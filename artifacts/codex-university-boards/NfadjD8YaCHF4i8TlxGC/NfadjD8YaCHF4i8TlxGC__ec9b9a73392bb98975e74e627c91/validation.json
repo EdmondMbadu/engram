@@ -1,0 +1,92 @@
+{
+  "ok": false,
+  "problems": [
+    "Cross-board overlap exceeds four subjects: Shadek-Fackenthal Library, Martin Library of the Sciences, Phillips Museum of Art, Buchanan Park, Lancaster Central Market, Fulton Theatre."
+  ],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.fandm.edu/centers-institutes-and-initiatives/lombardo-welcome-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fandm.edu/centers-institutes-and-initiatives/lombardo-welcome-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fandm.edu/library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fandm.edu/library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fandm.edu/office-of-student-affairs/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fandm.edu/office-of-student-affairs/",
+      "error": ""
+    },
+    {
+      "url": "https://ampersand.fandm.edu/web/rsvp_boot?id=388972",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ampersand.fandm.edu/web/rsvp_boot?id=388972",
+      "error": ""
+    },
+    {
+      "url": "https://www.cityoflancasterpa.gov/services/parks/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cityoflancasterpa.gov/services/parks/",
+      "error": ""
+    },
+    {
+      "url": "https://www.cityoflancasterpa.gov/lancaster-central-market/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cityoflancasterpa.gov/lancaster-central-market/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lmapa.org/contact/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lmapa.org/contact/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fandm.edu/stories/explore-winter-activities-near-campus.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fandm.edu/stories/explore-winter-activities-near-campus.html",
+      "error": ""
+    },
+    {
+      "url": "https://thefulton.org/box-office/buy-tickets/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thefulton.org/box-office/buy-tickets/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Shadek-Fackenthal Library",
+    "Martin Library of the Sciences",
+    "Phillips Museum of Art",
+    "Buchanan Park",
+    "Lancaster Central Market",
+    "Fulton Theatre"
+  ],
+  "sourceCount": 9,
+  "generationScore": null,
+  "generationGrade": null
+}

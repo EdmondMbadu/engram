@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "ENVX and several symposium cards are seasonal; their linked official pages document free admission, but attendees should verify the next program dates.",
+    "OtterBus is restricted to Lewis & Clark students, staff, and faculty and does not operate during summer session.",
+    "EAR Forest instrument access depends on scheduled programming; confirm the current event before participating."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.lclark.edu/hoffman_gallery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lclark.edu/hoffman_gallery/",
+      "error": ""
+    },
+    {
+      "url": "https://graduate.lclark.edu/programs/art-therapy/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://graduate.lclark.edu/programs/art-therapy/",
+      "error": ""
+    },
+    {
+      "url": "https://college.lclark.edu/departments/gender_studies/symposium/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://college.lclark.edu/departments/gender_studies/symposium/about/",
+      "error": ""
+    },
+    {
+      "url": "https://college.lclark.edu/programs/middle_east_and_north_african_studies/symposium/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://college.lclark.edu/programs/middle_east_and_north_african_studies/symposium/about/",
+      "error": ""
+    },
+    {
+      "url": "https://college.lclark.edu/programs/ethnic_studies/symposium/info/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://college.lclark.edu/programs/ethnic_studies/symposium/info/",
+      "error": ""
+    },
+    {
+      "url": "https://college.lclark.edu/departments/art/visiting_artists/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://college.lclark.edu/departments/art/visiting_artists/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lclark.edu/offices/international/events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lclark.edu/offices/international/events/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lclark.edu/live/news/54255-27th-annual-environmental-studies-symposium-focuses-on",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lclark.edu/live/news/54255-27th-annual-environmental-studies-symposium-focuses-on",
+      "error": ""
+    },
+    {
+      "url": "https://www.lclark.edu/offices/transportation_and_parking/shuttle/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lclark.edu/offices/transportation_and_parking/shuttle/",
+      "error": ""
+    },
+    {
+      "url": "https://college.lclark.edu/offices/alumni/homecoming/schedule/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://college.lclark.edu/offices/alumni/homecoming/schedule/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.stkate.edu/about/visit-campus/cdc",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stkate.edu/about/visit-campus/cdc",
+      "error": ""
+    },
+    {
+      "url": "https://www.stkate.edu/about/visit-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stkate.edu/about/visit-campus",
+      "error": ""
+    },
+    {
+      "url": "https://www.stkate.edu/life/housing/dining",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stkate.edu/life/housing/dining",
+      "error": ""
+    },
+    {
+      "url": "https://www.stkate.edu/about/visit-campus/our-lady-of-victory-chapel",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stkate.edu/about/visit-campus/our-lady-of-victory-chapel",
+      "error": ""
+    },
+    {
+      "url": "https://gallery.stkate.edu/exhibition/paglees-between-reason-and-madness",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gallery.stkate.edu/exhibition/paglees-between-reason-and-madness",
+      "error": ""
+    },
+    {
+      "url": "https://oshag.stkate.edu/events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stkate.edu/oshaughnessy",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Student Organization Center"
+  ],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

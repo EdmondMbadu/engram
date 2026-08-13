@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.nycgovparks.org/sub_about/parks_history/index_image_thumbs/40_years_public_art.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nycgovparks.org/sub_about/parks_history/index_image_thumbs/40_years_public_art.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://publictheater.org/about-the-public/welcome-to-the-public-theater/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://publictheater.org/about-the-public/welcome-to-the-public-theater/",
+      "error": ""
+    },
+    {
+      "url": "https://www.strandbooks.com/books-and-media/performing-arts.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.strandbooks.com/books-and-media/performing-arts.html",
+      "error": ""
+    },
+    {
+      "url": "https://lamama.org/capital-campaign/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lamama.org/capital-campaign/",
+      "error": ""
+    },
+    {
+      "url": "https://merchantshouse.org/the-house/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://merchantshouse.org/the-house/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nypl.org/locations/ottendorfer/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nypl.org/locations/ottendorfer/",
+      "error": ""
+    },
+    {
+      "url": "https://www.theukrainianmuseum.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.theukrainianmuseum.org/",
+      "error": ""
+    },
+    {
+      "url": "https://www.anthologyfilmarchives.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.anthologyfilmarchives.org/",
+      "error": ""
+    },
+    {
+      "url": "https://php1-84.nycgovparks.org/parks/tompkins-square-park/facilities/great-trees",
+      "ok": true,
+      "conclusive": true,
+      "status": 401,
+      "finalUrl": "https://php1-84.nycgovparks.org/parks/tompkins-square-park/facilities/great-trees",
+      "error": ""
+    },
+    {
+      "url": "https://grownyc.org/locations/union-square-greenmarket/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://grownyc.org/locations/union-square-greenmarket/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

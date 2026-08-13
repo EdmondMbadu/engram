@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://homecoming.sdsu.edu/history",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://homecoming.sdsu.edu/history",
+      "error": ""
+    },
+    {
+      "url": "https://as.sdsu.edu/greenfest/traditions-committee",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://as.sdsu.edu/greenfest/traditions-committee",
+      "error": ""
+    },
+    {
+      "url": "https://nrc.sdsu.edu/programs/powwow",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://nrc.sdsu.edu/programs/powwow",
+      "error": ""
+    },
+    {
+      "url": "https://www.sdsu.edu/news/2021/11/the-cowles-mountain-s-yesterday-today",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sdsu.edu/news/2021/11/the-cowles-mountain-s-yesterday-today",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

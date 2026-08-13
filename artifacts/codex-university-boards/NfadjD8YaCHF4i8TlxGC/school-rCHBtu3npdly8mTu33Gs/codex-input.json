@@ -1,0 +1,55 @@
+{
+  "target": {
+    "atlasId": "rCHBtu3npdly8mTu33Gs",
+    "schoolName": "California State University-Northridge",
+    "shortSchoolName": "California State University-Northridge",
+    "townName": "Northridge",
+    "state": "CA",
+    "countryCode": "US",
+    "website": "https://www.csun.edu/",
+    "latitude": 34.240126,
+    "longitude": -118.529319
+  },
+  "templates": [
+    {
+      "id": "college-campus-tour-skips",
+      "version": "1.0",
+      "titlePattern": "What the Campus Tour Skips: {count} Places Students Share With Each Other",
+      "editorialBrief": "Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.",
+      "researchQueries": [
+        "student favorite campus places",
+        "campus map student spaces",
+        "student newspaper campus places"
+      ],
+      "count": 10,
+      "icon": "style",
+      "primarySubjectType": "place",
+      "allowedSubjectTypes": [
+        "place",
+        "study_space"
+      ],
+      "freshnessDays": 365,
+      "exactTitle": "What the Campus Tour Skips: 10 Places Students Share With Each Other"
+    },
+    {
+      "id": "college-zero-dollar-hangs",
+      "version": "1.0",
+      "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+      "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+      "researchQueries": [
+        "free student activities campus",
+        "free campus spaces students",
+        "free public places near campus"
+      ],
+      "count": 10,
+      "icon": "money_off",
+      "primarySubjectType": "activity",
+      "allowedSubjectTypes": [
+        "activity",
+        "place"
+      ],
+      "freshnessDays": 180,
+      "exactTitle": "Zero Dollars: 10 Hangs That Cost Nothing"
+    }
+  ]
+}

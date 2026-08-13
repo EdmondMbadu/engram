@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://biteofpower.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://biteofpower.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.gumbyspizza.com/gainesville",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gumbyspizza.com/gainesville",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.ihop.com/en-us/fl/gainesville/breakfast-3625-sw-13th-street-360092/late-night-food",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.ihop.com/en-us/fl/gainesville/breakfast-3625-sw-13th-street-360092/late-night-food",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.applebees.com/en-us/fl/gainesville/1005-n-w-13th-street-89000",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.applebees.com/en-us/fl/gainesville/1005-n-w-13th-street-89000",
+      "error": ""
+    },
+    {
+      "url": "https://cantinaanejo.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://cantinaanejo.com/",
+      "error": ""
+    },
+    {
+      "url": "https://spurriers.com/menu",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://spurriers.com/menu",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/fl/gainesville/1515-sw-13th-street/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/fl/gainesville/1515-sw-13th-street/restaurant.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.vpizza.com/locations/gainesville-fl/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.vpizza.com/locations/gainesville-fl/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.checkersandrallys.com/location/checkers-6320-w-university-ave-413541",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://locations.checkersandrallys.com/location/checkers-6320-w-university-ave-413541",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wafflehouse.com/fl/gainesville/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wafflehouse.com/fl/gainesville/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

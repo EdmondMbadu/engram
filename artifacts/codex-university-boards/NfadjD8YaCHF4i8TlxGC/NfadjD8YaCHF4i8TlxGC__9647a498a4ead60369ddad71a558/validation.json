@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.stmarys-ca.edu/news/all-we-can-say-wow",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stmarys-ca.edu/news/all-we-can-say-wow",
+      "error": ""
+    },
+    {
+      "url": "https://www.stmarys-ca.edu/news/welcome-gael-life-poolside-edition",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stmarys-ca.edu/news/welcome-gael-life-poolside-edition",
+      "error": ""
+    },
+    {
+      "url": "https://www.stmarys-ca.edu/news/weekend-welcome-see-why-saint-marys-experience-no-other",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stmarys-ca.edu/news/weekend-welcome-see-why-saint-marys-experience-no-other",
+      "error": ""
+    },
+    {
+      "url": "https://www.stmarys-ca.edu/news/celebrating-our-lady-guadalupe-0",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stmarys-ca.edu/news/celebrating-our-lady-guadalupe-0",
+      "error": ""
+    },
+    {
+      "url": "https://www.stmarys-ca.edu/news/celebrate-saint-marys-lasallian-heritage-days",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stmarys-ca.edu/news/celebrate-saint-marys-lasallian-heritage-days",
+      "error": ""
+    },
+    {
+      "url": "https://www.stmarys-ca.edu/news/get-ready-44-days-saint-marys-signature-celebration-black-history",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stmarys-ca.edu/news/get-ready-44-days-saint-marys-signature-celebration-black-history",
+      "error": ""
+    },
+    {
+      "url": "https://www.stmarys-ca.edu/news/why-does-jan-term-exist-answer-will-surprise-you",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stmarys-ca.edu/news/why-does-jan-term-exist-answer-will-surprise-you",
+      "error": ""
+    },
+    {
+      "url": "https://www.stmarys-ca.edu/news/honors-program-saint-marys-best-kept-secret-not-anymore",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stmarys-ca.edu/news/honors-program-saint-marys-best-kept-secret-not-anymore",
+      "error": ""
+    },
+    {
+      "url": "https://www.stmarys-ca.edu/news/saint-marys-undergraduate-commencement-vibrant-class-2025-charges-future-eyes-forward",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stmarys-ca.edu/news/saint-marys-undergraduate-commencement-vibrant-class-2025-charges-future-eyes-forward",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 100,
+  "generationGrade": "A"
+}

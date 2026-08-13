@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://stories.purdue.edu/popular-purdue-buildings-for-student-life/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stories.purdue.edu/popular-purdue-buildings-for-student-life/",
+      "error": ""
+    },
+    {
+      "url": "https://stories.purdue.edu/renovations-modernize-pmu-dining-level-while-celebrating-purdues-history/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stories.purdue.edu/renovations-modernize-pmu-dining-level-while-celebrating-purdues-history/",
+      "error": ""
+    },
+    {
+      "url": "https://www.purdue.edu/operations/pmu/activities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.purdue.edu/operations/pmu/activities/",
+      "error": ""
+    },
+    {
+      "url": "https://stories.purdue.edu/the-top-10-best-study-locations-at-purdue/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stories.purdue.edu/the-top-10-best-study-locations-at-purdue/",
+      "error": ""
+    },
+    {
+      "url": "https://webapps.lib.purdue.edu/covid-19/pages/where-to-study-on-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://webapps.lib.purdue.edu/covid-19/pages/where-to-study-on-campus",
+      "error": ""
+    },
+    {
+      "url": "https://www.chem.purdue.edu/commons/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.chem.purdue.edu/commons/",
+      "error": ""
+    },
+    {
+      "url": "https://convocations.purdue.edu/new-music-rehearsal-space-opens-for-students/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://convocations.purdue.edu/new-music-rehearsal-space-opens-for-students/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

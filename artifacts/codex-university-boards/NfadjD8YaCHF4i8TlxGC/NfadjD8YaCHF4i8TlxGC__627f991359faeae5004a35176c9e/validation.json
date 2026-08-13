@@ -1,0 +1,88 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://orientation.boston.northeastern.edu/wp-content/uploads/2026/06/Orientation-26-HH-Vol-3-Confirm-Info.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://orientation.boston.northeastern.edu/wp-content/uploads/2026/06/Orientation-26-HH-Vol-3-Confirm-Info.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://news.northeastern.edu/2022/09/13/northeasterns-boston-campus-secrets/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.northeastern.edu/2022/09/13/northeasterns-boston-campus-secrets/",
+      "error": ""
+    },
+    {
+      "url": "https://curry.sites.northeastern.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://curry.sites.northeastern.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://camd.northeastern.edu/center-for-the-arts/gallery-360/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://camd.northeastern.edu/center-for-the-arts/gallery-360/",
+      "error": ""
+    },
+    {
+      "url": "https://library.northeastern.edu/ideas/about-snell-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.northeastern.edu/ideas/about-snell-library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.northeastern.edu/orientation/wp-content/uploads/2019/12/Sp20OrientationMap.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://orientation.boston.northeastern.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://recreation.northeastern.edu/matthews-arena/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recreation.northeastern.edu/matthews-arena/",
+      "error": ""
+    },
+    {
+      "url": "https://recreation.northeastern.edu/squashbusters-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recreation.northeastern.edu/squashbusters-center/",
+      "error": ""
+    },
+    {
+      "url": "https://news.northeastern.edu/2018/01/18/campus-hub-for-club-sports-and-intramurals-opens-at-squashbusters/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.northeastern.edu/2018/01/18/campus-hub-for-club-sports-and-intramurals-opens-at-squashbusters/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Curry Student Center",
+    "Snell Library"
+  ],
+  "sourceCount": 9,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.rhodes.edu/welcome-week-schedule",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rhodes.edu/welcome-week-schedule",
+      "error": ""
+    },
+    {
+      "url": "https://news.rhodes.edu/stories/100-years-memphis-long-history-makes-meaningful-and-fun-traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.rhodes.edu/stories/100-years-memphis-long-history-makes-meaningful-and-fun-traditions",
+      "error": ""
+    },
+    {
+      "url": "https://www.rhodes.edu/about-rhodes/our-traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rhodes.edu/about-rhodes/our-traditions",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

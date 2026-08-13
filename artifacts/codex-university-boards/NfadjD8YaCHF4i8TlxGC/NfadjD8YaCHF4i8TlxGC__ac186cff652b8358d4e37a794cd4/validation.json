@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.usna.edu/Library/services/studyspaces.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usna.edu/Library/services/studyspaces.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.usna.edu/Library/services/room_reservations.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usna.edu/Library/services/room_reservations.php",
+      "error": ""
+    },
+    {
+      "url": "https://usna.edu/BlueAndGoldBook/athletics.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://usna.edu/BlueAndGoldBook/athletics.php",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

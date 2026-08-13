@@ -3,19 +3,17 @@
   "apply": true,
   "requested": 1,
   "completed": 1,
-  "created": 0,
-  "rejected": 1,
+  "created": 1,
+  "rejected": 0,
   "results": [
     {
-      "itemId": "0OSDT6McWwWJwm7dvT5E__1d3b2bdbf8c528d45b294513487d",
-      "school": "Adelphi University",
-      "template": "college-first-weekend",
-      "status": "rejected",
-      "problems": [
-        "Writer marked the board incomplete.",
-        "3 source URL(s) returned a conclusive broken response."
-      ],
-      "score": null
+      "itemId": "NfadjD8YaCHF4i8TlxGC__5590ff2fc41201573dafbc37999a",
+      "school": "University of Portland",
+      "template": "college-study-spots",
+      "status": "created",
+      "boardId": "bulk_5590ff2fc41201573dafbc37999a",
+      "score": 90,
+      "grade": "A"
     }
   ]
 }

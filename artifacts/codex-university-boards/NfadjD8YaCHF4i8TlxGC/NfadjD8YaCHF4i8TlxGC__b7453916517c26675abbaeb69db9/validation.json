@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.hofstra.edu/student-leadership-engagement/game-room.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hofstra.edu/student-leadership-engagement/game-room.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.hofstra.edu/facilities-operations/projects-archive.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hofstra.edu/facilities-operations/projects-archive.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.hofstra.edu/commuting-student-services/services.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hofstra.edu/commuting-student-services/services.html",
+      "error": ""
+    },
+    {
+      "url": "https://news.hofstra.edu/2024/09/23/celebrating-the-librarys-10th-floor-makeover/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://news.hofstra.edu/2024/09/23/celebrating-the-librarys-10th-floor-makeover/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hofstra.edu/admission/deposit-resources/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hofstra.edu/admission/deposit-resources/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hofstra.edu/museum/hofstra-faculty.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hofstra.edu/museum/hofstra-faculty.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.nyit.edu/news/articles/mayfest-2024/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nyit.edu/news/articles/mayfest-2024/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nyit.edu/news/articles/21st-annual-source-showcases-student-research/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nyit.edu/news/articles/21st-annual-source-showcases-student-research/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nyit.edu/news/articles/urep-spotlights-innovative-student-research/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nyit.edu/news/articles/urep-spotlights-innovative-student-research/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nyit.edu/news/articles/health-professions-students-shine-at-aletheia/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nyit.edu/news/articles/health-professions-students-shine-at-aletheia/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nyit.edu/news/articles/community-engagement-day-2024/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nyit.edu/news/articles/community-engagement-day-2024/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nyit.edu/news/articles/taste-of-nations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nyit.edu/news/articles/taste-of-nations/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nyit.edu/news/articles/meet-the-class-of-2025-speaker-and-singer/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nyit.edu/news/articles/meet-the-class-of-2025-speaker-and-singer/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nyit.edu/news/articles/new-academic-year-brings-new-faculty/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nyit.edu/news/articles/new-academic-year-brings-new-faculty/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nyit.edu/news/articles/fifth-annual-ingenium-sets-fundraising-record/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nyit.edu/news/articles/fifth-annual-ingenium-sets-fundraising-record/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nyit.edu/news/articles/recognizing-nyitcom-alumni-and-friends/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nyit.edu/news/articles/recognizing-nyitcom-alumni-and-friends/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 100,
+  "generationGrade": "A"
+}

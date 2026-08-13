@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.fairfield.edu/museum/about/plan-your-visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/museum/about/plan-your-visit/",
+      "error": ""
+    },
+    {
+      "url": "https://events.fairfield.edu/artsminds",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.fairfield.edu/artsminds",
+      "error": ""
+    },
+    {
+      "url": "https://events.fairfield.edu/event/childrens-storytime-in-the-fairfield-forest-1972",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.fairfield.edu/event/childrens-storytime-in-the-fairfield-forest-1972",
+      "error": ""
+    },
+    {
+      "url": "https://ctaudubon.org/locations/birdcraft-museum-and-sanctuary/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ctaudubon.org/locations/birdcraft-museum-and-sanctuary/",
+      "error": ""
+    },
+    {
+      "url": "https://ctaudubon.org/locations/the-fairfield-nature-center-and-larsen-sanctuary/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ctaudubon.org/locations/the-fairfield-nature-center-and-larsen-sanctuary/",
+      "error": ""
+    },
+    {
+      "url": "https://experiencefairfieldct.squarespace.com/walking-tour-the-lake-mohegan-walk",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://experiencefairfieldct.squarespace.com/walking-tour-the-lake-mohegan-walk",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

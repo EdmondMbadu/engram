@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.farmingdale.edu/library/open.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.farmingdale.edu/library/open.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.farmingdale.edu/aaic/aaic-handbook.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.farmingdale.edu/aaic/aaic-handbook.shtml",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 2,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

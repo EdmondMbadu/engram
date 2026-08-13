@@ -1,0 +1,71 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "XdKvC5s98qxNAbPfZKO4",
+    "schoolName": "University of Arizona",
+    "shortSchoolName": "University of Arizona",
+    "townName": "Tucson",
+    "state": "AZ",
+    "countryCode": "US",
+    "unitId": "104179",
+    "website": "https://www.arizona.edu/",
+    "latitude": 32.232672,
+    "longitude": -110.950815,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/e/e4/University_of_Arizona_seal.svg/250px-University_of_Arizona_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=arizona.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Silent Study Room",
+    "Scholars’ Corner",
+    "Main Library Quiet Study Area, Floor 4",
+    "Main Library Quiet Study Area, Floor 5",
+    "Weaver Library Quiet Study Area, Floor 1",
+    "Weaver Library Quiet Study Area, Floor 4",
+    "Main Library Group Study Rooms",
+    "Weaver Library Group Study Rooms",
+    "Maker Studio",
+    "Virtual Reality (VR) Studio",
+    "Old Main",
+    "Berger Memorial Fountain",
+    "Joseph Wood Krutch Garden",
+    "UA Campus Arboretum Self-Guided Tour",
+    "Student Union Memorial Center",
+    "U.S.S. Arizona Bell",
+    "Main Library",
+    "Flandrau Science Center & Planetarium",
+    "Outdoor Recreation Bouldering Workshop",
+    "Bear Down!",
+    "Bear Down rally cry",
+    "“Bear Down, Arizona”",
+    "“Fight, Wildcats, Fight”",
+    "John “Button” Salmon bust touch",
+    "Wildcat Walk",
+    "Lighting of “A” Mountain",
+    "University of Arizona Homecoming",
+    "Territorial Cup",
+    "Wilbur and Wilma Wildcat",
+    "Bear Down Friday"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

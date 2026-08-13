@@ -1,0 +1,39 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "7vvwozgqm6iMYnsCU9x4",
+    "schoolName": "University of Alabama in Huntsville",
+    "shortSchoolName": "University of Alabama in Huntsville",
+    "townName": "Huntsville",
+    "state": "AL",
+    "countryCode": "US",
+    "unitId": "100706",
+    "website": "https://www.uah.edu/",
+    "latitude": 34.724557,
+    "longitude": -86.640449,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/0/05/UAHuntsville_seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=uah.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain University of Alabama in Huntsville",
+  "excluded_subjects": [],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

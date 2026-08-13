@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/mo/chesterfield/1701-clarkson-rd/7678.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/mo/chesterfield/1701-clarkson-rd/7678.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.hyatt.com/hyatt-place/en-US/stlzc-hyatt-place-st-louis-chesterfield/dining",
+      "ok": true,
+      "conclusive": true,
+      "status": 429,
+      "finalUrl": "https://www.hyatt.com/hyatt-place/en-US/stlzc-hyatt-place-st-louis-chesterfield/dining",
+      "error": ""
+    },
+    {
+      "url": "https://locations.quiktrip.com/mo/ballwin/14800-manchester-rd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.quiktrip.com/mo/ballwin/14800-manchester-rd",
+      "error": ""
+    },
+    {
+      "url": "https://www.culvers.com/restaurants/chesterfield",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.culvers.com/restaurants/chesterfield",
+      "error": ""
+    },
+    {
+      "url": "https://stlcurryclub.com/contact-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stlcurryclub.com/contact-us/",
+      "error": ""
+    },
+    {
+      "url": "https://www.toasttab.com/local/order/greentrails-cafe-14276-ladue-road/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.toasttab.com/local/order/greentrails-cafe-14276-ladue-road/",
+      "error": ""
+    },
+    {
+      "url": "https://sybergs.com/locations/chesterfield/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sybergs.com/locations/chesterfield/",
+      "error": ""
+    },
+    {
+      "url": "https://smittys-food-and-drink.com/contact-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://smittys-food-and-drink.com/contact-us",
+      "error": ""
+    },
+    {
+      "url": "https://town-and-country.mikeduffys.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://town-and-country.mikeduffys.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.westchesterstl.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.westchesterstl.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

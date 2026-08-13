@@ -1,0 +1,58 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "4 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.seattleu.edu/academics/lemieux-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.seattleu.edu/academics/lemieux-library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.seattleu.edu/media/seattle-university/orientation/first-year-students/files/45052_New-Student-Guide---Orientation_v2.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.seattleu.edu/admitted-students/orientation/cornish-students--south-lake-union-campus/",
+      "error": ""
+    },
+    {
+      "url": "https://www.seattleu.edu/office-directory/university-events/event-spaces/multipurpose-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.seattleu.edu/office-directory/university-events/event-spaces/multipurpose-spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://www.seattleu.edu/life-at-seattle-u/faith-spirituality-meaning/chapel-of-st-ignatius/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.seattleu.edu/life-at-seattle-u/faith-spirituality-meaning/chapel-of-st-ignatius/",
+      "error": ""
+    },
+    {
+      "url": "https://www.seattleu.edu/life-at-seattle-u/university-recreation/recreation-facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.seattleu.edu/life-at-seattle-u/university-recreation/recreation-facilities/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Lemieux Library",
+    "Billodue Makerspace",
+    "Media Production Center",
+    "Chapel of St. Ignatius"
+  ],
+  "sourceCount": 5,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

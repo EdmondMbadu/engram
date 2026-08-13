@@ -1,0 +1,301 @@
+Reading additional input from stdin...
+2026-08-13T07:24:29.744442Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:24:29.749981Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa02-1a4d-7e33-8483-258d58d3e253
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"ZGHXYhkUuL9tZvuzyBLf","schoolName":"Grove City College","shortSchoolName":"Grove City College","townName":"Grove City","state":"PA","countryCode":"US","website":"https://www.gcc.edu/","latitude":41.1558,"longitude":-80.081481},"templates":[{"id":"college-late-night-runs","version":"1.0","titlePattern":"{count} Late-Night Runs That Explain {school}","editorialBrief":"Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.","researchQueries":["late night dining students","campus dining late hours","restaurants open late near campus"],"count":10,"icon":"nightlife","primarySubjectType":"place","allowedSubjectTypes":["place"],"freshnessDays":120,"exactTitle":"10 Late-Night Runs That Explain Grove City College"}]}
+codex
+{
+  "complete": false,
+  "school_name": "Grove City College",
+  "town_name": "Grove City",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Grove City College",
+      "town_name": "Grove City",
+      "template_id": "college-late-night-runs",
+      "title": "10 Late-Night Runs That Explain Grove City College",
+      "description": "",
+      "icon": "nightlife",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     
+
+
+
+
+
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+      ],
+      "warnings": [
+        "Research in progress; final response will contain verified direct sources and exactly 10 complete cards."
+      ]
+    }
+  ],
+  "warnings": [
+    "Researching current late-night availability from direct official sources."
+  ]
+}
+web search: 
+web search: site:sheetz.com Grove City PA 16127 Sheetz ...
+web search: 
+web search: official Domino's Grove City PA 16127 hours ...
+web search: 
+web search: site:restaurants.subway.com Grove City PA hours ...
+web search: 
+web search: 
+web search: 
+web search: 
+web search: 
+web search: site:gcc.edu dining hours Grove City College late night ...
+web search: 
+web search: https://orders.sheetz.com/findASheetz/store/299
+codex
+{"complete":true,"school_name":"Grove City College","town_name":"Grove City","boards":[{"complete":true,"school_name":"Grove City College","town_name":"Grove City","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Grove City College","description":"Ten under-21-safe Grove City destinations with verified access at 10 p.m. or later, including campus study stops, self-checkout markets, and nearby food runs.","icon":"nightlife","cards":[{"subject_id":"gcc-garage-cafe","subject_type":"place","entity_name":"The Garage Café","title":"The Garage Café","subtitle":"Late-night campus café in MAP","notes":"Head to MAP for pizza, snacks, ice cream, or coffee; check the dining site before leaving because Friday service is closed.","short_summary":"An on-campus evening food counter scheduled through 11 p.m. on most operating nights.","evidence_claim":"Grove City College lists The Garage Café in MAP and gives closing times of 11 p.m. Monday–Thursday and Saturday, plus 10 p.m. Sunday.","source_url":"https://www.gcc.edu/Home/Experience-the-Grove/Campus-Life/Dining","source_title":"Dining","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current college-posted hours: Monday–Thursday 8–11 p.m.; Saturday 5–11 p.m.; Sunday 10 a.m.–10 p.m.; closed Friday. Campus access rules may apply.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"gcc-hicks-market","subject_type":"place","entity_name":"Hicks Market","title":"Hicks Market After Hours","subtitle":"A 24/7 self-checkout market in Hicks","notes":"Bring your Crimson Card or payment method and use the self-checkout setup when staffed dining counters have already closed.","short_summary":"A round-the-clock campus market suited to a quick packaged-food stop.","evidence_claim":"Grove City College states that Hicks Market operates 24/7 with self-checkout.","source_url":"https://www.gcc.edu/Home/Experience-the-Grove/Campus-Life/Dining","source_title":"Dining","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The college currently lists Hicks Market as open 24/7 with self-checkout; building and campus-entry rules may still govern access.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"gcc-map-market","subject_type":"place","entity_name":"MAP Market","title":"MAP Market After Hours","subtitle":"Round-the-clock self-checkout beside MAP Café","notes":"Use this stop for packaged food or drinks after MAP Café closes, and confirm residence-area access before making a very late trip.","short_summary":"A second 24-hour campus market, located outside the MAP dining hall.","evidence_claim":"Grove City College identifies MAP Market as a retail market and lists it as open 24/7 with self-checkout.","source_url":"https://www.gcc.edu/Home/Experience-the-Grove/Campus-Life/Dining","source_title":"Dining","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The college currently lists MAP Market as open 24/7 with self-checkout; campus and building access restrictions may apply.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"gcc-buhl-library","subject_type":"place","entity_name":"Henry Buhl Library","title":"Henry Buhl Library","subtitle":"Campus study destination open past midnight","notes":"Choose a quiet or group-study area and finish before the posted 1 a.m. close; verify academic-break hours before heading over.","short_summary":"A late study run with 1 a.m. closing times on several school-week nights.","evidence_claim":"The college’s Buhl Library page lists office hours until 1 a.m. Monday–Thursday and Sunday.","source_url":"https://www.gcc.edu/Home/Experience-the-Grove/Facilities/Buhl-Library/Writing-Center","source_title":"Buhl Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Posted hours are Monday–Thursday 7:30 a.m.–1 a.m., Friday 7:30 a.m.–7:30 p.m., Saturday 8 a.m.–6 p.m., and Sunday 2 p.m.–1 a.m.; verify break schedules.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"taco-bell-1560-west-main","subject_type":"place","entity_name":"Taco Bell","title":"Taco Bell on West Main","subtitle":"A Grove City drive-through open after midnight","notes":"Check the live location page before leaving and plan on the drive-through if the dining room has a different late-night schedule.","short_summary":"The latest verified restaurant close in this set, with drive-through service to 1 a.m.","evidence_claim":"Taco Bell’s official Grove City location page lists the 1560 W. Main Street drive-through as open until 1 a.m. daily.","source_url":"https://locations.tacobell.com/pa/grove-city/1560-w--main-street.html","source_title":"Taco Bell in Grove City, PA — 1560 W. Main Street","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official location page currently lists drive-through hours of 9 a.m.–1 a.m. every day; dine-in availability may differ.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dominos-150-south-broad","subject_type":"place","entity_name":"Domino's Pizza","title":"Domino's on South Broad","subtitle":"Downtown carryout and delivery until midnight","notes":"Place the order before the posted cutoff and confirm whether carryout or delivery remains available for your campus address.","short_summary":"A downtown pizza counter with an official midnight closing time.","evidence_claim":"Domino’s official page identifies its Grove City store at 150 South Broad Street and shows it open until 12 a.m.","source_url":"https://pizza.dominos.com/pennsylvania/grove-city/150-south-broad-street","source_title":"Domino's Pizza at 150 South Broad Street","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official store page currently shows service until 12 a.m.; hours and the availability of delivery versus carryout can vary by day.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"mcdonalds-1902-leesburg-grove-city-road","subject_type":"place","entity_name":"McDonald's","title":"McDonald's by the Outlets","subtitle":"Restaurant and drive-through service to 11 p.m.","notes":"Allow time for the trip west of campus and check the location page before departure, especially around holidays or severe weather.","short_summary":"A consistently scheduled 11 p.m. option near the Grove City Premium Outlets area.","evidence_claim":"McDonald’s official page lists both restaurant/lobby and drive-through hours through 11 p.m. daily at 1902 Leesburg Grove City Road.","source_url":"https://www.mcdonalds.com/us/en-us/location/pa/grove-city/1902-leesburg-grove-city-road/16569.html","source_title":"McDonald's at 1902 Leesburg Grove City Road","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Officially posted restaurant, lobby, and drive-through hours are 5 a.m.–11 p.m. daily.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wendys-1925-leesburg-grove-city-road","subject_type":"place","entity_name":"Wendy's","title":"Wendy's on Leesburg Grove City Road","subtitle":"Dine-in and drive-through through 11 p.m.","notes":"Use the official listing to recheck holiday hours, then choose dine-in, carryout, delivery, or drive-through based on current availability.","short_summary":"An outlet-area food run with four listed service modes and an 11 p.m. close.","evidence_claim":"Wendy’s official Grove City page lists restaurant and drive-through hours of 10 a.m. to 11 p.m. every day.","source_url":"https://locations.wendys.com/united-states/pa/grove-city/1925-leesburg/grove-city-road","source_title":"Wendy's Grove City at 1925 Leesburg/Grove City Road","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official listing currently gives restaurant and drive-through hours of 10 a.m.–11 p.m. daily; holiday hours may vary.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"pizza-hut-715-west-main","subject_type":"place","entity_name":"Pizza Hut","title":"Pizza Hut on West Main","subtitle":"Friday and Saturday service to 11 p.m.","notes":"Save this run for Friday or Saturday if you need the 11 p.m. window, and distinguish restaurant, carryout, and delivery cutoffs.","short_summary":"A weekend-focused late pizza stop whose hours vary by service channel.","evidence_claim":"Pizza Hut’s official Grove City page lists restaurant and carryout hours until 11 p.m. Friday and Saturday at 715 W. Main Street.","source_url":"https://locations.pizzahut.com/pa/grove-city/715-w-main-st","source_title":"Pizza Hut at 715 W Main St","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Restaurant and carryout are posted until 11 p.m. Friday–Saturday and 10 p.m. Sunday–Thursday; dine-in and delivery hours differ.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"sheetz-1931-mercer-butler-pike","subject_type":"place","entity_name":"Sheetz","title":"Sheetz on Mercer Butler Pike","subtitle":"A 24-hour convenience-food stop west of town","notes":"Treat this as a driving run, use the mapped 1931 Mercer Butler Pike location, and verify food-ordering availability upon arrival.","short_summary":"A continuously open convenience-store destination for a flexible overnight run.","evidence_claim":"Apple Maps identifies the Sheetz at 1931 Mercer Butler Pike in Grove City and lists it as open 24 hours every day.","source_url":"https://maps.apple.com/place?place-id=IFC8E5936D19E8F0C","source_title":"Sheetz in Grove City, PA","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://maps.apple.com/place?place-id=IFC8E5936D19E8F0C","access_notes":"The current map listing shows this location open 24 hours every day; overnight food-counter selections or services may vary.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:27:31.465220Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa02-1a4d-7e33-8483-258d58d3e253.1786605869645952000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+55,232
+
+{"complete":true,"school_name":"Grove City College","town_name":"Grove City","boards":[{"complete":true,"school_name":"Grove City College","town_name":"Grove City","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Grove City College","description":"Ten under-21-safe Grove City destinations with verified access at 10 p.m. or later, including campus study stops, self-checkout markets, and nearby food runs.","icon":"nightlife","cards":[{"subject_id":"gcc-garage-cafe","subject_type":"place","entity_name":"The Garage Café","title":"The Garage Café","subtitle":"Late-night campus café in MAP","notes":"Head to MAP for pizza, snacks, ice cream, or coffee; check the dining site before leaving because Friday service is closed.","short_summary":"An on-campus evening food counter scheduled through 11 p.m. on most operating nights.","evidence_claim":"Grove City College lists The Garage Café in MAP and gives closing times of 11 p.m. Monday–Thursday and Saturday, plus 10 p.m. Sunday.","source_url":"https://www.gcc.edu/Home/Experience-the-Grove/Campus-Life/Dining","source_title":"Dining","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current college-posted hours: Monday–Thursday 8–11 p.m.; Saturday 5–11 p.m.; Sunday 10 a.m.–10 p.m.; closed Friday. Campus access rules may apply.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"gcc-hicks-market","subject_type":"place","entity_name":"Hicks Market","title":"Hicks Market After Hours","subtitle":"A 24/7 self-checkout market in Hicks","notes":"Bring your Crimson Card or payment method and use the self-checkout setup when staffed dining counters have already closed.","short_summary":"A round-the-clock campus market suited to a quick packaged-food stop.","evidence_claim":"Grove City College states that Hicks Market operates 24/7 with self-checkout.","source_url":"https://www.gcc.edu/Home/Experience-the-Grove/Campus-Life/Dining","source_title":"Dining","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The college currently lists Hicks Market as open 24/7 with self-checkout; building and campus-entry rules may still govern access.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"gcc-map-market","subject_type":"place","entity_name":"MAP Market","title":"MAP Market After Hours","subtitle":"Round-the-clock self-checkout beside MAP Café","notes":"Use this stop for packaged food or drinks after MAP Café closes, and confirm residence-area access before making a very late trip.","short_summary":"A second 24-hour campus market, located outside the MAP dining hall.","evidence_claim":"Grove City College identifies MAP Market as a retail market and lists it as open 24/7 with self-checkout.","source_url":"https://www.gcc.edu/Home/Experience-the-Grove/Campus-Life/Dining","source_title":"Dining","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The college currently lists MAP Market as open 24/7 with self-checkout; campus and building access restrictions may apply.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"gcc-buhl-library","subject_type":"place","entity_name":"Henry Buhl Library","title":"Henry Buhl Library","subtitle":"Campus study destination open past midnight","notes":"Choose a quiet or group-study area and finish before the posted 1 a.m. close; verify academic-break hours before heading over.","short_summary":"A late study run with 1 a.m. closing times on several school-week nights.","evidence_claim":"The college’s Buhl Library page lists office hours until 1 a.m. Monday–Thursday and Sunday.","source_url":"https://www.gcc.edu/Home/Experience-the-Grove/Facilities/Buhl-Library/Writing-Center","source_title":"Buhl Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Posted hours are Monday–Thursday 7:30 a.m.–1 a.m., Friday 7:30 a.m.–7:30 p.m., Saturday 8 a.m.–6 p.m., and Sunday 2 p.m.–1 a.m.; verify break schedules.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"taco-bell-1560-west-main","subject_type":"place","entity_name":"Taco Bell","title":"Taco Bell on West Main","subtitle":"A Grove City drive-through open after midnight","notes":"Check the live location page before leaving and plan on the drive-through if the dining room has a different late-night schedule.","short_summary":"The latest verified restaurant close in this set, with drive-through service to 1 a.m.","evidence_claim":"Taco Bell’s official Grove City location page lists the 1560 W. Main Street drive-through as open until 1 a.m. daily.","source_url":"https://locations.tacobell.com/pa/grove-city/1560-w--main-street.html","source_title":"Taco Bell in Grove City, PA — 1560 W. Main Street","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official location page currently lists drive-through hours of 9 a.m.–1 a.m. every day; dine-in availability may differ.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dominos-150-south-broad","subject_type":"place","entity_name":"Domino's Pizza","title":"Domino's on South Broad","subtitle":"Downtown carryout and delivery until midnight","notes":"Place the order before the posted cutoff and confirm whether carryout or delivery remains available for your campus address.","short_summary":"A downtown pizza counter with an official midnight closing time.","evidence_claim":"Domino’s official page identifies its Grove City store at 150 South Broad Street and shows it open until 12 a.m.","source_url":"https://pizza.dominos.com/pennsylvania/grove-city/150-south-broad-street","source_title":"Domino's Pizza at 150 South Broad Street","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official store page currently shows service until 12 a.m.; hours and the availability of delivery versus carryout can vary by day.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"mcdonalds-1902-leesburg-grove-city-road","subject_type":"place","entity_name":"McDonald's","title":"McDonald's by the Outlets","subtitle":"Restaurant and drive-through service to 11 p.m.","notes":"Allow time for the trip west of campus and check the location page before departure, especially around holidays or severe weather.","short_summary":"A consistently scheduled 11 p.m. option near the Grove City Premium Outlets area.","evidence_claim":"McDonald’s official page lists both restaurant/lobby and drive-through hours through 11 p.m. daily at 1902 Leesburg Grove City Road.","source_url":"https://www.mcdonalds.com/us/en-us/location/pa/grove-city/1902-leesburg-grove-city-road/16569.html","source_title":"McDonald's at 1902 Leesburg Grove City Road","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Officially posted restaurant, lobby, and drive-through hours are 5 a.m.–11 p.m. daily.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wendys-1925-leesburg-grove-city-road","subject_type":"place","entity_name":"Wendy's","title":"Wendy's on Leesburg Grove City Road","subtitle":"Dine-in and drive-through through 11 p.m.","notes":"Use the official listing to recheck holiday hours, then choose dine-in, carryout, delivery, or drive-through based on current availability.","short_summary":"An outlet-area food run with four listed service modes and an 11 p.m. close.","evidence_claim":"Wendy’s official Grove City page lists restaurant and drive-through hours of 10 a.m. to 11 p.m. every day.","source_url":"https://locations.wendys.com/united-states/pa/grove-city/1925-leesburg/grove-city-road","source_title":"Wendy's Grove City at 1925 Leesburg/Grove City Road","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official listing currently gives restaurant and drive-through hours of 10 a.m.–11 p.m. daily; holiday hours may vary.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"pizza-hut-715-west-main","subject_type":"place","entity_name":"Pizza Hut","title":"Pizza Hut on West Main","subtitle":"Friday and Saturday service to 11 p.m.","notes":"Save this run for Friday or Saturday if you need the 11 p.m. window, and distinguish restaurant, carryout, and delivery cutoffs.","short_summary":"A weekend-focused late pizza stop whose hours vary by service channel.","evidence_claim":"Pizza Hut’s official Grove City page lists restaurant and carryout hours until 11 p.m. Friday and Saturday at 715 W. Main Street.","source_url":"https://locations.pizzahut.com/pa/grove-city/715-w-main-st","source_title":"Pizza Hut at 715 W Main St","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Restaurant and carryout are posted until 11 p.m. Friday–Saturday and 10 p.m. Sunday–Thursday; dine-in and delivery hours differ.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"sheetz-1931-mercer-butler-pike","subject_type":"place","entity_name":"Sheetz","title":"Sheetz on Mercer Butler Pike","subtitle":"A 24-hour convenience-food stop west of town","notes":"Treat this as a driving run, use the mapped 1931 Mercer Butler Pike location, and verify food-ordering availability upon arrival.","short_summary":"A continuously open convenience-store destination for a flexible overnight run.","evidence_claim":"Apple Maps identifies the Sheetz at 1931 Mercer Butler Pike in Grove City and lists it as open 24 hours every day.","source_url":"https://maps.apple.com/place?place-id=IFC8E5936D19E8F0C","source_title":"Sheetz in Grove City, PA","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://maps.apple.com/place?place-id=IFC8E5936D19E8F0C","access_notes":"The current map listing shows this location open 24 hours every day; overnight food-counter selections or services may vary.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}

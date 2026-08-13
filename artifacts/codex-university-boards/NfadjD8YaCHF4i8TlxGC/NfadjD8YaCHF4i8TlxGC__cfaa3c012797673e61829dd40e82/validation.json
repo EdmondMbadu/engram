@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.dennys.com/ny/geneva/248657",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dennys.com/ny/geneva/248657",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/new-york/geneva/1-exchange-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/new-york/geneva/1-exchange-st",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/ny/geneva/481-hamilton-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/ny/geneva/481-hamilton-street",
+      "error": ""
+    },
+    {
+      "url": "https://www.wegmans.com/stores/geneva-ny",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.wegmans.com/stores/geneva-ny",
+      "error": ""
+    },
+    {
+      "url": "https://www.walmart.com/store/1731-geneva-ny",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.walmart.com/blocked?url=L3N0b3JlLzE3MzEtZ2VuZXZhLW55&uuid=5635ebee-96ea-11f1-8702-a12e18959745&vid=&g=b",
+      "error": ""
+    },
+    {
+      "url": "https://ciccinos.weborder.net/Items/Index/1090",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ciccinos.weborder.net/",
+      "error": ""
+    },
+    {
+      "url": "https://geneva.camspizza.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://geneva.camspizza.com/",
+      "error": ""
+    },
+    {
+      "url": "https://salvatores.com/locations/geneva",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://salvatores.com/locations/geneva",
+      "error": ""
+    },
+    {
+      "url": "https://fornoonseneca.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fornoonseneca.com/",
+      "error": ""
+    },
+    {
+      "url": "https://rustypigonlinden.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://rustypigonlinden.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

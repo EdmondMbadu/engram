@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://oxyarts.oxy.edu/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://oxyarts.oxy.edu/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.oxy.edu/about-oxy/community-engagement",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oxy.edu/about-oxy/community-engagement",
+      "error": ""
+    },
+    {
+      "url": "https://www.oxy.edu/academics/library/spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oxy.edu/academics/library/spaces",
+      "error": ""
+    },
+    {
+      "url": "https://www.oxy.edu/academics/library/about/policies",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oxy.edu/academics/library/about/policies",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

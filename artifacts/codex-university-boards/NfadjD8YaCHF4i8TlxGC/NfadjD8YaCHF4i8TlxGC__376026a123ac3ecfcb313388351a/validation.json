@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.tacobell.com/co/denver.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/co/denver.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dennys.com/co/denver/247203",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dennys.com/co/denver/247203",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dennys.com/co/denver",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dennys.com/co/denver",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/co/denver/1775-e--colfax-ave-/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/co/denver/1775-e--colfax-ave-/restaurant.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/co/denver/447-south-broadway.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/co/denver/447-south-broadway.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.deltaco.com/us/co/denver/8100-northfield-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.deltaco.com/us/co/denver/8100-northfield-blvd",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

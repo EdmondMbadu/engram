@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://dasa.fiu.edu/all-departments/graham-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dasa.fiu.edu/all-departments/graham-center/",
+      "error": ""
+    },
+    {
+      "url": "https://admissions.fiu.edu/experience-fiu/campus-tours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://admissions.fiu.edu/experience-fiu/campus-tours/",
+      "error": ""
+    },
+    {
+      "url": "https://astroscience.fiu.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://astroscience.fiu.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://dasa.fiu.edu/all-departments/wellness-recreation-centers/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dasa.fiu.edu/all-departments/wellness-recreation-centers/",
+      "error": ""
+    },
+    {
+      "url": "https://ignite.fiu.edu/give-now/giving-opportunities/units-and-divisions/university-sustainability/nature-preserve/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://ignite.fiu.edu/give-now/giving-opportunities/units-and-divisions/university-sustainability/nature-preserve/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://frost.fiu.edu/visit/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://frost.fiu.edu/visit/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.fiu.edu/locations/mmc/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fiu.edu/locations/mmc/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

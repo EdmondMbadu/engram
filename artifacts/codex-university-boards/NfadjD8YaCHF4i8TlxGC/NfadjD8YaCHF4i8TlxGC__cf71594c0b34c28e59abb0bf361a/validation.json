@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.farmingdale.edu/library/open.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.farmingdale.edu/library/open.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.farmingdale.edu/aaic/aaic-handbook.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.farmingdale.edu/aaic/aaic-handbook.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.farmingdale.edu/visitors/index.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.farmingdale.edu/visitors/index.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://catalog.farmingdale.edu/2025-2026/catalog.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.farmingdale.edu/2025-2026/catalog.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.farmingdale.edu/business/vis-comm/gallery.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.farmingdale.edu/business/vis-comm/gallery.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.farmingdale.edu/sustainability/giving-garden.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.farmingdale.edu/sustainability/giving-garden.shtml",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Ralph Bunche Plaza"
+  ],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

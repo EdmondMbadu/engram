@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.pomona.edu/admissions/connect/student/connect-tour-guide",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pomona.edu/admissions/connect/student/connect-tour-guide",
+      "error": ""
+    },
+    {
+      "url": "https://www.pomona.edu/administration/campus-center/reserving-space/campus-center-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pomona.edu/administration/campus-center/reserving-space/campus-center-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://catalog.pomona.edu/information/campus/facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.pomona.edu/information/campus/facilities",
+      "error": ""
+    },
+    {
+      "url": "https://www.pomona.edu/administration/president/statements/posts/update-hive-and-its-next-chapter",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pomona.edu/administration/president/statements/posts/update-hive-and-its-next-chapter",
+      "error": ""
+    },
+    {
+      "url": "https://www.pomona.edu/about/traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pomona.edu/about/traditions",
+      "error": ""
+    },
+    {
+      "url": "https://www.pomona.edu/academics/departments/music/our-facilities/montgomery-music-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pomona.edu/academics/departments/music/our-facilities/montgomery-music-library",
+      "error": ""
+    },
+    {
+      "url": "https://studenthandbook.pomona.edu/deanofstudentspolicies/housing",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studenthandbook.pomona.edu/deanofstudentspolicies/housing",
+      "error": ""
+    },
+    {
+      "url": "https://www.pomona.edu/museum/collections/james-turrell-skyspace",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pomona.edu/museum/collections/james-turrell-skyspace",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

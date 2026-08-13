@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.upenn.edu/life-at-penn/community/public",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.upenn.edu/life-at-penn/community/public",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.upenn.edu/exhibits/secure-these-rights-150-years",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.upenn.edu/exhibits/secure-these-rights-150-years",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.upenn.edu/finearts/common-press",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.upenn.edu/finearts/common-press",
+      "error": ""
+    },
+    {
+      "url": "https://www.design.upenn.edu/events/penns-sylvania-book-launch",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.design.upenn.edu/events/penns-sylvania-book-launch",
+      "error": ""
+    },
+    {
+      "url": "https://www.design.upenn.edu/events/catherine-telford-keogh",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.design.upenn.edu/events/catherine-telford-keogh",
+      "error": ""
+    },
+    {
+      "url": "https://wolfhumanities.upenn.edu/events/halberstam",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wolfhumanities.upenn.edu/events/halberstam",
+      "error": ""
+    },
+    {
+      "url": "https://wolfhumanities.upenn.edu/events/practice-articulation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wolfhumanities.upenn.edu/events/practice-articulation",
+      "error": ""
+    },
+    {
+      "url": "https://www.design.upenn.edu/fine-arts/graduate/visiting-artists",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.design.upenn.edu/fine-arts/graduate/visiting-artists",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.upenn.edu/events",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.upenn.edu/events",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

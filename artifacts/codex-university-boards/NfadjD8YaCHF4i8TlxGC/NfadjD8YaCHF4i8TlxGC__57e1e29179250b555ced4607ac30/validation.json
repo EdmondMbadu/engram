@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://thepalacediner.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thepalacediner.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/ny/poughkeepsie/753-main-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/ny/poughkeepsie/753-main-street",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ny/poughkeepsie/755-main-street/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ny/poughkeepsie/755-main-street/restaurant.html",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/new-york/poughkeepsie/10-taft-avenue",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/new-york/poughkeepsie/10-taft-avenue",
+      "error": ""
+    },
+    {
+      "url": "https://www.sundazeburgers.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sundazeburgers.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.kfc.com/ny/poughkeepsie/746-50-main-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.kfc.com/ny/poughkeepsie/746-50-main-street-G506017",
+      "error": ""
+    },
+    {
+      "url": "https://order.online/en-US/store/39520641",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://order.online/en-US/store/39520641",
+      "error": ""
+    },
+    {
+      "url": "https://midnightmunchieco.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://midnightmunchieco.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lacabanitaoax.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lacabanitaoax.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.farmersandchefs.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.farmersandchefs.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

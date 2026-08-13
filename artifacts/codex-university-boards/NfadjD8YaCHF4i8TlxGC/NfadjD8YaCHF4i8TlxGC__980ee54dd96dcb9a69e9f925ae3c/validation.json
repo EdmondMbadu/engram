@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://events.francis.edu/frankies_cafe",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.francis.edu/frankies_cafe",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/pa/ebensburg/4374-admiral-peary-hwy/10930.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/pa/ebensburg/4374-admiral-peary-hwy/10930.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/pa/ebensburg/4482-admiral-peary-hwy.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/pa/ebensburg/4482-admiral-peary-hwy.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/pa/ebensburg/842-hills-plz",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/pa/ebensburg/842-hills-plz",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/pa/ebensburg/943-w-high-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/pa/ebensburg/943-w-high-st",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/pa/altoona/406-e-25th-ave/15207.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/pa/altoona/406-e-25th-ave/15207.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/pa/altoona/1500-9th-avenue-station-mall/4294.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/pa/altoona/1500-9th-avenue-station-mall/4294.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/pa/altoona/1304-1st-street.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/pa/altoona/1304-1st-street.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/pa/altoona.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/pa/altoona.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/pa/east-freedom.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/pa/east-freedom.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

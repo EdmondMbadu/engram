@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.princestreetpizza.com/pasadena",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.princestreetpizza.com/pasadena",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/ca/pasadena",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/ca/pasadena",
+      "error": ""
+    },
+    {
+      "url": "https://www.tatsuramen.com/late-night-ramen",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.tatsuramen.com/late-night-ramen",
+      "error": ""
+    },
+    {
+      "url": "https://www.luckyboyburgers.com/location/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.luckyboyburgers.com/location/",
+      "error": ""
+    },
+    {
+      "url": "https://shakeshack.com/location/pasadena-ca",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://shakeshack.com/location/pasadena-ca",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jackinthebox.com/us/ca/pasadena/1415-e-colorado-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jackinthebox.com/us/ca/pasadena/1415-e-colorado-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ca/pasadena/1953-e-colorado-blvd/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ca/pasadena/1953-e-colorado-blvd/restaurant.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.luckystrikeent.com/location/lucky-strike-pasadena",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.luckystrikeent.com/location/lucky-strike-pasadena",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.ihop.com/en-us/ca/pasadena/breakfast-880-s-arroyo-pkwy-741",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.ihop.com/en-us/ca/pasadena/breakfast-880-s-arroyo-pkwy-741",
+      "error": ""
+    },
+    {
+      "url": "https://locations.deltaco.com/us/ca/pasadena/765-north-lake-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.deltaco.com/us/ca/pasadena/765-north-lake-ave",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

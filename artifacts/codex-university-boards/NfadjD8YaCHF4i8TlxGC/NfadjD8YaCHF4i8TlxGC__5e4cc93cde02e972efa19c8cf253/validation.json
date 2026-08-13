@@ -1,0 +1,96 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://mercycollege.edu/my-mercy/library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mercycollege.edu/my-mercy/library",
+      "error": ""
+    },
+    {
+      "url": "https://mercycollege.edu/news/mercy-college-of-ohio-unveils-new-library-with-ribbon-cutting-ceremony",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mercycollege.edu/news/mercy-college-of-ohio-unveils-new-library-with-ribbon-cutting-ceremony",
+      "error": ""
+    },
+    {
+      "url": "https://mercycollege.edu/student-affairs/student-success",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mercycollege.edu/student-affairs/student-success",
+      "error": ""
+    },
+    {
+      "url": "https://mercycollege.edu/student-affairs/student-success/tutoring",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mercycollege.edu/student-affairs/student-success/tutoring",
+      "error": ""
+    },
+    {
+      "url": "https://mercycollege.edu/student-affairs/testing-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mercycollege.edu/student-affairs/testing-center",
+      "error": ""
+    },
+    {
+      "url": "https://mercycollege.edu/student-affairs/fitness-center-2",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mercycollege.edu/student-affairs/fitness-center-2",
+      "error": ""
+    },
+    {
+      "url": "https://mercycollege.edu/student-affairs/campus-ministry",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mercycollege.edu/student-affairs/campus-ministry",
+      "error": ""
+    },
+    {
+      "url": "https://mercycollege.edu/student-affairs/mercy-college-food-pantry",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mercycollege.edu/student-affairs/mercy-college-food-pantry",
+      "error": ""
+    },
+    {
+      "url": "https://assets.mercycollege.edu/uploads/documents/20192020_mercy_college_catalog_final.pdf?mtime=20200528090632",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://assets.mercycollege.edu/uploads/documents/20192020_mercy_college_catalog_final.pdf?mtime=20200528090632",
+      "error": ""
+    },
+    {
+      "url": "https://mercycollege.edu/events/event/338623/2026/01/23",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mercycollege.edu/events/event/338623/2026/01/23",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Mercy College Library",
+    "Mercy College Food Pantry"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

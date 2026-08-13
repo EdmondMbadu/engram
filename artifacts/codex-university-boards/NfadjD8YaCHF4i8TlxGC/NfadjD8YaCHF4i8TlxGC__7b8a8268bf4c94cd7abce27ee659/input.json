@@ -1,0 +1,60 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "D8jZKSIMIEFdRrUCNFir",
+    "schoolName": "The University of Tennessee-Knoxville",
+    "shortSchoolName": "The University of Tennessee-Knoxville",
+    "townName": "Knoxville",
+    "state": "TN",
+    "countryCode": "US",
+    "unitId": "221759",
+    "website": "https://www.utk.edu/",
+    "latitude": 35.952082,
+    "longitude": -83.925852,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/5/55/Seal_of_the_University_of_Tennessee.svg/330px-Seal_of_the_University_of_Tennessee.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=utk.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "Raising Cane's Cumberland Ave",
+    "Gus's Good Times Deli",
+    "Cook Out",
+    "Insomnia Cookies",
+    "Subway",
+    "Mellow Mushroom Knoxville",
+    "Moe's Southwest Grill University of Tennessee",
+    "Rocky Top Dining Hall",
+    "Cumberland Food Hall",
+    "Student Union",
+    "Quiet Study Carrels",
+    "Quiet Study Tables",
+    "Group Study Carrels",
+    "Morgan Commons North",
+    "Graduate Commons Study Rooms - Small",
+    "Graduate Commons Study Room - Large",
+    "Pendergrass Study Rooms",
+    "Vol Study Center",
+    "Study Tables at DeVine Music Library",
+    "Study Lounge - Sixth Floor"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

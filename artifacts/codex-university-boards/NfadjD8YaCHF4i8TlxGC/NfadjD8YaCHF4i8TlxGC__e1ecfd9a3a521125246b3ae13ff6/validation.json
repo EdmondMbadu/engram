@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://library.unh.edu/services/spaces-study-work",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.unh.edu/services/spaces-study-work",
+      "error": ""
+    },
+    {
+      "url": "https://www.unh.edu/student-success/center-academic-resources/resources/study-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.unh.edu/student-success/center-academic-resources/resources/study-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://library.unh.edu/services/spaces-study-work/graduate-study-carrels",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.unh.edu/services/spaces-study-work/graduate-study-carrels",
+      "error": ""
+    },
+    {
+      "url": "https://library.unh.edu/services/spaces-study-work/studio-235",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.unh.edu/services/spaces-study-work/studio-235",
+      "error": ""
+    },
+    {
+      "url": "https://library.unh.edu/research-support/geospatial-services-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.unh.edu/research-support/geospatial-services-center",
+      "error": ""
+    },
+    {
+      "url": "https://library.unh.edu/services/spaces-study-work/conference-rooms",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.unh.edu/services/spaces-study-work/conference-rooms",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

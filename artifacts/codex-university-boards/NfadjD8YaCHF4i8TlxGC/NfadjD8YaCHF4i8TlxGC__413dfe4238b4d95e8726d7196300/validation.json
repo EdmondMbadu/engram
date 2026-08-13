@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.seattleu.edu/life-at-seattle-u/get-involved/campus-traditions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.seattleu.edu/life-at-seattle-u/get-involved/campus-traditions/",
+      "error": ""
+    },
+    {
+      "url": "https://www.seattleu.edu/life-at-seattle-u/get-involved/campus-traditions/annual-events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.seattleu.edu/life-at-seattle-u/get-involved/campus-traditions/annual-events/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 2,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

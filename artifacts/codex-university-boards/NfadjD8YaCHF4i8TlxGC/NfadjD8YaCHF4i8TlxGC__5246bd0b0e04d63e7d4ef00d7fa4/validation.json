@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.hillsdale.edu/about/facilities/grewcock-student-union/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsdale.edu/about/facilities/grewcock-student-union/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hillsdale.edu/about/facilities/slayton-aboretum/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsdale.edu/about/facilities/slayton-aboretum/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hillsdale.edu/about/facilities/hayden-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsdale.edu/about/facilities/hayden-park/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hillsdale.edu/about/facilities/north-and-south-quad/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsdale.edu/about/facilities/north-and-south-quad/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hillsdale.edu/about/facilities/mossey-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsdale.edu/about/facilities/mossey-library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hillsdale.edu/hillsdale-blog/student-life/the-fishpolls/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsdale.edu/hillsdale-blog/student-life/the-fishpolls/",
+      "error": ""
+    },
+    {
+      "url": "https://lib.hillsdale.edu/about/policies/heritage-room-use/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.hillsdale.edu/about/policies/heritage-room-use/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hillsdale.edu/academics/academic-resources/library-and-archives/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsdale.edu/academics/academic-resources/library-and-archives/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hillsdale.edu/about/facilities/knorr-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsdale.edu/about/facilities/knorr-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hillsdale.edu/about/facilities/searle-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsdale.edu/about/facilities/searle-center/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

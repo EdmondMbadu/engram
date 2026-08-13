@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.jcu.edu/about/traditions/index",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jcu.edu/about/traditions/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 1,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

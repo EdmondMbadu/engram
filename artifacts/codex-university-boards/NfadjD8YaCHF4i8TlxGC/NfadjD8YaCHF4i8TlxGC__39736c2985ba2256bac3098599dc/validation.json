@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://library.umkc.edu/mnl/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.umkc.edu/mnl/",
+      "error": ""
+    },
+    {
+      "url": "https://libcal.library.umkc.edu/space/70636",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libcal.library.umkc.edu/space/70636",
+      "error": ""
+    },
+    {
+      "url": "https://library.umkc.edu/floorplan/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.umkc.edu/floorplan/",
+      "error": ""
+    },
+    {
+      "url": "https://library.umkc.edu/digital-collaboration-studio/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.umkc.edu/digital-collaboration-studio/",
+      "error": ""
+    },
+    {
+      "url": "https://library.umkc.edu/fourth-floor/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.umkc.edu/fourth-floor/",
+      "error": ""
+    },
+    {
+      "url": "https://library.umkc.edu/welcome/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.umkc.edu/welcome/",
+      "error": ""
+    },
+    {
+      "url": "https://library.umkc.edu/hsl/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.umkc.edu/hsl/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

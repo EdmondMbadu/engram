@@ -1,0 +1,116 @@
+{
+  "target": "RzMmU1nibZhPY8j3PqeN",
+  "schoolName": "University of California-Santa Cruz",
+  "generatedAt": "2026-08-13T09:29:58.538Z",
+  "mode": "free-related-campus-limited-reuse",
+  "images": [
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FRzMmU1nibZhPY8j3PqeN%2F01-01b65237f1fca3d0.jpg?alt=media&token=d73f6eed-b388-4f78-9030-4f4f8680c46a",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:BaskEng1Eng2Plza.JPG",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY 3.0",
+      "imageLicense": "CC BY 3.0",
+      "imageTitle": "BaskEng1Eng2Plza.JPG",
+      "imageFingerprint": "01b65237f1fca3d0c1bde2d2bea213d32e50289b076fb108ca691ad06815e9bc",
+      "imageWidth": 1920,
+      "imageHeight": 1440,
+      "imageResolvedAt": "2026-08-13T09:29:58.198Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FRzMmU1nibZhPY8j3PqeN%2F02-5935338781a9285c.jpg?alt=media&token=d26ef290-91b2-4c92-8766-afa0ed37a578",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:20_smoke_out,_UCSC.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 2.0",
+      "imageLicense": "CC BY-SA 2.0",
+      "imageTitle": "20 smoke out, UCSC.jpg",
+      "imageFingerprint": "5935338781a9285ca4a4cc8f360aefecef171a70d03f5e05f5ed39448a1d1f7c",
+      "imageWidth": 1920,
+      "imageHeight": 1277,
+      "imageResolvedAt": "2026-08-13T09:29:58.216Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FRzMmU1nibZhPY8j3PqeN%2F03-b5c80db74d448578.jpg?alt=media&token=b0f7a1e4-e980-4966-ae65-c31120716909",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Australian_garden_(8044481146).jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY 2.0",
+      "imageLicense": "CC BY 2.0",
+      "imageTitle": "Australian garden (8044481146).jpg",
+      "imageFingerprint": "b5c80db74d448578af4cba74e60d9e8e034f99255a4d296aae91dd76a7929b33",
+      "imageWidth": 1920,
+      "imageHeight": 1440,
+      "imageResolvedAt": "2026-08-13T09:29:58.243Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FRzMmU1nibZhPY8j3PqeN%2F04-5b8a9f4f2fc4e1c3.jpg?alt=media&token=28a4336d-ea19-4adc-9bc6-faca28b68a73",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Australian_garden_(8044475687).jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY 2.0",
+      "imageLicense": "CC BY 2.0",
+      "imageTitle": "Australian garden (8044475687).jpg",
+      "imageFingerprint": "5b8a9f4f2fc4e1c3383e91963108b186e5f5ce5cb45686646a1ae777df7c14b0",
+      "imageWidth": 1920,
+      "imageHeight": 1440,
+      "imageResolvedAt": "2026-08-13T09:29:58.250Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FRzMmU1nibZhPY8j3PqeN%2F05-5a02012371d20df7.jpg?alt=media&token=f58768be-1062-44c6-9d41-477f3778f49e",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Bridge_across_ravine_at_UCSC.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY 2.0",
+      "imageLicense": "CC BY 2.0",
+      "imageTitle": "Bridge across ravine at UCSC.jpg",
+      "imageFingerprint": "5a02012371d20df7c9130fe79b47876a4d1ac2d67606164ed81638b9fe0c3ed3",
+      "imageWidth": 604,
+      "imageHeight": 800,
+      "imageResolvedAt": "2026-08-13T09:29:58.131Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FRzMmU1nibZhPY8j3PqeN%2F06-445c1418c5cdd5bd.jpg?alt=media&token=5e7c9306-847d-4757-836e-f16ff03adc16",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Great_Meadow.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY 2.0",
+      "imageLicense": "CC BY 2.0",
+      "imageTitle": "Great Meadow.jpg",
+      "imageFingerprint": "445c1418c5cdd5bd93139d2fe1bd4c68d7bd2419e02758856a0d2c338902fb0a",
+      "imageWidth": 1024,
+      "imageHeight": 768,
+      "imageResolvedAt": "2026-08-13T09:29:58.091Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FRzMmU1nibZhPY8j3PqeN%2F07-ad2b3861a4effec9.jpg?alt=media&token=1c59d2f0-f8c4-4968-8b0d-8b76c84db2c4",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Los_Mejicas_Spring_Show_Conclusion_2010.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 3.0",
+      "imageLicense": "CC BY-SA 3.0",
+      "imageTitle": "Los Mejicas Spring Show Conclusion 2010.jpg",
+      "imageFingerprint": "ad2b3861a4effec99d7a2b2e622125d6e3f74d975b79879fc89e5ad088bbf8bf",
+      "imageWidth": 604,
+      "imageHeight": 401,
+      "imageResolvedAt": "2026-08-13T09:29:58.210Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FRzMmU1nibZhPY8j3PqeN%2F08-fe2311d1c9247ec3.jpg?alt=media&token=29dbe12c-c460-4c43-ab70-5825ced8c9be",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Hakea_bakeriana_-_UC_Santa_Cruz_Arboretum_-_DSC07312.JPG",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC0",
+      "imageLicense": "CC0",
+      "imageTitle": "Hakea bakeriana - UC Santa Cruz Arboretum - DSC07312.JPG",
+      "imageFingerprint": "fe2311d1c9247ec3e156e03c75a7211f49c232b922ba7e28ca06649f1e6518ef",
+      "imageWidth": 1920,
+      "imageHeight": 1280,
+      "imageResolvedAt": "2026-08-13T09:29:58.404Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FRzMmU1nibZhPY8j3PqeN%2F09-6044cace7a001654.jpg?alt=media&token=ef388a3d-4b63-46b9-aa3d-408e06d94a12",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Grevillea_pilosa_-_UC_Santa_Cruz_Arboretum_-_DSC07478.JPG",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC0",
+      "imageLicense": "CC0",
+      "imageTitle": "Grevillea pilosa - UC Santa Cruz Arboretum - DSC07478.JPG",
+      "imageFingerprint": "6044cace7a0016542d8bf1add0a2dc6a342d108f322eee9a143fd33f297d6bed",
+      "imageWidth": 1920,
+      "imageHeight": 1280,
+      "imageResolvedAt": "2026-08-13T09:29:58.538Z"
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.uab.edu/studentaffairs/news/student-experience/late-night-dining-new-location-mcmahon-food-hall",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uab.edu/studentaffairs/news/student-experience/late-night-dining-new-location-mcmahon-food-hall",
+      "error": ""
+    },
+    {
+      "url": "https://www.uab.edu/students/dining/?id=15&view=category",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uab.edu/students/dining/?id=15&view=category",
+      "error": ""
+    },
+    {
+      "url": "https://www.uabmedicine.org/wp-content/uploads/sites/3/2026/04/UABHospital_PatientGuide_2026.03.19.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uabmedicine.org/wp-content/uploads/sites/3/2026/04/UABHospital_PatientGuide_2026.03.19.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/al/birmingham/1501-5th-avenue-s/31194.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/al/birmingham/1501-5th-avenue-s/31194.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/al/birmingham/2124-7th-ave-s/takeout.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/al/birmingham/2124-7th-ave-s/takeout.html",
+      "error": ""
+    },
+    {
+      "url": "https://ruscellispizzataco.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://ruscellispizzataco.com/",
+      "error": ""
+    },
+    {
+      "url": "https://order.toasttab.com/online/the-purple-onion-lakeview-737-29th-st-s-czyza/item-no-3-philly-sub-combo_008c4dc9-3419-4715-916d-d2ed88ab6a19",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://order.toasttab.com/online/the-purple-onion-lakeview-737-29th-st-s-czyza/item-no-3-philly-sub-combo_008c4dc9-3419-4715-916d-d2ed88ab6a19",
+      "error": ""
+    },
+    {
+      "url": "https://maps.apple.com/place?place-id=I55C42AE72AF5D47A",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://maps.apple.com/place?place-id=I55C42AE72AF5D47A",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

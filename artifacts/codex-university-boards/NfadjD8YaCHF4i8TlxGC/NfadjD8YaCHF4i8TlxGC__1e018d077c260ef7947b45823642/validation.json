@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www2.cortland.edu/community/bowers-science-museum/index.dot",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.cortland.edu/community/bowers-science-museum/index.dot",
+      "error": ""
+    },
+    {
+      "url": "https://www2.cortland.edu/departments/art/dowd-gallery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.cortland.edu/departments/art/dowd-gallery/",
+      "error": ""
+    },
+    {
+      "url": "https://www2.cortland.edu/library/about/policies/borrowing-policy",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.cortland.edu/library/about/policies/borrowing-policy",
+      "error": ""
+    },
+    {
+      "url": "https://cortlandfreelibrary.org/use-a-computer/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cortlandfreelibrary.org/use-a-computer/",
+      "error": ""
+    },
+    {
+      "url": "https://cortlandfreelibrary.org/get-a-library-card/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cortlandfreelibrary.org/get-a-library-card/",
+      "error": ""
+    },
+    {
+      "url": "https://cortlandyb.recdesk.com/Community/Page?pageId=5016",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cortlandyb.recdesk.com/Community/Page?pageId=5016",
+      "error": ""
+    },
+    {
+      "url": "https://www.cortlandcountyny.gov/DocumentCenter/View/1909",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cortlandcountyny.gov/DocumentCenter/View/1909/Exercise-Directory-PDF?bidId=",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

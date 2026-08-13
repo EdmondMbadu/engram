@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "x9J184J5hltrYVnsfoRv",
+    "schoolName": "SUNY College at Geneseo",
+    "shortSchoolName": "SUNY College at Geneseo",
+    "townName": "Geneseo",
+    "state": "NY",
+    "countryCode": "US",
+    "unitId": "196167",
+    "website": "https://www.geneseo.edu/",
+    "latitude": 42.796645,
+    "longitude": -77.821894,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/d/d1/SUNY_Geneseo_seal.svg/250px-SUNY_Geneseo_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=geneseo.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "Roemer Arboretum Outer Loop Trail",
+    "Roemer Arboretum Inner Loop Trail",
+    "Roemer Arboretum Native Plant Gardens",
+    "Roemer Arboretum 9/11 Memorial",
+    "Roemer Arboretum Gazebo",
+    "Roemer Arboretum Picnic Tables",
+    "Roemer Arboretum Oak Trees",
+    "Roemer Arboretum Black Walnut Trees",
+    "Roemer Arboretum Entrance Kiosk",
+    "Roemer Arboretum Public Walk"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

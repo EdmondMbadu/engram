@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.csulb.edu/university-library/maps",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/university-library/maps",
+      "error": ""
+    },
+    {
+      "url": "https://www.csulb.edu/university-library/code-of-conduct",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/university-library/code-of-conduct",
+      "error": ""
+    },
+    {
+      "url": "https://www.csulb.edu/university-library/computer-labs-at-the-university-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/university-library/computer-labs-at-the-university-library",
+      "error": ""
+    },
+    {
+      "url": "https://www.csulb.edu/academic-technology-services/horn-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/academic-technology-services/horn-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.csulb.edu/student-affairs/bob-murphy-access-center/bmac-study-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/student-affairs/bob-murphy-access-center/bmac-study-room",
+      "error": ""
+    },
+    {
+      "url": "https://www.csulb.edu/college-of-business/instructional-technology/oal-instructions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/college-of-business/instructional-technology/oal-instructions",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

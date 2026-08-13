@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.scu.edu/alumni/about/historytraditions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scu.edu/alumni/about/historytraditions/",
+      "error": ""
+    },
+    {
+      "url": "https://www.scu.edu/alumni/about/rally-song-contest/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scu.edu/alumni/about/rally-song-contest/",
+      "error": ""
+    },
+    {
+      "url": "https://www.scu.edu/news-and-events/feature-stories/2026/stories/the-unbridled-potential-of-bucky-the-bronco.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scu.edu/news-and-events/feature-stories/2026/stories/the-unbridled-potential-of-bucky-the-bronco.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.scu.edu/alumni/connect/students/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scu.edu/alumni/connect/students/",
+      "error": ""
+    },
+    {
+      "url": "https://www.scu.edu/belonging/camino-de-los-muertos/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scu.edu/belonging/camino-de-los-muertos/",
+      "error": ""
+    },
+    {
+      "url": "https://www.scu.edu/belonging/indigenous-legacy/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scu.edu/belonging/indigenous-legacy/",
+      "error": ""
+    },
+    {
+      "url": "https://www.scu.edu/epo/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scu.edu/epo/",
+      "error": ""
+    },
+    {
+      "url": "https://www.scu.edu/news-and-events/press-releases/2026/june/news/santa-clara-universitys-largest-ever-graduating-class-celebrates-commencement.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scu.edu/news-and-events/press-releases/2026/june/news/santa-clara-universitys-largest-ever-graduating-class-celebrates-commencement.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

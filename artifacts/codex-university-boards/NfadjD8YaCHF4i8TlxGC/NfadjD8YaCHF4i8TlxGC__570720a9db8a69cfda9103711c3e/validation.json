@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.lib.ua.edu/using-the-library/find-a-place-to-study/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ua.edu/using-the-library/find-a-place-to-study/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ua.edu/using-the-library/sanford-media-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ua.edu/using-the-library/sanford-media-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ua.edu/libraries/bruno/about-bruno/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ua.edu/libraries/bruno/about-bruno/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ua.edu/using-the-library/equipment/whisper-booths/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ua.edu/using-the-library/equipment/whisper-booths/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ua.edu/about/libraries-policies/gorgas-library-study-carrels/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ua.edu/about/libraries-policies/gorgas-library-study-carrels/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

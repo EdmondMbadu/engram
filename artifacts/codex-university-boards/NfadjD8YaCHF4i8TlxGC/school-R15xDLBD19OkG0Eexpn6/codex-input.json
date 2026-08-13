@@ -1,0 +1,53 @@
+{
+  "target": {
+    "atlasId": "R15xDLBD19OkG0Eexpn6",
+    "schoolName": "California State University-San Bernardino",
+    "shortSchoolName": "California State University-San Bernardino",
+    "townName": "San Bernardino",
+    "state": "CA",
+    "countryCode": "US",
+    "website": "https://www.csusb.edu/",
+    "latitude": 34.182622,
+    "longitude": -117.323801
+  },
+  "templates": [
+    {
+      "id": "college-late-night-runs",
+      "version": "1.0",
+      "titlePattern": "{count} Late-Night Runs That Explain {school}",
+      "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+      "researchQueries": [
+        "late night dining students",
+        "campus dining late hours",
+        "restaurants open late near campus"
+      ],
+      "count": 10,
+      "icon": "nightlife",
+      "primarySubjectType": "place",
+      "allowedSubjectTypes": [
+        "place"
+      ],
+      "freshnessDays": 120,
+      "exactTitle": "10 Late-Night Runs That Explain California State University-San Bernardino"
+    },
+    {
+      "id": "college-only-happens-here",
+      "version": "1.0",
+      "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+      "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+      "researchQueries": [
+        "university traditions alumni",
+        "campus traditions student newspaper",
+        "school rituals history"
+      ],
+      "count": 10,
+      "icon": "fingerprint",
+      "primarySubjectType": "tradition",
+      "allowedSubjectTypes": [
+        "tradition"
+      ],
+      "freshnessDays": 1095,
+      "exactTitle": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else"
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://newsroom.csun.edu/2024/08/27/did-you-know-csuns-tradition-of-the-rose/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://newsroom.csun.edu/2024/08/27/did-you-know-csuns-tradition-of-the-rose/",
+      "error": ""
+    },
+    {
+      "url": "https://newsroom.csun.edu/2025/11/17/csuns-annual-powwow-celebrates-40-years-of-bringing-together-socal-american-indian-communities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://newsroom.csun.edu/2025/11/17/csuns-annual-powwow-celebrates-40-years-of-bringing-together-socal-american-indian-communities/",
+      "error": ""
+    },
+    {
+      "url": "https://newsroom.csun.edu/2025/10/17/falling-for-big-show-with-galantis/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://newsroom.csun.edu/2025/10/17/falling-for-big-show-with-galantis/",
+      "error": ""
+    },
+    {
+      "url": "https://magazine.csun.edu/issue/fall-2025/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://magazine.csun.edu/issue/fall-2025/",
+      "error": ""
+    },
+    {
+      "url": "https://www.csun.edu/nso/new-student-convocation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csun.edu/nso/new-student-convocation",
+      "error": ""
+    },
+    {
+      "url": "https://newsroom.csun.edu/2025/05/19/first-gen-and-future-leaders-csun-commencement-2025/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://newsroom.csun.edu/2025/05/19/first-gen-and-future-leaders-csun-commencement-2025/",
+      "error": ""
+    },
+    {
+      "url": "https://news.csun.edu/event/rainbow-graduation-2/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.csun.edu/event/rainbow-graduation-2/",
+      "error": ""
+    },
+    {
+      "url": "https://www.csun.edu/commencement/communications/honors-convocation-ceremony-rsvp-tickets-scholastic-achievement",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csun.edu/commencement/communications/honors-convocation-ceremony-rsvp-tickets-scholastic-achievement",
+      "error": ""
+    },
+    {
+      "url": "https://newsroom.csun.edu/2026/05/21/families-friends-and-matador-pride-fill-campus-for-commencement-2026/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://newsroom.csun.edu/2026/05/21/families-friends-and-matador-pride-fill-campus-for-commencement-2026/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 100,
+  "generationGrade": "A"
+}

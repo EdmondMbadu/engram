@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.irvingsstatecollege.com/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.irvingsstatecollege.com/contact",
+      "error": ""
+    },
+    {
+      "url": "https://thestatetheatre.org/talk-to-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thestatetheatre.org/talk-to-us/",
+      "error": ""
+    },
+    {
+      "url": "https://meet.schlowlibrary.org/using-zoom",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://meet.schlowlibrary.org/using-zoom",
+      "error": ""
+    },
+    {
+      "url": "https://www.webstersbooksandcafe.com/location",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.webstersbooksandcafe.com/location",
+      "error": ""
+    },
+    {
+      "url": "https://3dotsdowntown.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://3dotsdowntown.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.mclanahans.com/contact-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mclanahans.com/contact-us",
+      "error": ""
+    },
+    {
+      "url": "https://thewaffleshops.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thewaffleshops.com/",
+      "error": ""
+    },
+    {
+      "url": "https://centrehistory.org/visit-us/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://centrehistory.org/visit-us/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://statecollegepa.us/borough-council-mayor?contentId=d83a1cca-ddfb-4425-9f4f-39990692cf98",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://statecollegepa.us/borough-council-mayor?contentId=d83a1cca-ddfb-4425-9f4f-39990692cf98",
+      "error": ""
+    },
+    {
+      "url": "https://catabus.com/about/contact/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catabus.com/about/contact/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

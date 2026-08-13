@@ -1,0 +1,60 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "7ypvhLDi162LAkq76pVE",
+    "schoolName": "University of Illinois Urbana-Champaign",
+    "shortSchoolName": "University of Illinois Urbana-Champaign",
+    "townName": "Champaign",
+    "state": "IL",
+    "countryCode": "US",
+    "unitId": "145637",
+    "website": "https://www.illinois.edu/",
+    "latitude": 40.104718,
+    "longitude": -88.229114,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/University_of_Illinois_seal.svg/250px-University_of_Illinois_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=illinois.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain University of Illinois Urbana-Champaign",
+  "excluded_subjects": [
+    "ACES (Funk) Library Floors 2–4",
+    "Communications Library Room 39",
+    "Communications Library Room 122",
+    "Grainger 1 West Design Space",
+    "SSHEL Main Library Room 101",
+    "SSHEL Main Library Room 123",
+    "The Orange Room",
+    "Shebik Family Reading Room",
+    "Central Access Services Room 204",
+    "Media Commons Room 220",
+    "Alma Mater",
+    "Illini Union",
+    "Main Quad",
+    "Foellinger Auditorium",
+    "Morrow Plots",
+    "Main Library",
+    "Krannert Art Museum",
+    "Spurlock Museum",
+    "Japan House Gardens",
+    "Illini Union Rec Room"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

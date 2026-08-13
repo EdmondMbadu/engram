@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.foxcities.org/directory/insomnia-cookies/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.foxcities.org/directory/insomnia-cookies/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/wi/appleton/2810-n-richmond.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/wi/appleton/2810-n-richmond.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/wi/appleton/2840-west-college-avenue.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/wi/appleton/2840-west-college-avenue.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/wi/appleton/3221-east-express-court/fast-food.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/wi/appleton/3221-east-express-court/fast-food.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.papajohns.com/united-states/wi/54914/appleton/902-w-northland-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.papajohns.com/united-states/wi/54914/appleton/902-w-northland-ave",
+      "error": ""
+    },
+    {
+      "url": "https://locations.papajohns.com/united-states/wi/54915/appleton/4055-e-calumet-st/food-near-me",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.papajohns.com/united-states/wi/54915/appleton/4055-e-calumet-st/food-near-me",
+      "error": ""
+    },
+    {
+      "url": "https://www.culvers.com/restaurants/appleton",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.culvers.com/restaurants/appleton",
+      "error": ""
+    },
+    {
+      "url": "https://www.perkinsrestaurants.com/locations/us/wi/appleton/3030-east-college-ave/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.perkinsrestaurants.com/locations/us/wi/appleton/3030-east-college-ave/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jimmyjohns.com/wi/appleton/delivery-0446.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jimmyjohns.com/wi/appleton/delivery-0446.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.legendairycnc.com/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.legendairycnc.com/contact",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

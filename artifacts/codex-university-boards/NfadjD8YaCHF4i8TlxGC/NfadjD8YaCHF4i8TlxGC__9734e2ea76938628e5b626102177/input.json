@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "6m1Bexc6XPwD0q7StbOn",
+    "schoolName": "St Catherine University",
+    "shortSchoolName": "St Catherine University",
+    "townName": "Saint Paul",
+    "state": "MN",
+    "countryCode": "US",
+    "unitId": "175005",
+    "website": "https://www.stkate.edu/",
+    "latitude": 44.924926,
+    "longitude": -93.183761,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=stkate.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=stkate.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain St Catherine University",
+  "excluded_subjects": [
+    "Library Lower-Level Quiet Study Space",
+    "Study Room 125",
+    "Study Room 126",
+    "Library Main Floor",
+    "Dew Drop Area",
+    "The Pulse Booths",
+    "Tutoring and Learning Center",
+    "Access and Success Study Spaces",
+    "St. Mary Hall Computer Labs",
+    "Student Organization Center"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

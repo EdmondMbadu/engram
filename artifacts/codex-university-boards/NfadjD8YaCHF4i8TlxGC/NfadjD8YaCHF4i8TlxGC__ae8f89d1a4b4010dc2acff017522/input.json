@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "XsuMMcG2sDZnoYqUjuej",
+    "schoolName": "Johns Hopkins University",
+    "shortSchoolName": "Johns Hopkins University",
+    "townName": "Baltimore",
+    "state": "MD",
+    "countryCode": "US",
+    "unitId": "162928",
+    "website": "https://www.jhu.edu/",
+    "latitude": 39.328977,
+    "longitude": -76.621595,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/0/09/Johns_Hopkins_University%27s_Academic_Seal.svg/250px-Johns_Hopkins_University%27s_Academic_Seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=jhu.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Charles Street Market",
+    "Peabody Dining Hall",
+    "Connie’s",
+    "Hopkins Café",
+    "Lucky Danger",
+    "Koshary",
+    "Mo’s Place",
+    "Nolan’s on 33rd",
+    "Arcade Daily Grind Cafe",
+    "Subway at Cobblestone Cafe"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

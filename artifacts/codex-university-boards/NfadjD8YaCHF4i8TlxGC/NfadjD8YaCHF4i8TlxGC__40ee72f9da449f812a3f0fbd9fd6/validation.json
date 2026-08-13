@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Four cards document past 2026 University events and direct readers to confirm a future recurrence; the remaining six are scheduled for September or October 2026. Registration or RSVP may be required even where attendance is free."
+  ],
+  "reachability": [
+    {
+      "url": "https://events.miami.edu/event/ceps-william-m-hoeveler-ethics-public-service-award-ceremony",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.miami.edu/event/ceps-william-m-hoeveler-ethics-public-service-award-ceremony",
+      "error": ""
+    },
+    {
+      "url": "https://events.miami.edu/event/yusuf-kara-fall-2026",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.miami.edu/event/yusuf-kara-fall-2026",
+      "error": ""
+    },
+    {
+      "url": "https://events.miami.edu/event/prompting-legal-solutions-conference-competition",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.miami.edu/event/prompting-legal-solutions-conference-competition",
+      "error": ""
+    },
+    {
+      "url": "https://events.miami.edu/event/ceps-lunch-learn-election-law-and-voting-rights",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.miami.edu/event/ceps-lunch-learn-election-law-and-voting-rights",
+      "error": ""
+    },
+    {
+      "url": "https://events.miami.edu/event/save-the-date-for-law-family-weekend-2026",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.miami.edu/event/save-the-date-for-law-family-weekend-2026",
+      "error": ""
+    },
+    {
+      "url": "https://events.miami.edu/event/mredu-program-info-session-09012026-6pm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.miami.edu/event/mredu-program-info-session-09012026-6pm",
+      "error": ""
+    },
+    {
+      "url": "https://events.miami.edu/event/arbor-day-concert-and-celebration",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.miami.edu/event/arbor-day-concert-and-celebration",
+      "error": ""
+    },
+    {
+      "url": "https://events.miami.edu/event/green-u-tour-of-the-coral-gables-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.miami.edu/event/green-u-tour-of-the-coral-gables-campus",
+      "error": ""
+    },
+    {
+      "url": "https://events.miami.edu/event/copy-of-garden-volunteering-hour-9209",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.miami.edu/event/copy-of-garden-volunteering-hour-9209",
+      "error": ""
+    },
+    {
+      "url": "https://events.miami.edu/event/frost-horns-friends-9780",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.miami.edu/event/frost-horns-friends-9780",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

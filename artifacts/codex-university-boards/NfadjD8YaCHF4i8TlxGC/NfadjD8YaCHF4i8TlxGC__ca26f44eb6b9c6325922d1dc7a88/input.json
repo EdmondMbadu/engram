@@ -1,0 +1,52 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "6xWP86Ui1AzlSNu1Anx2",
+    "schoolName": "Stevenson University",
+    "shortSchoolName": "Stevenson University",
+    "townName": "Owings Mills",
+    "state": "MD",
+    "countryCode": "US",
+    "unitId": "164173",
+    "website": "https://www.stevenson.edu/",
+    "latitude": 39.426413,
+    "longitude": -76.775809,
+    "heroUrl": "https://www.stevenson.edu/wp-content/uploads/zhanna_alyssa_change_v1.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=stevenson.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at Stevenson University, Shared as Cards",
+  "excluded_subjects": [
+    "AMC Theatres at Mill Station",
+    "Costco at Mill Station",
+    "Giant Food at Mill Station",
+    "Cinnaholic at Mill Station",
+    "Crumbl Cookies at Mill Station",
+    "Honeygrow at Mill Station",
+    "PetSmart at Mill Station",
+    "Five Below at Mill Station",
+    "Marshalls at Mill Station",
+    "Sephora at Mill Station"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

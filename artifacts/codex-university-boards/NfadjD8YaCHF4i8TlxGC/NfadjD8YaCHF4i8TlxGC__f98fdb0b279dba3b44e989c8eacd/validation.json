@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.stjohns.edu/news-media/johnnies-blog/Ten-best-study-spots-near-st-johns-queens-ny-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stjohns.edu/news-media/johnnies-blog/Ten-best-study-spots-near-st-johns-queens-ny-campus",
+      "error": ""
+    },
+    {
+      "url": "https://www.stjohns.edu/admission/undergraduate-admission/faqs",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stjohns.edu/admission/undergraduate-admission/faqs",
+      "error": ""
+    },
+    {
+      "url": "https://www.stjohns.edu/queens-residential-campus/queens-campus-life/campus-activities/commuter-student-life",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stjohns.edu/queens-residential-campus/queens-campus-life/campus-activities/commuter-student-life",
+      "error": ""
+    },
+    {
+      "url": "https://www.stjohns.edu/who-we-are/faith-mission-ministry/your-faith-ministry",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stjohns.edu/who-we-are/faith-mission-ministry/your-faith-ministry",
+      "error": ""
+    },
+    {
+      "url": "https://www.stjohns.edu/libraries/about-libraries/campus-libraries",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stjohns.edu/libraries/about-libraries/campus-libraries",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

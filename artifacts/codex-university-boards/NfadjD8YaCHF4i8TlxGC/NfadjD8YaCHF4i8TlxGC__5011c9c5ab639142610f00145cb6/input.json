@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "UXO9kXEu4GhFcbtmkM9t",
+    "schoolName": "Ramapo College of New Jersey",
+    "shortSchoolName": "Ramapo College of New Jersey",
+    "townName": "Mahwah",
+    "state": "NJ",
+    "countryCode": "US",
+    "unitId": "186201",
+    "website": "https://www.ramapo.edu/",
+    "latitude": 41.080942,
+    "longitude": -74.174086,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/7/7b/Ramapo_college_seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=ramapo.edu&sz=256"
+  },
+  "template": {
+    "id": "college-study-spots",
+    "version": "1.0",
+    "titlePattern": "Claimed by 9am: {count} Study Spots Worth Showing Up Early For",
+    "editorialBrief": "Choose ten distinct study environments. Verify access rules, room or reservation constraints, and the physical affordance that makes each useful. Treat “Claimed by 9am” as editorial framing; never assert crowding or student behavior without evidence.",
+    "researchQueries": [
+      "campus study spaces",
+      "library study rooms students",
+      "quiet study campus"
+    ],
+    "count": 10,
+    "icon": "menu_book",
+    "primarySubjectType": "study_space",
+    "allowedSubjectTypes": [
+      "study_space",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Claimed by 9am: 10 Study Spots Worth Showing Up Early For",
+  "excluded_subjects": [
+    "Robert A. Scott Student Center",
+    "The Atrium",
+    "Bandshell",
+    "Student Involvement Fair",
+    "Peter P. Mercer Learning Commons",
+    "Kresge and Pascal Galleries",
+    "Selden Rodman Gallery of Popular Arts",
+    "Bill Bradley Sports and Recreation Center",
+    "Arch Performances",
+    "J. Lee’s"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

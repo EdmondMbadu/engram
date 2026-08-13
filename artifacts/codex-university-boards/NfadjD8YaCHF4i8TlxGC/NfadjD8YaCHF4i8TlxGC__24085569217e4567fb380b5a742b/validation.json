@@ -1,0 +1,77 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://apps.sga.umbc.edu/open-now/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://apps.sga.umbc.edu/open-now/",
+      "error": ""
+    },
+    {
+      "url": "https://thecommons.umbc.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thecommons.umbc.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/md/catonsville/501-frederick-rd/20971.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/md/catonsville/501-frederick-rd/20971.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/md/catonsville/6200-baltimore-national-pike.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/md/catonsville/6200-baltimore-national-pike.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.toasttab.com/local/order/hip-hop-fish-chicken-catonsville",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.toasttab.com/local/order/hip-hop-fish-chicken-catonsville",
+      "error": ""
+    },
+    {
+      "url": "https://kianispizzamd.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://kianispizzamd.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/md/catonsville/6415-fredrick-road",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/md/catonsville/6415-fredrick-road",
+      "error": ""
+    },
+    {
+      "url": "https://www.jenningscafe.com/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.jenningscafe.com/",
+      "error": "fetch failed"
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

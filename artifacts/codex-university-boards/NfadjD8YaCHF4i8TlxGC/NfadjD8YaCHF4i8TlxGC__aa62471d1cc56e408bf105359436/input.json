@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "I4pJXjOnybcTpuF1GyJ4",
+    "schoolName": "Louisiana State University and Agricultural & Mechanical College",
+    "shortSchoolName": "Louisiana State University and Agricultural & Mechanical College",
+    "townName": "Baton Rouge",
+    "state": "LA",
+    "countryCode": "US",
+    "unitId": "159391",
+    "website": "https://www.lsu.edu/",
+    "latitude": 30.414986,
+    "longitude": -91.178921,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/d/d4/Seal-of-Louisiana-State-University.svg/250px-Seal-of-Louisiana-State-University.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=lsu.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Mike the Tiger",
+    "March Down Victory Hill",
+    "LSU Pregame Salute",
+    "Post-Victory LSU Alma Mater",
+    "Callin’ Baton Rouge Pregame Singalong",
+    "Tiger Rag Touchdown Chant",
+    "LSU Home White Jerseys",
+    "Tiger Stadium H-Style Goalposts",
+    "Overnight with Mike",
+    "Tiger Twelve"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

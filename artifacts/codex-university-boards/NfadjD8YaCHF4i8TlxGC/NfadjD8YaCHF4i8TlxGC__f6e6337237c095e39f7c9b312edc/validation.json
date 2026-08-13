@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://hawaiianbros.com/locations/manhattan-ks/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hawaiianbros.com/locations/manhattan",
+      "error": ""
+    },
+    {
+      "url": "https://assets-global.website-files.com/5984ea3bca4c8000015b7d05/5f7b65df4474eaab206f9ce7_FatShack-Menu-KS-Manhattan.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://assets-global.website-files.com/5984ea3bca4c8000015b7d05/5f7b65df4474eaab206f9ce7_FatShack-Menu-KS-Manhattan.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.aggieville.org/dp-dough",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.aggieville.org/dp-dough",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ks/manhattan/1155-westport-road/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ks/manhattan/1155-westport-road/restaurant.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.raisingcanes.com/ks/manhattan/329-east-poyntz-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.raisingcanes.com/ks/manhattan/329-east-poyntz-ave",
+      "error": ""
+    },
+    {
+      "url": "https://locations.papajohns.com/united-states/ks/66502/manhattan/2615-anderson-avenue/pizza-near-me",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.papajohns.com/united-states/ks/66502/manhattan/2615-anderson-avenue/pizza-near-me",
+      "error": ""
+    },
+    {
+      "url": "https://www.culvers.com/restaurants/manhattan-ks-mccall-rd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.culvers.com/restaurants/manhattan-ks-mccall-rd",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/ks/manhattan/100-good-food-place",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/ks/manhattan/100-good-food-place",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jimmyjohns.com/ks/manhattan/delivery-2272.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jimmyjohns.com/ks/manhattan/delivery-2272.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/ks/manhattan/1005-hostetler-drive",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/ks/manhattan/1005-hostetler-drive",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

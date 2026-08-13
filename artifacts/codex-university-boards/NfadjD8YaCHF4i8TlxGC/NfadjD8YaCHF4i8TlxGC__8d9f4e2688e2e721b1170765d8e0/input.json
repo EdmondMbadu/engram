@@ -1,0 +1,61 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "ofoIWZttyaik3foQHTgI",
+    "schoolName": "State University of New York at Cortland",
+    "shortSchoolName": "State University of New York at Cortland",
+    "townName": "Cortland",
+    "state": "NY",
+    "countryCode": "US",
+    "unitId": "196149",
+    "website": "https://www2.cortland.edu/",
+    "latitude": 42.598022,
+    "longitude": -76.188655,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=www2.cortland.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=www2.cortland.edu&sz=256"
+  },
+  "template": {
+    "id": "college-campus-tour-skips",
+    "version": "1.0",
+    "titlePattern": "What the Campus Tour Skips: {count} Places Students Share With Each Other",
+    "editorialBrief": "Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.",
+    "researchQueries": [
+      "student favorite campus places",
+      "campus map student spaces",
+      "student newspaper campus places"
+    ],
+    "count": 10,
+    "icon": "style",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place",
+      "study_space"
+    ],
+    "freshnessDays": 365
+  },
+  "exact_title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+  "excluded_subjects": [
+    "Bowers Science Museum",
+    "Dowd Gallery",
+    "Memorial Library",
+    "Use WiFi at Cortland Free Library",
+    "Borrow from Cortland Free Library",
+    "Swim at Yaman Beach",
+    "Swim at C. C. Wickwire Pool",
+    "Walk the trails at Lime Hollow Nature Center",
+    "Walk the East End Community Center indoor track",
+    "Walk Bennett Street Field trails",
+    "Cortaca Jug",
+    "Academic Convocation",
+    "Kente Ceremony",
+    "The Big Event",
+    "Transformations Student Research Conference",
+    "Honors Convocation",
+    "SUNY Cortland Alma Mater",
+    "SUNY Cortland Commencement Gonfalons",
+    "Torch of Learning",
+    "DiGiusto Medallion"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

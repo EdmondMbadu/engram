@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.depauw.edu/files/resources/galleries-brochure.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depauw.edu/files/resources/galleries-brochure.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.depauw.edu/arts-and-culture/arts/peeler/gallery-directions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depauw.edu/arts-and-culture/arts/peeler/gallery-directions/",
+      "error": ""
+    },
+    {
+      "url": "https://www.prindleinstitute.org/campus/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.prindleinstitute.org/campus/",
+      "error": ""
+    },
+    {
+      "url": "https://www.depauw.edu/arts-and-culture/speakers/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depauw.edu/arts-and-culture/speakers/",
+      "error": ""
+    },
+    {
+      "url": "https://www.depauw.edu/arts-and-culture/speakers/kellywriters/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depauw.edu/arts-and-culture/speakers/kellywriters/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

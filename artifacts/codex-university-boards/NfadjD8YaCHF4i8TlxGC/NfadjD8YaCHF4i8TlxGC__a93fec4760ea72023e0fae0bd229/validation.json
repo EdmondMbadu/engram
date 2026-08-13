@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.denverlibrary.org/plaza/newcomer",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.denverlibrary.org/plaza/newcomer",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 1,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

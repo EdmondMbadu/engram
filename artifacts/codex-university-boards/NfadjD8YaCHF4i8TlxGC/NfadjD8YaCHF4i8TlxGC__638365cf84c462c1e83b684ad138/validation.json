@@ -1,0 +1,96 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://agbmuseum.org/home",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://agbmuseum.org/home",
+      "error": ""
+    },
+    {
+      "url": "https://www.lakelandgov.net/departments/library/locations-hours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakelandgov.net/departments/library/locations-hours/",
+      "error": ""
+    },
+    {
+      "url": "https://www.polktheatre.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.polktheatre.org/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lakelandgov.net/hollisgarden",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakelandgov.net/hollisgarden",
+      "error": ""
+    },
+    {
+      "url": "https://www.lakelandgov.net/departments/parks-recreation-and-cultural-arts/barnett-family-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakelandgov.net/departments/parks-recreation-and-cultural-arts/barnett-family-park/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lakelandgov.net/departments/parks-recreation-and-cultural-arts/reservations-rentals/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakelandgov.net/departments/parks-recreation-and-cultural-arts/reservations-rentals/",
+      "error": ""
+    },
+    {
+      "url": "https://blackandbrew.com/our-story/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://blackandbrew.com/our-story/",
+      "error": ""
+    },
+    {
+      "url": "https://concordcoffee.com/pages/store-locator",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://concordcoffee.com/pages/store-locator",
+      "error": ""
+    },
+    {
+      "url": "https://hillcrestcoffeefl.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://hillcrestcoffeefl.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.bornandbreadbakehouse.com/contactus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bornandbreadbakehouse.com/contactus",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Ashley Gibson Barnett Museum of Art",
+    "Hollis Garden"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://spencerart.ku.edu/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://spencerart.ku.edu/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.watkinsmuseum.org/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.watkinsmuseum.org/about/",
+      "error": ""
+    },
+    {
+      "url": "https://www.kslegislature.gov/b2025_26/laws/019_000_0000_chapter/019_028_0000_article/019_028_0073_section/019_028_0073_k/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.kslegislature.gov/b2025_26/laws/019_000_0000_chapter/019_028_0000_article/019_028_0073_section/019_028_0073_k/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

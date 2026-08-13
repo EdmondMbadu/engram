@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.smith.edu/discover-smith/visit-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smith.edu/discover-smith/visit-campus",
+      "error": ""
+    },
+    {
+      "url": "https://www.smith.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smith.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://garden.smith.edu/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://garden.smith.edu/visit",
+      "error": ""
+    },
+    {
+      "url": "https://scma.smith.edu/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://scma.smith.edu/visit",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.smith.edu/spaces-technology/neilson-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.smith.edu/spaces-technology/neilson-library",
+      "error": ""
+    },
+    {
+      "url": "https://www.smith.edu/your-campus/offices-services/student-engagement",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smith.edu/your-campus/offices-services/student-engagement",
+      "error": ""
+    },
+    {
+      "url": "https://www.smith.edu/about-smith/performing-arts/plan-your-visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smith.edu/about-smith/performing-arts/plan-your-visit",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

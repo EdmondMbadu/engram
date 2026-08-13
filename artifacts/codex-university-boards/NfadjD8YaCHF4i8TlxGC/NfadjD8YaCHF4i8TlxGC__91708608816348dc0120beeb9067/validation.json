@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.risd.edu/news/annual-events/artists-ball",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.risd.edu/news/annual-events/artists-ball",
+      "error": ""
+    },
+    {
+      "url": "https://students.risd.edu/finding-community/center-student-involvement/annual-student-events",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://students.risd.edu/finding-community/center-student-involvement/annual-student-events",
+      "error": ""
+    },
+    {
+      "url": "https://www.risd.edu/news-and-events/annual-events/student-art-sale",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.risd.edu/news-and-events/annual-events/student-art-sale",
+      "error": ""
+    },
+    {
+      "url": "https://www.risd.edu/academics/apparel-design/senior-thesis-show",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.risd.edu/academics/apparel-design/senior-thesis-show",
+      "error": ""
+    },
+    {
+      "url": "https://www.risd.edu/academics/film-animation-video/fav-senior-show",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.risd.edu/academics/film-animation-video/fav-senior-show",
+      "error": ""
+    },
+    {
+      "url": "https://www.risd.edu/news/annual-events/founders-day",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.risd.edu/news/annual-events/founders-day",
+      "error": ""
+    },
+    {
+      "url": "https://www.risd.edu/news/annual-events/open-studios",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.risd.edu/news/annual-events/open-studios",
+      "error": ""
+    },
+    {
+      "url": "https://www.risd.edu/news/annual-events/risd-grad-show",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.risd.edu/news/annual-events/risd-grad-show",
+      "error": ""
+    },
+    {
+      "url": "https://www.risd.edu/news/annual-events/commencement",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.risd.edu/news/annual-events/commencement",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 100,
+  "generationGrade": "A"
+}

@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.oldwestburydinerli.com/contact-reservations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oldwestburydinerli.com/contact-reservations",
+      "error": ""
+    },
+    {
+      "url": "https://www.chickandtender.com/location/chick-and-tender-westbury/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.chickandtender.com/location/chick-and-tender-westbury/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lachalatecarestaurantny.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lachalatecarestaurantny.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.goldenwokkitchen.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.goldenwokkitchen.com/",
+      "error": ""
+    },
+    {
+      "url": "https://cafebacirestaurant.com/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://cafebacirestaurant.com/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://piccolabussola.squarespace.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://piccolabussola.squarespace.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.tesorosrestaurant.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.tesorosrestaurant.com/",
+      "error": ""
+    },
+    {
+      "url": "https://nanxiangxiaolongbao.com/locations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://nanxiangxiaolongbao.com/locations/",
+      "error": ""
+    },
+    {
+      "url": "https://www.giuliocesareristorante.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.giuliocesareristorante.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.salisburytavern.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.salisburytavern.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

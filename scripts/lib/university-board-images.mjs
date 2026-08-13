@@ -1042,6 +1042,16 @@ export async function officialUniversitySiteCandidates(target, website, seedUrls
 }
 
 export async function enrichUniversityBoardImages(payload, target, options) {
+  const relatedCampusCandidates = options.relatedCampusFallback
+    ? await (async () => {
+      const sourceUrls = payload.cards.map((card) => clean(card.sourceUrl || card.source_url, 2_000)).filter(Boolean);
+      const [commons, official] = await Promise.all([
+        universityCampusFallbackCandidates(target),
+        officialUniversitySiteCandidates(target, options.officialWebsite || target.website, sourceUrls.slice(0, 12)),
+      ]);
+      return [...new Map([...commons, ...official].map((candidate) => [candidate.imageUrl, candidate])).values()];
+    })()
+    : [];
   const candidateLists = await Promise.all(payload.cards.map(async (card) => {
     if (clean(card.imageUrl) && clean(card.imageSourceUrl) && clean(card.imageFingerprint)) return [];
     const override = editorialImageOverride(target.atlasId, card.entityName || card.entity_name);
@@ -1066,6 +1076,7 @@ export async function enrichUniversityBoardImages(payload, target, options) {
       ...commons,
       ...wikipedia,
       ...webCandidates,
+      ...relatedCampusCandidates,
     ];
   }));
   async function firstUsable(candidates, forbidden = new Set()) {
@@ -1091,6 +1102,9 @@ export async function enrichUniversityBoardImages(payload, target, options) {
     if (selected && usedFingerprints.has(selected.bitmap.fingerprint)) {
       selected = await firstUsable(candidateLists[index].slice(selected.candidateIndex + 1), usedFingerprints);
     }
+    if (!selected && options.allowLimitedRelatedReuse && relatedCampusCandidates.length) {
+      selected = await firstUsable(relatedCampusCandidates);
+    }
     if (!selected) failures.push(`${index + 1}. ${card.entityName || card.title}`);
     else {
       usedFingerprints.add(selected.bitmap.fingerprint);
@@ -1115,10 +1129,19 @@ export async function enrichUniversityBoardImages(payload, target, options) {
   const mergedCards = payload.cards.map((card, index) => resolvedByIndex.get(index) || card);
   const imageCards = mergedCards.filter((card) => clean(card.imageUrl) && clean(card.imageSourceUrl) && clean(card.imageFingerprint));
   const allFingerprints = new Set(imageCards.map((card) => clean(card.imageFingerprint)).filter(Boolean));
+  const limitedRelatedReuse = failures.length === 0
+    && imageCards.length === payload.cards.length
+    && allFingerprints.size >= 7
+    && allFingerprints.size < payload.cards.length
+    && options.allowLimitedRelatedReuse;
+  const imageDiversityAccepted = allFingerprints.size === payload.cards.length || limitedRelatedReuse;
   return {
-    ok: failures.length === 0 || (options.allowPartial && resolved.length > 0),
+    ok: (failures.length === 0 && imageDiversityAccepted)
+      || (options.allowPartial && resolved.length > 0),
     complete: failures.length === 0,
-    failures,
+    failures: imageDiversityAccepted
+      ? failures
+      : [...failures, `Image diversity gate: ${allFingerprints.size}/${payload.cards.length} unique images.`],
     cards: resolved,
     board: {
       ...payload,
@@ -1129,9 +1152,11 @@ export async function enrichUniversityBoardImages(payload, target, options) {
         image_count: imageCards.length,
         unique_image_count: allFingerprints.size,
         all_have_images: failures.length === 0 && imageCards.length === payload.cards.length
-          && allFingerprints.size === payload.cards.length,
-        image_validation_mode: options.freeOnly
-          ? 'free_exact_official_and_wikidata_wikimedia_downloaded_bitmap_with_provenance'
+          && imageDiversityAccepted,
+        image_validation_mode: limitedRelatedReuse
+          ? 'exact_or_related_university_location_with_limited_reuse_and_provenance'
+          : options.freeOnly
+            ? 'free_exact_official_and_wikidata_wikimedia_downloaded_bitmap_with_provenance'
           : 'downloaded_bitmap_with_provenance',
       },
     },

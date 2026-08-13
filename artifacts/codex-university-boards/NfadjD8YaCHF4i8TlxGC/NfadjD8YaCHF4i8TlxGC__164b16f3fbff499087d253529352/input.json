@@ -1,0 +1,69 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "hOl5QLtdjcQ3nT43sJ1g",
+    "schoolName": "Illinois Wesleyan University",
+    "shortSchoolName": "Illinois Wesleyan University",
+    "townName": "Bloomington",
+    "state": "IL",
+    "countryCode": "US",
+    "unitId": "145646",
+    "website": "https://www.iwu.edu/",
+    "latitude": 40.489901,
+    "longitude": -88.992014,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/8/80/Illinois_wesleyan_univ_seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=iwu.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Center for Engaged Learning",
+    "Ames Library Information Commons",
+    "Ames Library Project Room 130",
+    "Ames Library Project Room 134",
+    "Ames Library Project Room 214",
+    "Ames Library Lower Level Rotunda",
+    "Ames Library Third-Floor Quiet Space",
+    "Ames Library Fourth-Floor Quiet Space",
+    "Ames Roof Garden",
+    "State Farm Hall Study Areas",
+    "Wendy's — 1522 W. Market Street",
+    "Denny's — 701 Eldorado Road",
+    "Denny's — 1615 N. Main Street",
+    "Taco Bell — 1702 W. Market Street",
+    "Wesley’s Grill",
+    "Tobin's Pizza",
+    "Domino's — 1910 E. College Avenue",
+    "Insomnia Cookies — Normal",
+    "D.P. Dough — Normal",
+    "McDonald's — 2507 E. Oakland Avenue",
+    "The Ames Plaza",
+    "Ames Lower Level Rotunda",
+    "Ames Information Commons",
+    "Hansen Student Center",
+    "Center for Natural Sciences Atrium",
+    "State Farm Hall",
+    "Robert S. Eckley Quadrangle",
+    "IWU Peace Garden"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

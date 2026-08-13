@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://harrispizza.com/page/locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://harrispizza.com/page/locations",
+      "error": ""
+    },
+    {
+      "url": "https://www.enjoyillinois.com/explore/listing/la-rancherita/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.enjoyillinois.com/explore/listing/la-rancherita/",
+      "error": ""
+    },
+    {
+      "url": "https://happyjoes.com/locations/illinois/rock-island-rock-island-il-2/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://happyjoes.com/locations/illinois/rock-island-rock-island-il-2/",
+      "error": ""
+    },
+    {
+      "url": "https://visitquadcities.com/listing?id=3003",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://visitquadcities.com/listing?id=3003",
+      "error": ""
+    },
+    {
+      "url": "https://visitquadcities.com/media-qc/insiders-blog/cool-beanz-coffeehouse",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://visitquadcities.com/media-qc/insiders-blog/cool-beanz-coffeehouse",
+      "error": ""
+    },
+    {
+      "url": "https://www.whiteysicecream.com/locations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.whiteysicecream.com/locations/",
+      "error": ""
+    },
+    {
+      "url": "https://www.rockislandlibrary.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rockislandlibrary.org/",
+      "error": ""
+    },
+    {
+      "url": "https://www.rigov.org/facilities/facility/details/Lincoln-Park-43",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rigov.org/facilities/facility/details/Lincoln-Park-43",
+      "error": ""
+    },
+    {
+      "url": "https://www.rigov.org/Facilities/Facility/Details/33",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rigov.org/Facilities/Facility/Details/33",
+      "error": ""
+    },
+    {
+      "url": "https://www.rigov.org/Facilities/Facility/Details/6",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rigov.org/Facilities/Facility/Details/6",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

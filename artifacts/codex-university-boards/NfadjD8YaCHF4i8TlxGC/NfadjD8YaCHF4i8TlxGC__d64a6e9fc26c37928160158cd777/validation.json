@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.eljefestaqueria.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.eljefestaqueria.com/",
+      "error": ""
+    },
+    {
+      "url": "https://newyorkpizzaboston.com/store/boston/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://newyorkpizzaboston.com/store/boston/",
+      "error": ""
+    },
+    {
+      "url": "https://www.dumplingcafeboston.com/locationinfo",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.dumplingcafeboston.com/locationinfo",
+      "error": ""
+    },
+    {
+      "url": "https://southstreetdiner.com/late-night-eats.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://southstreetdiner.com/late-night-eats.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.bostonalibaba.com/locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bostonalibaba.com/locations",
+      "error": ""
+    },
+    {
+      "url": "https://www.tastyburger.com/location/back-bay/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.tastyburger.com/location/back-bay/",
+      "error": ""
+    },
+    {
+      "url": "https://app.insomniacookies.com/news/insomnia-cookies-opens-fourth-boston-location-to-satisfy-sweets-cravings-all-day-and-late-into-the-night",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://app.insomniacookies.com/news/insomnia-cookies-opens-fourth-boston-location-to-satisfy-sweets-cravings-all-day-and-late-into-the-night",
+      "error": ""
+    },
+    {
+      "url": "https://bovabakeryboston.net/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bovabakeryboston.net/about/",
+      "error": ""
+    },
+    {
+      "url": "https://today.emerson.edu/2026/01/26/winter-storm-tuesday-schedule-changes-for-boston-campus/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://emerson.edu/news/",
+      "error": ""
+    },
+    {
+      "url": "https://www.cvs.com/store-locator/cvs-pharmacy-locations/Massachusetts/Boston",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cvs.com/store-locator/cvs-pharmacy-locations/Massachusetts/Boston",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://masonhistory.gmu.edu/timeline/show/34",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://masonhistory.gmu.edu/timeline/show/34",
+      "error": ""
+    },
+    {
+      "url": "https://studentcenters.gmu.edu/the-johnson-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentcenters.gmu.edu/the-johnson-center/",
+      "error": ""
+    },
+    {
+      "url": "https://catalog.gmu.edu/tuition-fees/expenses/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.gmu.edu/tuition-fees/expenses/",
+      "error": ""
+    },
+    {
+      "url": "https://cfa.calendar.gmu.edu/free-student-tickets/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cfa.calendar.gmu.edu/free-student-tickets/",
+      "error": ""
+    },
+    {
+      "url": "https://studentcenters.gmu.edu/hub/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentcenters.gmu.edu/hub/",
+      "error": ""
+    },
+    {
+      "url": "https://library.gmu.edu/locations/fenwick",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.gmu.edu/locations/fenwick",
+      "error": ""
+    },
+    {
+      "url": "https://recreation.gmu.edu/facilities/rac/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recreation.gmu.edu/facilities/rac/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfaxva.gov/Services/CUE-Bus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfaxva.gov/Services/CUE-Bus",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfaxva.gov/Fun-Facilities/Cultural-Arts-and-History/Fairfax-Museum",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfaxva.gov/Fun-Facilities/Cultural-Arts-and-History/Fairfax-Museum",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfaxva.gov/Fun-Facilities/Parks/Parks-Directory/Old-Town-Square",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfaxva.gov/Fun-Facilities/Parks/Parks-Directory/Old-Town-Square",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

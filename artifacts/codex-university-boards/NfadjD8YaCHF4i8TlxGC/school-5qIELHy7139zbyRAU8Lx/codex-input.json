@@ -1,0 +1,36 @@
+{
+  "target": {
+    "atlasId": "5qIELHy7139zbyRAU8Lx",
+    "schoolName": "California State University-Long Beach",
+    "shortSchoolName": "California State University-Long Beach",
+    "townName": "Long Beach",
+    "state": "CA",
+    "countryCode": "US",
+    "website": "https://www.csulb.edu/",
+    "latitude": 33.782818,
+    "longitude": -118.11204
+  },
+  "templates": [
+    {
+      "id": "college-first-weekend",
+      "version": "1.0",
+      "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+      "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+      "researchQueries": [
+        "new student orientation campus guide",
+        "first year student campus activities",
+        "weekend near campus students"
+      ],
+      "count": 10,
+      "icon": "schedule",
+      "primarySubjectType": "sequence_stop",
+      "allowedSubjectTypes": [
+        "sequence_stop",
+        "place",
+        "activity"
+      ],
+      "freshnessDays": 180,
+      "exactTitle": "Your First Weekend at California State University-Long Beach, Shared as Cards"
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "D8jZKSIMIEFdRrUCNFir",
+    "schoolName": "The University of Tennessee-Knoxville",
+    "shortSchoolName": "The University of Tennessee-Knoxville",
+    "townName": "Knoxville",
+    "state": "TN",
+    "countryCode": "US",
+    "unitId": "221759",
+    "website": "https://www.utk.edu/",
+    "latitude": 35.952082,
+    "longitude": -83.925852,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/5/55/Seal_of_the_University_of_Tennessee.svg/330px-Seal_of_the_University_of_Tennessee.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=utk.edu&sz=256"
+  },
+  "template": {
+    "id": "college-campus-tour-skips",
+    "version": "1.0",
+    "titlePattern": "What the Campus Tour Skips: {count} Places Students Share With Each Other",
+    "editorialBrief": "Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.",
+    "researchQueries": [
+      "student favorite campus places",
+      "campus map student spaces",
+      "student newspaper campus places"
+    ],
+    "count": 10,
+    "icon": "style",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place",
+      "study_space"
+    ],
+    "freshnessDays": 365
+  },
+  "exact_title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+  "excluded_subjects": [
+    "Raising Cane's Cumberland Ave",
+    "Gus's Good Times Deli",
+    "Cook Out",
+    "Insomnia Cookies",
+    "Subway",
+    "Mellow Mushroom Knoxville",
+    "Moe's Southwest Grill University of Tennessee",
+    "Rocky Top Dining Hall",
+    "Cumberland Food Hall",
+    "Student Union",
+    "Quiet Study Carrels",
+    "Quiet Study Tables",
+    "Group Study Carrels",
+    "Morgan Commons North",
+    "Graduate Commons Study Rooms - Small",
+    "Graduate Commons Study Room - Large",
+    "Pendergrass Study Rooms",
+    "Vol Study Center",
+    "Study Tables at DeVine Music Library",
+    "Study Lounge - Sixth Floor"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www2.cortland.edu/events/cortaca-jug/history",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.cortland.edu/events/cortaca-jug/history",
+      "error": ""
+    },
+    {
+      "url": "https://www2.cortland.edu/news/academic-convocation-set-for-aug-28",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.cortland.edu/news/academic-convocation-set-for-aug-28",
+      "error": ""
+    },
+    {
+      "url": "https://www2.cortland.edu/news/kente-tradition-grows-stronger",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.cortland.edu/news/kente-tradition-grows-stronger",
+      "error": ""
+    },
+    {
+      "url": "https://www2.cortland.edu/student-life/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.cortland.edu/student-life/",
+      "error": ""
+    },
+    {
+      "url": "https://www2.cortland.edu/academics/student-excellence/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.cortland.edu/academics/student-excellence/",
+      "error": ""
+    },
+    {
+      "url": "https://www2.cortland.edu/events/honors-convocation/index.dot",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.cortland.edu/events/honors-convocation/index.dot",
+      "error": ""
+    },
+    {
+      "url": "https://www2.cortland.edu/events/commencement/family-friends/history-and-tradition.dot",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.cortland.edu/events/commencement/family-friends/history-and-tradition.dot",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

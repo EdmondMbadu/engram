@@ -1,0 +1,58 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Six New York City activities have no admission or purchase requirement, but transportation from Hofstra is not free and is explicitly excluded from each cost claim.",
+    "The Swim Center card is restricted to Hofstra students, faculty, and staff with valid identification.",
+    "The Archives Mini-Symposium is date-specific and requires advance registration.",
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.hofstra.edu/museum/about.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hofstra.edu/museum/about.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.hofstra.edu/museum/calendar.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hofstra.edu/museum/calendar.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.hofstra.edu/campus-life/swim-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hofstra.edu/campus-life/swim-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hofstra.edu/academics/cultural-center/signature-events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hofstra.edu/academics/cultural-center/signature-events/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hofstra.edu/campus-life/new-york-city.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hofstra.edu/campus-life/new-york-city.html",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Emily Lowe Gallery"
+  ],
+  "sourceCount": 5,
+  "generationScore": 89,
+  "generationGrade": "B"
+}

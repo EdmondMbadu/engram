@@ -1,0 +1,64 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.deperewi.gov/egov/apps/locations/facilities.egov?id=22&view=detail",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.deperewi.gov/egov/apps/locations/facilities.egov?id=22&view=detail",
+      "error": ""
+    },
+    {
+      "url": "https://www.deperewi.gov/egov/apps/locations/facilities.egov?id=14&view=detail",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.deperewi.gov/egov/apps/locations/facilities.egov?id=14&view=detail",
+      "error": ""
+    },
+    {
+      "url": "https://www.deperewi.gov/egov/apps/locations/facilities.egov?view=detail%3Bid%3D28",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.deperewi.gov/egov/apps/locations/facilities.egov?view=detail%3Bid%3D28",
+      "error": ""
+    },
+    {
+      "url": "https://www.deperewi.gov/egov/apps/locations/facilities.egov?view=detail%3Bid%3D33",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.deperewi.gov/egov/apps/locations/facilities.egov?view=detail%3Bid%3D33",
+      "error": ""
+    },
+    {
+      "url": "https://www.deperewi.gov/egov/apps/document/center.egov?id=5729&view=item",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.deperewi.gov/egov/documents/1541516944_85724.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.deperewi.gov/egov/apps/locations/facilities.egov?view=group%3Bgroup%3Dname",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.deperewi.gov/egov/apps/locations/facilities.egov?view=group%3Bgroup%3Dname",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Voyageur Park",
+    "Legion Park"
+  ],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

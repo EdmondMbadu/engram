@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.sniderplazadallas.com/directory",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sniderplazadallas.com/directory",
+      "error": ""
+    },
+    {
+      "url": "https://www.dart.org/about/news-and-events/newsreleases/newsrelease-detail/dart-mockingbird-station-renamed-smu-mockingbird-station-1426",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.dart.org/about/news-and-events/newsreleases/newsrelease-detail/dart-mockingbird-station-renamed-smu-mockingbird-station-1426",
+      "error": ""
+    },
+    {
+      "url": "https://mockingbirdstation.com/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mockingbirdstation.com/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://mockingbirdstation.com/shops/angelika-film-center-cafe-dallas/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mockingbirdstation.com/shops/angelika-film-center-cafe-dallas/",
+      "error": ""
+    },
+    {
+      "url": "https://www.dallasparks.org/facilities/facility/details/Glencoe-Park-507",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.dallasparks.org/facilities/facility/details/Glencoe-Park-507",
+      "error": ""
+    },
+    {
+      "url": "https://www.uptexas.org/Facilities/Facility/Details/Centennial-formerly-Goar-Park-8",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uptexas.org/Facilities/Facility/Details/Centennial-formerly-Goar-Park-8",
+      "error": ""
+    },
+    {
+      "url": "https://www.uptexas.org/Facilities/Facility/Details/Burleson-Park-1",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uptexas.org/Facilities/Facility/Details/Burleson-Park-1",
+      "error": ""
+    },
+    {
+      "url": "https://www.uptexas.org/Facilities/Facility/Details/Caruth-Park-2",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uptexas.org/Facilities/Facility/Details/Caruth-Park-2",
+      "error": ""
+    },
+    {
+      "url": "https://www.uptexas.org/facilities/facility/details/universityparkpubliclibrary-16",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uptexas.org/facilities/facility/details/universityparkpubliclibrary-16",
+      "error": ""
+    },
+    {
+      "url": "https://www.uptexas.org/Facilities/Facility/Details/Germany-Park-7",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uptexas.org/Facilities/Facility/Details/Germany-Park-7",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

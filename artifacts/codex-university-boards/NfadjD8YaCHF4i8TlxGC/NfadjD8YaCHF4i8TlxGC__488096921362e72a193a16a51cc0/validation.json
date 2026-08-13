@@ -1,0 +1,87 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://gustavus.edu/about/administrative-offices/library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/about/administrative-offices/library",
+      "error": ""
+    },
+    {
+      "url": "https://gustavus.edu/finearts/hillstrom/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/finearts/hillstrom/index.php",
+      "error": ""
+    },
+    {
+      "url": "https://gustavus.edu/about/facilities/olin-hall",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/about/facilities/olin-hall",
+      "error": ""
+    },
+    {
+      "url": "https://gustavus.edu/about/facilities/nobel-hall",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/about/facilities/nobel-hall",
+      "error": ""
+    },
+    {
+      "url": "https://gustavus.edu/reslife/residences/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/reslife/residences/index.php",
+      "error": ""
+    },
+    {
+      "url": "https://gustavus.edu/student-experience/where-youll-live/explore-housing/north-hall",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/student-experience/where-youll-live/explore-housing/north-hall",
+      "error": ""
+    },
+    {
+      "url": "https://gustavus.edu/student-experience/where-youll-live/explore-housing/sohre-hall",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/student-experience/where-youll-live/explore-housing/sohre-hall",
+      "error": ""
+    },
+    {
+      "url": "https://gustavus.edu/student-experience/where-youll-live/explore-housing/uhler",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/student-experience/where-youll-live/explore-housing/uhler",
+      "error": ""
+    },
+    {
+      "url": "https://gustavus.edu/reslife/residences/collegeview/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/student-experience/where-youll-live/explore-housing/college-view",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Folke Bernadotte Memorial Library"
+  ],
+  "sourceCount": 9,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

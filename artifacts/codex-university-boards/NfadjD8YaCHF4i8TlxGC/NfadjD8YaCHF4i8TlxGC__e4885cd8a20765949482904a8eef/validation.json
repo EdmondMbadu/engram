@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://as.csuchico.edu/wellness",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://as.csuchico.edu/wellness",
+      "error": ""
+    },
+    {
+      "url": "https://www.csuchico.edu/gateway/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csuchico.edu/gateway/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.csuchico.edu/announcements/2026-04/26-04-07-annual-student-exhibitions-now-on-view.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csuchico.edu/announcements/2026-04/26-04-07-annual-student-exhibitions-now-on-view.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.csuchico.edu/anthmuseum/connections/earth-day.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csuchico.edu/academics/college/behavioral-social-sciences/departments/anthropology/labs-museums/valene-smith/index.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.csuchico.edu/resources/search.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csuchico.edu/resources/search.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.csuchico.edu/housing/more/get-involved/hub.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csuchico.edu/housing/more/get-involved/hub.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://as.csuchico.edu/adventure-outings",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://as.csuchico.edu/adventure-outings",
+      "error": ""
+    },
+    {
+      "url": "https://www.csuchico.edu/academics/college/agriculture/farm/visit.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csuchico.edu/academics/college/agriculture/farm/visit.shtml",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

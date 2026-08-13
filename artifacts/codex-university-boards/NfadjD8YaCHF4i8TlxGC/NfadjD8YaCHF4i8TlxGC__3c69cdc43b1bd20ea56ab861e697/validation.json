@@ -1,0 +1,69 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Confirm individual venue schedules and any event-specific closures before visiting."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.conncoll.edu/the-arboretum/visiting-the-arboretum/hours-and-policies/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.conncoll.edu/the-arboretum/visiting-the-arboretum/hours-and-policies/",
+      "error": ""
+    },
+    {
+      "url": "https://www.conncoll.edu/arboretum-programs/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.conncoll.edu/arboretum-programs/",
+      "error": ""
+    },
+    {
+      "url": "https://www.conncoll.edu/community-visitors/events-on-campus/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.conncoll.edu/community-visitors/events-on-campus/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lymanallyn.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lymanallyn.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://portal.ct.gov/-/media/deep/gis/coastalaccessmaps/coastalaccesssite102.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://portal.ct.gov/-/media/deep/gis/coastalaccessmaps/coastalaccesssite102.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/places/memorial-park.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/places/memorial-park.htm",
+      "error": ""
+    },
+    {
+      "url": "https://portal.ct.gov/-/media/DEEP/stateparks/Park-Connect/2022-B-ParkConneCT-Fort-Trumbull.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://portal.ct.gov/-/media/DEEP/stateparks/Park-Connect/2022-B-ParkConneCT-Fort-Trumbull.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

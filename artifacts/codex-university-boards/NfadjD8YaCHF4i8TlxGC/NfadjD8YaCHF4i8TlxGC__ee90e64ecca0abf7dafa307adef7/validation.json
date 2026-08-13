@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.usafa.edu/about/milestones/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usafa.edu/about/milestones/",
+      "error": ""
+    },
+    {
+      "url": "https://www.usafa.edu/about/milestones/acceptance-day/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usafa.edu/about/milestones/acceptance-day/",
+      "error": ""
+    },
+    {
+      "url": "https://www.usafa.edu/parents/freshman-year/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usafa.edu/parents/freshman-year/",
+      "error": ""
+    },
+    {
+      "url": "https://www.usafa.edu/wing-open-boxing/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usafa.edu/wing-open-boxing/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

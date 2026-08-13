@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.cpp.edu/news/content/2021/12/rose-float-experience-is-unlike-any-other/index.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cpp.edu/news/content/2021/12/rose-float-experience-is-unlike-any-other/index.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.cpp.edu/news/content/2025/09/cal-poly-pomona-pumpkin-festival-opens-oct-4/index.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cpp.edu/news/content/2025/09/cal-poly-pomona-pumpkin-festival-opens-oct-4/index.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.cpp.edu/news/content/2025/09/hot-dog-caper-returns-for-magical-42nd-anniversary/index.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cpp.edu/news/content/2025/09/hot-dog-caper-returns-for-magical-42nd-anniversary/index.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://asi.cpp.edu/activities/broncofusion/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://asi.cpp.edu/activities/broncofusion/",
+      "error": ""
+    },
+    {
+      "url": "https://www.cpp.edu/news/content/2026/01/cpp-to-host-third-annual-green-and-gold-block-party/index.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cpp.edu/news/content/2026/01/cpp-to-host-third-annual-green-and-gold-block-party/index.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://asi.cpp.edu/activities/special-events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://asi.cpp.edu/activities/special-events/",
+      "error": ""
+    },
+    {
+      "url": "https://www.cpp.edu/annualfund/student-philanthropy/index.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cpp.edu/annualfund/student-philanthropy/index.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.cpp.edu/news/content/2024/09/cal-poly-pomona-hosts-inaugural-new-student-convocation-to-foster-belonging-and-sense-of-pride/index.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cpp.edu/news/content/2024/09/cal-poly-pomona-hosts-inaugural-new-student-convocation-to-foster-belonging-and-sense-of-pride/index.shtml",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

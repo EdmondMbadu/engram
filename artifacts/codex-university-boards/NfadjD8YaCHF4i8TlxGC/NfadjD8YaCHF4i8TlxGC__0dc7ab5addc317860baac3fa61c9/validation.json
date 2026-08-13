@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.pizzahouse.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pizzahouse.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.conradsgrill.com/conrads-2-1",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.conradsgrill.com/conrads-2-1",
+      "error": ""
+    },
+    {
+      "url": "https://thebellspizza.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thebellspizza.com/",
+      "error": ""
+    },
+    {
+      "url": "https://elazteco.net/late-night-menu",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://elazteco.net/late-night-menu",
+      "error": ""
+    },
+    {
+      "url": "https://dennys.com/location/denny-s-7908-844866",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://dennys.com/location/denny-s-7908-844866",
+      "error": ""
+    },
+    {
+      "url": "https://locations.raisingcanes.com/mi/east-lansing/301-e-grand-river-rd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.raisingcanes.com/mi/east-lansing/301-e-grand-river-rd",
+      "error": ""
+    },
+    {
+      "url": "https://locations.cottageinn.com/cottage-inn-pizza-6dde97989f3f",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.cottageinn.com/cottage-inn-pizza-6dde97989f3f",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/mi/east-lansing/7195-e-saginaw-st.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mi/east-lansing/7195-e-saginaw-st.html",
+      "error": ""
+    },
+    {
+      "url": "https://shakeshack.com/location/east-lansing-mi",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://shakeshack.com/location/east-lansing-mi",
+      "error": ""
+    },
+    {
+      "url": "https://crunchyseastlansing.com/contact-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://crunchyseastlansing.com/contact-us/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

@@ -1,0 +1,285 @@
+Reading additional input from stdin...
+2026-08-13T06:54:37.490508Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e6-9565-7460-86f9-41e6dfb46694.1786604066150253000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:54:37.492977Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:54:37.495106Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9e6-c14b-7b03-9324-51f569a3b50b
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"wgqSCnempXbXuFZZQlPA","schoolName":"DePauw University","shortSchoolName":"DePauw University","townName":"Greencastle","state":"IN","countryCode":"US","website":"https://www.depauw.edu/","latitude":39.640904,"longitude":-86.860363},"templates":[{"id":"college-only-happens-here","version":"1.0","titlePattern":"Only Happens Here: {count} Traditions That Make No Sense Anywhere Else","editorialBrief":"Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.","researchQueries":["university traditions alumni","campus traditions student newspaper","school rituals history"],"count":10,"icon":"fingerprint","primarySubjectType":"tradition","allowedSubjectTypes":["tradition"],"freshnessDays":1095,"exactTitle":"Only Happens Here: 10 Traditions That Make No Sense Anywhere Else"}]}
+codex
+{
+  "complete": false,
+  "school_name": "DePauw University",
+  "town_name": "Greencastle",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "DePauw University",
+      "town_name": "Greencastle",
+      "template_id": "college-only-happens-here",
+      "title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+      "description": "",
+      "icon": "fingerprint",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "I’m researching ten distinct, documented DePauw traditions and checking each claim against direct sources.",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "tradition",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "tradition",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "tradition",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "tradition",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "tradition",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "tradition",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "tradition",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "tradition",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "tradition",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:depauw.edu traditions DePauw University Monon Bell Boulder first-year ...
+web search: 
+web search: site:depauw.edu opening day tradition bagpipes East College gateway ...
+web search: 
+web search: site:depauw.edu DePauw annual tradition "Walker Cup" ...
+codex
+{"complete":true,"school_name":"DePauw University","town_name":"Greencastle","boards":[{"complete":true,"school_name":"DePauw University","town_name":"Greencastle","template_id":"college-only-happens-here","title":"Only Happens Here: 10 Traditions That Make No Sense Anywhere Else","description":"Ten documented DePauw rituals spanning arrival, rivalry, spring racing, senior honors and the final walk across campus.","icon":"fingerprint","cards":[{"subject_id":"depauw-monon-bell-classic","subject_type":"tradition","entity_name":"Monon Bell Classic","title":"Play for a 300-Pound Railroad Bell","subtitle":"DePauw and Wabash’s annual football rivalry","notes":"Watch for the locomotive bell beside the field; the winning school keeps the 300-pound trophy until the rivals meet again.","short_summary":"A nearby college rivalry decides which campus houses an actual railroad bell for the next year.","evidence_claim":"DePauw and Wabash have played football since 1890 and have competed for possession of the 300-pound Monon Railroad bell since 1932.","source_url":"https://www.depauw.edu/about/history-traditions/","source_title":"History & Traditions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Game location and admission arrangements vary by year; consult the current university athletics or alumni announcement before attending.","cost_status":"unknown","under21_safe":true},{"subject_id":"depauw-little-5","subject_type":"tradition","entity_name":"Little 5","title":"Turn Campus Streets Into a Bike Course","subtitle":"DePauw’s spring cycling week since 1956","notes":"Follow the time trial, street sprints and final criterium; use designated spectator areas and leave the closed course to registered racers.","short_summary":"A fundraiser-born bicycle race has evolved into a week of racing and spring events around campus.","evidence_claim":"DePauw’s Little 5 has been held since 1956 and currently progresses from a time trial to street sprints and criterium races on a half-mile campus course.","source_url":"https://www.depauw.edu/about/history-traditions/","source_title":"History & Traditions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Held in late April; current routes, road closures and spectator instructions should be confirmed through DePauw event notices.","cost_status":"unknown","under21_safe":true},{"subject_id":"depauw-old-gold-weekend","subject_type":"tradition","entity_name":"Old Gold Weekend","title":"Replace Class Scraps With Old Gold","subtitle":"A homecoming tradition created in 1907","notes":"Check the weekend program for the football game, arts events and alumni gatherings—the modern, organized successors to early class contests.","short_summary":"DePauw transformed unruly class rivalries into a structured homecoming celebration more than a century ago.","evidence_claim":"Old Gold Day began in 1907 to replace increasingly violent freshman-sophomore contests and had developed into a full homecoming weekend by 1919.","source_url":"https://www.depauw.edu/about/history-traditions/","source_title":"History & Traditions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The university schedules Old Gold Weekend annually; individual activities may have separate registration or access requirements.","cost_status":"unknown","under21_safe":true},{"subject_id":"depauw-opening-convocation-procession","subject_type":"tradition","entity_name":"Opening Convocation Procession","title":"Enter DePauw Through the East College Gates","subtitle":"The new-student welcome march across campus","notes":"Join the procession with your residence mentor and pass through the gates; bring ear protection if cheering and amplified sound feel overwhelming.","short_summary":"New Tigers symbolically enter the university together before their welcome convocation.","evidence_claim":"During orientation, new students process across campus with residence assistants and mentors and walk through the East College gates as their official welcome into the DePauw community.","source_url":"https://www.depauw.edu/studentaffairs/new-students/fall-orientation/","source_title":"New Student Orientation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Designed for incoming students and families during orientation; the procession includes loud music, cheering and clapping, with a quiet room available.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"depauw-commencement-gate-walk","subject_type":"tradition","entity_name":"Commencement Gate Walk","title":"Leave Through the Same Historic Arch","subtitle":"A ceremonial bookend to the opening-week march","notes":"Notice the DPU letters overhead as the graduating procession crosses the historic arch—the ceremonial counterpart to the first-year entrance.","short_summary":"DePauw uses its historic campus gateway to frame both arrival and graduation.","evidence_claim":"DePauw identifies the ornamental DPU Arch as an essential pass-through for both the opening-week march and commencement ceremonies.","source_url":"https://www.depauw.edu/about/history-traditions/","source_title":"History & Traditions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Participation is tied to official commencement instructions; graduates should follow the University Marshal’s procession guidance.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"depauw-toast-song","subject_type":"tradition","entity_name":"A Toast to DePauw","title":"Sing a Toast Written by an Alumna","subtitle":"DePauw’s ceremonial university anthem","notes":"Listen for Vivien Bard’s anthem at formal gatherings; follow the printed program when the community joins in the school-specific song.","short_summary":"An alumna’s composition supplies the shared song for DePauw ceremonies and reunions.","evidence_claim":"Vivien Bard’s “A Toast to Old DePauw” became the official university anthem and has been sung at commencement, Old Gold Day, Alumni Day and other ceremonies.","source_url":"https://library.depauw.edu/library/archives/ehistory/chapter3/3index08.html","source_title":"DePauw University History","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Performed as part of selected university ceremonies; attendance conditions depend on the host event.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"depauw-walker-cup-presentation","subject_type":"tradition","entity_name":"Walker Cup Presentation","title":"Let Seniors Choose a Cup Winner","subtitle":"An annual student honor established in 1926","notes":"Attend the Student Awards Convocation to see the cup presented after senior-class nominations recognize service to the university.","short_summary":"Graduating students help select the classmate whose contribution to DePauw is commemorated by a historic cup.","evidence_claim":"Established in 1926, the Walker Cup is presented annually to a graduating senior nominated by the senior class for exceptional contribution to DePauw.","source_url":"https://www.depauw.edu/stories/details/outstanding-seniors-honored-with-walker-cup-and-murad-medal/","source_title":"Outstanding Seniors Honored with Walker Cup and Murad Medal","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Presented during the annual Student Awards Convocation; verify the current ceremony’s venue and attendance guidance.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"depauw-meet-at-the-boulder","subject_type":"tradition","entity_name":"Meeting at the Columbian Boulder","title":"Meet at the Campus’s Giant Granite Marker","subtitle":"A gathering custom on the East College lawn","notes":"Use the inscribed Boulder as a daylight meeting point and examine it from the lawn; avoid the unsafe, clothing-optional run in older lore.","short_summary":"A granite curiosity delivered by 26 horses became a long-running campus rendezvous point.","evidence_claim":"The Columbian Boulder has served as an iconic student gathering place, and DePauw’s archives document its earlier use as a meeting point for chapel dates.","source_url":"https://library.depauw.edu/library/archives/ehistory/chapter2/symbols.html","source_title":"Symbols of Old DePauw","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Viewable outdoors on the East College lawn; this card covers the safe gathering custom and explicitly excludes the Boulder Run.","cost_status":"free","under21_safe":true},{"subject_id":"depauw-baccalaureate-celebration","subject_type":"tradition","entity_name":"Baccalaureate Celebration","title":"Begin Commencement With Many Traditions","subtitle":"DePauw’s formal ceremony before graduation day","notes":"Arrive before the listed start to hear student reflections, music, prayers and readings that open DePauw’s commencement weekend.","short_summary":"Graduation weekend formally begins with a multi-tradition gathering centered on the senior class.","evidence_claim":"DePauw describes Baccalaureate as the first formal event of Commencement Weekend, featuring the president, student reflections, music, prayers and readings from many traditions.","source_url":"https://www.depauw.edu/academics/academic-resources/advising/registrar/commencement/","source_title":"Commencement","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The 2026 ceremony was scheduled in Kresge Auditorium and required no tickets; future dates and access should be reconfirmed.","cost_status":"free","under21_safe":true},{"subject_id":"depauw-under-the-stars","subject_type":"tradition","entity_name":"DePauw Under the Stars","title":"Gather Under the Stars Before Graduation","subtitle":"A named commencement-weekend evening event","notes":"Join graduates and guests at Stewart Plaza for the scheduled music and conversation; check the rain location before setting out.","short_summary":"DePauw gives seniors and their guests a relaxed outdoor evening between Baccalaureate and Commencement.","evidence_claim":"The university’s 2026 Commencement schedule included “DePauw Under the Stars,” an evening of music and conversation for graduates, families and guests at Stewart Plaza.","source_url":"https://www.depauw.edu/academics/academic-resources/advising/registrar/commencement/","source_title":"Commencement","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Scheduled for commencement weekend at Stewart Plaza, with Hoover Hall and the Union Building Living Room listed as inclement-weather locations.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T06:56:38.473449Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9e6-c14b-7b03-9324-51f569a3b50b.1786604077388478000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+46,882
+
+{"complete":true,"school_name":"DePauw University","town_name":"Greencastle","boards":[{"complete":true,"school_name":"DePauw University","town_name":"Greencastle","template_id":"college-only-happens-here","title":"Only Happens Here: 10 Traditions That Make No Sense Anywhere Else","description":"Ten documented DePauw rituals spanning arrival, rivalry, spring racing, senior honors and the final walk across campus.","icon":"fingerprint","cards":[{"subject_id":"depauw-monon-bell-classic","subject_type":"tradition","entity_name":"Monon Bell Classic","title":"Play for a 300-Pound Railroad Bell","subtitle":"DePauw and Wabash’s annual football rivalry","notes":"Watch for the locomotive bell beside the field; the winning school keeps the 300-pound trophy until the rivals meet again.","short_summary":"A nearby college rivalry decides which campus houses an actual railroad bell for the next year.","evidence_claim":"DePauw and Wabash have played football since 1890 and have competed for possession of the 300-pound Monon Railroad bell since 1932.","source_url":"https://www.depauw.edu/about/history-traditions/","source_title":"History & Traditions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Game location and admission arrangements vary by year; consult the current university athletics or alumni announcement before attending.","cost_status":"unknown","under21_safe":true},{"subject_id":"depauw-little-5","subject_type":"tradition","entity_name":"Little 5","title":"Turn Campus Streets Into a Bike Course","subtitle":"DePauw’s spring cycling week since 1956","notes":"Follow the time trial, street sprints and final criterium; use designated spectator areas and leave the closed course to registered racers.","short_summary":"A fundraiser-born bicycle race has evolved into a week of racing and spring events around campus.","evidence_claim":"DePauw’s Little 5 has been held since 1956 and currently progresses from a time trial to street sprints and criterium races on a half-mile campus course.","source_url":"https://www.depauw.edu/about/history-traditions/","source_title":"History & Traditions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Held in late April; current routes, road closures and spectator instructions should be confirmed through DePauw event notices.","cost_status":"unknown","under21_safe":true},{"subject_id":"depauw-old-gold-weekend","subject_type":"tradition","entity_name":"Old Gold Weekend","title":"Replace Class Scraps With Old Gold","subtitle":"A homecoming tradition created in 1907","notes":"Check the weekend program for the football game, arts events and alumni gatherings—the modern, organized successors to early class contests.","short_summary":"DePauw transformed unruly class rivalries into a structured homecoming celebration more than a century ago.","evidence_claim":"Old Gold Day began in 1907 to replace increasingly violent freshman-sophomore contests and had developed into a full homecoming weekend by 1919.","source_url":"https://www.depauw.edu/about/history-traditions/","source_title":"History & Traditions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The university schedules Old Gold Weekend annually; individual activities may have separate registration or access requirements.","cost_status":"unknown","under21_safe":true},{"subject_id":"depauw-opening-convocation-procession","subject_type":"tradition","entity_name":"Opening Convocation Procession","title":"Enter DePauw Through the East College Gates","subtitle":"The new-student welcome march across campus","notes":"Join the procession with your residence mentor and pass through the gates; bring ear protection if cheering and amplified sound feel overwhelming.","short_summary":"New Tigers symbolically enter the university together before their welcome convocation.","evidence_claim":"During orientation, new students process across campus with residence assistants and mentors and walk through the East College gates as their official welcome into the DePauw community.","source_url":"https://www.depauw.edu/studentaffairs/new-students/fall-orientation/","source_title":"New Student Orientation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Designed for incoming students and families during orientation; the procession includes loud music, cheering and clapping, with a quiet room available.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"depauw-commencement-gate-walk","subject_type":"tradition","entity_name":"Commencement Gate Walk","title":"Leave Through the Same Historic Arch","subtitle":"A ceremonial bookend to the opening-week march","notes":"Notice the DPU letters overhead as the graduating procession crosses the historic arch—the ceremonial counterpart to the first-year entrance.","short_summary":"DePauw uses its historic campus gateway to frame both arrival and graduation.","evidence_claim":"DePauw identifies the ornamental DPU Arch as an essential pass-through for both the opening-week march and commencement ceremonies.","source_url":"https://www.depauw.edu/about/history-traditions/","source_title":"History & Traditions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Participation is tied to official commencement instructions; graduates should follow the University Marshal’s procession guidance.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"depauw-toast-song","subject_type":"tradition","entity_name":"A Toast to DePauw","title":"Sing a Toast Written by an Alumna","subtitle":"DePauw’s ceremonial university anthem","notes":"Listen for Vivien Bard’s anthem at formal gatherings; follow the printed program when the community joins in the school-specific song.","short_summary":"An alumna’s composition supplies the shared song for DePauw ceremonies and reunions.","evidence_claim":"Vivien Bard’s “A Toast to Old DePauw” became the official university anthem and has been sung at commencement, Old Gold Day, Alumni Day and other ceremonies.","source_url":"https://library.depauw.edu/library/archives/ehistory/chapter3/3index08.html","source_title":"DePauw University History","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Performed as part of selected university ceremonies; attendance conditions depend on the host event.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"depauw-walker-cup-presentation","subject_type":"tradition","entity_name":"Walker Cup Presentation","title":"Let Seniors Choose a Cup Winner","subtitle":"An annual student honor established in 1926","notes":"Attend the Student Awards Convocation to see the cup presented after senior-class nominations recognize service to the university.","short_summary":"Graduating students help select the classmate whose contribution to DePauw is commemorated by a historic cup.","evidence_claim":"Established in 1926, the Walker Cup is presented annually to a graduating senior nominated by the senior class for exceptional contribution to DePauw.","source_url":"https://www.depauw.edu/stories/details/outstanding-seniors-honored-with-walker-cup-and-murad-medal/","source_title":"Outstanding Seniors Honored with Walker Cup and Murad Medal","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Presented during the annual Student Awards Convocation; verify the current ceremony’s venue and attendance guidance.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"depauw-meet-at-the-boulder","subject_type":"tradition","entity_name":"Meeting at the Columbian Boulder","title":"Meet at the Campus’s Giant Granite Marker","subtitle":"A gathering custom on the East College lawn","notes":"Use the inscribed Boulder as a daylight meeting point and examine it from the lawn; avoid the unsafe, clothing-optional run in older lore.","short_summary":"A granite curiosity delivered by 26 horses became a long-running campus rendezvous point.","evidence_claim":"The Columbian Boulder has served as an iconic student gathering place, and DePauw’s archives document its earlier use as a meeting point for chapel dates.","source_url":"https://library.depauw.edu/library/archives/ehistory/chapter2/symbols.html","source_title":"Symbols of Old DePauw","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Viewable outdoors on the East College lawn; this card covers the safe gathering custom and explicitly excludes the Boulder Run.","cost_status":"free","under21_safe":true},{"subject_id":"depauw-baccalaureate-celebration","subject_type":"tradition","entity_name":"Baccalaureate Celebration","title":"Begin Commencement With Many Traditions","subtitle":"DePauw’s formal ceremony before graduation day","notes":"Arrive before the listed start to hear student reflections, music, prayers and readings that open DePauw’s commencement weekend.","short_summary":"Graduation weekend formally begins with a multi-tradition gathering centered on the senior class.","evidence_claim":"DePauw describes Baccalaureate as the first formal event of Commencement Weekend, featuring the president, student reflections, music, prayers and readings from many traditions.","source_url":"https://www.depauw.edu/academics/academic-resources/advising/registrar/commencement/","source_title":"Commencement","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The 2026 ceremony was scheduled in Kresge Auditorium and required no tickets; future dates and access should be reconfirmed.","cost_status":"free","under21_safe":true},{"subject_id":"depauw-under-the-stars","subject_type":"tradition","entity_name":"DePauw Under the Stars","title":"Gather Under the Stars Before Graduation","subtitle":"A named commencement-weekend evening event","notes":"Join graduates and guests at Stewart Plaza for the scheduled music and conversation; check the rain location before setting out.","short_summary":"DePauw gives seniors and their guests a relaxed outdoor evening between Baccalaureate and Commencement.","evidence_claim":"The university’s 2026 Commencement schedule included “DePauw Under the Stars,” an evening of music and conversation for graduates, families and guests at Stewart Plaza.","source_url":"https://www.depauw.edu/academics/academic-resources/advising/registrar/commencement/","source_title":"Commencement","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Scheduled for commencement weekend at Stewart Plaza, with Hoover Hall and the Union Building Living Room listed as inclement-weather locations.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

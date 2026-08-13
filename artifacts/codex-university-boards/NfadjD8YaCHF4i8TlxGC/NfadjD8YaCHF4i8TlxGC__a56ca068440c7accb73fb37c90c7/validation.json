@@ -1,0 +1,94 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Orientation dates and individual operating hours can change; students should follow their assigned 2026 NSO schedule and check live hours before departure.",
+    "Coordinates are included only where a supplied target coordinate or direct government page verified them; all other coordinates and maps URLs are null."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.hmc.edu/student-life/orientation/faqs/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hmc.edu/student-life/orientation/faqs/",
+      "error": ""
+    },
+    {
+      "url": "https://connect.hmc.edu/portal/hmc-visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://connect.hmc.edu/portal/hmc-visit",
+      "error": ""
+    },
+    {
+      "url": "https://arts.hmc.edu/Visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arts.hmc.edu/Visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.hmc.edu/student-life/wp-content/uploads/sites/4/2025/09/2025-HMC_AFSSR.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hmc.edu/student-life/wp-content/uploads/sites/4/2025/09/2025-HMC_AFSSR.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.hmc.edu/dco/dining-services/hoch-shanahan-dining-commons/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hmc.edu/dco/dining-services/hoch-shanahan-dining-commons/",
+      "error": ""
+    },
+    {
+      "url": "https://library.claremont.edu/hours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.claremont.edu/hours/",
+      "error": ""
+    },
+    {
+      "url": "https://www.pomona.edu/museum/support",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pomona.edu/museum/support",
+      "error": ""
+    },
+    {
+      "url": "https://www.hmc.edu/about/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hmc.edu/about/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.claremontca.gov/Activities-Recreation/Parks/Memorial-Park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.claremontca.gov/Activities-Recreation/Parks/Memorial-Park",
+      "error": ""
+    },
+    {
+      "url": "https://www.calbg.org/visit/hours-admission",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.calbg.org/visit/hours-admission",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

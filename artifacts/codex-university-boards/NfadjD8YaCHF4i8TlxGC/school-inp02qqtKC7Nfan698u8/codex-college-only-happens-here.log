@@ -1,0 +1,289 @@
+Reading additional input from stdin...
+2026-08-13T07:43:31.363818Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa13-11d9-7653-8284-be30975bbdec.1786606981593695000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:43:31.371295Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:43:31.375039Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa13-85cc-7002-93ea-59933afb76fe
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"inp02qqtKC7Nfan698u8","schoolName":"Iowa State University","shortSchoolName":"Iowa State University","townName":"Ames","state":"IA","countryCode":"US","website":"https://www.iastate.edu/","latitude":42.026212,"longitude":-93.648504},"templates":[{"id":"college-only-happens-here","version":"1.0","titlePattern":"Only Happens Here: {count} Traditions That Make No Sense Anywhere Else","editorialBrief":"Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.","researchQueries":["university traditions alumni","campus traditions student newspaper","school rituals history"],"count":10,"icon":"fingerprint","primarySubjectType":"tradition","allowedSubjectTypes":["tradition"],"freshnessDays":1095,"exactTitle":"Only Happens Here: 10 Traditions That Make No Sense Anywhere Else"}]}
+codex
+{
+  "complete": false,
+  "school_name": "Iowa State University",
+  "town_name": "Ames",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Iowa State University",
+      "town_name": "Ames",
+      "template_id": "college-only-happens-here",
+      "title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+      "description": "",
+      "icon": "fingerprint",
+      "cards": [
+        {
+          "subject_id": "tradition_campaniling",
+          "subject_type": "tradition",
+          "entity_name": "Campaniling",
+          "title": "Become a True Iowa Stater at Midnight",
+          "subtitle": "A midnight kiss beneath the Campanile",
+          "notes": "Visit at midnight with someone you trust, listen for the bells, and keep the tradition consensual and respectful of the central campus setting.",
+          "short_summary": "Campus lore says an Iowa State student becomes a “true Iowa Stater” after a midnight kiss beneath the Campanile.",
+          "evidence_claim": "The ISU Alumni Association identifies campaniling as the tradition of kissing under the Campanile at midnight to become a “true Iowa Stater.”",
+          "source_url": "https://www.isualum.org/s/565/17/interior.aspx?sid=565&gid=1&pgid=252",
+          "source_title": "Traditions of Iowa State",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": 42.02517,
+          "longitude": -93.64635,
+          "maps_url": "https://www.google.com/maps/search/?api=1&query=Campanile%2C%20Iowa%20State%20University%2C%20Ames%2C%20IA",
+          "access_notes": "The Campanile stands on central campus; this tradition is specifically associated with midnight.",
+          "cost_status": "free",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "tradition_lake_laverne_swans",
+          "subject_type": "tradition",
+          "entity_name": "Lancelot and Elaine",
+          "title": "Meet the Swans Who Inherit Their Names",
+          "subtitle": "Lake LaVerne’s resident pair",
+          "notes": "Walk the lake path for a view of Lancelot and Elaine, photograph from shore, and never feed or approach the university’s resident swans.",
+          "short_summary": "Every resident swan pair at Lake LaVerne carries the names Lancelot and Elaine, continuing a campus custom dating to 1935.",
+          "evidence_claim": "Iowa State’s official traditions page says two swans were introduced to Lake LaVerne in 1935 and that all resident pairs have been named Lancelot and Elaine.",
+          "source_url": "https://www.iastate.edu/about/traditions",
+          "source_title": "Traditions",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": 42.0233,
+          "longitude": -93.6433,
+          "maps_url": "https://www.google.com/maps/search/?api=1&query=Lake%20LaVerne%2C%20Iowa%20State%20University%2C%20Ames%2C%20IA",
+          "access_notes": "View the swans from public campus paths around Lake LaVerne; wildlife should not be handled or fed.",
+          "cost_status": "free",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "tradition_zodiac",
+          "subject_type": "tradition",
+          "entity_name": "Memorial Union Zodiac",
+          "title": "Step Around the Zodiac",
+          "subtitle": "A floor medallion with an academic superstition",
+          "notes": "Spot the bronze Zodiac inside the Memorial Union, walk around its edge, and use the nearby fountain if you accidentally step on it.",
+          "short_summary": "Students avoid the Zodiac because campus superstition links stepping on it with failing the next test.",
+          "evidence_claim": "The Memorial Union documents the superstition that stepping on the Zodiac means failing the next test and says students throw a coin into the Four Seasons Fountain to break the curse.",
+          "source_url": "https://www.mu.iastate.edu/about/history-and-traditions/zodiac",
+          "source_title": "Zodiac",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": 42.02363,
+          "longitude": -93.64581,
+          "maps_url": "https://www.google.com/maps/search/?api=1&query=Memorial%20Union%2C%20Iowa%20State%20University%2C%20Ames%2C%20IA",
+          "access_notes": "Located inside the Memorial Union; building access follows current Memorial Union operating hours.",
+          "cost_status": "free",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "tradition_four_seasons_fountain_coin",
+          "subject_type": "tradition",
+          "entity_name": "Fountain of the Four Seasons",
+          "title": "Undo the Zodiac Curse",
+          "subtitle": "A coin toss tied to a campus superstition",
+          "notes": "If you step on the Zodiac, follow the documented ritual by tossing a coin into the Four Seasons Fountain, then pause to see the Christian Petersen sculptures.",
+          "short_summary": "The prescribed campus cure for a Zodiac misstep is a coin tossed into the Fountain of the Four Seasons.",
+          "evidence_claim": "The Memorial Union’s Zodiac history page says the curse can be broken by throwing a coin into the Fountain of the Four Seasons.",
+          "source_url": "https://www.mu.iastate.edu/about/history-and-traditions/zodiac",
+          "source_title": "Zodiac",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": 42.0235,
+          "longitude": -93.6462,
+          "maps_url": "https://www.google.com/maps/search/?api=1&query=Fountain%20of%20the%20Four%20Seasons%2C%20Ames%2C%20IA",
+          "access_notes": "The fountain is immediately north of the Memorial Union; the ritual involves a coin and therefore is not a zero-cost requirement.",
+          "cost_status": "purchase_required",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "tradition_homecoming_lawn_displays",
+          "subject_type": "tradition",
+          "entity_name": "Homecoming Lawn Displays",
+          "title": "Watch Homecoming Take Shape on the Lawns",
+          "subtitle": "Student-built displays judged during Homecoming",
+          "notes": "Check the official Homecoming schedule for judging, view the finished displays from public paths, and respect roped work areas and student construction.",
+          "short_summary": "Student organizations turn campus lawns into judged Homecoming installations built around the year’s theme.",
+          "evidence_claim": "Iowa State Homecoming’s official traditions page describes lawn displays as a tradition in which student organizations build large themed displays that are judged during Homecoming.",
+          "source_url": "https://www.isualum.org/s/565/17/interior.aspx?sid=565&gid=1&pgid=269",
+          "source_title": "Homecoming Traditions",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "Seasonal Homecoming activity; locations and public viewing times vary by the annual schedule.",
+          "cost_status": "free",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "tradition_yell_like_hell",
+          "subject_type": "tradition",
+          "entity_name": "Yell Like Hell",
+          "title": "Hear Cyclone Spirit at Full Volume",
+          "subtitle": "Homecoming’s student spirit competition",
+          "notes": "Use the Homecoming schedule to find a public round, expect loud group performances and body paint, and follow venue rules for audience access.",
+          "short_summary": "Teams perform Iowa State-themed chants and routines in a multi-round Homecoming competition known as Yell Like Hell.",
+          "evidence_claim": "The official Iowa State Homecoming site identifies Yell Like Hell as a Homecoming tradition and student competition involving Iowa State-themed chants and performances.",
+          "source_url": "https://www.isualum.org/s/565/17/interior.aspx?sid=565&gid=1&pgid=269",
+          "source_title": "Homecoming Traditions",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "A scheduled Homecoming competition; rounds, venues, and audience access can change annually.",
+          "cost_status": "free",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "tradition_cyclone_central_tailgate",
+          "subject_type": "tradition",
+          "entity_name": "Cyclone Central Tailgate",
+          "title": "Start Homecoming Game Day at Cyclone Central",
+          "subtitle": "The alumni association’s official pregame gathering",
+          "notes": "Confirm the game-day time, join the all-ages gathering before kickoff, and plan separately for any optional food, merchandise, parking, or game ticket.",
+          "short_summary": "Cyclone Central gathers alumni, students, and fans for the official Homecoming pregame celebration.",
+          "evidence_claim": "The ISU Alumni Association lists Cyclone Central as an official Homecoming tradition and pregame event.",
+          "source_url": "https://www.isualum.org/s/565/17/interior.aspx?sid=565&gid=1&pgid=269",
+          "source_title": "Homecoming Traditions",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "Held on Homecoming game day; attendance details, site, and timing depend on the annual event listing.",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "tradition_cy_squad",
+          "subject_type": "tradition",
+          "entity_name": "Cy Squad",
+          "title": "Send Cy Across Campus",
+          "subtitle": "A traveling Homecoming mascot contest",
+          "notes": "Look for the decorated Cy figures during Homecoming, use the official contest map or schedule, and photograph them without moving or touching entries.",
+          "short_summary": "Decorated Cy figures appear around campus as teams compete in the Homecoming Cy Squad contest.",
+          "evidence_claim": "Iowa State Homecoming’s official traditions page presents Cy Squad as a Homecoming contest centered on decorated Cy figures displayed around campus.",
+          "source_url": "https://www.isualum.org/s/565/17/interior.aspx?sid=565&gid=1&pgid=269",
+          "source_title": "Homecoming Traditions",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "Seasonal and distributed across campus; exact display sites and dates are announced for each Homecoming.",
+          "cost_status": "free",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "tradition_cardinal_and_gold",
+          "subject_type": "tradition",
+          "entity_name": "Cardinal and Gold",
+          "title": "Wear the Colors Chosen in 1899",
+          "subtitle": "The school colors selected by an early student council",
+          "notes": "Wear cardinal and gold to a campus event or photograph the pair in official displays; buying new clothing is optional, not part of the tradition.",
+          "short_summary": "Cardinal and gold have represented Iowa State since students adopted the color combination in 1899.",
+          "evidence_claim": "Iowa State’s official traditions page states that the student council selected cardinal and gold as the school colors in 1899.",
+          "source_url": "https://www.iastate.edu/about/traditions",
+          "source_title": "Traditions",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "This tradition can be observed at public campus events and displays; event admission rules vary.",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "tradition_cyclone_nickname",
+          "subject_type": "tradition",
+          "entity_name": "Cyclones Nickname",
+          "title": "Cheer for a Team Named by a Tornado Headline",
+          "subtitle": "An 1895 newspaper phrase that stuck",
+          "notes": "Listen for “Cyclones” at a campus event, then read the official account of the 1895 football headline that turned a weather metaphor into the school nickname.",
+          "short_summary": "Iowa State’s Cyclones identity traces to an 1895 football report that compared the team’s decisive win to a cyclone.",
+          "evidence_claim": "Iowa State’s official traditions page explains that the Cyclones nickname arose after an 1895 newspaper account described the football team’s victory as a cyclone.",
+          "source_url": "https://www.iastate.edu/about/traditions",
+          "source_title": "Traditions",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "The nickname is visible across campus; access and cost depend on the specific event or venue.",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ],
+      "warnings": [
+        "Live web verification could not be completed in this session; direct official URLs are supplied, but current page availability and exact wording should be checked before publication.",
+        "The four Homecoming entries rely on an ISU Alumni Association page whose current accessibility could not be confirmed.",
+        "Coordinates are included only for stable named landmarks and should be map-verified before publication."
+      ]
+    }
+  ],
+  "warnings": [
+    "Board is structurally complete with exactly 10 distinct tradition cards, but complete is false because live web verification was unavailable."
+  ]
+}
+web search: 
+web search: site:iastate.edu Iowa State traditions campaniling zodiac VEISHEA cherry pies swans homecoming traditions ...
+web search: 
+web search: site:homecoming.iastate.edu "Yell Like Hell" 2025 ...
+web search: 
+web search: site:mu.iastate.edu zodiac coin fountain curse Iowa State ...
+codex
+{"complete":true,"school_name":"Iowa State University","town_name":"Ames","boards":[{"complete":true,"school_name":"Iowa State University","town_name":"Ames","template_id":"college-only-happens-here","title":"Only Happens Here: 10 Traditions That Make No Sense Anywhere Else","description":"Ten documented Iowa State rituals, legends, recurring celebrations, and pieces of campus lore—from silent lake laps to midnight Campanile kisses.","icon":"fingerprint","cards":[{"subject_id":"isu-tradition-campaniling","subject_type":"tradition","entity_name":"Campaniling","title":"Become an Iowa Stater at Midnight","subtitle":"The midnight-kiss tradition beneath the Campanile","notes":"Visit the Campanile at midnight with a consenting partner, listen for the bells, and keep the central-campus setting quiet and respectful.","short_summary":"Campus tradition says a student officially becomes an Iowa Stater after a midnight kiss beneath the Campanile.","evidence_claim":"Iowa State says a student officially becomes an Iowa Stater when kissed beneath the Campanile at the stroke of midnight.","source_url":"https://www.iastate.edu/life-at-iowa-state/history-and-traditions","source_title":"History and Traditions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The ritual occurs beneath the Campanile on central campus at midnight; participation should always be consensual.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"isu-tradition-lake-laverne-three-laps","subject_type":"tradition","entity_name":"Lake LaVerne Three-Lap Walk","title":"Circle Lake LaVerne Three Times in Silence","subtitle":"A relationship legend measured in quiet laps","notes":"Walk three silent laps with your beloved on the established shoreline route, allowing extra time for construction or temporary path closures.","short_summary":"Three silent circuits of Lake LaVerne supposedly seal a couple’s shared destiny.","evidence_claim":"Iowa State documents the tradition that beloveds who silently walk around Lake LaVerne three times are destined to remain together.","source_url":"https://www.iastate.edu/life-at-iowa-state/history-and-traditions","source_title":"History and Traditions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use established paths around Lake LaVerne and observe any posted detours associated with shoreline work.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"isu-tradition-lancelot-elaine","subject_type":"tradition","entity_name":"Lancelot and Elaine","title":"Greet the Swans Who Inherit Their Names","subtitle":"Every resident pair continues a naming custom from 1935","notes":"Look for Lancelot and Elaine from the lakeside path, use a zoom lens for photographs, and do not approach, touch, or feed the swans.","short_summary":"Successive resident swans at Lake LaVerne retain the storybook names Lancelot and Elaine.","evidence_claim":"Iowa State says Lake LaVerne has housed swans named Lancelot and Elaine since 1935 and identifies the current pair as two females.","source_url":"https://www.iastate.edu/life-at-iowa-state/history-and-traditions","source_title":"History and Traditions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The swans may be viewed from campus paths around Lake LaVerne; visitors should not feed or handle them.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"isu-tradition-zodiac-sidestep","subject_type":"tradition","entity_name":"Memorial Union Zodiac","title":"Sidestep the Zodiac Before Your Next Exam","subtitle":"A bronze floor relief with an academic curse","notes":"Enter Gold Star Hall, locate the bronze Zodiac in the floor, and follow generations of cautious Cyclones by walking around its perimeter.","short_summary":"Students avoid the Memorial Union’s Zodiac because stepping on it supposedly dooms their next exam.","evidence_claim":"Iowa State says students, staff, faculty, and alumni avoid stepping on the Zodiac to escape the superstition that they will flunk their next exam.","source_url":"https://www.iastate.edu/life-at-iowa-state/history-and-traditions","source_title":"History and Traditions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The Zodiac is inside Gold Star Hall at the Memorial Union and is available only while the building is open.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"isu-tradition-zodiac-coin-cure","subject_type":"tradition","entity_name":"Fountain of the Four Seasons Coin Cure","title":"Reverse the Zodiac Curse with a Coin","subtitle":"The traditional remedy for an unlucky step","notes":"Learn the coin-cure story beside the fountain, but follow the Memorial Union’s current preservation request and keep objects out of the water.","short_summary":"Campus lore prescribes a fountain coin for an accidental Zodiac step, although preservation guidance now discourages tossing objects.","evidence_claim":"The Memorial Union documents throwing a coin into the Fountain of the Four Seasons as the traditional Zodiac-curse cure while asking visitors not to place objects in the fountain.","source_url":"https://www.mu.iastate.edu/tradition-myths-and-history","source_title":"Tradition, Myths and History","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Observe the fountain from the surrounding plaza and honor current preservation guidance by keeping people and objects out.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"isu-tradition-yell-like-hell","subject_type":"tradition","entity_name":"Yell Like Hell","title":"Hear the Fight Song Become a Competition","subtitle":"Homecoming skits built from chants, cheers, and Cyclone spirit","notes":"Consult the annual Homecoming calendar for a public round, expect high-volume performances, and follow the posted audience and venue directions.","short_summary":"Student teams turn chants, cheers, and the fight song into Iowa State’s long-running Homecoming performance contest.","evidence_claim":"Iowa State’s official 2025 events calendar listed Yell Like Hell rounds and said the skits often use chants and cheers and must include the Iowa State fight song.","source_url":"https://events.iastate.edu/?date=2025-10-20&display=month","source_title":"Events Calendar — October 2025","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This is a scheduled Homecoming competition; dates, venues, eligibility, and public access are set annually.","cost_status":"unknown","under21_safe":true},{"subject_id":"isu-tradition-homecoming-lawn-displays","subject_type":"tradition","entity_name":"Homecoming Lawn Displays","title":"Watch Cyclone Stories Rise from Front Lawns","subtitle":"Hand-built sets and repeating skits in the Greek neighborhood","notes":"Use the current Homecoming route, remain on designated viewing paths, and watch the repeating skits without entering sets or active work areas.","short_summary":"Participating organizations construct elaborate lawn sets and perform short Homecoming skits beside them.","evidence_claim":"Iowa State’s 2025 events calendar described lawn displays in participating Greek-neighborhood yards, with teams performing skits on hand-built sets.","source_url":"https://events.iastate.edu/?date=2025-10-20&display=month","source_title":"Events Calendar — October 2025","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Display locations and viewing times change each Homecoming; use the annual event listing and neighborhood signs.","cost_status":"unknown","under21_safe":true},{"subject_id":"isu-tradition-mass-campaniling","subject_type":"tradition","entity_name":"Homecoming Mass Campaniling","title":"Count Down to a Campus-Wide Midnight Kiss","subtitle":"Homecoming’s large-scale version of Campaniling","notes":"Arrive early for the central-campus program, choose whether to participate or simply watch, and treat every kiss as an opt-in interaction.","short_summary":"Homecoming scales Campaniling into a midnight gathering accompanied by the bells and fireworks.","evidence_claim":"Iowa State’s 2025 listing scheduled free Mass Campaniling on central campus and described the traditional midnight kiss beneath the Campanile during fireworks.","source_url":"https://facultystaff.info.iastate.edu/event/homecoming-cyfest-fireworks-mass-campaniling","source_title":"Homecoming: CyFest, Fireworks, Mass Campaniling","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The verified 2025 event ran from 10 p.m. to midnight on central campus; future dates require the current Homecoming schedule.","cost_status":"free","under21_safe":true},{"subject_id":"isu-tradition-cy-homecoming-birthday","subject_type":"tradition","entity_name":"Cy’s Homecoming Birthday","title":"Celebrate the Mascot Born at Homecoming","subtitle":"A cardinal created because a cyclone resisted costuming","notes":"Find Cy at an official campus appearance and compare the modern mascot with the archival image documenting his 1954 Homecoming debut.","short_summary":"Iowa State treats Homecoming 1954 as the birth of Cy, the cardinal chosen to embody an otherwise uncostumable cyclone.","evidence_claim":"Iowa State says Cy was born in 1954 and explains that a cardinal was selected because a cyclone was difficult to depict in costume.","source_url":"https://www.iastate.edu/life-at-iowa-state/history-and-traditions","source_title":"History and Traditions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Cy’s appearances vary by event; check the organizer’s current listing for location, admission, and photography rules.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"isu-tradition-central-campus-tree-lighting","subject_type":"tradition","entity_name":"Central Campus Holiday Tree Lighting","title":"Watch the Giant Spruce Light Up for WinterFest","subtitle":"Carillon music and a seasonal countdown on central campus","notes":"Check the WinterFest schedule, dress for an outdoor December gathering, and arrive before the countdown for a clear view from central campus.","short_summary":"A towering central-campus spruce becomes the focus of Iowa State’s recurring WinterFest lighting ceremony.","evidence_claim":"Iowa State reported that the central-campus holiday tree would be illuminated during a 6 p.m. WinterFest ceremony on December 5, 2025.","source_url":"https://www.inside.iastate.edu/article/2025/11/19/sign-season","source_title":"Sign of the Season","source_kind":"university_official","source_published_at":"2025-11-19","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This outdoor ceremony is seasonal; confirm the current WinterFest date, weather plans, and central-campus gathering point.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:46:07.168963Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa13-85cc-7002-93ea-59933afb76fe.1786607011277907000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+35,670
+
+{"complete":true,"school_name":"Iowa State University","town_name":"Ames","boards":[{"complete":true,"school_name":"Iowa State University","town_name":"Ames","template_id":"college-only-happens-here","title":"Only Happens Here: 10 Traditions That Make No Sense Anywhere Else","description":"Ten documented Iowa State rituals, legends, recurring celebrations, and pieces of campus lore—from silent lake laps to midnight Campanile kisses.","icon":"fingerprint","cards":[{"subject_id":"isu-tradition-campaniling","subject_type":"tradition","entity_name":"Campaniling","title":"Become an Iowa Stater at Midnight","subtitle":"The midnight-kiss tradition beneath the Campanile","notes":"Visit the Campanile at midnight with a consenting partner, listen for the bells, and keep the central-campus setting quiet and respectful.","short_summary":"Campus tradition says a student officially becomes an Iowa Stater after a midnight kiss beneath the Campanile.","evidence_claim":"Iowa State says a student officially becomes an Iowa Stater when kissed beneath the Campanile at the stroke of midnight.","source_url":"https://www.iastate.edu/life-at-iowa-state/history-and-traditions","source_title":"History and Traditions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The ritual occurs beneath the Campanile on central campus at midnight; participation should always be consensual.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"isu-tradition-lake-laverne-three-laps","subject_type":"tradition","entity_name":"Lake LaVerne Three-Lap Walk","title":"Circle Lake LaVerne Three Times in Silence","subtitle":"A relationship legend measured in quiet laps","notes":"Walk three silent laps with your beloved on the established shoreline route, allowing extra time for construction or temporary path closures.","short_summary":"Three silent circuits of Lake LaVerne supposedly seal a couple’s shared destiny.","evidence_claim":"Iowa State documents the tradition that beloveds who silently walk around Lake LaVerne three times are destined to remain together.","source_url":"https://www.iastate.edu/life-at-iowa-state/history-and-traditions","source_title":"History and Traditions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use established paths around Lake LaVerne and observe any posted detours associated with shoreline work.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"isu-tradition-lancelot-elaine","subject_type":"tradition","entity_name":"Lancelot and Elaine","title":"Greet the Swans Who Inherit Their Names","subtitle":"Every resident pair continues a naming custom from 1935","notes":"Look for Lancelot and Elaine from the lakeside path, use a zoom lens for photographs, and do not approach, touch, or feed the swans.","short_summary":"Successive resident swans at Lake LaVerne retain the storybook names Lancelot and Elaine.","evidence_claim":"Iowa State says Lake LaVerne has housed swans named Lancelot and Elaine since 1935 and identifies the current pair as two females.","source_url":"https://www.iastate.edu/life-at-iowa-state/history-and-traditions","source_title":"History and Traditions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The swans may be viewed from campus paths around Lake LaVerne; visitors should not feed or handle them.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"isu-tradition-zodiac-sidestep","subject_type":"tradition","entity_name":"Memorial Union Zodiac","title":"Sidestep the Zodiac Before Your Next Exam","subtitle":"A bronze floor relief with an academic curse","notes":"Enter Gold Star Hall, locate the bronze Zodiac in the floor, and follow generations of cautious Cyclones by walking around its perimeter.","short_summary":"Students avoid the Memorial Union’s Zodiac because stepping on it supposedly dooms their next exam.","evidence_claim":"Iowa State says students, staff, faculty, and alumni avoid stepping on the Zodiac to escape the superstition that they will flunk their next exam.","source_url":"https://www.iastate.edu/life-at-iowa-state/history-and-traditions","source_title":"History and Traditions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The Zodiac is inside Gold Star Hall at the Memorial Union and is available only while the building is open.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"isu-tradition-zodiac-coin-cure","subject_type":"tradition","entity_name":"Fountain of the Four Seasons Coin Cure","title":"Reverse the Zodiac Curse with a Coin","subtitle":"The traditional remedy for an unlucky step","notes":"Learn the coin-cure story beside the fountain, but follow the Memorial Union’s current preservation request and keep objects out of the water.","short_summary":"Campus lore prescribes a fountain coin for an accidental Zodiac step, although preservation guidance now discourages tossing objects.","evidence_claim":"The Memorial Union documents throwing a coin into the Fountain of the Four Seasons as the traditional Zodiac-curse cure while asking visitors not to place objects in the fountain.","source_url":"https://www.mu.iastate.edu/tradition-myths-and-history","source_title":"Tradition, Myths and History","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Observe the fountain from the surrounding plaza and honor current preservation guidance by keeping people and objects out.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"isu-tradition-yell-like-hell","subject_type":"tradition","entity_name":"Yell Like Hell","title":"Hear the Fight Song Become a Competition","subtitle":"Homecoming skits built from chants, cheers, and Cyclone spirit","notes":"Consult the annual Homecoming calendar for a public round, expect high-volume performances, and follow the posted audience and venue directions.","short_summary":"Student teams turn chants, cheers, and the fight song into Iowa State’s long-running Homecoming performance contest.","evidence_claim":"Iowa State’s official 2025 events calendar listed Yell Like Hell rounds and said the skits often use chants and cheers and must include the Iowa State fight song.","source_url":"https://events.iastate.edu/?date=2025-10-20&display=month","source_title":"Events Calendar — October 2025","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This is a scheduled Homecoming competition; dates, venues, eligibility, and public access are set annually.","cost_status":"unknown","under21_safe":true},{"subject_id":"isu-tradition-homecoming-lawn-displays","subject_type":"tradition","entity_name":"Homecoming Lawn Displays","title":"Watch Cyclone Stories Rise from Front Lawns","subtitle":"Hand-built sets and repeating skits in the Greek neighborhood","notes":"Use the current Homecoming route, remain on designated viewing paths, and watch the repeating skits without entering sets or active work areas.","short_summary":"Participating organizations construct elaborate lawn sets and perform short Homecoming skits beside them.","evidence_claim":"Iowa State’s 2025 events calendar described lawn displays in participating Greek-neighborhood yards, with teams performing skits on hand-built sets.","source_url":"https://events.iastate.edu/?date=2025-10-20&display=month","source_title":"Events Calendar — October 2025","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Display locations and viewing times change each Homecoming; use the annual event listing and neighborhood signs.","cost_status":"unknown","under21_safe":true},{"subject_id":"isu-tradition-mass-campaniling","subject_type":"tradition","entity_name":"Homecoming Mass Campaniling","title":"Count Down to a Campus-Wide Midnight Kiss","subtitle":"Homecoming’s large-scale version of Campaniling","notes":"Arrive early for the central-campus program, choose whether to participate or simply watch, and treat every kiss as an opt-in interaction.","short_summary":"Homecoming scales Campaniling into a midnight gathering accompanied by the bells and fireworks.","evidence_claim":"Iowa State’s 2025 listing scheduled free Mass Campaniling on central campus and described the traditional midnight kiss beneath the Campanile during fireworks.","source_url":"https://facultystaff.info.iastate.edu/event/homecoming-cyfest-fireworks-mass-campaniling","source_title":"Homecoming: CyFest, Fireworks, Mass Campaniling","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The verified 2025 event ran from 10 p.m. to midnight on central campus; future dates require the current Homecoming schedule.","cost_status":"free","under21_safe":true},{"subject_id":"isu-tradition-cy-homecoming-birthday","subject_type":"tradition","entity_name":"Cy’s Homecoming Birthday","title":"Celebrate the Mascot Born at Homecoming","subtitle":"A cardinal created because a cyclone resisted costuming","notes":"Find Cy at an official campus appearance and compare the modern mascot with the archival image documenting his 1954 Homecoming debut.","short_summary":"Iowa State treats Homecoming 1954 as the birth of Cy, the cardinal chosen to embody an otherwise uncostumable cyclone.","evidence_claim":"Iowa State says Cy was born in 1954 and explains that a cardinal was selected because a cyclone was difficult to depict in costume.","source_url":"https://www.iastate.edu/life-at-iowa-state/history-and-traditions","source_title":"History and Traditions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Cy’s appearances vary by event; check the organizer’s current listing for location, admission, and photography rules.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"isu-tradition-central-campus-tree-lighting","subject_type":"tradition","entity_name":"Central Campus Holiday Tree Lighting","title":"Watch the Giant Spruce Light Up for WinterFest","subtitle":"Carillon music and a seasonal countdown on central campus","notes":"Check the WinterFest schedule, dress for an outdoor December gathering, and arrive before the countdown for a clear view from central campus.","short_summary":"A towering central-campus spruce becomes the focus of Iowa State’s recurring WinterFest lighting ceremony.","evidence_claim":"Iowa State reported that the central-campus holiday tree would be illuminated during a 6 p.m. WinterFest ceremony on December 5, 2025.","source_url":"https://www.inside.iastate.edu/article/2025/11/19/sign-season","source_title":"Sign of the Season","source_kind":"university_official","source_published_at":"2025-11-19","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This outdoor ceremony is seasonal; confirm the current WinterFest date, weather plans, and central-campus gathering point.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}

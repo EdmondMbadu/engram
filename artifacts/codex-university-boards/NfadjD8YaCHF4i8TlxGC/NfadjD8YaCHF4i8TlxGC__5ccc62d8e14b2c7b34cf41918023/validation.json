@@ -1,0 +1,66 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "4 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.immaculata.edu/campus-life/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.immaculata.edu/campus-life/",
+      "error": ""
+    },
+    {
+      "url": "https://www.immaculata.edu/academics/library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.immaculata.edu/academics/library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.immaculata.edu/contact-us/university-communications/brand-guide/writing-style/academics-campus-locations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.immaculata.edu/contact-us/university-communications/brand-guide/writing-style/academics-campus-locations/",
+      "error": ""
+    },
+    {
+      "url": "https://www.immaculata.edu/wp-content/uploads/2023/08/IU_CampusMapWithExtendedKey2025.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.immaculata.edu/wp-content/uploads/2023/08/IU_CampusMapWithExtendedKey2025.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.immaculata.edu/athletics/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.immaculata.edu/athletics/",
+      "error": ""
+    },
+    {
+      "url": "https://www.immaculata.edu/campus-life/student-services/clubs-organizations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.immaculata.edu/campus-life/student-services/clubs-organizations/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Gabriele Library",
+    "ImmacuLatté Café",
+    "IHM Student Center",
+    "Back Campus"
+  ],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

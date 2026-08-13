@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "YGHdWPQurb7yOn0WnqqQ",
+    "schoolName": "University of Kansas",
+    "shortSchoolName": "University of Kansas",
+    "townName": "Lawrence",
+    "state": "KS",
+    "countryCode": "US",
+    "unitId": "155317",
+    "website": "https://ku.edu/",
+    "latitude": 38.958549,
+    "longitude": -95.247567,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/0/0b/University_of_Kansas_seal.svg/120px-University_of_Kansas_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=ku.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "Watson Library",
+    "Watson Library Fifth Floor Study Space",
+    "Studio K",
+    "Anschutz Library",
+    "David Beaham Reading Room",
+    "Anschutz Library Makerspace",
+    "Anschutz Library Reflection Room",
+    "Spahr Engineering Library",
+    "Murphy Art & Architecture Library",
+    "Marilyn Stokstad Reading Room"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

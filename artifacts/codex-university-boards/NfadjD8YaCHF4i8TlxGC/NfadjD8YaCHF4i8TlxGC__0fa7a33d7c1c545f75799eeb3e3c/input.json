@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "58EbJDSj24EFv81hykHl",
+    "schoolName": "Lipscomb University",
+    "shortSchoolName": "Lipscomb University",
+    "townName": "Nashville",
+    "state": "TN",
+    "countryCode": "US",
+    "unitId": "219976",
+    "website": "https://www.lipscomb.edu/",
+    "latitude": 36.106253,
+    "longitude": -86.799791,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=lipscomb.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=lipscomb.edu&sz=256"
+  },
+  "template": {
+    "id": "college-study-spots",
+    "version": "1.0",
+    "titlePattern": "Claimed by 9am: {count} Study Spots Worth Showing Up Early For",
+    "editorialBrief": "Choose ten distinct study environments. Verify access rules, room or reservation constraints, and the physical affordance that makes each useful. Treat “Claimed by 9am” as editorial framing; never assert crowding or student behavior without evidence.",
+    "researchQueries": [
+      "campus study spaces",
+      "library study rooms students",
+      "quiet study campus"
+    ],
+    "count": 10,
+    "icon": "menu_book",
+    "primarySubjectType": "study_space",
+    "allowedSubjectTypes": [
+      "study_space",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Claimed by 9am: 10 Study Spots Worth Showing Up Early For",
+  "excluded_subjects": [
+    "Painting the Bison",
+    "Singarama",
+    "Tau Phi Cowboy Show",
+    "Halloween Dodgeball Tournament",
+    "Battle of the Boulevard",
+    "Running of the Bison",
+    "Initium Ceremony",
+    "Lighting of the Green",
+    "Bisons Weekend Student Parade",
+    "Savannah’s Boogie 5K"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

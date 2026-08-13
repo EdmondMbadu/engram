@@ -1,0 +1,73 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://cal.lmu.edu/malone_student_center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cal.lmu.edu/malone_student_center",
+      "error": ""
+    },
+    {
+      "url": "https://mission.lmu.edu/ministry/liturgysacraments/reservinglmuchapels/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mission.lmu.edu/ministry/liturgysacraments/reservinglmuchapels/",
+      "error": ""
+    },
+    {
+      "url": "https://orientation.lmu.edu/firstyearschedule/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://orientation.lmu.edu/firstyearschedule/",
+      "error": ""
+    },
+    {
+      "url": "https://studentaffairs.lmu.edu/wellness/campusrecreationandstudentfacilities/membership/costeligibility/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentaffairs.lmu.edu/wellness/campusrecreationandstudentfacilities/membership/costeligibility/",
+      "error": ""
+    },
+    {
+      "url": "https://cfa.lmu.edu/labandgallery/exhibitions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cfa.lmu.edu/labandgallery/exhibitions/",
+      "error": ""
+    },
+    {
+      "url": "https://admin.lmu.edu/greenlmu/initiatives/greenwellness/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://admin.lmu.edu/greenlmu/initiatives/greenwellness/",
+      "error": ""
+    },
+    {
+      "url": "https://cal.lmu.edu/drollinger_family_stage",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cal.lmu.edu/drollinger_family_stage",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Sacred Heart Chapel",
+    "Burns Recreation Center",
+    "Laband Art Gallery"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

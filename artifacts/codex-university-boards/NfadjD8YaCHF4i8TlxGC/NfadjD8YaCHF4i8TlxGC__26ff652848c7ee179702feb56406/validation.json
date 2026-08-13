@@ -1,0 +1,85 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.uncw.edu/campus-map/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncw.edu/campus-map/",
+      "error": ""
+    },
+    {
+      "url": "https://library.uncw.edu/maps",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://library.uncw.edu/maps",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.uncw.edu/seahawk-life/arts/venues/boseman/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncw.edu/seahawk-life/arts/venues/boseman/",
+      "error": ""
+    },
+    {
+      "url": "https://uncw.edu/seahawk-life/services/conferences-events-reservations/event-spaces/lumina-theater",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncw.edu/seahawk-life/services/conferences-events-reservations/event-spaces/lumina-theater",
+      "error": ""
+    },
+    {
+      "url": "https://uncw.edu/seahawk-life/get-involved/students/campus-activities/uncweekends",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncw.edu/seahawk-life/get-involved/students/campus-activities/uncweekends",
+      "error": ""
+    },
+    {
+      "url": "https://uncw.edu/seahawk-life/health-wellness/campus-recreation/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncw.edu/seahawk-life/health-wellness/campus-recreation/",
+      "error": ""
+    },
+    {
+      "url": "https://uncwsports.com/facilities/trask-coliseum/1",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://uncwsports.com/facilities/trask-coliseum/1",
+      "error": ""
+    },
+    {
+      "url": "https://cameronartmuseum.org/plan-your-visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cameronartmuseum.org/plan-your-visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.townofwrightsvillebeach.com/208/Beach-Accesses-Public-Restrooms",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.townofwrightsvillebeach.com/208/Beach-Accesses-Public-Restrooms",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

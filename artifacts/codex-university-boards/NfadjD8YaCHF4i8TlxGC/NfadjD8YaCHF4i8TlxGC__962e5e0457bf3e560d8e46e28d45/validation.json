@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.fordham.edu/student-life/events-and-activities/orientation/student-orientation-at-rose-hill/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fordham.edu/student-life/events-and-activities/orientation/student-orientation-at-rose-hill/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fordham.edu/undergraduate-admission/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fordham.edu/undergraduate-admission/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fordham.edu/resources/libraries/about-us/locations-and-hours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fordham.edu/resources/libraries/about-us/locations-and-hours/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fordham.edu/about/living-the-mission/campus-ministry/calendar--events/catholic-mass-schedule/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fordham.edu/about/living-the-mission/campus-ministry/calendar--events/catholic-mass-schedule/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fordham.edu/student-life/student-organizations/rose-hill-student-organizations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fordham.edu/student-life/student-organizations/rose-hill-student-organizations/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fordham.edu/student-life/student-involvement/office-for-student-involvement-at-rose-hill/student-government-and-programming-leadership/campus-activities-board/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fordham.edu/student-life/student-involvement/office-for-student-involvement-at-rose-hill/student-government-and-programming-leadership/campus-activities-board/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fordham.edu/media/home/admin-use-only/pdfs/Rose-Hill-Campus-Map.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fordham.edu/media/home/admin-use-only/pdfs/Rose-Hill-Campus-Map.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

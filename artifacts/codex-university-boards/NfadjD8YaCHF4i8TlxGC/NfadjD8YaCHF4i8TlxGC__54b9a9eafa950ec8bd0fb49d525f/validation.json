@@ -1,0 +1,77 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://designsystem.ucsc.edu/templates/template-basic",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://designsystem.ucsc.edu/templates/template-basic",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://news.ucsc.edu/2011/06/banana-slug-25th-anniversary/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://news.ucsc.edu/2011/06/banana-slug-25th-anniversary/",
+      "error": ""
+    },
+    {
+      "url": "https://news.ucsc.edu/2024/06/kresge-pride-2024/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://news.ucsc.edu/2024/06/kresge-pride-2024/",
+      "error": ""
+    },
+    {
+      "url": "https://news.ucsc.edu/2026/06/intergenerational-keynote-speakers-becky-g-and-olga-talamante-inspire-graduates-at-uc-santa-cruz-chicane-latine-year-end-celebration/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://news.ucsc.edu/2026/06/intergenerational-keynote-speakers-becky-g-and-olga-talamante-inspire-graduates-at-uc-santa-cruz-chicane-latine-year-end-celebration/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ucsc.edu/annual-report/advancing-student-and-alumni-success-2025/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.ucsc.edu/annual-report/advancing-student-and-alumni-success-2025/",
+      "error": ""
+    },
+    {
+      "url": "https://news.ucsc.edu/2024/09/return-to-the-redwoods/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://news.ucsc.edu/2024/09/return-to-the-redwoods/",
+      "error": ""
+    },
+    {
+      "url": "https://thi.ucsc.edu/signature-events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thi.ucsc.edu/signature-events/",
+      "error": ""
+    },
+    {
+      "url": "https://news.ucsc.edu/2018/03/alumni-weekend-advance-feature-2018/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://news.ucsc.edu/2018/03/alumni-weekend-advance-feature-2018/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

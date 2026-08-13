@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.ebenezersbarandgrill.com/about-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ebenezersbarandgrill.com/about-us/",
+      "error": ""
+    },
+    {
+      "url": "https://www.campuspizzamherst.com/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.campuspizzamherst.com/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.umassdining.com/locations-menus/around-campus/southwest-cafe",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.umassdining.com/locations-menus/around-campus/southwest-cafe",
+      "error": ""
+    },
+    {
+      "url": "https://www.umassdining.com/locations-menus/student-businesses/sweets-and-more",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.umassdining.com/locations-menus/student-businesses/sweets-and-more",
+      "error": ""
+    },
+    {
+      "url": "https://www.umassdining.com/locations-menus/around-campus/procrastination-station",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.umassdining.com/locations-menus/around-campus/procrastination-station",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/ma/hadley/376-russell-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/ma/hadley/376-russell-street",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ma/hadley/348-russell-street/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ma/hadley/348-russell-street/restaurant.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ma/holyoke/2199-northampton-st/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ma/holyoke/2199-northampton-st/restaurant.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ma/northampton/203-king-street/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ma/northampton/203-king-street/restaurant.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ma/chicopee/1471-memorial-drive/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ma/chicopee/1471-memorial-drive/restaurant.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

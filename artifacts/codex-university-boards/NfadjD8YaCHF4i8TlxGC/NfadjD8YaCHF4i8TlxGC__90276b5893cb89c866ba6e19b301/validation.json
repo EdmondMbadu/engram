@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://claremontvillage.com/arts-%26-entertainment-1",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://claremontvillage.com/arts-%26-entertainment-1",
+      "error": ""
+    },
+    {
+      "url": "https://discoverclaremont.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://discoverclaremont.com/",
+      "error": ""
+    },
+    {
+      "url": "https://claremontvillage.com/shop-%26-dine-1",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://claremontvillage.com/shop-%26-dine-1",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

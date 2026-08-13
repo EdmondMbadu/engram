@@ -1,0 +1,288 @@
+Reading additional input from stdin...
+2026-08-13T07:50:06.184751Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:50:06.205405Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:50:06.291864Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa18-62a1-78d2-af23-c41c0d6507e4.1786607329954182000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa19-8c52-76c1-9c2c-9db12eb299a3
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"6yEuUDXBYwapTALuS8Av","schoolName":"Juniata College","shortSchoolName":"Juniata College","townName":"Huntingdon","state":"PA","countryCode":"US","website":"https://www.juniata.edu/","latitude":40.500523,"longitude":-78.017292},"templates":[{"id":"college-late-night-runs","version":"1.0","titlePattern":"{count} Late-Night Runs That Explain {school}","editorialBrief":"Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.","researchQueries":["late night dining students","campus dining late hours","restaurants open late near campus"],"count":10,"icon":"nightlife","primarySubjectType":"place","allowedSubjectTypes":["place"],"freshnessDays":120,"exactTitle":"10 Late-Night Runs That Explain Juniata College"}]}
+codex
+{
+  "complete": false,
+  "school_name": "Juniata College",
+  "town_name": "Huntingdon",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Juniata College",
+      "town_name": "Huntingdon",
+      "template_id": "college-late-night-runs",
+      "title": "10 Late-Night Runs That Explain Juniata College",
+      "description": "",
+      "icon": "nightlife",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     
+    ,
+          
+    
+    
+    {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+      ],
+      "warnings": ["Researching ten distinct destinations and verifying current late hours from direct sources."]
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:juniata.edu dining hours late Juniata College ...
+web search: 
+web search: site:sheetz.com Huntingdon PA store hours ...
+web search: 
+web search: Huntingdon PA Sheetz 24 hours official ...
+codex
+{"complete":true,"school_name":"Juniata College","town_name":"Huntingdon","boards":[{"complete":true,"school_name":"Juniata College","town_name":"Huntingdon","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Juniata College","description":"Ten named campus destinations with official posted access until midnight or later, suitable for under-21 evening study, recreation, and community activities.","icon":"nightlife","cards":[{"subject_id":"juniata-ellis-hall","subject_type":"place","entity_name":"Ellis Hall","title":"Ellis Hall After Hours","subtitle":"The campus destination with 24/7 posted building access","notes":"Use Ellis as the flexible endpoint when other buildings close, but carry your college ID and observe any room-level restrictions.","short_summary":"A round-the-clock campus building for late transitions between dining, student services, and shared spaces.","evidence_claim":"Juniata College lists Ellis Hall as open 24/7 Sunday through Saturday.","source_url":"https://www.juniata.edu/offices/security/building-hours.php","source_title":"Building Hours | Juniata College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official building-hours page lists Ellis Hall as open 24/7 every day; individual offices, dining operations, and rooms may keep shorter hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-brumbaugh-academic-center","subject_type":"place","entity_name":"Brumbaugh Academic Center","title":"The 1 A.M. Academic Run","subtitle":"Brumbaugh Academic Center stays open late on weeknights","notes":"Plan weeknight project work here before the 1 a.m. close, then leave enough time to collect materials and exit without rushing.","short_summary":"A late-closing academic building that extends the usable campus day from Sunday through Thursday.","evidence_claim":"Juniata College lists the Brumbaugh Academic Center, abbreviated BAC, as open until 1:00 a.m. Sunday through Thursday.","source_url":"https://www.juniata.edu/offices/security/building-hours.php","source_title":"Building Hours | Juniata College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Posted closing time is 1:00 a.m. Sunday through Thursday and 11:00 p.m. Friday and Saturday; room access may be more limited.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-good-hall","subject_type":"place","entity_name":"Good Hall","title":"Good Hall at 1 A.M.","subtitle":"Another Sunday-through-Thursday late academic stop","notes":"Choose Good Hall for work tied to its classrooms or departments, and verify that the specific room you need remains available.","short_summary":"A central academic destination with official access extending to 1 a.m. on five nights each week.","evidence_claim":"Juniata College lists Good Hall as open until 1:00 a.m. Sunday through Thursday.","source_url":"https://www.juniata.edu/offices/security/building-hours.php","source_title":"Building Hours | Juniata College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Posted closing time is 1:00 a.m. Sunday through Thursday and 11:00 p.m. Friday and Saturday; specialized rooms may require authorization.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-von-liebig-center","subject_type":"place","entity_name":"von Liebig Center for Science","title":"The Late Science-Building Run","subtitle":"von Liebig remains open until 1 a.m. on weeknights","notes":"Finish science-centered study before closing and confirm laboratory or equipment access separately from general building access.","short_summary":"A named science destination whose general building schedule supports late Sunday-through-Thursday work.","evidence_claim":"Juniata College lists the von Liebig Center for Science, abbreviated VLB, as open until 1:00 a.m. Sunday through Thursday.","source_url":"https://www.juniata.edu/offices/security/building-hours.php","source_title":"Building Hours | Juniata College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Posted closing time is 1:00 a.m. Sunday through Thursday and 11:00 p.m. Friday and Saturday; laboratory access is not established by these hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-swigart-hall","subject_type":"place","entity_name":"Swigart Hall","title":"Swigart Before Midnight","subtitle":"A seven-day campus stop with a midnight close","notes":"Treat midnight as a firm endpoint for shared work, and pack up early enough to leave the building on schedule.","short_summary":"A consistently late campus building with midnight closing times on both weekdays and weekends.","evidence_claim":"Juniata College lists Swigart Hall as open until midnight Monday through Sunday.","source_url":"https://www.juniata.edu/offices/security/building-hours.php","source_title":"Building Hours | Juniata College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official hours run to midnight every day, opening at 6:00 a.m. weekdays and 9:00 a.m. weekends; individual areas may differ.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-carnegie-hall","subject_type":"place","entity_name":"Carnegie Hall","title":"Carnegie at the Midnight Mark","subtitle":"Late access every night of the week","notes":"Use the building only for spaces available to you, keep noise low, and begin wrapping up before the posted midnight close.","short_summary":"A nightly midnight destination with later morning openings on Saturday and Sunday.","evidence_claim":"Juniata College lists Carnegie Hall as open until midnight Monday through Sunday.","source_url":"https://www.juniata.edu/offices/security/building-hours.php","source_title":"Building Hours | Juniata College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official hours run to midnight daily, with 7:00 a.m. weekday and 9:00 a.m. weekend openings; event or room access can vary.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-unity-house","subject_type":"place","entity_name":"Unity House","title":"Unity House Until Midnight","subtitle":"A named community destination with late daily hours","notes":"Check the current program or room-access rules before heading over, and respect any gathering already using the space.","short_summary":"A community-focused campus destination officially scheduled through midnight all week.","evidence_claim":"Juniata College lists Unity House as open until midnight Monday through Sunday.","source_url":"https://www.juniata.edu/offices/security/building-hours.php","source_title":"Building Hours | Juniata College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official hours run to midnight every day, opening at 6:00 a.m. weekdays and 9:00 a.m. weekends; program access may be narrower.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-statton-learning-commons","subject_type":"place","entity_name":"Statton Learning Commons","title":"The Midnight Library Run","subtitle":"Statton supports late study Sunday through Thursday","notes":"Use the learning commons for a focused final study block, and check service-desk or room schedules before relying on assistance.","short_summary":"A purpose-built study destination open until midnight on the core academic nights.","evidence_claim":"Juniata College lists Statton Learning Commons as open until midnight Sunday through Thursday.","source_url":"https://www.juniata.edu/offices/security/building-hours.php","source_title":"Building Hours | Juniata College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Posted hours end at midnight Sunday through Thursday, 8:00 p.m. Friday, and 5:00 p.m. Saturday; staffed services may close earlier.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-kennedy-sports-recreation-center","subject_type":"place","entity_name":"Kennedy Sports + Recreation Center","title":"KSRC at Midnight","subtitle":"Late recreation access on every posted day","notes":"Check facility, court, pool, and equipment schedules before leaving, since the building close does not guarantee every activity.","short_summary":"A recreation destination with general building access posted through midnight seven days a week.","evidence_claim":"Juniata College lists the Kennedy Sports + Recreation Center, abbreviated KSRC, as open until midnight every day.","source_url":"https://www.juniata.edu/offices/security/building-hours.php","source_title":"Building Hours | Juniata College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official general hours end at midnight daily; openings vary by day, and individual recreation facilities or programs may close earlier.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-halbritter-center","subject_type":"place","entity_name":"Halbritter Center for the Performing Arts","title":"Halbritter Before Midnight","subtitle":"A performing-arts building with late daily access","notes":"Confirm rehearsal, studio, or event authorization first, and allow time to secure materials before the midnight building close.","short_summary":"A performing-arts destination whose general access extends to midnight throughout the week.","evidence_claim":"Juniata College lists Halbritter as open until midnight Monday through Sunday.","source_url":"https://www.juniata.edu/offices/security/building-hours.php","source_title":"Building Hours | Juniata College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official hours end at midnight daily, with 7:00 a.m. weekday and 9:00 a.m. weekend openings; studios and events may require separate access.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:51:42.267371Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa19-8c52-76c1-9c2c-9db12eb299a3.1786607406163305000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+34,031
+
+{"complete":true,"school_name":"Juniata College","town_name":"Huntingdon","boards":[{"complete":true,"school_name":"Juniata College","town_name":"Huntingdon","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Juniata College","description":"Ten named campus destinations with official posted access until midnight or later, suitable for under-21 evening study, recreation, and community activities.","icon":"nightlife","cards":[{"subject_id":"juniata-ellis-hall","subject_type":"place","entity_name":"Ellis Hall","title":"Ellis Hall After Hours","subtitle":"The campus destination with 24/7 posted building access","notes":"Use Ellis as the flexible endpoint when other buildings close, but carry your college ID and observe any room-level restrictions.","short_summary":"A round-the-clock campus building for late transitions between dining, student services, and shared spaces.","evidence_claim":"Juniata College lists Ellis Hall as open 24/7 Sunday through Saturday.","source_url":"https://www.juniata.edu/offices/security/building-hours.php","source_title":"Building Hours | Juniata College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official building-hours page lists Ellis Hall as open 24/7 every day; individual offices, dining operations, and rooms may keep shorter hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-brumbaugh-academic-center","subject_type":"place","entity_name":"Brumbaugh Academic Center","title":"The 1 A.M. Academic Run","subtitle":"Brumbaugh Academic Center stays open late on weeknights","notes":"Plan weeknight project work here before the 1 a.m. close, then leave enough time to collect materials and exit without rushing.","short_summary":"A late-closing academic building that extends the usable campus day from Sunday through Thursday.","evidence_claim":"Juniata College lists the Brumbaugh Academic Center, abbreviated BAC, as open until 1:00 a.m. Sunday through Thursday.","source_url":"https://www.juniata.edu/offices/security/building-hours.php","source_title":"Building Hours | Juniata College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Posted closing time is 1:00 a.m. Sunday through Thursday and 11:00 p.m. Friday and Saturday; room access may be more limited.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-good-hall","subject_type":"place","entity_name":"Good Hall","title":"Good Hall at 1 A.M.","subtitle":"Another Sunday-through-Thursday late academic stop","notes":"Choose Good Hall for work tied to its classrooms or departments, and verify that the specific room you need remains available.","short_summary":"A central academic destination with official access extending to 1 a.m. on five nights each week.","evidence_claim":"Juniata College lists Good Hall as open until 1:00 a.m. Sunday through Thursday.","source_url":"https://www.juniata.edu/offices/security/building-hours.php","source_title":"Building Hours | Juniata College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Posted closing time is 1:00 a.m. Sunday through Thursday and 11:00 p.m. Friday and Saturday; specialized rooms may require authorization.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-von-liebig-center","subject_type":"place","entity_name":"von Liebig Center for Science","title":"The Late Science-Building Run","subtitle":"von Liebig remains open until 1 a.m. on weeknights","notes":"Finish science-centered study before closing and confirm laboratory or equipment access separately from general building access.","short_summary":"A named science destination whose general building schedule supports late Sunday-through-Thursday work.","evidence_claim":"Juniata College lists the von Liebig Center for Science, abbreviated VLB, as open until 1:00 a.m. Sunday through Thursday.","source_url":"https://www.juniata.edu/offices/security/building-hours.php","source_title":"Building Hours | Juniata College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Posted closing time is 1:00 a.m. Sunday through Thursday and 11:00 p.m. Friday and Saturday; laboratory access is not established by these hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-swigart-hall","subject_type":"place","entity_name":"Swigart Hall","title":"Swigart Before Midnight","subtitle":"A seven-day campus stop with a midnight close","notes":"Treat midnight as a firm endpoint for shared work, and pack up early enough to leave the building on schedule.","short_summary":"A consistently late campus building with midnight closing times on both weekdays and weekends.","evidence_claim":"Juniata College lists Swigart Hall as open until midnight Monday through Sunday.","source_url":"https://www.juniata.edu/offices/security/building-hours.php","source_title":"Building Hours | Juniata College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official hours run to midnight every day, opening at 6:00 a.m. weekdays and 9:00 a.m. weekends; individual areas may differ.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-carnegie-hall","subject_type":"place","entity_name":"Carnegie Hall","title":"Carnegie at the Midnight Mark","subtitle":"Late access every night of the week","notes":"Use the building only for spaces available to you, keep noise low, and begin wrapping up before the posted midnight close.","short_summary":"A nightly midnight destination with later morning openings on Saturday and Sunday.","evidence_claim":"Juniata College lists Carnegie Hall as open until midnight Monday through Sunday.","source_url":"https://www.juniata.edu/offices/security/building-hours.php","source_title":"Building Hours | Juniata College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official hours run to midnight daily, with 7:00 a.m. weekday and 9:00 a.m. weekend openings; event or room access can vary.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-unity-house","subject_type":"place","entity_name":"Unity House","title":"Unity House Until Midnight","subtitle":"A named community destination with late daily hours","notes":"Check the current program or room-access rules before heading over, and respect any gathering already using the space.","short_summary":"A community-focused campus destination officially scheduled through midnight all week.","evidence_claim":"Juniata College lists Unity House as open until midnight Monday through Sunday.","source_url":"https://www.juniata.edu/offices/security/building-hours.php","source_title":"Building Hours | Juniata College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official hours run to midnight every day, opening at 6:00 a.m. weekdays and 9:00 a.m. weekends; program access may be narrower.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-statton-learning-commons","subject_type":"place","entity_name":"Statton Learning Commons","title":"The Midnight Library Run","subtitle":"Statton supports late study Sunday through Thursday","notes":"Use the learning commons for a focused final study block, and check service-desk or room schedules before relying on assistance.","short_summary":"A purpose-built study destination open until midnight on the core academic nights.","evidence_claim":"Juniata College lists Statton Learning Commons as open until midnight Sunday through Thursday.","source_url":"https://www.juniata.edu/offices/security/building-hours.php","source_title":"Building Hours | Juniata College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Posted hours end at midnight Sunday through Thursday, 8:00 p.m. Friday, and 5:00 p.m. Saturday; staffed services may close earlier.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-kennedy-sports-recreation-center","subject_type":"place","entity_name":"Kennedy Sports + Recreation Center","title":"KSRC at Midnight","subtitle":"Late recreation access on every posted day","notes":"Check facility, court, pool, and equipment schedules before leaving, since the building close does not guarantee every activity.","short_summary":"A recreation destination with general building access posted through midnight seven days a week.","evidence_claim":"Juniata College lists the Kennedy Sports + Recreation Center, abbreviated KSRC, as open until midnight every day.","source_url":"https://www.juniata.edu/offices/security/building-hours.php","source_title":"Building Hours | Juniata College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official general hours end at midnight daily; openings vary by day, and individual recreation facilities or programs may close earlier.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-halbritter-center","subject_type":"place","entity_name":"Halbritter Center for the Performing Arts","title":"Halbritter Before Midnight","subtitle":"A performing-arts building with late daily access","notes":"Confirm rehearsal, studio, or event authorization first, and allow time to secure materials before the midnight building close.","short_summary":"A performing-arts destination whose general access extends to midnight throughout the week.","evidence_claim":"Juniata College lists Halbritter as open until midnight Monday through Sunday.","source_url":"https://www.juniata.edu/offices/security/building-hours.php","source_title":"Building Hours | Juniata College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official hours end at midnight daily, with 7:00 a.m. weekday and 9:00 a.m. weekend openings; studios and events may require separate access.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "huVq932nbv8bLt5BbVzF",
+    "schoolName": "Georgia Institute of Technology-Main Campus",
+    "shortSchoolName": "Georgia Institute of Technology",
+    "townName": "Atlanta",
+    "state": "GA",
+    "countryCode": "US",
+    "unitId": "139755",
+    "website": "https://www.gatech.edu/",
+    "latitude": 33.77242,
+    "longitude": -84.394832,
+    "heroUrl": "http://www.gatech.edu/themes/custom/gatech/images/georgia-tech-logo.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=gatech.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "Ramblin’ Reck Football Field Entrance",
+    "Georgia Tech Steam Whistle",
+    "Georgia Tech RAT Cap",
+    "Georgia Tech T-Book",
+    "Mini 500",
+    "Freshman Cake Race",
+    "Ramblin’ Wreck Parade",
+    "George P. Burdell",
+    "T-Night",
+    "Up With the White and Gold"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

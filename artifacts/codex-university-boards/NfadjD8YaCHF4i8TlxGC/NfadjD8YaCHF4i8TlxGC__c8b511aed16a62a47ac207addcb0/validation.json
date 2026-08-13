@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://arts.hmc.edu/Visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arts.hmc.edu/Visit",
+      "error": ""
+    },
+    {
+      "url": "https://library.claremont.edu/visitor-access/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.claremont.edu/visitor-access/",
+      "error": ""
+    },
+    {
+      "url": "https://rcwg.scrippscollege.edu/admission-directions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://rcwg.scrippscollege.edu/admission-directions/",
+      "error": ""
+    },
+    {
+      "url": "https://www.pomona.edu/museum/support",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pomona.edu/museum/support",
+      "error": ""
+    },
+    {
+      "url": "https://www.claremontca.gov/files/assets/public/v/1/city-managers-office/documents/press-releases/2026-monday-night-concerts-press-release.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.claremontca.gov/files/assets/public/v/1/city-managers-office/documents/press-releases/2026-monday-night-concerts-press-release.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.claremontca.gov/Activities-Recreation/Special-Needs-and-Inclusion-Program/Special-Needs-and-Inclusion-Events",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.claremontca.gov/Activities-Recreation/Special-Needs-and-Inclusion-Program/Special-Needs-and-Inclusion-Events",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Benton Museum of Art at Pomona College"
+  ],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

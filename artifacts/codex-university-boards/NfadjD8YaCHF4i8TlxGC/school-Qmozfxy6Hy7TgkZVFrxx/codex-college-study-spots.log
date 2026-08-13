@@ -1,0 +1,289 @@
+Reading additional input from stdin...
+2026-08-13T07:45:13.171001Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa14-f766-7cd3-aed7-09afbc3dbfd3.1786607105895868000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:45:13.216606Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa14-f762-74b1-935b-3c65bbaaf16c.1786607105890748000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:45:13.218128Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa15-137f-79e1-9723-2684cdba7c07
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"Qmozfxy6Hy7TgkZVFrxx","schoolName":"James Madison University","shortSchoolName":"James Madison University","townName":"Harrisonburg","state":"VA","countryCode":"US","website":"https://www.jmu.edu/index.shtml","latitude":38.436311,"longitude":-78.870484},"templates":[{"id":"college-study-spots","version":"1.0","titlePattern":"Claimed by 9am: {count} Study Spots Worth Showing Up Early For","editorialBrief":"Choose ten distinct study environments. Verify access rules, room or reservation constraints, and the physical affordance that makes each useful. Treat “Claimed by 9am” as editorial framing; never assert crowding or student behavior without evidence.","researchQueries":["campus study spaces","library study rooms students","quiet study campus"],"count":10,"icon":"menu_book","primarySubjectType":"study_space","allowedSubjectTypes":["study_space","place"],"freshnessDays":180,"exactTitle":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For"}]}
+2026-08-13T07:45:13.296009Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa14-f75b-7652-b5bd-bd3c815cea9c.1786607105885856000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:45:13.343609Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:45:13.474192Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa14-f762-7f11-8e77-b6d98107aa92.1786607105891085000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:45:13.558613Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa14-f75e-7c73-8fcb-913b3f380ff8.1786607105887662000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:45:13.693358Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa14-f75d-7483-a816-ca293327ee06.1786607105886084000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:45:13.873168Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa14-f763-7e03-b06e-a0068ae9cb2b.1786607105891480000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "James Madison University",
+  "town_name": "Harrisonburg",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "James Madison University",
+      "town_name": "Harrisonburg",
+      "template_id": "college-study-spots",
+      "title": "Claimed by 9am: 10 Study Spots Worth Showing Up Early For",
+      "description": "",
+      "icon": "menu_book",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:jmu.edu/libraries study spaces Rose Library Carrier Library JMU group study rooms ...
+web search: 
+web search: site:lib.jmu.edu/library-locations/carrier-library Carrier Library 24-hour Grand Reading Room August 2026 ...
+codex
+{"complete":true,"school_name":"James Madison University","town_name":"Harrisonburg","boards":[{"complete":true,"school_name":"James Madison University","town_name":"Harrisonburg","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten documented JMU study settings spanning quiet solo booths, configurable work areas, reservable collaboration rooms, computer labs, and informal library seating.","icon":"menu_book","cards":[{"subject_id":"jmu-rose-24-hour-space","subject_type":"study_space","entity_name":"Rose Library 24-Hour Space","title":"Settle In Around the Clock","subtitle":"Secure study space inside Rose Library","notes":"Bring your JACard and enter through Rose Library’s side door; choose among large tables, group rooms, computers, and soft seating.","short_summary":"A credentialed, always-open workspace with varied seating and essential study equipment.","evidence_claim":"JMU identifies this as a 24-hour study space with tables, soft seating, group rooms, a computer and printing lab, vending machines, and JACard-controlled entry.","source_url":"https://www.lib.jmu.edu/students/study-spaces/","source_title":"Study Spaces in JMU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Available at any hour through the Rose Library side entrance; entry requires a JACard.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jmu-rose-cafe-space","subject_type":"study_space","entity_name":"Rose Library Café Space","title":"Work With a Little Background Buzz","subtitle":"First-floor tables near Starbucks in Rose Library","notes":"Use a café-area table for casual reading or a short meetup when conversation and normal food-service noise will not disrupt your work.","short_summary":"An informal first-floor option suited to lighter assignments and brief collaboration.","evidence_claim":"JMU describes the tables near Starbucks in Rose Library as a café space for casual studying or short meetups.","source_url":"https://www.lib.jmu.edu/students/study-spaces/","source_title":"Study Spaces in JMU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on Rose Library’s first floor near Starbucks; use is subject to current library building hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jmu-rose-hangout-space","subject_type":"study_space","entity_name":"Rose Library Hangout Space","title":"Build Breaks Into the Session","subtitle":"Second-floor study-and-break area in Rose Library","notes":"Pair coursework with a planned reset using the magazines, games, and LEGO bricks available in this second-floor Rose Library space.","short_summary":"A study setting with built-in materials for short, screen-free breaks.","evidence_claim":"JMU documents a second-floor Rose Library hangout space containing magazines, games, and LEGO bricks.","source_url":"https://www.lib.jmu.edu/students/study-spaces/","source_title":"Study Spaces in JMU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on Rose Library’s second floor and available during current library building hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jmu-rose-group-study-rooms","subject_type":"study_space","entity_name":"Rose Library Group Study Rooms","title":"Put the Project on the Whiteboard","subtitle":"Reservable and walk-in collaboration rooms","notes":"Reserve a second- or fourth-floor room for a group session, or check first- and third-floor rooms that operate first come, first served.","short_summary":"Enclosed collaboration rooms with tables, whiteboards, and presentation options.","evidence_claim":"JMU says Rose Library has reservable group rooms on floors two and four and first-come, first-served rooms on floors one and three; rooms have large tables and whiteboards, and some include TVs.","source_url":"https://www.lib.jmu.edu/students/study-spaces/","source_title":"Study Spaces in JMU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Rooms are for groups of at least two; reservations are limited to two hours daily and may be made up to one week ahead.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jmu-rose-flex-space","subject_type":"study_space","entity_name":"Rose Library Flex Space","title":"Reconfigure the Room Around the Task","subtitle":"Mobile furniture on Rose Library’s third floor","notes":"Roll the tables, chairs, and whiteboards into a layout that fits your group, then restore an orderly arrangement when the session ends.","short_summary":"A configurable work zone for assignments that benefit from movable surfaces and seating.","evidence_claim":"JMU identifies the third-floor Flex Space as an open area furnished with mobile chairs, tables, and whiteboards.","source_url":"https://www.lib.jmu.edu/students/study-spaces/","source_title":"Study Spaces in JMU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on Rose Library’s third floor and available during current library building hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jmu-rose-quiet-booths","subject_type":"study_space","entity_name":"Rose Library Quiet Booths","title":"Close the Door on Distraction","subtitle":"Sound-dampened booths on Rose Library’s third floor","notes":"Choose a booth for focused solo work, then adjust the desk to your preferred position and keep conversation for a collaborative area.","short_summary":"Enclosed individual booths designed for concentrated, low-noise work.","evidence_claim":"JMU documents third-floor quiet booths with sound-dampening walls, individual airflow systems, and adjustable desks.","source_url":"https://www.lib.jmu.edu/students/study-spaces/","source_title":"Study Spaces in JMU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on Rose Library’s third floor; availability is subject to current library building hours and booth occupancy.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jmu-rose-the-nook","subject_type":"study_space","entity_name":"The Nook","title":"Spread Out Above the Campus View","subtitle":"A tucked-away third-floor room in Rose Library","notes":"Exit the third-floor elevator, turn right, and continue to The Nook; use its large tables for materials that need room to spread out.","short_summary":"A smaller destination combining broad worktables with elevated campus views.","evidence_claim":"JMU identifies The Nook as a small third-floor Rose Library space with campus views, big tables, and usually one or two whiteboards.","source_url":"https://www.lib.jmu.edu/students/study-spaces/","source_title":"Study Spaces in JMU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"From Rose Library’s third-floor elevator, turn right and continue to the room; use is subject to building hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jmu-rose-balcony-lounge","subject_type":"study_space","entity_name":"Rose Library Balcony Lounge","title":"Take Notes Beside the Windows","subtitle":"Fifth-floor lounge overlooking East Campus","notes":"Head to Rose Library’s fifth floor for a window-side session; choose this lounge when natural light and an East Campus view fit the task.","short_summary":"An upper-floor lounge pairing casual study seating with expansive exterior views.","evidence_claim":"JMU’s study-spaces guide identifies the Balcony Lounge as a fifth-floor Rose Library study location with large windows and East Campus views.","source_url":"https://www.lib.jmu.edu/students/study-spaces/","source_title":"Study Spaces in JMU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on Rose Library’s fifth floor and available during current library building hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jmu-etmc-open-study-space","subject_type":"study_space","entity_name":"ETMC Open Study Space","title":"Combine Desk Work With Computer Time","subtitle":"Open workspace in Memorial Hall’s ETMC","notes":"Use the desks, soft seating, or computer workstations for coursework; bring JMU credentials if your session requires a workstation login.","short_summary":"A Memorial Hall workspace offering several seating modes alongside desktop computers.","evidence_claim":"JMU states that the ETMC open study space has soft seating, desks, and computer workstations available to anyone with JMU credentials.","source_url":"https://www.lib.jmu.edu/library-locations/etmc/","source_title":"Educational Technology and Media Center (ETMC)","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Find the ETMC on the second floor at the back of Memorial Hall; JMU credentials are required for computer workstations.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jmu-music-library-musicommons","subject_type":"study_space","entity_name":"MusiCommons Lab","title":"Move From Research to Media Work","subtitle":"Mac-equipped lab inside the Music Library","notes":"Use a Mac workstation for regular study or music-technology work; find the lab in the Music Library on the Music Building’s basement level.","short_summary":"A technology-rich study lab that supports both ordinary coursework and media projects.","evidence_claim":"JMU identifies MusiCommons as the Music Library’s media and computer lab, equipped with 20 Mac workstations and available for regular study.","source_url":"https://www.lib.jmu.edu/library-locations/music-library/","source_title":"Music Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located in the Music Library on the Music Building’s basement level; workstation access is subject to current library hours.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:46:52.745424Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa15-137f-79e1-9723-2684cdba7c07.1786607113087687000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+24,508
+
+{"complete":true,"school_name":"James Madison University","town_name":"Harrisonburg","boards":[{"complete":true,"school_name":"James Madison University","town_name":"Harrisonburg","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten documented JMU study settings spanning quiet solo booths, configurable work areas, reservable collaboration rooms, computer labs, and informal library seating.","icon":"menu_book","cards":[{"subject_id":"jmu-rose-24-hour-space","subject_type":"study_space","entity_name":"Rose Library 24-Hour Space","title":"Settle In Around the Clock","subtitle":"Secure study space inside Rose Library","notes":"Bring your JACard and enter through Rose Library’s side door; choose among large tables, group rooms, computers, and soft seating.","short_summary":"A credentialed, always-open workspace with varied seating and essential study equipment.","evidence_claim":"JMU identifies this as a 24-hour study space with tables, soft seating, group rooms, a computer and printing lab, vending machines, and JACard-controlled entry.","source_url":"https://www.lib.jmu.edu/students/study-spaces/","source_title":"Study Spaces in JMU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Available at any hour through the Rose Library side entrance; entry requires a JACard.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jmu-rose-cafe-space","subject_type":"study_space","entity_name":"Rose Library Café Space","title":"Work With a Little Background Buzz","subtitle":"First-floor tables near Starbucks in Rose Library","notes":"Use a café-area table for casual reading or a short meetup when conversation and normal food-service noise will not disrupt your work.","short_summary":"An informal first-floor option suited to lighter assignments and brief collaboration.","evidence_claim":"JMU describes the tables near Starbucks in Rose Library as a café space for casual studying or short meetups.","source_url":"https://www.lib.jmu.edu/students/study-spaces/","source_title":"Study Spaces in JMU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on Rose Library’s first floor near Starbucks; use is subject to current library building hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jmu-rose-hangout-space","subject_type":"study_space","entity_name":"Rose Library Hangout Space","title":"Build Breaks Into the Session","subtitle":"Second-floor study-and-break area in Rose Library","notes":"Pair coursework with a planned reset using the magazines, games, and LEGO bricks available in this second-floor Rose Library space.","short_summary":"A study setting with built-in materials for short, screen-free breaks.","evidence_claim":"JMU documents a second-floor Rose Library hangout space containing magazines, games, and LEGO bricks.","source_url":"https://www.lib.jmu.edu/students/study-spaces/","source_title":"Study Spaces in JMU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on Rose Library’s second floor and available during current library building hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jmu-rose-group-study-rooms","subject_type":"study_space","entity_name":"Rose Library Group Study Rooms","title":"Put the Project on the Whiteboard","subtitle":"Reservable and walk-in collaboration rooms","notes":"Reserve a second- or fourth-floor room for a group session, or check first- and third-floor rooms that operate first come, first served.","short_summary":"Enclosed collaboration rooms with tables, whiteboards, and presentation options.","evidence_claim":"JMU says Rose Library has reservable group rooms on floors two and four and first-come, first-served rooms on floors one and three; rooms have large tables and whiteboards, and some include TVs.","source_url":"https://www.lib.jmu.edu/students/study-spaces/","source_title":"Study Spaces in JMU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Rooms are for groups of at least two; reservations are limited to two hours daily and may be made up to one week ahead.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jmu-rose-flex-space","subject_type":"study_space","entity_name":"Rose Library Flex Space","title":"Reconfigure the Room Around the Task","subtitle":"Mobile furniture on Rose Library’s third floor","notes":"Roll the tables, chairs, and whiteboards into a layout that fits your group, then restore an orderly arrangement when the session ends.","short_summary":"A configurable work zone for assignments that benefit from movable surfaces and seating.","evidence_claim":"JMU identifies the third-floor Flex Space as an open area furnished with mobile chairs, tables, and whiteboards.","source_url":"https://www.lib.jmu.edu/students/study-spaces/","source_title":"Study Spaces in JMU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on Rose Library’s third floor and available during current library building hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jmu-rose-quiet-booths","subject_type":"study_space","entity_name":"Rose Library Quiet Booths","title":"Close the Door on Distraction","subtitle":"Sound-dampened booths on Rose Library’s third floor","notes":"Choose a booth for focused solo work, then adjust the desk to your preferred position and keep conversation for a collaborative area.","short_summary":"Enclosed individual booths designed for concentrated, low-noise work.","evidence_claim":"JMU documents third-floor quiet booths with sound-dampening walls, individual airflow systems, and adjustable desks.","source_url":"https://www.lib.jmu.edu/students/study-spaces/","source_title":"Study Spaces in JMU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on Rose Library’s third floor; availability is subject to current library building hours and booth occupancy.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jmu-rose-the-nook","subject_type":"study_space","entity_name":"The Nook","title":"Spread Out Above the Campus View","subtitle":"A tucked-away third-floor room in Rose Library","notes":"Exit the third-floor elevator, turn right, and continue to The Nook; use its large tables for materials that need room to spread out.","short_summary":"A smaller destination combining broad worktables with elevated campus views.","evidence_claim":"JMU identifies The Nook as a small third-floor Rose Library space with campus views, big tables, and usually one or two whiteboards.","source_url":"https://www.lib.jmu.edu/students/study-spaces/","source_title":"Study Spaces in JMU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"From Rose Library’s third-floor elevator, turn right and continue to the room; use is subject to building hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jmu-rose-balcony-lounge","subject_type":"study_space","entity_name":"Rose Library Balcony Lounge","title":"Take Notes Beside the Windows","subtitle":"Fifth-floor lounge overlooking East Campus","notes":"Head to Rose Library’s fifth floor for a window-side session; choose this lounge when natural light and an East Campus view fit the task.","short_summary":"An upper-floor lounge pairing casual study seating with expansive exterior views.","evidence_claim":"JMU’s study-spaces guide identifies the Balcony Lounge as a fifth-floor Rose Library study location with large windows and East Campus views.","source_url":"https://www.lib.jmu.edu/students/study-spaces/","source_title":"Study Spaces in JMU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on Rose Library’s fifth floor and available during current library building hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jmu-etmc-open-study-space","subject_type":"study_space","entity_name":"ETMC Open Study Space","title":"Combine Desk Work With Computer Time","subtitle":"Open workspace in Memorial Hall’s ETMC","notes":"Use the desks, soft seating, or computer workstations for coursework; bring JMU credentials if your session requires a workstation login.","short_summary":"A Memorial Hall workspace offering several seating modes alongside desktop computers.","evidence_claim":"JMU states that the ETMC open study space has soft seating, desks, and computer workstations available to anyone with JMU credentials.","source_url":"https://www.lib.jmu.edu/library-locations/etmc/","source_title":"Educational Technology and Media Center (ETMC)","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Find the ETMC on the second floor at the back of Memorial Hall; JMU credentials are required for computer workstations.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jmu-music-library-musicommons","subject_type":"study_space","entity_name":"MusiCommons Lab","title":"Move From Research to Media Work","subtitle":"Mac-equipped lab inside the Music Library","notes":"Use a Mac workstation for regular study or music-technology work; find the lab in the Music Library on the Music Building’s basement level.","short_summary":"A technology-rich study lab that supports both ordinary coursework and media projects.","evidence_claim":"JMU identifies MusiCommons as the Music Library’s media and computer lab, equipped with 20 Mac workstations and available for regular study.","source_url":"https://www.lib.jmu.edu/library-locations/music-library/","source_title":"Music Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located in the Music Library on the Music Building’s basement level; workstation access is subject to current library hours.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

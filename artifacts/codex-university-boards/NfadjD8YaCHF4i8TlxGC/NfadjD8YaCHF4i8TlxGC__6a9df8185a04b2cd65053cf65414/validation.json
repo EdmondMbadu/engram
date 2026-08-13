@@ -1,0 +1,97 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.nps.gov/places/georgetown-waterfront-park.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/places/georgetown-waterfront-park.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/places/old-stone-house.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/places/old-stone-house.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/choh/planyourvisit/construction-updates-georgetown.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/choh/planyourvisit/construction-updates-georgetown.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/choh/planyourvisit/capital-crescent-trail.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/choh/planyourvisit/capital-crescent-trail.htm",
+      "error": ""
+    },
+    {
+      "url": "https://tudorplace.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://tudorplace.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://dumbartonhouse.org/visit-dumbarton-house/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dumbartonhouse.org/visit-dumbarton-house/",
+      "error": ""
+    },
+    {
+      "url": "https://www.dclibrary.org/plan-visit/georgetown-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.dclibrary.org/plan-visit/georgetown-library",
+      "error": ""
+    },
+    {
+      "url": "https://dgs.dc.gov/page/book-hill-park-improvements",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dgs.dc.gov/page/book-hill-park-improvements",
+      "error": ""
+    },
+    {
+      "url": "https://dpr.dc.gov/page/volta-park-recreation-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dpr.dc.gov/page/volta-park-recreation-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/rocr/planyourvisit/georgetown-sites.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/rocr/planyourvisit/georgetown-sites.htm",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Georgetown Waterfront Park",
+    "Old Stone House",
+    "Dumbarton Oaks Park"
+  ],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

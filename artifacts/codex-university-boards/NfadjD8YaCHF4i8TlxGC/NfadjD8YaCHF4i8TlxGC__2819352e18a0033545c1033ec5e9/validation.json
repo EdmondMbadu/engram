@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://docs.lclark.edu/undergraduate/about/campusbuildings/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://docs.lclark.edu/undergraduate/about/campusbuildings/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lclark.edu/visit/features/sacagawea/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lclark.edu/visit/features/sacagawea/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lclark.edu/about/facilities_and_resources/dining/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lclark.edu/about/facilities_and_resources/dining/",
+      "error": ""
+    },
+    {
+      "url": "https://college.lclark.edu/live/news/57877-changes-to-evening-library-access",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://college.lclark.edu/live/news/57877-changes-to-evening-library-access",
+      "error": ""
+    },
+    {
+      "url": "https://www.lclark.edu/hoffman_gallery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lclark.edu/hoffman_gallery/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lclark.edu/live/news/52460-making-sound-waves-in-the-ear-forest",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lclark.edu/live/news/52460-making-sound-waves-in-the-ear-forest",
+      "error": ""
+    },
+    {
+      "url": "https://www.lclark.edu/about/facilities_and_resources/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lclark.edu/about/facilities_and_resources/",
+      "error": ""
+    },
+    {
+      "url": "https://docs.lclark.edu/undergraduate/academicservices/student/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://docs.lclark.edu/undergraduate/academicservices/student/",
+      "error": ""
+    },
+    {
+      "url": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=103",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=103",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

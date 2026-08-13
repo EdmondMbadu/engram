@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.elon.edu/u/traditions/symbols-sayings/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/traditions/symbols-sayings/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/news/2025/08/25/new-elon-students-begin-powerful-journey-of-questions-and-curiosity-at-new-student-convocation/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/news/2025/08/25/new-elon-students-begin-powerful-journey-of-questions-and-curiosity-at-new-student-convocation/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/traditions/events-activities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/traditions/events-activities/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/traditions/celebrations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/traditions/celebrations/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/news/2025/11/24/elon-to-celebrate-many-lights-on-one-night-at-festival-of-lights-and-luminaries/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/news/2025/11/24/elon-to-celebrate-many-lights-on-one-night-at-festival-of-lights-and-luminaries/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/traditions/symbols-sayings/the-alma-mater/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/traditions/symbols-sayings/the-alma-mater/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

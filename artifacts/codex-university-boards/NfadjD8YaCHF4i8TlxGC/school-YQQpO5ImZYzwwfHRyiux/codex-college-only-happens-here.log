@@ -1,0 +1,304 @@
+Reading additional input from stdin...
+2026-08-13T07:26:10.378846Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa03-99bc-7020-86f8-7eb60550963e.1786605967804482000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:26:10.383248Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:26:10.422526Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa03-99cf-72c1-a49c-233755804dd0.1786605967823381000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:26:10.428266Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa03-a32e-7590-a1e6-7976df38227d
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"YQQpO5ImZYzwwfHRyiux","schoolName":"Hamilton College","shortSchoolName":"Hamilton College","townName":"Clinton","state":"NY","countryCode":"US","website":"https://www.hamilton.edu/","latitude":43.050245,"longitude":-75.408195},"templates":[{"id":"college-only-happens-here","version":"1.0","titlePattern":"Only Happens Here: {count} Traditions That Make No Sense Anywhere Else","editorialBrief":"Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.","researchQueries":["university traditions alumni","campus traditions student newspaper","school rituals history"],"count":10,"icon":"fingerprint","primarySubjectType":"tradition","allowedSubjectTypes":["tradition"],"freshnessDays":1095,"exactTitle":"Only Happens Here: 10 Traditions That Make No Sense Anywhere Else"}]}
+2026-08-13T07:26:10.489331Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa03-99d7-7e10-a9c0-430dca4057bc.1786605967832447000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:26:10.548061Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa03-99b8-7480-9b18-e99fffb08cdb.1786605967801190000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:26:10.592621Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa03-99b6-75e3-99c9-ce10f81b281d.1786605967799288000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Hamilton College",
+  "town_name": "Clinton",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Hamilton College",
+      "town_name": "Clinton",
+      "template_id": "college-only-happens-here",
+      "title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+      "description": "",
+      "icon": "fingerprint",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+     
+    ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:hamilton.edu traditions Hamilton College traditions ...
+web search: 
+web search: site:hamilton.edu "Lighting of Our Village" Hamilton ...
+codex
+{"complete":true,"school_name":"Hamilton College","town_name":"Clinton","boards":[{"complete":true,"school_name":"Hamilton College","town_name":"Clinton","template_id":"college-only-happens-here","title":"Only Happens Here: 10 Traditions That Make No Sense Anywhere Else","description":"Ten documented Hamilton College customs, from signing the College Register to closing spring classes with a charter-day convocation.","icon":"fingerprint","cards":[{"subject_id":"hamilton-matriculation-register","subject_type":"tradition","entity_name":"Matriculation at Kirkland Cottage","title":"Sign Into Hamilton History","subtitle":"New students add their names to the College Register in Kirkland Cottage.","notes":"When your class matriculates, look closely at the historic setting before signing the register that marks the start of your Hamilton membership.","short_summary":"A signature in a historic cottage formally opens each new student's Hamilton story.","evidence_claim":"Hamilton states that, since 1975, each new student has signed the College Register in Kirkland Cottage to symbolize matriculation.","source_url":"https://www.hamilton.edu/about/history","source_title":"History & Traditions - Hamilton College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Participation is associated with new-student matriculation; follow the College's orientation instructions.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hamilton-bronze-map-superstition","subject_type":"tradition","entity_name":"Bronze Map Tradition","title":"Walk Around the Bronze Map","subtitle":"Campus lore warns that stepping across the central bronze map jeopardizes graduation.","notes":"Pause at the bronze map and follow the customary route around it; the graduation warning is documented as tradition, not fact.","short_summary":"One patch of bronze turns an ordinary campus walk into a graduation superstition.","evidence_claim":"Hamilton documents a tradition that students who walk across the bronze map in the center of campus will not graduate.","source_url":"https://www.hamilton.edu/about/history","source_title":"History & Traditions - Hamilton College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Observe the map from the surrounding walkway and follow posted campus-access guidance.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hamilton-hamtrek","subject_type":"tradition","entity_name":"HamTrek","title":"Finish Spring With Three Sports","subtitle":"Hamilton's sprint triathlon combines a swim, bicycle leg, and 5K run.","notes":"Check the official event details before entering, then prepare for all three legs: a 525-yard swim, nine-mile ride, and 5K run.","short_summary":"The last weekend of spring classes becomes a compact swim-bike-run challenge.","evidence_claim":"Hamilton describes HamTrek as its sprint triathlon, comprising a 525-yard swim, nine-mile bicycle leg, and 5K run on the last weekend of spring classes.","source_url":"https://www.hamilton.edu/about/history","source_title":"History & Traditions - Hamilton College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The tradition coincides with the last weekend of spring classes; confirm current registration and participation requirements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hamilton-senior-canes","subject_type":"tradition","entity_name":"Senior Canes","title":"Graduate With a Tricorn-Headed Cane","subtitle":"Each graduating senior receives a cane tied to Hamilton-Oneida Academy history.","notes":"At graduation, inspect the cane's tricorn-shaped head and connect its design to Baron von Steuben and the academy cornerstone.","short_summary":"A miniature Continental hat crowns Hamilton's distinctive farewell gift to seniors.","evidence_claim":"Hamilton states that each graduating senior receives a cane whose head forms a Continental tricorn honoring Baron von Steuben, who laid the academy cornerstone.","source_url":"https://www.hamilton.edu/about/history","source_title":"History & Traditions - Hamilton College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cane is awarded to graduating seniors; follow Commencement instructions for distribution.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hamilton-honor-code-signing","subject_type":"tradition","entity_name":"Honor Code Signing","title":"Put Academic Integrity in Writing","subtitle":"Hamilton students sign a pledge against dishonesty in academic work.","notes":"Read the pledge carefully when it is presented, then treat the signature as an ongoing commitment throughout your coursework.","short_summary":"A signed promise makes academic integrity a personal Hamilton obligation.","evidence_claim":"Hamilton reports that students have signed its Honor Code since 1912, pledging to abstain from dishonesty in all academic work.","source_url":"https://www.hamilton.edu/about/history","source_title":"History & Traditions - Hamilton College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This is a student academic commitment; consult current College guidance for the signing process and code requirements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hamilton-febfest","subject_type":"tradition","entity_name":"FebFest","title":"Answer Winter With FebFest","subtitle":"A cold-season campus celebration built from a changing program of activities.","notes":"Review the year's schedule and choose a posted activity; Hamilton notes that past programs have ranged from snow sculpture to concerts.","short_summary":"Hamilton breaks up the cold season with a flexible festival that changes from year to year.","evidence_claim":"Hamilton identifies FebFest as a winter campus tradition and says events have included snow sculpture contests, snoccer, tastings, cook-offs, and concerts.","source_url":"https://www.hamilton.edu/about/history","source_title":"History & Traditions - Hamilton College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Activities vary by year; use the current College schedule and follow each event's stated eligibility and location guidance.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hamilton-class-charter-day","subject_type":"tradition","entity_name":"Class & Charter Day","title":"End Classes With Charter-Day Honors","subtitle":"The last day of spring classes brings a history-minded convocation and awards.","notes":"Attend the convocation ready to hear a Hamilton-focused address and recognize the announced student and faculty prize recipients.","short_summary":"Hamilton's charter anniversary and final class day meet in one ceremonial gathering.","evidence_claim":"Hamilton says Class & Charter Day began in 1950 and is a last-day-of-spring-classes convocation featuring a history-and-traditions address and awards.","source_url":"https://www.hamilton.edu/events/ccd/history-of-class-and-charter-day","source_title":"History of Class & Charter Day - Hamilton College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The convocation is held on the last day of spring classes; consult the current event page for venue and attendance details.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hamilton-senior-week","subject_type":"tradition","entity_name":"Senior Week","title":"Share One Final Week as a Class","subtitle":"Graduating students organize time together before Commencement.","notes":"Use the official senior schedule to plan your final class activities and preserve time for required Commencement preparation.","short_summary":"The graduating class organizes a final stretch together before the formal ceremony.","evidence_claim":"Hamilton describes Senior Week as organized by members of the graduating class and as a final opportunity for seniors to spend time together before Commencement.","source_url":"https://www.hamilton.edu/about/history","source_title":"History & Traditions - Hamilton College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Programming is for the graduating class; follow the official senior and Commencement schedules for current details.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hamilton-lighting-our-village","subject_type":"tradition","entity_name":"Lighting of Our Village","title":"Light the Village as Fall Winds Down","subtitle":"Hamilton celebrates light across cultural and faith traditions as a symbol of hope.","notes":"Check the current event announcement, then join the shared reflection on what light represents across different cultural and faith traditions.","short_summary":"A shared light-centered gathering closes the fall semester on a hopeful note.","evidence_claim":"Hamilton's current Student Activities page identifies Lighting of Our Village as a signature tradition; an official photo retrospective says the annual event celebrates light across cultural and faith traditions.","source_url":"https://www.hamilton.edu/news/stories/2024-in-photos","source_title":"2023-24 in Photos - Hamilton College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The event occurs as the fall semester winds down; verify the current date, venue, and participation guidance in College announcements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hamilton-fall-fest-off-hill-challenge","subject_type":"tradition","entity_name":"Fall Fest/Off the Hill Challenge","title":"Take Fall Fest Off the Hill","subtitle":"A Hamilton tradition links the campus community with an event in Clinton.","notes":"Watch Student Activities announcements for the next edition, then follow the posted location, transportation, and participation instructions.","short_summary":"This paired fall tradition deliberately turns attention from College Hill toward Clinton.","evidence_claim":"Hamilton's current Student Activities page explicitly identifies Fall Fest/Off the Hill Challenge among the office's long-standing traditions.","source_url":"https://www.hamilton.edu/offices/studentactivities/whats-happening-on-campus","source_title":"What's Happening on Campus - Hamilton College Student Activities","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The source does not provide a current date or venue; consult Student Activities announcements before attending.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:27:45.823119Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa03-a32e-7590-a1e6-7976df38227d.1786605970223314000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+24,719
+
+{"complete":true,"school_name":"Hamilton College","town_name":"Clinton","boards":[{"complete":true,"school_name":"Hamilton College","town_name":"Clinton","template_id":"college-only-happens-here","title":"Only Happens Here: 10 Traditions That Make No Sense Anywhere Else","description":"Ten documented Hamilton College customs, from signing the College Register to closing spring classes with a charter-day convocation.","icon":"fingerprint","cards":[{"subject_id":"hamilton-matriculation-register","subject_type":"tradition","entity_name":"Matriculation at Kirkland Cottage","title":"Sign Into Hamilton History","subtitle":"New students add their names to the College Register in Kirkland Cottage.","notes":"When your class matriculates, look closely at the historic setting before signing the register that marks the start of your Hamilton membership.","short_summary":"A signature in a historic cottage formally opens each new student's Hamilton story.","evidence_claim":"Hamilton states that, since 1975, each new student has signed the College Register in Kirkland Cottage to symbolize matriculation.","source_url":"https://www.hamilton.edu/about/history","source_title":"History & Traditions - Hamilton College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Participation is associated with new-student matriculation; follow the College's orientation instructions.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hamilton-bronze-map-superstition","subject_type":"tradition","entity_name":"Bronze Map Tradition","title":"Walk Around the Bronze Map","subtitle":"Campus lore warns that stepping across the central bronze map jeopardizes graduation.","notes":"Pause at the bronze map and follow the customary route around it; the graduation warning is documented as tradition, not fact.","short_summary":"One patch of bronze turns an ordinary campus walk into a graduation superstition.","evidence_claim":"Hamilton documents a tradition that students who walk across the bronze map in the center of campus will not graduate.","source_url":"https://www.hamilton.edu/about/history","source_title":"History & Traditions - Hamilton College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Observe the map from the surrounding walkway and follow posted campus-access guidance.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hamilton-hamtrek","subject_type":"tradition","entity_name":"HamTrek","title":"Finish Spring With Three Sports","subtitle":"Hamilton's sprint triathlon combines a swim, bicycle leg, and 5K run.","notes":"Check the official event details before entering, then prepare for all three legs: a 525-yard swim, nine-mile ride, and 5K run.","short_summary":"The last weekend of spring classes becomes a compact swim-bike-run challenge.","evidence_claim":"Hamilton describes HamTrek as its sprint triathlon, comprising a 525-yard swim, nine-mile bicycle leg, and 5K run on the last weekend of spring classes.","source_url":"https://www.hamilton.edu/about/history","source_title":"History & Traditions - Hamilton College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The tradition coincides with the last weekend of spring classes; confirm current registration and participation requirements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hamilton-senior-canes","subject_type":"tradition","entity_name":"Senior Canes","title":"Graduate With a Tricorn-Headed Cane","subtitle":"Each graduating senior receives a cane tied to Hamilton-Oneida Academy history.","notes":"At graduation, inspect the cane's tricorn-shaped head and connect its design to Baron von Steuben and the academy cornerstone.","short_summary":"A miniature Continental hat crowns Hamilton's distinctive farewell gift to seniors.","evidence_claim":"Hamilton states that each graduating senior receives a cane whose head forms a Continental tricorn honoring Baron von Steuben, who laid the academy cornerstone.","source_url":"https://www.hamilton.edu/about/history","source_title":"History & Traditions - Hamilton College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cane is awarded to graduating seniors; follow Commencement instructions for distribution.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hamilton-honor-code-signing","subject_type":"tradition","entity_name":"Honor Code Signing","title":"Put Academic Integrity in Writing","subtitle":"Hamilton students sign a pledge against dishonesty in academic work.","notes":"Read the pledge carefully when it is presented, then treat the signature as an ongoing commitment throughout your coursework.","short_summary":"A signed promise makes academic integrity a personal Hamilton obligation.","evidence_claim":"Hamilton reports that students have signed its Honor Code since 1912, pledging to abstain from dishonesty in all academic work.","source_url":"https://www.hamilton.edu/about/history","source_title":"History & Traditions - Hamilton College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This is a student academic commitment; consult current College guidance for the signing process and code requirements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hamilton-febfest","subject_type":"tradition","entity_name":"FebFest","title":"Answer Winter With FebFest","subtitle":"A cold-season campus celebration built from a changing program of activities.","notes":"Review the year's schedule and choose a posted activity; Hamilton notes that past programs have ranged from snow sculpture to concerts.","short_summary":"Hamilton breaks up the cold season with a flexible festival that changes from year to year.","evidence_claim":"Hamilton identifies FebFest as a winter campus tradition and says events have included snow sculpture contests, snoccer, tastings, cook-offs, and concerts.","source_url":"https://www.hamilton.edu/about/history","source_title":"History & Traditions - Hamilton College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Activities vary by year; use the current College schedule and follow each event's stated eligibility and location guidance.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hamilton-class-charter-day","subject_type":"tradition","entity_name":"Class & Charter Day","title":"End Classes With Charter-Day Honors","subtitle":"The last day of spring classes brings a history-minded convocation and awards.","notes":"Attend the convocation ready to hear a Hamilton-focused address and recognize the announced student and faculty prize recipients.","short_summary":"Hamilton's charter anniversary and final class day meet in one ceremonial gathering.","evidence_claim":"Hamilton says Class & Charter Day began in 1950 and is a last-day-of-spring-classes convocation featuring a history-and-traditions address and awards.","source_url":"https://www.hamilton.edu/events/ccd/history-of-class-and-charter-day","source_title":"History of Class & Charter Day - Hamilton College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The convocation is held on the last day of spring classes; consult the current event page for venue and attendance details.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hamilton-senior-week","subject_type":"tradition","entity_name":"Senior Week","title":"Share One Final Week as a Class","subtitle":"Graduating students organize time together before Commencement.","notes":"Use the official senior schedule to plan your final class activities and preserve time for required Commencement preparation.","short_summary":"The graduating class organizes a final stretch together before the formal ceremony.","evidence_claim":"Hamilton describes Senior Week as organized by members of the graduating class and as a final opportunity for seniors to spend time together before Commencement.","source_url":"https://www.hamilton.edu/about/history","source_title":"History & Traditions - Hamilton College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Programming is for the graduating class; follow the official senior and Commencement schedules for current details.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hamilton-lighting-our-village","subject_type":"tradition","entity_name":"Lighting of Our Village","title":"Light the Village as Fall Winds Down","subtitle":"Hamilton celebrates light across cultural and faith traditions as a symbol of hope.","notes":"Check the current event announcement, then join the shared reflection on what light represents across different cultural and faith traditions.","short_summary":"A shared light-centered gathering closes the fall semester on a hopeful note.","evidence_claim":"Hamilton's current Student Activities page identifies Lighting of Our Village as a signature tradition; an official photo retrospective says the annual event celebrates light across cultural and faith traditions.","source_url":"https://www.hamilton.edu/news/stories/2024-in-photos","source_title":"2023-24 in Photos - Hamilton College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The event occurs as the fall semester winds down; verify the current date, venue, and participation guidance in College announcements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hamilton-fall-fest-off-hill-challenge","subject_type":"tradition","entity_name":"Fall Fest/Off the Hill Challenge","title":"Take Fall Fest Off the Hill","subtitle":"A Hamilton tradition links the campus community with an event in Clinton.","notes":"Watch Student Activities announcements for the next edition, then follow the posted location, transportation, and participation instructions.","short_summary":"This paired fall tradition deliberately turns attention from College Hill toward Clinton.","evidence_claim":"Hamilton's current Student Activities page explicitly identifies Fall Fest/Off the Hill Challenge among the office's long-standing traditions.","source_url":"https://www.hamilton.edu/offices/studentactivities/whats-happening-on-campus","source_title":"What's Happening on Campus - Hamilton College Student Activities","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The source does not provide a current date or venue; consult Student Activities announcements before attending.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

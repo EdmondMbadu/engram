@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://mercycollege.edu/student-affairs/student-life",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mercycollege.edu/student-affairs/student-life",
+      "error": ""
+    },
+    {
+      "url": "https://mercycollege.edu/events",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mercycollege.edu/events",
+      "error": ""
+    },
+    {
+      "url": "https://mercycollege.edu/news/virtual-pinning",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mercycollege.edu/news/virtual-pinning",
+      "error": ""
+    },
+    {
+      "url": "https://mercycollege.edu/events/event/13636/2020/04/30",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mercycollege.edu/events/event/13636/2020/04/30",
+      "error": ""
+    },
+    {
+      "url": "https://mercycollege.edu/academics/student-records/graduation-commencement",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mercycollege.edu/academics/student-records/graduation-commencement",
+      "error": ""
+    },
+    {
+      "url": "https://mercycollege.edu/news/congratulations-spring-graduates",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mercycollege.edu/news/congratulations-spring-graduates",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

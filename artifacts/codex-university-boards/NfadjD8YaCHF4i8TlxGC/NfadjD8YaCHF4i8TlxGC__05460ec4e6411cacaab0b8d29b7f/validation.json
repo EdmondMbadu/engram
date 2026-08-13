@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.ucsc.edu/campus/visit/destinations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.ucsc.edu/campus/visit/destinations/",
+      "error": ""
+    },
+    {
+      "url": "https://library.ucsc.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.ucsc.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://spaces.ucsc.edu/cultural-center-at-merrill/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://spaces.ucsc.edu/cultural-center-at-merrill/",
+      "error": ""
+    },
+    {
+      "url": "https://spaces.ucsc.edu/merrill-plaza/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://spaces.ucsc.edu/merrill-plaza/",
+      "error": ""
+    },
+    {
+      "url": "https://catalog.ucsc.edu/en/current/general-catalog/undergraduate-information/the-colleges-and-student-life/the-colleges/merrill-college",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.ucsc.edu/en/current/general-catalog/undergraduate-information/the-colleges-and-student-life/the-colleges/merrill-college",
+      "error": ""
+    },
+    {
+      "url": "https://cowell.ucsc.edu/visit-contact-us/maps-tours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cowell.ucsc.edu/visit-contact-us/maps-tours/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

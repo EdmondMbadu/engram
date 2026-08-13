@@ -1,0 +1,79 @@
+{
+  "ok": false,
+  "problems": [
+    "Cross-board overlap exceeds four subjects: Christ the King Chapel, Antonian Hall, Finnegan Fieldhouse, J.C. Williams Center, The Portiuncula, The Stations of the Cross, Anathan Theatre, Steubenville City of Murals, Historic Fort Steuben."
+  ],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://franciscan.edu/new-student-orientation/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://franciscan.edu/new-student-orientation/",
+      "error": ""
+    },
+    {
+      "url": "https://franciscan.edu/quiz-where-will-you-be-on-campus/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://franciscan.edu/quiz-where-will-you-be-on-campus/",
+      "error": ""
+    },
+    {
+      "url": "https://library.franciscan.edu/about-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.franciscan.edu/about-us/",
+      "error": ""
+    },
+    {
+      "url": "https://chapel.franciscan.edu/pray/the-portiuncula/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://chapel.franciscan.edu/pray/the-portiuncula/",
+      "error": ""
+    },
+    {
+      "url": "https://chapel.franciscan.edu/pray/the-stations-of-the-cross/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://chapel.franciscan.edu/pray/the-stations-of-the-cross/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitsteubenville.com/discover-us/discover-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitsteubenville.com/discover-us/discover-us/",
+      "error": ""
+    },
+    {
+      "url": "https://www.oldfortsteuben.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oldfortsteuben.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Christ the King Chapel",
+    "Antonian Hall",
+    "Finnegan Fieldhouse",
+    "J.C. Williams Center",
+    "The Portiuncula",
+    "The Stations of the Cross",
+    "Anathan Theatre",
+    "Steubenville City of Murals",
+    "Historic Fort Steuben"
+  ],
+  "sourceCount": 7,
+  "generationScore": null,
+  "generationGrade": null
+}

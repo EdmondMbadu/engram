@@ -1,0 +1,34 @@
+{
+  "target": {
+    "atlasId": "cukaUWxvrrEfYWoUSUAx",
+    "schoolName": "Assumption University",
+    "shortSchoolName": "Assumption University",
+    "townName": "Worcester",
+    "state": "MA",
+    "countryCode": "US",
+    "website": "https://www.assumption.edu/",
+    "latitude": 42.294226,
+    "longitude": -71.828991
+  },
+  "templates": [
+    {
+      "id": "college-late-night-runs",
+      "version": "1.0",
+      "titlePattern": "{count} Late-Night Runs That Explain {school}",
+      "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+      "researchQueries": [
+        "late night dining students",
+        "campus dining late hours",
+        "restaurants open late near campus"
+      ],
+      "count": 10,
+      "icon": "nightlife",
+      "primarySubjectType": "place",
+      "allowedSubjectTypes": [
+        "place"
+      ],
+      "freshnessDays": 120,
+      "exactTitle": "10 Late-Night Runs That Explain Assumption University"
+    }
+  ]
+}

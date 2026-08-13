@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.plu.edu/scancenter/events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.plu.edu/scancenter/events/",
+      "error": ""
+    },
+    {
+      "url": "https://www.plu.edu/summer/berry-festival/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.plu.edu/hospitality/berry-festival/",
+      "error": ""
+    },
+    {
+      "url": "https://www.plu.edu/natural-sciences/support/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.plu.edu/natural-sciences/support/",
+      "error": ""
+    },
+    {
+      "url": "https://www.plu.edu/admission/blog/convocation-2023/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.plu.edu/admission/blog/convocation-2023/",
+      "error": ""
+    },
+    {
+      "url": "https://www.plu.edu/commencement/elements-of-the-ceremony/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.plu.edu/commencement/elements-of-the-ceremony/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

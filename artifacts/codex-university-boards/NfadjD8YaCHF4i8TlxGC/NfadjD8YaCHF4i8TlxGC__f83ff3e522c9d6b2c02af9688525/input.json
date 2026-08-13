@@ -1,0 +1,41 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "bvORj8bZ3HgH5keB6Rx7",
+    "schoolName": "Rochester Institute of Technology",
+    "shortSchoolName": "Rochester Institute of Technology",
+    "townName": "Rochester",
+    "state": "NY",
+    "countryCode": "US",
+    "unitId": "195003",
+    "website": "https://www.rit.edu/",
+    "latitude": 43.084188,
+    "longitude": -77.67386,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Rochester_Institute_of_Technology_Seal_%282018%29.svg/1280px-Rochester_Institute_of_Technology_Seal_%282018%29.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=rit.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at Rochester Institute of Technology, Shared as Cards",
+  "excluded_subjects": [],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

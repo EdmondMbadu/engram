@@ -1,0 +1,61 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "bQstrhOraoFYKqUmsZrB",
+    "schoolName": "University of Alabama at Birmingham",
+    "shortSchoolName": "University of Alabama at Birmingham",
+    "townName": "Birmingham",
+    "state": "AL",
+    "countryCode": "US",
+    "unitId": "100663",
+    "website": "https://www.uab.edu/",
+    "latitude": 33.505697,
+    "longitude": -86.799345,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=uab.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=uab.edu&sz=256"
+  },
+  "template": {
+    "id": "college-campus-tour-skips",
+    "version": "1.0",
+    "titlePattern": "What the Campus Tour Skips: {count} Places Students Share With Each Other",
+    "editorialBrief": "Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.",
+    "researchQueries": [
+      "student favorite campus places",
+      "campus map student spaces",
+      "student newspaper campus places"
+    ],
+    "count": 10,
+    "icon": "style",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place",
+      "study_space"
+    ],
+    "freshnessDays": 365
+  },
+  "exact_title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+  "excluded_subjects": [
+    "Mervyn H. Sterne Library First-Floor Collaborative Study Space",
+    "Mervyn H. Sterne Library Third-Floor Quiet Zone",
+    "Mervyn H. Sterne Library Single Study Rooms",
+    "Mervyn H. Sterne Library Group Study Rooms",
+    "Mervyn H. Sterne Library Study Carrels",
+    "Sterne Library SL 174",
+    "Sterne Library Sensory Room 385",
+    "Lister Hill Library First-Floor Study Rooms",
+    "Lister Hill Library Second-Floor Quiet Area",
+    "Lister Hill Library Second-Floor Conference Room",
+    "UAB Campus Green",
+    "Hill Student Center",
+    "Magic City Eats",
+    "UAB Campus Recreation Center",
+    "Climbing Wall & Bouldering Wall",
+    "Mervyn H. Sterne Library",
+    "Railroad Park",
+    "Rotary Trail",
+    "Sloss Furnaces National Historic Landmark",
+    "Birmingham Museum of Art"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

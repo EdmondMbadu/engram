@@ -1,0 +1,59 @@
+{
+  "ok": false,
+  "problems": [
+    "Cross-board overlap exceeds four subjects: Pandora’s Pies, Smitty’s Homemade Ice Cream, The Root Trackside, Moseley Center, Carol Grotnes Belk Library."
+  ],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.elon.edu/u/parents/family-weekend/dining-options/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/parents/family-weekend/dining-options/",
+      "error": ""
+    },
+    {
+      "url": "https://www.smittysicecream.com/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smittysicecream.com/about",
+      "error": ""
+    },
+    {
+      "url": "https://www.theroottrackside.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.theroottrackside.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/moseley-center/hours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/moseley-center/hours/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/alumni/homecoming/resources/elon-resources/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/alumni/homecoming/resources/elon-resources/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Pandora’s Pies",
+    "Smitty’s Homemade Ice Cream",
+    "The Root Trackside",
+    "Moseley Center",
+    "Carol Grotnes Belk Library"
+  ],
+  "sourceCount": 5,
+  "generationScore": null,
+  "generationGrade": null
+}

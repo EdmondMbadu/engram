@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.mtholyoke.edu/student-experience/living-campus/dining/dining-center-hours-and-openingclosing-schedule",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mtholyoke.edu/student-experience/living-campus/dining/dining-center-hours-and-openingclosing-schedule",
+      "error": ""
+    },
+    {
+      "url": "https://www.mtholyoke.edu/academics/centers-and-facilities/campus-trails",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mtholyoke.edu/academics/centers-and-facilities/campus-trails",
+      "error": ""
+    },
+    {
+      "url": "https://www.mtholyoke.edu/directory/departments-offices-centers/botanic-garden",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mtholyoke.edu/directory/departments-offices-centers/botanic-garden",
+      "error": ""
+    },
+    {
+      "url": "https://www.mtholyoke.edu/student-experience/community-and-belonging/religion-and-spirituality/quiet-contemplative-and-spiritual-places-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mtholyoke.edu/student-experience/community-and-belonging/religion-and-spirituality/quiet-contemplative-and-spiritual-places-campus",
+      "error": ""
+    },
+    {
+      "url": "https://lits.mtholyoke.edu/about-lits/service-desks/circulation-services",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lits.mtholyoke.edu/about-lits/service-desks/circulation-services",
+      "error": ""
+    },
+    {
+      "url": "https://lits.mtholyoke.edu/places/frances-perk-cafe",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lits.mtholyoke.edu/places/frances-perk-cafe",
+      "error": ""
+    },
+    {
+      "url": "https://events.mtholyoke.edu/blanchard_hall_318",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.mtholyoke.edu/blanchard_hall_318",
+      "error": ""
+    },
+    {
+      "url": "https://artmuseum.mtholyoke.edu/exhibition/mhcam-at-150-our-new-collection-galleries/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://artmuseum.mtholyoke.edu/exhibition/mhcam-at-150-our-new-collection-galleries/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.jackinthebox.com/us/ca/san-bernardino/4020-university-pkwy",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jackinthebox.com/us/ca/san-bernardino/4020-university-pkwy",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ca/san-bernardino/1990-ostrems-way.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ca/san-bernardino/1990-ostrems-way.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.carlsjr.com/ca/san-bernardino/4424-university-parkway",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.carlsjr.com/ca/san-bernardino/4424-university-parkway",
+      "error": ""
+    },
+    {
+      "url": "https://locations.papajohns.com/united-states/ca/92407/san-bernardino/4434-university-pkwy",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.papajohns.com/united-states/ca/92407/san-bernardino/4434-university-pkwy",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/ca/san-bernardino/1050-kendall-dr",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/ca/san-bernardino/1050-kendall-dr",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/ca/san-bernardino/1102-e-highland-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/ca/san-bernardino/1102-e-highland-ave",
+      "error": ""
+    },
+    {
+      "url": "https://locations.in-n-out.com/31-San-Bernardino",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.in-n-out.com/31-San-Bernardino",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ca/san-bernardino/385-e--hospitality-lane.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ca/san-bernardino/385-e--hospitality-lane.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ca/san-bernardino.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ca/san-bernardino.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jackinthebox.com/us/ca/san-bernardino/3265-w-little-league-dr",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jackinthebox.com/us/ca/san-bernardino/3265-w-little-league-dr",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

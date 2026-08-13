@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.sxu.edu/catalog/current/undergraduate/sxu/library.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sxu.edu/catalog/current/undergraduate/sxu/library.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.sxu.edu/parents/parent-guide.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sxu.edu/parents/parent-guide.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.sxu.edu/student-life/residence-life/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sxu.edu/student-life/residence-life/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.sxu.edu/student-life/getting-to-campus/docs/wac-map-first-second-floor-october-2025.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sxu.edu/student-life/getting-to-campus/docs/wac-map-first-second-floor-october-2025.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

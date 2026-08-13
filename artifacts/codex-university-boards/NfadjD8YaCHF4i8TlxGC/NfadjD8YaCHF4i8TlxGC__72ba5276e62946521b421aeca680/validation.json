@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.simmons.edu/library/about/hours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.simmons.edu/library/about/hours",
+      "error": ""
+    },
+    {
+      "url": "https://www.simmons.edu/library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.simmons.edu/library",
+      "error": ""
+    },
+    {
+      "url": "https://www.simmons.edu/sites/default/files/2026-03/map-lefavour-hall.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.simmons.edu/sites/default/files/2026-03/map-lefavour-hall.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://whocanhelp.simmons.edu/resources/library-study-rooms",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://whocanhelp.simmons.edu/resources/library-study-rooms",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

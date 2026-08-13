@@ -1,0 +1,73 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.depts.ttu.edu/sub/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depts.ttu.edu/sub/",
+      "error": ""
+    },
+    {
+      "url": "https://www.depts.ttu.edu/sub/rates/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depts.ttu.edu/sub/rates/",
+      "error": ""
+    },
+    {
+      "url": "https://cal.library.ttu.edu/space/32958",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cal.library.ttu.edu/space/32958",
+      "error": ""
+    },
+    {
+      "url": "https://www.depts.ttu.edu/recreation/membership/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depts.ttu.edu/recreation/membership/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ttu.edu/campus-locations/athletics-recreation/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ttu.edu/campus-locations/athletics-recreation/",
+      "error": ""
+    },
+    {
+      "url": "https://www.depts.ttu.edu/international/intlopr/directions.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depts.ttu.edu/international/intlopr/directions.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.depts.ttu.edu/international/isss/studentlife/InternationalOrientation/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depts.ttu.edu/international/isss/studentlife/InternationalOrientation/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Student Union Building",
+    "Museum of Texas Tech University",
+    "National Ranching Heritage Center"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

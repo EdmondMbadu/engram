@@ -1,0 +1,128 @@
+{
+  "target": "58EbJDSj24EFv81hykHl",
+  "schoolName": "Lipscomb University",
+  "generatedAt": "2026-08-13T08:06:21.315Z",
+  "mode": "free-related-campus-distinct",
+  "images": [
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2F58EbJDSj24EFv81hykHl%2F01-3feeae4d4d5a3332.jpg?alt=media&token=8a7fe3cc-1ddb-48d6-8573-92b78b642f9b",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Allen_Arena,_Lipscomb_University.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 3.0",
+      "imageLicense": "CC BY-SA 3.0",
+      "imageTitle": "Allen Arena, Lipscomb University.jpg",
+      "imageFingerprint": "3feeae4d4d5a3332dd9649feec339e5f03dae25e4660cd12a949270177218cc0",
+      "imageWidth": 1920,
+      "imageHeight": 1440,
+      "imageResolvedAt": "2026-08-13T08:06:21.045Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2F58EbJDSj24EFv81hykHl%2F02-9a2d6f2e99d7ca43.jpg?alt=media&token=31750ae9-0096-4304-ab56-2e1ef1f29c27",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:2012-06-09_Mark_Lanier_close_in.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 3.0",
+      "imageLicense": "CC BY-SA 3.0",
+      "imageTitle": "2012-06-09 Mark Lanier close in.jpg",
+      "imageFingerprint": "9a2d6f2e99d7ca432d16ef69f141f642e50652dbcd11f37823f1a8a55b7f8df6",
+      "imageWidth": 1055,
+      "imageHeight": 1319,
+      "imageResolvedAt": "2026-08-13T08:06:21.087Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2F58EbJDSj24EFv81hykHl%2F03-ce01a2942c872de0.jpg?alt=media&token=ff0a7b22-c3db-4359-95ef-32176f5487ad",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Doug_Foster_ACU_Summit_2013.JPG",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 3.0",
+      "imageLicense": "CC BY-SA 3.0",
+      "imageTitle": "Doug Foster ACU Summit 2013.JPG",
+      "imageFingerprint": "ce01a2942c872de06ccc64177cba9b2dc2a8de0501d1e1f84e02a0c6404d80f2",
+      "imageWidth": 1920,
+      "imageHeight": 2880,
+      "imageResolvedAt": "2026-08-13T08:06:21.103Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2F58EbJDSj24EFv81hykHl%2F04-dde9afa0030637f6.jpg?alt=media&token=bc4c1d18-cfd9-4231-8f3c-c78d63ec0e33",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:2012-06-09_Ilibagiza_%2B_Ramsey_at_Lipscomb.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 4.0",
+      "imageLicense": "CC BY-SA 4.0",
+      "imageTitle": "2012-06-09 Ilibagiza + Ramsey at Lipscomb.jpg",
+      "imageFingerprint": "dde9afa0030637f694fae30648e18fec977fe2f76efb9ff119a9548def9a7266",
+      "imageWidth": 873,
+      "imageHeight": 769,
+      "imageResolvedAt": "2026-08-13T08:06:21.007Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2F58EbJDSj24EFv81hykHl%2F05-63c7d943ba0668cb.jpg?alt=media&token=e951a0db-fa1b-45db-8723-8d54f0168404",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:140915-N-LC494-046_(15071264549).jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · Public domain",
+      "imageLicense": "Public domain",
+      "imageTitle": "140915-N-LC494-046 (15071264549).jpg",
+      "imageFingerprint": "63c7d943ba0668cb8425281c63959d7cb97087912e0280abee869d3fbb725403",
+      "imageWidth": 1920,
+      "imageHeight": 1280,
+      "imageResolvedAt": "2026-08-13T08:06:21.037Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2F58EbJDSj24EFv81hykHl%2F06-e90cf7d160fcc83f.jpg?alt=media&token=f0c85990-1e23-4fc7-8ad4-edc81062339a",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:140915-N-LC494-037_(15258018715).jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · Public domain",
+      "imageLicense": "Public domain",
+      "imageTitle": "140915-N-LC494-037 (15258018715).jpg",
+      "imageFingerprint": "e90cf7d160fcc83f11358da796de3f1d2a1547d528af2200387d7c385fb49894",
+      "imageWidth": 1920,
+      "imageHeight": 1280,
+      "imageResolvedAt": "2026-08-13T08:06:21.033Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2F58EbJDSj24EFv81hykHl%2F07-d6c3ae96e694b362.jpg?alt=media&token=3b74144b-b191-431c-b40b-fc7b20be5149",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:140915-N-LC494-090_(15258021635).jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · Public domain",
+      "imageLicense": "Public domain",
+      "imageTitle": "140915-N-LC494-090 (15258021635).jpg",
+      "imageFingerprint": "d6c3ae96e694b36291d3d136329a04d5d84d564b238ee43b6839be5c2954cd6f",
+      "imageWidth": 1920,
+      "imageHeight": 1280,
+      "imageResolvedAt": "2026-08-13T08:06:21.217Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2F58EbJDSj24EFv81hykHl%2F08-5581fdbdef00e570.jpg?alt=media&token=9c7933b4-0fba-4756-93f8-a8333a2eb80c",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:140915-N-LC494-098_(15071462478).jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · Public domain",
+      "imageLicense": "Public domain",
+      "imageTitle": "140915-N-LC494-098 (15071462478).jpg",
+      "imageFingerprint": "5581fdbdef00e5706fd0a592ebefb82da6eca530a9d805dd749b17872b5041a2",
+      "imageWidth": 1920,
+      "imageHeight": 1280,
+      "imageResolvedAt": "2026-08-13T08:06:21.255Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2F58EbJDSj24EFv81hykHl%2F09-5fae85dcaafd4819.jpg?alt=media&token=91a68bc7-8777-46e2-b24b-88559a18e2d6",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Andreas_Deja_at_Animation_Y%27all_2026-1.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 4.0",
+      "imageLicense": "CC BY-SA 4.0",
+      "imageTitle": "Andreas Deja at Animation Y'all 2026-1.jpg",
+      "imageFingerprint": "5fae85dcaafd48198246bec1e62d990ed8712999483598fb5e723d379666dbf5",
+      "imageWidth": 1920,
+      "imageHeight": 2880,
+      "imageResolvedAt": "2026-08-13T08:06:21.315Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2F58EbJDSj24EFv81hykHl%2F10-b573822c641e9a2b.jpg?alt=media&token=a0cce9d7-576c-4525-9b30-207d8dce72b5",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Andreas_Deja_at_Animation_Y%27all_2026-5.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 4.0",
+      "imageLicense": "CC BY-SA 4.0",
+      "imageTitle": "Andreas Deja at Animation Y'all 2026-5.jpg",
+      "imageFingerprint": "b573822c641e9a2bf9ddc7993201a57b678fc9a53469ae1635bf40a4f97632e3",
+      "imageWidth": 1920,
+      "imageHeight": 2880,
+      "imageResolvedAt": "2026-08-13T08:06:21.278Z"
+    }
+  ]
+}

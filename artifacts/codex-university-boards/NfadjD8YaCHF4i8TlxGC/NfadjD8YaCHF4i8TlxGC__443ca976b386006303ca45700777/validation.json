@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://orientation.gmu.edu/wp-content/uploads/2026/06/26-012-New-Student-Guide_ATI.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://orientation.gmu.edu/wp-content/uploads/2026/06/26-012-New-Student-Guide_ATI.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://covid-19.gmu.edu/about/legacy/traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://covid-19.gmu.edu/about/legacy/traditions",
+      "error": ""
+    },
+    {
+      "url": "https://orientation.gmu.edu/george-statue-photos/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://orientation.gmu.edu/george-statue-photos/",
+      "error": ""
+    },
+    {
+      "url": "https://si.gmu.edu/bench-painting-party/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://si.gmu.edu/bench-painting-party/",
+      "error": ""
+    },
+    {
+      "url": "https://ulife.gmu.edu/mason-day-2026-community-celebration-and-61-years-of-tradition/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ulife.gmu.edu/mason-day-2026-community-celebration-and-61-years-of-tradition/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

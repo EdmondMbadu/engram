@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://store.fryemuseum.org/pages/frontpage",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://store.fryemuseum.org/pages/frontpage",
+      "error": ""
+    },
+    {
+      "url": "https://www.stjames-cathedral.org/where.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stjames-cathedral.org/where.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.seattle.gov/parks/parks/first-hill-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.seattle.gov/parks/parks/first-hill-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.seattle.gov/parks/parks/freeway-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.seattle.gov/parks/parks/freeway-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.spl.org/hours-and-locations/capitol-hill-branch",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.spl.org/hours-and-locations/capitol-hill-branch",
+      "error": ""
+    },
+    {
+      "url": "https://www.seattle.gov/parks/parks/cal-anderson-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.seattle.gov/parks/parks/cal-anderson-park",
+      "error": ""
+    },
+    {
+      "url": "https://ce.seattlecentral.edu/student-resources/directions-maps-parking-info",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ce.seattlecentral.edu/student-resources/directions-maps-parking-info",
+      "error": ""
+    },
+    {
+      "url": "https://www.seattle.gov/transportation/getting-around/transit/streetcar/first-hill-line",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.seattle.gov/transportation/getting-around/transit/streetcar/first-hill-line",
+      "error": ""
+    },
+    {
+      "url": "https://www.seattle.gov/parks/parks/horiuchi-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.seattle.gov/parks/parks/horiuchi-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.seattle.gov/parks/parks/yesler-terrace-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.seattle.gov/parks/parks/yesler-terrace-park",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

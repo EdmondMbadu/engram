@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.raisingcanes.com/tn/knoxville/1830-cumberland-avenue",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.raisingcanes.com/tn/knoxville/1830-cumberland-avenue",
+      "error": ""
+    },
+    {
+      "url": "https://www.gussgoodtimesdeli.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gussgoodtimesdeli.com/",
+      "error": ""
+    },
+    {
+      "url": "https://maps.apple.com/place?place-id=I5C7F44C1C44B96E5",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://maps.apple.com/place?place-id=I5C7F44C1C44B96E5",
+      "error": ""
+    },
+    {
+      "url": "https://www.waze.com/live-map/directions/insomnia-cookies-cumberland-ave-2121-knoxville?to=place.w.180945256.1809190411.1965249",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.waze.com/live-map/directions/insomnia-cookies-cumberland-ave-2121-knoxville?to=place.w.180945256.1809190411.1965249",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.subway.com/united-states/tn/knoxville/2104-cumberland-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.subway.com/united-states/tn/knoxville/2104-cumberland-ave",
+      "error": ""
+    },
+    {
+      "url": "https://www.mellowmushroom.com/locations/tn/knoxville/2109-cumberland-ave/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mellowmushroom.com/locations/tn/knoxville/2109-cumberland-ave/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.moes.com/tn/knoxville/1800-cumberland-avenue",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.moes.com/tn/knoxville/1800-cumberland-avenue",
+      "error": ""
+    },
+    {
+      "url": "https://dining-stg.utk.edu/rocky-top/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dining-stg.utk.edu/rocky-top/",
+      "error": ""
+    },
+    {
+      "url": "https://dining.utk.edu/uts-vol-dining-celebrates-grand-opening-of-cumberland-food-hall/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dining.utk.edu/uts-vol-dining-celebrates-grand-opening-of-cumberland-food-hall/",
+      "error": ""
+    },
+    {
+      "url": "https://studentlife.utk.edu/studentunion/visit/hours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentlife.utk.edu/studentunion/visit/hours/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

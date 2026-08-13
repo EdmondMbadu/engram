@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.anselm.edu/campus-life/roger-and-francine-jean-student-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.anselm.edu/campus-life/roger-and-francine-jean-student-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.anselm.edu/about/offices-centers-institutes/geisel-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.anselm.edu/about/offices-centers-institutes/geisel-library",
+      "error": ""
+    },
+    {
+      "url": "https://www.anselm.edu/about/offices-centers-institutes/geisel-library/about/library-history",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.anselm.edu/about/offices-centers-institutes/geisel-library/about/library-history",
+      "error": ""
+    },
+    {
+      "url": "https://www.anselm.edu/admission/visit/audio-tour",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.anselm.edu/admission/visit/audio-tour",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

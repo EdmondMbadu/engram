@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://shoppesatuniversityplace.com/directory/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://shoppesatuniversityplace.com/directory/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 1,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

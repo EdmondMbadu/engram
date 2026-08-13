@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.luther.edu/library/about/facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.luther.edu/library/about/facilities",
+      "error": ""
+    },
+    {
+      "url": "https://www.luther.edu/admission-aid/online-campus-tour/dahl-centennial-union",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.luther.edu/admission-aid/online-campus-tour/dahl-centennial-union",
+      "error": ""
+    },
+    {
+      "url": "https://www.luther.edu/admission-aid/online-campus-tour/dining",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.luther.edu/admission-aid/online-campus-tour/dining",
+      "error": ""
+    },
+    {
+      "url": "https://www.luther.edu/admission-aid/online-campus-tour/cfl",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.luther.edu/admission-aid/online-campus-tour/cfl",
+      "error": ""
+    },
+    {
+      "url": "https://www.luther.edu/admission-aid/online-campus-tour/cfa",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.luther.edu/admission-aid/online-campus-tour/cfa",
+      "error": ""
+    },
+    {
+      "url": "https://www.luther.edu/admission-aid/online-campus-tour/gerdin-fieldhouse",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.luther.edu/admission-aid/online-campus-tour/gerdin-fieldhouse",
+      "error": ""
+    },
+    {
+      "url": "https://www.luther.edu/offices/student-life/rec-services",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.luther.edu/offices/student-life/rec-services",
+      "error": ""
+    },
+    {
+      "url": "https://www.luther.edu/admission-aid/visit/campus-map",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.luther.edu/admission-aid/visit/campus-map",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

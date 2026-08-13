@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Late-night means service at 9:30 p.m. or later on at least one night; several destinations have earlier kitchen, lobby, or ordering cutoffs than their venue closing time.",
+    "North Street Press Club and one19 serve alcohol but also operate as food restaurants; the cards recommend food service only and do not rely on alcohol-related access.",
+    "Wawa hours are supported by a current Apple Maps place page because its direct business-location page could not be retrieved."
+  ],
+  "reachability": [
+    {
+      "url": "https://locations.wendys.com/united-states/va/farmville/1809-south-main-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/va/farmville/1809-south-main-street",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/va/farmville/1708-s--main-street.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/va/farmville/1708-s--main-street.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/va/farmville/915-s-main-st/takeout",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/va/farmville/915-s-main-st/takeout",
+      "error": ""
+    },
+    {
+      "url": "https://www.northstreetpressclub.com/main-menu?location=127+North+Street&menu=nspc-cocktail-menu",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.northstreetpressclub.com/main-menu?location=127+North+Street&menu=nspc-cocktail-menu",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.applebees.com/en-us/va/farmville/1808-s.-main-st.-83019",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.applebees.com/en-us/va/farmville/1808-s.-main-st.-83019",
+      "error": ""
+    },
+    {
+      "url": "https://locations.kfc.com/va/farmville/2005-s-main-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.kfc.com/va/farmville/2005-s-main-st",
+      "error": ""
+    },
+    {
+      "url": "https://charleyswaterfront.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://charleyswaterfront.com/",
+      "error": ""
+    },
+    {
+      "url": "https://tastefullyoffcenter.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://tastefullyoffcenter.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.pinosfarmville.com/hours.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pinosfarmville.com/hours.html",
+      "error": ""
+    },
+    {
+      "url": "https://maps.apple.com/place?place-id=I7F6B1AA74A7398F2",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://maps.apple.com/place?place-id=I7F6B1AA74A7398F2",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

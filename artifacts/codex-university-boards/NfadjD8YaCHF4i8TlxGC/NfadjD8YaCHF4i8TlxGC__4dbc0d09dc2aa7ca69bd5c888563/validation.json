@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://library.kzoo.edu/about/navigating-the-building/floor-1/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.kzoo.edu/about/navigating-the-building/floor-1/",
+      "error": ""
+    },
+    {
+      "url": "https://library.kzoo.edu/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.kzoo.edu/about/",
+      "error": ""
+    },
+    {
+      "url": "https://library.kzoo.edu/about/navigating-the-building/floor-2/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.kzoo.edu/about/navigating-the-building/floor-2/",
+      "error": ""
+    },
+    {
+      "url": "https://library.kzoo.edu/about/navigating-the-building/floor-2/quiet-booths/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.kzoo.edu/about/navigating-the-building/floor-2/quiet-booths/",
+      "error": ""
+    },
+    {
+      "url": "https://library.kzoo.edu/help-and-services/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.kzoo.edu/help-and-services/",
+      "error": ""
+    },
+    {
+      "url": "https://library.kzoo.edu/about/navigating-the-building/floor-3/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.kzoo.edu/about/navigating-the-building/floor-3/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

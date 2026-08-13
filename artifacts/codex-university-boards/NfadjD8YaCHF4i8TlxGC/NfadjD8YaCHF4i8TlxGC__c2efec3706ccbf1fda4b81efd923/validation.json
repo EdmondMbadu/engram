@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://today.smumn.edu/articles/why-do-we-celebrate-de-la-salle-week-and-founders-day/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://today.smumn.edu/articles/why-do-we-celebrate-de-la-salle-week-and-founders-day/",
+      "error": ""
+    },
+    {
+      "url": "https://today.smumn.edu/articles/founders-day-2026-convocation-livestream-link/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://today.smumn.edu/articles/founders-day-2026-convocation-livestream-link/",
+      "error": ""
+    },
+    {
+      "url": "https://www.smumn.edu/newsroom/four-honored-during-saint-marys-founders-day-celebration-2/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smumn.edu/newsroom/four-honored-during-saint-marys-founders-day-celebration-2/",
+      "error": ""
+    },
+    {
+      "url": "https://connect.smumn.edu/page/ldos",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://connect.smumn.edu/page/ldos",
+      "error": ""
+    },
+    {
+      "url": "https://www.smumn.edu/event/feast-of-the-immaculate-conception-patronal-feast-day/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smumn.edu/event/feast-of-the-immaculate-conception-patronal-feast-day/",
+      "error": ""
+    },
+    {
+      "url": "https://www.smumn.edu/holiday/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smumn.edu/holiday/",
+      "error": ""
+    },
+    {
+      "url": "https://www.smumn.edu/events/winona-undergraduate-commencement/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smumn.edu/events/winona-undergraduate-commencement/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

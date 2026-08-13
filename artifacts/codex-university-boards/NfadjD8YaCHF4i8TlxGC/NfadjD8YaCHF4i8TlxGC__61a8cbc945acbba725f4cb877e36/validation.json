@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://libraries.smith.edu/spaces-technology/study-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.smith.edu/spaces-technology/study-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.smith.edu/spaces-technology/neilson-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.smith.edu/spaces-technology/neilson-library",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.smith.edu/spaces-technology/reservable-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.smith.edu/spaces-technology/reservable-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.smith.edu/spaces-technology/neilson-library/learning-commons",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.smith.edu/spaces-technology/neilson-library/learning-commons",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

@@ -1,0 +1,73 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://student-engagement-leadership.providence.edu/slavin-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://student-engagement-leadership.providence.edu/slavin-center/",
+      "error": ""
+    },
+    {
+      "url": "https://pml.providence.edu/about/spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pml.providence.edu/about/spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://academic-affairs.providence.edu/ruane-center-for-the-humanities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://academic-affairs.providence.edu/ruane-center-for-the-humanities/",
+      "error": ""
+    },
+    {
+      "url": "https://dining.providence.edu/dining/ray-dining/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dining.providence.edu/dining/ray-dining/",
+      "error": ""
+    },
+    {
+      "url": "https://recreation.providence.edu/facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recreation.providence.edu/facilities/",
+      "error": ""
+    },
+    {
+      "url": "https://student-affairs.providence.edu/handbook-student/the-student-handbook-2025-2026-1-30-26/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://student-affairs.providence.edu/handbook-student/the-student-handbook-2025-2026-1-30-26/",
+      "error": ""
+    },
+    {
+      "url": "https://admission.providence.edu/traditions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://admission.providence.edu/traditions/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Peterson Recreation Center",
+    "Schneider Arena",
+    "St. Dominic Chapel"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

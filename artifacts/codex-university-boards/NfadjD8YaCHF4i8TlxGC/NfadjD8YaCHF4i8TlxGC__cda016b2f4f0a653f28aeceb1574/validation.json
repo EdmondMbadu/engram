@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://housing.purdue.edu/visit/guests-alumni/traditions.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://housing.purdue.edu/visit/guests-alumni/traditions.html",
+      "error": ""
+    },
+    {
+      "url": "https://stories.purdue.edu/purdue-traditions-purdue-grand-prix/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stories.purdue.edu/purdue-traditions-purdue-grand-prix/",
+      "error": ""
+    },
+    {
+      "url": "https://stories.purdue.edu/purdues-cant-miss-traditions-for-new-boilermakers/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stories.purdue.edu/purdues-cant-miss-traditions-for-new-boilermakers/",
+      "error": ""
+    },
+    {
+      "url": "https://stories.purdue.edu/boilermakers-have-played-and-sung-hail-purdue-across-the-globe-and-even-in-space/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stories.purdue.edu/boilermakers-have-played-and-sung-hail-purdue-across-the-globe-and-even-in-space/",
+      "error": ""
+    },
+    {
+      "url": "https://www.purdue.edu/brand-studio/toolbox/editorial-style-guide/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.purdue.edu/brand-studio/toolbox/editorial-style-guide/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

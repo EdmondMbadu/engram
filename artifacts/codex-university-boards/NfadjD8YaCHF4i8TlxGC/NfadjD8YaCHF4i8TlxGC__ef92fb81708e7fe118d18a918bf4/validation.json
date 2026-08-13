@@ -1,0 +1,77 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.ua.edu/about/history/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ua.edu/about/history/",
+      "error": ""
+    },
+    {
+      "url": "https://stories.ua.edu/profile-of-excellence-2025-2026/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stories.ua.edu/profile-of-excellence-2025-2026/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://dennychimes.ua.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dennychimes.ua.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ua.edu/libraries/gorgas/gorgas-library-description/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ua.edu/libraries/gorgas/gorgas-library-description/",
+      "error": ""
+    },
+    {
+      "url": "https://stories.ua.edu/visitors-guide/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stories.ua.edu/visitors-guide/",
+      "error": ""
+    },
+    {
+      "url": "https://sl.ua.edu/partners/paver-purchases/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://sl.ua.edu/partners/paver-purchases/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://almnh.museums.ua.edu/hours-location-admission/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://almnh.museums.ua.edu/hours-location-admission/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ua.edu/wp-content/uploads/UA-Campus-Visitors-Guide-2025.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ua.edu/wp-content/uploads/UA-Campus-Visitors-Guide-2025.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

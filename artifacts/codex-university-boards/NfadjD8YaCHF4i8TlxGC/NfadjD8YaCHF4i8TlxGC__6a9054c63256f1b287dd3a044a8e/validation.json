@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.harding.edu/events/spring-sing/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.harding.edu/events/spring-sing/",
+      "error": ""
+    },
+    {
+      "url": "https://scholarworks.harding.edu/exhibit/harding-university-chapel/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://scholarworks.harding.edu/exhibit/harding-university-chapel/",
+      "error": ""
+    },
+    {
+      "url": "https://www.harding.edu/bible-ministry/events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.harding.edu/bible-ministry/events/",
+      "error": ""
+    },
+    {
+      "url": "https://www.harding.edu/events/stampede/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.harding.edu/events/stampede/",
+      "error": ""
+    },
+    {
+      "url": "https://www.harding.edu/events/bisons-for-christ/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.harding.edu/events/bisons-for-christ/",
+      "error": ""
+    },
+    {
+      "url": "https://www.harding.edu/events/homecoming/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.harding.edu/events/homecoming/",
+      "error": ""
+    },
+    {
+      "url": "https://www.harding.edu/events/holidays/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.harding.edu/events/holidays/",
+      "error": ""
+    },
+    {
+      "url": "https://news.harding.edu/2025/09/welcome-home-for-family-weekend.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.harding.edu/2025/09/welcome-home-for-family-weekend.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

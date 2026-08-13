@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://forever.francis.edu/s/1679/bp23/project.aspx?gid=2&pgid=2051&sid=1679",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://forever.francis.edu/s/1679/bp23/project.aspx?gid=2&pgid=2051&sid=1679",
+      "error": ""
+    },
+    {
+      "url": "https://www.francis.edu/maps-and-directions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.francis.edu/maps-and-directions",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitjohnstownpa.com/partner/the-shrine-of-our-lady-of-the-alleghenies",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitjohnstownpa.com/partner/the-shrine-of-our-lady-of-the-alleghenies",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitjohnstownpa.com/partner/servant-of-god-demetrius-gallitzins-tomb",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitjohnstownpa.com/partner/servant-of-god-demetrius-gallitzins-tomb",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitjohnstownpa.com/partner/prince-gallitzin-chapel-house",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitjohnstownpa.com/partner/prince-gallitzin-chapel-house",
+      "error": ""
+    },
+    {
+      "url": "https://www.francis.edu/sites/default/files/University%20Magazine%20Archives/E-SFU-Fall-2015.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.francis.edu/sites/default/files/University%20Magazine%20Archives/E-SFU-Fall-2015.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://franciscanstor.org/our-mission/shrines-gardens",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://franciscanstor.org/our-mission/shrines-gardens",
+      "error": ""
+    },
+    {
+      "url": "https://franciscanstor.org/our-mission/shrines-gardens/91-fatima-devotions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://franciscanstor.org/our-mission/shrines-gardens/91-fatima-devotions",
+      "error": ""
+    },
+    {
+      "url": "https://franciscanstor.org/documents/parish/11-tourism-brochure/file",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://franciscanstor.org/documents/parish/11-tourism-brochure/file",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

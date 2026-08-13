@@ -1,0 +1,60 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "NyMKr4MyBpirfwOjxUn2",
+    "schoolName": "Carleton College",
+    "shortSchoolName": "Carleton College",
+    "townName": "Northfield",
+    "state": "MN",
+    "countryCode": "US",
+    "unitId": "173258",
+    "website": "https://www.carleton.edu/",
+    "latitude": 44.462318,
+    "longitude": -93.154666,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/4/41/Combined_logo_and_seal_for_Carleton_College.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=carleton.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "Laurence McKinley Gould Library",
+    "Gould Library Group Study Rooms",
+    "Gould Library Room 306",
+    "Writing Center",
+    "Quantitative Resource Center",
+    "Anderson Hall Study Lounges",
+    "Daugherty Atrium",
+    "Class of 1980 Commons",
+    "Great Space",
+    "Language Center",
+    "Goodbye Blue Monday Coffeehouse",
+    "CakeWalk Custom Cakes & Dessert Bar",
+    "Content Bookstore",
+    "Northfield Arts Guild",
+    "Northfield History Center",
+    "Bridge Square",
+    "Northfield Arts Guild Water Street Studios",
+    "Northfield Arts Guild Theater",
+    "Northfield Public Library",
+    "Central Park"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

@@ -1,0 +1,268 @@
+Reading additional input from stdin...
+2026-08-13T07:59:36.500477Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa21-b3da-7323-91bf-dd9eca481faa.1786607940571303000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa22-3fd7-7271-9318-5f8ca0d0c53c
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"SbF1F6fCWw9T4esdmZbV","schoolName":"Lewis University","shortSchoolName":"Lewis University","townName":"Romeoville","state":"IL","countryCode":"US","website":"https://www.lewisu.edu/","latitude":41.605432,"longitude":-88.079032},"templates":[{"id":"college-zero-dollar-hangs","version":"1.0","titlePattern":"Zero Dollars: {count} Hangs That Cost Nothing","editorialBrief":"Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.","researchQueries":["free student activities campus","free campus spaces students","free public places near campus"],"count":10,"icon":"money_off","primarySubjectType":"activity","allowedSubjectTypes":["activity","place"],"freshnessDays":180,"exactTitle":"Zero Dollars: 10 Hangs That Cost Nothing"}]}
+2026-08-13T07:59:36.590095Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:59:36.741548Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+codex
+{
+  "complete": false,
+  "school_name": "Lewis University",
+  "town_name": "Romeoville",
+  "boards": [{
+    "complete": false,
+    "school_name": "Lewis University",
+    "town_name": "Romeoville",
+    "template_id": "college-zero-dollar-hangs",
+    "title": "Zero Dollars: 10 Hangs That Cost Nothing",
+    "description": "",
+    "icon": "money_off",
+    "cards": [{
+      "subject_id": "",
+      "subject_type": "activity",
+      "entity_name": "",
+      "title": "Researching verified free-access options",
+      "subtitle": "",
+      "notes": "I’m checking direct university, government, and cultural-institution pages for explicit no-cost access evidence.",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "other_reliable",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "activity",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "other_reliable",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "activity",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "other_reliable",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "activity",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "other_reliable",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "activity",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "other_reliable",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "activity",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "other_reliable",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "activity",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "other_reliable",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "activity",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "other_reliable",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "activity",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "other_reliable",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "activity",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "other_reliable",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    }],
+    "warnings": []
+  }],
+  "warnings": []
+}
+web search: 
+web search: site:lewisu.edu Lewis University campus attractions free museum chapel library students recreation center ...
+web search: 
+web search: site:lewisu.edu "free" "Caterpillar Gallery" ...
+codex
+{"complete":true,"school_name":"Lewis University","town_name":"Romeoville","boards":[{"complete":true,"school_name":"Lewis University","town_name":"Romeoville","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"Ten no-cost Lewis University intramural activities for current students, faculty, and staff with valid Lewis identification and a free IMLeagues account.","icon":"money_off","cards":[{"subject_id":"lewis-intramural-basketball","subject_type":"activity","entity_name":"Lewis Intramural Basketball","title":"Build a Basketball Team","subtitle":"Free intramural play at Lewis University","notes":"Gather classmates, create a team in IMLeagues, and check the posted intramural schedule before heading to the assigned campus court.","short_summary":"Organize a no-cost campus basketball game through Lewis Intramurals.","evidence_claim":"Lewis University lists Basketball as an intramural event and states that all on-campus intramural events are free to join.","source_url":"https://www.lewisu.edu/studentservices/fitnesscenter/intramurals.htm","source_title":"Intramural Sports - Overview","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open to current Lewis students, faculty, and staff with a valid Lewis ID and free IMLeagues account; consult the current schedule.","cost_status":"free","under21_safe":true},{"subject_id":"lewis-intramural-volleyball","subject_type":"activity","entity_name":"Lewis Intramural Volleyball","title":"Meet for Volleyball","subtitle":"A free Lewis intramural team activity","notes":"Recruit a group or register as a free agent in IMLeagues, then confirm the scheduled venue and arrive ready for team play.","short_summary":"Join classmates for structured volleyball without an entry charge.","evidence_claim":"Lewis University names Volleyball among its intramural events and says every on-campus intramural event is free to join.","source_url":"https://www.lewisu.edu/studentservices/fitnesscenter/intramurals.htm","source_title":"Intramural Sports - Overview","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Participation requires current student, faculty, or staff status, a valid Lewis ID, and a free IMLeagues account.","cost_status":"free","under21_safe":true},{"subject_id":"lewis-intramural-indoor-soccer","subject_type":"activity","entity_name":"Lewis Intramural Indoor Soccer","title":"Form an Indoor Soccer Side","subtitle":"No-cost intramural soccer at Lewis","notes":"Use IMLeagues to assemble a roster or request free-agent help, and review the current listing for match time and location.","short_summary":"Play a scheduled indoor soccer match with a student group for free.","evidence_claim":"Indoor Soccer appears on Lewis University's intramural event list, and the university states that on-campus intramural events are free.","source_url":"https://www.lewisu.edu/studentservices/fitnesscenter/intramurals.htm","source_title":"Intramural Sports - Overview","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"A valid Lewis ID and free IMLeagues account are required; availability follows the current intramural schedule.","cost_status":"free","under21_safe":true},{"subject_id":"lewis-intramural-badminton","subject_type":"activity","entity_name":"Lewis Intramural Badminton","title":"Pair Up for Badminton","subtitle":"Free racquet play through Lewis Intramurals","notes":"Invite a partner, register through IMLeagues, and bring a Lewis ID; the recreation center offers free daily racquet checkout.","short_summary":"Turn a study break into a no-cost badminton session.","evidence_claim":"Lewis University lists Badminton as a free on-campus intramural event and separately confirms free daily badminton-racquet checkout with a Lewis ID.","source_url":"https://www.lewisu.edu/studentservices/fitnesscenter/faq.htm","source_title":"Recreation and Fitness Center FAQ","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current students, faculty, and staff need a valid Lewis ID and free IMLeagues account; equipment checkout requires the ID.","cost_status":"free","under21_safe":true},{"subject_id":"lewis-intramural-pickleball","subject_type":"activity","entity_name":"Lewis Intramural Pickleball","title":"Try a Pickleball Match","subtitle":"A free Lewis intramural option","notes":"Find a playing partner, enroll through the free IMLeagues account, and verify the event schedule before meeting at the venue.","short_summary":"Learn rallies and play a structured pickleball match at no cost.","evidence_claim":"Lewis University includes Pickleball in its intramural offerings and explicitly says all on-campus intramural events are free to join.","source_url":"https://www.lewisu.edu/studentservices/fitnesscenter/intramurals.htm","source_title":"Intramural Sports - Overview","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Restricted to current Lewis students, faculty, and staff with valid university identification and a free IMLeagues account.","cost_status":"free","under21_safe":true},{"subject_id":"lewis-intramural-kickball","subject_type":"activity","entity_name":"Lewis Intramural Kickball","title":"Round Up a Kickball Squad","subtitle":"Free team recreation on campus","notes":"Bring together a casual squad or enter as a free agent, then use IMLeagues to confirm registration details and game times.","short_summary":"Socialize outdoors or in the assigned facility during free kickball play.","evidence_claim":"Kickball is named on Lewis University's intramural event list, and all on-campus intramural events are stated to be free.","source_url":"https://www.lewisu.edu/studentservices/fitnesscenter/intramurals.htm","source_title":"Intramural Sports - Overview","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Bring a valid Lewis ID and register with a free IMLeagues account; dates and locations depend on the active schedule.","cost_status":"free","under21_safe":true},{"subject_id":"lewis-intramural-nerf","subject_type":"activity","entity_name":"Lewis Intramural 3v3 Nerf","title":"Team Up for 3v3 Nerf","subtitle":"A free small-team intramural event","notes":"Recruit two teammates, register the trio in IMLeagues, and read the event rules and schedule before arriving at the assigned space.","short_summary":"Play a compact, team-based Nerf event without paying an entry fee.","evidence_claim":"Lewis University specifically lists 3v3 Nerf as an intramural event and states that on-campus intramural events are free to join.","source_url":"https://www.lewisu.edu/studentservices/fitnesscenter/intramurals.htm","source_title":"Intramural Sports - Overview","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current Lewis students, faculty, and staff may participate with a valid ID and free IMLeagues account when the event is scheduled.","cost_status":"free","under21_safe":true},{"subject_id":"lewis-intramural-sand-volleyball","subject_type":"activity","entity_name":"Lewis Intramural Sand Volleyball","title":"Play Sand Volleyball","subtitle":"Free intramural play at The Backyard","notes":"Assemble a team, register in IMLeagues, and check weather and schedule updates before meeting at the mapped sand-volleyball area.","short_summary":"Share a no-cost sand-volleyball game in Lewis University's Backyard.","evidence_claim":"Lewis University lists Sand Volleyball among its free on-campus intramural events; the official campus guide maps sand volleyball at The Backyard.","source_url":"https://www.lewisu.edu/studentservices/fitnesscenter/intramurals.htm","source_title":"Intramural Sports - Overview","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Valid Lewis identification and a free IMLeagues account are required; play is subject to the current event schedule and conditions.","cost_status":"free","under21_safe":true},{"subject_id":"lewis-intramural-wiffleball","subject_type":"activity","entity_name":"Lewis Intramural Wiffleball","title":"Start a Wiffleball Game","subtitle":"No-fee intramural team play","notes":"Create a roster or sign up as a free agent, then consult IMLeagues for the current rules, game date, and assigned campus field.","short_summary":"Gather a group for an approachable, free intramural ball game.","evidence_claim":"Lewis University identifies Wiffleball as an intramural event and confirms that all on-campus intramural events are free to join.","source_url":"https://www.lewisu.edu/studentservices/fitnesscenter/intramurals.htm","source_title":"Intramural Sports - Overview","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Available to current Lewis students, faculty, and staff with a valid ID and free IMLeagues account when offered.","cost_status":"free","under21_safe":true},{"subject_id":"lewis-intramural-spikeball","subject_type":"activity","entity_name":"Lewis Intramural Spikeball","title":"Meet for Spikeball","subtitle":"Free small-group recreation at Lewis","notes":"Invite friends, complete the IMLeagues signup, and review the active event listing so everyone reaches the correct venue on time.","short_summary":"Practice quick rallies with a group in a free scheduled Spikeball event.","evidence_claim":"Spikeball is included in Lewis University's intramural event list, and the university states that on-campus intramural participation is free.","source_url":"https://www.lewisu.edu/studentservices/fitnesscenter/intramurals.htm","source_title":"Intramural Sports - Overview","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Participants must be current Lewis students, faculty, or staff with valid identification and a free IMLeagues account.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T08:01:06.251875Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa22-3fd7-7271-9318-5f8ca0d0c53c.1786607976408022000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+24,607
+
+{"complete":true,"school_name":"Lewis University","town_name":"Romeoville","boards":[{"complete":true,"school_name":"Lewis University","town_name":"Romeoville","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"Ten no-cost Lewis University intramural activities for current students, faculty, and staff with valid Lewis identification and a free IMLeagues account.","icon":"money_off","cards":[{"subject_id":"lewis-intramural-basketball","subject_type":"activity","entity_name":"Lewis Intramural Basketball","title":"Build a Basketball Team","subtitle":"Free intramural play at Lewis University","notes":"Gather classmates, create a team in IMLeagues, and check the posted intramural schedule before heading to the assigned campus court.","short_summary":"Organize a no-cost campus basketball game through Lewis Intramurals.","evidence_claim":"Lewis University lists Basketball as an intramural event and states that all on-campus intramural events are free to join.","source_url":"https://www.lewisu.edu/studentservices/fitnesscenter/intramurals.htm","source_title":"Intramural Sports - Overview","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open to current Lewis students, faculty, and staff with a valid Lewis ID and free IMLeagues account; consult the current schedule.","cost_status":"free","under21_safe":true},{"subject_id":"lewis-intramural-volleyball","subject_type":"activity","entity_name":"Lewis Intramural Volleyball","title":"Meet for Volleyball","subtitle":"A free Lewis intramural team activity","notes":"Recruit a group or register as a free agent in IMLeagues, then confirm the scheduled venue and arrive ready for team play.","short_summary":"Join classmates for structured volleyball without an entry charge.","evidence_claim":"Lewis University names Volleyball among its intramural events and says every on-campus intramural event is free to join.","source_url":"https://www.lewisu.edu/studentservices/fitnesscenter/intramurals.htm","source_title":"Intramural Sports - Overview","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Participation requires current student, faculty, or staff status, a valid Lewis ID, and a free IMLeagues account.","cost_status":"free","under21_safe":true},{"subject_id":"lewis-intramural-indoor-soccer","subject_type":"activity","entity_name":"Lewis Intramural Indoor Soccer","title":"Form an Indoor Soccer Side","subtitle":"No-cost intramural soccer at Lewis","notes":"Use IMLeagues to assemble a roster or request free-agent help, and review the current listing for match time and location.","short_summary":"Play a scheduled indoor soccer match with a student group for free.","evidence_claim":"Indoor Soccer appears on Lewis University's intramural event list, and the university states that on-campus intramural events are free.","source_url":"https://www.lewisu.edu/studentservices/fitnesscenter/intramurals.htm","source_title":"Intramural Sports - Overview","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"A valid Lewis ID and free IMLeagues account are required; availability follows the current intramural schedule.","cost_status":"free","under21_safe":true},{"subject_id":"lewis-intramural-badminton","subject_type":"activity","entity_name":"Lewis Intramural Badminton","title":"Pair Up for Badminton","subtitle":"Free racquet play through Lewis Intramurals","notes":"Invite a partner, register through IMLeagues, and bring a Lewis ID; the recreation center offers free daily racquet checkout.","short_summary":"Turn a study break into a no-cost badminton session.","evidence_claim":"Lewis University lists Badminton as a free on-campus intramural event and separately confirms free daily badminton-racquet checkout with a Lewis ID.","source_url":"https://www.lewisu.edu/studentservices/fitnesscenter/faq.htm","source_title":"Recreation and Fitness Center FAQ","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current students, faculty, and staff need a valid Lewis ID and free IMLeagues account; equipment checkout requires the ID.","cost_status":"free","under21_safe":true},{"subject_id":"lewis-intramural-pickleball","subject_type":"activity","entity_name":"Lewis Intramural Pickleball","title":"Try a Pickleball Match","subtitle":"A free Lewis intramural option","notes":"Find a playing partner, enroll through the free IMLeagues account, and verify the event schedule before meeting at the venue.","short_summary":"Learn rallies and play a structured pickleball match at no cost.","evidence_claim":"Lewis University includes Pickleball in its intramural offerings and explicitly says all on-campus intramural events are free to join.","source_url":"https://www.lewisu.edu/studentservices/fitnesscenter/intramurals.htm","source_title":"Intramural Sports - Overview","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Restricted to current Lewis students, faculty, and staff with valid university identification and a free IMLeagues account.","cost_status":"free","under21_safe":true},{"subject_id":"lewis-intramural-kickball","subject_type":"activity","entity_name":"Lewis Intramural Kickball","title":"Round Up a Kickball Squad","subtitle":"Free team recreation on campus","notes":"Bring together a casual squad or enter as a free agent, then use IMLeagues to confirm registration details and game times.","short_summary":"Socialize outdoors or in the assigned facility during free kickball play.","evidence_claim":"Kickball is named on Lewis University's intramural event list, and all on-campus intramural events are stated to be free.","source_url":"https://www.lewisu.edu/studentservices/fitnesscenter/intramurals.htm","source_title":"Intramural Sports - Overview","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Bring a valid Lewis ID and register with a free IMLeagues account; dates and locations depend on the active schedule.","cost_status":"free","under21_safe":true},{"subject_id":"lewis-intramural-nerf","subject_type":"activity","entity_name":"Lewis Intramural 3v3 Nerf","title":"Team Up for 3v3 Nerf","subtitle":"A free small-team intramural event","notes":"Recruit two teammates, register the trio in IMLeagues, and read the event rules and schedule before arriving at the assigned space.","short_summary":"Play a compact, team-based Nerf event without paying an entry fee.","evidence_claim":"Lewis University specifically lists 3v3 Nerf as an intramural event and states that on-campus intramural events are free to join.","source_url":"https://www.lewisu.edu/studentservices/fitnesscenter/intramurals.htm","source_title":"Intramural Sports - Overview","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current Lewis students, faculty, and staff may participate with a valid ID and free IMLeagues account when the event is scheduled.","cost_status":"free","under21_safe":true},{"subject_id":"lewis-intramural-sand-volleyball","subject_type":"activity","entity_name":"Lewis Intramural Sand Volleyball","title":"Play Sand Volleyball","subtitle":"Free intramural play at The Backyard","notes":"Assemble a team, register in IMLeagues, and check weather and schedule updates before meeting at the mapped sand-volleyball area.","short_summary":"Share a no-cost sand-volleyball game in Lewis University's Backyard.","evidence_claim":"Lewis University lists Sand Volleyball among its free on-campus intramural events; the official campus guide maps sand volleyball at The Backyard.","source_url":"https://www.lewisu.edu/studentservices/fitnesscenter/intramurals.htm","source_title":"Intramural Sports - Overview","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Valid Lewis identification and a free IMLeagues account are required; play is subject to the current event schedule and conditions.","cost_status":"free","under21_safe":true},{"subject_id":"lewis-intramural-wiffleball","subject_type":"activity","entity_name":"Lewis Intramural Wiffleball","title":"Start a Wiffleball Game","subtitle":"No-fee intramural team play","notes":"Create a roster or sign up as a free agent, then consult IMLeagues for the current rules, game date, and assigned campus field.","short_summary":"Gather a group for an approachable, free intramural ball game.","evidence_claim":"Lewis University identifies Wiffleball as an intramural event and confirms that all on-campus intramural events are free to join.","source_url":"https://www.lewisu.edu/studentservices/fitnesscenter/intramurals.htm","source_title":"Intramural Sports - Overview","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Available to current Lewis students, faculty, and staff with a valid ID and free IMLeagues account when offered.","cost_status":"free","under21_safe":true},{"subject_id":"lewis-intramural-spikeball","subject_type":"activity","entity_name":"Lewis Intramural Spikeball","title":"Meet for Spikeball","subtitle":"Free small-group recreation at Lewis","notes":"Invite friends, complete the IMLeagues signup, and review the active event listing so everyone reaches the correct venue on time.","short_summary":"Practice quick rallies with a group in a free scheduled Spikeball event.","evidence_claim":"Spikeball is included in Lewis University's intramural event list, and the university states that on-campus intramural participation is free.","source_url":"https://www.lewisu.edu/studentservices/fitnesscenter/intramurals.htm","source_title":"Intramural Sports - Overview","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Participants must be current Lewis students, faculty, or staff with valid identification and a free IMLeagues account.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}

@@ -1,0 +1,79 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.jmu.edu/admissions/explore/spirit-traditions.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jmu.edu/admissions/explore/spirit-traditions.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.jmu.edu/ucenter/boxoffice",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jmu.edu/union/index.shtml?jmu_redir=r_ucenter",
+      "error": ""
+    },
+    {
+      "url": "https://www.harrisonburgfarmersmarket.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.harrisonburgfarmersmarket.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.jmu.edu/arboretum/visit/index.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jmu.edu/arboretum/visit/index.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.jmu.edu/recreation/sports/informal-recreation/running-jogging-walking.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jmu.edu/recreation/sports/informal-recreation/running-jogging-walking.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.jmu.edu/planetarium/index.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jmu.edu/planetarium/index.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.jmu.edu/recreation/visit/guide.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jmu.edu/recreation/visit/guide.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.jmu.edu/centennialcelebration/statue.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jmu.edu/centennialcelebration/statue.shtml",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Harrisonburg Farmers Market"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www2.lehigh.edu/about/lehigh-lafayette",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.lehigh.edu/about/lehigh-lafayette",
+      "error": ""
+    },
+    {
+      "url": "https://alumni.lehigh.edu/association-student-alumni",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://alumni.lehigh.edu/association-student-alumni",
+      "error": ""
+    },
+    {
+      "url": "https://www2.lehigh.edu/about/events-venues",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.lehigh.edu/about/events-venues",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

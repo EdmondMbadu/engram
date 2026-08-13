@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://my.snc.edu/library/home/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://my.snc.edu/library/home/",
+      "error": ""
+    },
+    {
+      "url": "https://www.snc.edu/news/pressrelease/st-norbert-colleges-baer-gallery-presents-evan-siegle-still-momentspeak-action",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://snc.edu/news/pressrelease/st-norbert-colleges-baer-gallery-presents-evan-siegle-still-momentspeak-action",
+      "error": ""
+    },
+    {
+      "url": "https://www.deperewi.gov/egov/apps/locations/facilities.egov?id=23&view=detail",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.deperewi.gov/egov/apps/locations/facilities.egov?id=23&view=detail",
+      "error": ""
+    },
+    {
+      "url": "https://www.deperewi.gov/egov/apps/locations/facilities.egov?id=22&view=detail",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.deperewi.gov/egov/apps/locations/facilities.egov?id=22&view=detail",
+      "error": ""
+    },
+    {
+      "url": "https://www.deperewi.gov/egov/apps/locations/facilities.egov?id=4&view=detail",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.deperewi.gov/egov/apps/locations/facilities.egov?id=4&view=detail",
+      "error": ""
+    },
+    {
+      "url": "https://www.deperewi.gov/egov/apps/locations/facilities.egov?id=14&view=detail",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.deperewi.gov/egov/apps/locations/facilities.egov?id=14&view=detail",
+      "error": ""
+    },
+    {
+      "url": "https://www.deperewi.gov/egov/apps/locations/facilities.egov?id=15&view=detail",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.deperewi.gov/egov/apps/locations/facilities.egov?id=15&view=detail",
+      "error": ""
+    },
+    {
+      "url": "https://www.deperewi.gov/egov/apps/locations/facilities.egov?id=10&view=detail",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.deperewi.gov/egov/apps/locations/facilities.egov?id=10&view=detail",
+      "error": ""
+    },
+    {
+      "url": "https://www.deperewi.gov/egov/apps/locations/facilities.egov?view=detail%3Bid%3D11",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.deperewi.gov/egov/apps/locations/facilities.egov?view=detail%3Bid%3D11",
+      "error": ""
+    },
+    {
+      "url": "https://www.deperewi.gov/topic/index.php?structureid=86&topicid=59",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.deperewi.gov/topic/index.php?structureid=86&topicid=59",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

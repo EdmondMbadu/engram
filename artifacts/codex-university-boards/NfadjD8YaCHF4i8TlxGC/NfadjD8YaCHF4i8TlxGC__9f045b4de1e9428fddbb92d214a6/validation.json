@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.depauw.edu/virtual-tour/details/roy-o-west-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depauw.edu/virtual-tour/details/roy-o-west-library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.depauw.edu/studentaffairs/campusliving/living-in-university-housing-faqs/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depauw.edu/studentaffairs/campusliving/living-in-university-housing-faqs/",
+      "error": ""
+    },
+    {
+      "url": "https://www.depauw.edu/academics/academic-resources/policies/finalshours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depauw.edu/academics/academic-resources/policies/finalshours/",
+      "error": ""
+    },
+    {
+      "url": "https://www.depauw.edu/academics/catalog/university/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depauw.edu/academics/catalog/university/",
+      "error": ""
+    },
+    {
+      "url": "https://www.depauw.edu/academics/centers/cdi/cdi-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depauw.edu/academics/centers/cdi/cdi-spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://www.depauw.edu/studentaffairs/womens-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depauw.edu/academics/centers/womens-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.depauw.edu/campus-life/wellness/meditation-and-reflection/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depauw.edu/campus-life/wellness/meditation-and-reflection/",
+      "error": ""
+    },
+    {
+      "url": "https://www.depauw.edu/academics/centers/tenzercenter/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depauw.edu/academics/centers/tenzercenter/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

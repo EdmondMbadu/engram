@@ -1,0 +1,66 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Seven activities are restricted to currently enrolled CSUSB students or other eligible campus members; free access is not general-public access.",
+    "Campus parking may require payment, but every listed activity itself requires no admission charge or purchase.",
+    "RAFFMA may close galleries temporarily for installation, so visitors should check its official page before going.",
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.csusb.edu/raffma",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusb.edu/raffma",
+      "error": ""
+    },
+    {
+      "url": "https://www.csusb.edu/anthropology-museum/visitors",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusb.edu/anthropology-museum/visitors",
+      "error": ""
+    },
+    {
+      "url": "https://www.csusb.edu/join-the-pack/future-students/campus-life/student-recreation-wellness-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusb.edu/join-the-pack/future-students/campus-life/student-recreation-wellness-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.csusb.edu/retreat/faq",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusb.edu/retreat/faq",
+      "error": ""
+    },
+    {
+      "url": "https://www.csusb.edu/guided-tour/student-recreation-wellness-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusb.edu/guided-tour/student-recreation-wellness-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.csusb.edu/recreation-wellness",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusb.edu/recreation-wellness",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Robert and Frances Fullerton Museum of Art"
+  ],
+  "sourceCount": 6,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

@@ -1,0 +1,58 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "4 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.umw.edu/uc/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.umw.edu/uc/",
+      "error": ""
+    },
+    {
+      "url": "https://students.umw.edu/studentactivities/things-to-do-at-umw/the-underground/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://students.umw.edu/studentactivities/things-to-do-at-umw/the-underground/",
+      "error": ""
+    },
+    {
+      "url": "https://convergence.umw.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://convergence.umw.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://academics.umw.edu/swc/communication-corner/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://academics.umw.edu/swc/communication-corner/",
+      "error": ""
+    },
+    {
+      "url": "https://www.umw.edu/essentials/eaglespeak/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.umw.edu/essentials/eaglespeak/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Cedric Rucker University Center",
+    "Linden Terrace",
+    "Hurley Convergence Center",
+    "Simpson Library Treehouses"
+  ],
+  "sourceCount": 5,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

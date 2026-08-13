@@ -1,0 +1,86 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Current operating hours and reservation policies were not available on the cited facility pages for most locations; access_notes explicitly identify where users should verify locally.",
+    "Coordinates and direct map URLs were left null because exact destination-level values were not verified from the supporting sources."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.elon.edu/u/library/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/library/about/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/news/2018/11/09/klc-elons-newest-learning-hub/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/news/2018/11/09/klc-elons-newest-learning-hub/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/fa/sustainability/campus-initiatives/buildings/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/fa/sustainability/campus-initiatives/buildings/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/academics/business/masters-accounting/about/facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/academics/business/masters-accounting/about/facilities/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/academics/arts-and-sciences/engineering/about-our-program/facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/academics/arts-and-sciences/engineering/about-our-program/facilities/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/news/2023/04/17/elon-dedicates-founders-hall-and-innovation-hall/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/news/2023/04/17/elon-dedicates-founders-hall-and-innovation-hall/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/news/2007/09/25/commitment-to-students-a-focus-of-mccoy-commons-dedication/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/news/2007/09/25/commitment-to-students-a-focus-of-mccoy-commons-dedication/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/news/2024/01/29/a-story-of-meaningful-relationship-the-numen-lumen-pavilion%E2%80%AFcelebrates-10-years/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/news/2024/01/29/a-story-of-meaningful-relationship-the-numen-lumen-pavilion%E2%80%AFcelebrates-10-years/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/news/2024/06/26/an-ecovillage-a-new-commons-and-more-in-the-works-this-summer-at-elon/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/news/2024/06/26/an-ecovillage-a-new-commons-and-more-in-the-works-this-summer-at-elon/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

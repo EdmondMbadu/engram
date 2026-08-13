@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://library.northeastern.edu/ideas/about-snell-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.northeastern.edu/ideas/about-snell-library/",
+      "error": ""
+    },
+    {
+      "url": "https://library.northeastern.edu/ideas/rooms-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.northeastern.edu/ideas/rooms-spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://cds.library.northeastern.edu/cds-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cds.library.northeastern.edu/cds-spaces/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

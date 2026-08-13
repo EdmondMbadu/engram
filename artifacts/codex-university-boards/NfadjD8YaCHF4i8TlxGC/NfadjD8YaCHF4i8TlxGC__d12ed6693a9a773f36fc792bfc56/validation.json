@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.aclib.us/sites/default/files/media/documents/LongRangePlanBrochure2023-2027printable.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.aclib.us/sites/default/files/media/documents/LongRangePlanBrochure2023-2027printable.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://mathesonmuseum.org/visit/museum/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mathesonmuseum.org/visit/museum/",
+      "error": ""
+    },
+    {
+      "url": "https://www.gainesvillefl.gov/Government-Pages/Government/Departments/Parks-Recreation-Cultural-Affairs/Arts-Culture/Cultural-Facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gainesvillefl.gov/Government-Pages/Government/Departments/Parks-Recreation-Cultural-Affairs/Arts-Culture/Cultural-Facilities",
+      "error": ""
+    },
+    {
+      "url": "https://thehipp.org/plannedgiving",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thehipp.org/plannedgiving",
+      "error": ""
+    },
+    {
+      "url": "https://cademuseum.org/sitemap/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cademuseum.org/sitemap/",
+      "error": ""
+    },
+    {
+      "url": "https://ccemail.cityofgainesville.org/Message?mid=14621&preview=true",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ccemail.cityofgainesville.org/Message?mid=14621&preview=true",
+      "error": ""
+    },
+    {
+      "url": "https://www.cottonclubmuseum.com/about-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cottonclubmuseum.com/about-us",
+      "error": ""
+    },
+    {
+      "url": "https://www.gainesvillefl.gov/Venues/A.-Quinn-Jones-Museum-Cultural-Center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gainesvillefl.gov/Venues/A.-Quinn-Jones-Museum-Cultural-Center",
+      "error": ""
+    },
+    {
+      "url": "https://www.gainesvillefl.gov/Venues",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gainesvillefl.gov/Venues",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

@@ -1,0 +1,72 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.flsouthern.edu/campus-life/arts-centers/melvin-gallery",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flsouthern.edu/campus-life/arts-centers/melvin-gallery",
+      "error": ""
+    },
+    {
+      "url": "https://www.flsouthern.edu/news/your-guide-to-experiencing-lakeland-like-a-local",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flsouthern.edu/news/your-guide-to-experiencing-lakeland-like-a-local",
+      "error": ""
+    },
+    {
+      "url": "https://www.lakelandgov.net/departments/public-works/ada-accessibility/accessible-facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakelandgov.net/departments/public-works/ada-accessibility/accessible-facilities/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lakelandgov.net/departments/library/lakeland-history-culture-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakelandgov.net/departments/library/lakeland-history-culture-center/",
+      "error": ""
+    },
+    {
+      "url": "https://bonnetspringspark.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bonnetspringspark.com/",
+      "error": ""
+    },
+    {
+      "url": "https://bonnetspringspark.com/frequently-asked-questions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bonnetspringspark.com/frequently-asked-questions/",
+      "error": ""
+    },
+    {
+      "url": "https://bonnetspringspark.com/education/storywalk-at-bsp/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bonnetspringspark.com/education/storywalk-at-bsp/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Ashley Gibson Barnett Museum of Art",
+    "Hollis Garden"
+  ],
+  "sourceCount": 7,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

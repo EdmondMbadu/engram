@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://wp.stolaf.edu/buntrock/eat/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wp.stolaf.edu/buntrock/eat/",
+      "error": ""
+    },
+    {
+      "url": "https://www.carbones.com/locations/northfield/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.carbones.com/locations/northfield/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/mn/northfield/410-s-hwy-3/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mn/northfield/410-s-hwy-3/restaurant.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.culvers.com/restaurants/northfield",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.culvers.com/restaurants/northfield",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/mn/northfield/1500-clinton-lane/delivery",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/mn/northfield/1500-clinton-lane/delivery",
+      "error": ""
+    },
+    {
+      "url": "https://www.caseys.com/general-store/mn-northfield/521-woodley-st-w/2400",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.caseys.com/general-store/mn-northfield/521-woodley-st-w/2400",
+      "error": ""
+    },
+    {
+      "url": "https://rosemaryitaliankitchen.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://rosemaryitaliankitchen.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://library.sfsu.edu/floor-maps",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.sfsu.edu/floor-maps",
+      "error": ""
+    },
+    {
+      "url": "https://library.sfsu.edu/quiet-study",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.sfsu.edu/quiet-study",
+      "error": ""
+    },
+    {
+      "url": "https://library.sfsu.edu/reserve-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.sfsu.edu/reserve-room",
+      "error": ""
+    },
+    {
+      "url": "https://library.sfsu.edu/collaboration-studio",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.sfsu.edu/collaboration-studio",
+      "error": ""
+    },
+    {
+      "url": "https://library.sfsu.edu/news/faculty-fall-2025",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.sfsu.edu/news/faculty-fall-2025",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

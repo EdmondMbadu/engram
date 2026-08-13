@@ -1,0 +1,61 @@
+Reading additional input from stdin...
+2026-08-13T09:45:35.555992Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T09:45:35.646737Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-terra
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa83-4738-7462-b008-190b2728455a
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"UOVBzphzOKXi3MUoROiP","schoolName":"Wheaton College (Massachusetts)","shortSchoolName":"Wheaton College (Massachusetts)","townName":"Norton","state":"MA","countryCode":"US","website":"https://www.wheatoncollege.edu/","latitude":41.966637,"longitude":-71.183979},"templates":[{"id":"college-only-happens-here","version":"1.0","titlePattern":"Only Happens Here: {count} Traditions That Make No Sense Anywhere Else","editorialBrief":"Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.","researchQueries":["university traditions alumni","campus traditions student newspaper","school rituals history"],"count":10,"icon":"fingerprint","primarySubjectType":"tradition","allowedSubjectTypes":["tradition"],"freshnessDays":1095,"exactTitle":"Only Happens Here: 10 Traditions That Make No Sense Anywhere Else"}]}
+2026-08-13T09:45:45.328992Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for zsh: Snapshot command timed out for zsh
+2026-08-13T09:45:51.149183Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses
+2026-08-13T09:45:51.162799Z  WARN codex_core::session_startup_prewarm: startup websocket prewarm setup failed: unexpected status 403 Forbidden: Unknown error, url: wss://chatgpt.com/backend-api/codex/responses, cf-ray: a2a6ca0dfa875808-LAS
+2026-08-13T09:45:54.984380Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses
+2026-08-13T09:45:54.984497Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (1/5 in 182ms)... turn_id=019ffa83-6aa7-7362-82c9-032fe55dca38 retries=1 max_retries=5 sampling_error=unexpected status 403 Forbidden: Unknown error, url: wss://chatgpt.com/backend-api/codex/responses, cf-ray: a2a6ca260bd8933b-LAS
+2026-08-13T09:45:57.503275Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses
+2026-08-13T09:45:57.503508Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (2/5 in 438ms)... turn_id=019ffa83-6aa7-7362-82c9-032fe55dca38 retries=2 max_retries=5 sampling_error=unexpected status 403 Forbidden: Unknown error, url: wss://chatgpt.com/backend-api/codex/responses, cf-ray: a2a6ca35a8695d22-LAS
+ERROR: Reconnecting... 2/5
+2026-08-13T09:45:59.850582Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses
+2026-08-13T09:45:59.850652Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (3/5 in 787ms)... turn_id=019ffa83-6aa7-7362-82c9-032fe55dca38 retries=3 max_retries=5 sampling_error=unexpected status 403 Forbidden: Unknown error, url: wss://chatgpt.com/backend-api/codex/responses, cf-ray: a2a6ca447c46f317-LAS
+ERROR: Reconnecting... 3/5
+2026-08-13T09:46:02.585527Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses
+2026-08-13T09:46:02.585643Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (4/5 in 1.589s)... turn_id=019ffa83-6aa7-7362-82c9-032fe55dca38 retries=4 max_retries=5 sampling_error=unexpected status 403 Forbidden: Unknown error, url: wss://chatgpt.com/backend-api/codex/responses, cf-ray: a2a6ca557caa4320-LAS
+ERROR: Reconnecting... 4/5
+2026-08-13T09:46:05.370805Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses
+2026-08-13T09:46:05.371389Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (5/5 in 3.371s)... turn_id=019ffa83-6aa7-7362-82c9-032fe55dca38 retries=5 max_retries=5 sampling_error=unexpected status 403 Forbidden: Unknown error, url: wss://chatgpt.com/backend-api/codex/responses, cf-ray: a2a6ca666f328b77-LAS
+ERROR: Reconnecting... 5/5
+2026-08-13T09:46:10.991174Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses
+2026-08-13T09:46:10.991469Z  WARN codex_core::client: falling back to HTTP
+warning: Falling back from WebSockets to HTTPS transport. unexpected status 403 Forbidden: Unknown error, url: wss://chatgpt.com/backend-api/codex/responses, cf-ray: a2a6ca8a0aa85d22-LAS
+ERROR: You've hit your usage limit. Visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Aug 19th, 2026 8:33 PM.
+ERROR: You've hit your usage limit. Visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Aug 19th, 2026 8:33 PM.
+

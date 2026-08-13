@@ -1,0 +1,290 @@
+Reading additional input from stdin...
+2026-08-13T07:37:09.576309Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0d-482f-75f3-8f92-6587af5e362b.1786606602287839000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:37:09.619264Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0d-482f-75b2-af86-9868f19bfb39.1786606602287588000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:37:09.719192Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0d-4830-7ae0-b25d-ed97516bcbcc.1786606602288715000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:37:09.803553Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0d-4831-73e3-8028-9b98d679c2ed.1786606602289908000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:37:09.814749Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:37:09.865401Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:37:09.954276Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0d-4813-7b83-a3c3-697f666ab3cd.1786606602259904000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:37:10.075408Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0d-482f-7c91-8f35-54299e194183.1786606602288095000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:37:10.229062Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0d-482e-7331-a60d-5a169734a48d.1786606602286482000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa0d-b254-77f3-a13d-d262c89b93e7
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"okOdCmv722iS72U18CBZ","schoolName":"Hope College","shortSchoolName":"Hope College","townName":"Holland","state":"MI","countryCode":"US","website":"https://hope.edu/","latitude":42.787247,"longitude":-86.100971},"templates":[{"id":"college-study-spots","version":"1.0","titlePattern":"Claimed by 9am: {count} Study Spots Worth Showing Up Early For","editorialBrief":"Choose ten distinct study environments. Verify access rules, room or reservation constraints, and the physical affordance that makes each useful. Treat “Claimed by 9am” as editorial framing; never assert crowding or student behavior without evidence.","researchQueries":["campus study spaces","library study rooms students","quiet study campus"],"count":10,"icon":"menu_book","primarySubjectType":"study_space","allowedSubjectTypes":["study_space","place"],"freshnessDays":180,"exactTitle":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For"}]}
+codex
+{
+  "complete": false,
+  "school_name": "Hope College",
+  "town_name": "Holland",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Hope College",
+      "town_name": "Holland",
+      "template_id": "college-study-spots",
+      "title": "Claimed by 9am: 10 Study Spots Worth Showing Up Early For",
+      "description": "",
+      "icon": "menu_book",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "I’m researching ten distinct Hope College study environments and checking official access or reservation details for each.",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     ,
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:hope.edu library study spaces Hope College Van Wylen rooms ...
+web search: 
+web search: site:hope.edu/library/about-us/floor-plans/ "Second Floor" Hope ...
+web search: 
+web search: https://hope.edu/library/about-us/floor-plans/fourth-floor.html
+codex
+{"complete":true,"school_name":"Hope College","town_name":"Holland","boards":[{"complete":true,"school_name":"Hope College","town_name":"Holland","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten distinct study settings inside Hope College’s Van Wylen Library, spanning quiet floors, collaborative areas, specialized labs and reservable rooms.","icon":"menu_book","cards":[{"subject_id":"hope-vwl-lower-level","subject_type":"study_space","entity_name":"Van Wylen Library Lower Level","title":"Lower-Level Quiet Zone","subtitle":"Quiet study near science, technology and language collections","notes":"Head downstairs for quiet work near the P–PT and Q–Z stacks; use a group room when discussion is necessary and keep shared-floor noise low.","short_summary":"A quiet library level pairing broad subject collections with enclosed group-study options.","evidence_claim":"Hope College identifies the Van Wylen Library lower level as a quiet zone with group study rooms and collections covering literature, languages, science, nursing, medicine and technology.","source_url":"https://hope.edu/library/about-us/floor-plans/lower-level.html","source_title":"Map of the Lower Level | Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use during Van Wylen Library’s current open hours. Group study rooms are for Hope College students, available first come, first served or by advance reservation.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hope-vwl-main-floor","subject_type":"study_space","entity_name":"Van Wylen Library Main Floor","title":"Main-Floor Collaboration Zone","subtitle":"Reference tools, current reading and academic help nearby","notes":"Set up here for a collaborative assignment, then use the Research Help Desk or Klooster writing assistants when the work calls for focused support.","short_summary":"A social work area with reference materials and research and writing assistance close at hand.","evidence_claim":"Hope College describes the main floor as a place for collaborative work and socializing, with reference sources, current magazines, the Research Help Desk and Klooster writing assistance.","source_url":"https://hope.edu/library/about-us/floor-plans/main-floor.html","source_title":"Map of the Main Floor | Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use during current library hours. Writing assistance is offered through the Klooster Center, and librarian help is available at the Research Help Desk.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hope-vwl-second-floor","subject_type":"study_space","entity_name":"Van Wylen Library Second Floor","title":"Second-Floor Collaboration Zone","subtitle":"Art and music stacks beside specialized library spaces","notes":"Bring work that benefits from conversation, then consult the nearby M, N and PZ collections or shift into one of the floor’s specialized rooms.","short_summary":"A collaborative floor anchored by arts collections and several project-oriented library facilities.","evidence_claim":"Hope College calls the second floor a place for collaborative work and socializing and locates the Curriculum Library, Digital Media Lab, Granberg Room and Library Teaching Lab there.","source_url":"https://hope.edu/library/about-us/floor-plans/second-floor.html","source_title":"Map of the Second Floor | Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use during current Van Wylen Library hours. Individual specialized rooms on this floor may have separate reservation or use requirements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hope-vwl-third-floor","subject_type":"study_space","entity_name":"Van Wylen Library Third Floor","title":"Third-Floor Quiet Zone","subtitle":"Low-noise study near social-science collections","notes":"Choose this floor for quiet reading in history, economics, sociology, politics or education; move into a group room when collaboration begins.","short_summary":"A quiet floor with social-science stacks and group rooms for contained conversation.","evidence_claim":"Hope College identifies the third floor as a quiet zone with group study rooms and collections including history, geography, economics, sociology, political science, law and education.","source_url":"https://hope.edu/library/about-us/floor-plans/third-floor.html","source_title":"Map of the Third Floor | Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use during current library hours. Observe quiet-zone expectations; Hope says study rooms are not soundproof and conversations should remain low.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hope-vwl-fourth-floor","subject_type":"study_space","entity_name":"Van Wylen Library Fourth Floor","title":"Fourth-Floor Quiet Zone","subtitle":"Quiet work among humanities collections","notes":"Climb to this quiet floor for reading or drafting near philosophy, psychology, religion and world-history stacks; use a group room for discussion.","short_summary":"A top-floor quiet zone surrounded by humanities books and equipped with group-study rooms.","evidence_claim":"Hope College identifies the fourth floor as a quiet zone with group study rooms and collections in philosophy, psychology, religion and world history.","source_url":"https://hope.edu/library/about-us/floor-plans/fourth-floor.html","source_title":"Map of the Fourth Floor | Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use during current Van Wylen Library hours. Follow quiet-zone expectations and reserve a group study room in advance when needed.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hope-aj-muste-alcove","subject_type":"study_space","entity_name":"A.J. Muste Alcove","title":"A.J. Muste Alcove","subtitle":"Second-floor study alcove with Hope-alumni sculpture","notes":"Settle into the dedicated alcove for individual work, and pause to examine the Muste bust and John Saurer’s chalkboard-surfaced sculpture.","short_summary":"A named study alcove where focused work shares space with two alumni-made artworks.","evidence_claim":"Hope College documents the A.J. Muste Alcove as a second-floor study alcove featuring John Saurer’s interactive sculpture “Stop, Look, and Listen” and Ryan Dodde II’s bust of Muste.","source_url":"https://hope.edu/library/about-us/spaces/","source_title":"Spaces | Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on Van Wylen Library’s second floor and usable during current library hours; the official page lists no reservation requirement for the alcove.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hope-digital-media-lab","subject_type":"study_space","entity_name":"Digital Media Lab","title":"Digital Media Lab","subtitle":"Technology-equipped workspace for multimedia projects","notes":"Bring media-heavy assignments here for specialized software, collaborative workspace and peer guidance; confirm support availability before arriving.","short_summary":"A project workspace for editing, visualization, fabrication and other technology-intensive coursework.","evidence_claim":"Hope College says the Digital Media Lab provides peer consultants, specialized computers and software, collaborative workspaces, a Sound Room, Cricut access and a heat press.","source_url":"https://hope.edu/library/about-us/spaces/","source_title":"Spaces | Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The lab is on Van Wylen Library’s second floor and serves students and staff. Check the library’s current hours and DML support schedule before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hope-curriculum-library","subject_type":"study_space","entity_name":"Curriculum Library","title":"Curriculum Library","subtitle":"Second-floor room beside education-focused resources","notes":"Use this named room when coursework benefits from the second floor’s education setting; submit an EMS request before relying on exclusive access.","short_summary":"A reservable second-floor library room suited to coursework connected with curriculum resources.","evidence_claim":"Hope College lists the Curriculum Library among Van Wylen Library’s reservable rooms and places it on the second floor.","source_url":"https://hope.edu/library/about-us/spaces/","source_title":"Spaces | Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Submit a reservation request through Hope’s Event Management System. Availability and approval are not guaranteed; also verify current library hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hope-granberg-room-222","subject_type":"study_space","entity_name":"Granberg Room 222","title":"Granberg Room 222","subtitle":"Reservable second-floor library classroom","notes":"Plan this room for structured group work that needs a classroom setup; check EMS first and use the outside tablet only for an eligible same-day opening.","short_summary":"A reservable library classroom for organized collaborative sessions rather than drop-in individual study.","evidence_claim":"Hope College identifies Granberg Room 222 as one of Van Wylen Library’s two classrooms and permits same-day reservations through the Quick Reserve tablet, with other requests routed through EMS.","source_url":"https://hope.edu/library/about-us/policies/classrooms.html","source_title":"Library Classroom Policy | Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Same-day reservations may be made on the Quick Reserve tablet outside the room. Other reservations require an EMS request and library approval; September and early October restrictions apply.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hope-library-teaching-lab-202","subject_type":"study_space","entity_name":"Library Teaching Lab 202","title":"Library Teaching Lab 202","subtitle":"Reservable classroom for computer-supported group work","notes":"Choose the LTL when a study session needs a classroom and computers; request it through EMS or check the door tablet for same-day availability.","short_summary":"A reservable teaching lab designed for library instruction and computer-related group sessions.","evidence_claim":"Hope College identifies Library Teaching Lab 202 as a library classroom used for library and computer-related instruction, with same-day Quick Reserve and advance EMS request options.","source_url":"https://hope.edu/library/about-us/policies/classrooms.html","source_title":"Library Classroom Policy | Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Same-day use requires an available Quick Reserve slot; other requests need EMS submission and library approval. The room is restricted during September and the first week of October.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:38:54.837259Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa0d-b254-77f3-a13d-d262c89b93e7.1786606629461050000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+43,749
+
+{"complete":true,"school_name":"Hope College","town_name":"Holland","boards":[{"complete":true,"school_name":"Hope College","town_name":"Holland","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten distinct study settings inside Hope College’s Van Wylen Library, spanning quiet floors, collaborative areas, specialized labs and reservable rooms.","icon":"menu_book","cards":[{"subject_id":"hope-vwl-lower-level","subject_type":"study_space","entity_name":"Van Wylen Library Lower Level","title":"Lower-Level Quiet Zone","subtitle":"Quiet study near science, technology and language collections","notes":"Head downstairs for quiet work near the P–PT and Q–Z stacks; use a group room when discussion is necessary and keep shared-floor noise low.","short_summary":"A quiet library level pairing broad subject collections with enclosed group-study options.","evidence_claim":"Hope College identifies the Van Wylen Library lower level as a quiet zone with group study rooms and collections covering literature, languages, science, nursing, medicine and technology.","source_url":"https://hope.edu/library/about-us/floor-plans/lower-level.html","source_title":"Map of the Lower Level | Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use during Van Wylen Library’s current open hours. Group study rooms are for Hope College students, available first come, first served or by advance reservation.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hope-vwl-main-floor","subject_type":"study_space","entity_name":"Van Wylen Library Main Floor","title":"Main-Floor Collaboration Zone","subtitle":"Reference tools, current reading and academic help nearby","notes":"Set up here for a collaborative assignment, then use the Research Help Desk or Klooster writing assistants when the work calls for focused support.","short_summary":"A social work area with reference materials and research and writing assistance close at hand.","evidence_claim":"Hope College describes the main floor as a place for collaborative work and socializing, with reference sources, current magazines, the Research Help Desk and Klooster writing assistance.","source_url":"https://hope.edu/library/about-us/floor-plans/main-floor.html","source_title":"Map of the Main Floor | Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use during current library hours. Writing assistance is offered through the Klooster Center, and librarian help is available at the Research Help Desk.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hope-vwl-second-floor","subject_type":"study_space","entity_name":"Van Wylen Library Second Floor","title":"Second-Floor Collaboration Zone","subtitle":"Art and music stacks beside specialized library spaces","notes":"Bring work that benefits from conversation, then consult the nearby M, N and PZ collections or shift into one of the floor’s specialized rooms.","short_summary":"A collaborative floor anchored by arts collections and several project-oriented library facilities.","evidence_claim":"Hope College calls the second floor a place for collaborative work and socializing and locates the Curriculum Library, Digital Media Lab, Granberg Room and Library Teaching Lab there.","source_url":"https://hope.edu/library/about-us/floor-plans/second-floor.html","source_title":"Map of the Second Floor | Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use during current Van Wylen Library hours. Individual specialized rooms on this floor may have separate reservation or use requirements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hope-vwl-third-floor","subject_type":"study_space","entity_name":"Van Wylen Library Third Floor","title":"Third-Floor Quiet Zone","subtitle":"Low-noise study near social-science collections","notes":"Choose this floor for quiet reading in history, economics, sociology, politics or education; move into a group room when collaboration begins.","short_summary":"A quiet floor with social-science stacks and group rooms for contained conversation.","evidence_claim":"Hope College identifies the third floor as a quiet zone with group study rooms and collections including history, geography, economics, sociology, political science, law and education.","source_url":"https://hope.edu/library/about-us/floor-plans/third-floor.html","source_title":"Map of the Third Floor | Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use during current library hours. Observe quiet-zone expectations; Hope says study rooms are not soundproof and conversations should remain low.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hope-vwl-fourth-floor","subject_type":"study_space","entity_name":"Van Wylen Library Fourth Floor","title":"Fourth-Floor Quiet Zone","subtitle":"Quiet work among humanities collections","notes":"Climb to this quiet floor for reading or drafting near philosophy, psychology, religion and world-history stacks; use a group room for discussion.","short_summary":"A top-floor quiet zone surrounded by humanities books and equipped with group-study rooms.","evidence_claim":"Hope College identifies the fourth floor as a quiet zone with group study rooms and collections in philosophy, psychology, religion and world history.","source_url":"https://hope.edu/library/about-us/floor-plans/fourth-floor.html","source_title":"Map of the Fourth Floor | Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use during current Van Wylen Library hours. Follow quiet-zone expectations and reserve a group study room in advance when needed.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hope-aj-muste-alcove","subject_type":"study_space","entity_name":"A.J. Muste Alcove","title":"A.J. Muste Alcove","subtitle":"Second-floor study alcove with Hope-alumni sculpture","notes":"Settle into the dedicated alcove for individual work, and pause to examine the Muste bust and John Saurer’s chalkboard-surfaced sculpture.","short_summary":"A named study alcove where focused work shares space with two alumni-made artworks.","evidence_claim":"Hope College documents the A.J. Muste Alcove as a second-floor study alcove featuring John Saurer’s interactive sculpture “Stop, Look, and Listen” and Ryan Dodde II’s bust of Muste.","source_url":"https://hope.edu/library/about-us/spaces/","source_title":"Spaces | Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on Van Wylen Library’s second floor and usable during current library hours; the official page lists no reservation requirement for the alcove.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hope-digital-media-lab","subject_type":"study_space","entity_name":"Digital Media Lab","title":"Digital Media Lab","subtitle":"Technology-equipped workspace for multimedia projects","notes":"Bring media-heavy assignments here for specialized software, collaborative workspace and peer guidance; confirm support availability before arriving.","short_summary":"A project workspace for editing, visualization, fabrication and other technology-intensive coursework.","evidence_claim":"Hope College says the Digital Media Lab provides peer consultants, specialized computers and software, collaborative workspaces, a Sound Room, Cricut access and a heat press.","source_url":"https://hope.edu/library/about-us/spaces/","source_title":"Spaces | Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The lab is on Van Wylen Library’s second floor and serves students and staff. Check the library’s current hours and DML support schedule before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hope-curriculum-library","subject_type":"study_space","entity_name":"Curriculum Library","title":"Curriculum Library","subtitle":"Second-floor room beside education-focused resources","notes":"Use this named room when coursework benefits from the second floor’s education setting; submit an EMS request before relying on exclusive access.","short_summary":"A reservable second-floor library room suited to coursework connected with curriculum resources.","evidence_claim":"Hope College lists the Curriculum Library among Van Wylen Library’s reservable rooms and places it on the second floor.","source_url":"https://hope.edu/library/about-us/spaces/","source_title":"Spaces | Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Submit a reservation request through Hope’s Event Management System. Availability and approval are not guaranteed; also verify current library hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hope-granberg-room-222","subject_type":"study_space","entity_name":"Granberg Room 222","title":"Granberg Room 222","subtitle":"Reservable second-floor library classroom","notes":"Plan this room for structured group work that needs a classroom setup; check EMS first and use the outside tablet only for an eligible same-day opening.","short_summary":"A reservable library classroom for organized collaborative sessions rather than drop-in individual study.","evidence_claim":"Hope College identifies Granberg Room 222 as one of Van Wylen Library’s two classrooms and permits same-day reservations through the Quick Reserve tablet, with other requests routed through EMS.","source_url":"https://hope.edu/library/about-us/policies/classrooms.html","source_title":"Library Classroom Policy | Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Same-day reservations may be made on the Quick Reserve tablet outside the room. Other reservations require an EMS request and library approval; September and early October restrictions apply.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hope-library-teaching-lab-202","subject_type":"study_space","entity_name":"Library Teaching Lab 202","title":"Library Teaching Lab 202","subtitle":"Reservable classroom for computer-supported group work","notes":"Choose the LTL when a study session needs a classroom and computers; request it through EMS or check the door tablet for same-day availability.","short_summary":"A reservable teaching lab designed for library instruction and computer-related group sessions.","evidence_claim":"Hope College identifies Library Teaching Lab 202 as a library classroom used for library and computer-related instruction, with same-day Quick Reserve and advance EMS request options.","source_url":"https://hope.edu/library/about-us/policies/classrooms.html","source_title":"Library Classroom Policy | Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Same-day use requires an available Quick Reserve slot; other requests need EMS submission and library approval. The room is restricted during September and the first week of October.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

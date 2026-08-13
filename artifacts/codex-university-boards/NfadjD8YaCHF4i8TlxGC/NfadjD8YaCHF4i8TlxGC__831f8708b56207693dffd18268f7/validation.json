@@ -1,0 +1,77 @@
+{
+  "ok": false,
+  "problems": [
+    "A card uses a subject type outside the template rubric."
+  ],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.stjohns.edu/life-st-johns/student-success/new-student-orientation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stjohns.edu/life-st-johns/student-success/new-student-orientation",
+      "error": ""
+    },
+    {
+      "url": "https://www.stjohns.edu/queens-residential-campus/queens-campus-life/campus-activities/commuter-student-life",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stjohns.edu/queens-residential-campus/queens-campus-life/campus-activities/commuter-student-life",
+      "error": ""
+    },
+    {
+      "url": "https://www.stjohns.edu/life-st-johns/new-york-locations/queens-residential-campus/queens-campus-life/campus-concierge",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stjohns.edu/life-st-johns/new-york-locations/queens-residential-campus/queens-campus-life/campus-concierge",
+      "error": ""
+    },
+    {
+      "url": "https://www.stjohns.edu/life-st-johns/new-york-locations/queens-residential-campus/campus-recreation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stjohns.edu/life-st-johns/new-york-locations/queens-residential-campus/campus-recreation",
+      "error": ""
+    },
+    {
+      "url": "https://www.stjohns.edu/life-st-johns/student-success/university-learning-commons",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stjohns.edu/life-st-johns/student-success/university-learning-commons",
+      "error": ""
+    },
+    {
+      "url": "https://www.stjohns.edu/offices-departments/dr-m-t-geoffrey-yeh-art-gallery",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stjohns.edu/offices-departments/dr-m-t-geoffrey-yeh-art-gallery",
+      "error": ""
+    },
+    {
+      "url": "https://www.stjohns.edu/who-we-are/faith-mission-ministry/your-faith-ministry",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stjohns.edu/who-we-are/faith-mission-ministry/your-faith-ministry",
+      "error": ""
+    },
+    {
+      "url": "https://www.stjohns.edu/files/queens-campus-map",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stjohns.edu/sites/default/files/uploads/140425_m1-9098_queens_campus_map.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": null,
+  "generationGrade": null
+}

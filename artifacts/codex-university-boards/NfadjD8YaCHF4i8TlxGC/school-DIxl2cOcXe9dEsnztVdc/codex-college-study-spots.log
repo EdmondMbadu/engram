@@ -1,0 +1,294 @@
+Reading additional input from stdin...
+2026-08-13T07:11:13.099018Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f5-ca0b-7733-bdc8-bebbc103ecb0.1786605062667786000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9f5-f22b-7552-a4c4-776a049b9c27
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"DIxl2cOcXe9dEsnztVdc","schoolName":"Franklin and Marshall College","shortSchoolName":"Franklin and Marshall College","townName":"Lancaster","state":"PA","countryCode":"US","website":"https://www.fandm.edu/","latitude":40.048045,"longitude":-76.319037},"templates":[{"id":"college-study-spots","version":"1.0","titlePattern":"Claimed by 9am: {count} Study Spots Worth Showing Up Early For","editorialBrief":"Choose ten distinct study environments. Verify access rules, room or reservation constraints, and the physical affordance that makes each useful. Treat “Claimed by 9am” as editorial framing; never assert crowding or student behavior without evidence.","researchQueries":["campus study spaces","library study rooms students","quiet study campus"],"count":10,"icon":"menu_book","primarySubjectType":"study_space","allowedSubjectTypes":["study_space","place"],"freshnessDays":180,"exactTitle":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For"}]}
+2026-08-13T07:11:13.269384Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f5-c9df-7df0-a803-a34ed1f33340.1786605062623698000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:11:13.339055Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f5-c9e0-79a0-b0e6-19e1f110e133.1786605062624919000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:11:13.351811Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:11:13.364760Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:11:13.446971Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f5-ca10-7690-8a2a-1187835a7d47.1786605062673215000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:11:13.522526Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f5-ca06-71f3-a9d1-701387925d15.1786605062662697000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:11:13.655654Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f5-ca0b-7820-bf30-430a945bea5a.1786605062668025000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Franklin and Marshall College",
+  "town_name": "Lancaster",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Franklin and Marshall College",
+      "town_name": "Lancaster",
+      "template_id": "college-study-spots",
+      "title": "Claimed by 9am: 10 Study Spots Worth Showing Up Early For",
+      "description": "",
+      "icon": "menu_book",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "I’m verifying ten distinct study environments against current official pages, including access and reservation constraints.",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:fandm.edu library study spaces Shadek-Fackenthal Martin Library Franklin Marshall ...
+web search: 
+web search: site:library.fandm.edu "Group Study Rooms" ...
+web search: 
+web search: site:fandm.edu "study" "lounge" campus ...
+web search: 
+web search: 
+web search: 
+web search: site:library.fandm.edu/hours Franklin Marshall library hours 2026 ...
+codex
+{"complete":true,"school_name":"Franklin and Marshall College","town_name":"Lancaster","boards":[{"complete":true,"school_name":"Franklin and Marshall College","town_name":"Lancaster","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten documented F&M settings for quiet reading, collaborative work, writing, and subject-focused study. Confirm current building access before visiting.","icon":"menu_book","cards":[{"subject_id":"fandm-shadek-fackenthal-library","subject_type":"study_space","entity_name":"Shadek-Fackenthal Library","title":"Settle In at Shadek-Fackenthal","subtitle":"Humanities, social sciences, and fine-arts collections","notes":"Start at the information desk, then choose a work area near the humanities, social-sciences, fine-arts, or media collections.","short_summary":"A collection-rich library setting for reading, research, and longer writing sessions.","evidence_claim":"F&M identifies Shadek-Fackenthal as a College Library location housing humanities, social-sciences, fine-arts, and media collections, plus several learning spaces and service desks.","source_url":"https://www.fandm.edu/library/","source_title":"College Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Library access follows the College Library’s current schedule; check posted hours and entry requirements before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fandm-martin-library-sciences","subject_type":"study_space","entity_name":"Martin Library of the Sciences","title":"Work Among the Science Collections","subtitle":"Science library with research and technology support","notes":"Bring a science-heavy assignment and use the nearby collections, Archives resources, or technology-support services as needed.","short_summary":"A science-centered library environment with research collections and technical support close at hand.","evidence_claim":"F&M states that Martin Library holds its science print collections and houses Archives & Special Collections, the ITS Help Desk, and the Tech Lending Center.","source_url":"https://www.fandm.edu/library/","source_title":"College Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Library access follows the College Library’s current schedule; verify hours and any ID requirement before arrival.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fandm-bonchek-college-house-commons","subject_type":"study_space","entity_name":"Bonchek College House Commons","title":"Use Bonchek’s Classroom or Lounge","subtitle":"Ground-floor commons in South Benjamin Franklin Hall","notes":"Choose the classroom for structured group work or move to the lounge when the assignment calls for a more conversational setup.","short_summary":"A residential commons pairing classroom space with a lounge, kitchen, and convenient ground-floor location.","evidence_claim":"F&M documents Bonchek College House Commons on South Benjamin Franklin Hall’s ground floor and says it includes a lounge, kitchen, and classroom.","source_url":"https://www.fandm.edu/housing/on-campus-residential-facilities.html","source_title":"On-Campus Residential Facilities","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This commons is inside first-year housing. Confirm residential-building entry and guest rules with Bonchek House staff.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fandm-brooks-college-house-commons","subject_type":"study_space","entity_name":"Brooks College House Commons","title":"Spread Out Between Brooks Halls","subtitle":"Commons connecting Buchanan and Marshall Halls","notes":"Pick the classroom for a working session or use the lounge or fireplace room for reading and discussion between commitments.","short_summary":"A connecting commons with several distinct settings for solo preparation or small-group conversation.","evidence_claim":"F&M says Brooks College House Commons connects Buchanan and Marshall Halls and includes a lounge, fireplace room, kitchen, and classroom.","source_url":"https://www.fandm.edu/housing/on-campus-residential-facilities.html","source_title":"On-Campus Residential Facilities","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located within first-year residential facilities; confirm building access and guest policies with Brooks House staff.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fandm-roschel-college-house-study-rooms","subject_type":"study_space","entity_name":"Roschel College House Study Rooms","title":"Bookend Group Work at Roschel","subtitle":"Study rooms beside the first-floor Great Room","notes":"Use a study room off the Great Room for focused collaboration, and move to a floor lounge when a less formal setting fits.","short_summary":"Dedicated residential study rooms positioned beside Roschel’s main first-floor gathering space.","evidence_claim":"F&M documents study rooms off Roschel College House’s first-floor Great Room, along with common lounges on every floor.","source_url":"https://www.fandm.edu/housing/on-campus-residential-facilities.html","source_title":"On-Campus Residential Facilities","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Roschel is returning-student housing. Confirm entry, guest access, and study-room availability with House staff.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fandm-ware-college-house-commons","subject_type":"study_space","entity_name":"Ware College House Commons","title":"Meet in Ware’s Ground-Floor Commons","subtitle":"Lounge and classroom in North Benjamin Franklin Hall","notes":"Use the classroom for organized project work, then shift to the lounge for review or discussion without changing buildings.","short_summary":"A ground-floor residential commons combining a classroom, lounge, and kitchen near the main dining hall.","evidence_claim":"F&M states that Ware College House Commons occupies North Benjamin Franklin Hall’s ground floor and includes a lounge, kitchen, and classroom.","source_url":"https://www.fandm.edu/housing/on-campus-residential-facilities.html","source_title":"On-Campus Residential Facilities","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This commons is within first-year housing. Ask Ware House staff about residential access and guest requirements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fandm-weis-college-house-commons","subject_type":"study_space","entity_name":"Weis College House Commons","title":"Match the Task to a Weis Room","subtitle":"Great room, seminar room, and living room in Weis Hall","notes":"Take discussion-based work to the seminar room, or choose the living room or great room for reading and collaborative review.","short_summary":"A multi-room commons that lets students select a formal seminar setup or a softer shared environment.","evidence_claim":"F&M says the renovated Weis College House Commons contains a large great room, seminar room, living room, and fully equipped kitchen.","source_url":"https://www.fandm.edu/housing/on-campus-residential-facilities.html","source_title":"On-Campus Residential Facilities","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Weis Hall is returning-student housing; verify building entry and guest rules with Weis House staff before meeting there.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fandm-philadelphia-alumni-writers-house","subject_type":"study_space","entity_name":"Philadelphia Alumni Writers House","title":"Draft Beside the Writers House Fireplace","subtitle":"Couches, books, and writing-focused classroom space","notes":"Bring a reading or draft, settle onto a couch, and check the event calendar so workshops or performances do not interrupt the session.","short_summary":"A house-scale literary setting suited to drafting, close reading, and publication work.","evidence_claim":"F&M describes Writers House as having comfortable couches, a kitchen, and fireplace, while serving as a classroom and home for student-run publications.","source_url":"https://www.fandm.edu/centers-institutes-and-initiatives/writers-house/","source_title":"Philadelphia Alumni Writers House","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"All are welcome to visit, but classes and events use the house; consult the current event schedule before settling in.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fandm-hackman-physics-majors-lounge","subject_type":"study_space","entity_name":"Hackman Physics Majors Lounge","title":"Compare Problems in the Physics Lounge","subtitle":"Subject-focused lounge in Hackman Laboratories","notes":"Bring equations or lab notes for peer discussion; this lounge is specifically documented for physics majors to study and exchange ideas.","short_summary":"A discipline-specific collaboration space within F&M’s physical-sciences complex.","evidence_claim":"F&M states that Hackman Physical Sciences Laboratories contains a lounge where physics majors gather to study and share ideas.","source_url":"https://www.fandm.edu/fields-of-study/astrophysics/","source_title":"Astrophysics","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The lounge is designated for physics majors. Academic-building student access is generally controlled by campus ID and schedule.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fandm-klehr-center-living-room","subject_type":"study_space","entity_name":"Klehr Center Living Room","title":"Read by the Klehr Center Fireplace","subtitle":"Well-lit living room with a library and comfortable furniture","notes":"Choose the living room for reading or informal review, and check the program calendar before relying on the multipurpose areas.","short_summary":"A comfortable, well-lit study setting within F&M’s center for Jewish life and interfaith gathering.","evidence_claim":"F&M calls the Klehr Center ideal for studying and socializing and documents a living room with fireplace and comfortable furniture, a library, and multipurpose spaces.","source_url":"https://www.fandm.edu/centers-institutes-and-initiatives/klehr-center-for-jewish-life/index.html","source_title":"The Klehr Center for Jewish Life","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Programs, classes, and religious activities may use the space; confirm current availability and entry arrangements with Klehr Center staff.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:13:36.583007Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9f5-f22b-7552-a4c4-776a049b9c27.1786605072939851000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+50,180
+
+{"complete":true,"school_name":"Franklin and Marshall College","town_name":"Lancaster","boards":[{"complete":true,"school_name":"Franklin and Marshall College","town_name":"Lancaster","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten documented F&M settings for quiet reading, collaborative work, writing, and subject-focused study. Confirm current building access before visiting.","icon":"menu_book","cards":[{"subject_id":"fandm-shadek-fackenthal-library","subject_type":"study_space","entity_name":"Shadek-Fackenthal Library","title":"Settle In at Shadek-Fackenthal","subtitle":"Humanities, social sciences, and fine-arts collections","notes":"Start at the information desk, then choose a work area near the humanities, social-sciences, fine-arts, or media collections.","short_summary":"A collection-rich library setting for reading, research, and longer writing sessions.","evidence_claim":"F&M identifies Shadek-Fackenthal as a College Library location housing humanities, social-sciences, fine-arts, and media collections, plus several learning spaces and service desks.","source_url":"https://www.fandm.edu/library/","source_title":"College Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Library access follows the College Library’s current schedule; check posted hours and entry requirements before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fandm-martin-library-sciences","subject_type":"study_space","entity_name":"Martin Library of the Sciences","title":"Work Among the Science Collections","subtitle":"Science library with research and technology support","notes":"Bring a science-heavy assignment and use the nearby collections, Archives resources, or technology-support services as needed.","short_summary":"A science-centered library environment with research collections and technical support close at hand.","evidence_claim":"F&M states that Martin Library holds its science print collections and houses Archives & Special Collections, the ITS Help Desk, and the Tech Lending Center.","source_url":"https://www.fandm.edu/library/","source_title":"College Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Library access follows the College Library’s current schedule; verify hours and any ID requirement before arrival.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fandm-bonchek-college-house-commons","subject_type":"study_space","entity_name":"Bonchek College House Commons","title":"Use Bonchek’s Classroom or Lounge","subtitle":"Ground-floor commons in South Benjamin Franklin Hall","notes":"Choose the classroom for structured group work or move to the lounge when the assignment calls for a more conversational setup.","short_summary":"A residential commons pairing classroom space with a lounge, kitchen, and convenient ground-floor location.","evidence_claim":"F&M documents Bonchek College House Commons on South Benjamin Franklin Hall’s ground floor and says it includes a lounge, kitchen, and classroom.","source_url":"https://www.fandm.edu/housing/on-campus-residential-facilities.html","source_title":"On-Campus Residential Facilities","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This commons is inside first-year housing. Confirm residential-building entry and guest rules with Bonchek House staff.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fandm-brooks-college-house-commons","subject_type":"study_space","entity_name":"Brooks College House Commons","title":"Spread Out Between Brooks Halls","subtitle":"Commons connecting Buchanan and Marshall Halls","notes":"Pick the classroom for a working session or use the lounge or fireplace room for reading and discussion between commitments.","short_summary":"A connecting commons with several distinct settings for solo preparation or small-group conversation.","evidence_claim":"F&M says Brooks College House Commons connects Buchanan and Marshall Halls and includes a lounge, fireplace room, kitchen, and classroom.","source_url":"https://www.fandm.edu/housing/on-campus-residential-facilities.html","source_title":"On-Campus Residential Facilities","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located within first-year residential facilities; confirm building access and guest policies with Brooks House staff.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fandm-roschel-college-house-study-rooms","subject_type":"study_space","entity_name":"Roschel College House Study Rooms","title":"Bookend Group Work at Roschel","subtitle":"Study rooms beside the first-floor Great Room","notes":"Use a study room off the Great Room for focused collaboration, and move to a floor lounge when a less formal setting fits.","short_summary":"Dedicated residential study rooms positioned beside Roschel’s main first-floor gathering space.","evidence_claim":"F&M documents study rooms off Roschel College House’s first-floor Great Room, along with common lounges on every floor.","source_url":"https://www.fandm.edu/housing/on-campus-residential-facilities.html","source_title":"On-Campus Residential Facilities","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Roschel is returning-student housing. Confirm entry, guest access, and study-room availability with House staff.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fandm-ware-college-house-commons","subject_type":"study_space","entity_name":"Ware College House Commons","title":"Meet in Ware’s Ground-Floor Commons","subtitle":"Lounge and classroom in North Benjamin Franklin Hall","notes":"Use the classroom for organized project work, then shift to the lounge for review or discussion without changing buildings.","short_summary":"A ground-floor residential commons combining a classroom, lounge, and kitchen near the main dining hall.","evidence_claim":"F&M states that Ware College House Commons occupies North Benjamin Franklin Hall’s ground floor and includes a lounge, kitchen, and classroom.","source_url":"https://www.fandm.edu/housing/on-campus-residential-facilities.html","source_title":"On-Campus Residential Facilities","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This commons is within first-year housing. Ask Ware House staff about residential access and guest requirements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fandm-weis-college-house-commons","subject_type":"study_space","entity_name":"Weis College House Commons","title":"Match the Task to a Weis Room","subtitle":"Great room, seminar room, and living room in Weis Hall","notes":"Take discussion-based work to the seminar room, or choose the living room or great room for reading and collaborative review.","short_summary":"A multi-room commons that lets students select a formal seminar setup or a softer shared environment.","evidence_claim":"F&M says the renovated Weis College House Commons contains a large great room, seminar room, living room, and fully equipped kitchen.","source_url":"https://www.fandm.edu/housing/on-campus-residential-facilities.html","source_title":"On-Campus Residential Facilities","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Weis Hall is returning-student housing; verify building entry and guest rules with Weis House staff before meeting there.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fandm-philadelphia-alumni-writers-house","subject_type":"study_space","entity_name":"Philadelphia Alumni Writers House","title":"Draft Beside the Writers House Fireplace","subtitle":"Couches, books, and writing-focused classroom space","notes":"Bring a reading or draft, settle onto a couch, and check the event calendar so workshops or performances do not interrupt the session.","short_summary":"A house-scale literary setting suited to drafting, close reading, and publication work.","evidence_claim":"F&M describes Writers House as having comfortable couches, a kitchen, and fireplace, while serving as a classroom and home for student-run publications.","source_url":"https://www.fandm.edu/centers-institutes-and-initiatives/writers-house/","source_title":"Philadelphia Alumni Writers House","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"All are welcome to visit, but classes and events use the house; consult the current event schedule before settling in.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fandm-hackman-physics-majors-lounge","subject_type":"study_space","entity_name":"Hackman Physics Majors Lounge","title":"Compare Problems in the Physics Lounge","subtitle":"Subject-focused lounge in Hackman Laboratories","notes":"Bring equations or lab notes for peer discussion; this lounge is specifically documented for physics majors to study and exchange ideas.","short_summary":"A discipline-specific collaboration space within F&M’s physical-sciences complex.","evidence_claim":"F&M states that Hackman Physical Sciences Laboratories contains a lounge where physics majors gather to study and share ideas.","source_url":"https://www.fandm.edu/fields-of-study/astrophysics/","source_title":"Astrophysics","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The lounge is designated for physics majors. Academic-building student access is generally controlled by campus ID and schedule.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fandm-klehr-center-living-room","subject_type":"study_space","entity_name":"Klehr Center Living Room","title":"Read by the Klehr Center Fireplace","subtitle":"Well-lit living room with a library and comfortable furniture","notes":"Choose the living room for reading or informal review, and check the program calendar before relying on the multipurpose areas.","short_summary":"A comfortable, well-lit study setting within F&M’s center for Jewish life and interfaith gathering.","evidence_claim":"F&M calls the Klehr Center ideal for studying and socializing and documents a living room with fireplace and comfortable furniture, a library, and multipurpose spaces.","source_url":"https://www.fandm.edu/centers-institutes-and-initiatives/klehr-center-for-jewish-life/index.html","source_title":"The Klehr Center for Jewish Life","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Programs, classes, and religious activities may use the space; confirm current availability and entry arrangements with Klehr Center staff.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

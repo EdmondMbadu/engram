@@ -1,0 +1,74 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "4 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.rmu.edu/why-rmu/campus-experience/student-life/new-student-orientation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rmu.edu/why-rmu/campus-experience/student-life/new-student-orientation",
+      "error": ""
+    },
+    {
+      "url": "https://www.rmu.edu/why-rmu/campus/dining/locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rmu.edu/why-rmu/campus/dining/locations",
+      "error": ""
+    },
+    {
+      "url": "https://www.rmu.edu/student-life/student-activities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rmu.edu/student-life/student-activities",
+      "error": ""
+    },
+    {
+      "url": "https://www.rmu.edu/student-life/campus-recreation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rmu.edu/student-life/campus-recreation",
+      "error": ""
+    },
+    {
+      "url": "https://www.rmu.edu/student-life/home",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rmu.edu/student-life/home",
+      "error": ""
+    },
+    {
+      "url": "https://www.rmu.edu/system/files/user_files/Student%20Organization%20Guidelines%202025%20-%202026%20.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rmu.edu/system/files/user_files/Student%20Organization%20Guidelines%202025%20-%202026%20.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.rmu.edu/about/campus-ministry/student-groups",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rmu.edu/about/campus-ministry/student-groups",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Student Recreation and Fitness Center",
+    "RMU Nature Trail",
+    "Elaine Boyd Library",
+    "Gus Krop Gym"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

@@ -1,0 +1,74 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "4 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.smith.edu/your-campus/offices-services/student-engagement",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smith.edu/your-campus/offices-services/student-engagement",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.smith.edu/spaces-technology/neilson-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.smith.edu/spaces-technology/neilson-library",
+      "error": ""
+    },
+    {
+      "url": "https://www.smith.edu/your-campus/offices-services/event-planning/reservable-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smith.edu/your-campus/offices-services/event-planning/reservable-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://garden.smith.edu/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://garden.smith.edu/visit",
+      "error": ""
+    },
+    {
+      "url": "https://scma.smith.edu/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://scma.smith.edu/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.smith.edu/your-campus/offices-services/imaging-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smith.edu/your-campus/offices-services/imaging-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.smith.edu/academics/departments-programs-courses/theatre",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smith.edu/academics/departments-programs-courses/theatre",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Neilson Library",
+    "Lyman Plant House & Conservatory",
+    "Campus Arboretum and Gardens",
+    "Smith College Museum of Art"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

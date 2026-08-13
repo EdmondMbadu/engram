@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.dennys.com/ca/long-beach",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dennys.com/ca/long-beach",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ca/long-beach/6407-stearns-ave-.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ca/long-beach/6407-stearns-ave-.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ca/long-beach/3398-norwalk-blvd.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ca/long-beach/3398-norwalk-blvd.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ca/long-beach/2500-e-pacific-coast-hwy/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ca/long-beach/2500-e-pacific-coast-hwy/restaurant.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jackinthebox.com/us/ca/long-beach/2550-n-lakewood-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jackinthebox.com/us/ca/long-beach/2550-n-lakewood-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jackinthebox.com/us/ca/long-beach/2101-e-anaheim-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jackinthebox.com/us/ca/long-beach/2101-e-anaheim-st",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jackinthebox.com/us/ca/long-beach/3980-e-ocean-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jackinthebox.com/us/ca/long-beach/3980-e-ocean-blvd",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

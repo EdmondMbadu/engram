@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "kpJ0WoVAS0mu3Qo2WUT9",
+    "schoolName": "University of Central Florida",
+    "shortSchoolName": "University of Central Florida",
+    "townName": "Orlando",
+    "state": "FL",
+    "countryCode": "US",
+    "unitId": "132903",
+    "website": "https://www.ucf.edu/",
+    "latitude": 28.602159,
+    "longitude": -81.200889,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/Seal_of_the_University_of_Central_Florida.svg/120px-Seal_of_the_University_of_Central_Florida.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=ucf.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain University of Central Florida",
+  "excluded_subjects": [
+    "UCF Arboretum Self-Guided Tour",
+    "UCF Arboretum Trails Walk",
+    "UCF Art Gallery Exhibition Visit",
+    "UCF Art Gallery Reception",
+    "Recreation and Wellness Center Fitness Workout",
+    "Recreation and Wellness Center Leisure Pool Swim",
+    "Recreation and Wellness Center Lap Pool Swim",
+    "Recreation and Wellness Center Indoor Track Walk",
+    "Recreation and Wellness Center Basketball Court Game",
+    "Lake Claire Watercraft Rental"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

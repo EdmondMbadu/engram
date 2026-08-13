@@ -1,0 +1,52 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "CR81gWwpizW8N2Hsgk7T",
+    "schoolName": "Emory University",
+    "shortSchoolName": "Emory University",
+    "townName": "Atlanta",
+    "state": "GA",
+    "countryCode": "US",
+    "unitId": "139658",
+    "website": "https://www.emory.edu/",
+    "latitude": 33.790183,
+    "longitude": -84.325512,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/6/63/Emory_University_Seal.svg/250px-Emory_University_Seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=emory.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at Emory University, Shared as Cards",
+  "excluded_subjects": [
+    "Dooley’s Week",
+    "Wonderful Wednesday",
+    "Songfest",
+    "Emory Gate Crossing + Coke Toast",
+    "Class Day Crossover",
+    "Midnight Pancakes",
+    "First Day Fest",
+    "Seney Hall Bell Graduate Toll",
+    "MD Program Alumni Book Signing",
+    "Society of Corpus Cordis Aureum Procession"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

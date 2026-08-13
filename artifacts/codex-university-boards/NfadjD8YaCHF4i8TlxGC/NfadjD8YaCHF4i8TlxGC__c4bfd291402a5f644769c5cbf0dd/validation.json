@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://greyhousecoffee.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://greyhousecoffee.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.vonsshops.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.vonsshops.com/",
+      "error": ""
+    },
+    {
+      "url": "https://mail.madmushroom.com/westlafayette.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mail.madmushroom.com/westlafayette.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.target.com/sl/west-lafayette-state-street/3309",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.target.com/sl/west-lafayette-state-street/3309",
+      "error": ""
+    },
+    {
+      "url": "https://www.purdueu.com/contact-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.purdueu.com/contact-us",
+      "error": ""
+    },
+    {
+      "url": "https://www.homeofpurdue.com/listing/wabash-landing-9/3798/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.homeofpurdue.com/listing/wabash-landing-9/3798/",
+      "error": ""
+    },
+    {
+      "url": "https://www.westlafayette.in.gov/government/development/wabash-landing-parking-garage",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.westlafayette.in.gov/government/development/wabash-landing-parking-garage",
+      "error": ""
+    },
+    {
+      "url": "https://www.westlafayette.in.gov/Home/Components/FacilityDirectory/FacilityDirectory/30/450",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.westlafayette.in.gov/Home/Components/FacilityDirectory/FacilityDirectory/30/450",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "zJH1mWjcd36USFinOZSH",
+    "schoolName": "University of Missouri-Kansas City",
+    "shortSchoolName": "University of Missouri-Kansas City",
+    "townName": "Kansas City",
+    "state": "MO",
+    "countryCode": "US",
+    "unitId": "178402",
+    "website": "https://www.umkc.edu/",
+    "latitude": 39.034179,
+    "longitude": -94.582141,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=umkc.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=umkc.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "The Nelson-Atkins Museum of Art",
+    "Donald J. Hall Sculpture Park",
+    "Kemper Museum of Contemporary Art",
+    "Emily & Todd Voth Artspace at KCAI",
+    "Community Christian Church",
+    "Plaza Branch, Kansas City Public Library",
+    "Ewing and Muriel Kauffman Memorial Garden",
+    "Linda Hall Library",
+    "Linda Hall Library Arboretum",
+    "The National Museum of Toys and Miniatures"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

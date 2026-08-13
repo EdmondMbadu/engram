@@ -1,0 +1,31 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.jefferson.edu/registrar/space-management-room-reservations/study-space.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jefferson.edu/registrar/space-management-room-reservations/study-space.html",
+      "error": ""
+    },
+    {
+      "url": "https://library.jefferson.edu/gutman/tech/space.cfm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.jefferson.edu/gutman/tech/space.cfm",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Rena Rowan Reading Room"
+  ],
+  "sourceCount": 2,
+  "generationScore": 90,
+  "generationGrade": "A"
+}

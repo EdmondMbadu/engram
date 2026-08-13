@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.callutheran.edu/library/room-reservations.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.callutheran.edu/library/room-reservations.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.callutheran.edu/students/registrar/faculty-staff/active-learning-classroom.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.callutheran.edu/students/registrar/faculty-staff/active-learning-classroom.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.callutheran.edu/centers/gallegly/location.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.callutheran.edu/centers/gallegly/location.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.callutheran.edu/offices/academic-affairs/syllabus-polices.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.callutheran.edu/offices/academic-affairs/syllabus-polices.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

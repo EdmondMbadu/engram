@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.mayacinemas.com/movies/checkout/700/136499%3Fauto%3D1",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mayacinemas.com/movies/checkout/700/136499%3Fauto%3D1",
+      "error": ""
+    },
+    {
+      "url": "https://www.coldstonecreamery.com/stores/20732",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.coldstonecreamery.com/stores/20732",
+      "error": ""
+    },
+    {
+      "url": "https://sites.google.com/mail.fresnostate.edu/2023-nayc/campus-pointe",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sites.google.com/mail.fresnostate.edu/2023-nayc/campus-pointe",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

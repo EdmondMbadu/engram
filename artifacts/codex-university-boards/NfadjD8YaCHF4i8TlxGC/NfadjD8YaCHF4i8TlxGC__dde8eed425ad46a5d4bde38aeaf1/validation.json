@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://chas.uni.edu/gallery-art/visitor-information",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://chas.uni.edu/gallery-art/visitor-information",
+      "error": ""
+    },
+    {
+      "url": "https://museum.library.uni.edu/visit-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://museum.library.uni.edu/visit-us",
+      "error": ""
+    },
+    {
+      "url": "https://stem.uni.edu/k12-students",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stem.uni.edu/k12-students",
+      "error": ""
+    },
+    {
+      "url": "https://rodcon.library.uni.edu/sites/default/files/inline-uploads/rodcon2023booklet_3_23digital-copy-1.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://rodcon.library.uni.edu/sites/default/files/inline-uploads/rodcon2023booklet_3_23digital-copy-1.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://cedarfallslibrary.org/youth/our-music-garden/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cedarfallslibrary.org/youth/our-music-garden/",
+      "error": ""
+    },
+    {
+      "url": "https://insideuni.uni.edu/campus-community/dates-announced-free-gallagher-bluedorn-block-party-series",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://insideuni.uni.edu/campus-community/dates-announced-free-gallagher-bluedorn-block-party-series",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

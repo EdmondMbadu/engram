@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.mercer.edu/about-mercer/traditions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mercer.edu/about-mercer/traditions/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 1,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

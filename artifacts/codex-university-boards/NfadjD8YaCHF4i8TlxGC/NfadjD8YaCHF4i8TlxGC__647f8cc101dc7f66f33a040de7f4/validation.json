@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.pasadenaplayhouse.org/centennial/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pasadenaplayhouse.org/centennial/",
+      "error": ""
+    },
+    {
+      "url": "https://www.cityofpasadena.net/parks-and-rec/parks/playhouse-village-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cityofpasadena.net/parks-and-rec/parks/playhouse-village-park/",
+      "error": ""
+    },
+    {
+      "url": "https://pacificasiamuseum.usc.edu/visit-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pacificasiamuseum.usc.edu/visit-us/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitpasadena.com/convention-center/attendees/directions-parking/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitpasadena.com/convention-center/attendees/directions-parking/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nortonsimon.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.nortonsimon.org/",
+      "error": ""
+    },
+    {
+      "url": "https://gamblehouse.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gamblehouse.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://kidspacemuseum.org/visit/hours-and-admission/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://kidspacemuseum.org/visit/hours-and-admission/",
+      "error": ""
+    },
+    {
+      "url": "https://www.rosebowlstadium.com/tours/contact-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rosebowlstadium.com/tours/contact-us",
+      "error": ""
+    },
+    {
+      "url": "https://www.arlingtongardenpasadena.org/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.arlingtongardenpasadena.org/about/",
+      "error": ""
+    },
+    {
+      "url": "https://www.pasadena.edu/about/our-campuses.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pasadena.edu/about/our-campuses.php",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

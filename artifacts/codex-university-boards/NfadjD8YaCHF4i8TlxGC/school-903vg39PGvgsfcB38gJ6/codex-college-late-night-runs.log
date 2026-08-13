@@ -1,0 +1,308 @@
+Reading additional input from stdin...
+2026-08-13T07:53:38.254691Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:53:38.262111Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:53:38.346867Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1b-ff08-7093-bb20-9c7d1f9044db.1786607566600539000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa1c-c8b0-7653-98ae-b100473fc826
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"903vg39PGvgsfcB38gJ6","schoolName":"Kettering College","shortSchoolName":"Kettering College","townName":"Kettering","state":"OH","countryCode":"US","website":"https://kc.edu/","latitude":39.695052,"longitude":-84.192006},"templates":[{"id":"college-late-night-runs","version":"1.0","titlePattern":"{count} Late-Night Runs That Explain {school}","editorialBrief":"Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.","researchQueries":["late night dining students","campus dining late hours","restaurants open late near campus"],"count":10,"icon":"nightlife","primarySubjectType":"place","allowedSubjectTypes":["place"],"freshnessDays":120,"exactTitle":"10 Late-Night Runs That Explain Kettering College"}]}
+codex
+{
+  "complete": false,
+  "school_name": "Kettering College",
+  "town_name": "Kettering",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Kettering College",
+      "town_name": "Kettering",
+      "template_id": "college-late-night-runs",
+      "title": "10 Late-Night Runs That Explain Kettering College",
+      "description": "",
+      "icon": "nightlife",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ],
+      "warnings": [
+        "Research in progress."
+      ]
+    }
+  ],
+  "warnings": [
+    "Verifying ten distinct under-21-safe destinations with current late-hour evidence."
+  ]
+}
+web search: 
+web search: site:locations.tacobell.com Kettering OH hours ...
+web search: 
+web search: Kettering OH Taco Bell official location midnight ...
+web search: 
+web search: site:locations.whitecastle.com Dayton OH 24 hours Kettering ...
+web search: 
+web search: White Castle Dayton OH official location South Keowee hours ...
+web search: 
+web search: site:locations.wafflehouse.com/dayton-oh "1210 WILMINGTON" ...
+web search: 
+web search: 
+web search: 
+web search: 
+web search: 
+web search: 'Monday - Sunday'
+web search: 
+web search: "Waffle House #2442" "24 hours"
+codex
+{"complete":true,"school_name":"Kettering College","town_name":"Kettering","boards":[{"complete":true,"school_name":"Kettering College","town_name":"Kettering","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Kettering College","description":"Ten under-21-safe food runs with late hours verified on current official location pages; check the linked page before leaving because operating hours can change.","icon":"nightlife","cards":[{"subject_id":"mcdonalds-2901-wilmington-pike","subject_type":"place","entity_name":"McDonald's — 2901 Wilmington Pike","title":"The All-Night Wilmington Pike Stop","subtitle":"A 24-hour restaurant and drive-thru in Kettering","notes":"Use this nearby Wilmington Pike option when timing is uncertain; confirm service details on the location page before setting out.","short_summary":"A close-to-campus option whose official page lists round-the-clock lobby and drive-thru hours every day.","evidence_claim":"McDonald's identifies its restaurant at 2901 Wilmington Pike, Kettering, and lists both restaurant/lobby and drive-thru service as open 24 hours Monday through Sunday.","source_url":"https://www.mcdonalds.com/us/en-us/location/oh/kettering/2901-wilmington-pike/187.html","source_title":"Fast Food in Kettering, OH at 2901 Wilmington Pike | McDonald's","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official location page lists restaurant/lobby and drive-thru hours as 24 hours daily; verify before departure, especially on holidays.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-2101-east-dorothy-lane","subject_type":"place","entity_name":"Taco Bell — 2101 East Dorothy Lane","title":"The Dorothy Lane Drive-Thru Run","subtitle":"A Kettering drive-thru operating into the early morning","notes":"Choose this run when the clock has passed midnight, and use the official page to confirm the drive-thru schedule before leaving.","short_summary":"The latest-closing Kettering option on this board, with official drive-thru hours extending to 4 or 5 a.m.","evidence_claim":"Taco Bell identifies its Kettering location at 2101 East Dorothy Lane and lists drive-thru hours until 4:00 a.m. Sunday through Thursday and 5:00 a.m. Friday and Saturday.","source_url":"https://locations.tacobell.com/oh/kettering/2101-east-dorothy-lane.html","source_title":"Taco Bell in Kettering, OH — 2101 East Dorothy Lane","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-thru is listed as 7:00 a.m.–4:00 a.m. Sun–Thu and 7:00 a.m.–5:00 a.m. Fri–Sat; confirm current access before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wendys-4003-wilmington-pike","subject_type":"place","entity_name":"Wendy's — 4003 Wilmington Pike","title":"The Midnight Wilmington Pike Run","subtitle":"A Kettering restaurant and drive-thru open through midnight","notes":"Keep this straightforward Wilmington Pike run for nights ending by midnight; check the location page before committing to the trip.","short_summary":"A nearby midnight cutoff with matching posted restaurant and drive-thru schedules.","evidence_claim":"Wendy's identifies its restaurant at 4003 Wilmington Pike, Kettering, and lists restaurant and drive-thru hours from 9:00 a.m. to midnight every day.","source_url":"https://locations.wendys.com/united-states/oh/kettering/4003-wilmington-pike","source_title":"Wendy's WILMINGTON PIKE in Kettering, OH","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official page lists restaurant and drive-thru service until 12:00 a.m. Monday through Sunday; verify before departure.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dominos-5293-cornerstone-north-boulevard","subject_type":"place","entity_name":"Domino's — 5293 Cornerstone North Boulevard","title":"The Cornerstone Pizza Pickup","subtitle":"A Kettering pizza counter with a midnight closing time","notes":"Place the order before driving toward Cornerstone, then recheck the store page because Domino's states that location hours can vary.","short_summary":"A late pizza option in Kettering with ordering and carryout details consolidated on its official store page.","evidence_claim":"Domino's identifies its Kettering store at 5293 Cornerstone North Boulevard and shows the location open until 12:00 a.m.","source_url":"https://pizza.dominos.com/ohio/kettering/5293-cornerstone-n-blvd","source_title":"Domino's Pizza at 5293 Cornerstone N. Blvd | Domino's in Kettering","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official store page showed service until 12:00 a.m. when fetched and notes that hours vary by location; recheck before ordering.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"raising-canes-4384-indian-ripple-road","subject_type":"place","entity_name":"Raising Cane's — 4384 Indian Ripple Road","title":"The Indian Ripple Chicken Run","subtitle":"A Beavercreek counter open to midnight or 1 a.m.","notes":"Save this drive for a later meal southeast of campus, and confirm both closing time and the desired service channel before departing.","short_summary":"A late Beavercreek destination with dine-in and drive-thru schedules explicitly posted by the restaurant.","evidence_claim":"Raising Cane's identifies its Indian Ripple Road restaurant at 4384 Indian Ripple Road, Beavercreek, and lists hours until midnight Sunday through Thursday and 1:00 a.m. Friday and Saturday.","source_url":"https://locations.raisingcanes.com/oh/beavercreek/4384-indian-ripple-road","source_title":"Raising Cane's in Beavercreek, OH — 4384 Indian Ripple Road","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Dine-in and drive-thru are listed until 12:00 a.m. Sun–Thu and 1:00 a.m. Fri–Sat; verify before making the drive.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"raising-canes-2755-fairfield-commons","subject_type":"place","entity_name":"Raising Cane's — 2755 Fairfield Commons","title":"The Fairfield Commons Late Run","subtitle":"A longer Beavercreek run with service as late as 2 a.m.","notes":"Reserve this farther trip for nights when its later cutoff is useful; review the official hours before leaving the Kettering area.","short_summary":"A distinct Fairfield Commons location offering the board's latest officially posted Cane's schedule.","evidence_claim":"Raising Cane's identifies its Fairfield Commons restaurant at 2755 Fairfield Commons, Beavercreek, and lists hours until 1:00 a.m. Sunday through Thursday and 2:00 a.m. Friday and Saturday.","source_url":"https://locations.raisingcanes.com/oh/beavercreek/2755-fairfield-commons","source_title":"Raising Cane's in Beavercreek, OH — 2755 Fairfield Commons","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Dine-in and drive-thru are listed until 1:00 a.m. Sun–Thu and 2:00 a.m. Fri–Sat; confirm hours before the longer trip.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"steak-n-shake-6380-wilmington-pike","subject_type":"place","entity_name":"Steak 'n Shake — 6380 Wilmington Pike","title":"The South Wilmington Pike Shake Run","subtitle":"A Bellbrook-area restaurant serving through midnight","notes":"Follow Wilmington Pike south for this midnight option, checking the official locator first for any same-day operating change.","short_summary":"A southbound restaurant run with a simple, officially posted midnight cutoff throughout the week.","evidence_claim":"Steak 'n Shake identifies its restaurant at 6380 Wilmington Pike and lists operating hours from 10:00 a.m. to midnight Monday through Sunday.","source_url":"https://www.steaknshake.com/locations/oh-dayton-wilmington-pike/","source_title":"Steak 'n Shake Locations | 6380 Wilmington Pike","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official locator lists 10:00 a.m.–12:00 a.m. Monday through Sunday; confirm current hours before heading south.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"ihop-6930-miller-lane","subject_type":"place","entity_name":"IHOP — 6930 Miller Lane","title":"The 24-Hour Miller Lane Breakfast Run","subtitle":"An all-night Dayton diner for a longer northbound trip","notes":"Use this longer drive when seated, all-night service matters; check the official page and road conditions before leaving Kettering.","short_summary":"A round-the-clock dine-in destination whose official page specifically identifies late-night food service.","evidence_claim":"IHOP identifies its restaurant at 6930 Miller Lane, Dayton, and lists it as open 24 hours every day with dine-in, takeout, and late-night food amenities.","source_url":"https://restaurants.ihop.com/en-us/oh/dayton/breakfast-6930-miller-lane-3703/late-night-food","source_title":"Dayton Late Night Food — IHOP at 6930 Miller Lane","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official location page lists the restaurant open 24 hours Monday through Sunday; verify before the longer northbound drive.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"waffle-house-394-7800-brandt-pike","subject_type":"place","entity_name":"Waffle House #394 — 7800 Brandt Pike","title":"The Brandt Pike All-Nighter","subtitle":"A 24-hour Dayton counter near Interstate 70","notes":"Treat this as a deliberate cross-town run, checking the official location page and travel conditions before starting the drive.","short_summary":"A continuously open diner option at Brandt Pike, documented directly by its individual Waffle House page.","evidence_claim":"Waffle House identifies location #394 at 7800 Brandt Pike, Dayton, and lists it as open 24 hours Monday through Sunday.","source_url":"https://locations.wafflehouse.com/dayton-oh-394","source_title":"Waffle House #394 — Dayton, OH","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official location page lists Monday through Sunday as open 24 hours; confirm before making the cross-town trip.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"mcdonalds-8240-springboro-pike","subject_type":"place","entity_name":"McDonald's — 8240 Springboro Pike","title":"The 24-Hour Springboro Pike Drive-Thru","subtitle":"An all-night drive-thru south of Kettering","notes":"Use this southbound fallback specifically for drive-thru service after the lobby closes, and verify the channel before departure.","short_summary":"A Miamisburg-area option where late-night access is specifically tied to the 24-hour drive-thru.","evidence_claim":"McDonald's identifies its restaurant at 8240 Springboro Pike, Miamisburg, and lists the drive-thru as open 24 hours daily while the lobby closes at 11:00 p.m.","source_url":"https://www.mcdonalds.com/us/en-us/location/oh/miamisburg/8240-springboro-pike/20210.html","source_title":"Fast Food in Miamisburg, OH at 8240 Springboro Pike | McDonald's","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-thru is listed as open 24 hours daily; lobby hours end at 11:00 p.m., so verify the available service channel before leaving.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:55:57.582002Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa1c-c8b0-7653-98ae-b100473fc826.1786607618225148000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+71,044
+
+{"complete":true,"school_name":"Kettering College","town_name":"Kettering","boards":[{"complete":true,"school_name":"Kettering College","town_name":"Kettering","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Kettering College","description":"Ten under-21-safe food runs with late hours verified on current official location pages; check the linked page before leaving because operating hours can change.","icon":"nightlife","cards":[{"subject_id":"mcdonalds-2901-wilmington-pike","subject_type":"place","entity_name":"McDonald's — 2901 Wilmington Pike","title":"The All-Night Wilmington Pike Stop","subtitle":"A 24-hour restaurant and drive-thru in Kettering","notes":"Use this nearby Wilmington Pike option when timing is uncertain; confirm service details on the location page before setting out.","short_summary":"A close-to-campus option whose official page lists round-the-clock lobby and drive-thru hours every day.","evidence_claim":"McDonald's identifies its restaurant at 2901 Wilmington Pike, Kettering, and lists both restaurant/lobby and drive-thru service as open 24 hours Monday through Sunday.","source_url":"https://www.mcdonalds.com/us/en-us/location/oh/kettering/2901-wilmington-pike/187.html","source_title":"Fast Food in Kettering, OH at 2901 Wilmington Pike | McDonald's","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official location page lists restaurant/lobby and drive-thru hours as 24 hours daily; verify before departure, especially on holidays.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-2101-east-dorothy-lane","subject_type":"place","entity_name":"Taco Bell — 2101 East Dorothy Lane","title":"The Dorothy Lane Drive-Thru Run","subtitle":"A Kettering drive-thru operating into the early morning","notes":"Choose this run when the clock has passed midnight, and use the official page to confirm the drive-thru schedule before leaving.","short_summary":"The latest-closing Kettering option on this board, with official drive-thru hours extending to 4 or 5 a.m.","evidence_claim":"Taco Bell identifies its Kettering location at 2101 East Dorothy Lane and lists drive-thru hours until 4:00 a.m. Sunday through Thursday and 5:00 a.m. Friday and Saturday.","source_url":"https://locations.tacobell.com/oh/kettering/2101-east-dorothy-lane.html","source_title":"Taco Bell in Kettering, OH — 2101 East Dorothy Lane","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-thru is listed as 7:00 a.m.–4:00 a.m. Sun–Thu and 7:00 a.m.–5:00 a.m. Fri–Sat; confirm current access before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wendys-4003-wilmington-pike","subject_type":"place","entity_name":"Wendy's — 4003 Wilmington Pike","title":"The Midnight Wilmington Pike Run","subtitle":"A Kettering restaurant and drive-thru open through midnight","notes":"Keep this straightforward Wilmington Pike run for nights ending by midnight; check the location page before committing to the trip.","short_summary":"A nearby midnight cutoff with matching posted restaurant and drive-thru schedules.","evidence_claim":"Wendy's identifies its restaurant at 4003 Wilmington Pike, Kettering, and lists restaurant and drive-thru hours from 9:00 a.m. to midnight every day.","source_url":"https://locations.wendys.com/united-states/oh/kettering/4003-wilmington-pike","source_title":"Wendy's WILMINGTON PIKE in Kettering, OH","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official page lists restaurant and drive-thru service until 12:00 a.m. Monday through Sunday; verify before departure.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dominos-5293-cornerstone-north-boulevard","subject_type":"place","entity_name":"Domino's — 5293 Cornerstone North Boulevard","title":"The Cornerstone Pizza Pickup","subtitle":"A Kettering pizza counter with a midnight closing time","notes":"Place the order before driving toward Cornerstone, then recheck the store page because Domino's states that location hours can vary.","short_summary":"A late pizza option in Kettering with ordering and carryout details consolidated on its official store page.","evidence_claim":"Domino's identifies its Kettering store at 5293 Cornerstone North Boulevard and shows the location open until 12:00 a.m.","source_url":"https://pizza.dominos.com/ohio/kettering/5293-cornerstone-n-blvd","source_title":"Domino's Pizza at 5293 Cornerstone N. Blvd | Domino's in Kettering","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official store page showed service until 12:00 a.m. when fetched and notes that hours vary by location; recheck before ordering.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"raising-canes-4384-indian-ripple-road","subject_type":"place","entity_name":"Raising Cane's — 4384 Indian Ripple Road","title":"The Indian Ripple Chicken Run","subtitle":"A Beavercreek counter open to midnight or 1 a.m.","notes":"Save this drive for a later meal southeast of campus, and confirm both closing time and the desired service channel before departing.","short_summary":"A late Beavercreek destination with dine-in and drive-thru schedules explicitly posted by the restaurant.","evidence_claim":"Raising Cane's identifies its Indian Ripple Road restaurant at 4384 Indian Ripple Road, Beavercreek, and lists hours until midnight Sunday through Thursday and 1:00 a.m. Friday and Saturday.","source_url":"https://locations.raisingcanes.com/oh/beavercreek/4384-indian-ripple-road","source_title":"Raising Cane's in Beavercreek, OH — 4384 Indian Ripple Road","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Dine-in and drive-thru are listed until 12:00 a.m. Sun–Thu and 1:00 a.m. Fri–Sat; verify before making the drive.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"raising-canes-2755-fairfield-commons","subject_type":"place","entity_name":"Raising Cane's — 2755 Fairfield Commons","title":"The Fairfield Commons Late Run","subtitle":"A longer Beavercreek run with service as late as 2 a.m.","notes":"Reserve this farther trip for nights when its later cutoff is useful; review the official hours before leaving the Kettering area.","short_summary":"A distinct Fairfield Commons location offering the board's latest officially posted Cane's schedule.","evidence_claim":"Raising Cane's identifies its Fairfield Commons restaurant at 2755 Fairfield Commons, Beavercreek, and lists hours until 1:00 a.m. Sunday through Thursday and 2:00 a.m. Friday and Saturday.","source_url":"https://locations.raisingcanes.com/oh/beavercreek/2755-fairfield-commons","source_title":"Raising Cane's in Beavercreek, OH — 2755 Fairfield Commons","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Dine-in and drive-thru are listed until 1:00 a.m. Sun–Thu and 2:00 a.m. Fri–Sat; confirm hours before the longer trip.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"steak-n-shake-6380-wilmington-pike","subject_type":"place","entity_name":"Steak 'n Shake — 6380 Wilmington Pike","title":"The South Wilmington Pike Shake Run","subtitle":"A Bellbrook-area restaurant serving through midnight","notes":"Follow Wilmington Pike south for this midnight option, checking the official locator first for any same-day operating change.","short_summary":"A southbound restaurant run with a simple, officially posted midnight cutoff throughout the week.","evidence_claim":"Steak 'n Shake identifies its restaurant at 6380 Wilmington Pike and lists operating hours from 10:00 a.m. to midnight Monday through Sunday.","source_url":"https://www.steaknshake.com/locations/oh-dayton-wilmington-pike/","source_title":"Steak 'n Shake Locations | 6380 Wilmington Pike","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official locator lists 10:00 a.m.–12:00 a.m. Monday through Sunday; confirm current hours before heading south.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"ihop-6930-miller-lane","subject_type":"place","entity_name":"IHOP — 6930 Miller Lane","title":"The 24-Hour Miller Lane Breakfast Run","subtitle":"An all-night Dayton diner for a longer northbound trip","notes":"Use this longer drive when seated, all-night service matters; check the official page and road conditions before leaving Kettering.","short_summary":"A round-the-clock dine-in destination whose official page specifically identifies late-night food service.","evidence_claim":"IHOP identifies its restaurant at 6930 Miller Lane, Dayton, and lists it as open 24 hours every day with dine-in, takeout, and late-night food amenities.","source_url":"https://restaurants.ihop.com/en-us/oh/dayton/breakfast-6930-miller-lane-3703/late-night-food","source_title":"Dayton Late Night Food — IHOP at 6930 Miller Lane","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official location page lists the restaurant open 24 hours Monday through Sunday; verify before the longer northbound drive.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"waffle-house-394-7800-brandt-pike","subject_type":"place","entity_name":"Waffle House #394 — 7800 Brandt Pike","title":"The Brandt Pike All-Nighter","subtitle":"A 24-hour Dayton counter near Interstate 70","notes":"Treat this as a deliberate cross-town run, checking the official location page and travel conditions before starting the drive.","short_summary":"A continuously open diner option at Brandt Pike, documented directly by its individual Waffle House page.","evidence_claim":"Waffle House identifies location #394 at 7800 Brandt Pike, Dayton, and lists it as open 24 hours Monday through Sunday.","source_url":"https://locations.wafflehouse.com/dayton-oh-394","source_title":"Waffle House #394 — Dayton, OH","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official location page lists Monday through Sunday as open 24 hours; confirm before making the cross-town trip.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"mcdonalds-8240-springboro-pike","subject_type":"place","entity_name":"McDonald's — 8240 Springboro Pike","title":"The 24-Hour Springboro Pike Drive-Thru","subtitle":"An all-night drive-thru south of Kettering","notes":"Use this southbound fallback specifically for drive-thru service after the lobby closes, and verify the channel before departure.","short_summary":"A Miamisburg-area option where late-night access is specifically tied to the 24-hour drive-thru.","evidence_claim":"McDonald's identifies its restaurant at 8240 Springboro Pike, Miamisburg, and lists the drive-thru as open 24 hours daily while the lobby closes at 11:00 p.m.","source_url":"https://www.mcdonalds.com/us/en-us/location/oh/miamisburg/8240-springboro-pike/20210.html","source_title":"Fast Food in Miamisburg, OH at 8240 Springboro Pike | McDonald's","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-thru is listed as open 24 hours daily; lobby hours end at 11:00 p.m., so verify the available service channel before leaving.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}

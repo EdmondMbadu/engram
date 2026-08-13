@@ -1,0 +1,62 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Current hours can change for academic breaks, exams, holidays, and building exceptions; consult the linked official location pages before visiting.",
+    "Coordinates and maps URLs are null because card-level coordinates or canonical map URLs were not verified from the cited direct sources."
+  ],
+  "reachability": [
+    {
+      "url": "https://libraries.emory.edu/woodruff/study-spaces/find-quiet-study-area",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.emory.edu/woodruff/study-spaces/find-quiet-study-area",
+      "error": ""
+    },
+    {
+      "url": "https://prod.libraries.emory.edu/multisitedev/de/using-library/accessing-libraries/maps",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://prod.libraries.emory.edu/multisitedev/de/using-library/accessing-libraries/maps",
+      "error": ""
+    },
+    {
+      "url": "https://prod.libraries.emory.edu/business/research-and-learning/using-your-library/group-study-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://prod.libraries.emory.edu/business/research-and-learning/using-your-library/group-study-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://library.law.emory.edu/about-the-library/reserving-library-space.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.law.emory.edu/about-the-library/reserving-library-space.html",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.emory.edu/woodruff/study-spaces/individual-study-rooms-and-carrels",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.emory.edu/woodruff/study-spaces/individual-study-rooms-and-carrels",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.emory.edu/students/spaces-and-technology",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.emory.edu/students/spaces-and-technology",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

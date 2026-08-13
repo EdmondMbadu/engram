@@ -1,0 +1,64 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation.",
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.lakeforest.edu/student-resources/dining",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakeforest.edu/student-resources/dining",
+      "error": ""
+    },
+    {
+      "url": "https://www.oakenbistro.com/dinner-menu",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oakenbistro.com/dinner-menu",
+      "error": ""
+    },
+    {
+      "url": "https://www.theforesterhotel.com/dining",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.theforesterhotel.com/dining",
+      "error": ""
+    },
+    {
+      "url": "https://www.loumalnatis.com/chicagoland/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loumalnatis.com/chicagoland/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lanternoflakeforest.com/home",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.lanternoflakeforest.com/home",
+      "error": "The operation was aborted due to timeout"
+    },
+    {
+      "url": "https://www.froggysrestaurant.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://froggysrestaurant.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Cyber Cafe"
+  ],
+  "sourceCount": 6,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

@@ -1,0 +1,47 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.harding.edu/about/community/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.harding.edu/about/community/",
+      "error": ""
+    },
+    {
+      "url": "https://www.harding.edu/arts-sciences/art-design/stevens-art-gallery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.harding.edu/arts-sciences/art-design/stevens-art-gallery/",
+      "error": ""
+    },
+    {
+      "url": "https://www.harding.edu/life-at-harding/athletics/recreation/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.harding.edu/life-at-harding/athletics/recreation/",
+      "error": ""
+    },
+    {
+      "url": "https://www.experiencesearcy.com/searcy-happenings/splash-pads-in-searcy",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.experiencesearcy.com/searcy-happenings/splash-pads-in-searcy",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Stevens Art Gallery"
+  ],
+  "sourceCount": 4,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

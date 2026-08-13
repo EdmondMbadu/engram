@@ -1,0 +1,55 @@
+{
+  "target": {
+    "atlasId": "CN2S0x6EgGVVOzPHFYxM",
+    "schoolName": "Duquesne University",
+    "shortSchoolName": "Duquesne University",
+    "townName": "Pittsburgh",
+    "state": "PA",
+    "countryCode": "US",
+    "website": "https://www.duq.edu/",
+    "latitude": 40.43589,
+    "longitude": -79.993123
+  },
+  "templates": [
+    {
+      "id": "college-blocks-off-campus",
+      "version": "1.0",
+      "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+      "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+      "researchQueries": [
+        "off campus streets student district",
+        "campus adjacent commercial streets",
+        "neighborhood plan near university"
+      ],
+      "count": 10,
+      "icon": "location_city",
+      "primarySubjectType": "street_or_district",
+      "allowedSubjectTypes": [
+        "street_or_district"
+      ],
+      "freshnessDays": 730,
+      "exactTitle": "10 Blocks Off Campus, One Reason Each"
+    },
+    {
+      "id": "college-first-weekend",
+      "version": "1.0",
+      "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+      "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+      "researchQueries": [
+        "new student orientation campus guide",
+        "first year student campus activities",
+        "weekend near campus students"
+      ],
+      "count": 10,
+      "icon": "schedule",
+      "primarySubjectType": "sequence_stop",
+      "allowedSubjectTypes": [
+        "sequence_stop",
+        "place",
+        "activity"
+      ],
+      "freshnessDays": 180,
+      "exactTitle": "Your First Weekend at Duquesne University, Shared as Cards"
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://get.illinois.edu/explore/community/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://get.illinois.edu/explore/community/",
+      "error": ""
+    },
+    {
+      "url": "https://www.union.illinois.edu/building-information",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.union.illinois.edu/building-information",
+      "error": ""
+    },
+    {
+      "url": "https://foellinger.illinois.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://foellinger.illinois.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://morrow.aces.illinois.edu/contact/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://morrow.aces.illinois.edu/contact/",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.illinois.edu/using-library-spaces/study-space-directory/main-library-room-220/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.illinois.edu/using-library-spaces/study-space-directory/main-library-room-220/",
+      "error": ""
+    },
+    {
+      "url": "https://kam.illinois.edu/know-before-you-go",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://kam.illinois.edu/know-before-you-go",
+      "error": ""
+    },
+    {
+      "url": "https://www.spurlock.illinois.edu/pdf/spurlock-brochure.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.spurlock.illinois.edu/pdf/spurlock-brochure.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://japanhouse.illinois.edu/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://japanhouse.illinois.edu/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.union.illinois.edu/recroom",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.union.illinois.edu/recroom",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

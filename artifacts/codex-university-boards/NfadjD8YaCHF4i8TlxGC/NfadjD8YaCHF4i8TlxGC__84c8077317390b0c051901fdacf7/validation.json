@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.duq.edu/life-at-duquesne/housing-and-dining/dining/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.duq.edu/life-at-duquesne/housing-and-dining/dining/index.php",
+      "error": ""
+    },
+    {
+      "url": "https://moonlitburgers.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://moonlitburgers.com/",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/pennsylvania/pittsburgh/1001-e-carson-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/pennsylvania/pittsburgh/1001-e-carson-street",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/pennsylvania/pittsburgh/625-stanwix-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/pennsylvania/pittsburgh/625-stanwix-st",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/pa/pittsburgh/121-costco-drive.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/pa/pittsburgh/121-costco-drive.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

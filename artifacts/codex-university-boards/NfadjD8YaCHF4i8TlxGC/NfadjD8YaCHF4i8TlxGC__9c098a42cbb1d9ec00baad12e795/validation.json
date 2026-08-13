@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.lib.umich.edu/visit-and-study/study-spaces/quiet-study-spaces/asia-library-reading-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.umich.edu/visit-and-study/study-spaces/quiet-study-spaces/asia-library-reading-room",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.umich.edu/visit-and-study/study-spaces/quiet-study-spaces/hatcher-north-stacks-study-tables",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.umich.edu/visit-and-study/study-spaces/quiet-study-spaces/hatcher-north-stacks-study-tables",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.umich.edu/visit-and-study/study-spaces/quiet-study-spaces/hatcher-south-open-carrels",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.umich.edu/visit-and-study/study-spaces/quiet-study-spaces/hatcher-south-open-carrels",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.umich.edu/visit-and-study/study-spaces/quiet-study-spaces/hatcher-floor-6",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.umich.edu/visit-and-study/study-spaces/quiet-study-spaces/hatcher-floor-6",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.umich.edu/visit-and-study/study-spaces/quiet-study-spaces/shapiro-reading-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.umich.edu/visit-and-study/study-spaces/quiet-study-spaces/shapiro-reading-room",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.umich.edu/visit-and-study/study-spaces/conversational-study-spaces/clark-commons-computing-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.umich.edu/visit-and-study/study-spaces/conversational-study-spaces/clark-commons-computing-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.umich.edu/visit-and-study/study-spaces/quiet-study-spaces/taubman-health-sciences-library-study-space",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.umich.edu/visit-and-study/study-spaces/quiet-study-spaces/taubman-health-sciences-library-study-space",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.umich.edu/visit-and-study/study-spaces/quiet-study-spaces/art-architecture-and-engineering-library-floor-2-stacks-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.umich.edu/visit-and-study/study-spaces/quiet-study-spaces/art-architecture-and-engineering-library-floor-2-stacks-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.umich.edu/visit-and-study/study-spaces/quiet-study-spaces/fine-arts-library-floor-2",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.umich.edu/visit-and-study/study-spaces/quiet-study-spaces/fine-arts-library-floor-2",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.umich.edu/visit-and-study/study-spaces/quiet-study-spaces/music-library-floors-3-and-4",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.umich.edu/visit-and-study/study-spaces/quiet-study-spaces/music-library-floors-3-and-4",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

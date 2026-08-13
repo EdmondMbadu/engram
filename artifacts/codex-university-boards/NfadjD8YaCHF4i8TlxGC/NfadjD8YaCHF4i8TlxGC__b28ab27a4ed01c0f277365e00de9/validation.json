@@ -1,0 +1,24 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.library.nd.edu/study-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.nd.edu/study-spaces",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Lower Level Study Seats",
+    "Mahaffey Scholars Lounge"
+  ],
+  "sourceCount": 1,
+  "generationScore": 90,
+  "generationGrade": "A"
+}

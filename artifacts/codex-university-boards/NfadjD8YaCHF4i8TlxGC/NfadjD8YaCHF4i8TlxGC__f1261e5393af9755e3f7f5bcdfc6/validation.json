@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://vicki-myhren-gallery.du.edu/visit-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://vicki-myhren-gallery.du.edu/visit-us/",
+      "error": ""
+    },
+    {
+      "url": "https://library.du.edu/visit-study/exhibits",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.du.edu/visit-study/exhibits",
+      "error": ""
+    },
+    {
+      "url": "https://www.du.edu/arboretum/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.du.edu/arboretum/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.du.edu/arboretum/visit/tours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.du.edu/arboretum/visit/tours",
+      "error": ""
+    },
+    {
+      "url": "https://www.du.edu/campus-life/arts-activities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.du.edu/campus-life/arts-activities",
+      "error": ""
+    },
+    {
+      "url": "https://www.du.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.du.edu/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

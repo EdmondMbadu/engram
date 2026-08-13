@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.visitbatonrouge.com/blog/late-night-bites-baton-rouge/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitbatonrouge.com/blog/late-night-bites-baton-rouge/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.whataburger.com/la/baton-rouge/5851-creek-centre-dr.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.whataburger.com/la/baton-rouge/5851-creek-centre-dr.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wafflehouse.com/batonrouge-la-442/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wafflehouse.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wafflehouse.com/la/baton-rouge/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wafflehouse.com/la/baton-rouge/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

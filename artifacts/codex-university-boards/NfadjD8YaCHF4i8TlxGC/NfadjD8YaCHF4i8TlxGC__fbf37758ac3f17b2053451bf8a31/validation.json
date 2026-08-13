@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://universityvillagefl.com/a-z-directory/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://universityvillagefl.com/a-z-directory/",
+      "error": ""
+    },
+    {
+      "url": "https://universityvillagefl.com/restaurants/insomnia-cookies/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://universityvillagefl.com/restaurants/insomnia-cookies/",
+      "error": ""
+    },
+    {
+      "url": "https://universityvillagefl.com/restaurants/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://universityvillagefl.com/restaurants/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

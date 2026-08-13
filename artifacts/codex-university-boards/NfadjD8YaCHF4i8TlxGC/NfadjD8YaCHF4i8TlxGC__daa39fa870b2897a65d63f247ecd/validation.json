@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://news.ncsu.edu/2026/06/nc-state-bucket-list-orientation/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.ncsu.edu/2026/06/nc-state-bucket-list-orientation/",
+      "error": ""
+    },
+    {
+      "url": "https://redwhiteweek.ncsu.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://redwhiteweek.ncsu.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://alumni.ncsu.edu/connect/find-your-community/student-alumni-association/nc-state-ring/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://alumni.ncsu.edu/connect/find-your-community/student-alumni-association/nc-state-ring/",
+      "error": ""
+    },
+    {
+      "url": "https://gopack.com/sports/2026/5/9/colors-songs",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gopack.com/sports/2026/5/9/colors-songs",
+      "error": ""
+    },
+    {
+      "url": "https://gti.ncsu.edu/2021/09/02/fightsong-almamater/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gti.ncsu.edu/2021/09/02/fightsong-almamater/",
+      "error": ""
+    },
+    {
+      "url": "https://gopack.com/sports/2026/5/9/tuffy-iii",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gopack.com/sports/2026/5/9/tuffy-iii",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ncsu.edu/news/special-collections/legen-dairy-history-ice-cream-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ncsu.edu/news/special-collections/legen-dairy-history-ice-cream-campus",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

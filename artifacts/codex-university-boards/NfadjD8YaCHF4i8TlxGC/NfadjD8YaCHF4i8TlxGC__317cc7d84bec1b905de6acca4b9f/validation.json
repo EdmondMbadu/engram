@@ -1,0 +1,64 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://lipscomb.edu/visiting-lipscomb",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lipscomb.edu/visiting-lipscomb",
+      "error": ""
+    },
+    {
+      "url": "https://lipscomb.edu/student-life",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lipscomb.edu/student-life",
+      "error": ""
+    },
+    {
+      "url": "https://lipscomb.edu/library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lipscomb.edu/library",
+      "error": ""
+    },
+    {
+      "url": "https://lipscomb.edu/academics/learning-commons",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lipscomb.edu/academics/learning-commons",
+      "error": ""
+    },
+    {
+      "url": "https://lipscomb.edu/news/allen-bell-tower-king-part-fabric-campus-community-25-years",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lipscomb.edu/news/allen-bell-tower-king-part-fabric-campus-community-25-years",
+      "error": ""
+    },
+    {
+      "url": "https://lipscomb.edu/business/college-business-academic-programs/center-entrepreneurship-and-innovation-0/student-0",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lipscomb.edu/business/college-business-academic-programs/center-entrepreneurship-and-innovation-0/student-0",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Bison Square",
+    "Bennett Campus Center"
+  ],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

@@ -1,0 +1,87 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.as.ucsb.edu/new-staff-org-chart/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.as.ucsb.edu/new-staff-org-chart/",
+      "error": ""
+    },
+    {
+      "url": "https://ivparks.org/peaceful-pardall-gardens-opens-in-i-v/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ivparks.org/peaceful-pardall-gardens-opens-in-i-v/",
+      "error": ""
+    },
+    {
+      "url": "https://ivparks.org/isla-vista-district-parks/central-downtown-parks/anisqoyo-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ivparks.org/isla-vista-district-parks/central-downtown-parks/anisqoyo-park/",
+      "error": ""
+    },
+    {
+      "url": "https://ivparks.org/isla-vista-district-parks/central-downtown-parks/peoples-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ivparks.org/isla-vista-district-parks/central-downtown-parks/peoples-park/",
+      "error": ""
+    },
+    {
+      "url": "https://ivparks.org/isla-vista-district-parks/central-downtown-parks/perfect-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ivparks.org/isla-vista-district-parks/central-downtown-parks/perfect-park/",
+      "error": ""
+    },
+    {
+      "url": "https://ivparks.org/isla-vista-district-parks/central-downtown-parks/little-acorn-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ivparks.org/isla-vista-district-parks/central-downtown-parks/little-acorn-park/",
+      "error": ""
+    },
+    {
+      "url": "https://ivparks.org/estero-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ivparks.org/estero-park/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ucsb.edu/sites/default/files/documents/parentsfamilyweekend/Services_in_IV_Flyer.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ucsb.edu/sites/default/files/documents/parentsfamilyweekend/Services_in_IV_Flyer.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://islavistafood.coop/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://islavistafood.coop/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Isla Vista Theater"
+  ],
+  "sourceCount": 9,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

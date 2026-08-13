@@ -1,0 +1,37 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Pioneer Days is included solely as a clearly labeled, discontinued historical tradition. Current availability is not implied for event-based traditions; verify schedules with Chico State."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.csuchico.edu/traditions/celebrating.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csuchico.edu/traditions/celebrating.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.csuchico.edu/traditions/history/csu-chico.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csuchico.edu/traditions/history/csu-chico.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.csuchico.edu/traditions/history/teachers-college.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csuchico.edu/traditions/history/teachers-college.shtml",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

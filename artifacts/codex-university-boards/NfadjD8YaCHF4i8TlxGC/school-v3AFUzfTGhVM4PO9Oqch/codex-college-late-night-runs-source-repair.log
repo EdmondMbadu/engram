@@ -1,0 +1,272 @@
+Reading additional input from stdin...
+2026-08-13T06:33:45.834736Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:33:45.835915Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9d3-a841-7a22-be78-577b17fbad1d
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+Do not cite these URLs because the live validator found them broken: https://www.hotboxpizza.com/locations/, https://locations.tacobell.com/in/indianapolis/2191-n-meridian-st.html
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"v3AFUzfTGhVM4PO9Oqch","schoolName":"Butler University","shortSchoolName":"Butler University","townName":"Indianapolis","state":"IN","countryCode":"US","website":"https://www.butler.edu/","latitude":39.8374,"longitude":-86.172167},"templates":[{"id":"college-late-night-runs","version":"1.0","titlePattern":"{count} Late-Night Runs That Explain {school}","editorialBrief":"Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.","researchQueries":["late night dining students","campus dining late hours","restaurants open late near campus"],"count":10,"icon":"nightlife","primarySubjectType":"place","allowedSubjectTypes":["place"],"freshnessDays":120,"exactTitle":"10 Late-Night Runs That Explain Butler University","excludedSourceUrls":["https://www.hotboxpizza.com/locations/","https://locations.tacobell.com/in/indianapolis/2191-n-meridian-st.html"]}]}
+codex
+{
+  "complete": false,
+  "school_name": "Butler University",
+  "town_name": "Indianapolis",
+  "boards": [{
+    "complete": false,
+    "school_name": "Butler University",
+    "town_name": "Indianapolis",
+    "template_id": "college-late-night-runs",
+    "title": "10 Late-Night Runs That Explain Butler University",
+    "description": "I’m verifying ten distinct under-21 destinations and their current late hours from direct official pages.",
+    "icon": "nightlife",
+    "cards": [
+    {
+      "subject_id": "research-in-progress",
+      "subject_type": "place",
+      "entity_name": "Research in progress",
+      "title": "Research in progress",
+      "subtitle": "Indianapolis",
+      "notes": "Checking direct destination pages for current late-night availability and conservative access details.",
+      "short_summary": "Verification underway.",
+      "evidence_claim": "Research in progress.",
+      "source_url": "https://www.butler.edu/",
+      "source_title": "Butler University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending verification.",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }
+   	, {
+      "subject_id": "placeholder-2",
+      "subject_type": "place",
+      "entity_name": "Placeholder",
+      "title": "Placeholder",
+      "subtitle": "Indianapolis",
+      "notes": "Pending verification.",
+      "short_summary": "Pending.",
+      "evidence_claim": "Pending.",
+      "source_url": "https://www.butler.edu/",
+      "source_title": "Butler University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending.",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "placeholder-3",
+      "subject_type": "place",
+      "entity_name": "Placeholder",
+      "title": "Placeholder",
+      "subtitle": "Indianapolis",
+      "notes": "Pending verification.",
+      "short_summary": "Pending.",
+      "evidence_claim": "Pending.",
+      "source_url": "https://www.butler.edu/",
+      "source_title": "Butler University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending.",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "placeholder-4",
+      "subject_type": "place",
+      "entity_name": "Placeholder",
+      "title": "Placeholder",
+      "subtitle": "Indianapolis",
+      "notes": "Pending verification.",
+      "short_summary": "Pending.",
+      "evidence_claim": "Pending.",
+      "source_url": "https://www.butler.edu/",
+      "source_title": "Butler University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending.",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "placeholder-5",
+      "subject_type": "place",
+      "entity_name": "Placeholder",
+      "title": "Placeholder",
+      "subtitle": "Indianapolis",
+      "notes": "Pending verification.",
+      "short_summary": "Pending.",
+      "evidence_claim": "Pending.",
+      "source_url": "https://www.butler.edu/",
+      "source_title": "Butler University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending.",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "placeholder-6",
+      "subject_type": "place",
+      "entity_name": "Placeholder",
+      "title": "Placeholder",
+      "subtitle": "Indianapolis",
+      "notes": "Pending verification.",
+      "short_summary": "Pending.",
+      "evidence_claim": "Pending.",
+      "source_url": "https://www.butler.edu/",
+      "source_title": "Butler University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending.",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "placeholder-7",
+      "subject_type": "place",
+      "entity_name": "Placeholder",
+      "title": "Placeholder",
+      "subtitle": "Indianapolis",
+      "notes": "Pending verification.",
+      "short_summary": "Pending.",
+      "evidence_claim": "Pending.",
+      "source_url": "https://www.butler.edu/",
+      "source_title": "Butler University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending.",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "placeholder-8",
+      "subject_type": "place",
+      "entity_name": "Placeholder",
+      "title": "Placeholder",
+      "subtitle": "Indianapolis",
+      "notes": "Pending verification.",
+      "short_summary": "Pending.",
+      "evidence_claim": "Pending.",
+      "source_url": "https://www.butler.edu/",
+      "source_title": "Butler University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending.",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "placeholder-9",
+      "subject_type": "place",
+      "entity_name": "Placeholder",
+      "title": "Placeholder",
+      "subtitle": "Indianapolis",
+      "notes": "Pending verification.",
+      "short_summary": "Pending.",
+      "evidence_claim": "Pending.",
+      "source_url": "https://www.butler.edu/",
+      "source_title": "Butler University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending.",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "placeholder-10",
+      "subject_type": "place",
+      "entity_name": "Placeholder",
+      "title": "Placeholder",
+      "subtitle": "Indianapolis",
+      "notes": "Pending verification.",
+      "short_summary": "Pending.",
+      "evidence_claim": "Pending.",
+      "source_url": "https://www.butler.edu/",
+      "source_title": "Butler University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending.",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }],
+    "warnings": ["Interim research update; final output will replace all placeholders."]
+  }],
+  "warnings": ["Research is underway."]
+}
+web search: 
+web search: site:butler.edu dining hours Butler University late night ...
+web search: 
+web search: site:restaurants.ihop.com Indianapolis IN 46220 hours ...
+web search: 
+web search: site:insomniacookies.com Indianapolis Broad Ripple store hours ...
+web search: 
+web search: site:locations.jimmyjohns.com Indianapolis Broad Ripple hours ...
+codex
+{"complete":true,"school_name":"Butler University","town_name":"Indianapolis","boards":[{"complete":true,"school_name":"Butler University","town_name":"Indianapolis","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Butler University","description":"Ten under-21 food runs spanning Butler’s campus, nearby north-side corridors, and farther Indianapolis options with current official late-hour evidence.","icon":"nightlife","cards":[{"subject_id":"butler-pizza-atm","subject_type":"place","entity_name":"Pizza ATM at Midtown Provisions","title":"Use the 24/7 Pizza ATM","subtitle":"Residential College, Butler University","notes":"Head to Midtown Provisions for an automated hot-food option when staffed campus counters have already closed.","short_summary":"A round-the-clock automated food stop inside Butler’s Residential College.","evidence_claim":"Butler states that the Pizza ATM in Midtown Provisions operates 24/7 and sells house-made pizzas, pretzel bites, and cookies.","source_url":"https://www.butler.edu/student-life/orientation/orientation-faq/","source_title":"Orientation FAQ | Butler University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The Pizza ATM operates 24/7; building access or academic-break conditions may affect availability.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"butler-midtown-late-night-bites","subject_type":"place","entity_name":"Midtown Provisions","title":"Order Late-Night Bites at Midtown","subtitle":"Residential College, Butler University","notes":"Order through Boost before midnight on a weekday; the late menu is separate from Midtown’s regular service.","short_summary":"Butler’s staffed weekday late-food counter runs through midnight.","evidence_claim":"Butler lists Midtown Provisions’ Late-Night Bites service from 8:00 PM to midnight Monday through Friday, ordered through the Boost app.","source_url":"https://www.butler.edu/student-life/orientation/orientation-faq/","source_title":"Orientation FAQ | Butler University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Late-Night Bites runs Monday–Friday, 8:00 PM–midnight, and requires ordering through the Boost app.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"butler-a-town-market","subject_type":"place","entity_name":"A-Town Market","title":"Catch A-Town Market Before Ten","subtitle":"Lower level of Atherton Union","notes":"Stop before the posted 10:00 PM weekday or Sunday close for made-to-order food, snacks, or microwaveable options.","short_summary":"An on-campus market that remains open later than Butler’s main dinner service.","evidence_claim":"Butler lists A-Town Market in Atherton Union as open until 10:00 PM Monday through Friday and Sunday.","source_url":"https://www.butler.edu/student-life/orientation/orientation-faq/","source_title":"Orientation FAQ | Butler University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Posted hours are 9:00 AM–10:00 PM Monday–Friday and 10:00 AM–10:00 PM Sunday; Saturday closes at 4:00 PM.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"pizza-king-broad-ripple","subject_type":"place","entity_name":"Pizza King | Meridian Kessler | Broad Ripple","title":"Make a Broad Ripple Pizza Run","subtitle":"5380 N College Avenue","notes":"Use this north-side stop for a counter-service pizza run, noting the slightly later Friday and Saturday close.","short_summary":"A named Broad Ripple pizza shop serving until nearly midnight on weekends.","evidence_claim":"Pizza King’s official Broad Ripple page lists an 11:00 PM close Sunday through Thursday and an 11:45 PM close Friday and Saturday.","source_url":"https://broadripple.theoriginalpizzaking.com/","source_title":"Pizza King | Broad Ripple","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until 11:00 PM Sunday–Thursday and 11:45 PM Friday–Saturday, according to the restaurant’s official page.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wendys-keystone-5509","subject_type":"place","entity_name":"Wendy's at 5509 N Keystone Avenue","title":"Use the All-Night Keystone Wendy’s","subtitle":"5509 N Keystone Avenue","notes":"Check the location page before leaving and confirm whether counter, pickup, or drive-through service fits your trip.","short_summary":"A north-side fast-food location whose official schedule spans the full day.","evidence_claim":"Wendy’s official location page lists restaurant and drive-through hours from 4:00 AM to 3:59 AM every day.","source_url":"https://locations.wendys.com/united-states/in/indianapolis/5509-n-keystone","source_title":"Wendy's 5509 N. Keystone","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Restaurant and drive-through hours are listed as 4:00 AM–3:59 AM daily, effectively continuous service.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wendys-meridian-2245","subject_type":"place","entity_name":"Wendy's at 2245 N Meridian Street","title":"Head South for a 3 A.M. Wendy’s","subtitle":"2245 N Meridian Street","notes":"Use the official location listing to verify same-night service, especially if you need an option south of campus.","short_summary":"A Meridian Street fast-food run with service listed into the early morning.","evidence_claim":"Wendy’s official Indianapolis location listing identifies the 2245 N Meridian Street restaurant and lists it as open until 3:00 AM.","source_url":"https://locations.wendys.com/united-states/in/indianapolis/2245-n-meridian-st","source_title":"Wendy's 2245 N. Meridian St","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official Wendy’s Indianapolis listing shows this location open until 3:00 AM; verify the available service channel before departure.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-keystone-6165","subject_type":"place","entity_name":"Taco Bell at 6165 N Keystone Avenue","title":"Try the 24-Hour Keystone Taco Bell","subtitle":"6165 N Keystone Avenue","notes":"Confirm the ordering channel before traveling; the official page currently shows continuous dine-in and drive-through hours.","short_summary":"A north-side Taco Bell officially displaying round-the-clock hours.","evidence_claim":"Taco Bell’s official page for 6165 N Keystone Avenue lists both drive-through and dine-in hours as midnight to midnight every day.","source_url":"https://locations.tacobell.com/in/indianapolis/6165-n-keystone-ave-.html","source_title":"Taco Bell in Indianapolis, IN – 6165 N Keystone Ave.","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page lists drive-through and dine-in service as 12:00 AM–12:00 AM daily; reconfirm before departure.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-east-38th-2809","subject_type":"place","entity_name":"Taco Bell at 2809 E 38th Street","title":"Use the Late Dine-In on 38th Street","subtitle":"2809 E 38th Street","notes":"Choose this location when indoor service matters; its posted dine-in close extends beyond many nearby restaurant counters.","short_summary":"An east-side Taco Bell with indoor service listed until 2:00 AM.","evidence_claim":"Taco Bell’s official page lists drive-through service until 4:00 AM daily and dine-in service until 2:00 AM at 2809 E 38th Street.","source_url":"https://locations.tacobell.com/in/indianapolis/2809-east-38th-street.html","source_title":"Taco Bell in Indianapolis, IN – 2809 East 38th Street","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-through is posted until 4:00 AM daily; the official page displays dine-in hours of 10:00 AM–2:00 AM.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"steak-n-shake-michigan-8640","subject_type":"place","entity_name":"Steak ’n Shake at 8640 Michigan Road","title":"Take the Michigan Road Diner Route","subtitle":"8640 Michigan Road","notes":"Save this longer northwestern run for nights when a seated diner-style menu matters more than staying close to campus.","short_summary":"A diner-style option serving until 2:00 AM on three nights each week.","evidence_claim":"Steak ’n Shake’s official location page lists midnight closing Monday through Thursday and 2:00 AM closing Friday through Sunday.","source_url":"https://www.steaknshake.com/locations/in-indianapolis-michigan-road/","source_title":"Steak ’n Shake – Indianapolis Michigan Road","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until midnight Monday–Thursday and until 2:00 AM Friday–Sunday, according to the official location page.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"steak-n-shake-maryland-101","subject_type":"place","entity_name":"Steak ’n Shake at 101 W Maryland Street","title":"Pair Downtown Plans With Steak ’n Shake","subtitle":"101 W Maryland Street","notes":"Use this downtown option after an evening event, allowing extra travel time between central Indianapolis and Butler’s campus.","short_summary":"A downtown restaurant with a later Friday and Saturday closing time.","evidence_claim":"Steak ’n Shake’s official location page lists midnight closing Sunday through Thursday and 2:00 AM closing Friday and Saturday.","source_url":"https://www.steaknshake.com/locations/in-indianapolis-west-maryland/","source_title":"Steak ’n Shake – Indianapolis West Maryland","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until midnight Sunday–Thursday and until 2:00 AM Friday–Saturday, according to the official location page.","cost_status":"purchase_required","under21_safe":true}],"warnings":["Hours can change during university breaks, holidays, or operational disruptions; verify the direct source before departure.","Some off-campus choices require driving or another safe transportation plan from Butler University."]}],"warnings":[]}
+tokens used
+55,975
+
+{"complete":true,"school_name":"Butler University","town_name":"Indianapolis","boards":[{"complete":true,"school_name":"Butler University","town_name":"Indianapolis","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Butler University","description":"Ten under-21 food runs spanning Butler’s campus, nearby north-side corridors, and farther Indianapolis options with current official late-hour evidence.","icon":"nightlife","cards":[{"subject_id":"butler-pizza-atm","subject_type":"place","entity_name":"Pizza ATM at Midtown Provisions","title":"Use the 24/7 Pizza ATM","subtitle":"Residential College, Butler University","notes":"Head to Midtown Provisions for an automated hot-food option when staffed campus counters have already closed.","short_summary":"A round-the-clock automated food stop inside Butler’s Residential College.","evidence_claim":"Butler states that the Pizza ATM in Midtown Provisions operates 24/7 and sells house-made pizzas, pretzel bites, and cookies.","source_url":"https://www.butler.edu/student-life/orientation/orientation-faq/","source_title":"Orientation FAQ | Butler University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The Pizza ATM operates 24/7; building access or academic-break conditions may affect availability.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"butler-midtown-late-night-bites","subject_type":"place","entity_name":"Midtown Provisions","title":"Order Late-Night Bites at Midtown","subtitle":"Residential College, Butler University","notes":"Order through Boost before midnight on a weekday; the late menu is separate from Midtown’s regular service.","short_summary":"Butler’s staffed weekday late-food counter runs through midnight.","evidence_claim":"Butler lists Midtown Provisions’ Late-Night Bites service from 8:00 PM to midnight Monday through Friday, ordered through the Boost app.","source_url":"https://www.butler.edu/student-life/orientation/orientation-faq/","source_title":"Orientation FAQ | Butler University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Late-Night Bites runs Monday–Friday, 8:00 PM–midnight, and requires ordering through the Boost app.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"butler-a-town-market","subject_type":"place","entity_name":"A-Town Market","title":"Catch A-Town Market Before Ten","subtitle":"Lower level of Atherton Union","notes":"Stop before the posted 10:00 PM weekday or Sunday close for made-to-order food, snacks, or microwaveable options.","short_summary":"An on-campus market that remains open later than Butler’s main dinner service.","evidence_claim":"Butler lists A-Town Market in Atherton Union as open until 10:00 PM Monday through Friday and Sunday.","source_url":"https://www.butler.edu/student-life/orientation/orientation-faq/","source_title":"Orientation FAQ | Butler University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Posted hours are 9:00 AM–10:00 PM Monday–Friday and 10:00 AM–10:00 PM Sunday; Saturday closes at 4:00 PM.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"pizza-king-broad-ripple","subject_type":"place","entity_name":"Pizza King | Meridian Kessler | Broad Ripple","title":"Make a Broad Ripple Pizza Run","subtitle":"5380 N College Avenue","notes":"Use this north-side stop for a counter-service pizza run, noting the slightly later Friday and Saturday close.","short_summary":"A named Broad Ripple pizza shop serving until nearly midnight on weekends.","evidence_claim":"Pizza King’s official Broad Ripple page lists an 11:00 PM close Sunday through Thursday and an 11:45 PM close Friday and Saturday.","source_url":"https://broadripple.theoriginalpizzaking.com/","source_title":"Pizza King | Broad Ripple","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until 11:00 PM Sunday–Thursday and 11:45 PM Friday–Saturday, according to the restaurant’s official page.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wendys-keystone-5509","subject_type":"place","entity_name":"Wendy's at 5509 N Keystone Avenue","title":"Use the All-Night Keystone Wendy’s","subtitle":"5509 N Keystone Avenue","notes":"Check the location page before leaving and confirm whether counter, pickup, or drive-through service fits your trip.","short_summary":"A north-side fast-food location whose official schedule spans the full day.","evidence_claim":"Wendy’s official location page lists restaurant and drive-through hours from 4:00 AM to 3:59 AM every day.","source_url":"https://locations.wendys.com/united-states/in/indianapolis/5509-n-keystone","source_title":"Wendy's 5509 N. Keystone","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Restaurant and drive-through hours are listed as 4:00 AM–3:59 AM daily, effectively continuous service.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wendys-meridian-2245","subject_type":"place","entity_name":"Wendy's at 2245 N Meridian Street","title":"Head South for a 3 A.M. Wendy’s","subtitle":"2245 N Meridian Street","notes":"Use the official location listing to verify same-night service, especially if you need an option south of campus.","short_summary":"A Meridian Street fast-food run with service listed into the early morning.","evidence_claim":"Wendy’s official Indianapolis location listing identifies the 2245 N Meridian Street restaurant and lists it as open until 3:00 AM.","source_url":"https://locations.wendys.com/united-states/in/indianapolis/2245-n-meridian-st","source_title":"Wendy's 2245 N. Meridian St","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official Wendy’s Indianapolis listing shows this location open until 3:00 AM; verify the available service channel before departure.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-keystone-6165","subject_type":"place","entity_name":"Taco Bell at 6165 N Keystone Avenue","title":"Try the 24-Hour Keystone Taco Bell","subtitle":"6165 N Keystone Avenue","notes":"Confirm the ordering channel before traveling; the official page currently shows continuous dine-in and drive-through hours.","short_summary":"A north-side Taco Bell officially displaying round-the-clock hours.","evidence_claim":"Taco Bell’s official page for 6165 N Keystone Avenue lists both drive-through and dine-in hours as midnight to midnight every day.","source_url":"https://locations.tacobell.com/in/indianapolis/6165-n-keystone-ave-.html","source_title":"Taco Bell in Indianapolis, IN – 6165 N Keystone Ave.","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page lists drive-through and dine-in service as 12:00 AM–12:00 AM daily; reconfirm before departure.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-east-38th-2809","subject_type":"place","entity_name":"Taco Bell at 2809 E 38th Street","title":"Use the Late Dine-In on 38th Street","subtitle":"2809 E 38th Street","notes":"Choose this location when indoor service matters; its posted dine-in close extends beyond many nearby restaurant counters.","short_summary":"An east-side Taco Bell with indoor service listed until 2:00 AM.","evidence_claim":"Taco Bell’s official page lists drive-through service until 4:00 AM daily and dine-in service until 2:00 AM at 2809 E 38th Street.","source_url":"https://locations.tacobell.com/in/indianapolis/2809-east-38th-street.html","source_title":"Taco Bell in Indianapolis, IN – 2809 East 38th Street","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-through is posted until 4:00 AM daily; the official page displays dine-in hours of 10:00 AM–2:00 AM.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"steak-n-shake-michigan-8640","subject_type":"place","entity_name":"Steak ’n Shake at 8640 Michigan Road","title":"Take the Michigan Road Diner Route","subtitle":"8640 Michigan Road","notes":"Save this longer northwestern run for nights when a seated diner-style menu matters more than staying close to campus.","short_summary":"A diner-style option serving until 2:00 AM on three nights each week.","evidence_claim":"Steak ’n Shake’s official location page lists midnight closing Monday through Thursday and 2:00 AM closing Friday through Sunday.","source_url":"https://www.steaknshake.com/locations/in-indianapolis-michigan-road/","source_title":"Steak ’n Shake – Indianapolis Michigan Road","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until midnight Monday–Thursday and until 2:00 AM Friday–Sunday, according to the official location page.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"steak-n-shake-maryland-101","subject_type":"place","entity_name":"Steak ’n Shake at 101 W Maryland Street","title":"Pair Downtown Plans With Steak ’n Shake","subtitle":"101 W Maryland Street","notes":"Use this downtown option after an evening event, allowing extra travel time between central Indianapolis and Butler’s campus.","short_summary":"A downtown restaurant with a later Friday and Saturday closing time.","evidence_claim":"Steak ’n Shake’s official location page lists midnight closing Sunday through Thursday and 2:00 AM closing Friday and Saturday.","source_url":"https://www.steaknshake.com/locations/in-indianapolis-west-maryland/","source_title":"Steak ’n Shake – Indianapolis West Maryland","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until midnight Sunday–Thursday and until 2:00 AM Friday–Saturday, according to the official location page.","cost_status":"purchase_required","under21_safe":true}],"warnings":["Hours can change during university breaks, holidays, or operational disruptions; verify the direct source before departure.","Some off-campus choices require driving or another safe transportation plan from Butler University."]}],"warnings":[]}

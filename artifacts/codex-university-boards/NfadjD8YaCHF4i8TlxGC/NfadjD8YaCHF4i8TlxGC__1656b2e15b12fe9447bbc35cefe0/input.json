@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "9MqxSSfCAWJiBwUaqq1d",
+    "schoolName": "University of Florida",
+    "shortSchoolName": "University of Florida",
+    "townName": "Gainesville",
+    "state": "FL",
+    "countryCode": "US",
+    "unitId": "134130",
+    "website": "https://www.ufl.edu/",
+    "latitude": 29.64629,
+    "longitude": -82.347911,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/6/6d/University_of_Florida_seal.svg/250px-University_of_Florida_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=ufl.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Alachua County Library District Headquarters",
+    "Matheson History Museum",
+    "Bo Diddley Plaza",
+    "Hippodrome State Theatre",
+    "Cade Museum for Creativity & Invention",
+    "Depot Park",
+    "Cotton Club Museum & Cultural Center",
+    "A. Quinn Jones Museum & Cultural Center",
+    "The Historic Thomas Center Museum and Art Galleries",
+    "Rosa B. Williams Center"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://kalashkitchen.com/kalash-kitchen-cortland-new-york/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://kalashkitchen.com/kalash-kitchen-cortland-new-york/",
+      "error": ""
+    },
+    {
+      "url": "https://www.brixcortland.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.brixcortland.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.pontilloscortland.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pontilloscortland.com/",
+      "error": ""
+    },
+    {
+      "url": "https://pudgiescortland.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pudgiescortland.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.arcticcortland.com/menu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.arcticcortland.com/menu/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.kfc.com/ny/cortland/3890-state-route-281",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.kfc.com/ny/cortland/3890-state-route-281",
+      "error": ""
+    },
+    {
+      "url": "https://locations.moes.com/ny/cortland/872-route-13",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.moes.com/ny/cortland/872-route-13",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dennys.com/ny/cortland/248853",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dennys.com/ny/cortland/248853",
+      "error": ""
+    },
+    {
+      "url": "https://www.281bowlinc.com/hours.html",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.281bowlinc.com/hours.html",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.cortlandaux.com/dining-services",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cortlandaux.com/dining-services",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

@@ -1,0 +1,80 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation.",
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://insights.wharton.upenn.edu/philadelphia-campus/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://insights.wharton.upenn.edu/philadelphia-campus/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://facilities.upenn.edu/maps/art/love",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://facilities.upenn.edu/maps/art/love",
+      "error": ""
+    },
+    {
+      "url": "https://facilities.upenn.edu/maps/discover-penn/college-hall",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://facilities.upenn.edu/maps/discover-penn/college-hall",
+      "error": ""
+    },
+    {
+      "url": "https://spaceandevents.universitylife.upenn.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://spaceandevents.universitylife.upenn.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.upenn.edu/vanpelt",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.upenn.edu/vanpelt",
+      "error": ""
+    },
+    {
+      "url": "https://penncard.business-services.upenn.edu/where-to-use-penncard",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://penncard.business-services.upenn.edu/where-to-use-penncard",
+      "error": ""
+    },
+    {
+      "url": "https://facilities.upenn.edu/maps/discover-penn/shoemaker-green",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://facilities.upenn.edu/maps/discover-penn/shoemaker-green",
+      "error": ""
+    },
+    {
+      "url": "https://facilities.upenn.edu/maps/discover-penn",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://facilities.upenn.edu/maps/discover-penn",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Institute of Contemporary Art"
+  ],
+  "sourceCount": 8,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

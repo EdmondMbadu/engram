@@ -1,0 +1,74 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Campus access, dining service, athletic schedules, and event availability can change; verify the linked current pages before going.",
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.saintmarys.edu/files/2020/05/Sisters%20of%20Holy%20Cross%20and%20College%20Boundary%20Map_2020.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.saintmarys.edu/files/2020/05/Sisters%20of%20Holy%20Cross%20and%20College%20Boundary%20Map_2020.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.saintmarys.edu/student-life/residence-life/study-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.saintmarys.edu/student-life/residence-life/study-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://www.saintmarys.edu/inauguration",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.saintmarys.edu/inauguration",
+      "error": ""
+    },
+    {
+      "url": "https://belles.saintmarys.edu/sports/2025/7/28/facilities-angela-athletic-wellness-complex-index.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://belles.saintmarys.edu/sports/2025/7/28/facilities-angela-athletic-wellness-complex-index.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.saintmarys.edu/dancearts-2024-splendidly-woven",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.saintmarys.edu/dancearts-2024-splendidly-woven",
+      "error": ""
+    },
+    {
+      "url": "https://belles.saintmarys.edu/sports/2025/7/28/information-game-day-information.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://belles.saintmarys.edu/sports/2025/7/28/information-game-day-information.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.saintmarys.edu/events",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.saintmarys.edu/events",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Cushwa-Leighton Library",
+    "Noble Family Dining Hall",
+    "Angela Athletic & Wellness Complex"
+  ],
+  "sourceCount": 7,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://admissions.tc.umn.edu/life-minnesota/big-ten",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://admissions.tc.umn.edu/life-minnesota/big-ten",
+      "error": ""
+    },
+    {
+      "url": "https://cla.umn.edu/music/ensembles/marching-band/history-traditions/school-songs/minnesota-rouser",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cla.umn.edu/music/ensembles/marching-band/history-traditions/school-songs/minnesota-rouser",
+      "error": ""
+    },
+    {
+      "url": "https://cla.umn.edu/music/ensembles/marching-band/history-traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cla.umn.edu/music/ensembles/marching-band/history-traditions",
+      "error": ""
+    },
+    {
+      "url": "https://homecoming.umn.edu/parade2026",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://homecoming.umn.edu/parade2026",
+      "error": ""
+    },
+    {
+      "url": "https://homecoming.umn.edu/royalty",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://homecoming.umn.edu/royalty",
+      "error": ""
+    },
+    {
+      "url": "https://brief.umn.edu/feature/tradition-pride-purpose-and-community-convocation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://brief.umn.edu/feature/tradition-pride-purpose-and-community-convocation",
+      "error": ""
+    },
+    {
+      "url": "https://springjam.umn.edu/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://springjam.umn.edu/about",
+      "error": ""
+    },
+    {
+      "url": "https://www.northrop.umn.edu/events/university-minnesota-marching-band-2026",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.northrop.umn.edu/events/university-minnesota-marching-band-2026",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

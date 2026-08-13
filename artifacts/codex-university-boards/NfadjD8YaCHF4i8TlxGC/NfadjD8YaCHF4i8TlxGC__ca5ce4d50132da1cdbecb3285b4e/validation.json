@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://addeobakers.com/products/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://addeobakers.com/products/",
+      "error": ""
+    },
+    {
+      "url": "https://bronxlittleitaly.com/merchants/pastry/artuso-pastry/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bronxlittleitaly.com/merchants/pastry/artuso-pastry/",
+      "error": ""
+    },
+    {
+      "url": "https://bronxlittleitaly.com/merchants/delicatessens/casa-della-mozzarella-2/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bronxlittleitaly.com/merchants/delicatessens/casa-della-mozzarella-2/",
+      "error": ""
+    },
+    {
+      "url": "https://www.cerinicoffee.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cerinicoffee.com/",
+      "error": ""
+    },
+    {
+      "url": "https://teitelbros.com/the-jewish-history-of-an-italian-grocery-store/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://teitelbros.com/the-jewish-history-of-an-italian-grocery-store/",
+      "error": ""
+    },
+    {
+      "url": "https://bronxlittleitaly.com/merchants/bakers/terranova-bakery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bronxlittleitaly.com/merchants/bakers/terranova-bakery/",
+      "error": ""
+    },
+    {
+      "url": "https://www.bronxlittleitaly.com/wp-content/uploads/2020/10/Walking-Tour.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bronxlittleitaly.com/wp-content/uploads/2020/10/Walking-Tour.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.nypl.org/about/locations/belmont",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nypl.org/about/locations/belmont",
+      "error": ""
+    },
+    {
+      "url": "https://www.nybg.org/visit/map/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nybg.org/visit/map/",
+      "error": ""
+    },
+    {
+      "url": "https://bronxzoo.com/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bronxzoo.com/contact",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

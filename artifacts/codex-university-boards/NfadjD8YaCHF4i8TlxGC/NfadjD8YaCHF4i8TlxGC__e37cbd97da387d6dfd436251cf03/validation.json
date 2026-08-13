@@ -1,0 +1,82 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "4 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.cpp.edu/licensingofspace/special-venues.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cpp.edu/licensingofspace/special-venues.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.cpp.edu/library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cpp.edu/library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.cpp.edu/library/access-services/group-study-rooms/reserve-a-room.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cpp.edu/library/group-study-room.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.cpp.edu/siil/resources/spaces.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cpp.edu/siil/resources/spaces.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://asi.cpp.edu/facilities/bsc/bsc-info/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://asi.cpp.edu/facilities/bsc/bsc-info/",
+      "error": ""
+    },
+    {
+      "url": "https://asi.cpp.edu/facilities/bric/bric-info/pool/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://asi.cpp.edu/facilities/bric/bric-info/pool/",
+      "error": ""
+    },
+    {
+      "url": "https://asi.cpp.edu/facilities/bric/bric-info/climbing-wall/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://asi.cpp.edu/facilities/bric/bric-info/climbing-wall/",
+      "error": ""
+    },
+    {
+      "url": "https://www.cpp.edu/kellogg-gallery/about/index.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cpp.edu/kellogg-gallery/about/index.shtml",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "George and Sakaye Aratani Japanese Garden",
+    "BRIC Pool and Poolside Lounge",
+    "Bronco Peak",
+    "W. Keith & Janet Kellogg University Art Gallery"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

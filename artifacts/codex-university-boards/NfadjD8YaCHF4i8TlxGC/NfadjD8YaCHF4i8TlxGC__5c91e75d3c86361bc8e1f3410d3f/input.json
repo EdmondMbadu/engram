@@ -1,0 +1,69 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "6m1Bexc6XPwD0q7StbOn",
+    "schoolName": "St Catherine University",
+    "shortSchoolName": "St Catherine University",
+    "townName": "Saint Paul",
+    "state": "MN",
+    "countryCode": "US",
+    "unitId": "175005",
+    "website": "https://www.stkate.edu/",
+    "latitude": 44.924926,
+    "longitude": -93.183761,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=stkate.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=stkate.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "Coeur de Catherine Information Center",
+    "Dew Drop Pond",
+    "City Sisters Coffee",
+    "St. Catherine University Library",
+    "Wildcat Kitchen at The Pulse",
+    "The Pulse and Game Room",
+    "Our Lady of Victory Chapel",
+    "Catherine G. Murphy Gallery",
+    "Student Organization Center",
+    "The O'Shaughnessy",
+    "Library Lower-Level Quiet Study Space",
+    "Study Room 125",
+    "Study Room 126",
+    "Library Main Floor",
+    "Dew Drop Area",
+    "The Pulse Booths",
+    "Tutoring and Learning Center",
+    "Access and Success Study Spaces",
+    "St. Mary Hall Computer Labs",
+    "Pizza Hut — 610 Snelling Ave S",
+    "Jimmy John's — 975 Grand Ave",
+    "Wendy's — 1770 University Ave W",
+    "Wendy's — 612 W University Ave",
+    "Wendy's — 255 E Maryland Ave",
+    "Wendy's — 1825 Suburban Ave",
+    "Taco Bell — 565 N Snelling",
+    "Taco Bell — 1630 Robert St S",
+    "Taco Bell — 1940 Suburban Ave",
+    "Taco Bell — 1672 Rice St"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

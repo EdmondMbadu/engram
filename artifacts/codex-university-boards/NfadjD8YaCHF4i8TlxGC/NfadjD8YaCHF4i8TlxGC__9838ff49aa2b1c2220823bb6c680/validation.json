@@ -1,0 +1,71 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Bronx Zoo and Wave Hill free access is limited to specified days and conditions.",
+    "NYBG free Grounds Access is limited to eligible Fordham ID holders and excludes premium areas.",
+    "Gallery schedules and library terrace availability should be checked before departure."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.nybg.org/community-access-discount-programs/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nybg.org/community-access-discount-programs/",
+      "error": ""
+    },
+    {
+      "url": "https://bronxmuseum.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bronxmuseum.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.wavehill.org/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.wavehill.org/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.nyc.gov/site/dcla/resources/free-and-suggested-admission.page",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nyc.gov/site/dcla/resources/free-and-suggested-admission.page",
+      "error": ""
+    },
+    {
+      "url": "https://www.lehman.edu/arts/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lehman.edu/arts/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nypl.org/locations/bronx-library-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nypl.org/locations/bronx-library-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nypl.org/locations/directory",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nypl.org/locations/directory",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

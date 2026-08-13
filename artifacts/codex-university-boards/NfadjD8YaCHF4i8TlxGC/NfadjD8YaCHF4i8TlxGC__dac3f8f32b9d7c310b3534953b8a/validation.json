@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.latech.edu/about/campus-map.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latech.edu/about/campus-map.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.latech.edu/about/traditions.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latech.edu/about/traditions.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.latech.edu/student-life/housing-and-dining/dining.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latech.edu/student-life/housing-and-dining/dining.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.latech.edu/student-life/student-support-and-resources/intramural-sports-recreation/bowling-alley.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latech.edu/student-life/student-support-and-resources/intramural-sports-recreation/bowling-alley.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.latech.edu/student-life/student-support-and-resources/intramural-sports-recreation/lambright-sports-wellness-center/rock-wall.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latech.edu/student-life/student-support-and-resources/intramural-sports-recreation/lambright-sports-wellness-center/rock-wall.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.latech.edu/student-life/student-support-and-resources/intramural-sports-recreation/hideaway-park.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latech.edu/student-life/student-support-and-resources/intramural-sports-recreation/hideaway-park.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.rustonlincoln.com/directory/railroad-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rustonlincoln.com/directory/railroad-park/",
+      "error": ""
+    },
+    {
+      "url": "https://www.latech.edu/documents/campus-map-july-2025.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latech.edu/documents/campus-map-july-2025.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.latech.edu/academics/library/about/library-hours.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latech.edu/academics/library/about/library-hours.php",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://campusinvolvement.umich.edu/article/diag-grove-reservation-2",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://campusinvolvement.umich.edu/article/diag-grove-reservation-2",
+      "error": ""
+    },
+    {
+      "url": "https://campusinvolvement.umich.edu/content/student-organization-resources",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://campusinvolvement.umich.edu/content/student-organization-resources",
+      "error": ""
+    },
+    {
+      "url": "https://artsatmichigan.umich.edu/artaroundtown/tour.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://artsatmichigan.umich.edu/artaroundtown/tour.php",
+      "error": ""
+    },
+    {
+      "url": "https://umma.umich.edu/objects/wave-field-aps1995-1/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://umma.umich.edu/objects/wave-field-aps1995-1/",
+      "error": ""
+    },
+    {
+      "url": "https://mbgna.umich.edu/nichols-arboretum",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://mbgna.umich.edu/nichols-arboretum",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.umich.edu/locations-and-hours/shapiro-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.umich.edu/locations-and-hours/shapiro-library",
+      "error": ""
+    },
+    {
+      "url": "https://uunions.umich.edu/union/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://uunions.umich.edu/union/",
+      "error": ""
+    },
+    {
+      "url": "https://trotter.umich.edu/frequently-asked-questions",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://trotter.umich.edu/frequently-asked-questions",
+      "error": ""
+    },
+    {
+      "url": "https://uunions.umich.edu/spaces-places/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://uunions.umich.edu/spaces-places/",
+      "error": ""
+    },
+    {
+      "url": "https://uunions.umich.edu/pierpont-retail-space/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://uunions.umich.edu/pierpont-retail-space/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Nichols Arboretum"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

@@ -1,0 +1,94 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Late availability can change for holidays, special events, and operational needs; confirm the official source before leaving. Two farther options are included only for students with safe transportation.",
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.amanouzcafe.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.amanouzcafe.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.teapotusa.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.teapotusa.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.joescafenorthampton.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.joescafenorthampton.com/",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/massachusetts/northampton/241-king-street-suite-115",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/massachusetts/northampton/241-king-street-suite-115",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ma/northampton/203-king-street.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ma/northampton/203-king-street.html",
+      "error": ""
+    },
+    {
+      "url": "https://stores.stopandshop.com/ma/northampton/228-king-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stores.stopandshop.com/ma/northampton/228-king-street",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ma/hadley/348-russell-street/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ma/hadley/348-russell-street/restaurant.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ma/holyoke/2199-northampton-st/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ma/holyoke/2199-northampton-st/restaurant.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.packardsnorthampton.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.packardsnorthampton.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.campuspizzamherst.com/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.campuspizzamherst.com/",
+      "error": "fetch failed"
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

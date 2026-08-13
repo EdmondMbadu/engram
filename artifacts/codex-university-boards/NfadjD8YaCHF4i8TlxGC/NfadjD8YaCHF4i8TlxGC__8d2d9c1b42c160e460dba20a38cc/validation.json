@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.caltech.edu/about/news/ditch-day-2023",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.caltech.edu/about/news/ditch-day-2023",
+      "error": ""
+    },
+    {
+      "url": "https://magazine.caltech.edu/post/caltech-traditions-ditch-day",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://magazine.caltech.edu/post/caltech-traditions-ditch-day",
+      "error": ""
+    },
+    {
+      "url": "https://www.admissions.caltech.edu/why-caltech/student-life/traditions-pranks",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.admissions.caltech.edu/why-caltech/student-life/traditions-pranks",
+      "error": ""
+    },
+    {
+      "url": "https://lloyd.caltech.edu/lloyd/index",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lloyd.caltech.edu/lloyd/index",
+      "error": ""
+    },
+    {
+      "url": "https://ihc.caltech.edu/rotation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ihc.caltech.edu/rotation",
+      "error": ""
+    },
+    {
+      "url": "https://www.admissions.caltech.edu/explore-more/news/129th-commencement-2023",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.admissions.caltech.edu/explore-more/news/129th-commencement-2023",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

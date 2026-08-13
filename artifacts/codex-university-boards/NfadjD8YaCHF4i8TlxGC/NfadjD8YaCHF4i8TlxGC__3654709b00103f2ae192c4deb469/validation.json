@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.artscentersp.org/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.artscentersp.org/about",
+      "error": ""
+    },
+    {
+      "url": "https://www.rrcoffee.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rrcoffee.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.cooksandcompany.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cooksandcompany.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.stpeterchamber.com/listing/the-smallest-cog/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stpeterchamber.com/listing/the-smallest-cog/",
+      "error": ""
+    },
+    {
+      "url": "https://stpeterfood.coop/about-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stpeterfood.coop/about-us/",
+      "error": ""
+    },
+    {
+      "url": "https://www.saintpetermn.gov/library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.saintpetermn.gov/library",
+      "error": ""
+    },
+    {
+      "url": "https://www.saintpetermn.gov/Facilities/Facility/Details/Community-Center-1",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.saintpetermn.gov/Facilities/Facility/Details/Community-Center-1",
+      "error": ""
+    },
+    {
+      "url": "https://www.saintpetermn.gov/facilities/facility/details/Minnesota-Square-Park-11",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.saintpetermn.gov/facilities/facility/details/Minnesota-Square-Park-11",
+      "error": ""
+    },
+    {
+      "url": "https://saintpetermn.gov/parks",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://saintpetermn.gov/parks",
+      "error": ""
+    },
+    {
+      "url": "https://nrhp.mnhs.org/traversedessioux",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://nrhp.mnhs.org/traversedessioux",
+      "error": "fetch failed"
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

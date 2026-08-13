@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.seattleu.edu/arts-sciences/academic-departments/department-of-visual-arts/classrooms-and-galleries/hedreen/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.seattleu.edu/arts-sciences/academic-departments/department-of-visual-arts/classrooms-and-galleries/hedreen/",
+      "error": ""
+    },
+    {
+      "url": "https://www.seattleu.edu/life-at-seattle-u/faith-spirituality-meaning/chapel-of-st-ignatius/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.seattleu.edu/life-at-seattle-u/faith-spirituality-meaning/chapel-of-st-ignatius/",
+      "error": ""
+    },
+    {
+      "url": "https://fryemuseum.org/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fryemuseum.org/about",
+      "error": ""
+    },
+    {
+      "url": "https://www.seattleartmuseum.org/whats-on/programs/free-first-thursday",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.seattleartmuseum.org/whats-on/programs/free-first-thursday",
+      "error": ""
+    },
+    {
+      "url": "https://www.seattle.gov/arts/experience/galleries/arts-at-king-street-station-gallery",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.seattle.gov/arts/experience/galleries/arts-at-king-street-station-gallery",
+      "error": ""
+    },
+    {
+      "url": "https://www.seattle.gov/arts/experience/art-walks",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.seattle.gov/arts/experience/art-walks",
+      "error": ""
+    },
+    {
+      "url": "https://www.spl.org/hours-and-locations/central-library/central-library-highlights/central-library-tours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.spl.org/hours-and-locations/central-library/central-library-highlights/central-library-tours",
+      "error": ""
+    },
+    {
+      "url": "https://www.spl.org/using-the-library/get-started/get-started-in-english/en-get-started-with-a-library-card",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.spl.org/using-the-library/get-started/get-started-in-english/en-get-started-with-a-library-card",
+      "error": ""
+    },
+    {
+      "url": "https://www.spl.org/hours-and-locations/douglass-truth-branch/douglass-truth-branch-highlights/douglass-truth-branch-art",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.spl.org/hours-and-locations/douglass-truth-branch/douglass-truth-branch-highlights/douglass-truth-branch-art",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

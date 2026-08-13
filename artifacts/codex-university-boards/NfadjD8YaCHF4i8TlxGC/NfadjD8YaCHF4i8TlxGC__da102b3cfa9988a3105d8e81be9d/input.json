@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "pMwdggHqmSFImBagTES9",
+    "schoolName": "Saint Mary's College of California",
+    "shortSchoolName": "Saint Mary's College of California",
+    "townName": "Moraga",
+    "state": "CA",
+    "countryCode": "US",
+    "unitId": "123554",
+    "website": "https://www.stmarys-ca.edu/",
+    "latitude": 37.840731,
+    "longitude": -122.109031,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/9/92/Saint_Mary%27s_College_of_California_seal.svg/120px-Saint_Mary%27s_College_of_California_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=stmarys-ca.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Power Plant Drop-In Space",
+    "Power Plant Silent Study Zone",
+    "Power Plant Sensory Room",
+    "Power Plant Reservable Study Rooms",
+    "Marie Curie STEM Center Main Study Room",
+    "Marie Curie STEM Center Small-Group Study Rooms",
+    "Psychology Center Central Lounge",
+    "Galileo Hall Student Study Spaces",
+    "Math Pedagogy Center",
+    "Aquinas Hall Study Lounge"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

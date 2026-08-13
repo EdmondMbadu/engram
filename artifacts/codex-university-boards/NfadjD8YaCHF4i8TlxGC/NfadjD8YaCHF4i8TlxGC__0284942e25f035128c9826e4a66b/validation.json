@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.henriettany.gov/community/park/veterans-memorial-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.henriettany.gov/community/park/veterans-memorial-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.henriettany.gov/bc-lb",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.henriettany.gov/bc-lb",
+      "error": ""
+    },
+    {
+      "url": "https://www.henriettany.gov/bc-yb",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.henriettany.gov/bc-yb",
+      "error": ""
+    },
+    {
+      "url": "https://www.henriettany.gov/bc-tb/page/contacting-town-board",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.henriettany.gov/bc-tb/page/contacting-town-board",
+      "error": ""
+    },
+    {
+      "url": "https://www.henriettany.gov/community/page/tinker-nature-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.henriettany.gov/community/page/tinker-nature-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.henriettany.gov/community/page/hansen-nature-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.henriettany.gov/community/page/hansen-nature-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.henriettany.gov/community/page/tinker-homestead-farm-museum",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.henriettany.gov/community/page/tinker-homestead-farm-museum",
+      "error": ""
+    },
+    {
+      "url": "https://www.henriettany.gov/parksites",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.henriettany.gov/parksites",
+      "error": ""
+    },
+    {
+      "url": "https://www.henriettany.gov/community/park/martin-road-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.henriettany.gov/community/park/martin-road-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.geneseevalleyregionalmarketauthority.com/contact-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.geneseevalleyregionalmarketauthority.com/contact-us",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

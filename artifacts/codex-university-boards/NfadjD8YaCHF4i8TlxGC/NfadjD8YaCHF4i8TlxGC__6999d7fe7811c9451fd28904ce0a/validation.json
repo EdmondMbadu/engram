@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://librarywest.uflib.ufl.edu/spaces/quiet-study-floor/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://librarywest.uflib.ufl.edu/spaces/quiet-study-floor/",
+      "error": ""
+    },
+    {
+      "url": "https://librarywest.uflib.ufl.edu/spaces/study-rooms/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://librarywest.uflib.ufl.edu/spaces/study-rooms/",
+      "error": ""
+    },
+    {
+      "url": "https://uflib.ufl.edu/using-the-libraries/studyareas/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://uflib.ufl.edu/using-the-libraries/studyareas/",
+      "error": ""
+    },
+    {
+      "url": "https://marston.uflib.ufl.edu/spaces/location-floorplans/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://marston.uflib.ufl.edu/spaces/location-floorplans/",
+      "error": ""
+    },
+    {
+      "url": "https://afa.uflib.ufl.edu/services/study-space/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://afa.uflib.ufl.edu/services/study-space/",
+      "error": ""
+    },
+    {
+      "url": "https://libcal.uflib.ufl.edu/spaces?c=0&gid=0&lid=4913",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libcal.uflib.ufl.edu/spaces?c=0&gid=0&lid=4913",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

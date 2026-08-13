@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "ba9nncqY5zUmwyXDoD10",
+    "schoolName": "Rutgers University-New Brunswick",
+    "shortSchoolName": "Rutgers University-New Brunswick",
+    "townName": "New Brunswick",
+    "state": "NJ",
+    "countryCode": "US",
+    "unitId": "186380",
+    "website": "https://newbrunswick.rutgers.edu/",
+    "latitude": 40.498769,
+    "longitude": -74.446251,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Rutgers_University_seal.svg/330px-Rutgers_University_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=newbrunswick.rutgers.edu&sz=256"
+  },
+  "template": {
+    "id": "college-study-spots",
+    "version": "1.0",
+    "titlePattern": "Claimed by 9am: {count} Study Spots Worth Showing Up Early For",
+    "editorialBrief": "Choose ten distinct study environments. Verify access rules, room or reservation constraints, and the physical affordance that makes each useful. Treat “Claimed by 9am” as editorial framing; never assert crowding or student behavior without evidence.",
+    "researchQueries": [
+      "campus study spaces",
+      "library study rooms students",
+      "quiet study campus"
+    ],
+    "count": 10,
+    "icon": "menu_book",
+    "primarySubjectType": "study_space",
+    "allowedSubjectTypes": [
+      "study_space",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Claimed by 9am: 10 Study Spots Worth Showing Up Early For",
+  "excluded_subjects": [
+    "Digital Learning Commons",
+    "The Cove",
+    "The Space",
+    "The Atrium",
+    "Rutgers Gardens",
+    "Archibald S. Alexander Library",
+    "Mabel Smith Douglass Library",
+    "Chang Science Library",
+    "James Dickson Carr Library",
+    "Library of Science and Medicine"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

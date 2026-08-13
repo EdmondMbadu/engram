@@ -1,0 +1,96 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.boston.gov/parks/back-bay-fens",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.boston.gov/parks/back-bay-fens",
+      "error": ""
+    },
+    {
+      "url": "https://search.boston.gov/departments/parks-and-recreation/improvements-james-p-kelleher-rose-garden",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://search.boston.gov/departments/parks-and-recreation/improvements-james-p-kelleher-rose-garden",
+      "error": ""
+    },
+    {
+      "url": "https://fenwayvictorygardens.org/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fenwayvictorygardens.org/contact",
+      "error": ""
+    },
+    {
+      "url": "https://www.emmanuel.edu/beyond-campus/our-neighborhood-and-neighbors/explore-our-neighborhood",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.emmanuel.edu/beyond-campus/our-neighborhood-and-neighbors/explore-our-neighborhood",
+      "error": ""
+    },
+    {
+      "url": "https://www.gardnermuseum.org/visit/directions-and-parking",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gardnermuseum.org/visit/directions-and-parking",
+      "error": ""
+    },
+    {
+      "url": "https://www.boston.gov/departments/parks-and-recreation/playgrounds-and-parks-boston",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.boston.gov/departments/parks-and-recreation/playgrounds-and-parks-boston",
+      "error": ""
+    },
+    {
+      "url": "https://www.timeout.com/time-out-market-boston/faqs",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.timeout.com/time-out-market-boston/faqs",
+      "error": ""
+    },
+    {
+      "url": "https://www.mlb.com/redsox/ballpark",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mlb.com/redsox/ballpark",
+      "error": ""
+    },
+    {
+      "url": "https://www.huntingtontheatre.org/contact-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.huntingtontheatre.org/contact-us/",
+      "error": ""
+    },
+    {
+      "url": "https://necmusic.edu/on-campus/visit-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://necmusic.edu/on-campus/visit-us/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Museum of Fine Arts, Boston",
+    "Isabella Stewart Gardner Museum"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

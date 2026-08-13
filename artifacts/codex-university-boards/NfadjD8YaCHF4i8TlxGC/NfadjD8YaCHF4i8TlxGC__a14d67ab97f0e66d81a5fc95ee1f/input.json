@@ -1,0 +1,71 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "aC7OIaPnBUgSApvEAd6p",
+    "schoolName": "United States Air Force Academy",
+    "shortSchoolName": "United States Air Force Academy",
+    "townName": "USAF Academy",
+    "state": "CO",
+    "countryCode": "US",
+    "unitId": "128328",
+    "website": "https://www.usafa.edu/",
+    "latitude": 39.010957,
+    "longitude": -104.891358,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/US-AirForceAcademy-Shield.svg/960px-US-AirForceAcademy-Shield.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=usafa.edu&sz=256"
+  },
+  "template": {
+    "id": "college-campus-tour-skips",
+    "version": "1.0",
+    "titlePattern": "What the Campus Tour Skips: {count} Places Students Share With Each Other",
+    "editorialBrief": "Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.",
+    "researchQueries": [
+      "student favorite campus places",
+      "campus map student spaces",
+      "student newspaper campus places"
+    ],
+    "count": 10,
+    "icon": "style",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place",
+      "study_space"
+    ],
+    "freshnessDays": 365
+  },
+  "exact_title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+  "excluded_subjects": [
+    "Garden of the Gods Visitor & Nature Center",
+    "Gateway Rock",
+    "Balanced Rock",
+    "Siamese Twins",
+    "Three Graces",
+    "Cathedral Spires",
+    "Kissing Camels",
+    "High Point Overlook",
+    "Perkins Central Garden Trail",
+    "Spring Canyon Trailhead",
+    "General Bradley and Zita Hosmer Visitor Center",
+    "Chapel Trail",
+    "Cadet Chapel",
+    "Honor Court",
+    "Noon Meal Formation",
+    "U.S. Air Force Academy Planetarium",
+    "Arnold Hall",
+    "Athletic Overlook",
+    "Doolittle Hall",
+    "Falcon Spur Trail",
+    "McDonald's, 765 West Baptist Road",
+    "Taco Bell, 1208 Interquest Parkway",
+    "Shake Shack Interquest",
+    "Whataburger, 1310 Interquest Parkway",
+    "IHOP, 3090 N. Chestnut Street",
+    "Carl's Jr., 425 Garden of the Gods",
+    "Jack in the Box, 3690 New Center Point Boulevard",
+    "Wendy's, 2515 Montebello Drive West",
+    "Whataburger, 2550 Montebello",
+    "Wendy's, 5850 Stetson Hills Boulevard"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

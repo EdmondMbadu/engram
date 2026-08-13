@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.malvern.org/1285/Parks-and-Open-Space",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.malvern.org/1285/Parks-and-Open-Space",
+      "error": ""
+    },
+    {
+      "url": "https://malvern.org/calendar.aspx?EID=762&PREVIEW=YES",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://malvern.org/calendar.aspx?EID=762&PREVIEW=YES",
+      "error": ""
+    },
+    {
+      "url": "https://www.malvern.org/1489/Malvern-Public-Library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.malvern.org/1489/Malvern-Public-Library",
+      "error": ""
+    },
+    {
+      "url": "https://theclassicdinerpa.com/malvern-location/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://theclassicdinerpa.com/malvern-location/",
+      "error": ""
+    },
+    {
+      "url": "https://www.target.com/sl/malvern/2537",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.target.com/sl/malvern/2537",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://essexcountyparks.org/index.php/parks/mills-reservation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://essexcountyparks.org/index.php/parks/mills-reservation",
+      "error": ""
+    },
+    {
+      "url": "https://essexcountyparks.org/parks/presby-memorial-iris-gardens",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://essexcountyparks.org/parks/presby-memorial-iris-gardens",
+      "error": ""
+    },
+    {
+      "url": "https://essexcountyparks.org/parks/anderson-park/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://essexcountyparks.org/parks/anderson-park/about",
+      "error": ""
+    },
+    {
+      "url": "https://montclairfoundation.org/plan-your-visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://montclairfoundation.org/plan-your-visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.montclairartmuseum.org/hours-and-admission",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.montclairartmuseum.org/hours-and-admission",
+      "error": ""
+    },
+    {
+      "url": "https://montclairlibrary.org/about/contact-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://montclairlibrary.org/about/contact-us/",
+      "error": ""
+    },
+    {
+      "url": "https://www.montclairfilm.org/cinemas/venues/the-clairidge/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.montclairfilm.org/cinemas/venues/the-clairidge/",
+      "error": ""
+    },
+    {
+      "url": "https://wellmonttheater.com/contact/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://wellmonttheater.com/contact/",
+      "error": ""
+    },
+    {
+      "url": "https://www.montclairhistory.org/plan-your-visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.montclairhistory.org/plan-your-visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.montclairfarmersmarket.org/faq",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.montclairfarmersmarket.org/faq",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

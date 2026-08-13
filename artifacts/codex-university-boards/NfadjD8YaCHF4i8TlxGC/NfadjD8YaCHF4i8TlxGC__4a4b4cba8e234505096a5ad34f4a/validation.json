@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.fandm.edu/traditions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fandm.edu/traditions/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fandm.edu/events/convocation/convocation-2024/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fandm.edu/events/convocation/convocation-2024/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fandm.edu/alumni/alumni-association/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fandm.edu/alumni/alumni-association/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fandm.edu/academic-associations-and-honor-societies/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fandm.edu/academic-associations-and-honor-societies/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "O9XDewUocj9z4KCITOAw",
+    "schoolName": "Union College",
+    "shortSchoolName": "Union College",
+    "townName": "Schenectady",
+    "state": "NY",
+    "countryCode": "US",
+    "unitId": "196866",
+    "website": "https://www.union.edu/",
+    "latitude": 42.818097,
+    "longitude": -73.928788,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/UnionCollegeSeal.svg/500px-UnionCollegeSeal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=union.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Reamer Campus Center",
+    "Schaffer Library Learning Commons",
+    "Nott Memorial",
+    "Jackson's Garden",
+    "Old Chapel",
+    "Feigenbaum Center for Visual Arts",
+    "Crowell and West Galleries",
+    "Henle Dance Pavilion",
+    "Wold Student Gallery",
+    "Kenney Community Center"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

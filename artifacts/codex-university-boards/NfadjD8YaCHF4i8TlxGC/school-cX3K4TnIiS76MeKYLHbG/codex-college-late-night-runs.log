@@ -1,0 +1,300 @@
+Reading additional input from stdin...
+2026-08-13T08:00:33.642259Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa22-3fd7-7271-9318-5f8ca0d0c53c.1786607976408022000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:00:33.682164Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa22-3fd2-7fa0-bf04-0eb33516a409.1786607976403083000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa23-1ef0-7fb2-8b50-147e84867cb9
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"cX3K4TnIiS76MeKYLHbG","schoolName":"Linfield University","shortSchoolName":"Linfield University","townName":"McMinnville","state":"OR","countryCode":"US","website":"https://www.linfield.edu/","latitude":45.201173,"longitude":-123.199642},"templates":[{"id":"college-late-night-runs","version":"1.0","titlePattern":"{count} Late-Night Runs That Explain {school}","editorialBrief":"Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.","researchQueries":["late night dining students","campus dining late hours","restaurants open late near campus"],"count":10,"icon":"nightlife","primarySubjectType":"place","allowedSubjectTypes":["place"],"freshnessDays":120,"exactTitle":"10 Late-Night Runs That Explain Linfield University"}]}
+2026-08-13T08:00:33.953398Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa22-3fc0-7c83-9086-55e9e66a0ee6.1786607976385319000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:00:33.983844Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T08:00:34.085882Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa22-3fd4-7461-a1bc-1b40241db390.1786607976404748000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:00:34.091952Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T08:00:34.276246Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa22-3fd9-7d81-9383-8f0bbdd309fe.1786607976410277000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:00:34.371029Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa22-3fcc-7a83-8719-cdf0192b56db.1786607976396635000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:00:34.558803Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa22-3fd3-7183-b1a2-e1eba38223b6.1786607976404452000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Linfield University",
+  "town_name": "McMinnville",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Linfield University",
+      "town_name": "McMinnville",
+      "template_id": "college-late-night-runs",
+      "title": "10 Late-Night Runs That Explain Linfield University",
+      "description": "",
+      "icon": "nightlife",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     		,
+     		{
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     		,
+     		{
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     		,
+     		{
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     		,
+     		{
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     		,
+     		{
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     		,
+     		{
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     		,
+     		{
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     		,
+     		{
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     		,
+     		{
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ],
+      "warnings": [
+        "Researching ten distinct under-21-safe destinations with direct, current late-hours evidence."
+      ]
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: McMinnville OR restaurants open until 10 pm official hours ...
+web search: 
+web search: site:tacobell.com McMinnville OR location hours ...
+web search: 
+web search: Odd Moe's McMinnville official hours ...
+codex
+{"complete":true,"school_name":"Linfield University","town_name":"McMinnville","boards":[{"complete":true,"school_name":"Linfield University","town_name":"McMinnville","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Linfield University","description":"Ten under-21-safe McMinnville food stops with directly documented service at 10 p.m. or later on at least one current operating day.","icon":"nightlife","cards":[{"subject_id":"linfield-late-night-taco-bell-915-ne-highway-99w","subject_type":"place","entity_name":"Taco Bell — 915 NE Highway 99W","title":"Taco Bell After Midnight","subtitle":"Drive-through food on NE Highway 99W","notes":"Use the drive-through after the dining room closes, and confirm the day’s posted schedule before leaving campus.","short_summary":"A McMinnville drive-through serving until 2 a.m. most nights and 3 a.m. Friday and Saturday.","evidence_claim":"The official location page lists drive-through hours until 2 a.m. Sunday–Thursday and 3 a.m. Friday–Saturday.","source_url":"https://locations.tacobell.com/or/mcminnville/915-ne-highway-99w.html","source_title":"Taco Bell in McMinnville, OR — 915 NE Highway 99W","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-through listed until 2 a.m. Sunday–Thursday and 3 a.m. Friday–Saturday; dine-in hours are shorter.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"linfield-late-night-jack-in-the-box-2565-ne-highway-99w","subject_type":"place","entity_name":"Jack in the Box — 2565 NE Highway 99W","title":"Jack in the Box Before Dawn","subtitle":"Late drive-through service north of central McMinnville","notes":"Plan on drive-through service after 10 p.m.; the official page shows the lobby closing well before the overnight lane.","short_summary":"An all-day-menu stop whose drive-through continues into the early morning.","evidence_claim":"The official McMinnville location page lists drive-through service until 3 or 4 a.m., depending on the day.","source_url":"https://locations.jackinthebox.com/us/or/mcminnville/2565-ne-highway-99w","source_title":"Jack in the Box McMinnville","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-through is listed until 3 a.m. Sunday–Wednesday and 4 a.m. Thursday–Saturday; lobby closes at 10 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"linfield-late-night-wendys-1730-n-highway-99w","subject_type":"place","entity_name":"Wendy's — 1730 N Highway 99W","title":"Wendy's at 1 A.M.","subtitle":"Seven-day late service on North Highway 99W","notes":"Check the location page before departing, then choose restaurant or drive-through service according to posted access.","short_summary":"A nightly fast-food option with the same late closing time every day of the week.","evidence_claim":"Wendy’s official location page lists restaurant and drive-through hours from 7 a.m. to 1 a.m. daily.","source_url":"https://locations.wendys.com/united-states/or/mcminnville/1730-n-hwy-99w","source_title":"Wendy's MAC in McMinnville, OR","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page lists both restaurant and drive-through service until 1 a.m. every day.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"linfield-late-night-dominos-635-ne-highway-99w","subject_type":"place","entity_name":"Domino's — 635 NE Highway 99W","title":"Domino's After Midnight","subtitle":"Late carryout and delivery from the Highway 99W shop","notes":"Open the store page to verify tonight’s closing time and ordering mode before choosing carryout or delivery.","short_summary":"A pizza counter whose official store page documents service into the early morning.","evidence_claim":"The official Domino’s page for 635 NE Highway 99W identifies the McMinnville store and displayed a 1 a.m. closing time when fetched.","source_url":"https://pizza.dominos.com/oregon/mcminnville/635-ne-highway-99w-b","source_title":"Domino's Pizza at 635 NE Highway 99W #B","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official store page displayed “Today Until 1:00 AM” when fetched; hours vary by day, so recheck before ordering.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"linfield-late-night-odd-moes-mcminnville","subject_type":"place","entity_name":"Odd Moe's Pizza — McMinnville","title":"Odd Moe's Until Midnight","subtitle":"Northwest-style pizza with weekend late hours","notes":"Use the McMinnville phone number or online-order link, and remember that the latest posted close applies Friday and Saturday.","short_summary":"A local pizza branch documented until midnight on weekend nights.","evidence_claim":"Odd Moe’s official menu lists McMinnville and states hours of 11 a.m.–11 p.m. Sunday–Thursday and 11 a.m.–midnight Friday–Saturday.","source_url":"https://oddmoes.com/wp-content/uploads/2025/04/2025-January-Menu-v2-Odd-Moes.pdf","source_title":"Odd Moe's Northwest Style Pizza Menu","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official menu lists closing at 11 p.m. Sunday–Thursday and midnight Friday–Saturday for McMinnville.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"linfield-late-night-mikeys-family-pizzeria","subject_type":"place","entity_name":"Mikey's Family Pizzeria","title":"Mikey's at Eleven","subtitle":"Family pizzeria on NE Highway 99W","notes":"Save this run for Friday or Saturday when the posted schedule extends an hour later than the rest of the week.","short_summary":"A family pizzeria offering its latest posted service on Friday and Saturday nights.","evidence_claim":"Mikey’s official contact page lists hours until 11 p.m. Friday–Saturday and 10 p.m. Sunday–Thursday.","source_url":"https://mikeys-pizzeria.com/contact-us/","source_title":"Contact — Mikey's Family Pizzeria","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until 11 p.m. Friday and Saturday; posted closing time is 10 p.m. Sunday–Thursday.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"linfield-late-night-joysticks-arcade-eatery","subject_type":"place","entity_name":"Joysticks Arcade & Eatery","title":"Joysticks After Ten","subtitle":"Downtown arcade and food counter on NE Third Street","notes":"Choose Friday or Saturday for the longest posted window, and verify hours because the official Friday listing contains a typo.","short_summary":"An arcade-and-eatery stop with documented late weekend service downtown.","evidence_claim":"Joysticks’ official site lists service until 10 p.m. Tuesday–Thursday and Sunday, with Saturday extending to midnight.","source_url":"https://joysticks-arcade.com/","source_title":"Joysticks Arcade & Eatery — McMinnville, Oregon","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Saturday is listed until midnight; Tuesday–Thursday and Sunday run until 10 p.m. The Friday closing entry is internally inconsistent, so confirm directly.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"linfield-late-night-1882-grille","subject_type":"place","entity_name":"1882 Grille","title":"1882 Grille at Ten","subtitle":"Family-friendly rooftop restaurant on NE Third Street","notes":"Go on Friday or Saturday for the 10 p.m. close, and arrive early enough to order before the kitchen winds down.","short_summary":"A downtown restaurant explicitly described as kid- and family-friendly, with later weekend hours.","evidence_claim":"The restaurant’s official site lists Friday and Saturday hours until 10 p.m. and identifies the venue as kid friendly and family friendly.","source_url":"https://www.1882grille.com/","source_title":"1882 Grille — Restaurant & Grill — McMinnville","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until 10 p.m. Friday and Saturday; closes at 8:30 p.m. on the other listed days.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"linfield-late-night-mcmenamins-pub-hotel-oregon","subject_type":"place","entity_name":"McMenamins Pub at Hotel Oregon","title":"Hotel Oregon at Eleven","subtitle":"All-ages restaurant service inside the historic hotel","notes":"Use the main pub rather than an age-restricted space, and target Friday or Saturday for the latest posted closing.","short_summary":"A hotel restaurant serving breakfast through dinner, with weekend hours extending to 11 p.m.","evidence_claim":"The official Hotel Oregon pub page lists hours until 10 p.m. Sunday–Thursday and 11 p.m. Friday–Saturday, plus pickup and delivery ordering.","source_url":"https://www.mcmenamins.com/hotel-oregon/mcmenamins-pub-at-hotel-oregon/on-tap/","source_title":"McMenamins Pub at Hotel Oregon","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Main pub closes at 10 p.m. Sunday–Thursday and 11 p.m. Friday–Saturday; pickup and delivery are listed.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"linfield-late-night-the-pub-mcminnville","subject_type":"place","entity_name":"The Pub at The Ground","title":"The Pub at Midnight","subtitle":"Comfort-food restaurant on NE Davis Street","notes":"Pick Friday or Saturday for midnight service; on other nights, use the official schedule to avoid arriving after 10 p.m.","short_summary":"A no-reservations restaurant with midnight closing times on Friday and Saturday.","evidence_claim":"The Ground’s official site lists The Pub at 326 NE Davis Street until midnight Friday–Saturday and 10 p.m. on other days.","source_url":"https://www.humblespirit.love/","source_title":"Grounded Table and The Pub","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until midnight Friday and Saturday; closes at 10 p.m. Monday–Thursday and Sunday. No reservations are required.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T08:02:21.012853Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa23-1ef0-7fb2-8b50-147e84867cb9.1786608033521611000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+36,777
+
+{"complete":true,"school_name":"Linfield University","town_name":"McMinnville","boards":[{"complete":true,"school_name":"Linfield University","town_name":"McMinnville","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Linfield University","description":"Ten under-21-safe McMinnville food stops with directly documented service at 10 p.m. or later on at least one current operating day.","icon":"nightlife","cards":[{"subject_id":"linfield-late-night-taco-bell-915-ne-highway-99w","subject_type":"place","entity_name":"Taco Bell — 915 NE Highway 99W","title":"Taco Bell After Midnight","subtitle":"Drive-through food on NE Highway 99W","notes":"Use the drive-through after the dining room closes, and confirm the day’s posted schedule before leaving campus.","short_summary":"A McMinnville drive-through serving until 2 a.m. most nights and 3 a.m. Friday and Saturday.","evidence_claim":"The official location page lists drive-through hours until 2 a.m. Sunday–Thursday and 3 a.m. Friday–Saturday.","source_url":"https://locations.tacobell.com/or/mcminnville/915-ne-highway-99w.html","source_title":"Taco Bell in McMinnville, OR — 915 NE Highway 99W","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-through listed until 2 a.m. Sunday–Thursday and 3 a.m. Friday–Saturday; dine-in hours are shorter.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"linfield-late-night-jack-in-the-box-2565-ne-highway-99w","subject_type":"place","entity_name":"Jack in the Box — 2565 NE Highway 99W","title":"Jack in the Box Before Dawn","subtitle":"Late drive-through service north of central McMinnville","notes":"Plan on drive-through service after 10 p.m.; the official page shows the lobby closing well before the overnight lane.","short_summary":"An all-day-menu stop whose drive-through continues into the early morning.","evidence_claim":"The official McMinnville location page lists drive-through service until 3 or 4 a.m., depending on the day.","source_url":"https://locations.jackinthebox.com/us/or/mcminnville/2565-ne-highway-99w","source_title":"Jack in the Box McMinnville","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-through is listed until 3 a.m. Sunday–Wednesday and 4 a.m. Thursday–Saturday; lobby closes at 10 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"linfield-late-night-wendys-1730-n-highway-99w","subject_type":"place","entity_name":"Wendy's — 1730 N Highway 99W","title":"Wendy's at 1 A.M.","subtitle":"Seven-day late service on North Highway 99W","notes":"Check the location page before departing, then choose restaurant or drive-through service according to posted access.","short_summary":"A nightly fast-food option with the same late closing time every day of the week.","evidence_claim":"Wendy’s official location page lists restaurant and drive-through hours from 7 a.m. to 1 a.m. daily.","source_url":"https://locations.wendys.com/united-states/or/mcminnville/1730-n-hwy-99w","source_title":"Wendy's MAC in McMinnville, OR","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page lists both restaurant and drive-through service until 1 a.m. every day.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"linfield-late-night-dominos-635-ne-highway-99w","subject_type":"place","entity_name":"Domino's — 635 NE Highway 99W","title":"Domino's After Midnight","subtitle":"Late carryout and delivery from the Highway 99W shop","notes":"Open the store page to verify tonight’s closing time and ordering mode before choosing carryout or delivery.","short_summary":"A pizza counter whose official store page documents service into the early morning.","evidence_claim":"The official Domino’s page for 635 NE Highway 99W identifies the McMinnville store and displayed a 1 a.m. closing time when fetched.","source_url":"https://pizza.dominos.com/oregon/mcminnville/635-ne-highway-99w-b","source_title":"Domino's Pizza at 635 NE Highway 99W #B","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official store page displayed “Today Until 1:00 AM” when fetched; hours vary by day, so recheck before ordering.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"linfield-late-night-odd-moes-mcminnville","subject_type":"place","entity_name":"Odd Moe's Pizza — McMinnville","title":"Odd Moe's Until Midnight","subtitle":"Northwest-style pizza with weekend late hours","notes":"Use the McMinnville phone number or online-order link, and remember that the latest posted close applies Friday and Saturday.","short_summary":"A local pizza branch documented until midnight on weekend nights.","evidence_claim":"Odd Moe’s official menu lists McMinnville and states hours of 11 a.m.–11 p.m. Sunday–Thursday and 11 a.m.–midnight Friday–Saturday.","source_url":"https://oddmoes.com/wp-content/uploads/2025/04/2025-January-Menu-v2-Odd-Moes.pdf","source_title":"Odd Moe's Northwest Style Pizza Menu","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official menu lists closing at 11 p.m. Sunday–Thursday and midnight Friday–Saturday for McMinnville.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"linfield-late-night-mikeys-family-pizzeria","subject_type":"place","entity_name":"Mikey's Family Pizzeria","title":"Mikey's at Eleven","subtitle":"Family pizzeria on NE Highway 99W","notes":"Save this run for Friday or Saturday when the posted schedule extends an hour later than the rest of the week.","short_summary":"A family pizzeria offering its latest posted service on Friday and Saturday nights.","evidence_claim":"Mikey’s official contact page lists hours until 11 p.m. Friday–Saturday and 10 p.m. Sunday–Thursday.","source_url":"https://mikeys-pizzeria.com/contact-us/","source_title":"Contact — Mikey's Family Pizzeria","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until 11 p.m. Friday and Saturday; posted closing time is 10 p.m. Sunday–Thursday.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"linfield-late-night-joysticks-arcade-eatery","subject_type":"place","entity_name":"Joysticks Arcade & Eatery","title":"Joysticks After Ten","subtitle":"Downtown arcade and food counter on NE Third Street","notes":"Choose Friday or Saturday for the longest posted window, and verify hours because the official Friday listing contains a typo.","short_summary":"An arcade-and-eatery stop with documented late weekend service downtown.","evidence_claim":"Joysticks’ official site lists service until 10 p.m. Tuesday–Thursday and Sunday, with Saturday extending to midnight.","source_url":"https://joysticks-arcade.com/","source_title":"Joysticks Arcade & Eatery — McMinnville, Oregon","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Saturday is listed until midnight; Tuesday–Thursday and Sunday run until 10 p.m. The Friday closing entry is internally inconsistent, so confirm directly.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"linfield-late-night-1882-grille","subject_type":"place","entity_name":"1882 Grille","title":"1882 Grille at Ten","subtitle":"Family-friendly rooftop restaurant on NE Third Street","notes":"Go on Friday or Saturday for the 10 p.m. close, and arrive early enough to order before the kitchen winds down.","short_summary":"A downtown restaurant explicitly described as kid- and family-friendly, with later weekend hours.","evidence_claim":"The restaurant’s official site lists Friday and Saturday hours until 10 p.m. and identifies the venue as kid friendly and family friendly.","source_url":"https://www.1882grille.com/","source_title":"1882 Grille — Restaurant & Grill — McMinnville","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until 10 p.m. Friday and Saturday; closes at 8:30 p.m. on the other listed days.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"linfield-late-night-mcmenamins-pub-hotel-oregon","subject_type":"place","entity_name":"McMenamins Pub at Hotel Oregon","title":"Hotel Oregon at Eleven","subtitle":"All-ages restaurant service inside the historic hotel","notes":"Use the main pub rather than an age-restricted space, and target Friday or Saturday for the latest posted closing.","short_summary":"A hotel restaurant serving breakfast through dinner, with weekend hours extending to 11 p.m.","evidence_claim":"The official Hotel Oregon pub page lists hours until 10 p.m. Sunday–Thursday and 11 p.m. Friday–Saturday, plus pickup and delivery ordering.","source_url":"https://www.mcmenamins.com/hotel-oregon/mcmenamins-pub-at-hotel-oregon/on-tap/","source_title":"McMenamins Pub at Hotel Oregon","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Main pub closes at 10 p.m. Sunday–Thursday and 11 p.m. Friday–Saturday; pickup and delivery are listed.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"linfield-late-night-the-pub-mcminnville","subject_type":"place","entity_name":"The Pub at The Ground","title":"The Pub at Midnight","subtitle":"Comfort-food restaurant on NE Davis Street","notes":"Pick Friday or Saturday for midnight service; on other nights, use the official schedule to avoid arriving after 10 p.m.","short_summary":"A no-reservations restaurant with midnight closing times on Friday and Saturday.","evidence_claim":"The Ground’s official site lists The Pub at 326 NE Davis Street until midnight Friday–Saturday and 10 p.m. on other days.","source_url":"https://www.humblespirit.love/","source_title":"Grounded Table and The Pub","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until midnight Friday and Saturday; closes at 10 p.m. Monday–Thursday and Sunday. No reservations are required.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}

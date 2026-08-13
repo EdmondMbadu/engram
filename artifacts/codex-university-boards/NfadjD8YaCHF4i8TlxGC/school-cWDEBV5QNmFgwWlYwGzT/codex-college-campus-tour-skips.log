@@ -1,0 +1,298 @@
+Reading additional input from stdin...
+2026-08-13T07:34:43.949688Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0a-22f1-7371-817b-a9d2b1f2a866.1786606396146298000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:34:44.006642Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0a-22f6-7363-8273-261854ff94b9.1786606396150985000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa0b-79a5-77b3-ac54-2523a6581f3d
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"cWDEBV5QNmFgwWlYwGzT","schoolName":"Hofstra University","shortSchoolName":"Hofstra University","townName":"Hempstead","state":"NY","countryCode":"US","website":"https://www.hofstra.edu/","latitude":40.715959,"longitude":-73.60078},"templates":[{"id":"college-campus-tour-skips","version":"1.0","titlePattern":"What the Campus Tour Skips: {count} Places Students Share With Each Other","editorialBrief":"Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.","researchQueries":["student favorite campus places","campus map student spaces","student newspaper campus places"],"count":10,"icon":"style","primarySubjectType":"place","allowedSubjectTypes":["place","study_space"],"freshnessDays":365,"exactTitle":"What the Campus Tour Skips: 10 Places Students Share With Each Other"}]}
+2026-08-13T07:34:44.109813Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0a-22f5-7582-b74f-89a20028ddbe.1786606396150211000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:34:44.209468Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0a-22f2-74c3-b5cf-17b41e4b5c61.1786606396147152000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:34:44.214721Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:34:44.280607Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0a-22e8-73c1-b253-a686fed8e879.1786606396137257000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:34:44.335011Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0a-22f2-7592-9b15-44be9c91df9a.1786606396147154000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:34:44.351021Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:34:44.395823Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0a-22f0-7930-8cf7-540483531f47.1786606396144864000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Hofstra University",
+  "town_name": "Hempstead",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Hofstra University",
+      "town_name": "Hempstead",
+      "template_id": "college-campus-tour-skips",
+      "title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+      "description": "",
+      "icon": "style",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     		,
+     		{
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     		,
+     		{
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     		,
+     		{
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     		,
+     		{
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     		,
+     		{
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     		,
+     		{
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     		,
+     		{
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     		,
+     		{
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     		,
+     		{
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:hofstra.edu campus student spaces Mack Student Center Axinn Library Hofstra ...
+web search: 
+web search: site:hofstra.edu/library Axinn Library Collaborative Learning Center study spaces ...
+web search: 
+web search: site:hofstra.edu "Pride Den" Hofstra ...
+codex
+{"complete":true,"school_name":"Hofstra University","town_name":"Hempstead","boards":[{"complete":true,"school_name":"Hofstra University","town_name":"Hempstead","template_id":"college-campus-tour-skips","title":"What the Campus Tour Skips: 10 Places Students Share With Each Other","description":"Ten campus spaces with specific, documented uses for studying, relaxing, recreation, events, and commuter or first-generation student support.","icon":"style","cards":[{"subject_id":"hofstra-game-room","subject_type":"place","entity_name":"Hofstra Game Room","title":"Settle In for a Game-Room Break","subtitle":"Lower level of the Sondra and David S. Mack Student Center","notes":"Bring your HofstraCard, then choose from console stations, pool, ping-pong, foosball, or board games between classes.","short_summary":"An ID-controlled student space that combines casual games, seating, lunch breaks, and homework.","evidence_claim":"Hofstra says the Game Room has consoles, pool tables, ping-pong, foosball, board games, and furniture for relaxing, eating lunch, or doing homework.","source_url":"https://www.hofstra.edu/student-leadership-engagement/game-room.html","source_title":"Game Room | Student Leadership & Engagement | Hofstra University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Room 029, lower level of the Mack Student Center. Entry is limited to students and staff carrying a valid Hofstra ID; guests are not permitted.","cost_status":"unknown","under21_safe":true},{"subject_id":"hofstra-pride-den","subject_type":"place","entity_name":"Hofstra Pride Den","title":"Use the Pride Den as a Flexible Hangout","subtitle":"Lower level of the Sondra and David S. Mack Student Center","notes":"Check the campus calendar before visiting; the den doubles as a lounge and a venue for student performances and programs.","short_summary":"A renovated student lounge that shifts between informal gathering space and scheduled campus events.","evidence_claim":"Hofstra identifies the Pride Den as a key student lounge and says its renovation added furnishings, internet connections, and audiovisual components for study, collaboration, and entertainment.","source_url":"https://www.hofstra.edu/facilities-operations/projects-archive.html","source_title":"Construction and Projects Archives | Facilities & Operations | Hofstra University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on the lower level of the Mack Student Center. Scheduled events may affect ordinary lounge use; consult Hofstra's event calendar.","cost_status":"unknown","under21_safe":true},{"subject_id":"hofstra-mack-24-hour-lounge","subject_type":"study_space","entity_name":"Mack Student Center 24-Hour Lounge","title":"Keep a Late Study Session Grounded","subtitle":"First floor of the Sondra and David S. Mack Student Center","notes":"Use the lounge for reading, charging devices, watching television, or meeting someone when most daytime offices have closed.","short_summary":"A specifically designated round-the-clock lounge for breaks and low-key work in the Student Center.","evidence_claim":"Hofstra's Commuting Student Services page lists the Mack Student Center 24-hour lounge, with television, among campus places for relaxing, reading, meeting friends, and charging devices.","source_url":"https://www.hofstra.edu/commuting-student-services/services.html","source_title":"Services | Commuting Student Services | Hofstra University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"First floor beside the Student Center Theatre. Hofstra currently identifies it as a 24-hour lounge; building access rules still apply.","cost_status":"unknown","under21_safe":true},{"subject_id":"hofstra-commuter-lounge-room-221","subject_type":"study_space","entity_name":"Commuting Student Services Lounge","title":"Heat Lunch and Reset Between Classes","subtitle":"Room 221 in the Sondra and David S. Mack Student Center","notes":"Bring lunch to use the microwave, recharge during a long gap, or ask the commuter-services staff about lockers and campus resources.","short_summary":"A staffed commuter-focused lounge with practical amenities for students spending a full day on campus.","evidence_claim":"Hofstra says the Room 221 lounge is open to students during posted hours and offers coffee or tea plus a microwave for heating lunch.","source_url":"https://www.hofstra.edu/commuting-student-services/services.html","source_title":"Services | Commuting Student Services | Hofstra University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Room 221, Mack Student Center. Hofstra lists lounge access from 8 a.m. to 8 p.m. when classes are in session; the office operates weekdays from 9 a.m. to 5 p.m.","cost_status":"unknown","under21_safe":true},{"subject_id":"hofstra-hammer-lab","subject_type":"study_space","entity_name":"Sanford Hammer Computer Lab","title":"Switch to a Dedicated Computer Lab","subtitle":"Across from the Axinn Library entrance on South Campus","notes":"Head here when your work needs a desktop, campus technology, or a setting separate from the library's reading areas.","short_summary":"A named computer lab positioned directly across from the main library entrance.","evidence_claim":"Hofstra identifies Hammer Lab, across from the Axinn Library entrance on South Campus, as one of the campus lounge and work areas commuter students should know.","source_url":"https://www.hofstra.edu/commuting-student-services/services.html","source_title":"Services | Commuting Student Services | Hofstra University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located across from the Axinn Library entrance on South Campus. Verify current lab hours and HofstraCard access before planning an overnight session.","cost_status":"unknown","under21_safe":true},{"subject_id":"hofstra-collaborative-learning-center","subject_type":"study_space","entity_name":"Collaborative Learning Center","title":"Move Group Work to the Second Floor","subtitle":"Second floor of the Joan and Donald E. Axinn Library","notes":"Meet here when a project benefits from conversation and shared work; choose another library area when you need individual quiet.","short_summary":"A library lounge specifically developed for collaborative learning rather than silent solo study.","evidence_claim":"Hofstra lists the Collaborative Learning Center on Axinn Library's second floor as a campus lounge, and its facilities archive says the space was created as a learning center and lounge.","source_url":"https://www.hofstra.edu/facilities-operations/projects-archive.html","source_title":"Construction and Projects Archives | Facilities & Operations | Hofstra University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Second floor of Axinn Library. Access follows current library building hours and University entry policies.","cost_status":"unknown","under21_safe":true},{"subject_id":"hofstra-axinn-library-tenth-floor","subject_type":"study_space","entity_name":"Axinn Library 10th-Floor Study Space","title":"Match Your Seat to the Assignment","subtitle":"Tenth floor of the Joan and Donald E. Axinn Library","notes":"Choose an individual desk for focused work or use group desks and sofa-style seating when classmates need to collaborate.","short_summary":"A renovated upper-floor study area offering distinct seating modes for solo and collaborative work.","evidence_claim":"Hofstra reports that Axinn Library's renovated 10th floor is a dedicated collaborative and study space with individual and group desks, sofas, and egg chairs.","source_url":"https://news.hofstra.edu/2024/09/23/celebrating-the-librarys-10th-floor-makeover/","source_title":"Celebrating the Library's 10th Floor Renovation | Hofstra University News","source_kind":"university_official","source_published_at":"2024-09-23","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on Axinn Library's 10th floor. Use is subject to current library hours, building policies, and any event reservations.","cost_status":"unknown","under21_safe":true},{"subject_id":"hofstra-first-gen-lounge","subject_type":"study_space","entity_name":"First-Gen Lounge","title":"Connect With First-Generation Support","subtitle":"Room 219 in the Sondra and David S. Mack Student Center","notes":"Stop in for first-generation programming and mentorship, and follow the office's official updates before attending a scheduled activity.","short_summary":"A dedicated lounge where first-generation students can connect with support programs and mentors.","evidence_claim":"Hofstra identifies the First-Gen Lounge in Student Center Room 219 and says First-Generation Support and Engagement provides programming and mentorship.","source_url":"https://www.hofstra.edu/admission/deposit-resources/","source_title":"Deposited Student Resources | Hofstra University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Room 219, Mack Student Center. The official page does not publish regular drop-in hours; confirm access or program timing with First-Generation Support and Engagement.","cost_status":"unknown","under21_safe":true},{"subject_id":"hofstra-multisport-courts","subject_type":"place","entity_name":"Hofstra Multisport Courts","title":"Take a Break on the Outdoor Courts","subtitle":"Beside the Wellness and Campus Living Center on North Campus","notes":"Check whether intramurals are scheduled, then bring classmates for basketball or use available RecRe Box equipment as directed.","short_summary":"Open student recreation courts with basketball facilities and app-accessible shared equipment nearby.","evidence_claim":"Hofstra says the outdoor Multisport Courts are next to the Wellness Center, equipped for basketball, open for student use and intramurals, and served by a RecRe Box with borrowable gear.","source_url":"https://www.hofstra.edu/admission/deposit-resources/","source_title":"Deposited Student Resources | Hofstra University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor courts next to the Wellness and Campus Living Center on North Campus. Availability may change for intramurals, programs, or weather.","cost_status":"unknown","under21_safe":true},{"subject_id":"hofstra-emily-lowe-gallery","subject_type":"place","entity_name":"Emily Lowe Gallery","title":"Use the Gallery as a Class Extension","subtitle":"Hofstra University Museum of Art in Emily Lowe Hall","notes":"Visit during current gallery access periods, look closely at the changing exhibition, and use one object to prompt discussion or writing.","short_summary":"A campus museum gallery used for exhibitions, object study, class meetings, and interdisciplinary assignments.","evidence_claim":"The Hofstra University Museum of Art documents class meetings in the Emily Lowe Gallery and says its exhibitions support gallery teaching, tours, and permanent-collection object study.","source_url":"https://www.hofstra.edu/museum/hofstra-faculty.html","source_title":"Museum Education – Hofstra Faculty | Hofstra University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located in Emily Lowe Hall. Check the Museum's current exhibition schedule and access information; faculty-led class visits should be scheduled with Museum Education.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:36:24.845368Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa0b-79a5-77b3-ac54-2523a6581f3d.1786606483878577000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+47,027
+
+{"complete":true,"school_name":"Hofstra University","town_name":"Hempstead","boards":[{"complete":true,"school_name":"Hofstra University","town_name":"Hempstead","template_id":"college-campus-tour-skips","title":"What the Campus Tour Skips: 10 Places Students Share With Each Other","description":"Ten campus spaces with specific, documented uses for studying, relaxing, recreation, events, and commuter or first-generation student support.","icon":"style","cards":[{"subject_id":"hofstra-game-room","subject_type":"place","entity_name":"Hofstra Game Room","title":"Settle In for a Game-Room Break","subtitle":"Lower level of the Sondra and David S. Mack Student Center","notes":"Bring your HofstraCard, then choose from console stations, pool, ping-pong, foosball, or board games between classes.","short_summary":"An ID-controlled student space that combines casual games, seating, lunch breaks, and homework.","evidence_claim":"Hofstra says the Game Room has consoles, pool tables, ping-pong, foosball, board games, and furniture for relaxing, eating lunch, or doing homework.","source_url":"https://www.hofstra.edu/student-leadership-engagement/game-room.html","source_title":"Game Room | Student Leadership & Engagement | Hofstra University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Room 029, lower level of the Mack Student Center. Entry is limited to students and staff carrying a valid Hofstra ID; guests are not permitted.","cost_status":"unknown","under21_safe":true},{"subject_id":"hofstra-pride-den","subject_type":"place","entity_name":"Hofstra Pride Den","title":"Use the Pride Den as a Flexible Hangout","subtitle":"Lower level of the Sondra and David S. Mack Student Center","notes":"Check the campus calendar before visiting; the den doubles as a lounge and a venue for student performances and programs.","short_summary":"A renovated student lounge that shifts between informal gathering space and scheduled campus events.","evidence_claim":"Hofstra identifies the Pride Den as a key student lounge and says its renovation added furnishings, internet connections, and audiovisual components for study, collaboration, and entertainment.","source_url":"https://www.hofstra.edu/facilities-operations/projects-archive.html","source_title":"Construction and Projects Archives | Facilities & Operations | Hofstra University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on the lower level of the Mack Student Center. Scheduled events may affect ordinary lounge use; consult Hofstra's event calendar.","cost_status":"unknown","under21_safe":true},{"subject_id":"hofstra-mack-24-hour-lounge","subject_type":"study_space","entity_name":"Mack Student Center 24-Hour Lounge","title":"Keep a Late Study Session Grounded","subtitle":"First floor of the Sondra and David S. Mack Student Center","notes":"Use the lounge for reading, charging devices, watching television, or meeting someone when most daytime offices have closed.","short_summary":"A specifically designated round-the-clock lounge for breaks and low-key work in the Student Center.","evidence_claim":"Hofstra's Commuting Student Services page lists the Mack Student Center 24-hour lounge, with television, among campus places for relaxing, reading, meeting friends, and charging devices.","source_url":"https://www.hofstra.edu/commuting-student-services/services.html","source_title":"Services | Commuting Student Services | Hofstra University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"First floor beside the Student Center Theatre. Hofstra currently identifies it as a 24-hour lounge; building access rules still apply.","cost_status":"unknown","under21_safe":true},{"subject_id":"hofstra-commuter-lounge-room-221","subject_type":"study_space","entity_name":"Commuting Student Services Lounge","title":"Heat Lunch and Reset Between Classes","subtitle":"Room 221 in the Sondra and David S. Mack Student Center","notes":"Bring lunch to use the microwave, recharge during a long gap, or ask the commuter-services staff about lockers and campus resources.","short_summary":"A staffed commuter-focused lounge with practical amenities for students spending a full day on campus.","evidence_claim":"Hofstra says the Room 221 lounge is open to students during posted hours and offers coffee or tea plus a microwave for heating lunch.","source_url":"https://www.hofstra.edu/commuting-student-services/services.html","source_title":"Services | Commuting Student Services | Hofstra University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Room 221, Mack Student Center. Hofstra lists lounge access from 8 a.m. to 8 p.m. when classes are in session; the office operates weekdays from 9 a.m. to 5 p.m.","cost_status":"unknown","under21_safe":true},{"subject_id":"hofstra-hammer-lab","subject_type":"study_space","entity_name":"Sanford Hammer Computer Lab","title":"Switch to a Dedicated Computer Lab","subtitle":"Across from the Axinn Library entrance on South Campus","notes":"Head here when your work needs a desktop, campus technology, or a setting separate from the library's reading areas.","short_summary":"A named computer lab positioned directly across from the main library entrance.","evidence_claim":"Hofstra identifies Hammer Lab, across from the Axinn Library entrance on South Campus, as one of the campus lounge and work areas commuter students should know.","source_url":"https://www.hofstra.edu/commuting-student-services/services.html","source_title":"Services | Commuting Student Services | Hofstra University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located across from the Axinn Library entrance on South Campus. Verify current lab hours and HofstraCard access before planning an overnight session.","cost_status":"unknown","under21_safe":true},{"subject_id":"hofstra-collaborative-learning-center","subject_type":"study_space","entity_name":"Collaborative Learning Center","title":"Move Group Work to the Second Floor","subtitle":"Second floor of the Joan and Donald E. Axinn Library","notes":"Meet here when a project benefits from conversation and shared work; choose another library area when you need individual quiet.","short_summary":"A library lounge specifically developed for collaborative learning rather than silent solo study.","evidence_claim":"Hofstra lists the Collaborative Learning Center on Axinn Library's second floor as a campus lounge, and its facilities archive says the space was created as a learning center and lounge.","source_url":"https://www.hofstra.edu/facilities-operations/projects-archive.html","source_title":"Construction and Projects Archives | Facilities & Operations | Hofstra University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Second floor of Axinn Library. Access follows current library building hours and University entry policies.","cost_status":"unknown","under21_safe":true},{"subject_id":"hofstra-axinn-library-tenth-floor","subject_type":"study_space","entity_name":"Axinn Library 10th-Floor Study Space","title":"Match Your Seat to the Assignment","subtitle":"Tenth floor of the Joan and Donald E. Axinn Library","notes":"Choose an individual desk for focused work or use group desks and sofa-style seating when classmates need to collaborate.","short_summary":"A renovated upper-floor study area offering distinct seating modes for solo and collaborative work.","evidence_claim":"Hofstra reports that Axinn Library's renovated 10th floor is a dedicated collaborative and study space with individual and group desks, sofas, and egg chairs.","source_url":"https://news.hofstra.edu/2024/09/23/celebrating-the-librarys-10th-floor-makeover/","source_title":"Celebrating the Library's 10th Floor Renovation | Hofstra University News","source_kind":"university_official","source_published_at":"2024-09-23","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on Axinn Library's 10th floor. Use is subject to current library hours, building policies, and any event reservations.","cost_status":"unknown","under21_safe":true},{"subject_id":"hofstra-first-gen-lounge","subject_type":"study_space","entity_name":"First-Gen Lounge","title":"Connect With First-Generation Support","subtitle":"Room 219 in the Sondra and David S. Mack Student Center","notes":"Stop in for first-generation programming and mentorship, and follow the office's official updates before attending a scheduled activity.","short_summary":"A dedicated lounge where first-generation students can connect with support programs and mentors.","evidence_claim":"Hofstra identifies the First-Gen Lounge in Student Center Room 219 and says First-Generation Support and Engagement provides programming and mentorship.","source_url":"https://www.hofstra.edu/admission/deposit-resources/","source_title":"Deposited Student Resources | Hofstra University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Room 219, Mack Student Center. The official page does not publish regular drop-in hours; confirm access or program timing with First-Generation Support and Engagement.","cost_status":"unknown","under21_safe":true},{"subject_id":"hofstra-multisport-courts","subject_type":"place","entity_name":"Hofstra Multisport Courts","title":"Take a Break on the Outdoor Courts","subtitle":"Beside the Wellness and Campus Living Center on North Campus","notes":"Check whether intramurals are scheduled, then bring classmates for basketball or use available RecRe Box equipment as directed.","short_summary":"Open student recreation courts with basketball facilities and app-accessible shared equipment nearby.","evidence_claim":"Hofstra says the outdoor Multisport Courts are next to the Wellness Center, equipped for basketball, open for student use and intramurals, and served by a RecRe Box with borrowable gear.","source_url":"https://www.hofstra.edu/admission/deposit-resources/","source_title":"Deposited Student Resources | Hofstra University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor courts next to the Wellness and Campus Living Center on North Campus. Availability may change for intramurals, programs, or weather.","cost_status":"unknown","under21_safe":true},{"subject_id":"hofstra-emily-lowe-gallery","subject_type":"place","entity_name":"Emily Lowe Gallery","title":"Use the Gallery as a Class Extension","subtitle":"Hofstra University Museum of Art in Emily Lowe Hall","notes":"Visit during current gallery access periods, look closely at the changing exhibition, and use one object to prompt discussion or writing.","short_summary":"A campus museum gallery used for exhibitions, object study, class meetings, and interdisciplinary assignments.","evidence_claim":"The Hofstra University Museum of Art documents class meetings in the Emily Lowe Gallery and says its exhibitions support gallery teaching, tours, and permanent-collection object study.","source_url":"https://www.hofstra.edu/museum/hofstra-faculty.html","source_title":"Museum Education – Hofstra Faculty | Hofstra University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located in Emily Lowe Hall. Check the Museum's current exhibition schedule and access information; faculty-led class visits should be scheduled with Museum Education.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}

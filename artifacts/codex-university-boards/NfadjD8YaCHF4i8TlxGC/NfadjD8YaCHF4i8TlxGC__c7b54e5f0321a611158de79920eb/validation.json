@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://swensonsdriveins.com/locations/university-heights/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://swensonsdriveins.com/locations/university-heights/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/oh/south-euclid/4037-mayfield-road",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/oh/south-euclid/4037-mayfield-road",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/oh/cleveland/4537-mayfield-road.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/oh/cleveland/4537-mayfield-road.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.guyspizzaco.com/locations/cleveland-heights/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.guyspizzaco.com/locations/cleveland-heights/",
+      "error": ""
+    },
+    {
+      "url": "https://www.cilantrotaqueria.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cilantrotaqueria.com/",
+      "error": ""
+    },
+    {
+      "url": "https://theeurowafelbar.wixsite.com/eurowafelbar",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://theeurowafelbar.wixsite.com/eurowafelbar",
+      "error": ""
+    },
+    {
+      "url": "https://locations.raisingcanes.com/oh/mayfield-heights/5880-mayfield-road",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.raisingcanes.com/oh/mayfield-heights/5880-mayfield-road",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/oh/mayfield-heights/5855-mayfield-road.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/oh/mayfield-heights/5855-mayfield-road.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dennys.com/oh/highland-heights/248106-bb",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dennys.com/oh/highland-heights",
+      "error": ""
+    },
+    {
+      "url": "https://cilantrothaicle.com/tags/vegetarian-food",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://cilantrothaicle.com/tags/vegetarian-food",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

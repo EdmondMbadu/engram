@@ -1,0 +1,300 @@
+Reading additional input from stdin...
+2026-08-13T07:46:32.147954Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa15-52bc-7142-866e-a3df59aa5e62.1786607129277272000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa16-47b2-7c12-af2f-550a47916ebc
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"LWPC6GMHUUNuvtEgenx9","schoolName":"John Carroll University","shortSchoolName":"John Carroll University","townName":"University Heights","state":"OH","countryCode":"US","website":"https://jcu.edu/","latitude":41.490259,"longitude":-81.531224},"templates":[{"id":"college-campus-tour-skips","version":"1.0","titlePattern":"What the Campus Tour Skips: {count} Places Students Share With Each Other","editorialBrief":"Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.","researchQueries":["student favorite campus places","campus map student spaces","student newspaper campus places"],"count":10,"icon":"style","primarySubjectType":"place","allowedSubjectTypes":["place","study_space"],"freshnessDays":365,"exactTitle":"What the Campus Tour Skips: 10 Places Students Share With Each Other"}]}
+2026-08-13T07:46:32.229843Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa15-52be-7273-96e7-718db54732ee.1786607129278869000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:46:32.239456Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:46:32.295214Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa15-52e1-7e80-8e34-72395b4187fb.1786607129314284000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:46:32.413932Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:46:32.489889Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa15-52cd-7331-976c-08e63f9d4a7c.1786607129294042000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:46:32.568794Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa15-52fb-7453-84a1-71d05987a26d.1786607129340584000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:46:32.741213Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa15-52e1-7ef3-9328-06ce48df5aa9.1786607129314299000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:46:32.917991Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa15-52e2-7c61-bc9b-f853c7ca25ec.1786607129314709000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "John Carroll University",
+  "town_name": "University Heights",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "John Carroll University",
+      "town_name": "University Heights",
+      "template_id": "college-campus-tour-skips",
+      "title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+      "description": "",
+      "icon": "style",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ],
+      "warnings": [
+        "Research in progress."
+      ]
+    }
+  ],
+  "warnings": [
+    "Research in progress."
+  ]
+}
+web search: 
+web search: site:jcu.edu John Carroll University student center spaces library study campus ...
+web search: 
+web search: site:jcu.edu "Lombardo Student Center" students renovated atrium ...
+codex
+{"complete":true,"school_name":"John Carroll University","town_name":"University Heights","boards":[{"complete":true,"school_name":"John Carroll University","town_name":"University Heights","template_id":"college-campus-tour-skips","title":"What the Campus Tour Skips: 10 Places Students Share With Each Other","description":"Ten campus places with documented uses for studying, collaborating, gathering, recreation, reflection, and student activities.","icon":"style","cards":[{"subject_id":"jcu-grasselli-library","subject_type":"study_space","entity_name":"Grasselli Library and Breen Learning Center","title":"Settle In at Grasselli","subtitle":"Study rooms, quiet corners, and project support under one roof","notes":"Reserve a group room for collaborative work, or bring an individual assignment and choose among the library’s quieter study areas.","short_summary":"A flexible study base with reservable rooms, research help, equipment loans, leisure collections, and spaces for focused work.","evidence_claim":"JCU describes Grasselli Library as containing study spaces and group meeting rooms; its student-services guide confirms that students can reserve study rooms for projects or study sessions.","source_url":"https://www.jcu.edu/student-experience/learning-here/libraries","source_title":"Libraries & Learning","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Campus library rules and room-reservation requirements apply; consult the library website before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jcu-mastrantoni-student-success-commons","subject_type":"study_space","entity_name":"Mastrantoni Family Student Success Commons","title":"Pair Study Time With Practical Help","subtitle":"A second-floor library commons connecting students with academic support","notes":"Use the commons as a study stop when you also need academic advising or career guidance; appointments are arranged through myJCU.","short_summary":"This library-based commons brings academic and career services into the same area students use for learning and collaboration.","evidence_claim":"JCU states that the Academic Success Center and Career Center are co-located in the Mastrantoni Family Student Success Commons on the library’s second floor.","source_url":"https://www.jcu.edu/academics/centers/academic-success-center/","source_title":"Academic Success Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Academic Success Center appointments are made through the myJCU portal; other commons services may have separate procedures.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jcu-curiosity-lab","subject_type":"study_space","entity_name":"Curiosity Lab","title":"Move a Group Project Into the Curiosity Lab","subtitle":"A named library space for innovation and collaborative student work","notes":"Bring an early-stage project here when your group needs a collaborative setting; confirm current availability through the library first.","short_summary":"A newer Grasselli Library space designed around innovation, entrepreneurship, student research, and group collaboration.","evidence_claim":"JCU identifies the Curiosity Lab as an innovation and entrepreneurship feature of the renovated Grasselli Library alongside new collaborative spaces for student research and group work.","source_url":"https://www.jcu.edu/news/2025/04/alan-r-miciak-phd-president-of-john-carroll-university-announces-plans-for-retirement-in-may-2026","source_title":"Alan R. Miciak, Ph.D., President of John Carroll University, Announces Plans for Retirement in May 2026","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The source documents the space and its purpose but does not provide public hours or drop-in access details.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jcu-sabo-center","subject_type":"study_space","entity_name":"Sabo Center for Languages and Cultures","title":"Build a Language Project Together","subtitle":"Flexible workstations and presentation technology in O’Malley Center","notes":"Use the flexible tables for collaborative coursework, or reserve the room through CourseDog when your project needs the full space.","short_summary":"A technology-equipped academic workspace with 24 computers, flexible furniture, device tables, and campus printing.","evidence_claim":"JCU says the Sabo Center in O’Malley Center room 101 is primarily for academic work and includes 24 computer workstations, flexible furniture, a Solstice Pod, tables, and printing.","source_url":"https://www.jcu.edu/academics/centers/sabo-center-for-languages-and-cultures/","source_title":"Explore Global Cultures","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The space is reservable through CourseDog; food is prohibited because it contains educational technology.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jcu-amlc-multimedia-library","subject_type":"study_space","entity_name":"AMLC Multimedia Library","title":"Screen Course Media With a Small Group","subtitle":"A food-friendly humanities library and theater space in O’Malley Center","notes":"Reserve OC 139 for a small organization event or course-related screening; plan for no more than the documented 12-person capacity.","short_summary":"A compact social-learning room combining a humanities collection with a theater area for coursework and organization events.","evidence_claim":"JCU describes the AMLC Multimedia Library in O’Malley Center room 139 as an informal social space with a humanities library and theater area, reservable by instructors and student organizations.","source_url":"https://www.jcu.edu/academics/centers/sabo-center-for-languages-and-cultures/","source_title":"Explore Global Cultures","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Reservations are handled through CourseDog; the documented safe seating capacity is 12, and the room is food-friendly.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jcu-lombardo-student-center-atrium","subject_type":"place","entity_name":"D.J. Lombardo Student Center Atrium","title":"Use the Atrium as a Campus Crossroads","subtitle":"A shared student-center setting for programs, meals, and campus connections","notes":"Check the campus calendar before stopping in; the atrium regularly serves as a recognizable meeting and event location.","short_summary":"The renovated heart of the student center functions as a common gathering point beside campus services and activity spaces.","evidence_claim":"JCU identifies the Lombardo Student Center Atrium as a campus event and gathering location, and the university documents that the atrium was completely renovated.","source_url":"https://www.jcu.edu/_audience/alumni/events/reunion","source_title":"Reunion 2026","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public-event schedules do not establish unrestricted access; normal student-center policies and event setups apply.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jcu-interfaith-atrium","subject_type":"place","entity_name":"Interfaith Atrium","title":"Join a Conversation Across Traditions","subtitle":"A Lombardo Student Center gathering place for interfaith programming","notes":"Watch the campus events calendar for an open program, then use the atrium as a setting for respectful conversation and connection.","short_summary":"A dedicated gathering area where JCU hosts student-led programs centered on fellowship and interreligious understanding.","evidence_claim":"JCU lists the Interfaith Atrium in Lombardo Student Center as the location of its Breaking Bread interfaith lunch, an event open to all students, faculty, and staff and led in part by student fellows.","source_url":"https://www.jcu.edu/academics/centers/tuohy-center-for-interreligious-understanding/events/breaking-bread","source_title":"Breaking Bread","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Attend only during an announced open program or according to current Campus Ministry access practices.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jcu-esports-lab","subject_type":"place","entity_name":"Esports Lab","title":"Gather for a Friendly Game","subtitle":"A Dolan Center lab used for organized gaming activities","notes":"Look for a scheduled student activity or authorized lab session rather than assuming open play; equipment access may be supervised.","short_summary":"A named campus gaming facility that supports structured, social play within the Dolan Center for Science and Technology.","evidence_claim":"JCU’s current campus map places the Esports Lab in the Dolan Center, and a 2025 university program report documents friendly games held there as an evening activity.","source_url":"https://www.jcu.edu/news/2025/07/john-carroll-university-hosted-first-ever-summer-in-the-heights-pre-college-program","source_title":"John Carroll University Hosted First-Ever Summer in The Heights Pre-College Program","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The source confirms programmed use, not general drop-in access; verify eligibility and scheduling before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jcu-dolan-science-center-balcony","subject_type":"study_space","entity_name":"Dolan Science Center Balcony","title":"Take a Study Session Above the Quad","subtitle":"An outdoor Dolan Center study area with tables overlooking campus","notes":"Bring reading or a small-group assignment when weather permits, and follow any posted building or balcony access restrictions.","short_summary":"This elevated Dolan Center spot gives students tables for studying or talking while looking toward the Academic Quad.","evidence_claim":"The Carroll News documented students using the Dolan Science Center balcony for studying and relaxing, noting its study tables and view over the Academic Quad.","source_url":"https://carrollnews.org/156429/campus/156429/","source_title":"Perfect Study Spots on John Carroll’s Campus","source_kind":"student_media","source_published_at":"2021-09-17","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Because the supporting student report predates recent campus projects, confirm current balcony access and obey posted restrictions.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jcu-main-quad","subject_type":"place","entity_name":"Main Quad","title":"Move the Meetup Onto the Main Quad","subtitle":"A central lawn used for games and shared outdoor activities","notes":"Choose the quad for an informal daytime meetup or campus activity, while yielding to scheduled programs and field conditions.","short_summary":"A map-listed outdoor campus space where university programming has included group recreation and student-centered activities.","evidence_claim":"JCU’s 2025 Summer in The Heights report documents participants playing kickball on the Main Quad, demonstrating its use for shared outdoor recreation.","source_url":"https://www.jcu.edu/news/2025/07/john-carroll-university-hosted-first-ever-summer-in-the-heights-pre-college-program","source_title":"John Carroll University Hosted First-Ever Summer in The Heights Pre-College Program","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor availability can change with university events, maintenance, and weather; scheduled activities take priority.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:48:09.150022Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa16-47b2-7c12-af2f-550a47916ebc.1786607191986584000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+24,799
+
+{"complete":true,"school_name":"John Carroll University","town_name":"University Heights","boards":[{"complete":true,"school_name":"John Carroll University","town_name":"University Heights","template_id":"college-campus-tour-skips","title":"What the Campus Tour Skips: 10 Places Students Share With Each Other","description":"Ten campus places with documented uses for studying, collaborating, gathering, recreation, reflection, and student activities.","icon":"style","cards":[{"subject_id":"jcu-grasselli-library","subject_type":"study_space","entity_name":"Grasselli Library and Breen Learning Center","title":"Settle In at Grasselli","subtitle":"Study rooms, quiet corners, and project support under one roof","notes":"Reserve a group room for collaborative work, or bring an individual assignment and choose among the library’s quieter study areas.","short_summary":"A flexible study base with reservable rooms, research help, equipment loans, leisure collections, and spaces for focused work.","evidence_claim":"JCU describes Grasselli Library as containing study spaces and group meeting rooms; its student-services guide confirms that students can reserve study rooms for projects or study sessions.","source_url":"https://www.jcu.edu/student-experience/learning-here/libraries","source_title":"Libraries & Learning","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Campus library rules and room-reservation requirements apply; consult the library website before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jcu-mastrantoni-student-success-commons","subject_type":"study_space","entity_name":"Mastrantoni Family Student Success Commons","title":"Pair Study Time With Practical Help","subtitle":"A second-floor library commons connecting students with academic support","notes":"Use the commons as a study stop when you also need academic advising or career guidance; appointments are arranged through myJCU.","short_summary":"This library-based commons brings academic and career services into the same area students use for learning and collaboration.","evidence_claim":"JCU states that the Academic Success Center and Career Center are co-located in the Mastrantoni Family Student Success Commons on the library’s second floor.","source_url":"https://www.jcu.edu/academics/centers/academic-success-center/","source_title":"Academic Success Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Academic Success Center appointments are made through the myJCU portal; other commons services may have separate procedures.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jcu-curiosity-lab","subject_type":"study_space","entity_name":"Curiosity Lab","title":"Move a Group Project Into the Curiosity Lab","subtitle":"A named library space for innovation and collaborative student work","notes":"Bring an early-stage project here when your group needs a collaborative setting; confirm current availability through the library first.","short_summary":"A newer Grasselli Library space designed around innovation, entrepreneurship, student research, and group collaboration.","evidence_claim":"JCU identifies the Curiosity Lab as an innovation and entrepreneurship feature of the renovated Grasselli Library alongside new collaborative spaces for student research and group work.","source_url":"https://www.jcu.edu/news/2025/04/alan-r-miciak-phd-president-of-john-carroll-university-announces-plans-for-retirement-in-may-2026","source_title":"Alan R. Miciak, Ph.D., President of John Carroll University, Announces Plans for Retirement in May 2026","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The source documents the space and its purpose but does not provide public hours or drop-in access details.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jcu-sabo-center","subject_type":"study_space","entity_name":"Sabo Center for Languages and Cultures","title":"Build a Language Project Together","subtitle":"Flexible workstations and presentation technology in O’Malley Center","notes":"Use the flexible tables for collaborative coursework, or reserve the room through CourseDog when your project needs the full space.","short_summary":"A technology-equipped academic workspace with 24 computers, flexible furniture, device tables, and campus printing.","evidence_claim":"JCU says the Sabo Center in O’Malley Center room 101 is primarily for academic work and includes 24 computer workstations, flexible furniture, a Solstice Pod, tables, and printing.","source_url":"https://www.jcu.edu/academics/centers/sabo-center-for-languages-and-cultures/","source_title":"Explore Global Cultures","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The space is reservable through CourseDog; food is prohibited because it contains educational technology.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jcu-amlc-multimedia-library","subject_type":"study_space","entity_name":"AMLC Multimedia Library","title":"Screen Course Media With a Small Group","subtitle":"A food-friendly humanities library and theater space in O’Malley Center","notes":"Reserve OC 139 for a small organization event or course-related screening; plan for no more than the documented 12-person capacity.","short_summary":"A compact social-learning room combining a humanities collection with a theater area for coursework and organization events.","evidence_claim":"JCU describes the AMLC Multimedia Library in O’Malley Center room 139 as an informal social space with a humanities library and theater area, reservable by instructors and student organizations.","source_url":"https://www.jcu.edu/academics/centers/sabo-center-for-languages-and-cultures/","source_title":"Explore Global Cultures","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Reservations are handled through CourseDog; the documented safe seating capacity is 12, and the room is food-friendly.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jcu-lombardo-student-center-atrium","subject_type":"place","entity_name":"D.J. Lombardo Student Center Atrium","title":"Use the Atrium as a Campus Crossroads","subtitle":"A shared student-center setting for programs, meals, and campus connections","notes":"Check the campus calendar before stopping in; the atrium regularly serves as a recognizable meeting and event location.","short_summary":"The renovated heart of the student center functions as a common gathering point beside campus services and activity spaces.","evidence_claim":"JCU identifies the Lombardo Student Center Atrium as a campus event and gathering location, and the university documents that the atrium was completely renovated.","source_url":"https://www.jcu.edu/_audience/alumni/events/reunion","source_title":"Reunion 2026","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public-event schedules do not establish unrestricted access; normal student-center policies and event setups apply.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jcu-interfaith-atrium","subject_type":"place","entity_name":"Interfaith Atrium","title":"Join a Conversation Across Traditions","subtitle":"A Lombardo Student Center gathering place for interfaith programming","notes":"Watch the campus events calendar for an open program, then use the atrium as a setting for respectful conversation and connection.","short_summary":"A dedicated gathering area where JCU hosts student-led programs centered on fellowship and interreligious understanding.","evidence_claim":"JCU lists the Interfaith Atrium in Lombardo Student Center as the location of its Breaking Bread interfaith lunch, an event open to all students, faculty, and staff and led in part by student fellows.","source_url":"https://www.jcu.edu/academics/centers/tuohy-center-for-interreligious-understanding/events/breaking-bread","source_title":"Breaking Bread","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Attend only during an announced open program or according to current Campus Ministry access practices.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jcu-esports-lab","subject_type":"place","entity_name":"Esports Lab","title":"Gather for a Friendly Game","subtitle":"A Dolan Center lab used for organized gaming activities","notes":"Look for a scheduled student activity or authorized lab session rather than assuming open play; equipment access may be supervised.","short_summary":"A named campus gaming facility that supports structured, social play within the Dolan Center for Science and Technology.","evidence_claim":"JCU’s current campus map places the Esports Lab in the Dolan Center, and a 2025 university program report documents friendly games held there as an evening activity.","source_url":"https://www.jcu.edu/news/2025/07/john-carroll-university-hosted-first-ever-summer-in-the-heights-pre-college-program","source_title":"John Carroll University Hosted First-Ever Summer in The Heights Pre-College Program","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The source confirms programmed use, not general drop-in access; verify eligibility and scheduling before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jcu-dolan-science-center-balcony","subject_type":"study_space","entity_name":"Dolan Science Center Balcony","title":"Take a Study Session Above the Quad","subtitle":"An outdoor Dolan Center study area with tables overlooking campus","notes":"Bring reading or a small-group assignment when weather permits, and follow any posted building or balcony access restrictions.","short_summary":"This elevated Dolan Center spot gives students tables for studying or talking while looking toward the Academic Quad.","evidence_claim":"The Carroll News documented students using the Dolan Science Center balcony for studying and relaxing, noting its study tables and view over the Academic Quad.","source_url":"https://carrollnews.org/156429/campus/156429/","source_title":"Perfect Study Spots on John Carroll’s Campus","source_kind":"student_media","source_published_at":"2021-09-17","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Because the supporting student report predates recent campus projects, confirm current balcony access and obey posted restrictions.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jcu-main-quad","subject_type":"place","entity_name":"Main Quad","title":"Move the Meetup Onto the Main Quad","subtitle":"A central lawn used for games and shared outdoor activities","notes":"Choose the quad for an informal daytime meetup or campus activity, while yielding to scheduled programs and field conditions.","short_summary":"A map-listed outdoor campus space where university programming has included group recreation and student-centered activities.","evidence_claim":"JCU’s 2025 Summer in The Heights report documents participants playing kickball on the Main Quad, demonstrating its use for shared outdoor recreation.","source_url":"https://www.jcu.edu/news/2025/07/john-carroll-university-hosted-first-ever-summer-in-the-heights-pre-college-program","source_title":"John Carroll University Hosted First-Ever Summer in The Heights Pre-College Program","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor availability can change with university events, maintenance, and weather; scheduled activities take priority.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

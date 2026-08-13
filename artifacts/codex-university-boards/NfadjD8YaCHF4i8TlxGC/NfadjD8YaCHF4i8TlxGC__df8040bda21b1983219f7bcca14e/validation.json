@@ -1,0 +1,81 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "West Point is an active military installation. Current Army guidance says visitors without Department of War ID need a local-area credential and must comply with access instructions; verify requirements before traveling beyond public-facing areas.",
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://home.army.mil/westpoint/contact/phonebook",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://home.army.mil/westpoint/contact/phonebook",
+      "error": ""
+    },
+    {
+      "url": "https://history.army.mil/Army-Museum-Enterprise/Find-an-Army-Museum/West-Point-Museum/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://history.army.mil/Army-Museum-Enterprise/Find-an-Army-Museum/West-Point-Museum/",
+      "error": ""
+    },
+    {
+      "url": "https://apply.westpoint.edu/portal/prospect_tour",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://apply.westpoint.edu/portal/prospect_tour",
+      "error": ""
+    },
+    {
+      "url": "https://www.westpoint.edu/contact-cadet-chapel",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.westpoint.edu/directory/cadet-chapel",
+      "error": ""
+    },
+    {
+      "url": "https://www.westpoint.edu/cadet-journey/cadet-life/day-in-the-life",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.westpoint.edu/cadet-journey/day-in-the-life",
+      "error": ""
+    },
+    {
+      "url": "https://press.westpoint.edu/download?book_id=810&type=pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://press.westpoint.edu/wp-content/uploads/sites/5/2024/12/TheWestPointLandscape_PDF3.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://band.westpoint.edu/events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://band.westpoint.edu/events/",
+      "error": ""
+    },
+    {
+      "url": "https://band.westpoint.edu/wpidc2026/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://band.westpoint.edu/wpidc2026/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "West Point Museum",
+    "West Point Bowling Alley"
+  ],
+  "sourceCount": 8,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

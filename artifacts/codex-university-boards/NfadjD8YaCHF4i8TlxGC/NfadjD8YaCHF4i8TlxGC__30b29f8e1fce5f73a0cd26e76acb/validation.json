@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.iit.edu/alphawood-arboretum",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iit.edu/alphawood-arboretum",
+      "error": ""
+    },
+    {
+      "url": "https://www.iit.edu/student-life/get-involved/bog",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iit.edu/student-life/get-involved/bog",
+      "error": ""
+    },
+    {
+      "url": "https://www.iit.edu/arc/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iit.edu/arc/about",
+      "error": ""
+    },
+    {
+      "url": "https://www.iit.edu/sites/default/files/2024-10/9a-Faculty-Staff-Benefit-Summary-2025-10-24-2024.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iit.edu/sites/default/files/2024-10/9a-Faculty-Staff-Benefit-Summary-2025-10-24-2024.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.iit.edu/community-affairs/events",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iit.edu/community-affairs/events",
+      "error": ""
+    },
+    {
+      "url": "https://www.choosechicago.com/articles/museums-art/chicago-cultural-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.choosechicago.com/articles/museums-art/chicago-cultural-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.chipublib.org/news/board-of-directors-meeting-minutes-november-28-2023/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.chipublib.org/news/board-of-directors-meeting-minutes-november-28-2023/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

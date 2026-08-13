@@ -1,0 +1,61 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.k-state.edu/about/who-we-are/traditions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.k-state.edu/about/who-we-are/traditions/",
+      "error": ""
+    },
+    {
+      "url": "https://www.k-state.com/news/ksuphotoshistory.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.k-state.com/news/ksuphotoshistory.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.k-state.com/about/williethewildcatcontinued.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.k-state.com/about/williethewildcatcontinued.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.k-state.com/news/120721bestmascot.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.k-state.com/news/120721bestmascot.php",
+      "error": ""
+    },
+    {
+      "url": "https://engg.k-state.edu/about/history/k-hill/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://engg.k-state.edu/about/history/k-hill/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.k-state.com/shoppurple/officialkstatering.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.k-state.com/shoppurple/officialkstatering.php",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

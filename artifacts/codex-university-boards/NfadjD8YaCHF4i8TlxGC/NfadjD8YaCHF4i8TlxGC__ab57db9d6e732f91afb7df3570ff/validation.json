@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.nyc.gov/site/dcla/resources/free-and-suggested-admission.page",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nyc.gov/site/dcla/resources/free-and-suggested-admission.page",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 1,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

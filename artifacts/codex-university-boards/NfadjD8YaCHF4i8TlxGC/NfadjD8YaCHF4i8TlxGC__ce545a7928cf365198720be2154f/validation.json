@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.rmu.edu/about/conference-services/yorktown-hall",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rmu.edu/about/conference-services/yorktown-hall",
+      "error": ""
+    },
+    {
+      "url": "https://highschool.moonarea.net/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://highschool.moonarea.net/contact",
+      "error": ""
+    },
+    {
+      "url": "https://www.hilton.com/en/hotels/pitardt-doubletree-pittsburgh-airport/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.hilton.com/en/hotels/pitardt-doubletree-pittsburgh-airport/",
+      "error": ""
+    },
+    {
+      "url": "https://www.paacc.com/list/member/eggs-n-at-llc-31007",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.paacc.com/list/member/eggs-n-at-llc-31007",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.primantibros.com/locations/pa/moon-township",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.primantibros.com/locations/pa/moon-township",
+      "error": ""
+    },
+    {
+      "url": "https://jobs.walgreens.com/buscar-trabajo/Pennsylvania%26p%3D2",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://jobs.walgreens.com/es/buscar-trabajo/Pennsylvania%26p%3D2",
+      "error": ""
+    },
+    {
+      "url": "https://www.rmu.edu/about/conference-services/university-map-and-directions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rmu.edu/about/conference-services/university-map-and-directions",
+      "error": ""
+    },
+    {
+      "url": "https://locations.eatnpark.com/pa/moontwsp/restaurants-41.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://locations.eatnpark.com/pa-moontwsp-41/",
+      "error": ""
+    },
+    {
+      "url": "https://www.rideprt.org/park-and-ride-lots/park-and-rides/university-boulevard/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rideprt.org/park-and-ride-lots/park-and-rides/university-boulevard/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

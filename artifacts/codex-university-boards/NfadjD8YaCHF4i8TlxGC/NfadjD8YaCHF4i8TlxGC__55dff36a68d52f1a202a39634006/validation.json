@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://stonehill-website.s3.amazonaws.com/files/resources/memorandum-on-campus-access-2-10-2025.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stonehill-website.s3.amazonaws.com/files/resources/memorandum-on-campus-access-2-10-2025.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.stonehill.edu/library/contact-us/about-the-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stonehill.edu/library/contact-us/about-the-library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.stonehill.edu/offices-and-services/financial-aid/student-accounts/tuition-fees/undergraduate-tuition-and-fees-25-26/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stonehill.edu/offices-and-services/financial-aid/student-accounts/tuition-fees/undergraduate-tuition-and-fees-25-26/",
+      "error": ""
+    },
+    {
+      "url": "https://amesfreelibrary.org/policies",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://amesfreelibrary.org/policies",
+      "error": ""
+    },
+    {
+      "url": "https://amesfreelibrary.org/queset-garden-concert-series",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://amesfreelibrary.org/queset-garden-concert-series",
+      "error": ""
+    },
+    {
+      "url": "https://amesfreelibrary.org/library-things",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://amesfreelibrary.org/library-things",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

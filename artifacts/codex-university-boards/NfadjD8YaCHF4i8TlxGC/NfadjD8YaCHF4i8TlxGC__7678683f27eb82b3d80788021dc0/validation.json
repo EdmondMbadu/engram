@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.harding.edu/library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.harding.edu/library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.harding.edu/life-at-harding/handbooks/under.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.harding.edu/life-at-harding/handbooks/under.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.harding.edu/arts-sciences/kinesiology/facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.harding.edu/arts-sciences/kinesiology/facilities/",
+      "error": ""
+    },
+    {
+      "url": "https://www.harding.edu/life-at-harding/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.harding.edu/life-at-harding/",
+      "error": ""
+    },
+    {
+      "url": "https://www.harding.edu/arts-sciences/art-design/stevens-art-gallery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.harding.edu/arts-sciences/art-design/stevens-art-gallery/",
+      "error": ""
+    },
+    {
+      "url": "https://www.harding.edu/events/theatre/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.harding.edu/events/theatre/",
+      "error": ""
+    },
+    {
+      "url": "https://www.harding.edu/arts-sciences/music/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.harding.edu/arts-sciences/music/",
+      "error": ""
+    },
+    {
+      "url": "https://www.harding.edu/about/buildings/holland-waller/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.harding.edu/about/buildings/holland-waller/",
+      "error": ""
+    },
+    {
+      "url": "https://www.harding.edu/events/homecoming/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.harding.edu/events/homecoming/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

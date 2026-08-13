@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "KhqRwC0DBX7dVUFCZyTk",
+    "schoolName": "Illinois Institute of Technology",
+    "shortSchoolName": "Illinois Institute of Technology",
+    "townName": "Chicago",
+    "state": "IL",
+    "countryCode": "US",
+    "unitId": "145725",
+    "website": "https://www.iit.edu/",
+    "latitude": 41.8313,
+    "longitude": -87.627321,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/9/96/Illinois_Institute_of_Technology_%28seal%29.svg/330px-Illinois_Institute_of_Technology_%28seal%29.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=iit.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "McCormick Tribune Campus Center",
+    "S. R. Crown Hall",
+    "Paul V. Galvin Library",
+    "Black Metropolis Historical Campus Markers",
+    "Keating Sports Center",
+    "Margaret T. Burroughs Beach",
+    "Alphawood Arboretum at Illinois Tech",
+    "Illinois Tech Disc Golf Course",
+    "Ed Kaplan Family Institute for Innovation and Tech Entrepreneurship",
+    "Ping Tom Natural Area"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

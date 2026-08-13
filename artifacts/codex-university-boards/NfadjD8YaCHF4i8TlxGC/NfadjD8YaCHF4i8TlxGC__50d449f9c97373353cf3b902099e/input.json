@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "0jyAjWD7QGL5lvZWmrDW",
+    "schoolName": "Northern Arizona University",
+    "shortSchoolName": "Northern Arizona University",
+    "townName": "Flagstaff",
+    "state": "AZ",
+    "countryCode": "US",
+    "unitId": "105330",
+    "website": "https://nau.edu/",
+    "latitude": 35.188449,
+    "longitude": -111.653724,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=nau.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=nau.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Cline Library",
+    "MakerLab",
+    "Virtual Reality Studio",
+    "One Button Studio",
+    "Photography Studio",
+    "Production Studios",
+    "University Union",
+    "Health and Learning Center",
+    "Native American Cultural Center",
+    "Observatory Field Complex"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

@@ -1,0 +1,291 @@
+Reading additional input from stdin...
+2026-08-13T06:44:49.914554Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9dd-5f72-7600-b875-55299ded6258.1786603462514812000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:44:49.917820Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:44:49.920088Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9dd-ca14-7791-812a-91a1a81dd9ad
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"id3dkF0ryJUkhNG5ZEDS","schoolName":"California State University-Monterey Bay","shortSchoolName":"California State University-Monterey Bay","townName":"Seaside","state":"CA","countryCode":"US","website":"https://csumb.edu/","latitude":36.652397,"longitude":-121.796178},"templates":[{"id":"college-study-spots","version":"1.0","titlePattern":"Claimed by 9am: {count} Study Spots Worth Showing Up Early For","editorialBrief":"Choose ten distinct study environments. Verify access rules, room or reservation constraints, and the physical affordance that makes each useful. Treat “Claimed by 9am” as editorial framing; never assert crowding or student behavior without evidence.","researchQueries":["campus study spaces","library study rooms students","quiet study campus"],"count":10,"icon":"menu_book","primarySubjectType":"study_space","allowedSubjectTypes":["study_space","place"],"freshnessDays":180,"exactTitle":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For"}]}
+codex
+{
+  "complete": false,
+  "school_name": "California State University-Monterey Bay",
+  "town_name": "Seaside",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "California State University-Monterey Bay",
+      "town_name": "Seaside",
+      "template_id": "college-study-spots",
+      "title": "Claimed by 9am: 10 Study Spots Worth Showing Up Early For",
+      "description": "",
+      "icon": "menu_book",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "I’m researching ten distinct CSUMB study environments and checking access or reservation details against direct sources.",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "https://csumb.edu/",
+          "source_title": "California State University Monterey Bay",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "https://csumb.edu/",
+        "source_title": "California State University Monterey Bay",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+    ,
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "https://csumb.edu/",
+          "source_title": "California State University Monterey Bay",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "https://csumb.edu/",
+          "source_title": "California State University Monterey Bay",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "https://csumb.edu/",
+          "source_title": "California State University Monterey Bay",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "https://csumb.edu/",
+          "source_title": "California State University Monterey Bay",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "https://csumb.edu/",
+          "source_title": "California State University Monterey Bay",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "https://csumb.edu/",
+          "source_title": "California State University Monterey Bay",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "https://csumb.edu/",
+          "source_title": "California State University Monterey Bay",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "https://csumb.edu/",
+          "source_title": "California State University Monterey Bay",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:csumb.edu/library study rooms group study rooms CSUMB ...
+web search: 
+web search: 
+codex
+{"complete":true,"school_name":"California State University-Monterey Bay","town_name":"Seaside","boards":[{"complete":true,"school_name":"California State University-Monterey Bay","town_name":"Seaside","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten documented CSUMB settings for solo work, group sessions, computer access, tutoring, and hands-on projects, with current access conditions noted.","icon":"menu_book","cards":[{"subject_id":"csumb-library-study-rooms","subject_type":"study_space","entity_name":"Tanimura & Antle Family Memorial Library Study Rooms","title":"Reserve a Library Study Room","subtitle":"A bookable room for focused solo or group work","notes":"Reserve on the hour, plan for a two-hour limit, and arrive within 10 minutes so the room is not released for first-come use.","short_summary":"An enclosed, reservable workspace governed by a clear arrival and time-limit policy.","evidence_claim":"CSUMB states that current students may reserve library study rooms individually or in groups, with reservations starting on the hour and limited to two hours per day.","source_url":"https://csumb.edu/library/services/study-rooms/","source_title":"Study Rooms | California State University Monterey Bay","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Only current CSUMB students may reserve and use these rooms. Reservations begin and end on the hour and have a two-hour daily limit.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csumb-osu-group-study-room","subject_type":"study_space","entity_name":"Otter Student Union Group Study Room","title":"Book the OSU Group Study Room","subtitle":"A student-only room reserved through the information desk","notes":"Bring your student credentials, stop at the OSU information desk, and reserve this room when your group needs a defined workspace.","short_summary":"A dedicated group room inside the Otter Student Union with desk-managed reservations.","evidence_claim":"The Otter Student Union lists a Group Study Room that CSUMB students can reserve at the information desk.","source_url":"https://csumb.edu/osu/services-resources/","source_title":"Services and Resources | California State University Monterey Bay","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Restricted to CSUMB students; reserve at the Otter Student Union information desk.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csumb-osu-student-lounge-terrace","subject_type":"study_space","entity_name":"Otter Student Union Student Lounge & Terrace","title":"Work from the OSU Lounge and Terrace","subtitle":"Flexible seating paired with Monterey Bay views","notes":"Choose the lounge for an informal work session or take materials onto the terrace; check OSU operations before making a special trip.","short_summary":"An informal indoor-outdoor option suited to reading, planning, or laptop work.","evidence_claim":"The Otter Student Union identifies its Student Lounge & Terrace as a facility where visitors can relax with views of Monterey Bay.","source_url":"https://csumb.edu/osu/services-resources/","source_title":"Services and Resources | California State University Monterey Bay","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use is subject to Otter Student Union building access and any event-related closures.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csumb-library-makerspace","subject_type":"study_space","entity_name":"Tanimura & Antle Family Memorial Library Makerspace","title":"Develop Projects in the Makerspace","subtitle":"Tables, materials, and equipment for creative coursework","notes":"Bring a project that benefits from shared tables or specialty materials, then confirm current general-access hours or workshop requirements.","short_summary":"A collaborative library workspace supporting creative assignments and hands-on production.","evidence_claim":"CSUMB reports that students use the library Makerspace for class projects and studying; the documented space includes tables, desks, materials, and printing equipment.","source_url":"https://csumb.edu/news/news-listing/2023/q2/students-create-crafts-and-community-in-the-librarys-makerspace/","source_title":"Students create crafts and community in the library's Makerspace | California State University Monterey Bay","source_kind":"university_official","source_published_at":"2023-06-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Confirm current general-access hours or contact the Makerspace before relying on equipment; some activities may occur through scheduled workshops.","cost_status":"unknown","under21_safe":true},{"subject_id":"csumb-library-first-floor-computers","subject_type":"study_space","entity_name":"Tanimura & Antle Family Memorial Library First-Floor Computer Area","title":"Set Up at the First-Floor Computers","subtitle":"Desktop workstations for the CSUMB community","notes":"Use this area when an assignment needs a full desktop setup; follow posted computer-use signs and keep your OtterID available.","short_summary":"A practical library workstation zone for research, drafting, and online coursework.","evidence_claim":"The library's New Student FAQ says desktop PCs are available to the CSUMB community on the library's first floor.","source_url":"https://csumb.edu/library/how-do-i/new-student-faq/","source_title":"New Student FAQ | California State University Monterey Bay","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Desktop PCs are for the CSUMB community. Users must follow posted computer-use instructions and current library access rules.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csumb-library-information-literacy-room-2145","subject_type":"study_space","entity_name":"Information Literacy Room 2145","title":"Use Room 2145 Between Classes","subtitle":"Student desktop access when instruction is not scheduled","notes":"Check whether library instruction is scheduled before settling in; use the room when you need a desktop for sustained course work.","short_summary":"A conditional-access computer classroom that doubles as student workspace between instruction sessions.","evidence_claim":"CSUMB says desktop PCs in Information Literacy Room 2145 are available to students when no library instruction is scheduled.","source_url":"https://csumb.edu/library/how-do-i/new-student-faq/","source_title":"New Student FAQ | California State University Monterey Bay","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Available to students only when library instruction is not scheduled; verify room availability on arrival.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csumb-cooperative-learning-center","subject_type":"study_space","entity_name":"Cooperative Learning Center","title":"Study with Support at the CLC","subtitle":"Appointments, drop-ins, and subject-focused group sessions","notes":"Review the current subject schedule before going, then book when required or choose a listed drop-in period for targeted assignment help.","short_summary":"An academic-support setting for structured tutoring, writing help, and guided group study.","evidence_claim":"CSUMB's Fall 2026 schedule lists tutoring, Supplemental Instruction, group sessions, drop-ins, writing support, and peer coaching through the Cooperative Learning Center.","source_url":"https://csumb.edu/academics/academic-resources/clc/tutoring-and-academic-support/tutoring-schedule/","source_title":"Tutoring Schedule | California State University Monterey Bay","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Consult the Fall 2026 schedule because some sessions require appointments while others are drop-in; hours and sessions are subject to change.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csumb-library-1176-stem-studio","subject_type":"study_space","entity_name":"Library 1176 STEM Studio","title":"Bring STEM Problems to Library 1176","subtitle":"A scheduled drop-in room for science support","notes":"Match your course to the published STEM Studio roster and arrive during its listed drop-in window with problems ready to work through.","short_summary":"A named library room hosting scheduled, course-specific STEM drop-in support.","evidence_claim":"The Fall 2026 tutoring schedule places STEM Studio drop-ins for listed biology and environmental science courses in Library 1176.","source_url":"https://csumb.edu/academics/academic-resources/clc/tutoring-and-academic-support/tutoring-schedule/","source_title":"Tutoring Schedule | California State University Monterey Bay","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use during the published STEM Studio drop-in sessions for eligible courses; the schedule states that hours are subject to change.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csumb-chapman-s222-math-stat-cafe","subject_type":"study_space","entity_name":"Chapman S222 Math/Stat Café","title":"Work Through Quantitative Courses in S222","subtitle":"Scheduled drop-in study support in Chapman Science Academic Center","notes":"Check which math or statistics courses are covered that day, then bring practice problems to Chapman S222 during a listed café session.","short_summary":"A recurring drop-in destination for guided mathematics and statistics work.","evidence_claim":"CSUMB's Fall 2026 tutoring schedule lists Math/Stat Café drop-ins for specified mathematics and statistics courses in Chapman S222.","source_url":"https://csumb.edu/academics/academic-resources/clc/tutoring-and-academic-support/tutoring-schedule/","source_title":"Tutoring Schedule | California State University Monterey Bay","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Attend only during a listed Math/Stat Café session and verify that the day's course coverage matches your class; schedules may change.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csumb-library-reference-area","subject_type":"study_space","entity_name":"Tanimura & Antle Family Memorial Library Reference Area","title":"Research from the Reference Area","subtitle":"Library materials and public-access research computers","notes":"Set up near the reference collection when source-heavy work needs print materials or on-site access to the library's electronic collections.","short_summary":"A research-oriented library area combining reference materials with designated public computers.","evidence_claim":"CSUMB states that visitors may consult library books, periodicals, and reference materials and that public-access computers in the Reference Area provide access to electronic collections.","source_url":"https://csumb.edu/library/services/privileges/general-public/","source_title":"General Public | California State University Monterey Bay","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"On-site consultation and Reference Area computer access are available under library rules; remote access to licensed databases and ebooks is excluded for the general public.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T06:46:39.139656Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9dd-ca14-7791-812a-91a1a81dd9ad.1786603489813316000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+38,089
+
+{"complete":true,"school_name":"California State University-Monterey Bay","town_name":"Seaside","boards":[{"complete":true,"school_name":"California State University-Monterey Bay","town_name":"Seaside","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten documented CSUMB settings for solo work, group sessions, computer access, tutoring, and hands-on projects, with current access conditions noted.","icon":"menu_book","cards":[{"subject_id":"csumb-library-study-rooms","subject_type":"study_space","entity_name":"Tanimura & Antle Family Memorial Library Study Rooms","title":"Reserve a Library Study Room","subtitle":"A bookable room for focused solo or group work","notes":"Reserve on the hour, plan for a two-hour limit, and arrive within 10 minutes so the room is not released for first-come use.","short_summary":"An enclosed, reservable workspace governed by a clear arrival and time-limit policy.","evidence_claim":"CSUMB states that current students may reserve library study rooms individually or in groups, with reservations starting on the hour and limited to two hours per day.","source_url":"https://csumb.edu/library/services/study-rooms/","source_title":"Study Rooms | California State University Monterey Bay","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Only current CSUMB students may reserve and use these rooms. Reservations begin and end on the hour and have a two-hour daily limit.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csumb-osu-group-study-room","subject_type":"study_space","entity_name":"Otter Student Union Group Study Room","title":"Book the OSU Group Study Room","subtitle":"A student-only room reserved through the information desk","notes":"Bring your student credentials, stop at the OSU information desk, and reserve this room when your group needs a defined workspace.","short_summary":"A dedicated group room inside the Otter Student Union with desk-managed reservations.","evidence_claim":"The Otter Student Union lists a Group Study Room that CSUMB students can reserve at the information desk.","source_url":"https://csumb.edu/osu/services-resources/","source_title":"Services and Resources | California State University Monterey Bay","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Restricted to CSUMB students; reserve at the Otter Student Union information desk.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csumb-osu-student-lounge-terrace","subject_type":"study_space","entity_name":"Otter Student Union Student Lounge & Terrace","title":"Work from the OSU Lounge and Terrace","subtitle":"Flexible seating paired with Monterey Bay views","notes":"Choose the lounge for an informal work session or take materials onto the terrace; check OSU operations before making a special trip.","short_summary":"An informal indoor-outdoor option suited to reading, planning, or laptop work.","evidence_claim":"The Otter Student Union identifies its Student Lounge & Terrace as a facility where visitors can relax with views of Monterey Bay.","source_url":"https://csumb.edu/osu/services-resources/","source_title":"Services and Resources | California State University Monterey Bay","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use is subject to Otter Student Union building access and any event-related closures.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csumb-library-makerspace","subject_type":"study_space","entity_name":"Tanimura & Antle Family Memorial Library Makerspace","title":"Develop Projects in the Makerspace","subtitle":"Tables, materials, and equipment for creative coursework","notes":"Bring a project that benefits from shared tables or specialty materials, then confirm current general-access hours or workshop requirements.","short_summary":"A collaborative library workspace supporting creative assignments and hands-on production.","evidence_claim":"CSUMB reports that students use the library Makerspace for class projects and studying; the documented space includes tables, desks, materials, and printing equipment.","source_url":"https://csumb.edu/news/news-listing/2023/q2/students-create-crafts-and-community-in-the-librarys-makerspace/","source_title":"Students create crafts and community in the library's Makerspace | California State University Monterey Bay","source_kind":"university_official","source_published_at":"2023-06-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Confirm current general-access hours or contact the Makerspace before relying on equipment; some activities may occur through scheduled workshops.","cost_status":"unknown","under21_safe":true},{"subject_id":"csumb-library-first-floor-computers","subject_type":"study_space","entity_name":"Tanimura & Antle Family Memorial Library First-Floor Computer Area","title":"Set Up at the First-Floor Computers","subtitle":"Desktop workstations for the CSUMB community","notes":"Use this area when an assignment needs a full desktop setup; follow posted computer-use signs and keep your OtterID available.","short_summary":"A practical library workstation zone for research, drafting, and online coursework.","evidence_claim":"The library's New Student FAQ says desktop PCs are available to the CSUMB community on the library's first floor.","source_url":"https://csumb.edu/library/how-do-i/new-student-faq/","source_title":"New Student FAQ | California State University Monterey Bay","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Desktop PCs are for the CSUMB community. Users must follow posted computer-use instructions and current library access rules.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csumb-library-information-literacy-room-2145","subject_type":"study_space","entity_name":"Information Literacy Room 2145","title":"Use Room 2145 Between Classes","subtitle":"Student desktop access when instruction is not scheduled","notes":"Check whether library instruction is scheduled before settling in; use the room when you need a desktop for sustained course work.","short_summary":"A conditional-access computer classroom that doubles as student workspace between instruction sessions.","evidence_claim":"CSUMB says desktop PCs in Information Literacy Room 2145 are available to students when no library instruction is scheduled.","source_url":"https://csumb.edu/library/how-do-i/new-student-faq/","source_title":"New Student FAQ | California State University Monterey Bay","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Available to students only when library instruction is not scheduled; verify room availability on arrival.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csumb-cooperative-learning-center","subject_type":"study_space","entity_name":"Cooperative Learning Center","title":"Study with Support at the CLC","subtitle":"Appointments, drop-ins, and subject-focused group sessions","notes":"Review the current subject schedule before going, then book when required or choose a listed drop-in period for targeted assignment help.","short_summary":"An academic-support setting for structured tutoring, writing help, and guided group study.","evidence_claim":"CSUMB's Fall 2026 schedule lists tutoring, Supplemental Instruction, group sessions, drop-ins, writing support, and peer coaching through the Cooperative Learning Center.","source_url":"https://csumb.edu/academics/academic-resources/clc/tutoring-and-academic-support/tutoring-schedule/","source_title":"Tutoring Schedule | California State University Monterey Bay","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Consult the Fall 2026 schedule because some sessions require appointments while others are drop-in; hours and sessions are subject to change.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csumb-library-1176-stem-studio","subject_type":"study_space","entity_name":"Library 1176 STEM Studio","title":"Bring STEM Problems to Library 1176","subtitle":"A scheduled drop-in room for science support","notes":"Match your course to the published STEM Studio roster and arrive during its listed drop-in window with problems ready to work through.","short_summary":"A named library room hosting scheduled, course-specific STEM drop-in support.","evidence_claim":"The Fall 2026 tutoring schedule places STEM Studio drop-ins for listed biology and environmental science courses in Library 1176.","source_url":"https://csumb.edu/academics/academic-resources/clc/tutoring-and-academic-support/tutoring-schedule/","source_title":"Tutoring Schedule | California State University Monterey Bay","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use during the published STEM Studio drop-in sessions for eligible courses; the schedule states that hours are subject to change.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csumb-chapman-s222-math-stat-cafe","subject_type":"study_space","entity_name":"Chapman S222 Math/Stat Café","title":"Work Through Quantitative Courses in S222","subtitle":"Scheduled drop-in study support in Chapman Science Academic Center","notes":"Check which math or statistics courses are covered that day, then bring practice problems to Chapman S222 during a listed café session.","short_summary":"A recurring drop-in destination for guided mathematics and statistics work.","evidence_claim":"CSUMB's Fall 2026 tutoring schedule lists Math/Stat Café drop-ins for specified mathematics and statistics courses in Chapman S222.","source_url":"https://csumb.edu/academics/academic-resources/clc/tutoring-and-academic-support/tutoring-schedule/","source_title":"Tutoring Schedule | California State University Monterey Bay","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Attend only during a listed Math/Stat Café session and verify that the day's course coverage matches your class; schedules may change.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csumb-library-reference-area","subject_type":"study_space","entity_name":"Tanimura & Antle Family Memorial Library Reference Area","title":"Research from the Reference Area","subtitle":"Library materials and public-access research computers","notes":"Set up near the reference collection when source-heavy work needs print materials or on-site access to the library's electronic collections.","short_summary":"A research-oriented library area combining reference materials with designated public computers.","evidence_claim":"CSUMB states that visitors may consult library books, periodicals, and reference materials and that public-access computers in the Reference Area provide access to electronic collections.","source_url":"https://csumb.edu/library/services/privileges/general-public/","source_title":"General Public | California State University Monterey Bay","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"On-site consultation and Reference Area computer access are available under library rules; remote access to licensed databases and ebooks is excluded for the general public.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

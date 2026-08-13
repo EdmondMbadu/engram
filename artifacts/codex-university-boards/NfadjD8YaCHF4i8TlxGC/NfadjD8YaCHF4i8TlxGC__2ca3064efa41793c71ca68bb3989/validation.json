@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.whataburger.com/fl/tallahassee/1701-w-tennessee-st.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.whataburger.com/fl/tallahassee/1701-w-tennessee-st.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/fl/tallahassee/1506-w-tennessee-st.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/fl/tallahassee/1506-w-tennessee-st.html",
+      "error": ""
+    },
+    {
+      "url": "https://visittallahassee.com/partners/insomnia-cookies/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visittallahassee.com/partners/insomnia-cookies/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wafflehouse.com/tallahassee-fl-1418/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wafflehouse.com/tallahassee-fl-1418/",
+      "error": ""
+    },
+    {
+      "url": "https://www.gainesstreetpies.com/locations-and-hours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gainesstreetpies.com/locations-and-hours",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/fl/tallahassee/3030-west-pensacola-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/fl/tallahassee/3030-west-pensacola-street",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dennys.com/fl/tallahassee/248652",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dennys.com/fl/tallahassee/248652",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.ihop.com/en-us/fl/tallahassee/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.ihop.com/en-us/fl/tallahassee/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.whataburger.com/fl/tallahassee/815-lake-bradford-rd.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.whataburger.com/fl/tallahassee/815-lake-bradford-rd.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/fl/tallahassee/5052-w-tennessee-st/7964.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/fl/tallahassee/5052-w-tennessee-st/7964.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

@@ -1,0 +1,88 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://toledomuseum.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://toledomuseum.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://metroparkstoledo.com/wildwoodpreserve",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://metroparkstoledo.com/wildwoodpreserve",
+      "error": ""
+    },
+    {
+      "url": "https://metroparkstoledo.com/explore-your-parks/swan-creek-preserve-metropark",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://metroparkstoledo.com/explore-your-parks/swan-creek-preserve-metropark",
+      "error": ""
+    },
+    {
+      "url": "https://metroparkstoledo.com/explore-your-parks/glass-city-metropark/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://metroparkstoledo.com/explore-your-parks/glass-city-metropark/",
+      "error": ""
+    },
+    {
+      "url": "https://metroparkstoledo.com/learn-and-play/socially-responsible-activities/metroparks-technology-explorer-middlegrounds-metropark/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://metroparkstoledo.com/learn-and-play/socially-responsible-activities/metroparks-technology-explorer-middlegrounds-metropark/",
+      "error": ""
+    },
+    {
+      "url": "https://metroparkstoledo.com/explore-your-parks/toledo-botanical-garden/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://metroparkstoledo.com/explore-your-parks/toledo-botanical-garden-metropark/",
+      "error": ""
+    },
+    {
+      "url": "https://metroparkstoledo.com/explore-your-parks/secor-metropark/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://metroparkstoledo.com/explore-your-parks/secor-metropark/",
+      "error": ""
+    },
+    {
+      "url": "https://metroparkstoledo.com/explore-your-parks/pearson-metropark/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://metroparkstoledo.com/explore-your-parks/pearson-metropark/",
+      "error": ""
+    },
+    {
+      "url": "https://toledo.oh.gov/residents/parks/ottawa-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://toledo.oh.gov/residents/parks/ottawa-park",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Toledo Museum of Art",
+    "Middlegrounds Metropark"
+  ],
+  "sourceCount": 9,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

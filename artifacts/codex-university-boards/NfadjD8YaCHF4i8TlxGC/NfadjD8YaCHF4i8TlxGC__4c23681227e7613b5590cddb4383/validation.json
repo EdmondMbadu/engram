@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www2.lehigh.edu/about/restaurants-near-lehigh-university",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.lehigh.edu/about/restaurants-near-lehigh-university",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 1,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

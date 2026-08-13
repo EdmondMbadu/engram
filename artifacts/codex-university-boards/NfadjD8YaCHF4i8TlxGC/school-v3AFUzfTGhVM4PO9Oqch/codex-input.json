@@ -1,0 +1,73 @@
+{
+  "target": {
+    "atlasId": "v3AFUzfTGhVM4PO9Oqch",
+    "schoolName": "Butler University",
+    "shortSchoolName": "Butler University",
+    "townName": "Indianapolis",
+    "state": "IN",
+    "countryCode": "US",
+    "website": "https://www.butler.edu/",
+    "latitude": 39.8374,
+    "longitude": -86.172167
+  },
+  "templates": [
+    {
+      "id": "college-late-night-runs",
+      "version": "1.0",
+      "titlePattern": "{count} Late-Night Runs That Explain {school}",
+      "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+      "researchQueries": [
+        "late night dining students",
+        "campus dining late hours",
+        "restaurants open late near campus"
+      ],
+      "count": 10,
+      "icon": "nightlife",
+      "primarySubjectType": "place",
+      "allowedSubjectTypes": [
+        "place"
+      ],
+      "freshnessDays": 120,
+      "exactTitle": "10 Late-Night Runs That Explain Butler University"
+    },
+    {
+      "id": "college-zero-dollar-hangs",
+      "version": "1.0",
+      "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+      "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+      "researchQueries": [
+        "free student activities campus",
+        "free campus spaces students",
+        "free public places near campus"
+      ],
+      "count": 10,
+      "icon": "money_off",
+      "primarySubjectType": "activity",
+      "allowedSubjectTypes": [
+        "activity",
+        "place"
+      ],
+      "freshnessDays": 180,
+      "exactTitle": "Zero Dollars: 10 Hangs That Cost Nothing"
+    },
+    {
+      "id": "college-blocks-off-campus",
+      "version": "1.0",
+      "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+      "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+      "researchQueries": [
+        "off campus streets student district",
+        "campus adjacent commercial streets",
+        "neighborhood plan near university"
+      ],
+      "count": 10,
+      "icon": "location_city",
+      "primarySubjectType": "street_or_district",
+      "allowedSubjectTypes": [
+        "street_or_district"
+      ],
+      "freshnessDays": 730,
+      "exactTitle": "10 Blocks Off Campus, One Reason Each"
+    }
+  ]
+}

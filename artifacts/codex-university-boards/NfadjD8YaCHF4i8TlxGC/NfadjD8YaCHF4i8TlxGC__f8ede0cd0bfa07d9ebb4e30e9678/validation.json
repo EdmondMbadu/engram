@@ -1,0 +1,77 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.sama-art.org/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sama-art.org/about",
+      "error": ""
+    },
+    {
+      "url": "https://www.francis.edu/about-us/community-resources/keirn-family-world-war-ii-museum",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.francis.edu/about-us/community-resources/keirn-family-world-war-ii-museum",
+      "error": ""
+    },
+    {
+      "url": "https://franciscanstor.org/documents/parish/11-tourism-brochure/file",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://franciscanstor.org/documents/parish/11-tourism-brochure/file",
+      "error": ""
+    },
+    {
+      "url": "https://www.francis.edu/fitness-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.francis.edu/fitness-center",
+      "error": ""
+    },
+    {
+      "url": "https://jics-web.francis.edu/ICS/Campus_Services/Departments__Committees/Writing_Center/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://jics-web.francis.edu/ICS/Campus_Services/Departments__Committees/Writing_Center/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.francis.edu/admissions/laptop",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.francis.edu/admissions/laptop",
+      "error": ""
+    },
+    {
+      "url": "https://www.francis.edu/admissions/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.francis.edu/admissions/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.francis.edu/rock",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.francis.edu/rock",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

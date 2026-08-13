@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://udallas.edu/admissions-aid/visit/admissions-visit-events/open-house-programs/meet-at-tower.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://udallas.edu/admissions-aid/visit/admissions-visit-events/open-house-programs/meet-at-tower.php",
+      "error": ""
+    },
+    {
+      "url": "https://udallas.edu/library/about/faq.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://udallas.edu/library/about/faq.php",
+      "error": ""
+    },
+    {
+      "url": "https://udallas.edu/offices-services/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://udallas.edu/offices-services/index.php",
+      "error": ""
+    },
+    {
+      "url": "https://udallas.edu/life-at-ud/church-of-the-incarnation/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://udallas.edu/life-at-ud/church-of-the-incarnation/",
+      "error": ""
+    },
+    {
+      "url": "https://udallas.edu/faith-service/our-catholic-faith/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://udallas.edu/faith-service/our-catholic-faith/index.php",
+      "error": ""
+    },
+    {
+      "url": "https://udallas.edu/offices-services/development-university-relations/seats-of-wisdom.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://udallas.edu/offices-services/development-university-relations/seats-of-wisdom.php",
+      "error": ""
+    },
+    {
+      "url": "https://udallas.edu/about-ud/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://udallas.edu/about-ud/index.php",
+      "error": ""
+    },
+    {
+      "url": "https://udallas.edu/life-at-ud/student-activities/campus-activities-board/campus-activities-board-events/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://udallas.edu/life-at-ud/student-activities/campus-activities-board/campus-activities-board-events/index.php",
+      "error": ""
+    },
+    {
+      "url": "https://udallas.edu/life-at-ud/student-activities/recreational-activities.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://udallas.edu/life-at-ud/student-activities/recreational-activities.php",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

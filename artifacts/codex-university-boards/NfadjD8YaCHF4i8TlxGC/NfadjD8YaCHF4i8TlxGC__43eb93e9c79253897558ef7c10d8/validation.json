@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://stvinc.com/project/thomas-jefferson-hall-library-and-learning-center-usma-2/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stvinc.com/project/thomas-jefferson-hall-library-and-learning-center-usma-2/",
+      "error": ""
+    },
+    {
+      "url": "https://www.steinberghart.com/design/projects/west-point-jefferson-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.steinberghart.com/design/projects/west-point-jefferson-library/",
+      "error": ""
+    },
+    {
+      "url": "https://courses.westpoint.edu/static/AcademicProgram.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://courses.westpoint.edu/static/AcademicProgram.htm",
+      "error": ""
+    },
+    {
+      "url": "https://centers.westpoint.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://centers.westpoint.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://band.westpoint.edu/research/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://band.westpoint.edu/research/",
+      "error": ""
+    },
+    {
+      "url": "https://www.westpoint.edu/us-army-space-missile-defense-command-space-high-altitude-research-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.westpoint.edu/directory/smdc-sharc",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

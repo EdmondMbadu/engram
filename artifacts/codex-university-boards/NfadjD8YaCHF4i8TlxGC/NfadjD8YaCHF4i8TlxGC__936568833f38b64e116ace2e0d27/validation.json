@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://library.und.edu/about/floormaps.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.und.edu/about/floormaps.html",
+      "error": ""
+    },
+    {
+      "url": "https://library.und.edu/services/computers-technology.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.und.edu/services/computers-technology.html",
+      "error": ""
+    },
+    {
+      "url": "https://law.und.edu/library/about.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://law.und.edu/library/about.html",
+      "error": ""
+    },
+    {
+      "url": "https://library.und.edu/branches-departments/music/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.und.edu/branches-departments/music/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://und.edu/academics/graduate-school/academic-career-support/gershman-graduate-center/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://und.edu/academics/graduate-school/academic-career-support/gershman-graduate-center/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://und.edu/student-life/union/map.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://und.edu/student-life/union/map.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://cooper.edu/art/facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cooper.edu/art/facilities",
+      "error": ""
+    },
+    {
+      "url": "https://cooper.edu/about/news/space-renewal",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cooper.edu/about/news/space-renewal",
+      "error": ""
+    },
+    {
+      "url": "https://cooper.edu/architecture/facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cooper.edu/architecture/facilities",
+      "error": ""
+    },
+    {
+      "url": "https://cooper.edu/architecture/archive",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cooper.edu/architecture/archive",
+      "error": ""
+    },
+    {
+      "url": "https://cooper.edu/about/information-technology/arch-Lab",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cooper.edu/about/information-technology/arch-Lab",
+      "error": ""
+    },
+    {
+      "url": "https://cooper.edu/architecture/shops-labs",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cooper.edu/architecture/shops-labs",
+      "error": ""
+    },
+    {
+      "url": "https://cooper.edu/about/history/41-cooper-square",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cooper.edu/about/history/41-cooper-square",
+      "error": ""
+    },
+    {
+      "url": "https://cooper.edu/sites/default/files/uploads/assets/student%20affairs/OpenHouse2022.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cooper.edu/sites/default/files/uploads/assets/student%20affairs/OpenHouse2022.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://cooper.edu/about/news/one-lab-all",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cooper.edu/about/news/one-lab-all",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

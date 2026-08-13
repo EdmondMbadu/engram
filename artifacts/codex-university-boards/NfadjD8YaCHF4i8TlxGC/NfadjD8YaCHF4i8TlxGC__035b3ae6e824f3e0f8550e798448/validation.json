@@ -1,0 +1,96 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://calendar.tcu.edu/campus_commons_347",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calendar.tcu.edu/campus_commons_347",
+      "error": ""
+    },
+    {
+      "url": "https://stories.tcu.edu/objects-of-our-affection",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://stories.tcu.edu/objects-of-our-affection",
+      "error": ""
+    },
+    {
+      "url": "https://union.tcu.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://union.tcu.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://library.tcu.edu/library100/history.asp",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.tcu.edu/library100/history.asp",
+      "error": ""
+    },
+    {
+      "url": "https://library.tcu.edu/locations.asp",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.tcu.edu/locations.asp",
+      "error": ""
+    },
+    {
+      "url": "https://library.tcu.edu/facilities-fab-lab.asp",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.tcu.edu/facilities-fab-lab.asp",
+      "error": ""
+    },
+    {
+      "url": "https://library.tcu.edu/docs/TOP_10_Library_Things_Students_Should_Know.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.tcu.edu/docs/TOP_10_Library_Things_Students_Should_Know.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://campusrec.tcu.edu/facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusrec.tcu.edu/facilities/",
+      "error": ""
+    },
+    {
+      "url": "https://stories.tcu.edu/campus-architecture",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://stories.tcu.edu/campus-architecture",
+      "error": ""
+    },
+    {
+      "url": "https://familyweekend.tcu.edu/history-traditions-tour/student-memorial/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://familyweekend.tcu.edu/history-traditions-tour/student-memorial/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Mary Couts Burnett Library",
+    "Special Collections Reading Room"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

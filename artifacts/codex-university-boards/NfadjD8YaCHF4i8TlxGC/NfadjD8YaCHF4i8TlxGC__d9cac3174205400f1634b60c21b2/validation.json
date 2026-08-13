@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://locations.tacobell.com/mi/rochester-hills/2290-crooks-road.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mi/rochester-hills/2290-crooks-road.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.chipotle.com/mi/rochester-hills/84-n-adams-rd/order-delivery",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.chipotle.com/mi/rochester-hills/84-n-adams-rd/order-delivery",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/mi/rochester-hills/3140-s-rochester-road",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/mi/rochester-hills/3140-s-rochester-road",
+      "error": ""
+    },
+    {
+      "url": "https://hamlinpubs.com/hamlin-pub-to-go/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://hamlinpubs.com/hamlin-pub-to-go/",
+      "error": ""
+    },
+    {
+      "url": "https://rh.house/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://rh.house/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.shishpalacerestaurants.com/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.shishpalacerestaurants.com/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.miyako-rochesterhills.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.miyako-rochesterhills.com/",
+      "error": ""
+    },
+    {
+      "url": "https://linosnorth.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://linosnorth.com/",
+      "error": ""
+    },
+    {
+      "url": "https://ramshornrochester.com/contact/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ramshornrochester.com/contact/",
+      "error": ""
+    },
+    {
+      "url": "https://buddyspizza.com/locations/auburn-hills/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://buddyspizza.com/locations/auburn-hills/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

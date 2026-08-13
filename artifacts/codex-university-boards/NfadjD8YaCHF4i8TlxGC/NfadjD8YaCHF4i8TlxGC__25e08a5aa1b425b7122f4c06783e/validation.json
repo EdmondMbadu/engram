@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.wendys.com/united-states/tn/nashville/741-thompson-ln",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/tn/nashville/741-thompson-ln",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wafflehouse.com/tn/nashville/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wafflehouse.com/tn/nashville/",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.ihop.com/en-us/tn/nashville/breakfast-4098-nolensville-pike-470",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.ihop.com/en-us/tn/nashville/breakfast-4098-nolensville-pike-470",
+      "error": ""
+    },
+    {
+      "url": "https://locations.whataburger.com/tn/nashville/1201-gallatin-avenue.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.whataburger.com/tn/nashville/1201-gallatin-avenue.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.raisingcanes.com/tn/nashville/36-white-bridge-pike",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.raisingcanes.com/tn/nashville/36-white-bridge-pike",
+      "error": ""
+    },
+    {
+      "url": "https://locations.raisingcanes.com/tn/nashville/212-broadway",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.raisingcanes.com/tn/nashville/212-broadway",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/tn/nashville/2904-gallatin-pike.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/tn/nashville/2904-gallatin-pike.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.krystal.com/locations/tn/nashville/6490-charlotte-pike/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.krystal.com/locations/tn/nashville/6490-charlotte-pike/",
+      "error": ""
+    },
+    {
+      "url": "https://maps.apple.com/place?place-id=IE96B6829AB5C7E3B",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://maps.apple.com/place?place-id=IE96B6829AB5C7E3B",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

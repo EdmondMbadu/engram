@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.furman.edu/academics/music/camps-conferences/music-by-the-lake/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.furman.edu/academics/music/camps-conferences/music-by-the-lake/",
+      "error": ""
+    },
+    {
+      "url": "https://gcma.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gcma.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitgreenvillesc.com/listing/thomas-and-vivian-a-wong-honor-tower-at-unity-park/17418/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitgreenvillesc.com/listing/thomas-and-vivian-a-wong-honor-tower-at-unity-park/17418/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitgreenvillesc.com/listing/the-galleries-at-first-presbyterian-church/15803/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitgreenvillesc.com/listing/the-galleries-at-first-presbyterian-church/15803/",
+      "error": ""
+    },
+    {
+      "url": "https://www.greenvillelibrary.org/wifi-public-computers",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.greenvillelibrary.org/wifi-public-computers",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

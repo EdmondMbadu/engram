@@ -1,0 +1,94 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Campus construction, academic breaks, holidays, weather, and seasonal operations can alter access; check each linked source shortly before visiting.",
+    "Travel times are intentionally unstated because walking conditions and starting points vary."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.georgetown.edu/who-we-are/our-history/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.georgetown.edu/who-we-are/our-history/",
+      "error": ""
+    },
+    {
+      "url": "https://campusministry.georgetown.edu/dahlgren/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusministry.georgetown.edu/dahlgren/",
+      "error": ""
+    },
+    {
+      "url": "https://www.georgetown.edu/news/georgetowns-us-presidential-history-at-old-north/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.georgetown.edu/news/georgetowns-us-presidential-history-at-old-north/",
+      "error": ""
+    },
+    {
+      "url": "https://studentcenters.georgetown.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentcenters.georgetown.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://residentialliving.georgetown.edu/explore-residences/first-year-housing/copley-hall/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://residentialliving.georgetown.edu/explore-residences/first-year-housing/copley-hall/",
+      "error": ""
+    },
+    {
+      "url": "https://www.dclibrary.org/plan-visit/georgetown-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.dclibrary.org/plan-visit/georgetown-library",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/olst/planyourvisit/index.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/places/old-stone-house.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/choh/planyourvisit/hours.htm?ms=home",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/choh/planyourvisit/hours.htm?ms=home",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/places/georgetown-waterfront-park.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/places/georgetown-waterfront-park.htm",
+      "error": ""
+    },
+    {
+      "url": "https://library.georgetown.edu/study-space/quiet",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.georgetown.edu/study-space/quiet",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

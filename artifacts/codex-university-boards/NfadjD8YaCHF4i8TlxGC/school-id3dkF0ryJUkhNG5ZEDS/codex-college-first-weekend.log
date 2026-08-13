@@ -1,0 +1,272 @@
+Reading additional input from stdin...
+2026-08-13T06:44:49.918902Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9dd-5f72-7600-b875-55299ded6258.1786603462514812000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:44:49.921208Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:44:49.923463Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9dd-ca1d-7d73-bcfd-04bb437a27d5
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"id3dkF0ryJUkhNG5ZEDS","schoolName":"California State University-Monterey Bay","shortSchoolName":"California State University-Monterey Bay","townName":"Seaside","state":"CA","countryCode":"US","website":"https://csumb.edu/","latitude":36.652397,"longitude":-121.796178},"templates":[{"id":"college-first-weekend","version":"1.0","titlePattern":"Your First Weekend at {school}, Shared as Cards","editorialBrief":"Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.","researchQueries":["new student orientation campus guide","first year student campus activities","weekend near campus students"],"count":10,"icon":"schedule","primarySubjectType":"sequence_stop","allowedSubjectTypes":["sequence_stop","place","activity"],"freshnessDays":180,"exactTitle":"Your First Weekend at California State University-Monterey Bay, Shared as Cards"}]}
+codex
+{
+  "complete": false,
+  "school_name": "California State University-Monterey Bay",
+  "town_name": "Seaside",
+  "boards": [{
+    "complete": false,
+    "school_name": "California State University-Monterey Bay",
+    "town_name": "Seaside",
+    "template_id": "college-first-weekend",
+    "title": "Your First Weekend at California State University-Monterey Bay, Shared as Cards",
+    "description": "",
+    "icon": "schedule",
+    "cards": [{
+      "subject_id": "",
+      "subject_type": "sequence_stop",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "sequence_stop",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "sequence_stop",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "sequence_stop",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "sequence_stop",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "sequence_stop",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "sequence_stop",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "sequence_stop",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "sequence_stop",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "sequence_stop",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }],
+    "warnings": []
+  }],
+  "warnings": []
+}
+web search: 
+web search: site:csumb.edu campus life student center library dining recreation CSUMB ...
+web search: 
+web search: site:csumb.edu "Otter Student Union" game room ...
+web search: 
+web search: site:csumb.edu recreation fitness center Otter Sports Center CSUMB ...
+web search: 
+web search: Marina State Beach California State Parks official ...
+codex
+{"complete":true,"school_name":"California State University-Monterey Bay","town_name":"Seaside","boards":[{"complete":true,"school_name":"California State University-Monterey Bay","town_name":"Seaside","template_id":"college-first-weekend","title":"Your First Weekend at California State University-Monterey Bay, Shared as Cards","description":"A Friday-to-Sunday introduction to CSUMB through student spaces, campus art, recreation facilities, nearby public lands, and the Monterey Bay shoreline.","icon":"schedule","cards":[{"subject_id":"osu-art-collection","subject_type":"sequence_stop","entity_name":"Otter Student Union Art Collection","title":"Friday Arrival: Follow the Art Through the OSU","subtitle":"Begin inside the Otter Student Union","notes":"Start on the third floor with Alebrije del Mar, then use the university’s collection guide to identify other murals and installations.","short_summary":"A visual orientation to the student union through artwork tied to CSUMB identities and the Monterey Bay environment.","evidence_claim":"CSUMB documents an evolving collection of murals and installations in the Otter Student Union, including the 2025 Alebrije del Mar mural on the third floor next to OC3.","source_url":"https://csumb.edu/osu/art/","source_title":"Art in the OSU","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The collection is inside the Otter Student Union; enter only while the building and relevant floors are open.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"the-rookery-game-room","subject_type":"sequence_stop","entity_name":"The Rookery","title":"Friday Game Break: Try the Rookery","subtitle":"Drop-in games inside the Otter Student Union","notes":"Bring your OtterCard, choose a table or console game, and leave enough time to return equipment before the student union closes.","short_summary":"An easy first-evening activity built around shared games rather than a scheduled program.","evidence_claim":"CSUMB identifies The Rookery as an Otter Student Union game room available for student drop-in use, with console games, table tennis, and billiards.","source_url":"https://csumb.edu/osu/services-resources/","source_title":"Services and Resources | Otter Student Union","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drop-in access is for CSUMB students and depends on current Otter Student Union operating hours and reservations.","cost_status":"unknown","under21_safe":true},{"subject_id":"the-eatery-dining-commons","subject_type":"sequence_stop","entity_name":"The Eatery","title":"Friday Dinner: Learn the Dining Commons","subtitle":"Finish the first evening at CSUMB’s residential dining hall","notes":"Use dinner to locate the serving concepts and learn the room’s flow; check the official dining site for the current weekend service window.","short_summary":"A practical first meal that introduces the campus dining system and its range of serving concepts.","evidence_claim":"CSUMB describes The Eatery as its all-you-care-to-enjoy residential dining commons with eight dining concepts, accessible by one meal swipe or a single-meal purchase.","source_url":"https://csumb.edu/dining/","source_title":"Dining Services","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"A meal swipe or single-meal purchase is required; verify the current weekend menu and hours through Otter Kitchens.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"tanimura-antle-library-makerspace","subject_type":"sequence_stop","entity_name":"Tanimura & Antle Family Memorial Library Makerspace","title":"Saturday Morning: Make Something at the Library","subtitle":"Shift from orientation to a hands-on creative stop","notes":"Check current open hours before walking over, then ask Makerspace staff which materials or beginner activities are available that day.","short_summary":"A creative library stop that can also introduce new students to a collaborative campus workspace.","evidence_claim":"CSUMB identifies a Makerspace in the Tanimura & Antle Family Memorial Library used for drawing, painting, modeling, jewelry making, and fabrication technologies.","source_url":"https://csumb.edu/news/news-listing/2023/q2/students-create-crafts-and-community-in-the-librarys-makerspace/","source_title":"Students create crafts and community in the library's Makerspace","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Library and Makerspace schedules can differ; confirm current availability before visiting and follow staff guidance for equipment.","cost_status":"unknown","under21_safe":true},{"subject_id":"otter-cycle-center","subject_type":"sequence_stop","entity_name":"Otter Cycle Center","title":"Saturday Midday: Plan a Ride at the Cycle Center","subtitle":"Get local route guidance before leaving campus","notes":"Stop at the East Lounge desk with your route questions; ask about terrain, safety guidance, and available rental equipment before committing.","short_summary":"A planning stop for learning how campus connects to paved coastal routes and Fort Ord trails.","evidence_claim":"CSUMB describes the Otter Cycle Center as its campus bike shop offering rentals, repairs, organized rides, skills clinics, and free trip-planning help.","source_url":"https://csumb.edu/recreation/cycle-center/","source_title":"Otter Cycle Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The center is in Student Center East Lounge, Room 157; rentals and repair services may require payment and depend on availability.","cost_status":"unknown","under21_safe":true},{"subject_id":"fort-ord-national-monument","subject_type":"sequence_stop","entity_name":"Fort Ord National Monument","title":"Saturday Afternoon: Choose a Fort Ord Trail","subtitle":"Use the federal trail map for an off-campus outing","notes":"Select a route that matches your experience, carry water, remain on designated trails, and review the monument’s trail rules before departure.","short_summary":"A nearby public-land outing with mapped recreation trails through the former Fort Ord landscape.","evidence_claim":"The Bureau of Land Management identifies Fort Ord National Monument as 14,658 acres of public land and provides an interactive map, trail map, and trail rules for visitors.","source_url":"https://www.blm.gov/programs/national-conservation-lands/california/fort-ord-national-monument","source_title":"Fort Ord National Monument","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Review the BLM interactive map and current trail rules first; choose a designated route suitable for your transportation and ability.","cost_status":"unknown","under21_safe":true},{"subject_id":"marina-state-beach","subject_type":"sequence_stop","entity_name":"Marina State Beach","title":"Saturday Sunset: Watch from Marina State Beach","subtitle":"End the day at a managed Monterey Bay shoreline","notes":"Arrive well before sunset, stay back from the surf, pack a wind layer, and use the picnic or interpretive areas instead of entering rough water.","short_summary":"A coastal pause centered on dunes, shoreline views, and safe observation rather than water activity.","evidence_claim":"California State Parks lists Marina State Beach as a day-use park open from 8 a.m. to sunset, with beach access, picnic areas, interpretive exhibits, parking, and restrooms.","source_url":"https://www.parks.ca.gov/?page_id=581","source_title":"Marina State Beach","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open 8 a.m. to sunset. Strong rip currents make water recreation extremely hazardous, and dogs are not allowed.","cost_status":"unknown","under21_safe":true},{"subject_id":"csumb-disc-golf-courses","subject_type":"sequence_stop","entity_name":"CSUMB Disc Golf Courses","title":"Sunday Morning: Play a Short Disc-Golf Loop","subtitle":"Start the final day on one of CSUMB’s campus courses","notes":"Photograph the course map or first tee before starting, keep throws clear of other users, and choose a short loop for a casual introduction.","short_summary":"A self-paced campus recreation stop that works for a small group without requiring a formal competition.","evidence_claim":"CSUMB Recreation states that the campus has two disc golf courses and illustrates the activity with students playing disc golf.","source_url":"https://csumb.edu/recreation/","source_title":"Recreation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Confirm course locations and any temporary closures with Recreation; yield to pedestrians and follow posted course guidance.","cost_status":"unknown","under21_safe":true},{"subject_id":"otter-sports-center","subject_type":"sequence_stop","entity_name":"Otter Sports Center","title":"Sunday Midday: Learn the Otter Sports Center","subtitle":"Use your student ID for an indoor movement break","notes":"Bring your Otter ID, closed-toe shoes, and a full-length shirt; start with a brief workout and wipe down every station after use.","short_summary":"A straightforward introduction to the student fitness facility and its equipment expectations.","evidence_claim":"CSUMB says the Otter Sports Center is open to its students, is free with a valid Otter ID, and includes strength equipment, cardio machines, a TRX room, and a basketball court.","source_url":"https://csumb.edu/athletics/otter-sports-center/","source_title":"Otter Sports Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Valid Otter ID required. The center closes on campus holidays and home basketball or volleyball game days; verify current hours.","cost_status":"free","under21_safe":true},{"subject_id":"skylight-transmission-of-knowledge-windows-to-justice","subject_type":"sequence_stop","entity_name":"Skylight: Transmission of Knowledge/Windows to Justice","title":"Sunday Close: Read the CAHSS Mural","subtitle":"Finish at the main entrance of CAHSS Building 504","notes":"Walk the mural from end to end, then use the front-door signage to identify details such as the khipu cords, marigolds, lenses, and scales.","short_summary":"A final reflective stop connecting environmental, cultural, technological, and social-justice imagery.","evidence_claim":"CSUMB documents Johanna Poethig’s acrylic mural Skylight: Transmission of Knowledge/Windows to Justice at the main entrance of CAHSS Building 504 and notes interpretive signage at the front doors.","source_url":"https://csumb.edu/cahss/about/announcements-events/cahss-academic-iii-mural/","source_title":"CAHSS 504 (Academic III) Mural","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"View the exterior entrance artwork without blocking doors; interior building access may vary by day and academic schedule.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T06:46:56.964767Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9dd-ca1d-7d73-bcfd-04bb437a27d5.1786603489822204000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+42,851
+
+{"complete":true,"school_name":"California State University-Monterey Bay","town_name":"Seaside","boards":[{"complete":true,"school_name":"California State University-Monterey Bay","town_name":"Seaside","template_id":"college-first-weekend","title":"Your First Weekend at California State University-Monterey Bay, Shared as Cards","description":"A Friday-to-Sunday introduction to CSUMB through student spaces, campus art, recreation facilities, nearby public lands, and the Monterey Bay shoreline.","icon":"schedule","cards":[{"subject_id":"osu-art-collection","subject_type":"sequence_stop","entity_name":"Otter Student Union Art Collection","title":"Friday Arrival: Follow the Art Through the OSU","subtitle":"Begin inside the Otter Student Union","notes":"Start on the third floor with Alebrije del Mar, then use the university’s collection guide to identify other murals and installations.","short_summary":"A visual orientation to the student union through artwork tied to CSUMB identities and the Monterey Bay environment.","evidence_claim":"CSUMB documents an evolving collection of murals and installations in the Otter Student Union, including the 2025 Alebrije del Mar mural on the third floor next to OC3.","source_url":"https://csumb.edu/osu/art/","source_title":"Art in the OSU","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The collection is inside the Otter Student Union; enter only while the building and relevant floors are open.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"the-rookery-game-room","subject_type":"sequence_stop","entity_name":"The Rookery","title":"Friday Game Break: Try the Rookery","subtitle":"Drop-in games inside the Otter Student Union","notes":"Bring your OtterCard, choose a table or console game, and leave enough time to return equipment before the student union closes.","short_summary":"An easy first-evening activity built around shared games rather than a scheduled program.","evidence_claim":"CSUMB identifies The Rookery as an Otter Student Union game room available for student drop-in use, with console games, table tennis, and billiards.","source_url":"https://csumb.edu/osu/services-resources/","source_title":"Services and Resources | Otter Student Union","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drop-in access is for CSUMB students and depends on current Otter Student Union operating hours and reservations.","cost_status":"unknown","under21_safe":true},{"subject_id":"the-eatery-dining-commons","subject_type":"sequence_stop","entity_name":"The Eatery","title":"Friday Dinner: Learn the Dining Commons","subtitle":"Finish the first evening at CSUMB’s residential dining hall","notes":"Use dinner to locate the serving concepts and learn the room’s flow; check the official dining site for the current weekend service window.","short_summary":"A practical first meal that introduces the campus dining system and its range of serving concepts.","evidence_claim":"CSUMB describes The Eatery as its all-you-care-to-enjoy residential dining commons with eight dining concepts, accessible by one meal swipe or a single-meal purchase.","source_url":"https://csumb.edu/dining/","source_title":"Dining Services","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"A meal swipe or single-meal purchase is required; verify the current weekend menu and hours through Otter Kitchens.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"tanimura-antle-library-makerspace","subject_type":"sequence_stop","entity_name":"Tanimura & Antle Family Memorial Library Makerspace","title":"Saturday Morning: Make Something at the Library","subtitle":"Shift from orientation to a hands-on creative stop","notes":"Check current open hours before walking over, then ask Makerspace staff which materials or beginner activities are available that day.","short_summary":"A creative library stop that can also introduce new students to a collaborative campus workspace.","evidence_claim":"CSUMB identifies a Makerspace in the Tanimura & Antle Family Memorial Library used for drawing, painting, modeling, jewelry making, and fabrication technologies.","source_url":"https://csumb.edu/news/news-listing/2023/q2/students-create-crafts-and-community-in-the-librarys-makerspace/","source_title":"Students create crafts and community in the library's Makerspace","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Library and Makerspace schedules can differ; confirm current availability before visiting and follow staff guidance for equipment.","cost_status":"unknown","under21_safe":true},{"subject_id":"otter-cycle-center","subject_type":"sequence_stop","entity_name":"Otter Cycle Center","title":"Saturday Midday: Plan a Ride at the Cycle Center","subtitle":"Get local route guidance before leaving campus","notes":"Stop at the East Lounge desk with your route questions; ask about terrain, safety guidance, and available rental equipment before committing.","short_summary":"A planning stop for learning how campus connects to paved coastal routes and Fort Ord trails.","evidence_claim":"CSUMB describes the Otter Cycle Center as its campus bike shop offering rentals, repairs, organized rides, skills clinics, and free trip-planning help.","source_url":"https://csumb.edu/recreation/cycle-center/","source_title":"Otter Cycle Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The center is in Student Center East Lounge, Room 157; rentals and repair services may require payment and depend on availability.","cost_status":"unknown","under21_safe":true},{"subject_id":"fort-ord-national-monument","subject_type":"sequence_stop","entity_name":"Fort Ord National Monument","title":"Saturday Afternoon: Choose a Fort Ord Trail","subtitle":"Use the federal trail map for an off-campus outing","notes":"Select a route that matches your experience, carry water, remain on designated trails, and review the monument’s trail rules before departure.","short_summary":"A nearby public-land outing with mapped recreation trails through the former Fort Ord landscape.","evidence_claim":"The Bureau of Land Management identifies Fort Ord National Monument as 14,658 acres of public land and provides an interactive map, trail map, and trail rules for visitors.","source_url":"https://www.blm.gov/programs/national-conservation-lands/california/fort-ord-national-monument","source_title":"Fort Ord National Monument","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Review the BLM interactive map and current trail rules first; choose a designated route suitable for your transportation and ability.","cost_status":"unknown","under21_safe":true},{"subject_id":"marina-state-beach","subject_type":"sequence_stop","entity_name":"Marina State Beach","title":"Saturday Sunset: Watch from Marina State Beach","subtitle":"End the day at a managed Monterey Bay shoreline","notes":"Arrive well before sunset, stay back from the surf, pack a wind layer, and use the picnic or interpretive areas instead of entering rough water.","short_summary":"A coastal pause centered on dunes, shoreline views, and safe observation rather than water activity.","evidence_claim":"California State Parks lists Marina State Beach as a day-use park open from 8 a.m. to sunset, with beach access, picnic areas, interpretive exhibits, parking, and restrooms.","source_url":"https://www.parks.ca.gov/?page_id=581","source_title":"Marina State Beach","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open 8 a.m. to sunset. Strong rip currents make water recreation extremely hazardous, and dogs are not allowed.","cost_status":"unknown","under21_safe":true},{"subject_id":"csumb-disc-golf-courses","subject_type":"sequence_stop","entity_name":"CSUMB Disc Golf Courses","title":"Sunday Morning: Play a Short Disc-Golf Loop","subtitle":"Start the final day on one of CSUMB’s campus courses","notes":"Photograph the course map or first tee before starting, keep throws clear of other users, and choose a short loop for a casual introduction.","short_summary":"A self-paced campus recreation stop that works for a small group without requiring a formal competition.","evidence_claim":"CSUMB Recreation states that the campus has two disc golf courses and illustrates the activity with students playing disc golf.","source_url":"https://csumb.edu/recreation/","source_title":"Recreation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Confirm course locations and any temporary closures with Recreation; yield to pedestrians and follow posted course guidance.","cost_status":"unknown","under21_safe":true},{"subject_id":"otter-sports-center","subject_type":"sequence_stop","entity_name":"Otter Sports Center","title":"Sunday Midday: Learn the Otter Sports Center","subtitle":"Use your student ID for an indoor movement break","notes":"Bring your Otter ID, closed-toe shoes, and a full-length shirt; start with a brief workout and wipe down every station after use.","short_summary":"A straightforward introduction to the student fitness facility and its equipment expectations.","evidence_claim":"CSUMB says the Otter Sports Center is open to its students, is free with a valid Otter ID, and includes strength equipment, cardio machines, a TRX room, and a basketball court.","source_url":"https://csumb.edu/athletics/otter-sports-center/","source_title":"Otter Sports Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Valid Otter ID required. The center closes on campus holidays and home basketball or volleyball game days; verify current hours.","cost_status":"free","under21_safe":true},{"subject_id":"skylight-transmission-of-knowledge-windows-to-justice","subject_type":"sequence_stop","entity_name":"Skylight: Transmission of Knowledge/Windows to Justice","title":"Sunday Close: Read the CAHSS Mural","subtitle":"Finish at the main entrance of CAHSS Building 504","notes":"Walk the mural from end to end, then use the front-door signage to identify details such as the khipu cords, marigolds, lenses, and scales.","short_summary":"A final reflective stop connecting environmental, cultural, technological, and social-justice imagery.","evidence_claim":"CSUMB documents Johanna Poethig’s acrylic mural Skylight: Transmission of Knowledge/Windows to Justice at the main entrance of CAHSS Building 504 and notes interpretive signage at the front doors.","source_url":"https://csumb.edu/cahss/about/announcements-events/cahss-academic-iii-mural/","source_title":"CAHSS 504 (Academic III) Mural","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"View the exterior entrance artwork without blocking doors; interior building access may vary by day and academic schedule.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

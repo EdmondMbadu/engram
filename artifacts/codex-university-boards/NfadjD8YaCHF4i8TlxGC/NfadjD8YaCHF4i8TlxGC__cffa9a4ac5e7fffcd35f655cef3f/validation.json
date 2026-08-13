@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://catalog.lewisu.edu/graduate/general-information/academic-resources/academic-resources.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 202,
+      "finalUrl": "https://catalog.lewisu.edu/graduate/general-information/academic-resources/academic-resources.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.lewisu.edu/academics/library/services.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lewisu.edu/academics/library/services.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.lewisu.edu/welcome/offices/infoservices/All_PublicLabsLocationsHours.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lewisu.edu/welcome/offices/infoservices/All_PublicLabsLocationsHours.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.lewisu.edu/writingcenter/writinglab.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lewisu.edu/writingcenter/writinglab.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.lewisu.edu/beresourceful/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lewisu.edu/pdf/Resource%20Guide%20-%20Student%20Version%202-23.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.lewisu.edu/campuses/romeoville/maincampusmap.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lewisu.edu/campuses/romeoville/maincampusmap.htm",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

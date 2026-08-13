@@ -1,0 +1,86 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "The Sensory Space hours come from an official 2022 feature and should be reconfirmed before a visit.",
+    "Coordinates and map URLs are null because exact destination-level values were not verified from direct authoritative pages."
+  ],
+  "reachability": [
+    {
+      "url": "https://library.ecu.edu/about/floor-maps/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.ecu.edu/about/floor-maps/",
+      "error": ""
+    },
+    {
+      "url": "https://library.ecu.edu/giving/naming-opportunities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.ecu.edu/giving/naming-opportunities/",
+      "error": ""
+    },
+    {
+      "url": "https://library.ecu.edu/2023/08/23/study-options-expand-with-new-family-room/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.ecu.edu/2023/08/23/study-options-expand-with-new-family-room/",
+      "error": ""
+    },
+    {
+      "url": "https://library.ecu.edu/2022/10/31/sensory-space-embraced-on-2nd-floor/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.ecu.edu/2022/10/31/sensory-space-embraced-on-2nd-floor/",
+      "error": ""
+    },
+    {
+      "url": "https://library.ecu.edu/2026/01/22/the-stacks-vol-5-no-1-spring-2026/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.ecu.edu/2026/01/22/the-stacks-vol-5-no-1-spring-2026/",
+      "error": ""
+    },
+    {
+      "url": "https://library.ecu.edu/music/our-services/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.ecu.edu/music/our-services/",
+      "error": ""
+    },
+    {
+      "url": "https://library.ecu.edu/scholarly-communications/ecu-libraries-overview/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.ecu.edu/scholarly-communications/ecu-libraries-overview/",
+      "error": ""
+    },
+    {
+      "url": "https://studentcenters.ecu.edu/main-campus-student-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentcenters.ecu.edu/main-campus-student-center/",
+      "error": ""
+    },
+    {
+      "url": "https://studentcenters.ecu.edu/health-sciences-campus-student-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentcenters.ecu.edu/health-sciences-campus-student-center/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

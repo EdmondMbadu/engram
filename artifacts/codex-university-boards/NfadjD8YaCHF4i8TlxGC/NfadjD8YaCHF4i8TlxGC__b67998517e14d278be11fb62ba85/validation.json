@@ -1,0 +1,85 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Some options are student-only or event-specific; review the cited source and current campus communications before going."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.onu.edu/admissions-aid/accepted-students",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/admissions-aid/accepted-students",
+      "error": ""
+    },
+    {
+      "url": "https://www.onu.edu/camps-and-events",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/camps-and-events",
+      "error": ""
+    },
+    {
+      "url": "https://digitalcommons.onu.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://digitalcommons.onu.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://www.onu.edu/tutoring",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/tutoring",
+      "error": ""
+    },
+    {
+      "url": "https://www.onu.edu/student-life/polar-career-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/student-life/polar-career-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.onu.edu/student-life/polar-careers/career-exploration-and-resources",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/student-life/polar-careers/career-exploration-and-resources",
+      "error": ""
+    },
+    {
+      "url": "https://www.onu.edu/student-stories/justin-zollars-vita-volunteer",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/student-stories/justin-zollars-vita-volunteer",
+      "error": ""
+    },
+    {
+      "url": "https://www.onu.edu/student-success-center/international-services",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/student-success-center/international-services",
+      "error": ""
+    },
+    {
+      "url": "https://www.onu.edu/student-life/housing",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/student-life/housing",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

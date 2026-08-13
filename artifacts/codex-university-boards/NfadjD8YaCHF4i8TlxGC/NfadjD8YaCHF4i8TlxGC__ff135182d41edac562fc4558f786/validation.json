@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.wafflehouse.com/macon-ga-872/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wafflehouse.com/macon-ga-872/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wafflehouse.com/macon-ga-40/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wafflehouse.com/macon-ga-40/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wafflehouse.com/macon-ga-218/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wafflehouse.com/macon-ga-218/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wafflehouse.com/macon-ga-2036/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wafflehouse.com/macon-ga-2036/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wafflehouse.com/macon-ga-103/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wafflehouse.com/macon-ga-103/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wafflehouse.com/macon-ga-959/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wafflehouse.com/macon-ga-959/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wafflehouse.com/macon-ga-1811/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wafflehouse.com/macon-ga-1811/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wafflehouse.com/macon-ga-1061/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wafflehouse.com/macon-ga-1061/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wafflehouse.com/macon-ga-2402/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wafflehouse.com/macon-ga-2402/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wafflehouse.com/macon-ga-2332/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wafflehouse.com/macon-ga-2332/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

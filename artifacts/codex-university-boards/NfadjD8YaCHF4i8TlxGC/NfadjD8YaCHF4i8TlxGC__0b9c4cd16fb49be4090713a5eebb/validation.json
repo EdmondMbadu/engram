@@ -1,0 +1,97 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.fairfield.edu/about/offices-and-departments/conference-and-events-management/available-rooms/the-dimenna-nyselius-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/about/offices-and-departments/conference-and-events-management/available-rooms/the-dimenna-nyselius-library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/about/offices-and-departments/conference-and-events-management/available-rooms/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/about/offices-and-departments/conference-and-events-management/available-rooms/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/about/offices-and-departments/conference-and-events-management/available-rooms/quick-center-for-the-arts/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/about/offices-and-departments/conference-and-events-management/available-rooms/quick-center-for-the-arts/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/academics/majors-and-minors/theatre/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/academics/majors-and-minors/theatre/",
+      "error": ""
+    },
+    {
+      "url": "https://catalog.fairfield.edu/bellarmine/bellarmine-overview/resources-services/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.fairfield.edu/bellarmine/bellarmine-overview/resources-services/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/museum/about/plan-your-visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/museum/about/plan-your-visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/student-life/campus-ministry/our-staff/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/student-life/campus-ministry/our-staff/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/about/offices-and-departments/conference-and-events-management/available-rooms/dolan-hall-chapel/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/about/offices-and-departments/conference-and-events-management/available-rooms/dolan-hall-chapel/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/about/offices-and-departments/conference-and-events-management/available-rooms/bellarmine-hall/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/about/offices-and-departments/conference-and-events-management/available-rooms/bellarmine-hall/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/about/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "DiMenna-Nyselius Library",
+    "Regina A. Quick Center for the Arts",
+    "Egan Chapel of St. Ignatius Loyola"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

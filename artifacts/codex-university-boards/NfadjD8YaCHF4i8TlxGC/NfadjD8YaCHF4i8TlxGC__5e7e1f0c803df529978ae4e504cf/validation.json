@@ -1,0 +1,71 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.library.upenn.edu/wic",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.upenn.edu/wic",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.upenn.edu/vanpelt/van-pelt-dietrich-library-5",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.upenn.edu/floor-plans/van-pelt/ground-floor",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.upenn.edu/spaces/education-commons-small-group",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.upenn.edu/spaces/education-commons-small-group",
+      "error": ""
+    },
+    {
+      "url": "https://spaceandevents.universitylife.upenn.edu/student-union/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://spaceandevents.universitylife.upenn.edu/student-union/",
+      "error": ""
+    },
+    {
+      "url": "https://spaceandevents.universitylife.upenn.edu/the-arch/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://spaceandevents.universitylife.upenn.edu/the-arch/",
+      "error": ""
+    },
+    {
+      "url": "https://spaceandevents.universitylife.upenn.edu/outdoor-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://spaceandevents.universitylife.upenn.edu/outdoor-spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://facilities.upenn.edu/maps/discover-penn",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://facilities.upenn.edu/maps/discover-penn",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Rosengarten Quiet Study Area"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

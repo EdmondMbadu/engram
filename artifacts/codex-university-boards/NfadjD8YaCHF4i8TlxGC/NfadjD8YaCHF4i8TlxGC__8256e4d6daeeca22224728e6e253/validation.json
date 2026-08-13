@@ -1,0 +1,66 @@
+{
+  "ok": false,
+  "problems": [
+    "A card uses a subject type outside the template rubric."
+  ],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://library.ucf.edu/about/john-c-hitt-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.ucf.edu/about/john-c-hitt-library/",
+      "error": ""
+    },
+    {
+      "url": "https://library.ucf.edu/library-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.ucf.edu/library-spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://library.ucf.edu/services/study-rooms/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.ucf.edu/services/study-rooms/",
+      "error": ""
+    },
+    {
+      "url": "https://studentunion.ucf.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentunion.ucf.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ucf.edu/location/recreation-and-wellness-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ucf.edu/location/recreation-and-wellness-center/",
+      "error": ""
+    },
+    {
+      "url": "https://rwc.sswb.ucf.edu/facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://rwc.sswb.ucf.edu/facilities/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "UCF Student Union",
+    "Recreation and Wellness Center"
+  ],
+  "sourceCount": 6,
+  "generationScore": null,
+  "generationGrade": null
+}

@@ -1,0 +1,40 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "srbEtoMd2YSjieUgJyCE",
+    "schoolName": "University of Dallas",
+    "shortSchoolName": "University of Dallas",
+    "townName": "Irving",
+    "state": "TX",
+    "countryCode": "US",
+    "unitId": "224323",
+    "website": "https://udallas.edu/",
+    "latitude": 32.846221,
+    "longitude": -96.919512,
+    "heroUrl": "https://udallas.edu/",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=udallas.edu&sz=256"
+  },
+  "template": {
+    "id": "college-campus-tour-skips",
+    "version": "1.0",
+    "titlePattern": "What the Campus Tour Skips: {count} Places Students Share With Each Other",
+    "editorialBrief": "Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.",
+    "researchQueries": [
+      "student favorite campus places",
+      "campus map student spaces",
+      "student newspaper campus places"
+    ],
+    "count": 10,
+    "icon": "style",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place",
+      "study_space"
+    ],
+    "freshnessDays": 365
+  },
+  "exact_title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+  "excluded_subjects": [],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://fpdcc.com/downloads/maps/athletic-fields/FPCC-Field-Map-Dan-Ryan-Woods-011526.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fpdcc.com/downloads/maps/athletic-fields/FPCC-Field-Map-Dan-Ryan-Woods-011526.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://fpdcc.com/downloads/maps/grove/FPCC-Picnic-Map-Dan-Ryan-Woods-100322.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fpdcc.com/downloads/maps/grove/FPCC-Picnic-Map-Dan-Ryan-Woods-100322.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.chipublib.org/about-walker-branch/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.chipublib.org/about-walker-branch/",
+      "error": ""
+    },
+    {
+      "url": "https://www.chipublib.org/locations/10/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.chipublib.org/locations/10/",
+      "error": ""
+    },
+    {
+      "url": "https://ridgehistorical.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ridgehistorical.org/",
+      "error": ""
+    },
+    {
+      "url": "https://ccpsa.chicago.gov/wp-content/uploads/2025/07/Minutes-022-2025-11-12.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ccpsa.chicago.gov/wp-content/uploads/2025/07/Minutes-022-2025-11-12.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.chicagoparkdistrict.com/parks-facilities/kennedy-dennis-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.chicagoparkdistrict.com/parks-facilities/kennedy-dennis-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.chicagoparkdistrict.com/parks-facilities/mount-greenwood-park?page=1",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.chicagoparkdistrict.com/parks-facilities/mount-greenwood-park?page=1",
+      "error": ""
+    },
+    {
+      "url": "https://www.chicagoagr.org/about/mission_vision.jsp",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.chicagoagr.org/about/mission_vision.jsp",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

@@ -1,0 +1,70 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "xz1RtRWO9NAy95IeqFgM",
+    "schoolName": "University of California-Irvine",
+    "shortSchoolName": "University of California-Irvine",
+    "townName": "Irvine",
+    "state": "CA",
+    "countryCode": "US",
+    "unitId": "110653",
+    "website": "https://www.uci.edu/",
+    "latitude": 33.648434,
+    "longitude": -117.841248,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/The_University_of_California_Irvine.svg/960px-The_University_of_California_Irvine.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=uci.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain University of California-Irvine",
+  "excluded_subjects": [
+    "University Art Gallery",
+    "Contemporary Arts Center Gallery",
+    "Room Gallery",
+    "UC Irvine Langson Orange County Museum of Art",
+    "Langson Library",
+    "Science Library",
+    "Special Collections & Archives",
+    "UC Irvine Libraries Exhibits",
+    "UC Irvine Libraries Public Computers",
+    "UCI Arboretum",
+    "Target",
+    "Trader Joe's",
+    "Regal Edwards University Town Center",
+    "Chick-fil-A",
+    "Chipotle Mexican Grill",
+    "Blaze Fast-Fire'd Pizza",
+    "Mendocino Farms",
+    "Tender Greens",
+    "Taco Bell - Live Más Café",
+    "In-N-Out Burger",
+    "Langson Library Fourth Floor Quiet Study Zone",
+    "Langson Library Basement Quiet Study Zone",
+    "Langson Library Third Floor Study Areas",
+    "Langson Library Third Floor Group Study Rooms",
+    "Nordstrom Honors Study Room",
+    "Science Library Fourth Floor Quiet Study Zone",
+    "Science Library Sixth Floor Quiet Study Zone",
+    "Science Library Honors Study Room",
+    "MRC SL Room 173",
+    "Courtyard Study Lounge"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

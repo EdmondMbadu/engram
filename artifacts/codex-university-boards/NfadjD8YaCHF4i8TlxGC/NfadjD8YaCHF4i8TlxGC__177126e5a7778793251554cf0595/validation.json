@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.salisbury.edu/libraries/about/gac.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.salisbury.edu/libraries/about/gac.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.salisbury.edu/libraries/spaces-tech/reserve-space.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.salisbury.edu/libraries/spaces-tech/reserve-space.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.salisbury.edu/libraries/services/technology.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.salisbury.edu/libraries/spaces-tech/",
+      "error": ""
+    },
+    {
+      "url": "https://www.salisbury.edu/news/article/Salisbury-University-Officially-Breaks-Ground-on-Patricia-R-Guerrieri-Academic-Commons",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.salisbury.edu/news/article/Salisbury-University-Officially-Breaks-Ground-on-Patricia-R-Guerrieri-Academic-Commons",
+      "error": ""
+    },
+    {
+      "url": "https://www.salisbury.edu/admissions/orientation/su-lingo.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.salisbury.edu/admissions/orientation/su-lingo.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.salisbury.edu/administration/student-affairs/conference-services/facilities-reservations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.salisbury.edu/administration/student-affairs/conference-services/facilities-reservations/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Guerrieri Student Union"
+  ],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

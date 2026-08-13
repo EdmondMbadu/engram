@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.ohio.edu/building-directory/athena-cinema",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ohio.edu/building-directory/athena-cinema",
+      "error": ""
+    },
+    {
+      "url": "https://www.supremecourt.ohio.gov/courts/judicial-system/ohio-trial-courts/courthouses/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.supremecourt.ohio.gov/courts/judicial-system/ohio-trial-courts/courthouses/",
+      "error": ""
+    },
+    {
+      "url": "https://www.order-bsd.com/employment-test",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.order-bsd.com/employment-test",
+      "error": ""
+    },
+    {
+      "url": "https://www.courtstreetcoffee.com/home",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.courtstreetcoffee.com/home",
+      "error": ""
+    },
+    {
+      "url": "https://fluffbakery.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fluffbakery.com/",
+      "error": ""
+    },
+    {
+      "url": "https://donkeycoffee.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://donkeycoffee.com/",
+      "error": ""
+    },
+    {
+      "url": "https://passionworks.org/pages/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://passionworks.org/pages/visit",
+      "error": ""
+    },
+    {
+      "url": "https://casanueva.com/contact-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://casanueva.com/contact-us/",
+      "error": ""
+    },
+    {
+      "url": "https://www.myacpl.org/athens/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.myacpl.org/athens/",
+      "error": ""
+    },
+    {
+      "url": "https://villagebakeryathens.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://villagebakeryathens.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

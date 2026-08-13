@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://finearts.uky.edu/art-museum/facilities/uk-art-museum",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://finearts.uky.edu/art-museum/facilities/uk-art-museum",
+      "error": ""
+    },
+    {
+      "url": "https://arboretum.mgcafe.uky.edu/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arboretum.mgcafe.uky.edu/visit",
+      "error": ""
+    },
+    {
+      "url": "https://arboretum.mgcafe.uky.edu/visit/walk-across-kentucky",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arboretum.mgcafe.uky.edu/visit/walk-across-kentucky",
+      "error": ""
+    },
+    {
+      "url": "https://arboretum.mgcafe.uky.edu/visit/horticultural-gardens",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arboretum.mgcafe.uky.edu/visit/horticultural-gardens",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

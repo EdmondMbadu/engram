@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://science.gmu.edu/academics/departments-units/physics-and-astronomy-department/observatory",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://science.gmu.edu/academics/departments-units/physics-and-astronomy-department/observatory",
+      "error": ""
+    },
+    {
+      "url": "https://mason360.gmu.edu/pac/rsvp_boot?id=2298573",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mason360.gmu.edu/pac/rsvp_boot?id=2298573",
+      "error": ""
+    },
+    {
+      "url": "https://masonfamily.gmu.edu/a-z-resources/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://masonfamily.gmu.edu/a-z-resources/",
+      "error": ""
+    },
+    {
+      "url": "https://recreation.gmu.edu/facilities/outdoor-venues/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recreation.gmu.edu/facilities/outdoor-venues/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfaxva.gov/Fun-Facilities/Cultural-Arts-and-History/Historic-Blenheim-Tours-and-History",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfaxva.gov/Fun-Facilities/Cultural-Arts-and-History/Historic-Blenheim-Tours-and-History",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

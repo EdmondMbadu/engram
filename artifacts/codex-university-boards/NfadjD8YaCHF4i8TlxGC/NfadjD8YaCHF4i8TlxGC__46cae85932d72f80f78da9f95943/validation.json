@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.stlawu.edu/offices/dining-and-conference-services/room-usage-policy",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stlawu.edu/offices/dining-and-conference-services/room-usage-policy",
+      "error": ""
+    },
+    {
+      "url": "https://library.stlawu.edu/view/spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.stlawu.edu/view/spaces",
+      "error": ""
+    },
+    {
+      "url": "https://library.stlawu.edu/space/mezzanine-study-area",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.stlawu.edu/space/mezzanine-study-area",
+      "error": ""
+    },
+    {
+      "url": "https://library.stlawu.edu/reserve-a-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.stlawu.edu/reserve-a-room",
+      "error": ""
+    },
+    {
+      "url": "https://www.stlawu.edu/student-life/housing",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stlawu.edu/student-life/housing",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.csusb.edu/its/support/technology-support/computer-labs",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusb.edu/its/support/technology-support/computer-labs",
+      "error": ""
+    },
+    {
+      "url": "https://faq.lib.csusb.edu/questions/6670",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://faq.lib.csusb.edu/questions/6670",
+      "error": ""
+    },
+    {
+      "url": "https://www.csusb.edu/library/services/reserve-study-rooms",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusb.edu/library/services/reserve-study-rooms",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

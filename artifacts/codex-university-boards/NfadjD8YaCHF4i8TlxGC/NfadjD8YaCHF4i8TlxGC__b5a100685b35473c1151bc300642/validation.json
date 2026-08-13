@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://team.studentlife.ufl.edu/onboarding/uf-traditions/chants-cheers/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://team.studentlife.ufl.edu/onboarding/uf-traditions/chants-cheers/",
+      "error": ""
+    },
+    {
+      "url": "https://news.ufl.edu/2023/10/100-years-of-gator-growl/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.ufl.edu/2023/10/100-years-of-gator-growl/",
+      "error": ""
+    },
+    {
+      "url": "https://connect.ufalumni.ufl.edu/students/gator-pride/gator-wrap-ring",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://connect.ufalumni.ufl.edu/students/gator-pride/gator-wrap-ring",
+      "error": ""
+    },
+    {
+      "url": "https://news.ufl.edu/2020/11/holiday-gator/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.ufl.edu/2020/11/holiday-gator/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

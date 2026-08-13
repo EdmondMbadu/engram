@@ -1,0 +1,81 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Bjork Library is renovating and scheduled to reopen in fall 2026, so it was intentionally omitted from this weekend sequence.",
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://stockton.edu/campuscenter",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stockton.edu/campus-center/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://stockton.edu/campus-center/operations/dining-retail.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stockton.edu/campus-center/operations/dining-retail.html",
+      "error": ""
+    },
+    {
+      "url": "https://stockton.edu/campus-center/operations/services.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stockton.edu/campus-center/operations/services.html",
+      "error": ""
+    },
+    {
+      "url": "https://www2.stockton.edu/stories/three-places-to-visit.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.stockton.edu/stories/three-places-to-visit.html",
+      "error": ""
+    },
+    {
+      "url": "https://stockton.edu/campus-center/operations/building-directory.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stockton.edu/campus-center/operations/building-directory.html",
+      "error": ""
+    },
+    {
+      "url": "https://stockton.edu/campus-services/documents/GallowayVendingMap3.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stockton.edu/campus-services/documents/GallowayVendingMap3.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://stockton.edu/pac/contact.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stockton.edu/pac/contact.html",
+      "error": ""
+    },
+    {
+      "url": "https://stockton.edu/student-development/osprey-advantage.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stockton.edu/student-development/osprey-advantage.html",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Campus Center Theatre",
+    "Stockton University Art Gallery"
+  ],
+  "sourceCount": 8,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

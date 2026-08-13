@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://libraries.uky.edu/locations/william-t-young-library/young-library-spaces-technology",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.uky.edu/locations/william-t-young-library/young-library-spaces-technology",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.uky.edu/news/young-library-balconies-open-march-9",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.uky.edu/news/young-library-balconies-open-march-8",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.uky.edu/FloorMaps/navigating-young-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.uky.edu/FloorMaps/navigating-young-library",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.uky.edu/locations/lucille-caudill-little-fine-arts-library/fine-arts-library-spaces-technology",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.uky.edu/locations/lucille-caudill-little-fine-arts-library/fine-arts-library-spaces-technology",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.uky.edu/locations/mcl/mcl-spaces-technology",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.uky.edu/locations/mcl/mcl-spaces-technology",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.uky.edu/locations/education-library/education-library-spaces-technology",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.uky.edu/locations/education-library/education-library-spaces-technology",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

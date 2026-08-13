@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.lib.uiowa.edu/commons/home-new/group-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.uiowa.edu/commons/home-new/group-spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.uiowa.edu/about/studyspaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.uiowa.edu/about/studyspaces/",
+      "error": ""
+    },
+    {
+      "url": "https://imu.uiowa.edu/outdoor-and-campus-spaces/hubbard-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://imu.uiowa.edu/outdoor-and-campus-spaces/hubbard-park",
+      "error": ""
+    },
+    {
+      "url": "https://imu.uiowa.edu/imu-services/study-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://imu.uiowa.edu/imu-services/study-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://music.uiowa.edu/about/facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://music.uiowa.edu/about/facilities",
+      "error": ""
+    },
+    {
+      "url": "https://facilities.uiowa.edu/named-building/dey-house",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://facilities.uiowa.edu/named-building/dey-house",
+      "error": ""
+    },
+    {
+      "url": "https://oldcap.uiowa.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://oldcap.uiowa.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://recserv.uiowa.edu/campus-recreation-wellness-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recserv.uiowa.edu/campus-recreation-wellness-center",
+      "error": ""
+    },
+    {
+      "url": "https://leadandengage.uiowa.edu/about-us/facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://leadandengage.uiowa.edu/about-us/facilities",
+      "error": ""
+    },
+    {
+      "url": "https://classrooms.uiowa.edu/spaces/student-learning-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://classrooms.uiowa.edu/spaces/student-learning-spaces",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Old Capitol Museum"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

@@ -1,0 +1,79 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.fordham.edu/resources/libraries/about-us/locations-and-hours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fordham.edu/resources/libraries/about-us/locations-and-hours/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fordham.edu/academics/departments/design-and-technology/facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fordham.edu/academics/departments/design-and-technology/facilities/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fordham.edu/about/campuses/rose-hill-campus/mcshane-campus-center/featured-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fordham.edu/about/campuses/rose-hill-campus/mcshane-campus-center/featured-spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://forever.fordham.edu/s/1362/images/editor_documents/j24_campus_map.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://securelb.imodules.com/controls/login/sts.ashx?sid=1362&gid=1&returnUrl=https%3a%2f%2fforever.fordham.edu%2fs%2f1362%2fimages%2feditor_documents%2fj24_campus_map.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.fordham.edu/commencement/events/university-commencement/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fordham.edu/commencement/events/university-commencement/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fordham.edu/student-life/events-and-activities/senior-week/senior-week-at-rose-hill/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fordham.edu/student-life/events-and-activities/senior-week/senior-week-at-rose-hill/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fordham.edu/commencement/events/university-commencement/commencement-traditions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fordham.edu/commencement/events/university-commencement/commencement-traditions/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fordham.edu/give/the-campaign-for-financial-aid/campaign-leadership/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fordham.edu/give/the-campaign-for-financial-aid/campaign-leadership/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "LITE Center"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

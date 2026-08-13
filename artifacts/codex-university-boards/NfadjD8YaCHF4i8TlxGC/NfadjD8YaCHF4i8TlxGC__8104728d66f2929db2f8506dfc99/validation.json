@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.library.illinois.edu/using-library-spaces/study-space-directory/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.illinois.edu/using-library-spaces/study-space-directory/",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.illinois.edu/tlas/spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.illinois.edu/tlas/spaces/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 2,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

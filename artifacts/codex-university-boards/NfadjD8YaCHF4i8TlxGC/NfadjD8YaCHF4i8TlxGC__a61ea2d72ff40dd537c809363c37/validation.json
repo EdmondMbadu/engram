@@ -1,0 +1,88 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://studentaffairs.psu.edu/hub",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentaffairs.psu.edu/about/facilities-spaces/hub",
+      "error": ""
+    },
+    {
+      "url": "https://sen.psu.edu/engagement-space/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.outreach.psu.edu/about/programs/experiential-learning/",
+      "error": ""
+    },
+    {
+      "url": "https://studentaffairs.psu.edu/student-life/arts-entertainment/hub-galleries",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentaffairs.psu.edu/student-life/arts-entertainment/hub-galleries",
+      "error": ""
+    },
+    {
+      "url": "https://www.it.psu.edu/labs/locations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.it.psu.edu/labs/locations/",
+      "error": ""
+    },
+    {
+      "url": "https://www.psu.edu/news/administration/story/pattee-library-renovation-expand-student-study-collaboration-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.psu.edu/news/administration/story/pattee-library-renovation-expand-student-study-collaboration-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://palmermuseum.psu.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://palmermuseum.psu.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://arboretum.psu.edu/visit/visitor-information/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arboretum.psu.edu/visit/visitor-information/",
+      "error": ""
+    },
+    {
+      "url": "https://alumni.psu.edu/about/hintz/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://alumni.psu.edu/about/hintz/",
+      "error": ""
+    },
+    {
+      "url": "https://studentaffairs.psu.edu/health-wellbeing/recreation/facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentaffairs.psu.edu/health-wellbeing/recreation/facilities",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Palmer Museum of Art",
+    "The Arboretum at Penn State"
+  ],
+  "sourceCount": 9,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

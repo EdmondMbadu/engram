@@ -1,0 +1,61 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "WvBumfqEfTmDF11olILs",
+    "schoolName": "Thomas Jefferson University",
+    "shortSchoolName": "Thomas Jefferson University",
+    "townName": "Philadelphia",
+    "state": "PA",
+    "countryCode": "US",
+    "unitId": "216366",
+    "website": "https://www.jefferson.edu/",
+    "latitude": 39.948274,
+    "longitude": -75.158266,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/2/2a/Thomas_Jefferson_University_seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=jefferson.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at Thomas Jefferson University, Shared as Cards",
+  "excluded_subjects": [
+    "Scott Memorial Library",
+    "Scott Memorial Library Second-Floor Group Study Rooms",
+    "Scott Memorial Library Third-Floor Individual Study Rooms",
+    "Scott Memorial Library Fourth-Floor Quiet Study",
+    "Paul J. Gutman Library",
+    "Gutman Library Study Room 101",
+    "Rena Rowan Reading Room",
+    "Kanbar Campus Center",
+    "Jefferson Alumni Hall Northwest Student Lounge",
+    "Curtis Building Second Floor Lobby",
+    "Reading Room (First Floor)",
+    "Group Study Rooms (Second Floor)",
+    "Casual Reading Area (Second Floor)",
+    "Group Study Tables (Second Floor)",
+    "Study Carrels (Third Floor)",
+    "Study Carrels (Fourth Floor)",
+    "Study Room 101",
+    "Second-Floor Study Rooms",
+    "Ground Floor Quiet Study Space"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

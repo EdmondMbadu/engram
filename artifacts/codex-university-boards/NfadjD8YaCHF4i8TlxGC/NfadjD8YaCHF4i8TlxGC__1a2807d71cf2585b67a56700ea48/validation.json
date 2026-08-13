@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://buffaloesdeli.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://buffaloesdeli.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/nc/wilmington/630-s-college-rd.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/nc/wilmington/630-s-college-rd.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/nc/wilmington/2600-n-college-rd/fast-food.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/nc/wilmington/2600-n-college-rd/fast-food.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/nc/wilmington/350-south-college-road",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/nc/wilmington/350-south-college-road",
+      "error": ""
+    },
+    {
+      "url": "https://locations.papajohns.com/united-states/nc/28403/wilmington/5814-oleander-dr/food-near-me",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.papajohns.com/united-states/nc/28403/wilmington/5814-oleander-dr/food-near-me",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/north-carolina/wilmington/3604-south-college-road-unit-a",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/north-carolina/wilmington/3604-south-college-road-unit-a",
+      "error": ""
+    },
+    {
+      "url": "https://insomniacookies.com/store/wilmingtonnc",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://insomniacookies.com/store/wilmingtonnc",
+      "error": ""
+    },
+    {
+      "url": "https://www.latapatiawilmington.com/location",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latapatiawilmington.com/location",
+      "error": ""
+    },
+    {
+      "url": "https://www.yoshisushiwilmington.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.yoshisushiwilmington.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.exxonmobilfuels.com/en/find-gas-station/hh-30-wilmington-nc-200320597",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.exxonmobilfuels.com/en/find-gas-station/hh-30-wilmington-nc-200320597",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.scu.edu/missionchurch/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scu.edu/missionchurch/",
+      "error": ""
+    },
+    {
+      "url": "https://www.scu.edu/desaisset/education/tours/what-to-expect/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scu.edu/desaisset/education/tours/what-to-expect/",
+      "error": ""
+    },
+    {
+      "url": "https://www.scu.edu/desaisset/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scu.edu/desaisset/about/",
+      "error": ""
+    },
+    {
+      "url": "https://www.scu.edu/bulletin/undergraduate/chapter-1-university-mission/campus.html?c=1734554647",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scu.edu/bulletin/undergraduate/chapter-1-university-mission/campus.html?c=1734554647",
+      "error": ""
+    },
+    {
+      "url": "https://www.scu.edu/academics/libraries/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scu.edu/academics/libraries/",
+      "error": ""
+    },
+    {
+      "url": "https://www.scu.edu/sustainability/forgegarden/history-of-the-forge/forge-tour/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scu.edu/sustainability/forgegarden/history-of-the-forge/forge-tour/",
+      "error": ""
+    },
+    {
+      "url": "https://www.scu.edu/recreation/membership/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scu.edu/recreation/membership/",
+      "error": ""
+    },
+    {
+      "url": "https://www.scu.edu/recreation/about/history/facility-history/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scu.edu/recreation/about/history/facility-history/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

@@ -1,0 +1,49 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.ramapo.edu/library/study-rooms-reservations-and-usage/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ramapo.edu/library/study-rooms-reservations-and-usage/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ramapo.edu/oss/campus-accessibility-and-services-information/academic-units/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ramapo.edu/oss/campus-accessibility-and-services-information/academic-units/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ramapo.edu/map/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ramapo.edu/map/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ramapo.edu/tours/sports-recreation/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ramapo.edu/tours/sports-recreation/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Peter P. Mercer Learning Commons",
+    "Robert A. Scott Student Center",
+    "Bill Bradley Sports and Recreation Center"
+  ],
+  "sourceCount": 4,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

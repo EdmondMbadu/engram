@@ -1,0 +1,295 @@
+Reading additional input from stdin...
+2026-08-13T07:54:47.825280Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:54:47.885954Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1d-4079-78f3-b9ea-2ac78a3279ae.1786607648890699000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa1d-d82e-70b3-ad2d-9f1f239600ce
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"DOBP7cPYoq34aTk4o5HU","schoolName":"Lafayette College","shortSchoolName":"Lafayette College","townName":"Easton","state":"PA","countryCode":"US","website":"https://www.lafayette.edu/","latitude":40.69956,"longitude":-75.209786},"templates":[{"id":"college-zero-dollar-hangs","version":"1.0","titlePattern":"Zero Dollars: {count} Hangs That Cost Nothing","editorialBrief":"Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.","researchQueries":["free student activities campus","free campus spaces students","free public places near campus"],"count":10,"icon":"money_off","primarySubjectType":"activity","allowedSubjectTypes":["activity","place"],"freshnessDays":180,"exactTitle":"Zero Dollars: 10 Hangs That Cost Nothing"}]}
+2026-08-13T07:54:47.959658Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1d-4079-7cf2-94f8-08d25b1ffd21.1786607648890151000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:54:47.991136Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:54:48.149698Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1d-4082-7e33-8e6d-c040602980e5.1786607648898881000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:54:48.239100Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1d-4081-7ad2-b287-978af240aa38.1786607648897617000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Lafayette College",
+  "town_name": "Easton",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Lafayette College",
+      "town_name": "Easton",
+      "template_id": "college-zero-dollar-hangs",
+      "title": "Zero Dollars: 10 Hangs That Cost Nothing",
+      "description": "",
+      "icon": "money_off",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+     ,
+      {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:lafayette.edu Lafayette College free admission gallery museum library campus public ...
+web search: 
+web search: site:lafayette.edu "free for Lafayette students" ...
+web search: 
+web search: site:recreation.lafayette.edu facilities pool climbing wall fitness center Lafayette ...
+codex
+{"complete":true,"school_name":"Lafayette College","town_name":"Easton","boards":[{"complete":true,"school_name":"Lafayette College","town_name":"Easton","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"Ten no-purchase Lafayette College activities spanning public art, current history exhibitions, and student recreation.","icon":"money_off","cards":[{"subject_id":"lafayette-williams-center-gallery","subject_type":"place","entity_name":"Williams Center Gallery","title":"Browse the Williams Center Gallery","subtitle":"A free public exhibition stop on College Hill","notes":"Meet at the Williams Center, browse the current exhibition together, and leave time to compare favorite works before closing.","short_summary":"A public gallery hang built around rotating exhibitions in the Williams Center for the Arts.","evidence_claim":"Lafayette states that its exhibitions and related programming are free and open to the public; the visitor guide lists Williams Center Gallery at 317 Hamilton Street.","source_url":"https://galleries.lafayette.edu/visitors-guide/","source_title":"Visitor’s Guide · Lafayette Art Galleries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open to the public during posted gallery hours; check the visitor guide because galleries close for holidays and campus closures.","cost_status":"free","under21_safe":true},{"subject_id":"lafayette-grossman-gallery","subject_type":"place","entity_name":"Richard A. and Rissa W. Grossman Gallery","title":"See Contemporary Art at Grossman Gallery","subtitle":"A free downtown gallery visit for campus and community","notes":"Walk down College Hill with friends, explore the current installation, and use the exhibit as an easy conversation starter.","short_summary":"A no-admission contemporary-art outing at Lafayette’s Williams Visual Arts Building.","evidence_claim":"Lafayette identifies Grossman Gallery as one of its gallery locations and states that exhibitions and related programming are free and open to the public.","source_url":"https://galleries.lafayette.edu/home/","source_title":"Lafayette Art Galleries & Collections","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open to the public during posted hours at 243 N. Third Street; the gallery closes for most academic holidays.","cost_status":"free","under21_safe":true},{"subject_id":"lafayette-kirby-art-study-center","subject_type":"place","entity_name":"Kirby Art Study Center","title":"Look Closely at the Kirby Art Study Center","subtitle":"A free, small-group art stop inside the Williams Center","notes":"Bring a classmate, focus on a few collection works, and trade observations instead of trying to cover everything at once.","short_summary":"A quieter public art-viewing option centered on close study of Lafayette’s collection.","evidence_claim":"The official visitor guide lists Kirby Art Study Center among Lafayette’s galleries and says gallery exhibitions and related programming are free and open to the public.","source_url":"https://galleries.lafayette.edu/visitors-guide/","source_title":"Visitor’s Guide · Lafayette Art Galleries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Visit Wednesday through Friday during posted hours or arrange an appointment; campus closures and holidays may affect access.","cost_status":"free","under21_safe":true},{"subject_id":"lafayette-sculpture-walk","subject_type":"activity","entity_name":"Lafayette College Sculpture Walk","title":"Follow the Campus Sculpture Walk","subtitle":"A self-guided outdoor art loop across Lafayette’s grounds","notes":"Open the official map, choose a cluster of sculptures, and take turns reading the artist notes while walking between works.","short_summary":"An outdoor, self-paced route linking public sculptures around Lafayette’s campus.","evidence_claim":"Lafayette’s Art on Campus page provides a self-guided sculpture walk and says the mapped outdoor sculptures include descriptions and artist-biography links.","source_url":"https://galleries.lafayette.edu/art-on-campus/","source_title":"Art On Campus · Lafayette Art Galleries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The route uses outdoor public sculptures on campus grounds and requires no gallery ticket or reservation.","cost_status":"free","under21_safe":true},{"subject_id":"lafayette-this-incomparable-site-exhibition","subject_type":"activity","entity_name":"This Incomparable Site: From College Edifice to College Hill","title":"Trace How College Hill Took Shape","subtitle":"A free architecture-history exhibition in Skillman Library","notes":"Start in Lass Gallery, compare early campus images with today’s surroundings, then step outside to spot what changed.","short_summary":"A visual history hang using engravings, maps, and photographs of Lafayette’s built environment.","evidence_claim":"Lafayette lists this exhibition in Lass Gallery through December 18, 2026 and states that its bicentennial exhibitions are free and open to the public.","source_url":"https://www.lafayette.edu/bicentennial/exhibitions/","source_title":"Bicentennial Exhibitions · Lafayette College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to the public during Skillman Library access hours; the listed run ends December 18, 2026.","cost_status":"free","under21_safe":true},{"subject_id":"lafayette-twilight-glow-exhibition","subject_type":"activity","entity_name":"We’ll Gather by the Twilight’s Glow: 200 Years of Community at Lafayette College","title":"Scan Two Centuries of Group Photos","subtitle":"A free community-history display in Skillman Library","notes":"Browse the panoramic photographs with friends and pick out changes in clothing, ceremonies, and campus gathering places.","short_summary":"A social photo-history stop showing Lafayette communities across generations.","evidence_claim":"Lafayette lists this Skillman Library exhibition through December 18, 2026 and says the bicentennial exhibitions are free and open to the public.","source_url":"https://www.lafayette.edu/bicentennial/exhibitions/","source_title":"Bicentennial Exhibitions · Lafayette College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to the public during Skillman Library access hours; the listed run ends December 18, 2026.","cost_status":"free","under21_safe":true},{"subject_id":"lafayette-bicentennial-history-exhibition","subject_type":"activity","entity_name":"Lafayette 200: A Bicentennial History of Lafayette College","title":"Explore Lafayette’s Bicentennial History","subtitle":"A free document-and-artifact exhibition in the Simon Room","notes":"Choose one era to investigate together, examine the displayed documents, and compare what each person notices first.","short_summary":"An artifact-centered look at Lafayette’s founding, organizations, conflicts, and institutional changes.","evidence_claim":"The College lists Lafayette 200 in Skillman Library’s Simon Room through December 18, 2026 and states that bicentennial exhibitions are free and open to the public.","source_url":"https://www.lafayette.edu/bicentennial/exhibitions/","source_title":"Bicentennial Exhibitions · Lafayette College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to the public during applicable Skillman Library and Simon Room hours; the listed run ends December 18, 2026.","cost_status":"free","under21_safe":true},{"subject_id":"lafayette-recreational-swim","subject_type":"activity","entity_name":"Lafayette Recreational Swim","title":"Meet for a Recreational Swim","subtitle":"Student no-cost pool time at Kirby Sports Center","notes":"Check the current pool schedule, bring your Lafayette ID and swim gear, and meet on deck for an easy shared workout.","short_summary":"A student-only aquatic hang in Lafayette’s six-lane pool and separate diving well.","evidence_claim":"Recreation Services describes Lafayette’s recreational swim program and states that students have no-cost facility access with a valid Lafayette ID.","source_url":"https://recreation.lafayette.edu/","source_title":"Recreation Services · Lafayette College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current Lafayette students must present a valid ID, complete the required waiver, and use the pool only during posted recreational-swim hours.","cost_status":"free","under21_safe":true},{"subject_id":"lafayette-climbing-wall","subject_type":"activity","entity_name":"Lafayette College Climbing Wall","title":"Try the Climbing Wall Together","subtitle":"A no-cost student climbing session at Kirby Sports Center","notes":"Confirm open-climb hours, bring your Lafayette ID, and start with routes suited to the least-experienced person in the group.","short_summary":"An indoor student activity where friends can attempt climbing routes at their own pace.","evidence_claim":"Recreation Services identifies the Climbing Wall as a Lafayette recreation offering and states that students receive no-cost facility access with valid Lafayette ID.","source_url":"https://recreation.lafayette.edu/","source_title":"Recreation Services · Lafayette College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"For current Lafayette students with valid ID and completed waiver; check current wall hours and follow staff safety requirements.","cost_status":"free","under21_safe":true},{"subject_id":"lafayette-group-fitness","subject_type":"activity","entity_name":"Lafayette Group Fitness","title":"Take a Group Fitness Class","subtitle":"A no-cost student workout through Recreation Services","notes":"Pick a class that suits everyone’s comfort level, confirm any sign-up requirement, and arrive early enough to get settled.","short_summary":"A structured movement session that turns exercise into an easy campus group plan.","evidence_claim":"Lafayette Recreation Services lists Group Fitness among its programs, while its facility-access policy grants students no-cost access with valid Lafayette ID.","source_url":"https://recreation.lafayette.edu/access/","source_title":"Facility Access · Recreation Services","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Limited to current Lafayette students with valid ID and a completed facility waiver; consult the live program schedule before going.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:56:36.951797Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa1d-d82e-70b3-ad2d-9f1f239600ce.1786607687727807000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+33,574
+
+{"complete":true,"school_name":"Lafayette College","town_name":"Easton","boards":[{"complete":true,"school_name":"Lafayette College","town_name":"Easton","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"Ten no-purchase Lafayette College activities spanning public art, current history exhibitions, and student recreation.","icon":"money_off","cards":[{"subject_id":"lafayette-williams-center-gallery","subject_type":"place","entity_name":"Williams Center Gallery","title":"Browse the Williams Center Gallery","subtitle":"A free public exhibition stop on College Hill","notes":"Meet at the Williams Center, browse the current exhibition together, and leave time to compare favorite works before closing.","short_summary":"A public gallery hang built around rotating exhibitions in the Williams Center for the Arts.","evidence_claim":"Lafayette states that its exhibitions and related programming are free and open to the public; the visitor guide lists Williams Center Gallery at 317 Hamilton Street.","source_url":"https://galleries.lafayette.edu/visitors-guide/","source_title":"Visitor’s Guide · Lafayette Art Galleries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open to the public during posted gallery hours; check the visitor guide because galleries close for holidays and campus closures.","cost_status":"free","under21_safe":true},{"subject_id":"lafayette-grossman-gallery","subject_type":"place","entity_name":"Richard A. and Rissa W. Grossman Gallery","title":"See Contemporary Art at Grossman Gallery","subtitle":"A free downtown gallery visit for campus and community","notes":"Walk down College Hill with friends, explore the current installation, and use the exhibit as an easy conversation starter.","short_summary":"A no-admission contemporary-art outing at Lafayette’s Williams Visual Arts Building.","evidence_claim":"Lafayette identifies Grossman Gallery as one of its gallery locations and states that exhibitions and related programming are free and open to the public.","source_url":"https://galleries.lafayette.edu/home/","source_title":"Lafayette Art Galleries & Collections","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open to the public during posted hours at 243 N. Third Street; the gallery closes for most academic holidays.","cost_status":"free","under21_safe":true},{"subject_id":"lafayette-kirby-art-study-center","subject_type":"place","entity_name":"Kirby Art Study Center","title":"Look Closely at the Kirby Art Study Center","subtitle":"A free, small-group art stop inside the Williams Center","notes":"Bring a classmate, focus on a few collection works, and trade observations instead of trying to cover everything at once.","short_summary":"A quieter public art-viewing option centered on close study of Lafayette’s collection.","evidence_claim":"The official visitor guide lists Kirby Art Study Center among Lafayette’s galleries and says gallery exhibitions and related programming are free and open to the public.","source_url":"https://galleries.lafayette.edu/visitors-guide/","source_title":"Visitor’s Guide · Lafayette Art Galleries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Visit Wednesday through Friday during posted hours or arrange an appointment; campus closures and holidays may affect access.","cost_status":"free","under21_safe":true},{"subject_id":"lafayette-sculpture-walk","subject_type":"activity","entity_name":"Lafayette College Sculpture Walk","title":"Follow the Campus Sculpture Walk","subtitle":"A self-guided outdoor art loop across Lafayette’s grounds","notes":"Open the official map, choose a cluster of sculptures, and take turns reading the artist notes while walking between works.","short_summary":"An outdoor, self-paced route linking public sculptures around Lafayette’s campus.","evidence_claim":"Lafayette’s Art on Campus page provides a self-guided sculpture walk and says the mapped outdoor sculptures include descriptions and artist-biography links.","source_url":"https://galleries.lafayette.edu/art-on-campus/","source_title":"Art On Campus · Lafayette Art Galleries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The route uses outdoor public sculptures on campus grounds and requires no gallery ticket or reservation.","cost_status":"free","under21_safe":true},{"subject_id":"lafayette-this-incomparable-site-exhibition","subject_type":"activity","entity_name":"This Incomparable Site: From College Edifice to College Hill","title":"Trace How College Hill Took Shape","subtitle":"A free architecture-history exhibition in Skillman Library","notes":"Start in Lass Gallery, compare early campus images with today’s surroundings, then step outside to spot what changed.","short_summary":"A visual history hang using engravings, maps, and photographs of Lafayette’s built environment.","evidence_claim":"Lafayette lists this exhibition in Lass Gallery through December 18, 2026 and states that its bicentennial exhibitions are free and open to the public.","source_url":"https://www.lafayette.edu/bicentennial/exhibitions/","source_title":"Bicentennial Exhibitions · Lafayette College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to the public during Skillman Library access hours; the listed run ends December 18, 2026.","cost_status":"free","under21_safe":true},{"subject_id":"lafayette-twilight-glow-exhibition","subject_type":"activity","entity_name":"We’ll Gather by the Twilight’s Glow: 200 Years of Community at Lafayette College","title":"Scan Two Centuries of Group Photos","subtitle":"A free community-history display in Skillman Library","notes":"Browse the panoramic photographs with friends and pick out changes in clothing, ceremonies, and campus gathering places.","short_summary":"A social photo-history stop showing Lafayette communities across generations.","evidence_claim":"Lafayette lists this Skillman Library exhibition through December 18, 2026 and says the bicentennial exhibitions are free and open to the public.","source_url":"https://www.lafayette.edu/bicentennial/exhibitions/","source_title":"Bicentennial Exhibitions · Lafayette College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to the public during Skillman Library access hours; the listed run ends December 18, 2026.","cost_status":"free","under21_safe":true},{"subject_id":"lafayette-bicentennial-history-exhibition","subject_type":"activity","entity_name":"Lafayette 200: A Bicentennial History of Lafayette College","title":"Explore Lafayette’s Bicentennial History","subtitle":"A free document-and-artifact exhibition in the Simon Room","notes":"Choose one era to investigate together, examine the displayed documents, and compare what each person notices first.","short_summary":"An artifact-centered look at Lafayette’s founding, organizations, conflicts, and institutional changes.","evidence_claim":"The College lists Lafayette 200 in Skillman Library’s Simon Room through December 18, 2026 and states that bicentennial exhibitions are free and open to the public.","source_url":"https://www.lafayette.edu/bicentennial/exhibitions/","source_title":"Bicentennial Exhibitions · Lafayette College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to the public during applicable Skillman Library and Simon Room hours; the listed run ends December 18, 2026.","cost_status":"free","under21_safe":true},{"subject_id":"lafayette-recreational-swim","subject_type":"activity","entity_name":"Lafayette Recreational Swim","title":"Meet for a Recreational Swim","subtitle":"Student no-cost pool time at Kirby Sports Center","notes":"Check the current pool schedule, bring your Lafayette ID and swim gear, and meet on deck for an easy shared workout.","short_summary":"A student-only aquatic hang in Lafayette’s six-lane pool and separate diving well.","evidence_claim":"Recreation Services describes Lafayette’s recreational swim program and states that students have no-cost facility access with a valid Lafayette ID.","source_url":"https://recreation.lafayette.edu/","source_title":"Recreation Services · Lafayette College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current Lafayette students must present a valid ID, complete the required waiver, and use the pool only during posted recreational-swim hours.","cost_status":"free","under21_safe":true},{"subject_id":"lafayette-climbing-wall","subject_type":"activity","entity_name":"Lafayette College Climbing Wall","title":"Try the Climbing Wall Together","subtitle":"A no-cost student climbing session at Kirby Sports Center","notes":"Confirm open-climb hours, bring your Lafayette ID, and start with routes suited to the least-experienced person in the group.","short_summary":"An indoor student activity where friends can attempt climbing routes at their own pace.","evidence_claim":"Recreation Services identifies the Climbing Wall as a Lafayette recreation offering and states that students receive no-cost facility access with valid Lafayette ID.","source_url":"https://recreation.lafayette.edu/","source_title":"Recreation Services · Lafayette College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"For current Lafayette students with valid ID and completed waiver; check current wall hours and follow staff safety requirements.","cost_status":"free","under21_safe":true},{"subject_id":"lafayette-group-fitness","subject_type":"activity","entity_name":"Lafayette Group Fitness","title":"Take a Group Fitness Class","subtitle":"A no-cost student workout through Recreation Services","notes":"Pick a class that suits everyone’s comfort level, confirm any sign-up requirement, and arrive early enough to get settled.","short_summary":"A structured movement session that turns exercise into an easy campus group plan.","evidence_claim":"Lafayette Recreation Services lists Group Fitness among its programs, while its facility-access policy grants students no-cost access with valid Lafayette ID.","source_url":"https://recreation.lafayette.edu/access/","source_title":"Facility Access · Recreation Services","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Limited to current Lafayette students with valid ID and a completed facility waiver; consult the live program schedule before going.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}

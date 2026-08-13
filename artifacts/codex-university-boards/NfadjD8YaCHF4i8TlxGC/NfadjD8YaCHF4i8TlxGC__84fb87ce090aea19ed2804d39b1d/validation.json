@@ -1,0 +1,71 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.flsouthern.edu/library/services",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flsouthern.edu/library/services",
+      "error": ""
+    },
+    {
+      "url": "https://www.flsouthern.edu/library/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flsouthern.edu/library/about",
+      "error": ""
+    },
+    {
+      "url": "https://www.flsouthern.edu/library/archives/fsc-history/fsc-building-history/roux-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flsouthern.edu/library/archives/fsc-history/fsc-building-history/roux-library",
+      "error": ""
+    },
+    {
+      "url": "https://www.flsouthern.edu/campus-offices/offices-directory/office-of-technology-services",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flsouthern.edu/campus-offices/offices-directory/office-of-technology-services",
+      "error": ""
+    },
+    {
+      "url": "https://www.flsouthern.edu/campus-offices/offices-directory/office-of-student-disability-services",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flsouthern.edu/campus-offices/offices-directory/office-of-student-disability-services",
+      "error": ""
+    },
+    {
+      "url": "https://www.flsouthern.edu/campus-life/college-housing/dell-hall",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flsouthern.edu/campus-life/college-housing/dell-hall",
+      "error": ""
+    },
+    {
+      "url": "https://www.flsouthern.edu/campus-life/college-housing/allan-spivey-hall",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flsouthern.edu/campus-life/college-housing/allan-spivey-hall",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "TûTû’s Cyber Café"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

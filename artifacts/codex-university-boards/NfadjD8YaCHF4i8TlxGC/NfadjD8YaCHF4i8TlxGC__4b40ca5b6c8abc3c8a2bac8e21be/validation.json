@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.folkmusiccenter.com/services",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.folkmusiccenter.com/services",
+      "error": ""
+    },
+    {
+      "url": "https://claremontvillage.com/shop-%26-dine-1",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://claremontvillage.com/shop-%26-dine-1",
+      "error": ""
+    },
+    {
+      "url": "https://clmoa.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://clmoa.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.claremontpackinghouse.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.claremontpackinghouse.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.claremontforum.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.claremontforum.org/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.libraries.rutgers.edu/new-brunswick/visit-study/locations/alexander-library/digital-learning-commons",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.libraries.rutgers.edu/new-brunswick/visit-study/locations/alexander-library/digital-learning-commons",
+      "error": ""
+    },
+    {
+      "url": "https://newbrunswick.rutgers.edu/chancellor/strategic-priorities/campus-improvement-initiative",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://newbrunswick.rutgers.edu/chancellor/strategic-priorities/campus-improvement-initiative",
+      "error": ""
+    },
+    {
+      "url": "https://www.rutgersgardens.rutgers.edu/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rutgersgardens.rutgers.edu/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.libraries.rutgers.edu/visit-study/locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.libraries.rutgers.edu/visit-study/locations",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

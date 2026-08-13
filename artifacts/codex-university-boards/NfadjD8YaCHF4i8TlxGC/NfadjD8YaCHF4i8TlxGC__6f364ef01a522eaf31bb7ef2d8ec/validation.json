@@ -1,0 +1,80 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://dennychimes.ua.edu/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dennychimes.ua.edu/about/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ua.edu/libraries/gorgas/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ua.edu/libraries/gorgas/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ua.edu/libraries/gorgas/gorgas-library-description/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ua.edu/libraries/gorgas/gorgas-library-description/",
+      "error": ""
+    },
+    {
+      "url": "https://barefield.ua.edu/2014/08/11/woods-quad-sculpture-garden-opens/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://barefield.ua.edu/2014/08/11/woods-quad-sculpture-garden-opens/",
+      "error": ""
+    },
+    {
+      "url": "https://art.ua.edu/venue/sarah-moody-gallery-of-art/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://art.ua.edu/venue-sarah-moody-gallery-of-art/",
+      "error": ""
+    },
+    {
+      "url": "https://museums.ua.edu/contact-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://museums.ua.edu/contact-us/",
+      "error": ""
+    },
+    {
+      "url": "https://arboretum.ua.edu/visit-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arboretum.ua.edu/visit-us/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ua.edu/using-the-library/equipment/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ua.edu/using-the-library/equipment/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Denny Chimes",
+    "Alabama Museum of Natural History"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

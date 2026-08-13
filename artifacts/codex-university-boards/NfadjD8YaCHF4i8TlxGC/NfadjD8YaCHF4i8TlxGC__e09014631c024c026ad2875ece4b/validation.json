@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.oxy.edu/about-oxy/our-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oxy.edu/about-oxy/our-campus",
+      "error": ""
+    },
+    {
+      "url": "https://www.oxy.edu/locations/branca-patio",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oxy.edu/locations/branca-patio",
+      "error": ""
+    },
+    {
+      "url": "https://www.oxy.edu/student-life/campus-dining/where-eat/green-bean",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oxy.edu/student-life/campus-dining/where-eat/green-bean",
+      "error": ""
+    },
+    {
+      "url": "https://www.oxy.edu/academics/library/academic-commons",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oxy.edu/academics/library/academic-commons",
+      "error": ""
+    },
+    {
+      "url": "https://www.oxy.edu/about-oxy/community-equity/intercultural-community-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oxy.edu/about-oxy/community-equity/intercultural-community-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.oxy.edu/academics/areas-study/urban-environmental-policy/our-projects/feast-organic-garden",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oxy.edu/academics/areas-study/urban-environmental-policy/our-projects/feast-organic-garden",
+      "error": ""
+    },
+    {
+      "url": "https://www.oxy.edu/about-oxy/sustainability/sustainable-operations/gardens",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oxy.edu/about-oxy/sustainability/sustainable-operations/gardens",
+      "error": ""
+    },
+    {
+      "url": "https://www.oxy.edu/academics/areas-study/art-art-history/studio-art",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oxy.edu/academics/areas-study/art-art-history/studio-art",
+      "error": ""
+    },
+    {
+      "url": "https://www.oxy.edu/student-life/campus-dining/where-eat/tiger-cooler",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oxy.edu/student-life/campus-dining/where-eat/tiger-cooler",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

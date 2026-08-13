@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.farmingdale.edu/ram-bo/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.farmingdale.edu/ram-bo/",
+      "error": ""
+    },
+    {
+      "url": "https://www.farmingdale.edu/visitors/index.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.farmingdale.edu/visitors/index.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.farmingdale.edu/emails/general/2026/2026-04-23_ramchella-1.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.farmingdale.edu/emails/general/2026/2026-04-23_ramchella-1.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.farmingdale.edu/feature/farmingdale-fest-2024.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.farmingdale.edu/feature/farmingdale-fest-2024.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.farmingdale.edu/news/diversity/2023/2023-05-09-multicultural-gala-2023.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.farmingdale.edu/news/diversity/2023/2023-05-09-multicultural-gala-2023.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.farmingdale.edu/provost/ignite/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.farmingdale.edu/provost/ignite/",
+      "error": ""
+    },
+    {
+      "url": "https://www.farmingdale.edu/president/presidents-reports-and-convocation/pdf/fsc-annual-report-2024-2025.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.farmingdale.edu/president/presidents-reports-and-convocation/pdf/fsc-annual-report-2024-2025.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.farmingdale.edu/dean/pdf/fall-2025-student-code-of-conduct.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.farmingdale.edu/dean/pdf/fall-2025-student-code-of-conduct.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.farmingdale.edu/student-activities/pdf/osaeoy2425.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.farmingdale.edu/student-activities/pdf/osaeoy2425.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 100,
+  "generationGrade": "A"
+}

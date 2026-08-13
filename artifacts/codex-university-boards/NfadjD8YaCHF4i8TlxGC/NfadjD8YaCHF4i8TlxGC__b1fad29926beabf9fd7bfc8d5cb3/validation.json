@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.305mun.org/our-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.305mun.org/our-campus",
+      "error": ""
+    },
+    {
+      "url": "https://www.linkedin.com/posts/um-dining-692262298_new-location-at-the-university-of-miami-activity-7175556390646616065-kYmq",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.linkedin.com/posts/um-dining-692262298_new-location-at-the-university-of-miami-activity-7175556390646616065-kYmq",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/florida/coral-gables/5877-ponce-de-leon-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/florida/coral-gables/5877-ponce-de-leon-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://shakeshack.com/location/coral-gables-fl",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://shakeshack.com/location/coral-gables-fl",
+      "error": ""
+    },
+    {
+      "url": "https://www.grazianosgroup.com/pages/coral-gables",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.grazianosgroup.com/pages/coral-gables",
+      "error": ""
+    },
+    {
+      "url": "https://lucamiami.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lucamiami.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.loewshotels.com/coral-gables/dining",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loewshotels.com/coral-gables/dining",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

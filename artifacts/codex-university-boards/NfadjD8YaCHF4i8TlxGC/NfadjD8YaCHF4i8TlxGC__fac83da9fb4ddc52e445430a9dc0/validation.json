@@ -1,0 +1,70 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Several recreation cards are student-only and require current FGCU eligibility or an Eagle ID; public access is stated only where the cited source confirms it.",
+    "Activity schedules, facility status and weather closures can change; users should consult the linked official pages before visiting."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.fgcu.edu/cas/communityimpact/foodforest/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fgcu.edu/cas/communityimpact/foodforest/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fgcu.edu/university-recreation-and-wellness/fitness/groupfitness",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fgcu.edu/university-recreation-and-wellness/fitness/groupfitness",
+      "error": ""
+    },
+    {
+      "url": "https://www.fgcu.edu/graduatestudies/gradstudentlife",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fgcu.edu/graduatestudies/gradstudentlife",
+      "error": ""
+    },
+    {
+      "url": "https://www.fgcu.edu/advancement/universityrelations/virtualtourofthenest",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fgcu.edu/advancement/universityrelations/virtualtourofthenest",
+      "error": ""
+    },
+    {
+      "url": "https://www.fgcu.edu/concerts/studentrecitals",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fgcu.edu/concerts/studentrecitals",
+      "error": ""
+    },
+    {
+      "url": "https://www.fgcu.edu/eaglex/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fgcu.edu/eaglex/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fgcu.edu/university-recreation-and-wellness/wellness/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fgcu.edu/university-recreation-and-wellness/wellness/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

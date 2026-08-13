@@ -1,0 +1,92 @@
+{
+  "target": "NE4UGInWNRdoGW3v0gmL",
+  "schoolName": "Luther College",
+  "generatedAt": "2026-08-13T08:29:57.328Z",
+  "mode": "free-related-campus-limited-reuse",
+  "images": [
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FNE4UGInWNRdoGW3v0gmL%2F01-815c6b6bfe08dec8.jpg?alt=media&token=263dcf28-5630-4636-b686-1a81981c3047",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:LutherCollege.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 3.0",
+      "imageLicense": "CC BY-SA 3.0",
+      "imageTitle": "LutherCollege.jpg",
+      "imageFingerprint": "815c6b6bfe08dec8bd40805154645d97cde97fb57ff483fac84b69c576702ef7",
+      "imageWidth": 1920,
+      "imageHeight": 1152,
+      "imageResolvedAt": "2026-08-13T08:29:57.262Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FNE4UGInWNRdoGW3v0gmL%2F02-9dd7cf98058aaf91.jpg?alt=media&token=af97b7fa-e80d-4e40-abec-47ad797a5335",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Luther_bell.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · Public domain",
+      "imageLicense": "Public domain",
+      "imageTitle": "Luther bell.jpg",
+      "imageFingerprint": "9dd7cf98058aaf91311127a6ef0f1ca77cfcb1984de74f189bab2c6d2247d2e5",
+      "imageWidth": 1024,
+      "imageHeight": 626,
+      "imageResolvedAt": "2026-08-13T08:29:57.199Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FNE4UGInWNRdoGW3v0gmL%2F03-aa16be5fb9bdabf2.jpg?alt=media&token=163a321b-8462-4dad-aebc-9809f747290c",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:2009-0528-MN-IA11-LutherLab.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY 3.0",
+      "imageLicense": "CC BY 3.0",
+      "imageTitle": "2009-0528-MN-IA11-LutherLab.jpg",
+      "imageFingerprint": "aa16be5fb9bdabf20f9a26231a7efce248238ded623c876a042a7671fcb78962",
+      "imageWidth": 1920,
+      "imageHeight": 974,
+      "imageResolvedAt": "2026-08-13T08:29:57.198Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FNE4UGInWNRdoGW3v0gmL%2F04-e0ad16535c50f917.jpg?alt=media&token=36d83bb6-a8ba-4103-8b6c-dcbf97e2cab3",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Feiring_av_Bj%C3%B8rnson-jubileet,_Luther_College,_Decorah,_Iowa,_1932_-_no-nb_digifoto_20160607_00005_bldsa_BB1438.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · Public domain",
+      "imageLicense": "Public domain",
+      "imageTitle": "Feiring av Bjørnson-jubileet, Luther College, Decorah, Iowa, 1932 - no-nb digifoto 20160607 00005 bldsa BB1438.jpg",
+      "imageFingerprint": "e0ad16535c50f917080c4e61305544132d13f0d97e5075fed020e7e271b7d354",
+      "imageWidth": 1920,
+      "imageHeight": 1453,
+      "imageResolvedAt": "2026-08-13T08:29:57.232Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FNE4UGInWNRdoGW3v0gmL%2F05-2aefc31587f1451d.jpg?alt=media&token=0d0811db-a5d2-4af1-a717-5d928d117859",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Centennial_Hall_Martin_Luther_College_Spring_2018.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 4.0",
+      "imageLicense": "CC BY-SA 4.0",
+      "imageTitle": "Centennial Hall Martin Luther College Spring 2018.jpg",
+      "imageFingerprint": "2aefc31587f1451d2063e130d6c12106d2a500250c8411c41d6f185aa7379ee1",
+      "imageWidth": 1920,
+      "imageHeight": 1282,
+      "imageResolvedAt": "2026-08-13T08:29:57.234Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FNE4UGInWNRdoGW3v0gmL%2F06-a00332f5e6c9e9ed.jpg?alt=media&token=9ee38ca5-5daf-4c9d-a06a-c847ead0a640",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Gregory_R_Dahlberg_(cropped).jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · Public domain",
+      "imageLicense": "Public domain",
+      "imageTitle": "Gregory R Dahlberg (cropped).jpg",
+      "imageFingerprint": "a00332f5e6c9e9edd3fae2cca196a073747d53e6341b1320699859bd660ed418",
+      "imageWidth": 1630,
+      "imageHeight": 1992,
+      "imageResolvedAt": "2026-08-13T08:29:57.264Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FNE4UGInWNRdoGW3v0gmL%2F07-2059179202418e6b.jpg?alt=media&token=4635a0a6-a2a8-44f2-b7ef-d094a0f8ceb9",
+      "imageSource": "official-campus-fallback",
+      "imageSourceUrl": "https://www.luther.edu/",
+      "imageSourceLabel": "Luther College official website",
+      "imageLicense": "",
+      "imageTitle": "Luther College | A private liberal arts college in Decorah, Iowa",
+      "imageFingerprint": "2059179202418e6bdbc0b03dcadd8c87c7c6d85102558a5cccb63e2b0ca705ac",
+      "imageWidth": 800,
+      "imageHeight": 535,
+      "imageResolvedAt": "2026-08-13T08:29:57.328Z"
+    }
+  ]
+}

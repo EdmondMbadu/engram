@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.gvsu.edu/gvnext/2025/lakers-fill-the-valley-campus-for-homecoming-2025.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gvsu.edu/gvnext/2025/lakers-fill-the-valley-campus-for-homecoming-2025.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.gvsu.edu/foundersday/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gvsu.edu/foundersday/",
+      "error": ""
+    },
+    {
+      "url": "https://www.gvsu.edu/sibsandkids/thank-you-26.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gvsu.edu/sibsandkids/thank-you-26.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.gvsu.edu/gvnext/2018/faculty-staff-recognized-at-masquerade-themed-presidents-ball-10345.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gvsu.edu/gvnext/2018/faculty-staff-recognized-at-masquerade-themed-presidents-ball-10345.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.gvsu.edu/studentlife/events-15",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gvsu.edu/studentlife/events-15",
+      "error": ""
+    },
+    {
+      "url": "https://www.gvsu.edu/events/extravagrandza-467700.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gvsu.edu/events/extravagrandza-467700.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.gvsu.edu/cab/cab-leadership-positions-19.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gvsu.edu/cab/cab-leadership-positions-19.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.gvsu.edu/gvmagazinearchive/play-with-power-march-with-pride-485.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gvsu.edu/gvmagazinearchive/play-with-power-march-with-pride-485.htm",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

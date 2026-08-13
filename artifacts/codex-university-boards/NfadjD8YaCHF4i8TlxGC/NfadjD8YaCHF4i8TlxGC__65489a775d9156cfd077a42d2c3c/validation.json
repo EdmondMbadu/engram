@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://westportkcmo.com/business/insomnia-cookies/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://westportkcmo.com/business/insomnia-cookies/",
+      "error": ""
+    },
+    {
+      "url": "https://www.powerandlightdistrict.com/eat-and-drink/insomnia-cookies",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.powerandlightdistrict.com/eat-and-drink/insomnia-cookies",
+      "error": ""
+    },
+    {
+      "url": "https://www.elpueblitokc.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elpueblitokc.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.towntopic.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.towntopic.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.bigbackeaterykc.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bigbackeaterykc.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/mo/kansas-city/1420-prospect-ave/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mo/kansas-city/1420-prospect-ave/restaurant.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/mo/kansas-city/6830-nw-83rd-ter/6126.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/mo/kansas-city/6830-nw-83rd-ter/6126.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dennys.com/mo/kansas-city/247492",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dennys.com/mo/kansas-city/247492",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.ihop.com/en-us/mo/kansas-city/breakfast-4337-n-chouteau-trafficway-5334",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.ihop.com/en-us/mo/kansas-city/breakfast-4337-n-chouteau-trafficway-5334",
+      "error": ""
+    },
+    {
+      "url": "https://labambarestaurantandcantinamo.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://labambarestaurantandcantinamo.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

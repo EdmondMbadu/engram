@@ -1,0 +1,87 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "The sequence is evergreen rather than event-specific; verify live library, recreation, dining, building, transit, and seasonal beach conditions before departure.",
+    "Coordinates and maps URLs are null because they were not independently verified from the cited direct evidence pages.",
+    "The historical-marker route is marked free because the university documents outdoor campus markers intended for visitors; it does not require admission or a purchase."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.iit.edu/student-experience/campus-and-housing/notable-buildings-and-centers",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iit.edu/student-experience/campus-and-housing/notable-buildings-and-centers",
+      "error": ""
+    },
+    {
+      "url": "https://library.iit.edu/help",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.iit.edu/help",
+      "error": ""
+    },
+    {
+      "url": "https://www.iit.edu/sites/default/files/2024-02/Bronzeville%20History%20Booklet.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iit.edu/sites/default/files/2024-02/Bronzeville%20History%20Booklet.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.iit.edu/keating-sports-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iit.edu/keating-sports-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.chicagoparkdistrict.com/parks-facilities/margaret-t-burroughs-beach",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.chicagoparkdistrict.com/parks-facilities/margaret-t-burroughs-beach",
+      "error": ""
+    },
+    {
+      "url": "https://www.iit.edu/alphawood-arboretum",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iit.edu/alphawood-arboretum",
+      "error": ""
+    },
+    {
+      "url": "https://catalog.iit.edu/undergraduate/campus-overview/campus-resources/athletics-recreation/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.iit.edu/undergraduate/campus-overview/campus-resources/athletics-recreation/",
+      "error": ""
+    },
+    {
+      "url": "https://www.iit.edu/research/institutes-and-centers/research-centers",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iit.edu/research/institutes-and-centers/research-centers",
+      "error": ""
+    },
+    {
+      "url": "https://www.chicagoparkdistrict.com/parks-facilities/ping-tom-natural-area",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.chicagoparkdistrict.com/parks-facilities/ping-tom-natural-area",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

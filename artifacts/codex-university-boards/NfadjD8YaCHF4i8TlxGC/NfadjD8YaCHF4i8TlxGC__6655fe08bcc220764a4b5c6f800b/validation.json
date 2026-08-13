@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://admission.providence.edu/visit/directions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://admission.providence.edu/visit/directions/",
+      "error": ""
+    },
+    {
+      "url": "https://dining.providence.edu/dining/ruane-cafe/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dining.providence.edu/dining/ruane-cafe/",
+      "error": ""
+    },
+    {
+      "url": "https://www.providence.edu/campus-map/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.providence.edu/campus-map/",
+      "error": ""
+    },
+    {
+      "url": "https://pcgalleries.providence.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pcgalleries.providence.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://music.providence.edu/events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://music.providence.edu/events/",
+      "error": ""
+    },
+    {
+      "url": "https://student-engagement-leadership.providence.edu/board-of-programmers/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://student-engagement-leadership.providence.edu/board-of-programmers/",
+      "error": ""
+    },
+    {
+      "url": "https://student-affairs.providence.edu/handbook-student/the-student-handbook-2025-2026-1-30-26/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://student-affairs.providence.edu/handbook-student/the-student-handbook-2025-2026-1-30-26/",
+      "error": ""
+    },
+    {
+      "url": "https://admission.providence.edu/traditions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://admission.providence.edu/traditions/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

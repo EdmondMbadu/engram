@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://studentaffairs.du.edu/Driscoll-Community-Commons",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentaffairs.du.edu/Driscoll-Community-Commons",
+      "error": ""
+    },
+    {
+      "url": "https://www.du.edu/denver-advantage/campus-heartbeat",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.du.edu/denver-advantage/campus-heartbeat",
+      "error": ""
+    },
+    {
+      "url": "https://www.du.edu/media/documents/maps/map-campus.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.du.edu/sites/default/files/2023-12/Aug23DUCampusMap.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://studentaffairs.du.edu/du-help/well-being/recreation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentaffairs.du.edu/du-help/well-being/recreation",
+      "error": ""
+    },
+    {
+      "url": "https://www.du.edu/news/newman-center-unveils-lineup-2026-27-season",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.du.edu/news/newman-center-unveils-lineup-2026-27-season",
+      "error": ""
+    },
+    {
+      "url": "https://science.du.edu/physics/chamberlin-observatory",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://science.du.edu/physics/chamberlin-observatory",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.uncsa.edu/news/20221027-nutcracker-returns-full-length.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncsa.edu/news/20221027-nutcracker-returns-full-length.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.uncsa.edu/news/20161209-nutcracker-behind-the-scenes.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncsa.edu/news/20161209-nutcracker-behind-the-scenes.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.uncsa.edu/news/20231020-relive-uncsa-homecoming.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncsa.edu/news/20231020-relive-uncsa-homecoming.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.uncsa.edu/current-students/college/beaux-arts-rules-and-policies.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncsa.edu/current-students/college/beaux-arts-rules-and-policies.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.uncsa.edu/news/pr-20250819-performance-season-announcement.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncsa.edu/news/pr-20250819-performance-season-announcement.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.uncsa.edu/giving/doc/associates-news-2019-05.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncsa.edu/giving/doc/associates-news-2019-05.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.uncsa.edu/giving/doc/associates-membership-form.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncsa.edu/giving/doc/associates-membership-form.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

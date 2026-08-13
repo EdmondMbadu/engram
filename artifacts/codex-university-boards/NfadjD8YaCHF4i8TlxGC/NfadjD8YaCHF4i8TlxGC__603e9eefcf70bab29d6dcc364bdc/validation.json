@@ -1,0 +1,72 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://library.samford.edu/about/faq.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.samford.edu/about/faq.html",
+      "error": ""
+    },
+    {
+      "url": "https://library.samford.edu/policy/study-rooms.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.samford.edu/policy/study-rooms.html",
+      "error": ""
+    },
+    {
+      "url": "https://library.samford.edu/policy/media-rooms.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.samford.edu/policy/media-rooms.html",
+      "error": ""
+    },
+    {
+      "url": "https://library.samford.edu/about/maps.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.samford.edu/about/maps.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.samford.edu/residence-life/new-students",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.samford.edu/residence-life/new-students",
+      "error": ""
+    },
+    {
+      "url": "https://www.samford.edu/files/samford-campus-map.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.samford.edu/files/samford-campus-map.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.samford.edu/campus-recreation/facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.samford.edu/campus-recreation/facilities",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Beeson University Center Food Court",
+    "A. Hamilton Reid Chapel"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

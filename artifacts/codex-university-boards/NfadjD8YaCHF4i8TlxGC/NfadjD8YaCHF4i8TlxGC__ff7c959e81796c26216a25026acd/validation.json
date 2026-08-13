@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Wingstop's Fort Myers directory confirms the 18911 South Tamiami Trail destination and provides live status, but it does not expose a stable weekly hours table; check the direct page immediately before travel.",
+    "Late-night access varies by service channel at Taco Bell and the South Tamiami Trail McDonald's; their dining rooms close before their drive-thrus.",
+    "Several destinations are farther from campus than the Ben Hill Griffin Parkway stop; this board covers the broader FGCU–Fort Myers area rather than claiming every location is adjacent to campus."
+  ],
+  "reachability": [
+    {
+      "url": "https://locations.tacobell.com/fl/fort-myers/17460-ben-hill-griffin-parkway.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/fl/fort-myers/17460-ben-hill-griffin-parkway.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/fl/fort-myers/7105-constitution-blvd/10895.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/fl/fort-myers/7105-constitution-blvd/10895.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dennys.com/fl/fort-myers/246424",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dennys.com/fl/fort-myers/246424",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/fl/fort-myers/9301-daniels-parkway",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/fl/fort-myers/9301-daniels-parkway",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.ihop.com/en-us/fl/fort-myers/breakfast-12801-s-cleveland-avenue-360147",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.ihop.com/en-us/fl/fort-myers/breakfast-12801-s-cleveland-avenue-360147",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wingstop.com/us/fl/fort-myers",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wingstop.com/us/fl/fort-myers",
+      "error": ""
+    },
+    {
+      "url": "https://locations.papajohns.com/united-states/fl/33908/fort-myers/18990-s-tamiami-trail",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.papajohns.com/united-states/fl/33908/fort-myers/18990-s-tamiami-trail",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wingstop.com/fl/fort-myers/wingstop-1152-fort-myers-fl-33907",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wingstop.com/fl/fort-myers/wingstop-1152-fort-myers-fl-33907",
+      "error": ""
+    },
+    {
+      "url": "https://locations.papajohns.com/united-states/fl/33912/fort-myers/13650-fiddlesticks-blvd/pizza-near-me",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.papajohns.com/united-states/fl/33912/fort-myers/13650-fiddlesticks-blvd/pizza-near-me",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/es-us/location/fl/ft-myers/14985-s-tamiami-tr/34529.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/es-us/location/fl/ft-myers/14985-s-tamiami-tr/34529.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

@@ -1,0 +1,140 @@
+{
+  "target": "XsuMMcG2sDZnoYqUjuej",
+  "schoolName": "Johns Hopkins University",
+  "generatedAt": "2026-08-13T07:54:01.097Z",
+  "mode": "free-related-campus-distinct",
+  "images": [
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FXsuMMcG2sDZnoYqUjuej%2F01-9fb3aa3b6dcdd5de.jpg?alt=media&token=80ce3a1c-a62d-4ded-ae5e-fc275c00d022",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:HomewoodFIeld2008.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 3.0",
+      "imageLicense": "CC BY-SA 3.0",
+      "imageTitle": "HomewoodFIeld2008.jpg",
+      "imageFingerprint": "9fb3aa3b6dcdd5dec0bfcfdc6b1e4a7f2340e8bf5dbb54c5fceb41cfd4500eb2",
+      "imageWidth": 1152,
+      "imageHeight": 768,
+      "imageResolvedAt": "2026-08-13T07:54:00.783Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FXsuMMcG2sDZnoYqUjuej%2F02-5d76a2f9e1302036.jpg?alt=media&token=c928cd54-3436-45df-b46d-3ca7d4d5b4bb",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:JHU_yard_1.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY 2.0",
+      "imageLicense": "CC BY 2.0",
+      "imageTitle": "JHU yard 1.jpg",
+      "imageFingerprint": "5d76a2f9e1302036d3e9d9f0af6c86b82dd4d8a4892df7c953dd15ac5ec104a4",
+      "imageWidth": 1024,
+      "imageHeight": 768,
+      "imageResolvedAt": "2026-08-13T07:54:00.873Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FXsuMMcG2sDZnoYqUjuej%2F03-d8b66058f8e2634f.jpg?alt=media&token=4640dcab-0ac3-4d03-85ad-387c754d9116",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:JHU_yard_2.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY 2.0",
+      "imageLicense": "CC BY 2.0",
+      "imageTitle": "JHU yard 2.jpg",
+      "imageFingerprint": "d8b66058f8e2634fd6f8488ee5ea3f0eedaaf9b359cbc94707ce3f613f93482b",
+      "imageWidth": 1024,
+      "imageHeight": 768,
+      "imageResolvedAt": "2026-08-13T07:54:00.847Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FXsuMMcG2sDZnoYqUjuej%2F04-113fa3d517e22263.jpg?alt=media&token=b16fc5dd-e57f-431e-8139-2d526ea80660",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:BluFactors.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · Public domain",
+      "imageLicense": "Public domain",
+      "imageTitle": "BluFactors.jpg",
+      "imageFingerprint": "113fa3d517e22263907251c9de526b0d50af8c0a398a7cea292f14582c5a18d1",
+      "imageWidth": 500,
+      "imageHeight": 357,
+      "imageResolvedAt": "2026-08-13T07:54:00.778Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FXsuMMcG2sDZnoYqUjuej%2F05-cbf2fea02061fc22.jpg?alt=media&token=1b75e626-a092-4f64-b956-f53a18e572c9",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:JHU-V.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · Public domain",
+      "imageLicense": "Public domain",
+      "imageTitle": "JHU-V.jpg",
+      "imageFingerprint": "cbf2fea02061fc222e212b02efc90451259e29220e1905cbbcddae5c35fa654d",
+      "imageWidth": 600,
+      "imageHeight": 402,
+      "imageResolvedAt": "2026-08-13T07:54:00.757Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FXsuMMcG2sDZnoYqUjuej%2F06-d08e36ee6158a36b.jpg?alt=media&token=239e4b43-5c93-4c8c-834f-aa49d524e55c",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Garrison.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · Public domain",
+      "imageLicense": "Public domain",
+      "imageTitle": "Garrison.jpg",
+      "imageFingerprint": "d08e36ee6158a36bf95d1ce313e2389a1ca08a2478178f882d919fcdc66ef661",
+      "imageWidth": 1024,
+      "imageHeight": 789,
+      "imageResolvedAt": "2026-08-13T07:54:00.865Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FXsuMMcG2sDZnoYqUjuej%2F07-a3cff9a57557ff61.jpg?alt=media&token=dd1f4113-52d4-460a-918d-fbdacbf8b04c",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Johns_Hopkins_Club.JPG",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 3.0",
+      "imageLicense": "CC BY-SA 3.0",
+      "imageTitle": "Johns Hopkins Club.JPG",
+      "imageFingerprint": "a3cff9a57557ff6172356239e9a499954a9bef4ed804602f5983bc1f1399fb11",
+      "imageWidth": 1920,
+      "imageHeight": 1440,
+      "imageResolvedAt": "2026-08-13T07:54:01.007Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FXsuMMcG2sDZnoYqUjuej%2F08-22092db99bd2dd3a.jpg?alt=media&token=7ed907f4-fca7-484b-95ec-ad2cea982195",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Bsuncartoon.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · Public domain",
+      "imageLicense": "Public domain",
+      "imageTitle": "Bsuncartoon.jpg",
+      "imageFingerprint": "22092db99bd2dd3aedfa5653266efac650493becc8767f9f42865ba5867303d7",
+      "imageWidth": 768,
+      "imageHeight": 612,
+      "imageResolvedAt": "2026-08-13T07:54:01.033Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FXsuMMcG2sDZnoYqUjuej%2F09-83c6c6d27f4a5fd0.jpg?alt=media&token=7b352c1b-85cf-44c9-8ff9-d3f8d16078a1",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:JHUpic3.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 3.0",
+      "imageLicense": "CC BY-SA 3.0",
+      "imageTitle": "JHUpic3.jpg",
+      "imageFingerprint": "83c6c6d27f4a5fd087cb41d82c7044995082b51c71ef814b9113223400c5031b",
+      "imageWidth": 1920,
+      "imageHeight": 1500,
+      "imageResolvedAt": "2026-08-13T07:54:00.996Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FXsuMMcG2sDZnoYqUjuej%2F10-0cb02ac95b669110.jpg?alt=media&token=6f74c6a4-cfa9-4232-9f95-fe4d138ccf37",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:JHUpic2.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 3.0",
+      "imageLicense": "CC BY-SA 3.0",
+      "imageTitle": "JHUpic2.jpg",
+      "imageFingerprint": "0cb02ac95b669110509161aacf2e6ed4cd6fee6312c0a5f30f37b661b53a1e13",
+      "imageWidth": 1920,
+      "imageHeight": 2560,
+      "imageResolvedAt": "2026-08-13T07:54:01.097Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FXsuMMcG2sDZnoYqUjuej%2F11-951b0853be7f9468.jpg?alt=media&token=c27b224c-012c-4e19-a069-89e1a59a40f5",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:JHUwyman.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · Public domain",
+      "imageLicense": "Public domain",
+      "imageTitle": "JHUwyman.jpg",
+      "imageFingerprint": "951b0853be7f9468a309bcc6a80891b4a5ef566380b07b300bd457f2af773b73",
+      "imageWidth": 1920,
+      "imageHeight": 1813,
+      "imageResolvedAt": "2026-08-13T07:54:01.089Z"
+    }
+  ]
+}

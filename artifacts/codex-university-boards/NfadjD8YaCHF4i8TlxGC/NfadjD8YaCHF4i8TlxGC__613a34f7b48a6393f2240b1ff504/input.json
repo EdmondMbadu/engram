@@ -1,0 +1,61 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "17fiBF5QM9liPCmM3E4N",
+    "schoolName": "Rhode Island School of Design",
+    "shortSchoolName": "Rhode Island School of Design",
+    "townName": "Providence",
+    "state": "RI",
+    "countryCode": "US",
+    "unitId": "217493",
+    "website": "https://www.risd.edu/",
+    "latitude": 41.827114,
+    "longitude": -71.409309,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/RISD_Seal.svg/960px-RISD_Seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=risd.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Fleet Library at RISD",
+    "RISD Museum",
+    "Co-Works Research Lab",
+    "Color Lab",
+    "Movement Lab",
+    "Edna W. Lawrence Nature Lab",
+    "Studio for Research in Sound and Technology",
+    "Sustainability Design Lab",
+    "Gelman Student Exhibitions Gallery",
+    "Woods-Gerry Gallery",
+    "Artist Ball",
+    "Haunted Haus",
+    "Care Week and Late Night Breakfast",
+    "Student Art Sale",
+    "Collection",
+    "FAV Senior Show",
+    "Founders Day",
+    "Open Studios",
+    "RISD Grad Show",
+    "RISD Commencement"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://library.buffalo.edu/specialcollections/archives/ubhistory/campuses/detail.html?ID=111",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.buffalo.edu/specialcollections/archives/ubhistory/campuses/detail.html?ID=111",
+      "error": ""
+    },
+    {
+      "url": "https://www.amherst.ny.us/content/parks_detail.php?park_num=park_0023",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.amherst.ny.us/content/parks_detail.php?park_num=park_0023",
+      "error": ""
+    },
+    {
+      "url": "https://www.buffalolib.org/locations-hours/audubon-branch",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.buffalolib.org/locations-hours/audubon-branch",
+      "error": ""
+    },
+    {
+      "url": "https://www.amherst.ny.us/content/parks_detail.php?park_num=park_0014",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.amherst.ny.us/content/parks_detail.php?park_num=park_0014",
+      "error": ""
+    },
+    {
+      "url": "https://amherst.ny.us/pdf/parks/parks_inventory.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://amherst.ny.us/pdf/parks/parks_inventory.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.amherst.ny.us/content/parks.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.amherst.ny.us/content/parks.php",
+      "error": ""
+    },
+    {
+      "url": "https://metro.nfta.com/schedules/route/rail",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://metro.nfta.com/schedules/route/rail",
+      "error": ""
+    },
+    {
+      "url": "https://metro.nfta.com/about/news-and-announcements/congressman-kennedy-announces-funding-nftas-lasalle-dlw-metro-rail",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://metro.nfta.com/about/news-and-announcements/congressman-kennedy-announces-funding-nftas-lasalle-dlw-metro-rail",
+      "error": ""
+    },
+    {
+      "url": "https://www.amherstyouthandrec.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.amherstyouthandrec.org/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

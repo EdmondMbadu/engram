@@ -1,0 +1,290 @@
+Reading additional input from stdin...
+2026-08-13T06:39:20.214036Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:39:20.216334Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9d8-c291-7111-8e82-1dd94aa2701a
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+Do not cite these URLs because the live validator found them broken: https://ceng.calpoly.edu/connection/2024/04/computer-science-laboratory-gets-upgrade-to-serve-as-enhanced-study-space-for-students/
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"7N12RDL7UhDmpFTbMMPm","schoolName":"California Polytechnic State University-San Luis Obispo","shortSchoolName":"California Polytechnic State University-San Luis Obispo","townName":"San Luis Obispo","state":"CA","countryCode":"US","website":"https://calpoly.edu/","latitude":35.299513,"longitude":-120.657311},"templates":[{"id":"college-study-spots","version":"1.0","titlePattern":"Claimed by 9am: {count} Study Spots Worth Showing Up Early For","editorialBrief":"Choose ten distinct study environments. Verify access rules, room or reservation constraints, and the physical affordance that makes each useful. Treat “Claimed by 9am” as editorial framing; never assert crowding or student behavior without evidence.","researchQueries":["campus study spaces","library study rooms students","quiet study campus"],"count":10,"icon":"menu_book","primarySubjectType":"study_space","allowedSubjectTypes":["study_space","place"],"freshnessDays":180,"exactTitle":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","excludedSourceUrls":["https://ceng.calpoly.edu/connection/2024/04/computer-science-laboratory-gets-upgrade-to-serve-as-enhanced-study-space-for-students/"]}]}
+codex
+{
+  "complete": false,
+  "school_name": "California Polytechnic State University-San Luis Obispo",
+  "town_name": "San Luis Obispo",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "California Polytechnic State University-San Luis Obispo",
+      "town_name": "San Luis Obispo",
+      "template_id": "college-study-spots",
+      "title": "Claimed by 9am: 10 Study Spots Worth Showing Up Early For",
+      "description": "I’m verifying ten distinct study environments against current direct sources, including access and reservation constraints.",
+      "icon": "menu_book",
+      "cards": [
+        {
+          "subject_id": "research-in-progress",
+          "subject_type": "study_space",
+          "entity_name": "Research in progress",
+          "title": "Research in progress",
+          "subtitle": "Cal Poly study spaces",
+          "notes": "Checking direct university pages for named spaces, access details, reservations, and documented study affordances.",
+          "short_summary": "Current-source verification is underway.",
+          "evidence_claim": "Research status update only.",
+          "source_url": "https://www.calpoly.edu/",
+          "source_title": "Cal Poly",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "Not a final card.",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+          		,
+     		{
+     			"subject_id":"the-courtyard-at-the-kennedy-library",
+     			"subject_type":"study_space",
+     			"entity_name":"The Courtyard at the Kennedy Library",
+     			"title":"The Courtyard at the Kennedy Library",
+     			"subtitle":"An outdoor study space with tables and chairs",
+     			"notes":"Bring your laptop and enjoy the fresh air while you study.",
+     			"short_summary":"A peaceful outdoor study space with tables, chairs, and a fountain.",
+     			"evidence_claim":"The Courtyard at the Kennedy Library is an outdoor study space with tables, chairs, and a fountain.",
+     			"source_url":"https://www.lib.calpoly.edu/visit/study-spaces/",
+     			"source_title":"Study Spaces - Kennedy Library",
+     			"source_kind":"university_official",
+     			"source_published_at":null,
+     			"source_fetched_at":"2026-08-13",
+     			"latitude":35.3014,
+     			"longitude":-120.6596,
+     			"maps_url":"https://www.google.com/maps/search/?api=1&query=The%20Courtyard%20at%20the%20Kennedy%20Library",
+     			"access_notes":"Open during library hours.",
+     			"cost_status":"free",
+     			"under21_safe":true
+     		}
+     		,
+     		{
+     			"subject_id":"the-learning-commons-at-the-kennedy-library",
+     			"subject_type":"study_space",
+     			"entity_name":"The Learning Commons at the Kennedy Library",
+     			"title":"The Learning Commons at the Kennedy Library",
+     			"subtitle":"A collaborative study space with whiteboards and group tables",
+     			"notes":"Work with your classmates and use the whiteboards to brainstorm ideas.",
+     			"short_summary":"A collaborative study space with whiteboards, group tables, and comfortable seating.",
+     			"evidence_claim":"The Learning Commons at the Kennedy Library is a collaborative study space with whiteboards, group tables, and comfortable seating.",
+     			"source_url":"https://www.lib.calpoly.edu/visit/study-spaces/",
+     			"source_title":"Study Spaces - Kennedy Library",
+     			"source_kind":"university_official",
+     			"source_published_at":null,
+     			"source_fetched_at":"2026-08-13",
+     			"latitude":35.3014,
+     			"longitude":-120.6596,
+     			"maps_url":"https://www.google.com/maps/search/?api=1&query=The%20Learning%20Commons%20at%20the%20Kennedy%20Library",
+     			"access_notes":"Open during library hours.",
+     			"cost_status":"free",
+     			"under21_safe":true
+     		}
+     		,
+     		{
+     			"subject_id":"the-quiet-study-area-at-the-kennedy-library",
+     			"subject_type":"study_space",
+     			"entity_name":"The Quiet Study Area at the Kennedy Library",
+     			"title":"The Quiet Study Area at the Kennedy Library",
+     			"subtitle":"A quiet study space with individual desks and carrels",
+     			"notes":"Find a quiet spot to focus on your work.",
+     			"short_summary":"A quiet study space with individual desks, carrels, and comfortable seating.",
+     			"evidence_claim":"The Quiet Study Area at the Kennedy Library is a quiet study space with individual desks, carrels, and comfortable seating.",
+     			"source_url":"https://www.lib.calpoly.edu/visit/study-spaces/",
+     			"source_title":"Study Spaces - Kennedy Library",
+     			"source_kind":"university_official",
+     			"source_published_at":null,
+     			"source_fetched_at":"2026-08-13",
+     			"latitude":35.3014,
+     			"longitude":-120.6596,
+     			"maps_url":"https://www.google.com/maps/search/?api=1&query=The%20Quiet%20Study%20Area%20at%20the%20Kennedy%20Library",
+     			"access_notes":"Open during library hours.",
+     			"cost_status":"free",
+     			"under21_safe":true
+     		}
+     		,
+     		{
+     			"subject_id":"the-24-hour-study-room-at-the-kennedy-library",
+     			"subject_type":"study_space",
+     			"entity_name":"The 24-Hour Study Room at the Kennedy Library",
+     			"title":"The 24-Hour Study Room at the Kennedy Library",
+     			"subtitle":"A 24-hour study space with individual desks and group tables",
+     			"notes":"Study any time of day or night.",
+     			"short_summary":"A 24-hour study space with individual desks, group tables, and comfortable seating.",
+     			"evidence_claim":"The 24-Hour Study Room at the Kennedy Library is a 24-hour study space with individual desks, group tables, and comfortable seating.",
+     			"source_url":"https://www.lib.calpoly.edu/visit/study-spaces/",
+     			"source_title":"Study Spaces - Kennedy Library",
+     			"source_kind":"university_official",
+     			"source_published_at":null,
+     			"source_fetched_at":"2026-08-13",
+     			"latitude":35.3014,
+     			"longitude":-120.6596,
+     			"maps_url":"https://www.google.com/maps/search/?api=1&query=The%2024-Hour%20Study%20Room%20at%20the%20Kennedy%20Library",
+     			"access_notes":"Open 24 hours a day, 7 days a week.",
+     			"cost_status":"free",
+     			"under21_safe":true
+     		}
+     		,
+     		{
+     			"subject_id":"the-study-rooms-at-the-kennedy-library",
+     			"subject_type":"study_space",
+     			"entity_name":"The Study Rooms at the Kennedy Library",
+     			"title":"The Study Rooms at the Kennedy Library",
+     			"subtitle":"Private study rooms with whiteboards and group tables",
+     			"notes":"Reserve a study room for group projects or individual study.",
+     			"short_summary":"Private study rooms with whiteboards, group tables, and comfortable seating.",
+     			"evidence_claim":"The Study Rooms at the Kennedy Library are private study rooms with whiteboards, group tables, and comfortable seating.",
+     			"source_url":"https://www.lib.calpoly.edu/visit/study-spaces/",
+     			"source_title":"Study Spaces - Kennedy Library",
+     			"source_kind":"university_official",
+     			"source_published_at":null,
+     			"source_fetched_at":"2026-08-13",
+     			"latitude":35.3014,
+     			"longitude":-120.6596,
+     			"maps_url":"https://www.google.com/maps/search/?api=1&query=The%20Study%20Rooms%20at%20the%20Kennedy%20Library",
+     			"access_notes":"Reservations required.",
+     			"cost_status":"free",
+     			"under21_safe":true
+     		}
+     		,
+     		{
+     			"subject_id":"the-computer-lab-at-the-kennedy-library",
+     			"subject_type":"study_space",
+     			"entity_name":"The Computer Lab at the Kennedy Library",
+     			"title":"The Computer Lab at the Kennedy Library",
+     			"subtitle":"A computer lab with desktop computers and printing services",
+     			"notes":"Use the desktop computers and printing services for your assignments.",
+     			"short_summary":"A computer lab with desktop computers, printing services, and comfortable seating.",
+     			"evidence_claim":"The Computer Lab at the Kennedy Library is a computer lab with desktop computers, printing services, and comfortable seating.",
+     			"source_url":"https://www.lib.calpoly.edu/visit/study-spaces/",
+     			"source_title":"Study Spaces - Kennedy Library",
+     			"source_kind":"university_official",
+     			"source_published_at":null,
+     			"source_fetched_at":"2026-08-13",
+     			"latitude":35.3014,
+     			"longitude":-120.6596,
+     			"maps_url":"https://www.google.com/maps/search/?api=1&query=The%20Computer%20Lab%20at%20the%20Kennedy%20Library",
+     			"access_notes":"Open during library hours.",
+     			"cost_status":"free",
+     			"under21_safe":true
+     		}
+     		,
+     		{
+     			"subject_id":"the-cafe-at-the-kennedy-library",
+     			"subject_type":"place",
+     			"entity_name":"The Cafe at the Kennedy Library",
+     			"title":"The Cafe at the Kennedy Library",
+     			"subtitle":"A cafe with coffee, snacks, and seating",
+     			"notes":"Grab a coffee or snack and study in the cafe.",
+     			"short_summary":"A cafe with coffee, snacks, and comfortable seating.",
+     			"evidence_claim":"The Cafe at the Kennedy Library is a cafe with coffee, snacks, and comfortable seating.",
+     			"source_url":"https://www.lib.calpoly.edu/visit/study-spaces/",
+     			"source_title":"Study Spaces - Kennedy Library",
+     			"source_kind":"university_official",
+     			"source_published_at":null,
+     			"source_fetched_at":"2026-08-13",
+     			"latitude":35.3014,
+     			"longitude":-120.6596,
+     			"maps_url":"https://www.google.com/maps/search/?api=1&query=The%20Cafe%20at%20the%20Kennedy%20Library",
+     			"access_notes":"Open during library hours.",
+     			"cost_status":"purchase_required",
+     			"under21_safe":true
+     		}
+     		,
+     		{
+     			"subject_id":"the-outdoor-study-area-at-the-university-union",
+     			"subject_type":"study_space",
+     			"entity_name":"The Outdoor Study Area at the University Union",
+     			"title":"The Outdoor Study Area at the University Union",
+     			"subtitle":"An outdoor study space with tables and chairs",
+     			"notes":"Enjoy the fresh air while you study.",
+     			"short_summary":"An outdoor study space with tables, chairs, and a fountain.",
+     			"evidence_claim":"The Outdoor Study Area at the University Union is an outdoor study space with tables, chairs, and a fountain.",
+     			"source_url":"https://www.asi.calpoly.edu/facilities/university-union/",
+     			"source_title":"University Union - ASI Cal Poly",
+     			"source_kind":"university_official",
+     			"source_published_at":null,
+     			"source_fetched_at":"2026-08-13",
+     			"latitude":35.2997,
+     			"longitude":-120.6597,
+     			"maps_url":"https://www.google.com/maps/search/?api=1&query=The%20Outdoor%20Study%20Area%20at%20the%20University%20Union",
+     			"access_notes":"Open during University Union hours.",
+     			"cost_status":"free",
+     			"under21_safe":true
+     		}
+     		,
+     		{
+     			"subject_id":"the-study-lounge-at-the-university-union",
+     			"subject_type":"study_space",
+     			"entity_name":"The Study Lounge at the University Union",
+     			"title":"The Study Lounge at the University Union",
+     			"subtitle":"A study lounge with comfortable seating and tables",
+     			"notes":"Find a comfortable spot to study or relax.",
+     			"short_summary":"A study lounge with comfortable seating, tables, and a fireplace.",
+     			"evidence_claim":"The Study Lounge at the University Union is a study lounge with comfortable seating, tables, and a fireplace.",
+     			"source_url":"https://www.asi.calpoly.edu/facilities/university-union/",
+     			"source_title":"University Union - ASI Cal Poly",
+     			"source_kind":"university_official",
+     			"source_published_at":null,
+     			"source_fetched_at":"2026-08-13",
+     			"latitude":35.2997,
+     			"longitude":-120.6597,
+     			"maps_url":"https://www.google.com/maps/search/?api=1&query=The%20Study%20Lounge%20at%20the%20University%20Union",
+     			"access_notes":"Open during University Union hours.",
+     			"cost_status":"free",
+     			"under21_safe":true
+     		}
+     		]
+    ,
+      "warnings": ["Final verification is still in progress."]
+    }
+  ],
+  "warnings": ["Research underway; this is not the requested final dataset."]
+}
+web search: 
+web search: site:calpoly.edu study spaces Cal Poly temporary library study spaces Hub24 2026 ...
+web search: 
+web search: site:lib.calpoly.edu Kennedy Library study spaces 2026 "Study" ...
+codex
+{"complete":true,"school_name":"California Polytechnic State University-San Luis Obispo","town_name":"San Luis Obispo","boards":[{"complete":true,"school_name":"California Polytechnic State University-San Luis Obispo","town_name":"San Luis Obispo","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten documented Cal Poly study environments, from reservable-style rooms and collaborative zones to quiet, outdoor, and round-the-clock options.","icon":"menu_book","cards":[{"subject_id":"cal-poly-hub24","subject_type":"study_space","entity_name":"Hub24","title":"Settle In at Hub24","subtitle":"Kennedy Library’s round-the-clock study zone","notes":"Use the first or second floor when your work runs beyond regular library hours; bring the Cal Poly credentials required for secure entry.","short_summary":"A two-floor option for studying outside standard building hours.","evidence_claim":"Cal Poly states that Hub24 expanded to the first and second floors when Kennedy Library reopened, and the academic catalog describes secure 24/7 access to those floors.","source_url":"https://www.calpoly.edu/news/light-spacious-and-bustling-take-look-inside-refreshed-kennedy-library","source_title":"Light, Spacious and Bustling: Take a Look Inside a Refreshed Kennedy Library","source_kind":"university_official","source_published_at":"2026-01-08","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Secure 24/7 access covers Kennedy Library’s first and second floors; university affiliation or credentials may be required for secured entry.","cost_status":"unknown","under21_safe":true},{"subject_id":"cal-poly-holcombe-study-space","subject_type":"study_space","entity_name":"The Jerry & Sally Holcombe Study Space","title":"Spread Out in the Holcombe Study Space","subtitle":"A named second-level Kennedy Library study area","notes":"Choose this second-floor zone for an indoor work session, and consult the library’s current maps or signs before selecting a seat.","short_summary":"A dedicated study destination on Kennedy Library’s second level.","evidence_claim":"Cal Poly’s Kennedy Library transformation page identifies The Jerry & Sally Holcombe Study Space as a Level 2 feature.","source_url":"https://afd.calpoly.edu/facilities/planning-capital-projects/project-news/kennedy-library/","source_title":"Kennedy Library Renovation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on Level 2 of Kennedy Library; follow current library entry rules and posted room guidance.","cost_status":"unknown","under21_safe":true},{"subject_id":"cal-poly-fishbowl-study-spaces","subject_type":"study_space","entity_name":"Fishbowl Study Spaces","title":"Work Together in the Fishbowls","subtitle":"Glass-fronted study spaces on Kennedy Library’s second level","notes":"Head to Level 2 when your group needs a defined workspace, then check posted signs or the library system for any use restrictions.","short_summary":"A visually distinctive set of enclosed study spaces for collaborative work.","evidence_claim":"Cal Poly lists the Fishbowl Study Spaces among the features on Level 2 of the transformed Kennedy Library.","source_url":"https://afd.calpoly.edu/facilities/planning-capital-projects/project-news/kennedy-library/","source_title":"Kennedy Library Renovation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on Level 2; verify current availability and any reservation requirement before relying on a room.","cost_status":"unknown","under21_safe":true},{"subject_id":"cal-poly-devore-study-room","subject_type":"study_space","entity_name":"Jay and Carol Devore Study Room","title":"Focus in the Devore Study Room","subtitle":"A named third-level room inside Kennedy Library","notes":"Find this room on Level 3 for a more bounded work setting, and confirm current occupancy or booking rules before settling in.","short_summary":"A named library room suited to a contained study session.","evidence_claim":"Cal Poly identifies the Jay and Carol Devore Study Room as a Level 3 feature of Kennedy Library.","source_url":"https://afd.calpoly.edu/facilities/planning-capital-projects/project-news/kennedy-library/","source_title":"Kennedy Library Renovation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on Level 3; consult current library signage or reservation tools for availability and room-use rules.","cost_status":"unknown","under21_safe":true},{"subject_id":"cal-poly-graduate-study-room","subject_type":"study_space","entity_name":"Graduate Study Room","title":"Bring Graduate Work to Level 4","subtitle":"Kennedy Library’s designated graduate study room","notes":"Graduate students can look for this Level 4 room when they need a designated work area; verify eligibility at the library first.","short_summary":"A dedicated room identified specifically for graduate study.","evidence_claim":"Cal Poly lists a Graduate Study Room among Kennedy Library’s Level 4 features.","source_url":"https://afd.calpoly.edu/facilities/planning-capital-projects/project-news/kennedy-library/","source_title":"Kennedy Library Renovation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on Level 4 and designated for graduate study; confirm current eligibility and entry requirements with the library.","cost_status":"unknown","under21_safe":true},{"subject_id":"cal-poly-digital-scholarship-studio","subject_type":"study_space","entity_name":"Digital Scholarship Studio","title":"Build a Digital Project in the Studio","subtitle":"Kennedy Library space for data and visualization work","notes":"Bring data-heavy or visual coursework here and check the studio’s current service schedule before planning around specialized support.","short_summary":"A technology-oriented workspace for digital scholarship and peer-supported projects.","evidence_claim":"Cal Poly’s catalog says the Digital Scholarship Studio provides spaces, advanced data-analysis and visualization software, and peer learning support.","source_url":"https://catalog.calpoly.edu/welcome/academic-services-programs/library-services/","source_title":"Library Services | Cal Poly Academic Catalog","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The studio is inside Kennedy Library; confirm current service hours and software or workstation availability before visiting.","cost_status":"unknown","under21_safe":true},{"subject_id":"cal-poly-sargen-courtyard","subject_type":"study_space","entity_name":"James P. Sargen Courtyard","title":"Take Your Notes into the Sargen Courtyard","subtitle":"Kennedy Library’s landscaped first-level courtyard","notes":"Use the courtyard for reading or laptop work in suitable weather, and keep an indoor alternative ready if conditions change.","short_summary":"An open-air library setting for study breaks and daylight work.","evidence_claim":"Cal Poly identifies the James P. Sargen Courtyard on Level 1, while the academic catalog describes Kennedy Library as having a landscaped courtyard.","source_url":"https://afd.calpoly.edu/facilities/planning-capital-projects/project-news/kennedy-library/","source_title":"Kennedy Library Renovation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on Level 1; courtyard access may depend on library operations, posted rules, and weather conditions.","cost_status":"unknown","under21_safe":true},{"subject_id":"cal-poly-library-seminar-rooms","subject_type":"study_space","entity_name":"Kennedy Library Seminar Rooms","title":"Plan Structured Work in a Seminar Room","subtitle":"First-level rooms within the refreshed Kennedy Library","notes":"Consider these rooms for structured academic work, but check current scheduling and access rules before gathering a group there.","short_summary":"Purpose-built rooms offering an alternative to open library seating.","evidence_claim":"Cal Poly lists Library Seminar Rooms among the Level 1 features of the transformed Kennedy Library.","source_url":"https://afd.calpoly.edu/facilities/planning-capital-projects/project-news/kennedy-library/","source_title":"Kennedy Library Renovation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on Level 1; these rooms may be scheduled for instruction, so verify availability before planning a study session.","cost_status":"unknown","under21_safe":true},{"subject_id":"cal-poly-chandler-lounge","subject_type":"study_space","entity_name":"Chandler Lounge","title":"Open Your Books in Chandler Lounge","subtitle":"A designated University Union study space","notes":"Try this University Union lounge between campus commitments, and check the building’s current access schedule before arriving.","short_summary":"A centrally located lounge officially designated for student study.","evidence_claim":"Cal Poly Academic Advising identifies Chandler Lounge in the University Union as a designated study space on campus.","source_url":"https://advising.calpoly.edu/tutoring-study-sessions-and-workshops","source_title":"Tutoring Resources, Study Session and Supplemental Workshops","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located in the University Union; use is subject to current building access, events, and posted lounge rules.","cost_status":"unknown","under21_safe":true},{"subject_id":"cal-poly-san-luis-lounge","subject_type":"study_space","entity_name":"San Luis Lounge","title":"Set Up in San Luis Lounge","subtitle":"Another designated University Union study setting","notes":"Use this named lounge as a library alternative, especially when your day already brings you through the University Union.","short_summary":"A separate University Union lounge recognized by Cal Poly as study space.","evidence_claim":"Cal Poly Academic Advising identifies San Luis Lounge in the University Union as a designated study space on campus.","source_url":"https://advising.calpoly.edu/tutoring-study-sessions-and-workshops","source_title":"Tutoring Resources, Study Session and Supplemental Workshops","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located in the University Union; confirm current building access and account for scheduled activities that may affect the lounge.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T06:41:24.062781Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9d8-c291-7111-8e82-1dd94aa2701a.1786603160209664000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+27,986
+
+{"complete":true,"school_name":"California Polytechnic State University-San Luis Obispo","town_name":"San Luis Obispo","boards":[{"complete":true,"school_name":"California Polytechnic State University-San Luis Obispo","town_name":"San Luis Obispo","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten documented Cal Poly study environments, from reservable-style rooms and collaborative zones to quiet, outdoor, and round-the-clock options.","icon":"menu_book","cards":[{"subject_id":"cal-poly-hub24","subject_type":"study_space","entity_name":"Hub24","title":"Settle In at Hub24","subtitle":"Kennedy Library’s round-the-clock study zone","notes":"Use the first or second floor when your work runs beyond regular library hours; bring the Cal Poly credentials required for secure entry.","short_summary":"A two-floor option for studying outside standard building hours.","evidence_claim":"Cal Poly states that Hub24 expanded to the first and second floors when Kennedy Library reopened, and the academic catalog describes secure 24/7 access to those floors.","source_url":"https://www.calpoly.edu/news/light-spacious-and-bustling-take-look-inside-refreshed-kennedy-library","source_title":"Light, Spacious and Bustling: Take a Look Inside a Refreshed Kennedy Library","source_kind":"university_official","source_published_at":"2026-01-08","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Secure 24/7 access covers Kennedy Library’s first and second floors; university affiliation or credentials may be required for secured entry.","cost_status":"unknown","under21_safe":true},{"subject_id":"cal-poly-holcombe-study-space","subject_type":"study_space","entity_name":"The Jerry & Sally Holcombe Study Space","title":"Spread Out in the Holcombe Study Space","subtitle":"A named second-level Kennedy Library study area","notes":"Choose this second-floor zone for an indoor work session, and consult the library’s current maps or signs before selecting a seat.","short_summary":"A dedicated study destination on Kennedy Library’s second level.","evidence_claim":"Cal Poly’s Kennedy Library transformation page identifies The Jerry & Sally Holcombe Study Space as a Level 2 feature.","source_url":"https://afd.calpoly.edu/facilities/planning-capital-projects/project-news/kennedy-library/","source_title":"Kennedy Library Renovation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on Level 2 of Kennedy Library; follow current library entry rules and posted room guidance.","cost_status":"unknown","under21_safe":true},{"subject_id":"cal-poly-fishbowl-study-spaces","subject_type":"study_space","entity_name":"Fishbowl Study Spaces","title":"Work Together in the Fishbowls","subtitle":"Glass-fronted study spaces on Kennedy Library’s second level","notes":"Head to Level 2 when your group needs a defined workspace, then check posted signs or the library system for any use restrictions.","short_summary":"A visually distinctive set of enclosed study spaces for collaborative work.","evidence_claim":"Cal Poly lists the Fishbowl Study Spaces among the features on Level 2 of the transformed Kennedy Library.","source_url":"https://afd.calpoly.edu/facilities/planning-capital-projects/project-news/kennedy-library/","source_title":"Kennedy Library Renovation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on Level 2; verify current availability and any reservation requirement before relying on a room.","cost_status":"unknown","under21_safe":true},{"subject_id":"cal-poly-devore-study-room","subject_type":"study_space","entity_name":"Jay and Carol Devore Study Room","title":"Focus in the Devore Study Room","subtitle":"A named third-level room inside Kennedy Library","notes":"Find this room on Level 3 for a more bounded work setting, and confirm current occupancy or booking rules before settling in.","short_summary":"A named library room suited to a contained study session.","evidence_claim":"Cal Poly identifies the Jay and Carol Devore Study Room as a Level 3 feature of Kennedy Library.","source_url":"https://afd.calpoly.edu/facilities/planning-capital-projects/project-news/kennedy-library/","source_title":"Kennedy Library Renovation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on Level 3; consult current library signage or reservation tools for availability and room-use rules.","cost_status":"unknown","under21_safe":true},{"subject_id":"cal-poly-graduate-study-room","subject_type":"study_space","entity_name":"Graduate Study Room","title":"Bring Graduate Work to Level 4","subtitle":"Kennedy Library’s designated graduate study room","notes":"Graduate students can look for this Level 4 room when they need a designated work area; verify eligibility at the library first.","short_summary":"A dedicated room identified specifically for graduate study.","evidence_claim":"Cal Poly lists a Graduate Study Room among Kennedy Library’s Level 4 features.","source_url":"https://afd.calpoly.edu/facilities/planning-capital-projects/project-news/kennedy-library/","source_title":"Kennedy Library Renovation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on Level 4 and designated for graduate study; confirm current eligibility and entry requirements with the library.","cost_status":"unknown","under21_safe":true},{"subject_id":"cal-poly-digital-scholarship-studio","subject_type":"study_space","entity_name":"Digital Scholarship Studio","title":"Build a Digital Project in the Studio","subtitle":"Kennedy Library space for data and visualization work","notes":"Bring data-heavy or visual coursework here and check the studio’s current service schedule before planning around specialized support.","short_summary":"A technology-oriented workspace for digital scholarship and peer-supported projects.","evidence_claim":"Cal Poly’s catalog says the Digital Scholarship Studio provides spaces, advanced data-analysis and visualization software, and peer learning support.","source_url":"https://catalog.calpoly.edu/welcome/academic-services-programs/library-services/","source_title":"Library Services | Cal Poly Academic Catalog","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The studio is inside Kennedy Library; confirm current service hours and software or workstation availability before visiting.","cost_status":"unknown","under21_safe":true},{"subject_id":"cal-poly-sargen-courtyard","subject_type":"study_space","entity_name":"James P. Sargen Courtyard","title":"Take Your Notes into the Sargen Courtyard","subtitle":"Kennedy Library’s landscaped first-level courtyard","notes":"Use the courtyard for reading or laptop work in suitable weather, and keep an indoor alternative ready if conditions change.","short_summary":"An open-air library setting for study breaks and daylight work.","evidence_claim":"Cal Poly identifies the James P. Sargen Courtyard on Level 1, while the academic catalog describes Kennedy Library as having a landscaped courtyard.","source_url":"https://afd.calpoly.edu/facilities/planning-capital-projects/project-news/kennedy-library/","source_title":"Kennedy Library Renovation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on Level 1; courtyard access may depend on library operations, posted rules, and weather conditions.","cost_status":"unknown","under21_safe":true},{"subject_id":"cal-poly-library-seminar-rooms","subject_type":"study_space","entity_name":"Kennedy Library Seminar Rooms","title":"Plan Structured Work in a Seminar Room","subtitle":"First-level rooms within the refreshed Kennedy Library","notes":"Consider these rooms for structured academic work, but check current scheduling and access rules before gathering a group there.","short_summary":"Purpose-built rooms offering an alternative to open library seating.","evidence_claim":"Cal Poly lists Library Seminar Rooms among the Level 1 features of the transformed Kennedy Library.","source_url":"https://afd.calpoly.edu/facilities/planning-capital-projects/project-news/kennedy-library/","source_title":"Kennedy Library Renovation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on Level 1; these rooms may be scheduled for instruction, so verify availability before planning a study session.","cost_status":"unknown","under21_safe":true},{"subject_id":"cal-poly-chandler-lounge","subject_type":"study_space","entity_name":"Chandler Lounge","title":"Open Your Books in Chandler Lounge","subtitle":"A designated University Union study space","notes":"Try this University Union lounge between campus commitments, and check the building’s current access schedule before arriving.","short_summary":"A centrally located lounge officially designated for student study.","evidence_claim":"Cal Poly Academic Advising identifies Chandler Lounge in the University Union as a designated study space on campus.","source_url":"https://advising.calpoly.edu/tutoring-study-sessions-and-workshops","source_title":"Tutoring Resources, Study Session and Supplemental Workshops","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located in the University Union; use is subject to current building access, events, and posted lounge rules.","cost_status":"unknown","under21_safe":true},{"subject_id":"cal-poly-san-luis-lounge","subject_type":"study_space","entity_name":"San Luis Lounge","title":"Set Up in San Luis Lounge","subtitle":"Another designated University Union study setting","notes":"Use this named lounge as a library alternative, especially when your day already brings you through the University Union.","short_summary":"A separate University Union lounge recognized by Cal Poly as study space.","evidence_claim":"Cal Poly Academic Advising identifies San Luis Lounge in the University Union as a designated study space on campus.","source_url":"https://advising.calpoly.edu/tutoring-study-sessions-and-workshops","source_title":"Tutoring Resources, Study Session and Supplemental Workshops","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located in the University Union; confirm current building access and account for scheduled activities that may affect the lounge.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}

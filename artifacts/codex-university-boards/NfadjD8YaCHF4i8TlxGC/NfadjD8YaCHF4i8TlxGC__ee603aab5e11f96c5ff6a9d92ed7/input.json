@@ -1,0 +1,59 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "L5deVL0VTyzYbNPuun45",
+    "schoolName": "San Diego State University",
+    "shortSchoolName": "San Diego State University",
+    "townName": "San Diego",
+    "state": "CA",
+    "countryCode": "US",
+    "unitId": "122409",
+    "website": "https://www.sdsu.edu/",
+    "latitude": 32.77525,
+    "longitude": -117.071228,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/6/60/San_Diego_State_University_seal.svg/250px-San_Diego_State_University_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=sdsu.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "Aztec Market at Aztec Student Union",
+    "Shake Smart at Aztec Student Union",
+    "The Habit Burger Grill at Aztec Student Union",
+    "Los Primos at Aztec Student Union",
+    "Aztec Market at Cuicacalli",
+    "Aztec Market at University Towers",
+    "Aztec Market at Chapultepec",
+    "Epic Wings N' Things at South Campus Plaza",
+    "Aztec Lanes",
+    "Taco Bell at 4545 El Cajon Boulevard",
+    "Student Lounge",
+    "The Backdoor Studio",
+    "Montezuma Hall",
+    "Harvey Goodfriend Lounge",
+    "Student Union Theatre",
+    "University Art Gallery",
+    "SDSU Mediterranean Garden",
+    "Native and Indigenous Healing Garden",
+    "Aztec Recreation Center"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

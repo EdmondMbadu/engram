@@ -1,0 +1,96 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 source URL check(s) were inconclusive and need editorial confirmation.",
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://carlos.emory.edu/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://carlos.emory.edu/visit",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.emory.edu/rose/using-rose-library/preparing-research-visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.emory.edu/rose/using-rose-library/preparing-research-visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.cdc.gov/museum/index.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cdc.gov/museum/index.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.fernbank.edu/page15.html",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.fernbank.edu/page15.html",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.fernbank.edu/observatory.html",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.fernbank.edu/observatory.html",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.nps.gov/malu/planyourvisit/fees.htm?fullweb=1",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/malu/planyourvisit/fees.htm?fullweb=1",
+      "error": ""
+    },
+    {
+      "url": "https://library.uga.edu/capitolmuseum/visit/tours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.uga.edu/capitolmuseum/visit/tours",
+      "error": ""
+    },
+    {
+      "url": "https://www.oaklandcemetery.com/plan-your-visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oaklandcemetery.com/plan-your-visit",
+      "error": ""
+    },
+    {
+      "url": "https://cdn.atlantacontemporary.org/docs/Atlanta-Contemporary-2025-2028-StrategicPlan.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cdn.atlantacontemporary.org/docs/Atlanta-Contemporary-2025-2028-StrategicPlan.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.atlantafed.org/who-we-are/visit/atlanta-monetary-museum",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.atlantafed.org/who-we-are/visit/atlanta-monetary-museum",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Michael C. Carlos Museum"
+  ],
+  "sourceCount": 10,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

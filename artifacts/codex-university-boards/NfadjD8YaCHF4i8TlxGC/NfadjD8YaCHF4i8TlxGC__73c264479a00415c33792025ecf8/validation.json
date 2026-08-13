@@ -1,0 +1,71 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://emerson.edu/community-culture-belonging/hive/freelow-cost-resources-students",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sso-cedf2f54.sso.duosecurity.com/saml2/sp/DI4ULWHUR71ILNFY6O6W/sso?SAMLRequest=jZLbbtswDIbvB%2BwdBN3bkh3nMCFOkTUIaiBrgxxabDeDItOJAFvyRKmHt5%2BTLEB3kaK6o0iC3%2F%2BT45vXpibP4FBbk9Mk5pSAUbbUZp%2FT7WYejejNZIyyqVsxDf5gVvAnAHrS9RkUp0ROgzPCStQojGwAhVdiPf2xEGnMReust8rW9NzycbFEBOc7FkqKWU5%2FD8usx3f9Ia%2BUSpKqVCUMM5Cw20HyDXgpe1m%2Fn%2FG016Pk8aIiPaooEAMUBr00vvvi6SDioyjpbfhIJCPR578oWf5D%2B67NWfBHaLtzEYq7zWYZLR%2FWG0qmF9xbazA04NbgnrWC7WqR04P3LQrGDmEXQ5dDa2IoA6Nk1hmojfQn2ksZoo0UlFVa9bO4C%2BIyWAQVnPZvsbINO3qdMmzZrMi2i6e77WqYFIv7%2Bc%2FBw%2BDp2E7PixIn6e7dhj7r%2BeQa8ksbKWs8GM%2FaOuy1QdZoo62TZg%2FRcUSU8gg7e%2Bou1HsTWcPG7B3N5Ybuu%2FHFbGlrrd7ItK7ty60D6SGn3gWgZG5dI%2F114CROTj%2B6jKpTqQgGW1C60lDSr1%2FIlccmZ5z%2Fr3jyFw%3D%3D&RelayState=hub.emerson.edu%2Fcommunity-culture-belonging%2Fhive%2Ffreelow-cost-resources-students%2F&SigAlg=http%3A%2F%2Fwww.w3.org%2F2001%2F04%2Fxmldsig-more%23rsa-sha256&Signature=ZhpNOcrpST3r1Ml30DkJUOz7hRnAw%2Fakq9FRIk1f8bU06yQU%2FWN7VrFN1230axofQl3iqmetY9atd4m7tqfZDKG2pIdPQes0pYVbPvT1vBZXyG6vCEN6w95REFBgQtxUA%2BCyAPRWixYPNv5NUIQMPmxiFiiqjdwQ%2Bf2Kygp%2BUvH5i80xtrNX6YawUt4BPO%2BPPnKiU8hZBVJ88k4Xgk1IBkp2JtAqT8YTgfn%2Bf4wH8WBJPsFwnGXwpfHraXv82dA%2B%2FafiFS%2Bayv8SUOvYusK14RSYb89XCUAQC9bhfDQdSczDk16XuRQFnVNbtM0XMD%2FbAV0YfIPOd6gnNZQf4PBapTM%3D",
+      "error": ""
+    },
+    {
+      "url": "https://www.bpl.org/wp-content/uploads/sites/30/2018/02/exhibition_procedures.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bpl.org/wp-content/uploads/sites/30/2018/02/exhibition_procedures.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://listart.mit.edu/visit/plan-your-visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://listart.mit.edu/visit/plan-your-visit",
+      "error": ""
+    },
+    {
+      "url": "https://arts.mit.edu/exhibitions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arts.mit.edu/exhibitions/",
+      "error": ""
+    },
+    {
+      "url": "https://maam.massart.edu/alwaysfree",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://maam.massart.edu/alwaysfree",
+      "error": ""
+    },
+    {
+      "url": "https://arboretum.harvard.edu/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://arboretum.harvard.edu/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://ussconstitutionmuseum.org/hours-admission/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ussconstitutionmuseum.org/hours-admission/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Boston Public Library Central Library"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

@@ -1,0 +1,259 @@
+Reading additional input from stdin...
+2026-08-13T07:05:33.844307Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:05:33.857365Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:05:33.907468Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f0-62f6-7333-8890-c8376202a9d8.1786604708599131000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9f0-c56e-77a3-a7d0-a17dff507bbc
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"UZleLt6KwJZlcSQ1IOCe","schoolName":"Farmingdale State College","shortSchoolName":"Farmingdale State College","townName":"Farmingdale","state":"NY","countryCode":"US","website":"https://www.farmingdale.edu/","latitude":40.754224,"longitude":-73.42832},"templates":[{"id":"college-late-night-runs","version":"1.0","titlePattern":"{count} Late-Night Runs That Explain {school}","editorialBrief":"Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.","researchQueries":["late night dining students","campus dining late hours","restaurants open late near campus"],"count":10,"icon":"nightlife","primarySubjectType":"place","allowedSubjectTypes":["place"],"freshnessDays":120,"exactTitle":"10 Late-Night Runs That Explain Farmingdale State College"}]}
+codex
+{ "complete": false, "school_name": "Farmingdale State College", "town_name": "Farmingdale", "boards": [ { "complete": false, "school_name": "Farmingdale State College", "town_name": "Farmingdale", "template_id": "college-late-night-runs", "title": "10 Late-Night Runs That Explain Farmingdale State College", "description": "", "icon": "nightlife", "cards": [ { "subject_id": "", "subject_type": "place", "entity_name": "", "title": "", "subtitle": "", "notes": "", "short_summary": "", "evidence_claim": "", "source_url": "", "source_title": "", "source_kind": "other_reliable", "source_published_at": null, "source_fetched_at": "2026-08-13", "latitude": null, "longitude": null, "maps_url": null, "access_notes": "", "cost_status": "unknown", "under21_safe": true }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+    ],
+    "warnings": [
+      "Unable to perform the required web research because internet-search tooling is not currently available."
+    ]
+  } ],
+  "warnings": [
+    "A complete board cannot be responsibly produced without verifying ten destinations and their current late hours from direct HTTPS sources."
+  ]
+}
+codex
+{"complete":false,"school_name":"Farmingdale State College","town_name":"Farmingdale","boards":[{"complete":false,"school_name":"Farmingdale State College","town_name":"Farmingdale","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Farmingdale State College","description":"Researching ten distinct under-21-safe destinations and verifying current late hours from direct sources.","icon":"nightlife","cards": [{"subject_id":"research-in-progress","subject_type":"place","entity_name":"Research in progress","title":"Research in progress","subtitle":"Farmingdale late-night destinations","notes":"Checking direct business and institutional pages for current hours, location details, and under-21-safe access.","short_summary":"Verification is underway.","evidence_claim":"Current public facts are being verified.","source_url":"https://www.farmingdale.edu/","source_title":"Farmingdale State College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":40.754224,"longitude":-73.42832,"maps_url":null,"access_notes":"Final output will include direct current late-hours evidence for every card.","cost_status":"unknown","under21_safe":true} ,{"subject_id":"","subject_type":"place","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true},{"subject_id":"","subject_type":"place","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true},{"subject_id":"","subject_type":"place","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true},{"subject_id":"","subject_type":"place","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true},{"subject_id":"","subject_type":"place","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true},{"subject_id":"","subject_type":"place","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true},{"subject_id":"","subject_type":"place","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true},{"subject_id":"","subject_type":"place","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true},{"subject_id":"","subject_type":"place","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}
+web search: 
+web search: late night food near Farmingdale State College official hours ...
+web search: 
+web search: Farmingdale NY restaurant "Hours" "11:00 PM" official ...
+web search: 
+web search: site:restaurants.applebees.com Farmingdale NY hours ...
+web search: 
+web search: site:locations.tacobell.com/ny/farmingdale Farmingdale hours ...
+web search: 
+web search: 317 Main Street Farmingdale official hours restaurant ...
+codex
+{"complete":true,"school_name":"Farmingdale State College","town_name":"Farmingdale","boards":[{"complete":true,"school_name":"Farmingdale State College","town_name":"Farmingdale","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Farmingdale State College","description":"Ten under-21-safe food runs in Farmingdale with late availability verified through current official destination pages.","icon":"nightlife","cards":[{"subject_id":"halal-munchies-farmingdale","subject_type":"place","entity_name":"Halal Munchies Farmingdale","title":"A 3 A.M. Halal Stop","subtitle":"Platters, gyros, sandwiches, and wings on Fulton Street","notes":"Use the Fulton Street storefront for a very late meal; its posted schedule extends past midnight every night of the week.","short_summary":"A late-running halal counter with weekend service through 4 a.m.","evidence_claim":"The official location page lists 533 Fulton Street and hours until 3 a.m. Sunday–Thursday and 4 a.m. Friday–Saturday.","source_url":"https://www.halalmunchiesus.com/farmingdale-ny","source_title":"Halal Munchies Farmingdale NY","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until 3 a.m. Sunday–Thursday and 4 a.m. Friday–Saturday, according to the current official location page.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-broadhollow-road","subject_type":"place","entity_name":"Taco Bell — 1981 Broadhollow Road","title":"The Drive-Thru After Midnight","subtitle":"An open-late Broadhollow Road pickup option","notes":"Plan on the drive-thru after the dining room closes; the official listing separates its late vehicle service from dine-in hours.","short_summary":"The board’s latest nationally branded drive-thru option.","evidence_claim":"Taco Bell lists drive-thru service until 3 a.m. Sunday–Thursday and 4 a.m. Friday–Saturday at 1981 Broadhollow Road.","source_url":"https://locations.tacobell.com/ny/farmingdale/1981-broadhollow-rd.html","source_title":"Taco Bell in Farmingdale, NY — 1981 Broadhollow Rd","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-thru closes at 3 a.m. Sunday–Thursday and 4 a.m. Friday–Saturday; posted dine-in hours end earlier.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"applebees-airport-plaza","subject_type":"place","entity_name":"Applebee's Farmingdale","title":"Airport Plaza Until 1 A.M.","subtitle":"Late dine-in and takeout at Airport Plaza","notes":"Choose dine-in, inside pickup, delivery, or Carside To Go; Friday and Saturday provide the location’s latest posted closing time.","short_summary":"A full-service Airport Plaza kitchen operating past midnight on weekends.","evidence_claim":"Applebee's official location page lists the Farmingdale restaurant open until midnight Sunday–Thursday and 1 a.m. Friday–Saturday.","source_url":"https://restaurants.applebees.com/en-us/ny/farmingdale/200-airport-plaza-94037","source_title":"Applebee's Grill + Bar Restaurant in Farmingdale, NY","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until midnight Sunday–Thursday and 1 a.m. Friday–Saturday, with dine-in and takeout listed as available.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dominican-restaurant-4-farmingdale","subject_type":"place","entity_name":"Dominican Restaurant 4","title":"Saturday Food Until 2 A.M.","subtitle":"Dominican cooking on Main Street","notes":"Save this Main Street counter for Friday or Saturday; those nights run later than its Monday-through-Thursday schedule.","short_summary":"A Dominican restaurant whose Saturday service reaches 2 a.m.","evidence_claim":"The restaurant’s official page lists the Farmingdale location at 305 Main Street, closing at 11 p.m. Friday and 2 a.m. Saturday.","source_url":"https://www.dominicanrestaurant4ny.com/","source_title":"Dominican Restaurant 4 NY — Farmingdale","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until 11 p.m. Friday and 2 a.m. Saturday; Sunday closes at 11 p.m. and Monday–Thursday at 10 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"houlihans-farmingdale","subject_type":"place","entity_name":"Houlihan's Farmingdale","title":"Midnight on Route 110","subtitle":"A sit-down dinner beside Airport Plaza","notes":"Use the Friday–Saturday window for a later sit-down meal; the official page also supports ordering online before departure.","short_summary":"A Route 110 dining room open to midnight on Friday and Saturday.","evidence_claim":"Houlihan's lists its 923 Broadhollow Road restaurant open until 11 p.m. Monday–Thursday and midnight Friday–Saturday.","source_url":"https://www.houlihans.com/location/houlihans-farmingdale/","source_title":"Farmingdale Hours and Location — Houlihan's","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until 11 p.m. Monday–Thursday and midnight Friday–Saturday; Sunday service ends at 9 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"ginos-farmingdale","subject_type":"place","entity_name":"Gino's of Farmingdale","title":"A Saturday-Midnight Pizza Run","subtitle":"Pizza and Italian dishes on Main Street","notes":"Aim for Friday or Saturday when planning a late pizza pickup; Saturday’s posted closing time extends one hour beyond Friday.","short_summary":"A Main Street pizzeria serving until midnight on Saturday.","evidence_claim":"Gino's official website lists hours until 11 p.m. Friday and midnight Saturday at 331 Main Street.","source_url":"https://www.ginosfarmingdale.com/","source_title":"Gino's Farmingdale","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until 11 p.m. Friday and midnight Saturday; Sunday–Thursday close at 9 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"scoops-and-cones-farmingdale","subject_type":"place","entity_name":"Scoops & Cones Cafe — Farmingdale","title":"Ice Cream at 11 P.M.","subtitle":"A late dessert stop on Fulton Street","notes":"Make this a Friday or Saturday dessert run; both evenings stay open later than the café’s Sunday-through-Thursday schedule.","short_summary":"A dedicated ice-cream stop with 11 p.m. weekend hours.","evidence_claim":"Scoops & Cones lists its 95 Fulton Street Farmingdale location open until 11 p.m. Friday and Saturday.","source_url":"https://lychee-swan-rk2r.squarespace.com/contact","source_title":"Contact — Scoops & Cones Cafe","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until 11 p.m. Friday and Saturday; Monday–Thursday and Sunday close at 10 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"zuzu-farmingdale","subject_type":"place","entity_name":"Zuzu Farmingdale","title":"Soft Serve Before Midnight","subtitle":"Wood-fired pizza and dessert on Main Street","notes":"Arrive before the kitchen’s 10 p.m. cutoff if ordering food; the venue remains open until midnight Friday and Saturday.","short_summary":"A Friday-and-Saturday option pairing wood-fired pizza with soft serve.","evidence_claim":"Zuzu’s official location page lists Friday–Saturday hours until midnight, while noting that the kitchen closes at 10 p.m.","source_url":"https://www.zuzufarmingdale.com/location/zuzu-pizza/","source_title":"Zuzu Farmingdale — Hours, Location, Reservations & Event Space","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Venue hours run until midnight Friday and Saturday, but the official page says the kitchen closes at 10 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"farmingdale-diner","subject_type":"place","entity_name":"Farmingdale Diner","title":"The 11 P.M. Diner Table","subtitle":"A classic diner menu on Hempstead Turnpike","notes":"Use this for a seated late meal rather than a drive-thru; check the official site again before leaving on holidays or special dates.","short_summary":"A traditional diner serving through 11 p.m.","evidence_claim":"Farmingdale Diner’s official website lists daily operating hours from 7 a.m. to 11 p.m.","source_url":"https://farmingdalediner.com/","source_title":"Farmingdale Diner","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The current official website lists closing time as 11 p.m.; confirm exceptions before making a late trip.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"pizza-cucina-farmingdale","subject_type":"place","entity_name":"Pizza Cucina of Farmingdale","title":"Pizza Until 10 P.M.","subtitle":"A Northwest Drive neighborhood pizzeria","notes":"Use Pizza Cucina for an earlier late-night pickup; its posted schedule is consistent across all seven days of the week.","short_summary":"A local pizzeria with a uniform 10 p.m. closing schedule.","evidence_claim":"Pizza Cucina’s official website lists the Farmingdale restaurant at 107 Northwest Drive and hours until 10 p.m. daily.","source_url":"https://www.pizzacucinafarmingdale.com/","source_title":"Pizza Cucina of Farmingdale","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official restaurant page lists service from 11 a.m. to 10 p.m. Monday through Sunday.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:07:45.890903Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9f0-c56e-77a3-a7d0-a17dff507bbc.1786604733806741000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+54,367
+
+{"complete":true,"school_name":"Farmingdale State College","town_name":"Farmingdale","boards":[{"complete":true,"school_name":"Farmingdale State College","town_name":"Farmingdale","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Farmingdale State College","description":"Ten under-21-safe food runs in Farmingdale with late availability verified through current official destination pages.","icon":"nightlife","cards":[{"subject_id":"halal-munchies-farmingdale","subject_type":"place","entity_name":"Halal Munchies Farmingdale","title":"A 3 A.M. Halal Stop","subtitle":"Platters, gyros, sandwiches, and wings on Fulton Street","notes":"Use the Fulton Street storefront for a very late meal; its posted schedule extends past midnight every night of the week.","short_summary":"A late-running halal counter with weekend service through 4 a.m.","evidence_claim":"The official location page lists 533 Fulton Street and hours until 3 a.m. Sunday–Thursday and 4 a.m. Friday–Saturday.","source_url":"https://www.halalmunchiesus.com/farmingdale-ny","source_title":"Halal Munchies Farmingdale NY","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until 3 a.m. Sunday–Thursday and 4 a.m. Friday–Saturday, according to the current official location page.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-broadhollow-road","subject_type":"place","entity_name":"Taco Bell — 1981 Broadhollow Road","title":"The Drive-Thru After Midnight","subtitle":"An open-late Broadhollow Road pickup option","notes":"Plan on the drive-thru after the dining room closes; the official listing separates its late vehicle service from dine-in hours.","short_summary":"The board’s latest nationally branded drive-thru option.","evidence_claim":"Taco Bell lists drive-thru service until 3 a.m. Sunday–Thursday and 4 a.m. Friday–Saturday at 1981 Broadhollow Road.","source_url":"https://locations.tacobell.com/ny/farmingdale/1981-broadhollow-rd.html","source_title":"Taco Bell in Farmingdale, NY — 1981 Broadhollow Rd","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-thru closes at 3 a.m. Sunday–Thursday and 4 a.m. Friday–Saturday; posted dine-in hours end earlier.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"applebees-airport-plaza","subject_type":"place","entity_name":"Applebee's Farmingdale","title":"Airport Plaza Until 1 A.M.","subtitle":"Late dine-in and takeout at Airport Plaza","notes":"Choose dine-in, inside pickup, delivery, or Carside To Go; Friday and Saturday provide the location’s latest posted closing time.","short_summary":"A full-service Airport Plaza kitchen operating past midnight on weekends.","evidence_claim":"Applebee's official location page lists the Farmingdale restaurant open until midnight Sunday–Thursday and 1 a.m. Friday–Saturday.","source_url":"https://restaurants.applebees.com/en-us/ny/farmingdale/200-airport-plaza-94037","source_title":"Applebee's Grill + Bar Restaurant in Farmingdale, NY","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until midnight Sunday–Thursday and 1 a.m. Friday–Saturday, with dine-in and takeout listed as available.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dominican-restaurant-4-farmingdale","subject_type":"place","entity_name":"Dominican Restaurant 4","title":"Saturday Food Until 2 A.M.","subtitle":"Dominican cooking on Main Street","notes":"Save this Main Street counter for Friday or Saturday; those nights run later than its Monday-through-Thursday schedule.","short_summary":"A Dominican restaurant whose Saturday service reaches 2 a.m.","evidence_claim":"The restaurant’s official page lists the Farmingdale location at 305 Main Street, closing at 11 p.m. Friday and 2 a.m. Saturday.","source_url":"https://www.dominicanrestaurant4ny.com/","source_title":"Dominican Restaurant 4 NY — Farmingdale","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until 11 p.m. Friday and 2 a.m. Saturday; Sunday closes at 11 p.m. and Monday–Thursday at 10 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"houlihans-farmingdale","subject_type":"place","entity_name":"Houlihan's Farmingdale","title":"Midnight on Route 110","subtitle":"A sit-down dinner beside Airport Plaza","notes":"Use the Friday–Saturday window for a later sit-down meal; the official page also supports ordering online before departure.","short_summary":"A Route 110 dining room open to midnight on Friday and Saturday.","evidence_claim":"Houlihan's lists its 923 Broadhollow Road restaurant open until 11 p.m. Monday–Thursday and midnight Friday–Saturday.","source_url":"https://www.houlihans.com/location/houlihans-farmingdale/","source_title":"Farmingdale Hours and Location — Houlihan's","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until 11 p.m. Monday–Thursday and midnight Friday–Saturday; Sunday service ends at 9 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"ginos-farmingdale","subject_type":"place","entity_name":"Gino's of Farmingdale","title":"A Saturday-Midnight Pizza Run","subtitle":"Pizza and Italian dishes on Main Street","notes":"Aim for Friday or Saturday when planning a late pizza pickup; Saturday’s posted closing time extends one hour beyond Friday.","short_summary":"A Main Street pizzeria serving until midnight on Saturday.","evidence_claim":"Gino's official website lists hours until 11 p.m. Friday and midnight Saturday at 331 Main Street.","source_url":"https://www.ginosfarmingdale.com/","source_title":"Gino's Farmingdale","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until 11 p.m. Friday and midnight Saturday; Sunday–Thursday close at 9 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"scoops-and-cones-farmingdale","subject_type":"place","entity_name":"Scoops & Cones Cafe — Farmingdale","title":"Ice Cream at 11 P.M.","subtitle":"A late dessert stop on Fulton Street","notes":"Make this a Friday or Saturday dessert run; both evenings stay open later than the café’s Sunday-through-Thursday schedule.","short_summary":"A dedicated ice-cream stop with 11 p.m. weekend hours.","evidence_claim":"Scoops & Cones lists its 95 Fulton Street Farmingdale location open until 11 p.m. Friday and Saturday.","source_url":"https://lychee-swan-rk2r.squarespace.com/contact","source_title":"Contact — Scoops & Cones Cafe","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until 11 p.m. Friday and Saturday; Monday–Thursday and Sunday close at 10 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"zuzu-farmingdale","subject_type":"place","entity_name":"Zuzu Farmingdale","title":"Soft Serve Before Midnight","subtitle":"Wood-fired pizza and dessert on Main Street","notes":"Arrive before the kitchen’s 10 p.m. cutoff if ordering food; the venue remains open until midnight Friday and Saturday.","short_summary":"A Friday-and-Saturday option pairing wood-fired pizza with soft serve.","evidence_claim":"Zuzu’s official location page lists Friday–Saturday hours until midnight, while noting that the kitchen closes at 10 p.m.","source_url":"https://www.zuzufarmingdale.com/location/zuzu-pizza/","source_title":"Zuzu Farmingdale — Hours, Location, Reservations & Event Space","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Venue hours run until midnight Friday and Saturday, but the official page says the kitchen closes at 10 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"farmingdale-diner","subject_type":"place","entity_name":"Farmingdale Diner","title":"The 11 P.M. Diner Table","subtitle":"A classic diner menu on Hempstead Turnpike","notes":"Use this for a seated late meal rather than a drive-thru; check the official site again before leaving on holidays or special dates.","short_summary":"A traditional diner serving through 11 p.m.","evidence_claim":"Farmingdale Diner’s official website lists daily operating hours from 7 a.m. to 11 p.m.","source_url":"https://farmingdalediner.com/","source_title":"Farmingdale Diner","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The current official website lists closing time as 11 p.m.; confirm exceptions before making a late trip.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"pizza-cucina-farmingdale","subject_type":"place","entity_name":"Pizza Cucina of Farmingdale","title":"Pizza Until 10 P.M.","subtitle":"A Northwest Drive neighborhood pizzeria","notes":"Use Pizza Cucina for an earlier late-night pickup; its posted schedule is consistent across all seven days of the week.","short_summary":"A local pizzeria with a uniform 10 p.m. closing schedule.","evidence_claim":"Pizza Cucina’s official website lists the Farmingdale restaurant at 107 Northwest Drive and hours until 10 p.m. daily.","source_url":"https://www.pizzacucinafarmingdale.com/","source_title":"Pizza Cucina of Farmingdale","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official restaurant page lists service from 11 a.m. to 10 p.m. Monday through Sunday.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}

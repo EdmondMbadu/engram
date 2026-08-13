@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.nps.gov/daav/planyourvisit/fees.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/daav/planyourvisit/fees.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/daav/planyourvisit/basicinfo.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/daav/planyourvisit/basicinfo.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.daytonohio.gov/Blog.aspx?IID=117",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.daytonohio.gov/Blog.aspx?IID=117",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

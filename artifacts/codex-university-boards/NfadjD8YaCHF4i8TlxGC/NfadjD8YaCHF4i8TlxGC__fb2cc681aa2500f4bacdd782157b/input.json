@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "xz1RtRWO9NAy95IeqFgM",
+    "schoolName": "University of California-Irvine",
+    "shortSchoolName": "University of California-Irvine",
+    "townName": "Irvine",
+    "state": "CA",
+    "countryCode": "US",
+    "unitId": "110653",
+    "website": "https://www.uci.edu/",
+    "latitude": 33.648434,
+    "longitude": -117.841248,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/The_University_of_California_Irvine.svg/960px-The_University_of_California_Irvine.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=uci.edu&sz=256"
+  },
+  "template": {
+    "id": "college-campus-tour-skips",
+    "version": "1.0",
+    "titlePattern": "What the Campus Tour Skips: {count} Places Students Share With Each Other",
+    "editorialBrief": "Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.",
+    "researchQueries": [
+      "student favorite campus places",
+      "campus map student spaces",
+      "student newspaper campus places"
+    ],
+    "count": 10,
+    "icon": "style",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place",
+      "study_space"
+    ],
+    "freshnessDays": 365
+  },
+  "exact_title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+  "excluded_subjects": [
+    "Target",
+    "Trader Joe's",
+    "Regal Edwards University Town Center",
+    "Chick-fil-A",
+    "Chipotle Mexican Grill",
+    "Blaze Fast-Fire'd Pizza",
+    "Mendocino Farms",
+    "Tender Greens",
+    "Taco Bell - Live Más Café",
+    "In-N-Out Burger"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "0jyAjWD7QGL5lvZWmrDW",
+    "schoolName": "Northern Arizona University",
+    "shortSchoolName": "Northern Arizona University",
+    "townName": "Flagstaff",
+    "state": "AZ",
+    "countryCode": "US",
+    "unitId": "105330",
+    "website": "https://nau.edu/",
+    "latitude": 35.188449,
+    "longitude": -111.653724,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=nau.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=nau.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "Cline Library",
+    "MakerLab",
+    "Virtual Reality Studio",
+    "One Button Studio",
+    "Photography Studio",
+    "Production Studios",
+    "University Union",
+    "Health and Learning Center",
+    "Native American Cultural Center",
+    "Observatory Field Complex"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

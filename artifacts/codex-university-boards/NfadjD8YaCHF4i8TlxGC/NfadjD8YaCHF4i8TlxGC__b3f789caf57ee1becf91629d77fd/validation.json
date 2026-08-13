@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.georgefox.edu/offices/student-life/housing/meal-plans/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.georgefox.edu/offices/student-life/housing/meal-plans/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.georgefox.edu/recreation/student-center/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.georgefox.edu/recreation/student-center/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.georgefox.edu/library/spaces/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.georgefox.edu/library/spaces/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.georgefox.edu/maps_locations/centennial-tower.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.georgefox.edu/maps_locations/centennial-tower.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.georgefox.edu/about/history/historical_buildings.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.georgefox.edu/about/history/historical_buildings.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.georgefox.edu/maps_locations/alumni-plaza.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.georgefox.edu/maps_locations/alumni-plaza.html",
+      "error": ""
+    },
+    {
+      "url": "https://athletics.georgefox.edu/facilities/stoffer-family-stadium/2",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://athletics.georgefox.edu/facilities/stoffer-family-stadium/2",
+      "error": ""
+    },
+    {
+      "url": "https://www.georgefox.edu/college-admissions/campus-tour/bauman-auditorium.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.georgefox.edu/college-admissions/campus-tour/bauman-auditorium.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.georgefox.edu/maps_locations/ross.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.georgefox.edu/maps_locations/ross.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.georgefox.edu/recreation/student-center/access.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.georgefox.edu/recreation/student-center/access.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

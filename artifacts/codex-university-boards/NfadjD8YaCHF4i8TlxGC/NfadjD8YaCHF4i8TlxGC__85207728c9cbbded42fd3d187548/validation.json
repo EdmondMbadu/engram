@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.ohio.edu/food/locations-hours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ohio.edu/food/locations-hours",
+      "error": ""
+    },
+    {
+      "url": "https://toast.app/r/courtside-pizza/order",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://toast.app/r/courtside-pizza/order",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 2,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

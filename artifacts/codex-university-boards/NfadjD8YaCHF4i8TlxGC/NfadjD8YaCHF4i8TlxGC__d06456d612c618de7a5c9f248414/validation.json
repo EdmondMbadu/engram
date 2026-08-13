@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.bingsbakery.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bingsbakery.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.national5and10.com/location-store-hours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.national5and10.com/location-store-hours/",
+      "error": ""
+    },
+    {
+      "url": "https://bingsbakeandbrew.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bingsbakeandbrew.com/",
+      "error": ""
+    },
+    {
+      "url": "https://storewebnew.azurewebsites.net/captain_blue_hen_comics/info/about-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://storewebnew.azurewebsites.net/captain_blue_hen_comics/info/about-us",
+      "error": ""
+    },
+    {
+      "url": "https://mainstreetmovies5.com/mobile/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mainstreetmovies5.com/mobile/",
+      "error": ""
+    },
+    {
+      "url": "https://newarkbikeproject.org/contact/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://newarkbikeproject.org/contact/",
+      "error": ""
+    },
+    {
+      "url": "https://www.daysofknights.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.daysofknights.com/",
+      "error": ""
+    },
+    {
+      "url": "https://caffegelato.net/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.caffegelato.net/",
+      "error": ""
+    },
+    {
+      "url": "https://homegrowncafe.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.homegrowncafe.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.newarkartsalliance.org/contact/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.newarkartsalliance.org/contact/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

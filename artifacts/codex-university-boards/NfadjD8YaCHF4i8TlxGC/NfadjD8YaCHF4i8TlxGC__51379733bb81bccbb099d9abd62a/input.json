@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "UZleLt6KwJZlcSQ1IOCe",
+    "schoolName": "Farmingdale State College",
+    "shortSchoolName": "Farmingdale State College",
+    "townName": "Farmingdale",
+    "state": "NY",
+    "countryCode": "US",
+    "unitId": "196042",
+    "website": "https://www.farmingdale.edu/",
+    "latitude": 40.754224,
+    "longitude": -73.42832,
+    "heroUrl": "https://fsc-main.b-cdn.net/images/fsc-social-link-share.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=farmingdale.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "Thomas D. Greenley Library",
+    "School of Business Lounge Areas",
+    "Ralph Bunche Plaza",
+    "Campus Center Open Lounges",
+    "Gleeson Hall Lounge Areas",
+    "Hale Hall Lounge Areas",
+    "Lupton Hall Lounge Areas",
+    "Roosevelt Hall Lobby",
+    "Sinclair Hall Pit Lounge",
+    "Whitman Hall First-Floor Lounge"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

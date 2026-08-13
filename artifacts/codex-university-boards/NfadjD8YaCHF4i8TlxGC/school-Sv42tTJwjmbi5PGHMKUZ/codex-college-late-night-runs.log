@@ -1,0 +1,285 @@
+Reading additional input from stdin...
+2026-08-13T07:24:28.750118Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:24:28.768365Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa02-1659-7400-aa67-cac800fad02e
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"Sv42tTJwjmbi5PGHMKUZ","schoolName":"Grinnell College","shortSchoolName":"Grinnell College","townName":"Grinnell","state":"IA","countryCode":"US","website":"https://www.grinnell.edu/","latitude":41.747952,"longitude":-92.722094},"templates":[{"id":"college-late-night-runs","version":"1.0","titlePattern":"{count} Late-Night Runs That Explain {school}","editorialBrief":"Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.","researchQueries":["late night dining students","campus dining late hours","restaurants open late near campus"],"count":10,"icon":"nightlife","primarySubjectType":"place","allowedSubjectTypes":["place"],"freshnessDays":120,"exactTitle":"10 Late-Night Runs That Explain Grinnell College"}]}
+codex
+{
+  "complete": false,
+  "school_name": "Grinnell College",
+  "town_name": "Grinnell",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Grinnell College",
+      "town_name": "Grinnell",
+      "template_id": "college-late-night-runs",
+      "title": "10 Late-Night Runs That Explain Grinnell College",
+      "description": "Researching ten current, under-21-safe destinations with direct late-hours evidence.",
+      "icon": "nightlife",
+      "cards": [
+        {
+          "subject_id": "research-status",
+          "subject_type": "place",
+          "entity_name": "Research in progress",
+          "title": "Verifying current hours",
+          "subtitle": "Grinnell, Iowa",
+          "notes": "Checking direct university and business pages for current late availability.",
+          "short_summary": "Current-hours verification is underway.",
+          "evidence_claim": "This is a progress update, not a completed card.",
+          "source_url": "https://www.grinnell.edu/",
+          "source_title": "Grinnell College",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "No final access claim yet.",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     ,
+      {
+        "subject_id": "research-status-2",
+        "subject_type": "place",
+        "entity_name": "Research in progress",
+        "title": "Verifying current hours",
+        "subtitle": "Grinnell, Iowa",
+        "notes": "Checking direct university and business pages for current late availability.",
+        "short_summary": "Current-hours verification is underway.",
+        "evidence_claim": "This is a progress update, not a completed card.",
+        "source_url": "https://www.grinnell.edu/",
+        "source_title": "Grinnell College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "No final access claim yet.",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+        {
+          "subject_id": "research-status-3",
+          "subject_type": "place",
+          "entity_name": "Research in progress",
+          "title": "Verifying current hours",
+          "subtitle": "Grinnell, Iowa",
+          "notes": "Checking direct university and business pages for current late availability.",
+          "short_summary": "Current-hours verification is underway.",
+          "evidence_claim": "This is a progress update, not a completed card.",
+          "source_url": "https://www.grinnell.edu/",
+          "source_title": "Grinnell College",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "No final access claim yet.",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "research-status-4",
+          "subject_type": "place",
+          "entity_name": "Research in progress",
+          "title": "Verifying current hours",
+          "subtitle": "Grinnell, Iowa",
+          "notes": "Checking direct university and business pages for current late availability.",
+          "short_summary": "Current-hours verification is underway.",
+          "evidence_claim": "This is a progress update, not a completed card.",
+          "source_url": "https://www.grinnell.edu/",
+          "source_title": "Grinnell College",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "No final access claim yet.",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "research-status-5",
+          "subject_type": "place",
+          "entity_name": "Research in progress",
+          "title": "Verifying current hours",
+          "subtitle": "Grinnell, Iowa",
+          "notes": "Checking direct university and business pages for current late availability.",
+          "short_summary": "Current-hours verification is underway.",
+          "evidence_claim": "This is a progress update, not a completed card.",
+          "source_url": "https://www.grinnell.edu/",
+          "source_title": "Grinnell College",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "No final access claim yet.",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "research-status-6",
+          "subject_type": "place",
+          "entity_name": "Research in progress",
+          "title": "Verifying current hours",
+          "subtitle": "Grinnell, Iowa",
+          "notes": "Checking direct university and business pages for current late availability.",
+          "short_summary": "Current-hours verification is underway.",
+          "evidence_claim": "This is a progress update, not a completed card.",
+          "source_url": "https://www.grinnell.edu/",
+          "source_title": "Grinnell College",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "No final access claim yet.",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "research-status-7",
+          "subject_type": "place",
+          "entity_name": "Research in progress",
+          "title": "Verifying current hours",
+          "subtitle": "Grinnell, Iowa",
+          "notes": "Checking direct university and business pages for current late availability.",
+          "short_summary": "Current-hours verification is underway.",
+          "evidence_claim": "This is a progress update, not a completed card.",
+          "source_url": "https://www.grinnell.edu/",
+          "source_title": "Grinnell College",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "No final access claim yet.",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "research-status-8",
+          "subject_type": "place",
+          "entity_name": "Research in progress",
+          "title": "Verifying current hours",
+          "subtitle": "Grinnell, Iowa",
+          "notes": "Checking direct university and business pages for current late availability.",
+          "short_summary": "Current-hours verification is underway.",
+          "evidence_claim": "This is a progress update, not a completed card.",
+          "source_url": "https://www.grinnell.edu/",
+          "source_title": "Grinnell College",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "No final access claim yet.",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "research-status-9",
+          "subject_type": "place",
+          "entity_name": "Research in progress",
+          "title": "Verifying current hours",
+          "subtitle": "Grinnell, Iowa",
+          "notes": "Checking direct university and business pages for current late availability.",
+          "short_summary": "Current-hours verification is underway.",
+          "evidence_claim": "This is a progress update, not a completed card.",
+          "source_url": "https://www.grinnell.edu/",
+          "source_title": "Grinnell College",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "No final access claim yet.",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "research-status-10",
+          "subject_type": "place",
+          "entity_name": "Research in progress",
+          "title": "Verifying current hours",
+          "subtitle": "Grinnell, Iowa",
+          "notes": "Checking direct university and business pages for current late availability.",
+          "short_summary": "Current-hours verification is underway.",
+          "evidence_claim": "This is a progress update, not a completed card.",
+          "source_url": "https://www.grinnell.edu/",
+          "source_title": "Grinnell College",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "No final access claim yet.",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:grinnell.edu dining hours Spencer Grill late night Grinnell ...
+web search: 
+web search: McDonald's Grinnell IA official location hours 11 pm ...
+web search: 
+web search: site:caseys.com/general-store-locations/grinnell-ia Grinnell Iowa Casey's hours ...
+web search: 
+web search: Casa Margaritas Grinnell official website hours ...
+codex
+{"complete":true,"school_name":"Grinnell College","town_name":"Grinnell","boards":[{"complete":true,"school_name":"Grinnell College","town_name":"Grinnell","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Grinnell College","description":"Ten under-21-safe Grinnell destinations with directly documented availability until at least 9 p.m.; verify academic-break and holiday schedules before leaving.","icon":"nightlife","cards":[{"subject_id":"spencer-grill","subject_type":"place","entity_name":"Spencer Grill","title":"Campus Café Until 10:30","subtitle":"Joe Rosenfield ’25 Center • academic-year evenings","notes":"Walk to the JRC for a late snack, then check Dining Services before visiting during breaks because the Grill follows altered schedules.","short_summary":"The campus café provides the board’s latest regular on-campus closing time.","evidence_claim":"Grinnell College states that Spencer Grill is open until 10:30 p.m. every day during the academic year and accepts cash, dining dollars, and campus cash.","source_url":"https://www.grinnell.edu/campus-life/campus-living/dining/hours","source_title":"Dining Hours | Grinnell College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Academic-year hours are 7:30 a.m.–10:30 p.m. Monday–Friday, 10 a.m.–10:30 p.m. Saturday, and 9 a.m.–10:30 p.m. Sunday; break hours vary.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"marketplace-dining-hall","subject_type":"place","entity_name":"Marketplace Dining Hall","title":"Dinner Service Until 10","subtitle":"Joe Rosenfield ’25 Center • Sunday–Thursday","notes":"Use the Sunday-through-Thursday dinner window for a later campus meal, and consult posted break schedules before making the trip.","short_summary":"A four-hour evening service window keeps the main dining hall operating late on class nights.","evidence_claim":"Grinnell College lists regular Marketplace dinner service from 5–10 p.m. Sunday through Thursday and 5–9 p.m. Friday and Saturday.","source_url":"https://www.grinnell.edu/campus-life/campus-living/dining/hours","source_title":"Dining Hours | Grinnell College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Regular dinner hours end at 10 p.m. Sunday–Thursday and 9 p.m. Friday–Saturday; commencement and break schedules differ.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"walmart-supercenter-647","subject_type":"place","entity_name":"Walmart Supercenter #647","title":"An 11 P.M. Supply Run","subtitle":"415 Industrial Avenue • daily essentials","notes":"Head here for groceries or forgotten supplies before 11 p.m.; confirm holiday changes on the store page before a special-date run.","short_summary":"The latest everyday retail option in this set covers food, toiletries, and school supplies.","evidence_claim":"Walmart’s official page identifies Grinnell Supercenter #647 at 415 Industrial Avenue and lists store hours of 6 a.m.–11 p.m. daily.","source_url":"https://www.walmart.com/store/647-grinnell-ia","source_title":"Walmart Supercenter in Grinnell, IA | Store 647","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official location page lists the main store as open Monday–Sunday from 6 a.m. to 11 p.m.; individual departments have separate hours.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-johns-grinnell","subject_type":"place","entity_name":"Taco John's Grinnell","title":"Midnight on Friday and Saturday","subtitle":"1020 West Street • counter-service food","notes":"Save this West Street stop for the latest weekend food window, while noting that Sunday closes earlier than the rest of the week.","short_summary":"Weekend service reaches midnight, with 11 p.m. closings on most weekdays.","evidence_claim":"Taco John’s official Grinnell page lists closing at midnight Friday and Saturday, 11 p.m. Monday–Thursday, and 10 p.m. Sunday.","source_url":"https://locations.tacojohns.com/ia/grinnell/1020-west-st/","source_title":"Taco John's | 1020 W St - Grinnell","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until midnight Friday–Saturday, 11 p.m. Monday–Thursday, and 10 p.m. Sunday according to the official location page.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"pizza-ranch-grinnell","subject_type":"place","entity_name":"Pizza Ranch Grinnell","title":"Pizza Through 10 P.M.","subtitle":"613 West Street South • daily closing","notes":"Order or visit before the 10 p.m. store closing; arrive earlier if you want the evening buffet, which ends before the restaurant does.","short_summary":"Daily operating hours offer a predictable late pizza option south of downtown.","evidence_claim":"Pizza Ranch’s official Grinnell location page lists the restaurant as open from 9 a.m.–10 p.m. every day.","source_url":"https://pizzaranch.com/locations/ia/grinnell/613-west-street-s/menu","source_title":"Pizza Ranch in Grinnell, IA | 613 West Street S","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official restaurant hours are 9 a.m.–10 p.m. daily; the listed evening buffet ends at 9 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"pizza-hut-grinnell","subject_type":"place","entity_name":"Pizza Hut Grinnell","title":"An 11 P.M. Weekend Pizza Window","subtitle":"1019 West Street • Friday and Saturday","notes":"Use the Friday or Saturday carryout window for the latest closing; review the service tabs because dine-in hours end earlier.","short_summary":"Delivery and carryout extend one hour later on Friday and Saturday.","evidence_claim":"Pizza Hut’s official Grinnell page lists delivery and carryout until 11 p.m. Friday and Saturday and 10 p.m. Sunday–Thursday.","source_url":"https://locations.pizzahut.com/ia/grinnell/1019-west-street","source_title":"Pizza Hut: Pizza & Wings - 1019 West Street","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Delivery and carryout close at 11 p.m. Friday–Saturday and 10 p.m. Sunday–Thursday; listed dine-in hours are earlier.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jimmy-johns-grinnell-2103","subject_type":"place","entity_name":"Jimmy John's Grinnell Store 2103","title":"Sandwiches Until 9","subtitle":"812 Sixth Avenue • daily service","notes":"Place a pickup or delivery order before 9 p.m.; use the official location page rather than assuming later chain hours apply here.","short_summary":"This downtown sandwich counter maintains the same evening cutoff throughout the week.","evidence_claim":"Jimmy John’s official page for Grinnell Store 2103 lists restaurant and delivery service ending at 9 p.m. every day.","source_url":"https://locations.jimmyjohns.com/ia/grinnell/delivery-2103.html","source_title":"Sandwich Shop & Gourmet Subs in Grinnell | Jimmy John's 2103","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Restaurant hours are 10:30 a.m.–9 p.m. daily; delivery is listed from 11 a.m.–9 p.m. daily.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"grinnell-hy-vee","subject_type":"place","entity_name":"Grinnell Hy-Vee","title":"Groceries Until 9","subtitle":"320 West Street South • daily store hours","notes":"Use the main store for an evening grocery run, but shop earlier for prepared-food counters and the pharmacy because departments close sooner.","short_summary":"The supermarket fills the practical nine-o’clock slot for groceries and household basics.","evidence_claim":"Hy-Vee’s official Grinnell store page lists the supermarket as open daily from 7 a.m.–9 p.m.","source_url":"https://www.hy-vee.com/stores/detail.aspx?sc=1235","source_title":"Grinnell Hy-Vee","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The main store is open daily from 7 a.m. to 9 p.m.; pharmacy, kitchen, bakery, pickup, and delivery hours differ.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"el-cascabel-grinnell","subject_type":"place","entity_name":"El Cascabel","title":"Friday Dinner Until 11","subtitle":"1014 Third Avenue • restaurant seating","notes":"Choose Friday for the 11 p.m. closing, or arrive before 10 p.m. on most other nights; Sunday has the earliest cutoff.","short_summary":"The downtown restaurant provides the set’s latest non-chain Friday dining window.","evidence_claim":"El Cascabel’s official site lists hours until 11 p.m. Friday, 10 p.m. Monday–Thursday and Saturday, and 9 p.m. Sunday.","source_url":"https://elcascabelia.com/","source_title":"El Cascabel | Grinnell, IA","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Closes at 11 p.m. Friday, 10 p.m. Monday–Thursday and Saturday, and 9 p.m. Sunday according to the official site.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"pagliais-grinnell","subject_type":"place","entity_name":"Pagliai's Grinnell","title":"A 10 P.M. Weekend Oven","subtitle":"816 Fifth Avenue • Friday and Saturday","notes":"Plan a Friday or Saturday order before the 10 p.m. close; Sunday through Thursday service ends one hour earlier.","short_summary":"A locally operated pizza dining room extends its schedule on weekend evenings.","evidence_claim":"Pagliai’s Grinnell’s official website lists hours of 5–10 p.m. Friday and Saturday and 5–9 p.m. Sunday through Thursday.","source_url":"https://www.pagliaisgrinnellia.com/","source_title":"Home | Pagliai's Grinnell","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until 10 p.m. Friday–Saturday and 9 p.m. Sunday–Thursday; the official site lists a 5 p.m. opening each day.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:26:44.671731Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa02-1659-7400-aa67-cac800fad02e.1786605868634196000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+43,917
+
+{"complete":true,"school_name":"Grinnell College","town_name":"Grinnell","boards":[{"complete":true,"school_name":"Grinnell College","town_name":"Grinnell","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Grinnell College","description":"Ten under-21-safe Grinnell destinations with directly documented availability until at least 9 p.m.; verify academic-break and holiday schedules before leaving.","icon":"nightlife","cards":[{"subject_id":"spencer-grill","subject_type":"place","entity_name":"Spencer Grill","title":"Campus Café Until 10:30","subtitle":"Joe Rosenfield ’25 Center • academic-year evenings","notes":"Walk to the JRC for a late snack, then check Dining Services before visiting during breaks because the Grill follows altered schedules.","short_summary":"The campus café provides the board’s latest regular on-campus closing time.","evidence_claim":"Grinnell College states that Spencer Grill is open until 10:30 p.m. every day during the academic year and accepts cash, dining dollars, and campus cash.","source_url":"https://www.grinnell.edu/campus-life/campus-living/dining/hours","source_title":"Dining Hours | Grinnell College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Academic-year hours are 7:30 a.m.–10:30 p.m. Monday–Friday, 10 a.m.–10:30 p.m. Saturday, and 9 a.m.–10:30 p.m. Sunday; break hours vary.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"marketplace-dining-hall","subject_type":"place","entity_name":"Marketplace Dining Hall","title":"Dinner Service Until 10","subtitle":"Joe Rosenfield ’25 Center • Sunday–Thursday","notes":"Use the Sunday-through-Thursday dinner window for a later campus meal, and consult posted break schedules before making the trip.","short_summary":"A four-hour evening service window keeps the main dining hall operating late on class nights.","evidence_claim":"Grinnell College lists regular Marketplace dinner service from 5–10 p.m. Sunday through Thursday and 5–9 p.m. Friday and Saturday.","source_url":"https://www.grinnell.edu/campus-life/campus-living/dining/hours","source_title":"Dining Hours | Grinnell College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Regular dinner hours end at 10 p.m. Sunday–Thursday and 9 p.m. Friday–Saturday; commencement and break schedules differ.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"walmart-supercenter-647","subject_type":"place","entity_name":"Walmart Supercenter #647","title":"An 11 P.M. Supply Run","subtitle":"415 Industrial Avenue • daily essentials","notes":"Head here for groceries or forgotten supplies before 11 p.m.; confirm holiday changes on the store page before a special-date run.","short_summary":"The latest everyday retail option in this set covers food, toiletries, and school supplies.","evidence_claim":"Walmart’s official page identifies Grinnell Supercenter #647 at 415 Industrial Avenue and lists store hours of 6 a.m.–11 p.m. daily.","source_url":"https://www.walmart.com/store/647-grinnell-ia","source_title":"Walmart Supercenter in Grinnell, IA | Store 647","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official location page lists the main store as open Monday–Sunday from 6 a.m. to 11 p.m.; individual departments have separate hours.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-johns-grinnell","subject_type":"place","entity_name":"Taco John's Grinnell","title":"Midnight on Friday and Saturday","subtitle":"1020 West Street • counter-service food","notes":"Save this West Street stop for the latest weekend food window, while noting that Sunday closes earlier than the rest of the week.","short_summary":"Weekend service reaches midnight, with 11 p.m. closings on most weekdays.","evidence_claim":"Taco John’s official Grinnell page lists closing at midnight Friday and Saturday, 11 p.m. Monday–Thursday, and 10 p.m. Sunday.","source_url":"https://locations.tacojohns.com/ia/grinnell/1020-west-st/","source_title":"Taco John's | 1020 W St - Grinnell","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until midnight Friday–Saturday, 11 p.m. Monday–Thursday, and 10 p.m. Sunday according to the official location page.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"pizza-ranch-grinnell","subject_type":"place","entity_name":"Pizza Ranch Grinnell","title":"Pizza Through 10 P.M.","subtitle":"613 West Street South • daily closing","notes":"Order or visit before the 10 p.m. store closing; arrive earlier if you want the evening buffet, which ends before the restaurant does.","short_summary":"Daily operating hours offer a predictable late pizza option south of downtown.","evidence_claim":"Pizza Ranch’s official Grinnell location page lists the restaurant as open from 9 a.m.–10 p.m. every day.","source_url":"https://pizzaranch.com/locations/ia/grinnell/613-west-street-s/menu","source_title":"Pizza Ranch in Grinnell, IA | 613 West Street S","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official restaurant hours are 9 a.m.–10 p.m. daily; the listed evening buffet ends at 9 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"pizza-hut-grinnell","subject_type":"place","entity_name":"Pizza Hut Grinnell","title":"An 11 P.M. Weekend Pizza Window","subtitle":"1019 West Street • Friday and Saturday","notes":"Use the Friday or Saturday carryout window for the latest closing; review the service tabs because dine-in hours end earlier.","short_summary":"Delivery and carryout extend one hour later on Friday and Saturday.","evidence_claim":"Pizza Hut’s official Grinnell page lists delivery and carryout until 11 p.m. Friday and Saturday and 10 p.m. Sunday–Thursday.","source_url":"https://locations.pizzahut.com/ia/grinnell/1019-west-street","source_title":"Pizza Hut: Pizza & Wings - 1019 West Street","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Delivery and carryout close at 11 p.m. Friday–Saturday and 10 p.m. Sunday–Thursday; listed dine-in hours are earlier.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jimmy-johns-grinnell-2103","subject_type":"place","entity_name":"Jimmy John's Grinnell Store 2103","title":"Sandwiches Until 9","subtitle":"812 Sixth Avenue • daily service","notes":"Place a pickup or delivery order before 9 p.m.; use the official location page rather than assuming later chain hours apply here.","short_summary":"This downtown sandwich counter maintains the same evening cutoff throughout the week.","evidence_claim":"Jimmy John’s official page for Grinnell Store 2103 lists restaurant and delivery service ending at 9 p.m. every day.","source_url":"https://locations.jimmyjohns.com/ia/grinnell/delivery-2103.html","source_title":"Sandwich Shop & Gourmet Subs in Grinnell | Jimmy John's 2103","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Restaurant hours are 10:30 a.m.–9 p.m. daily; delivery is listed from 11 a.m.–9 p.m. daily.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"grinnell-hy-vee","subject_type":"place","entity_name":"Grinnell Hy-Vee","title":"Groceries Until 9","subtitle":"320 West Street South • daily store hours","notes":"Use the main store for an evening grocery run, but shop earlier for prepared-food counters and the pharmacy because departments close sooner.","short_summary":"The supermarket fills the practical nine-o’clock slot for groceries and household basics.","evidence_claim":"Hy-Vee’s official Grinnell store page lists the supermarket as open daily from 7 a.m.–9 p.m.","source_url":"https://www.hy-vee.com/stores/detail.aspx?sc=1235","source_title":"Grinnell Hy-Vee","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The main store is open daily from 7 a.m. to 9 p.m.; pharmacy, kitchen, bakery, pickup, and delivery hours differ.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"el-cascabel-grinnell","subject_type":"place","entity_name":"El Cascabel","title":"Friday Dinner Until 11","subtitle":"1014 Third Avenue • restaurant seating","notes":"Choose Friday for the 11 p.m. closing, or arrive before 10 p.m. on most other nights; Sunday has the earliest cutoff.","short_summary":"The downtown restaurant provides the set’s latest non-chain Friday dining window.","evidence_claim":"El Cascabel’s official site lists hours until 11 p.m. Friday, 10 p.m. Monday–Thursday and Saturday, and 9 p.m. Sunday.","source_url":"https://elcascabelia.com/","source_title":"El Cascabel | Grinnell, IA","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Closes at 11 p.m. Friday, 10 p.m. Monday–Thursday and Saturday, and 9 p.m. Sunday according to the official site.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"pagliais-grinnell","subject_type":"place","entity_name":"Pagliai's Grinnell","title":"A 10 P.M. Weekend Oven","subtitle":"816 Fifth Avenue • Friday and Saturday","notes":"Plan a Friday or Saturday order before the 10 p.m. close; Sunday through Thursday service ends one hour earlier.","short_summary":"A locally operated pizza dining room extends its schedule on weekend evenings.","evidence_claim":"Pagliai’s Grinnell’s official website lists hours of 5–10 p.m. Friday and Saturday and 5–9 p.m. Sunday through Thursday.","source_url":"https://www.pagliaisgrinnellia.com/","source_title":"Home | Pagliai's Grinnell","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until 10 p.m. Friday–Saturday and 9 p.m. Sunday–Thursday; the official site lists a 5 p.m. opening each day.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}

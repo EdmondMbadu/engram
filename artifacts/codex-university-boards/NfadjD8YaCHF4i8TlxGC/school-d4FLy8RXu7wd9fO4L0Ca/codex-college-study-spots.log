@@ -1,0 +1,290 @@
+Reading additional input from stdin...
+2026-08-13T07:55:49.593739Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1e-2100-7a20-a403-c6fefaa091e0.1786607706369140000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa1e-c92e-72b1-8d9e-78881fd8948e
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"d4FLy8RXu7wd9fO4L0Ca","schoolName":"Lawrence University","shortSchoolName":"Lawrence University","townName":"Appleton","state":"WI","countryCode":"US","website":"https://www.lawrence.edu/","latitude":44.261323,"longitude":-88.397822},"templates":[{"id":"college-study-spots","version":"1.0","titlePattern":"Claimed by 9am: {count} Study Spots Worth Showing Up Early For","editorialBrief":"Choose ten distinct study environments. Verify access rules, room or reservation constraints, and the physical affordance that makes each useful. Treat “Claimed by 9am” as editorial framing; never assert crowding or student behavior without evidence.","researchQueries":["campus study spaces","library study rooms students","quiet study campus"],"count":10,"icon":"menu_book","primarySubjectType":"study_space","allowedSubjectTypes":["study_space","place"],"freshnessDays":180,"exactTitle":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For"}]}
+2026-08-13T07:55:49.790339Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1e-211b-70f0-af2b-284e8a62a036.1786607706395937000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:55:49.917404Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1e-2150-71a0-8bd1-7f53a817c2d4.1786607706448779000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:55:50.042126Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1e-2107-7cc0-be95-4c81e59103b1.1786607706376127000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:55:50.044509Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:55:50.048207Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:55:50.160579Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1e-211b-7701-96e9-2d9dc9d598de.1786607706396305000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:55:50.261658Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1e-2115-70b2-8c85-6c9e7979b60c.1786607706390548000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:55:50.431204Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1e-2113-7a72-8554-f3c4b8d71f62.1786607706387715000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Lawrence University",
+  "town_name": "Appleton",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Lawrence University",
+      "town_name": "Appleton",
+      "template_id": "college-study-spots",
+      "title": "Claimed by 9am: 10 Study Spots Worth Showing Up Early For",
+      "description": "",
+      "icon": "menu_book",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "I’m verifying ten named Lawrence study environments, including access and reservation constraints, against direct university pages.",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+     		,
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:lawrence.edu Mudd Library study rooms Lawrence University ...
+web search: 
+web search: site:lawrence.edu "study space" "Warch" ...
+web search: 
+web search: 
+codex
+{"complete":true,"school_name":"Lawrence University","town_name":"Appleton","boards":[{"complete":true,"school_name":"Lawrence University","town_name":"Appleton","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten distinct work settings inside Seeley G. Mudd Library, from silent reading rooms to reservable group, media, computing, music, and making spaces.","icon":"menu_book","cards":[{"subject_id":"lawrence-mudd-kruse-room","subject_type":"study_space","entity_name":"Roger Dale Kruse Room","title":"Settle into the Kruse Room","subtitle":"Silent study and reflection on Mudd Library’s fourth floor","notes":"Bring reading or focused solo work, silence devices before entering, and use another floor when your assignment requires conversation.","short_summary":"A dedicated silent room for uninterrupted reading, writing, or reflection.","evidence_claim":"Lawrence designates the fourth-floor Kruse Room for silent study or reflection.","source_url":"https://www.lawrence.edu/library/spaces","source_title":"Spaces in the Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Mudd Library requires Lawrence card access during all open hours; non-Lawrence visitors must arrange an appointment at least one business day in advance.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lawrence-mudd-milwaukee-downer-room","subject_type":"study_space","entity_name":"Milwaukee-Downer Room","title":"Work among Milwaukee-Downer history","subtitle":"First-come study when the special-collections room is unbooked","notes":"Check whether an academic or administrative function is scheduled, then use the room for individual work or a small study session.","short_summary":"A historic library room that becomes an individual or group workspace between scheduled functions.","evidence_claim":"Lawrence says the Milwaukee-Downer Room is available for individual or group study on a first-come basis when it is not otherwise in use.","source_url":"https://www.lawrence.edu/library/spaces","source_title":"Spaces in the Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use is first-come, first-served only when no academic or administrative function occupies the room; library building access requires a Lawrence card.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lawrence-mudd-lincoln-room","subject_type":"study_space","entity_name":"Lincoln Room","title":"Take a first-come seat in the Lincoln Room","subtitle":"Flexible solo or group study between scheduled functions","notes":"Confirm the room is not reserved before unpacking, and choose it when you need a named room that can accommodate either solo or shared work.","short_summary":"An occasional-function room that doubles as a flexible study setting when open.","evidence_claim":"Lawrence states that the Lincoln Room may be used for individual or group study on a first-come basis whenever it is not otherwise in use.","source_url":"https://www.lawrence.edu/library/spaces","source_title":"Spaces in the Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Availability depends on academic and administrative reservations; library building access requires a Lawrence card during open hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lawrence-mudd-third-floor-group-room","subject_type":"study_space","entity_name":"Mudd Library Third-Floor Group Study Room","title":"Put the problem on three different surfaces","subtitle":"A reservable group room with computer, display, and writing boards","notes":"Sign up on the clipboard at the door, bring your Lawrence ID, and divide calculations or presentation notes between the chalkboard and whiteboard.","short_summary":"A technology-equipped collaboration room suited to presentations and board-heavy problem solving.","evidence_claim":"Lawrence identifies one third-floor group study room with a computer, large-screen monitor, chalkboard, and dry-erase board.","source_url":"https://www.lawrence.edu/library/spaces","source_title":"Spaces in the Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Lawrence ID-card access is required, and the room is reserved by signing the clipboard posted at its door.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lawrence-mudd-first-floor-viewing-rooms","subject_type":"study_space","entity_name":"Mudd Library Viewing Rooms","title":"Rehearse with the screen already connected","subtitle":"Four reservable media rooms for viewing and presentation practice","notes":"Claim one session on the Monday door schedule, connect your laptop through the wall plate, and yield priority to academic viewing or listening.","short_summary":"Four enclosed rooms combining legacy-media playback, monitors, and laptop presentation connections.","evidence_claim":"Mudd Library has four ID-access viewing rooms with monitors, Blu-ray/DVD and VCR equipment, and VGA/HDMI wall plates; independent study is allowed but academic media use has priority.","source_url":"https://www.lawrence.edu/library/spaces","source_title":"Spaces in the Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Available to Lawrence students, faculty, and staff by ID card; reserve in person for one 2.5-hour session on the weekly schedule posted each Monday.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lawrence-mudd-second-floor-study-rooms","subject_type":"study_space","entity_name":"Mudd Library Second-Floor Study Rooms","title":"Book a small room for one or two","subtitle":"Compact study rooms reservable for sessions of up to three hours","notes":"Write your reservation on the clipboard at the room, keep the session within three hours, and use the space alone or with one partner.","short_summary":"Small unlocked rooms sized for focused solo work or a two-person collaboration.","evidence_claim":"Lawrence provides second-floor study rooms for one or two students that can be reserved for up to three hours and should remain unlocked.","source_url":"https://www.lawrence.edu/library/spaces","source_title":"Spaces in the Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Reserve on the clipboard posted at the door for no more than three hours; individual room entry does not require an ID, but library building access does.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lawrence-mudd-music-lab-116","subject_type":"study_space","entity_name":"Mudd Library Music Lab, Room 116","title":"Move a score from page to playback","subtitle":"Music-focused workstations, keyboards, scanners, and listening gear","notes":"Use the MIDI keyboards and composition software for arranging, or scan a score at the large-format station before reviewing it at the piano.","short_summary":"A first-floor lab built for score study, composition, digitization, and close listening.","evidence_claim":"Room 116 is open to the Lawrence community and contains a Yamaha digital piano, score-scanning equipment, Mac workstations with MIDI keyboards and music software, and a listening station.","source_url":"https://www.lawrence.edu/library/spaces","source_title":"Spaces in the Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The Music Lab is available to members of the Lawrence University community; Mudd Library requires Lawrence card access during open hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lawrence-mudd-itc-computer-lab","subject_type":"study_space","entity_name":"Mudd Library ITC Computer Lab","title":"Use a full computer station between reservations","subtitle":"Seventeen login computers beside the Technology Services help desk","notes":"Check that the lab is not reserved, sign in at one of the 17 computers, and use the nearby help desk when a campus account or device blocks progress.","short_summary":"A sizable second-floor computer lab with technical assistance close at hand.","evidence_claim":"Lawrence locates the ITC Computer Lab on Mudd Library’s second floor and says its 17 login computers are open for use when the room is not reserved.","source_url":"https://www.lawrence.edu/library/spaces","source_title":"Spaces in the Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open when not otherwise reserved; computers require a login, and library building access requires a Lawrence card during open hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lawrence-mudd-makerspace","subject_type":"study_space","entity_name":"Lawrence University Makerspace","title":"Prototype the assignment instead of describing it","subtitle":"A trained-access workspace for hands-on academic projects","notes":"Complete the initial and equipment-specific training, attend an open session, then reserve the machine needed for your academic project.","short_summary":"A project workspace where trained students can turn academic ideas into physical prototypes.","evidence_claim":"Lawrence says its makerspace supports academic work with hands-on tools and innovative equipment; users must complete training and reserve equipment time afterward.","source_url":"https://www.lawrence.edu/academics/advising-support/library/spaces/makerspace/","source_title":"Makerspace","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Initial and equipment-specific training are required; after training, students must reserve equipment time. Library card-access rules also apply.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lawrence-mudd-third-floor-quiet-study","subject_type":"study_space","entity_name":"Mudd Library Third-Floor Quiet Study","title":"Choose quiet without committing to silence","subtitle":"A full library floor designated for lower-volume study","notes":"Head to the third floor for reading or writing that benefits from quiet, and move group discussion to a designated collaboration room.","short_summary":"A floor-wide quiet zone offering a middle ground between collaborative and silent study.","evidence_claim":"Lawrence officially designates the third floor of Mudd Library for quiet study.","source_url":"https://www.lawrence.edu/library/spaces","source_title":"Spaces in the Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Observe the floor’s quiet-study designation; Mudd Library requires Lawrence card access during all open hours.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:57:54.161594Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa1e-c92e-72b1-8d9e-78881fd8948e.1786607749422636000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+49,309
+
+{"complete":true,"school_name":"Lawrence University","town_name":"Appleton","boards":[{"complete":true,"school_name":"Lawrence University","town_name":"Appleton","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten distinct work settings inside Seeley G. Mudd Library, from silent reading rooms to reservable group, media, computing, music, and making spaces.","icon":"menu_book","cards":[{"subject_id":"lawrence-mudd-kruse-room","subject_type":"study_space","entity_name":"Roger Dale Kruse Room","title":"Settle into the Kruse Room","subtitle":"Silent study and reflection on Mudd Library’s fourth floor","notes":"Bring reading or focused solo work, silence devices before entering, and use another floor when your assignment requires conversation.","short_summary":"A dedicated silent room for uninterrupted reading, writing, or reflection.","evidence_claim":"Lawrence designates the fourth-floor Kruse Room for silent study or reflection.","source_url":"https://www.lawrence.edu/library/spaces","source_title":"Spaces in the Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Mudd Library requires Lawrence card access during all open hours; non-Lawrence visitors must arrange an appointment at least one business day in advance.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lawrence-mudd-milwaukee-downer-room","subject_type":"study_space","entity_name":"Milwaukee-Downer Room","title":"Work among Milwaukee-Downer history","subtitle":"First-come study when the special-collections room is unbooked","notes":"Check whether an academic or administrative function is scheduled, then use the room for individual work or a small study session.","short_summary":"A historic library room that becomes an individual or group workspace between scheduled functions.","evidence_claim":"Lawrence says the Milwaukee-Downer Room is available for individual or group study on a first-come basis when it is not otherwise in use.","source_url":"https://www.lawrence.edu/library/spaces","source_title":"Spaces in the Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use is first-come, first-served only when no academic or administrative function occupies the room; library building access requires a Lawrence card.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lawrence-mudd-lincoln-room","subject_type":"study_space","entity_name":"Lincoln Room","title":"Take a first-come seat in the Lincoln Room","subtitle":"Flexible solo or group study between scheduled functions","notes":"Confirm the room is not reserved before unpacking, and choose it when you need a named room that can accommodate either solo or shared work.","short_summary":"An occasional-function room that doubles as a flexible study setting when open.","evidence_claim":"Lawrence states that the Lincoln Room may be used for individual or group study on a first-come basis whenever it is not otherwise in use.","source_url":"https://www.lawrence.edu/library/spaces","source_title":"Spaces in the Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Availability depends on academic and administrative reservations; library building access requires a Lawrence card during open hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lawrence-mudd-third-floor-group-room","subject_type":"study_space","entity_name":"Mudd Library Third-Floor Group Study Room","title":"Put the problem on three different surfaces","subtitle":"A reservable group room with computer, display, and writing boards","notes":"Sign up on the clipboard at the door, bring your Lawrence ID, and divide calculations or presentation notes between the chalkboard and whiteboard.","short_summary":"A technology-equipped collaboration room suited to presentations and board-heavy problem solving.","evidence_claim":"Lawrence identifies one third-floor group study room with a computer, large-screen monitor, chalkboard, and dry-erase board.","source_url":"https://www.lawrence.edu/library/spaces","source_title":"Spaces in the Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Lawrence ID-card access is required, and the room is reserved by signing the clipboard posted at its door.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lawrence-mudd-first-floor-viewing-rooms","subject_type":"study_space","entity_name":"Mudd Library Viewing Rooms","title":"Rehearse with the screen already connected","subtitle":"Four reservable media rooms for viewing and presentation practice","notes":"Claim one session on the Monday door schedule, connect your laptop through the wall plate, and yield priority to academic viewing or listening.","short_summary":"Four enclosed rooms combining legacy-media playback, monitors, and laptop presentation connections.","evidence_claim":"Mudd Library has four ID-access viewing rooms with monitors, Blu-ray/DVD and VCR equipment, and VGA/HDMI wall plates; independent study is allowed but academic media use has priority.","source_url":"https://www.lawrence.edu/library/spaces","source_title":"Spaces in the Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Available to Lawrence students, faculty, and staff by ID card; reserve in person for one 2.5-hour session on the weekly schedule posted each Monday.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lawrence-mudd-second-floor-study-rooms","subject_type":"study_space","entity_name":"Mudd Library Second-Floor Study Rooms","title":"Book a small room for one or two","subtitle":"Compact study rooms reservable for sessions of up to three hours","notes":"Write your reservation on the clipboard at the room, keep the session within three hours, and use the space alone or with one partner.","short_summary":"Small unlocked rooms sized for focused solo work or a two-person collaboration.","evidence_claim":"Lawrence provides second-floor study rooms for one or two students that can be reserved for up to three hours and should remain unlocked.","source_url":"https://www.lawrence.edu/library/spaces","source_title":"Spaces in the Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Reserve on the clipboard posted at the door for no more than three hours; individual room entry does not require an ID, but library building access does.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lawrence-mudd-music-lab-116","subject_type":"study_space","entity_name":"Mudd Library Music Lab, Room 116","title":"Move a score from page to playback","subtitle":"Music-focused workstations, keyboards, scanners, and listening gear","notes":"Use the MIDI keyboards and composition software for arranging, or scan a score at the large-format station before reviewing it at the piano.","short_summary":"A first-floor lab built for score study, composition, digitization, and close listening.","evidence_claim":"Room 116 is open to the Lawrence community and contains a Yamaha digital piano, score-scanning equipment, Mac workstations with MIDI keyboards and music software, and a listening station.","source_url":"https://www.lawrence.edu/library/spaces","source_title":"Spaces in the Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The Music Lab is available to members of the Lawrence University community; Mudd Library requires Lawrence card access during open hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lawrence-mudd-itc-computer-lab","subject_type":"study_space","entity_name":"Mudd Library ITC Computer Lab","title":"Use a full computer station between reservations","subtitle":"Seventeen login computers beside the Technology Services help desk","notes":"Check that the lab is not reserved, sign in at one of the 17 computers, and use the nearby help desk when a campus account or device blocks progress.","short_summary":"A sizable second-floor computer lab with technical assistance close at hand.","evidence_claim":"Lawrence locates the ITC Computer Lab on Mudd Library’s second floor and says its 17 login computers are open for use when the room is not reserved.","source_url":"https://www.lawrence.edu/library/spaces","source_title":"Spaces in the Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open when not otherwise reserved; computers require a login, and library building access requires a Lawrence card during open hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lawrence-mudd-makerspace","subject_type":"study_space","entity_name":"Lawrence University Makerspace","title":"Prototype the assignment instead of describing it","subtitle":"A trained-access workspace for hands-on academic projects","notes":"Complete the initial and equipment-specific training, attend an open session, then reserve the machine needed for your academic project.","short_summary":"A project workspace where trained students can turn academic ideas into physical prototypes.","evidence_claim":"Lawrence says its makerspace supports academic work with hands-on tools and innovative equipment; users must complete training and reserve equipment time afterward.","source_url":"https://www.lawrence.edu/academics/advising-support/library/spaces/makerspace/","source_title":"Makerspace","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Initial and equipment-specific training are required; after training, students must reserve equipment time. Library card-access rules also apply.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lawrence-mudd-third-floor-quiet-study","subject_type":"study_space","entity_name":"Mudd Library Third-Floor Quiet Study","title":"Choose quiet without committing to silence","subtitle":"A full library floor designated for lower-volume study","notes":"Head to the third floor for reading or writing that benefits from quiet, and move group discussion to a designated collaboration room.","short_summary":"A floor-wide quiet zone offering a middle ground between collaborative and silent study.","evidence_claim":"Lawrence officially designates the third floor of Mudd Library for quiet study.","source_url":"https://www.lawrence.edu/library/spaces","source_title":"Spaces in the Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Observe the floor’s quiet-study designation; Mudd Library requires Lawrence card access during all open hours.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

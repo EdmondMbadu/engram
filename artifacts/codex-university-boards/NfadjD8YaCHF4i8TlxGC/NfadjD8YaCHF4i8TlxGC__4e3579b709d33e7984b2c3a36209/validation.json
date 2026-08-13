@@ -1,0 +1,71 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.moravian.edu/academics/reeves-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.moravian.edu/academics/reeves-library",
+      "error": ""
+    },
+    {
+      "url": "https://amos.moravian.edu/ics/reeves_library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://amos.moravian.edu/ics/reeves_library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.moravian.edu/celebratingthehub",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.moravian.edu/celebratingthehub",
+      "error": ""
+    },
+    {
+      "url": "https://www.moravian.edu/eventmanagement/hub/meeting-rooms-services",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.moravian.edu/eventmanagement/hub/meeting-rooms-services",
+      "error": ""
+    },
+    {
+      "url": "https://www.moravian.edu/student-athletes",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.moravian.edu/student-athletes",
+      "error": ""
+    },
+    {
+      "url": "https://www.moravian.edu/new-student-guide/student-life",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.moravian.edu/new-student-guide/student-life",
+      "error": ""
+    },
+    {
+      "url": "https://www.moravian.edu/handbook/campus-life/resources",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.moravian.edu/handbook/campus-life/resources",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Reeves Library"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.charlesrivermuseum.org/admission",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.charlesrivermuseum.org/admission",
+      "error": ""
+    },
+    {
+      "url": "https://www.lizzysicecream.com/waltham/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lizzysicecream.com/waltham/",
+      "error": ""
+    },
+    {
+      "url": "https://www.embassywaltham.com/home",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.embassywaltham.com/home",
+      "error": ""
+    },
+    {
+      "url": "https://www.waltham.lib.ma.us/about-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://waltham.lib.ma.us/about-us/",
+      "error": ""
+    },
+    {
+      "url": "https://www.pizzifarm.com/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pizzifarm.com/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.city.waltham.ma.us/1939/Prospect-Hill-Park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.city.waltham.ma.us/1939/Prospect-Hill-Park",
+      "error": ""
+    },
+    {
+      "url": "https://www.city.waltham.ma.us/1755/Stonehurst-The-Robert-Treat-Paine-Estate",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.city.waltham.ma.us/1755/Stonehurst-The-Robert-Treat-Paine-Estate",
+      "error": ""
+    },
+    {
+      "url": "https://www.historicnewengland.org/property/lyman-estate/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.historicnewengland.org/property/lyman-estate/",
+      "error": ""
+    },
+    {
+      "url": "https://goreplace.org/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://goreplace.org/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.mass.gov/info-details/mass-central-rail-trail-wayside",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mass.gov/info-details/mass-central-rail-trail-wayside",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

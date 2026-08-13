@@ -1,0 +1,73 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.elon.edu/u/moseley-center/about-the-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/moseley-center/about-the-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/moseley-center/about-the-center/second-floor/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/moseley-center/about-the-center/second-floor/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/news/2025/10/23/reflecting-on-the-past-and-present-of-hispanic-heritage-month-at-elon/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/news/2025/10/23/reflecting-on-the-past-and-present-of-hispanic-heritage-month-at-elon/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/fa/technology/makerhub/locations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/fa/technology/makerhub/locations/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/truitt-center/our-spaces/numen-lumen-pavilion/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/truitt-center/our-spaces/numen-lumen-pavilion/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/library/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/library/about/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/academics/arts-and-sciences/engineering/about-our-program/facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/academics/arts-and-sciences/engineering/about-our-program/facilities/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Numen Lumen Pavilion",
+    "Carol Grotnes Belk Library",
+    "Hunt Atrium"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

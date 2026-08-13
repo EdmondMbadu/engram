@@ -1,0 +1,90 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "4 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://imu.uiowa.edu/outdoor-and-campus-spaces/pentacrest",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://imu.uiowa.edu/outdoor-and-campus-spaces/pentacrest",
+      "error": ""
+    },
+    {
+      "url": "https://oldcap.uiowa.edu/visit/group-visits-tours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://oldcap.uiowa.edu/visit/group-visits-tours",
+      "error": ""
+    },
+    {
+      "url": "https://mnh.uiowa.edu/visit/group-visits-tours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mnh.uiowa.edu/visit/group-visits-tours",
+      "error": ""
+    },
+    {
+      "url": "https://classrooms.uiowa.edu/spaces/student-learning-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://classrooms.uiowa.edu/spaces/student-learning-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://stanleymuseum.uiowa.edu/visit/plan-your-visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stanleymuseum.uiowa.edu/visit/plan-your-visit",
+      "error": ""
+    },
+    {
+      "url": "https://recserv.uiowa.edu/campus-recreation-wellness-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recserv.uiowa.edu/campus-recreation-wellness-center",
+      "error": ""
+    },
+    {
+      "url": "https://hancher.uiowa.edu/Online/default.asp?BOparam%3A%3AWScontent%3A%3AloadArticle%3A%3Acontext_id=&BOparam%3A%3AWScontent%3A%3Apermalink=gooseRSVP",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://hancher.uiowa.edu/Online/default.asp?BOparam%3A%3AWScontent%3A%3AloadArticle%3A%3Acontext_id=&BOparam%3A%3AWScontent%3A%3Apermalink=gooseRSVP",
+      "error": ""
+    },
+    {
+      "url": "https://www.icpl.org/about/hours-location",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.icpl.org/about/hours-location",
+      "error": ""
+    },
+    {
+      "url": "https://www.icgov.org/business/public-art-program",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.icgov.org/business/public-art-program",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Old Capitol Museum",
+    "Stanley Museum of Art",
+    "Campus Recreation and Wellness Center",
+    "Iowa City Public Library"
+  ],
+  "sourceCount": 9,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

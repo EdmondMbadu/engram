@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.nobts.edu/chapel/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nobts.edu/chapel/",
+      "error": ""
+    },
+    {
+      "url": "https://nobts.edu/_resources/pdf/studentlife/CityGuide.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://nobts.edu/_resources/pdf/studentlife/CityGuide.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.nobts.edu/student-services/New-Student-Orientation-NOBTS-Spring-2026.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nobts.edu/student-services/New-Student-Orientation-NOBTS-Spring-2026.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.nobts.edu/plc/dining-options.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nobts.edu/plc/dining-options.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.nobts.edu/_resources/pdf/studentservices/NOBTSHandbook.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nobts.edu/_resources/pdf/studentservices/NOBTSHandbook.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.nobts.edu/giving/legacy-brick.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nobts.edu/giving/legacy-brick.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

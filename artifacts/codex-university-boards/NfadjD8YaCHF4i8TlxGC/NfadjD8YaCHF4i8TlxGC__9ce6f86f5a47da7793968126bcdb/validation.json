@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.littleitalyau.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.littleitalyau.com/",
+      "error": ""
+    },
+    {
+      "url": "https://proudwillies.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://proudwillies.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.olivineauburn.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.olivineauburn.com/",
+      "error": ""
+    },
+    {
+      "url": "https://auburnrestaurants.com/Restaurants/Profile/Ariccia-Cucina-Italiana",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://auburnrestaurants.com/Restaurants/Profile/Ariccia-Cucina-Italiana",
+      "error": ""
+    },
+    {
+      "url": "https://auburn.campusdish.com/LocationsAndMenus/TheEdgeCentralDining",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://auburn.mydininghub.com/en/locations",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wafflehouse.com/auburn-al-1882/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wafflehouse.com/auburn-al-1882/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wafflehouse.com/auburn-al-1035/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wafflehouse.com/auburn-al-1035/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wafflehouse.com/auburn-al-1166/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wafflehouse.com/auburn-al-1166/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wafflehouse.com/auburn-al-1646/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wafflehouse.com/auburn-al-1646/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wafflehouse.com/auburn-al-2542/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wafflehouse.com/auburn-al-2542/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "The Edge at Central Dining"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

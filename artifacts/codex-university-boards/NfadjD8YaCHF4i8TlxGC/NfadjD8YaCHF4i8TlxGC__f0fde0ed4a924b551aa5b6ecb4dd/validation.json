@@ -1,0 +1,64 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.lib.uiowa.edu/commons/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.uiowa.edu/commons/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.uiowa.edu/about/policies/group-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.uiowa.edu/about/policies/group-spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.uiowa.edu/about/studyspaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.uiowa.edu/about/studyspaces/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.uiowa.edu/eng/group-study-rooms/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.uiowa.edu/eng/group-study-rooms/",
+      "error": ""
+    },
+    {
+      "url": "https://blog.lib.uiowa.edu/eng/find-a-study-space/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://blog.lib.uiowa.edu/eng/find-a-study-space/",
+      "error": ""
+    },
+    {
+      "url": "https://imu.uiowa.edu/imu-services/study-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://imu.uiowa.edu/imu-services/study-spaces",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Main Library Learning Commons",
+    "Hubbard Commons"
+  ],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

@@ -1,0 +1,55 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.holyfamily.edu/academics/library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.holyfamily.edu/academics/library",
+      "error": ""
+    },
+    {
+      "url": "https://www.holyfamily.edu/about/news-and-media/news/huddle-room-study-spaces-open-campus-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.holyfamily.edu/about/news-and-media/news/huddle-room-study-spaces-open-campus-library",
+      "error": ""
+    },
+    {
+      "url": "https://www.holyfamily.edu/about/administrative-services/university-archives",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.holyfamily.edu/about/administrative-services/university-archives",
+      "error": ""
+    },
+    {
+      "url": "https://www.holyfamily.edu/about/news-and-media/news/holy-family-universitys-center-academic-enhancement-awarded-college-reading-and-learning-association",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.holyfamily.edu/about/news-and-media/news/cae-awarded-crla-tutor-certification",
+      "error": ""
+    },
+    {
+      "url": "https://www.holyfamily.edu/documents/sonahp-bsn-handbook",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.holyfamily.edu/documents/sonahp-bsn-handbook",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Holy Family University Library"
+  ],
+  "sourceCount": 5,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

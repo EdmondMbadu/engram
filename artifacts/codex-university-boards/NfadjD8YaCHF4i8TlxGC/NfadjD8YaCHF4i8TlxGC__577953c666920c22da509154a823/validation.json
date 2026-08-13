@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.loyola.edu/life-at-loyola/school-spirit-traditions.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loyola.edu/life-at-loyola/school-spirit-traditions.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.loyola.edu/explore/magazine/issues/2025-spring/weve-got-spirit.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loyola.edu/explore/magazine/issues/2025-spring/weve-got-spirit.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 2,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

@@ -1,0 +1,59 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "pwBLNuFjKdQn7c6E6k2b",
+    "schoolName": "United States Coast Guard Academy",
+    "shortSchoolName": "United States Coast Guard Academy",
+    "townName": "New London",
+    "state": "CT",
+    "countryCode": "US",
+    "unitId": "130624",
+    "website": "https://www.uscga.edu/",
+    "latitude": 41.375823,
+    "longitude": -72.101583,
+    "heroUrl": "https://uscga.edu/wp-content/uploads/2026/06/washington-parade-field.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=uscga.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "Library Large Tables",
+    "Library Collaboration Workstations",
+    "Library Study Rooms",
+    "Library Small Group Tables",
+    "Library Individual Carrels",
+    "Hewitt Writing and Reading Center",
+    "Library Research Assistance",
+    "Library Quiet Study Space",
+    "Library Comfortable Chairs",
+    "Library Coffee and Tea Seating",
+    "Library at Waesche Hall",
+    "Chase Hall",
+    "Leamy Hall",
+    "Roland Hall Gym",
+    "Cadet Memorial Field",
+    "Sailing Center",
+    "Rowing Center",
+    "Barque Eagle",
+    "Bear Plaza"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

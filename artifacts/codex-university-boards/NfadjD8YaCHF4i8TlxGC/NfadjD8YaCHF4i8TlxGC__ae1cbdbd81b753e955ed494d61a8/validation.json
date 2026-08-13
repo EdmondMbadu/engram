@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.fgcu.edu/campusmap/ada",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fgcu.edu/campusmap/ada",
+      "error": ""
+    },
+    {
+      "url": "https://www.fgcu.edu/cohenstudentunion/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fgcu.edu/cohenstudentunion/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fgcu.edu/cas/communityimpact/foodforest/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fgcu.edu/cas/communityimpact/foodforest/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fgcu.edu/university-recreation-and-wellness/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fgcu.edu/university-recreation-and-wellness/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fgcu.edu/university-recreation-and-wellness/operatinghours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fgcu.edu/university-recreation-and-wellness/operatinghours",
+      "error": ""
+    },
+    {
+      "url": "https://www.fgcu.edu/artgalleries/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fgcu.edu/artgalleries/about/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fgcu.edu/concerts/studentensembles",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fgcu.edu/concerts/studentensembles",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

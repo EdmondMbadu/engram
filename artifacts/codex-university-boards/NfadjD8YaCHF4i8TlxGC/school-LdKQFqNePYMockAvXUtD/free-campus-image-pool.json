@@ -1,0 +1,152 @@
+{
+  "target": "LdKQFqNePYMockAvXUtD",
+  "schoolName": "North Carolina State University at Raleigh",
+  "generatedAt": "2026-08-13T08:46:04.235Z",
+  "mode": "free-related-campus-distinct",
+  "images": [
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FLdKQFqNePYMockAvXUtD%2F01-f6eef14637248551.jpg?alt=media&token=01ded141-b950-48df-80a5-f42380905a51",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:DH_Hill_Library.JPG",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 4.0",
+      "imageLicense": "CC BY-SA 4.0",
+      "imageTitle": "DH Hill Library.JPG",
+      "imageFingerprint": "f6eef14637248551df307142cdf81b9bb39aa78454e8279ea9f99035a4852e08",
+      "imageWidth": 1920,
+      "imageHeight": 2560,
+      "imageResolvedAt": "2026-08-13T08:46:03.785Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FLdKQFqNePYMockAvXUtD%2F02-a007da7fe8a918d4.jpg?alt=media&token=330c672b-521f-43dd-8df5-9368ec042b2f",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Jane_Simpson_McKimmon_plaque.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC0",
+      "imageLicense": "CC0",
+      "imageTitle": "Jane Simpson McKimmon plaque.jpg",
+      "imageFingerprint": "a007da7fe8a918d4cea4dd2455c809c528e9c55a7e8a071bbbb8a88c50fbdc6d",
+      "imageWidth": 1920,
+      "imageHeight": 2403,
+      "imageResolvedAt": "2026-08-13T08:46:04.156Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FLdKQFqNePYMockAvXUtD%2F03-6bd3d894fbb521fe.jpg?alt=media&token=2404359a-bdee-4251-8ee7-0400235f0cf0",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:McKimmon_Center_sign.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC0",
+      "imageLicense": "CC0",
+      "imageTitle": "McKimmon Center sign.jpg",
+      "imageFingerprint": "6bd3d894fbb521fed24175eee36f8f9664a60e83d1f8690d21b6d044a44dd8db",
+      "imageWidth": 1920,
+      "imageHeight": 1295,
+      "imageResolvedAt": "2026-08-13T08:46:03.887Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FLdKQFqNePYMockAvXUtD%2F04-8e0422b68c9491b4.jpg?alt=media&token=13db5640-0380-4c91-98dc-f02bdf833b58",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Freedom_Of_Expression_Tunnel_-_panoramio.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY 3.0",
+      "imageLicense": "CC BY 3.0",
+      "imageTitle": "Freedom Of Expression Tunnel - panoramio.jpg",
+      "imageFingerprint": "8e0422b68c9491b4aa0f1d395ffa1432bffeaedd94523c72dca355dff9523ca3",
+      "imageWidth": 1920,
+      "imageHeight": 1280,
+      "imageResolvedAt": "2026-08-13T08:46:03.822Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FLdKQFqNePYMockAvXUtD%2F05-25bc60bffe3edc54.jpg?alt=media&token=92626723-2088-4f6d-9c92-62ec0f635bf4",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:North_Carolina_State_aerial_(22112860786).jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · No restrictions",
+      "imageLicense": "No restrictions",
+      "imageTitle": "North Carolina State aerial (22112860786).jpg",
+      "imageFingerprint": "25bc60bffe3edc549391977ebf3cf104949cfbb7dee7b5a6e477709156413c87",
+      "imageWidth": 1670,
+      "imageHeight": 1087,
+      "imageResolvedAt": "2026-08-13T08:46:03.817Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FLdKQFqNePYMockAvXUtD%2F06-576e7ab62baf9fed.jpg?alt=media&token=927f71c3-c0ec-417b-acf8-a7aa7312e2c1",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Lake_Wheeler_Road_Field_Laboratory.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC0",
+      "imageLicense": "CC0",
+      "imageTitle": "Lake Wheeler Road Field Laboratory.jpg",
+      "imageFingerprint": "576e7ab62baf9fedfd363d2cede7376adae2ff9fc047d709fc49b90452d9a4c6",
+      "imageWidth": 1920,
+      "imageHeight": 1440,
+      "imageResolvedAt": "2026-08-13T08:46:03.749Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FLdKQFqNePYMockAvXUtD%2F07-f689cec6afac4212.jpg?alt=media&token=ec29c00c-c8ac-4c62-857d-7944cc2d179b",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:HolladayHallNCSU.JPG",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · Public domain",
+      "imageLicense": "Public domain",
+      "imageTitle": "HolladayHallNCSU.JPG",
+      "imageFingerprint": "f689cec6afac4212ed90fd8401a16aa1f0086bede96c6581b90e9eab2e584ef1",
+      "imageWidth": 727,
+      "imageHeight": 474,
+      "imageResolvedAt": "2026-08-13T08:46:03.883Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FLdKQFqNePYMockAvXUtD%2F08-4647e38bc4cee24d.jpg?alt=media&token=f454605a-83be-48c9-be5c-878b80f6672d",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:NCSU_campus_033.JPG",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 3.0",
+      "imageLicense": "CC BY-SA 3.0",
+      "imageTitle": "NCSU campus 033.JPG",
+      "imageFingerprint": "4647e38bc4cee24d61ca9ce6a50c463fd5576f39a8b8b77abe6a9185cad9a2e7",
+      "imageWidth": 1920,
+      "imageHeight": 1440,
+      "imageResolvedAt": "2026-08-13T08:46:04.048Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FLdKQFqNePYMockAvXUtD%2F09-db1950131c1e8c40.jpg?alt=media&token=6121eaa2-c8d3-4486-bc30-894dcd76fdbf",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Ncsutower2.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 3.0",
+      "imageLicense": "CC BY-SA 3.0",
+      "imageTitle": "Ncsutower2.jpg",
+      "imageFingerprint": "db1950131c1e8c40f1501f954e18a0c69a80bdae72f547e3debbde47c3caa866",
+      "imageWidth": 1920,
+      "imageHeight": 1280,
+      "imageResolvedAt": "2026-08-13T08:46:03.992Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FLdKQFqNePYMockAvXUtD%2F10-3aa5bd81dc759570.jpg?alt=media&token=ef4b3ad6-6caf-48fa-aebb-057e367d1d22",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:North_Carolina_State_Bell_Tower.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 3.0",
+      "imageLicense": "CC BY-SA 3.0",
+      "imageTitle": "North Carolina State Bell Tower.jpg",
+      "imageFingerprint": "3aa5bd81dc7595709180b1c0d865c92aeafe2b7d6fe84b0760bf01e26dc39515",
+      "imageWidth": 1920,
+      "imageHeight": 2560,
+      "imageResolvedAt": "2026-08-13T08:46:04.047Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FLdKQFqNePYMockAvXUtD%2F11-f9d9aa0e6400483e.jpg?alt=media&token=08d8aa7e-2ea3-4d64-8b68-c8ae741af070",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Brickyard.JPG",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 3.0",
+      "imageLicense": "CC BY-SA 3.0",
+      "imageTitle": "Brickyard.JPG",
+      "imageFingerprint": "f9d9aa0e6400483ec1ea3bb011f6d00c26fd14ef9f15903994c1a14c3564a6f1",
+      "imageWidth": 1920,
+      "imageHeight": 1278,
+      "imageResolvedAt": "2026-08-13T08:46:04.104Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FLdKQFqNePYMockAvXUtD%2F12-ced09a515d261306.jpg?alt=media&token=9a856b20-5c6d-4234-8ebc-7eabcde43d52",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Coast_watch_(1979)_(20651722962).jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · No restrictions",
+      "imageLicense": "No restrictions",
+      "imageTitle": "Coast watch (1979) (20651722962).jpg",
+      "imageFingerprint": "ced09a515d261306ef32ee9cf2755a1117d698f4acdb9f87cc014d16f271fbd3",
+      "imageWidth": 1920,
+      "imageHeight": 1927,
+      "imageResolvedAt": "2026-08-13T08:46:04.235Z"
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation.",
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://studentlife.mit.edu/wellbeing-support/religious-spiritual-and-ethical-life/mit-chapel/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentlife.mit.edu/wellbeing-support/religious-spiritual-and-ethical-life/mit-chapel/",
+      "error": ""
+    },
+    {
+      "url": "https://thecoop.com/pages/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thecoop.com/pages/contact",
+      "error": ""
+    },
+    {
+      "url": "https://capitalprojects.mit.edu/projects/314-main-street-kendall-square",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://capitalprojects.mit.edu/projects/314-main-street-kendall-square",
+      "error": ""
+    },
+    {
+      "url": "https://mitpressbookstore.mit.edu/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mitpressbookstore.mit.edu/contact",
+      "error": ""
+    },
+    {
+      "url": "https://www.mit.edu/visitmit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mit.edu/visitmit/",
+      "error": ""
+    },
+    {
+      "url": "https://ki.mit.edu/about/galleries",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ki.mit.edu/about/galleries",
+      "error": ""
+    },
+    {
+      "url": "https://prepared.mit.edu/mit-cool-spots/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://prepared.mit.edu/mit-cool-spots/",
+      "error": ""
+    },
+    {
+      "url": "https://listart.mit.edu/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://listart.mit.edu/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.csail.mit.edu/about/visit-csail",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csail.mit.edu/about/visit-csail",
+      "error": ""
+    },
+    {
+      "url": "https://sailing.mit.edu/info/directions.php",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://sailing.mit.edu/info/directions.php",
+      "error": "fetch failed"
+    }
+  ],
+  "overlap": [
+    "MIT Chapel",
+    "MIT List Visual Arts Center",
+    "Ray and Maria Stata Center"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

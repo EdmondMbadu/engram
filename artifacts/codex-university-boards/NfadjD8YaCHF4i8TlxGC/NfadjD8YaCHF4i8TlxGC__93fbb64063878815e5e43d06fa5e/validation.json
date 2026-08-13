@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.hofstra.edu/dining-services/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hofstra.edu/dining-services/",
+      "error": ""
+    },
+    {
+      "url": "https://campuspizza742.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campuspizza742.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.kennedychickengrillkabob.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://order.menufy.com/?404Location",
+      "error": ""
+    },
+    {
+      "url": "https://tressaboresny.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://tressaboresny.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.halalmunchiesus.com/hempstead-ny",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.halalmunchiesus.com/hempstead-ny",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ny/hempstead/490-peninsula-blvd.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ny/hempstead/490-peninsula-blvd.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wingstop.com/us/ny/hempstead",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wingstop.com/us/ny/hempstead",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/es-us/location/ny/hempstead/340-peninsula-blvd/24689.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/es-us/location/ny/hempstead/340-peninsula-blvd/24689.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/ny/hempstead/760-fulton-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/ny/hempstead/760-fulton-ave",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/ny/west-hempstead/65-hempstead-tpke",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/ny/west-hempstead/65-hempstead-tpke",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

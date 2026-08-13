@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.boston.gov/calendar/watercolor-painting-workshop-1-roslindale-wetlands",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.boston.gov/calendar/watercolor-painting-workshop-1-roslindale-wetlands",
+      "error": ""
+    },
+    {
+      "url": "https://www.boston.gov/calendar/watercolor-painting-workshop-3-copley-square-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.boston.gov/calendar/watercolor-painting-workshop-3-copley-square-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.boston.gov/calendar/watercolor-painting-workshop-4-chandler-pond",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.boston.gov/calendar/watercolor-painting-workshop-4-chandler-pond",
+      "error": ""
+    },
+    {
+      "url": "https://www.boston.gov/calendar/watercolor-painting-workshop-5-scarboro-pond",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.boston.gov/calendar/watercolor-painting-workshop-5-scarboro-pond",
+      "error": ""
+    },
+    {
+      "url": "https://www.boston.gov/calendar/watercolor-painting-workshop-6-boston-public-garden",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.boston.gov/calendar/watercolor-painting-workshop-6-boston-public-garden",
+      "error": ""
+    },
+    {
+      "url": "https://www.boston.gov/calendar/franklin-park-ruins-tour",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.boston.gov/calendar/franklin-park-ruins-tour",
+      "error": ""
+    },
+    {
+      "url": "https://www.boston.gov/departments/boston-bikes/adults-learn-to-bike",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.boston.gov/departments/boston-bikes/adults-learn-to-bike",
+      "error": ""
+    },
+    {
+      "url": "https://www.boston.gov/calendar/movie-night-hamilton",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.boston.gov/calendar/movie-night-hamilton",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

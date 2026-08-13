@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.cityofsacramento.gov/ypce/parks/park-directory/g-h/glenn-hall-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cityofsacramento.gov/ypce/parks/park-directory/g-h/glenn-hall-park",
+      "error": ""
+    },
+    {
+      "url": "https://theuv.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://theuv.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.menchies.com/location/howe-avenue/get-the-app/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.menchies.com/location/howe-avenue/get-the-app/",
+      "error": ""
+    },
+    {
+      "url": "https://theuv.com/dining/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://theuv.com/dining/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.traderjoes.com/ca/sacramento/175/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.traderjoes.com/ca/sacramento/175/",
+      "error": ""
+    },
+    {
+      "url": "https://cortibrothers.com/pages/contact-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cortibrothers.com/pages/contact-us",
+      "error": ""
+    },
+    {
+      "url": "https://www.krurestaurant.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.krurestaurant.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.sellands.com/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sellands.com/contact",
+      "error": ""
+    },
+    {
+      "url": "https://www.cityofsacramento.gov/ypce/parks/park-directory/e-f/east-portal-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cityofsacramento.gov/ypce/parks/park-directory/e-f/east-portal-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.cityofsacramento.gov/ypce/parks/park-directory/w-x/william-mckinley-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cityofsacramento.gov/ypce/parks/park-directory/w-x/william-mckinley-park",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

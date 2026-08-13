@@ -1,0 +1,67 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "UXO9kXEu4GhFcbtmkM9t",
+    "schoolName": "Ramapo College of New Jersey",
+    "shortSchoolName": "Ramapo College of New Jersey",
+    "townName": "Mahwah",
+    "state": "NJ",
+    "countryCode": "US",
+    "unitId": "186201",
+    "website": "https://www.ramapo.edu/",
+    "latitude": 41.080942,
+    "longitude": -74.174086,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/7/7b/Ramapo_college_seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=ramapo.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "LC-113 Group Study Room",
+    "LC-120 Group Study Room",
+    "LC-124 Group Study Room",
+    "LC-126 Group Study Room",
+    "LC-228 Group Study Room",
+    "LC-229 Group Study Room",
+    "LC-230 Group Study Room",
+    "LC-331 Group Study Room",
+    "LC-332 Group Study Room",
+    "LC-429 Group Study Room",
+    "Robert A. Scott Student Center",
+    "The Atrium",
+    "Bandshell",
+    "Student Involvement Fair",
+    "Peter P. Mercer Learning Commons",
+    "Kresge and Pascal Galleries",
+    "Selden Rodman Gallery of Popular Arts",
+    "Bill Bradley Sports and Recreation Center",
+    "Arch Performances",
+    "J. Lee’s",
+    "The Atrium (Food Court)",
+    "Berrie Center for Performing and Visual Arts",
+    "Kresge Gallery",
+    "Pascal Gallery",
+    "Sharp Fitness Center",
+    "Adele and Reuben Thomas Swimming Pool",
+    "Arch (Havemeyer)"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

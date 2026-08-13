@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://oregonstate.edu/stories/coziest-places-study",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://oregonstate.edu/stories/coziest-places-study",
+      "error": ""
+    },
+    {
+      "url": "https://honors.oregonstate.edu/student-learning-centers",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://honors.oregonstate.edu/student-learning-centers",
+      "error": ""
+    },
+    {
+      "url": "https://see.oregonstate.edu/dce/centers-initiatives/ettihad-cultural-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://see.oregonstate.edu/dce/centers-initiatives/ettihad-cultural-center",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.tacobell.com/wi/de-pere/1010-s-broadway.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/wi/de-pere/1010-s-broadway.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/wi/de-pere/1610-lawrence-drive/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/wi/de-pere/1610-lawrence-drive/restaurant.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/wi/de-pere/1501-main-avenue.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/wi/de-pere/1501-main-avenue.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/wi/de-pere/1373-s-broadway/25148.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/wi/de-pere/1373-s-broadway/25148.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.dairyqueen.com/en-us/locations/wi/de-pere/1500-scheuring-rd/41423/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.dairyqueen.com/en-us/locations/wi/de-pere/1500-scheuring-rd/41423/",
+      "error": ""
+    },
+    {
+      "url": "https://toppers.com/locations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://toppers.com/locations/",
+      "error": ""
+    },
+    {
+      "url": "https://www.glassnickelpizza.com/location/green-bay/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.glassnickelpizza.com/location/green-bay/",
+      "error": ""
+    },
+    {
+      "url": "https://www.kwiktrip.com/locator?address=44.4344570%2C-88.0700980&maxDistance=15",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.kwiktrip.com/locator?address=44.4344570%2C-88.0700980&maxDistance=15",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

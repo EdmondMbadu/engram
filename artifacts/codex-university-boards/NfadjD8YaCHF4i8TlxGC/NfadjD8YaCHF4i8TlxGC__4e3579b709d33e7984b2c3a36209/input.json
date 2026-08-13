@@ -1,0 +1,61 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "brYJ1ZFiW74k6V7aq4c1",
+    "schoolName": "Moravian University",
+    "shortSchoolName": "Moravian University",
+    "townName": "Bethlehem",
+    "state": "PA",
+    "countryCode": "US",
+    "unitId": "214157",
+    "website": "https://www.moravian.edu/",
+    "latitude": 40.630947,
+    "longitude": -75.383638,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=moravian.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=moravian.edu&sz=256"
+  },
+  "template": {
+    "id": "college-campus-tour-skips",
+    "version": "1.0",
+    "titlePattern": "What the Campus Tour Skips: {count} Places Students Share With Each Other",
+    "editorialBrief": "Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.",
+    "researchQueries": [
+      "student favorite campus places",
+      "campus map student spaces",
+      "student newspaper campus places"
+    ],
+    "count": 10,
+    "icon": "style",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place",
+      "study_space"
+    ],
+    "freshnessDays": 365
+  },
+  "exact_title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+  "excluded_subjects": [
+    "Moravian Museum of Bethlehem",
+    "Single Sisters’ House",
+    "Kemerer Museum of Decorative Arts",
+    "1750 Smithy",
+    "1752 Apothecary",
+    "1810 Goundie House Welcome Center",
+    "Schropp Dry Goods Shoppe",
+    "Nain-Schober House",
+    "Colonial Industrial Quarter",
+    "1869 Luckenbach Mill",
+    "Reeves Library",
+    "Reeves Library Glass Study Rooms",
+    "Reeves Library Individual Carrels",
+    "Reeves Library Group Study Areas",
+    "Reeves Library Lounge Seating",
+    "REEVE 212",
+    "REEVE 315",
+    "Zinczenko New Media Center",
+    "Debra Gaspar Reading Nook",
+    "Reeves Library Lower-Level Digital Collaboration Space"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

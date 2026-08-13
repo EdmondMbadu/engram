@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://libraries.psu.edu/services/rooms-spaces/one-button-studio",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://libraries.psu.edu/services/rooms-spaces/one-button-studio",
+      "error": ""
+    },
+    {
+      "url": "https://guides.libraries.psu.edu/c.php?g=821576&p=5863293",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://guides.libraries.psu.edu/c.php?g=821576&p=5863293",
+      "error": ""
+    },
+    {
+      "url": "https://guides.libraries.psu.edu/c.php?g=417962&p=2848617",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://guides.libraries.psu.edu/c.php?g=417962&p=2848617",
+      "error": ""
+    },
+    {
+      "url": "https://liveon.psu.edu/university-park/housing/north-halls",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://liveon.psu.edu/university-park/housing/north-halls",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

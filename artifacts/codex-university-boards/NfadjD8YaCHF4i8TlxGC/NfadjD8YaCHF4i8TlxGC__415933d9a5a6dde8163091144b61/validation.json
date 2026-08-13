@@ -1,0 +1,90 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Dining, recreation, library, museum, and business hours can change during breaks or holidays; verify the linked source before departure.",
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.gcsu.edu/about/campus-maps",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcsu.edu/about/campus-maps",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcsu.edu/library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcsu.edu/library",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcsu.edu/studentengagement",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcsu.edu/studentengagement",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcsu.edu/bobcatcard/locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcsu.edu/bobcatcard/locations",
+      "error": ""
+    },
+    {
+      "url": "https://exploregeorgia.org/milledgeville/food-drink/bakeries/blackbird-coffee",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://exploregeorgia.org/milledgeville/food-drink/bakeries/blackbird-coffee",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitmilledgeville.org/listings/oconee-river-greenway/41728/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitmilledgeville.org/listings/oconee-river-greenway/41728/",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcsu.edu/mansion/tour-information",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcsu.edu/mansion/tour-information",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcsu.edu/andalusia",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcsu.edu/andalusia",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcsu.edu/wellnessrec",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcsu.edu/wellnessrec",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Oconee River Greenway",
+    "Georgia's Old Governor's Mansion",
+    "Andalusia: The Home of Flannery O'Connor"
+  ],
+  "sourceCount": 9,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

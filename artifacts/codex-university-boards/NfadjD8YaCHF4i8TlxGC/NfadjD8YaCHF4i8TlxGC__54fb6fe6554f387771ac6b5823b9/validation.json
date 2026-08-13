@@ -1,0 +1,93 @@
+{
+  "ok": false,
+  "problems": [
+    "Card entities are not unique."
+  ],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.tacobell.com/md/owings-mills/10245-reistertown-road.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/md/owings-mills/10245-reistertown-road.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/md/owings-mills/9243-lakeside-boulevard",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/md/owings-mills/9243-lakeside-boulevard",
+      "error": ""
+    },
+    {
+      "url": "https://bellagiowingsandpizza.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://bellagiowingsandpizza.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hyatt.com/hyatt-place/en-US/bwizo-hyatt-place-baltimore-owings-mills/dining",
+      "ok": true,
+      "conclusive": true,
+      "status": 429,
+      "finalUrl": "https://www.hyatt.com/hyatt-place/en-US/bwizo-hyatt-place-baltimore-owings-mills/dining",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/maryland/reisterstown/11616-reisterstown-rd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/maryland/reisterstown/11616-reisterstown-rd",
+      "error": ""
+    },
+    {
+      "url": "https://locations.papajohns.com/united-states/md/21136/reisterstown/11708-a-reisterstown-rd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.papajohns.com/united-states/md/21136/reisterstown/11708-a-reisterstown-rd",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/maryland/randallstown/3502-brenbrook-drive",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/maryland/randallstown/3502-brenbrook-drive",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/md/randallstown/8610-liberty-road",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/md/randallstown/8610-liberty-road",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/maryland/pikesville/607-reisterstown-rd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/maryland/pikesville/607-reisterstown-rd",
+      "error": ""
+    },
+    {
+      "url": "https://www.thegreeneturtle.com/location/owings-mills-md/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.thegreeneturtle.com/location/owings-mills-md/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": null,
+  "generationGrade": null
+}

@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.uncsa.edu/about/office-of-the-provost/handbooks/college-handbook/chapter-i-student-services.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncsa.edu/about/office-of-the-provost/handbooks/college-handbook/chapter-i-student-services.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.uncsa.edu/campus-performance-facilities/venues.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncsa.edu/campus-performance-facilities/venues.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.uncsa.edu/wellness/take-five.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncsa.edu/wellness/take-five.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.uncsa.edu/fitness-center/index.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncsa.edu/fitness-center/index.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.uncsa.edu/current-students/campus-life/housing/college-housing/artist-village.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncsa.edu/current-students/campus-life/housing/college-housing/artist-village.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.uncsa.edu/high-school/high-school-life.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncsa.edu/high-school/high-school-life.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.uncsa.edu/orientation/undergrad/schedule.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncsa.edu/orientation/undergrad/schedule.aspx",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

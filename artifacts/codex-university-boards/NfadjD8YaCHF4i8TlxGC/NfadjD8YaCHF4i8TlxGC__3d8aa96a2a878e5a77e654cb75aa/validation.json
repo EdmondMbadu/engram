@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://library.tcu.edu/locations.asp",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.tcu.edu/locations.asp",
+      "error": ""
+    },
+    {
+      "url": "https://library.tcu.edu/facilities-room-reservations.asp",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.tcu.edu/facilities-room-reservations.asp",
+      "error": ""
+    },
+    {
+      "url": "https://studentsuccess.tcu.edu/study-space/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentsuccess.tcu.edu/study-space/",
+      "error": ""
+    },
+    {
+      "url": "https://library.tcu.edu/information-commons.asp",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.tcu.edu/information-commons.asp",
+      "error": ""
+    },
+    {
+      "url": "https://library.tcu.edu/facilities-gigalab.asp",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.tcu.edu/facilities-gigalab.asp",
+      "error": ""
+    },
+    {
+      "url": "https://library.tcu.edu/facilities-media-editing-rooms.asp",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.tcu.edu/facilities-media-editing-rooms.asp",
+      "error": ""
+    },
+    {
+      "url": "https://library.tcu.edu/spcoll/about.asp",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.tcu.edu/spcoll/about.asp",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

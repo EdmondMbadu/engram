@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.psu.edu/news/campus-life/story/why-we-say-we-are",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.psu.edu/news/campus-life/story/why-we-say-we-are",
+      "error": ""
+    },
+    {
+      "url": "https://alumni.psu.edu/student-programs/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://alumni.psu.edu/student-programs/",
+      "error": ""
+    },
+    {
+      "url": "https://www.psu.edu/about/traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.psu.edu/about/traditions",
+      "error": ""
+    },
+    {
+      "url": "https://www.psu.edu/news/athletics/story/head-over-heels-blue-band-drum-major",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.psu.edu/news/athletics/story/head-over-heels-blue-band-drum-major",
+      "error": ""
+    },
+    {
+      "url": "https://www.psu.edu/news/story/thon-2020-big-reveal",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.psu.edu/news/story/thon-2020-big-reveal",
+      "error": ""
+    },
+    {
+      "url": "https://www.psu.edu/news/campus-life/story/history-penn-state-homecoming-remembrance-reflection-and-revelry",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.psu.edu/news/campus-life/story/history-penn-state-homecoming-remembrance-reflection-and-revelry",
+      "error": ""
+    },
+    {
+      "url": "https://studentaffairs.psu.edu/sites/default/files/Visiting%20Clubs%20Guide%202020.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentaffairs.psu.edu/sites/default/files/Visiting%20Clubs%20Guide%202020.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.shc.psu.edu/about/history-traditions/index.cfm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.shc.psu.edu/about/history-traditions/index.cfm",
+      "error": ""
+    },
+    {
+      "url": "https://www.psu.edu/news/campus-life/story/cultivating-next-old-willow",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.psu.edu/news/campus-life/story/cultivating-next-old-willow",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 100,
+  "generationGrade": "A"
+}

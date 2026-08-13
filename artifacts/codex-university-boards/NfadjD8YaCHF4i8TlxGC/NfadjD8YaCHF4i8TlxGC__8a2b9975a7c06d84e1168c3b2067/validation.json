@@ -1,0 +1,86 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "The first and final cards use distinct named subjects within the same building: the University Student Center as an orientation hub and its officially identified study spaces as the closing activity.",
+    "Hours and temporary-access conditions should be rechecked immediately before visiting, particularly for the Student Center, Smith Center events, Lafayette Park, and Kennedy Center spaces."
+  ],
+  "reachability": [
+    {
+      "url": "https://students.gwu.edu/university-student-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://students.gwu.edu/university-student-center",
+      "error": ""
+    },
+    {
+      "url": "https://events-venues.gwu.edu/gw-campus-venues",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events-venues.gwu.edu/gw-campus-venues",
+      "error": ""
+    },
+    {
+      "url": "https://museum.gwu.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://museum.gwu.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://gwsports.com/sports/2018/7/23/facilities-gewa-baskbl-facility-html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gwsports.com/sports/2018/7/23/facilities-gewa-baskbl-facility-html",
+      "error": ""
+    },
+    {
+      "url": "https://www.kennedy-center.org/globalassets/visit/kennedy-center-campus-map.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.kennedy-center.org/globalassets/visit/kennedy-center-campus-map.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/linc/planyourvisit/visit-the-lincoln-memorial-chamber.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/linc/planyourvisit/visit-the-lincoln-memorial-chamber.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/places/000/constitution-gardens.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/places/000/constitution-gardens.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.si.edu/museums/renwick-gallery",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.si.edu/museums/renwick-gallery",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/places/000/lafayette-park.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/places/000/lafayette-park.htm",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

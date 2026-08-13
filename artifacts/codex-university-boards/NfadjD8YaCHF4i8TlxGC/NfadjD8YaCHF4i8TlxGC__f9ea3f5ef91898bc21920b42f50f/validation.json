@@ -1,0 +1,71 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.misericordia.edu/admissions/admissions/interactive-campus-map/upper-campus-map",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.misericordia.edu/admissions/admissions/interactive-campus-map/upper-campus-map",
+      "error": ""
+    },
+    {
+      "url": "https://www.misericordia.edu/academics/library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.misericordia.edu/academics/library",
+      "error": ""
+    },
+    {
+      "url": "https://www.misericordia.edu/arts-film-and-music",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.misericordia.edu/arts-film-and-music",
+      "error": ""
+    },
+    {
+      "url": "https://www.misericordia.edu/life-at-mu/student-services/post-office",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.misericordia.edu/life-at-mu/student-services/post-office",
+      "error": ""
+    },
+    {
+      "url": "https://www.misericordia.edu/mens-soccer-id-clinic",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.misericordia.edu/mens-soccer-id-clinic",
+      "error": ""
+    },
+    {
+      "url": "https://www.misericordia.edu/life-at-mu/officeformissionministryandservice/liturgical-ministries",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.misericordia.edu/life-at-mu/officeformissionministryandservice/liturgical-ministries",
+      "error": ""
+    },
+    {
+      "url": "https://www.misericordia.edu/library/services/group-study-rooms",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.misericordia.edu/library/services/group-study-rooms",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Center for Nursing History of Northeastern Pennsylvania"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

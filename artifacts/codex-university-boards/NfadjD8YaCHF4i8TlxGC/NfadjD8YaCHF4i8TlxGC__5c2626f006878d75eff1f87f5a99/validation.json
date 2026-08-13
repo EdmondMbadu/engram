@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.onu.edu/admissions-aid/accepted-students/summer-orientation-and-welcome-weekend",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/admissions-aid/accepted-students/summer-orientation-and-welcome-weekend",
+      "error": ""
+    },
+    {
+      "url": "https://www.onu.edu/admissions-aid/accepted-students",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/admissions-aid/accepted-students",
+      "error": ""
+    },
+    {
+      "url": "https://www.onu.edu/history-and-tradition",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/history-and-tradition",
+      "error": ""
+    },
+    {
+      "url": "https://www.onu.edu/news/happy-100th-birthday-onu-polar-bear",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/news/happy-100th-birthday-onu-polar-bear",
+      "error": ""
+    },
+    {
+      "url": "https://www.onu.edu/100days",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/100days",
+      "error": ""
+    },
+    {
+      "url": "https://www.onu.edu/employee-stories/carole-rader",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/employee-stories/carole-rader",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

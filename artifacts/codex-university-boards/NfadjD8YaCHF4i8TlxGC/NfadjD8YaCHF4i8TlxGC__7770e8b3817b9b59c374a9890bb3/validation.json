@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.up.edu/news/2021/07/live-music%2C-food-trucks%2C-seminars-and-soccer-in-person-orientation-is-back.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ww1.up.edu/news/2021/07/live-music,-food-trucks,-seminars-and-soccer-in-person-orientation-is-back.html",
+      "error": ""
+    },
+    {
+      "url": "https://sites.up.edu/upbeat/founders-day-a-celebration-of-student-scholarship-apr-4/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sites.up.edu/upbeat/founders-day-a-celebration-of-student-scholarship-apr-4/",
+      "error": ""
+    },
+    {
+      "url": "https://sites.up.edu/museum/spu-wally-pilot-at-75/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sites.up.edu/museum/spu-wally-pilot-at-75/",
+      "error": ""
+    },
+    {
+      "url": "https://www.giving.up.edu/s/1797/home.aspx?cc=1&gid=2&pgid=478&sessionid=2ead5718-2508-4999-82e7-904291c12d14&sid=1797",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.giving.up.edu/s/1797/home.aspx?cc=1&gid=2&pgid=478&sessionid=2ead5718-2508-4999-82e7-904291c12d14&sid=1797",
+      "error": ""
+    },
+    {
+      "url": "https://sites.up.edu/psoba/events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sites.up.edu/psoba/events/",
+      "error": ""
+    },
+    {
+      "url": "https://sites.up.edu/museum/campus-buildings-history-and-fun-facts/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sites.up.edu/museum/campus-buildings-history-and-fun-facts/",
+      "error": ""
+    },
+    {
+      "url": "https://calendar.up.edu/event/family-weekend-homecoming-2025",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calendar.up.edu/event/family-weekend-homecoming-2025",
+      "error": ""
+    },
+    {
+      "url": "https://sites.up.edu/upbeat/wally-pilot-at-75/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sites.up.edu/upbeat/wally-pilot-at-75/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

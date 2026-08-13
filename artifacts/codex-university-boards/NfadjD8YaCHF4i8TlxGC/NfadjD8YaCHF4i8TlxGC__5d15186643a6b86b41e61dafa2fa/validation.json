@@ -1,0 +1,96 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation.",
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://paper.gatech.edu/visit-0",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://paper.gatech.edu/visit-0",
+      "error": ""
+    },
+    {
+      "url": "https://livingbuilding.gatech.edu/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://livingbuilding.gatech.edu/visit",
+      "error": ""
+    },
+    {
+      "url": "https://sustainability.campusservices.gatech.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sustainability.campusservices.gatech.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://library.gatech.edu/library-arts",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.gatech.edu/library-arts",
+      "error": ""
+    },
+    {
+      "url": "https://arts.gatech.edu/public-art",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arts.gatech.edu/public-art",
+      "error": ""
+    },
+    {
+      "url": "https://www.gatech.edu/about/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gatech.edu/about/visit",
+      "error": ""
+    },
+    {
+      "url": "https://facilities.gatech.edu/ecocommons",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://facilities.gatech.edu/ecocommons",
+      "error": ""
+    },
+    {
+      "url": "https://archive.atlantacontemporary.org/visit",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://archive.atlantacontemporary.org/visit",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.atlantafed.org/who-we-are/visit/atlanta-monetary-museum",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.atlantafed.org/who-we-are/visit/atlanta-monetary-museum",
+      "error": ""
+    },
+    {
+      "url": "https://beltline.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://beltline.org/visit/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Georgia Tech Community Garden"
+  ],
+  "sourceCount": 10,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.libraries.rutgers.edu/book-a-space/dlc-pitch-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.libraries.rutgers.edu/book-a-space/dlc-pitch-room",
+      "error": ""
+    },
+    {
+      "url": "https://www.libraries.rutgers.edu/book-a-space/dlc-study-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.libraries.rutgers.edu/book-a-space/dlc-study-room",
+      "error": ""
+    },
+    {
+      "url": "https://www.libraries.rutgers.edu/book-a-space/study-room-301a",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.libraries.rutgers.edu/book-a-space/study-room-301a",
+      "error": ""
+    },
+    {
+      "url": "https://www.libraries.rutgers.edu/book-a-space/study-room-301b",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.libraries.rutgers.edu/book-a-space/study-room-301b",
+      "error": ""
+    },
+    {
+      "url": "https://www.libraries.rutgers.edu/book-a-space/study-room-301c",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.libraries.rutgers.edu/book-a-space/study-room-301c",
+      "error": ""
+    },
+    {
+      "url": "https://www.libraries.rutgers.edu/book-a-space/study-room-301d",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.libraries.rutgers.edu/book-a-space/study-room-301d",
+      "error": ""
+    },
+    {
+      "url": "https://webapps.rutgers.edu/study-spaces/Alexander-Library-Room-301E",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://webapps.rutgers.edu/study-spaces/Alexander-Library-Room-301E",
+      "error": ""
+    },
+    {
+      "url": "https://www.libraries.rutgers.edu/book-a-space/study-room-301f",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.libraries.rutgers.edu/book-a-space/study-room-301f",
+      "error": ""
+    },
+    {
+      "url": "https://www.libraries.rutgers.edu/book-a-space/study-room-310",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.libraries.rutgers.edu/book-a-space/study-room-310",
+      "error": ""
+    },
+    {
+      "url": "https://www.libraries.rutgers.edu/book-a-space/study-room-319",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.libraries.rutgers.edu/book-a-space/study-room-319",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

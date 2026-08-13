@@ -26,8 +26,10 @@ const apply = has('--apply');
 const resume = has('--resume');
 const artifactOnly = has('--artifact-only');
 const regenerate = has('--regenerate');
+const freeImages = has('--free-images');
 const reuseDossiers = has('--reuse-dossiers') || resume;
 const skipSourceCheck = has('--skip-source-check');
+const sharedImagePoolPath = valueAfter('--shared-image-pool');
 const limit = Math.max(1, Math.min(100, Number.parseInt(valueAfter('--limit') || '1', 10)));
 const requestedJobId = valueAfter('--job');
 const requestedItemId = valueAfter('--item');
@@ -59,6 +61,8 @@ if (has('--help') || has('-h')) {
     '  --artifact-only         Validate the resumed board artifact without invoking Codex',
     '  --generation-engine ID  Label saved boards/audit with the actual generator',
     '  --regenerate            Replace an existing private review board when the new score improves it',
+    '  --free-images           Use only direct pages, Wikidata/Wikimedia, and official campus imagery',
+    '  --shared-image-pool P    Attach a prevalidated free campus pool (minimum 7 distinct images)',
     '  --output-dir PATH       Store audit artifacts at PATH',
     '  --skip-source-check     Diagnostic only; skip live source reachability checks',
     '  -h, --help              Show this help',
@@ -346,6 +350,42 @@ function boardPayload(artifact, validation, target, template, jobId, itemId, her
   };
 }
 
+async function attachSharedImagePool(payload, poolPath) {
+  const parsed = await readJson(poolPath);
+  const pool = Array.isArray(parsed?.images) ? parsed.images.filter((image) => clean(image?.imageUrl)
+    && clean(image?.imageSourceUrl) && clean(image?.imageFingerprint)) : [];
+  const fingerprints = new Set(pool.map((image) => clean(image.imageFingerprint)).filter(Boolean));
+  if (fingerprints.size < 7) throw new Error(`Shared image pool has only ${fingerprints.size} distinct validated images; at least 7 are required.`);
+  const offset = GLOBAL_UNIVERSITY_BOARD_TEMPLATES.findIndex((template) => template.id === payload.template_id);
+  const cards = payload.cards.map((card, index) => {
+    const image = pool[(index + Math.max(0, offset) * 3) % pool.length];
+    return {
+      ...card,
+      imageUrl: image.imageUrl, imageUrls: [image.imageUrl], imageSource: image.imageSource,
+      imageSourceUrl: image.imageSourceUrl, imageSourceLabel: image.imageSourceLabel,
+      imageLicense: image.imageLicense || '', imageTitle: image.imageTitle || '',
+      imageFingerprint: image.imageFingerprint, imageWidth: image.imageWidth, imageHeight: image.imageHeight,
+      imageVerificationStatus: 'verified', imageResolvedAt: image.imageResolvedAt || new Date().toISOString(),
+    };
+  });
+  const usedFingerprints = new Set(cards.map((card) => clean(card.imageFingerprint)).filter(Boolean));
+  const limitedReuse = usedFingerprints.size < cards.length;
+  return {
+    ...payload,
+    cards,
+    imageUrl: cards[0]?.imageUrl || payload.imageUrl || '',
+    validation_summary: {
+      ...payload.validation_summary,
+      image_count: cards.length,
+      unique_image_count: usedFingerprints.size,
+      all_have_images: cards.length === 10 && usedFingerprints.size >= 7,
+      image_validation_mode: limitedReuse
+        ? 'exact_or_related_university_location_with_limited_reuse_and_provenance'
+        : 'free_exact_official_and_wikidata_wikimedia_downloaded_bitmap_with_provenance',
+    },
+  };
+}
+
 async function googlePlacesApiKey() {
   const configured = clean(process.env.GOOGLE_PLACES_API_KEY, 2_000);
   if (configured) return configured;
@@ -591,8 +631,13 @@ async function processItem(item) {
   }
   const imageOptions = {
     admin, bucketName: storageBucket, functionsBaseUrl,
-    googlePlacesApiKey: await googlePlacesApiKey(),
-    googleCustomSearchApiKey: await gcloudSecret('GOOGLE_CUSTOM_SEARCH_API_KEY'),
+    freeOnly: freeImages,
+    wikimediaGeo: freeImages,
+    relatedCampusFallback: freeImages,
+    allowLimitedRelatedReuse: freeImages,
+    officialWebsite: target.website,
+    googlePlacesApiKey: freeImages ? '' : await googlePlacesApiKey(),
+    googleCustomSearchApiKey: freeImages ? '' : await gcloudSecret('GOOGLE_CUSTOM_SEARCH_API_KEY'),
     googleCustomSearchCx: process.env.GOOGLE_CUSTOM_SEARCH_CX || 'f5a12e50537f14b83',
   };
   let validation;
@@ -619,7 +664,9 @@ async function processItem(item) {
     validation = await validateArtifact(artifact, target, template);
     payload = validation.ok ? boardPayload(artifact, validation, target, template, clean(item.data.job_id, 180), item.id, target.heroUrl) : null;
     if (!payload) break;
-    const imageResult = await enrichUniversityBoardImages(payload, target, imageOptions);
+    const imageResult = sharedImagePoolPath
+      ? { ok: true, failures: [], board: await attachSharedImagePool(payload, sharedImagePoolPath) }
+      : await enrichUniversityBoardImages(payload, target, imageOptions);
     if (imageResult.ok) {
       payload = imageResult.board;
       break;

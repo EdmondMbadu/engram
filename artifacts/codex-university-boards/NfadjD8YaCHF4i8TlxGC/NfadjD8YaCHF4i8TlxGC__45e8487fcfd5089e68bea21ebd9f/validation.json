@@ -1,0 +1,35 @@
+{
+  "ok": false,
+  "problems": [
+    "Cross-board overlap exceeds four subjects: Front Lawn, Brackett Library, Hammon Student Center, Benson Auditorium, First Ladies Garden."
+  ],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.harding.edu/map/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.harding.edu/map/",
+      "error": ""
+    },
+    {
+      "url": "https://www.harding.edu/library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.harding.edu/library/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Front Lawn",
+    "Brackett Library",
+    "Hammon Student Center",
+    "Benson Auditorium",
+    "First Ladies Garden"
+  ],
+  "sourceCount": 2,
+  "generationScore": null,
+  "generationGrade": null
+}

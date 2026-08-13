@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://library.csuchico.edu/about/policies/public-use",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csuchico.edu/about/policies/public-use",
+      "error": ""
+    },
+    {
+      "url": "https://library.csuchico.edu/floor-maps",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csuchico.edu/floor-maps",
+      "error": ""
+    },
+    {
+      "url": "https://library.csuchico.edu/spaces/260",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csuchico.edu/spaces/260",
+      "error": ""
+    },
+    {
+      "url": "https://as.csuchico.edu/wellness/faq",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://as.csuchico.edu/wellness/faq",
+      "error": ""
+    },
+    {
+      "url": "https://as.csuchico.edu/assets/resources/Department/BMU/BMU-Facility-Handbook-10-16-25.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://as.csuchico.edu/assets/resources/Department/BMU/BMU-Facility-Handbook-10-16-25.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.csuchico.edu/traditions/campus/buildings.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csuchico.edu/traditions/campus/buildings.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.csuchico.edu/academics/college/behavioral-social-sciences/resources/student-success-center.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csuchico.edu/academics/college/behavioral-social-sciences/resources/student-success-center.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://as.csuchico.edu/wrec/aquatics",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://as.csuchico.edu/wrec/aquatics",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

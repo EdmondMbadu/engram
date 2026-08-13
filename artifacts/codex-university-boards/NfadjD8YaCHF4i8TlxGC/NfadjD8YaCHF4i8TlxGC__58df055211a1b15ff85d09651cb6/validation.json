@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://food.rutgers.edu/ru-express/ru-express-participating-locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://food.rutgers.edu/ru-express/ru-express-participating-locations",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 1,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.macalester.edu/library/about/spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.macalester.edu/library/about/spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://www.macalester.edu/entrepreneurship-and-innovation/idealab/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.macalester.edu/entrepreneurship-and-innovation/idealab/",
+      "error": ""
+    },
+    {
+      "url": "https://www.macalester.edu/library/wp-content/uploads/sites/375/2025/10/Level-2_with-key-1.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.macalester.edu/library/wp-content/uploads/sites/375/2025/10/Level-2_with-key-1.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.macalester.edu/health-and-well-being/counseling/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.macalester.edu/health-and-well-being/counseling/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

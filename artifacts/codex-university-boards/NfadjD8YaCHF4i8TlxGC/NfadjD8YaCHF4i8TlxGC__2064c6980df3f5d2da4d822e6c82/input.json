@@ -1,0 +1,70 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "C5iY4jhcry71uWsN26Mq",
+    "schoolName": "University of Notre Dame",
+    "shortSchoolName": "University of Notre Dame",
+    "townName": "Notre Dame",
+    "state": "IN",
+    "countryCode": "US",
+    "unitId": "152080",
+    "website": "https://www.nd.edu/",
+    "latitude": 41.703058,
+    "longitude": -86.238959,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/University_of_Notre_Dame_seal_%282%29.svg/250px-University_of_Notre_Dame_seal_%282%29.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=nd.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "Raclin Murphy Museum of Art",
+    "Mary, Queen of Families Chapel",
+    "International Modern and Contemporary Art Galleries",
+    "Sculpture Court",
+    "Charles B. Hayes Family Sculpture Park",
+    "Life of Christ / Cycle of Life",
+    "Basilica of the Sacred Heart",
+    "Basilica Museum",
+    "Hesburgh Library",
+    "Notre Dame Public Campus Tour",
+    "Research Commons",
+    "Collaboration Hub",
+    "Mahaffey Scholars Lounge",
+    "Lower Level Study Seats",
+    "First Floor Group Study Rooms",
+    "Richard and Margaret Carey Courtyard",
+    "LaFortune Student Center",
+    "Jan and Marty Hiller Midfield Commons",
+    "Graduate Student Lounge",
+    "Rockne Memorial",
+    "Main Building Steps Tradition",
+    "God Quad Grass Superstition",
+    "Golden Dome Gold Leaf Reuse",
+    "South Quad First Snowfall Snowball Fight",
+    "The Last Visit",
+    "Trumpets Under the Dome",
+    "Notre Dame Football Player Walk",
+    "Bengal Bouts",
+    "Pop Farley Week",
+    "Ryan Hall Wheelchair Basketball Tournament"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

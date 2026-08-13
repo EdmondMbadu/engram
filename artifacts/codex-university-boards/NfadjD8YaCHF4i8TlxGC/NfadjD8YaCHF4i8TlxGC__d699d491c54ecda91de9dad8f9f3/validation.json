@@ -1,0 +1,86 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Late hours can change for holidays, staffing, or service mode; confirm the cited location page before leaving.",
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://locations.whataburger.com/la/ruston/801-n-service-rd-e.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.whataburger.com/la/ruston/801-n-service-rd-e.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/la/ruston/301-w-california-ave-.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/la/ruston/301-w-california-ave-.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/la/ruston/2103-farmerville-hwy/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/la/ruston/2103-farmerville-hwy/restaurant.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/la/ruston/1400-north-trenton-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/la/ruston/1400-north-trenton-st",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/la/ruston/975-tech-dr",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/la/ruston/975-tech-dr",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.subway.com/united-states/la/ruston/1105-tech-drive",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.subway.com/united-states/la/ruston/1105-tech-drive",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.subway.com/united-states/la/ruston/110-woodward-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.subway.com/united-states/la/ruston/110-woodward-ave",
+      "error": ""
+    },
+    {
+      "url": "https://www.rustonlincoln.com/directory/waffle-house-farmerville-hwy/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rustonlincoln.com/directory/waffle-house-farmerville-hwy/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.huddlehouse.com/la/ruston/501-n-service-rd-e",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://locations.huddlehouse.com/la/ruston/501-n-service-rd-e",
+      "error": "fetch failed"
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

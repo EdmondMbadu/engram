@@ -1,0 +1,74 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "4 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.gcsu.edu/studentlife/traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcsu.edu/studentlife/traditions",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcsu.edu/library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcsu.edu/library",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcsu.edu/technology/student-technology-resources",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcsu.edu/technology/student-technology-resources",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcsu.edu/community",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcsu.edu/community",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcsu.edu/wellnessrec",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcsu.edu/wellnessrec",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcsu.edu/recreational-sports",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcsu.edu/recreational-sports",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcsu.edu/artsandsciences/theatre/production-facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcsu.edu/artsandsciences/theatre/production-facilities",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Front Campus",
+    "Ina Dillard Russell Library",
+    "Wellness and Recreation Center",
+    "Campus Black Box Theatre"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

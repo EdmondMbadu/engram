@@ -1,0 +1,73 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://uci.edu/campus-life/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://uci.edu/campus-life/index.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.studentcenter.uci.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.studentcenter.uci.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://studentcenter.uci.edu/learn-and-enjoy/study/book-a-study-room-online/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentcenter.uci.edu/learn-and-enjoy/study/book-a-study-room-online/",
+      "error": ""
+    },
+    {
+      "url": "https://www.studentcenter.uci.edu/information/information-center/commuter-lounge/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.studentcenter.uci.edu/information/information-center/commuter-lounge/",
+      "error": ""
+    },
+    {
+      "url": "https://ccc.uci.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ccc.uci.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://studentcenter.uci.edu/learn-and-enjoy/services/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentcenter.uci.edu/learn-and-enjoy/services/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.uci.edu/study-rooms",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.uci.edu/study-rooms",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Courtyard Study Lounge",
+    "Langson Library",
+    "Science Library"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

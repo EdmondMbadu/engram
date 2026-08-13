@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "zMzUfEA7IJ23ViW2TbGC",
+    "schoolName": "Swarthmore College",
+    "shortSchoolName": "Swarthmore College",
+    "townName": "Swarthmore",
+    "state": "PA",
+    "countryCode": "US",
+    "unitId": "216287",
+    "website": "https://www.swarthmore.edu/",
+    "latitude": 39.905159,
+    "longitude": -75.354278,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/8/8e/Formal_Seal_of_Swarthmore_College%2C_Swarthmore%2C_PA%2C_USA.svg/250px-Formal_Seal_of_Swarthmore_College%2C_Swarthmore%2C_PA%2C_USA.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=swarthmore.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain Swarthmore College",
+  "excluded_subjects": [
+    "Swarthmore Public Library",
+    "Central Park and Amphitheater",
+    "Swarthmore Farmers Market",
+    "Hobbs Coffee",
+    "Luna's Mexican Grill",
+    "Renato Pizza",
+    "Pastry Pants Bakery",
+    "Celia Bookshop",
+    "Swarthmore Co-op",
+    "Park Avenue Community Center"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

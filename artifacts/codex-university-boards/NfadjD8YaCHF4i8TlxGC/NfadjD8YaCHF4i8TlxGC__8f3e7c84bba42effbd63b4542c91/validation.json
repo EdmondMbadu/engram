@@ -1,0 +1,96 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.nps.gov/places/000/vietnam-veterans-memorial.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/places/000/vietnam-veterans-memorial.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/places/000/vietnam-veterans-memorial-three-servicemen-statue.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/places/000/vietnam-veterans-memorial-three-servicemen-statue.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/places/000/vietnam-womens-memorial.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/places/000/vietnam-womens-memorial.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/places/000/vietnam-veterans-memorial-in-memory-plaque.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/places/000/vietnam-veterans-memorial-in-memory-plaque.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/coga/planyourvisit/basicinfo.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/coga/planyourvisit/basicinfo.htm",
+      "error": ""
+    },
+    {
+      "url": "https://home.nps.gov/linc/planyourvisit/fees.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://home.nps.gov/linc/planyourvisit/fees.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/places/000/korean-war-veterans-memorial.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/places/000/korean-war-veterans-memorial.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/places/000/district-of-columbia-war-memorial.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/places/000/district-of-columbia-war-memorial.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/thingstodo/visit-national-mall-and-memorial-parks.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/thingstodo/visit-national-mall-and-memorial-parks.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.nasonline.org/about-the-nas/locations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.nasonline.org/about-the-nas/locations/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Constitution Gardens",
+    "Lincoln Memorial"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

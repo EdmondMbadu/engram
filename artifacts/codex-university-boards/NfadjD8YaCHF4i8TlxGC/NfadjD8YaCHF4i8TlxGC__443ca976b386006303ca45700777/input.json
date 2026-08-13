@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "LvpvYUWbEogfkcuTbtbt",
+    "schoolName": "George Mason University",
+    "shortSchoolName": "George Mason University",
+    "townName": "Fairfax",
+    "state": "VA",
+    "countryCode": "US",
+    "unitId": "232186",
+    "website": "https://www.gmu.edu/",
+    "latitude": 38.83195,
+    "longitude": -77.307063,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/7/78/George_Mason_University_seal.svg/250px-George_Mason_University_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=gmu.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "George Mason Statue",
+    "George W. Johnson Center",
+    "Southside Dining Hall",
+    "Center for the Arts",
+    "The Hub",
+    "Fenwick Library",
+    "Recreation Athletic Complex",
+    "City of Fairfax CUE Bus",
+    "Fairfax Museum and Visitor Center",
+    "Old Town Square"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

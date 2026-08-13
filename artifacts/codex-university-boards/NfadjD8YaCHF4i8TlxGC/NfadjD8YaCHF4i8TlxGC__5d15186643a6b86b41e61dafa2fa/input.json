@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "huVq932nbv8bLt5BbVzF",
+    "schoolName": "Georgia Institute of Technology-Main Campus",
+    "shortSchoolName": "Georgia Institute of Technology",
+    "townName": "Atlanta",
+    "state": "GA",
+    "countryCode": "US",
+    "unitId": "139755",
+    "website": "https://www.gatech.edu/",
+    "latitude": 33.77242,
+    "longitude": -84.394832,
+    "heroUrl": "http://www.gatech.edu/themes/custom/gatech/images/georgia-tech-logo.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=gatech.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Ramblin’ Reck Football Field Entrance",
+    "Georgia Tech Steam Whistle",
+    "Georgia Tech RAT Cap",
+    "Georgia Tech T-Book",
+    "Mini 500",
+    "Freshman Cake Race",
+    "Ramblin’ Wreck Parade",
+    "George P. Burdell",
+    "T-Night",
+    "Up With the White and Gold"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

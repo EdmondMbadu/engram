@@ -1,0 +1,39 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "NE4UGInWNRdoGW3v0gmL",
+    "schoolName": "Luther College",
+    "shortSchoolName": "Luther College",
+    "townName": "Decorah",
+    "state": "IA",
+    "countryCode": "US",
+    "unitId": "153834",
+    "website": "https://www.luther.edu/",
+    "latitude": 43.312304,
+    "longitude": -91.802809,
+    "heroUrl": "https://live-luther.pantheonsite.io/wp-content/uploads/2022/08/915644.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=luther.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain Luther College",
+  "excluded_subjects": [],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

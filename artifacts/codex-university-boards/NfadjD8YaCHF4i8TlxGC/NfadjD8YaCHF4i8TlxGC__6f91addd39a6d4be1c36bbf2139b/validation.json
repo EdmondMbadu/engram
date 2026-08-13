@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://library.illinoisstate.edu/about/spaces/study/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.illinoisstate.edu/about/spaces/study/",
+      "error": ""
+    },
+    {
+      "url": "https://library.illinoisstate.edu/about/spaces/study/group-study/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.illinoisstate.edu/about/spaces/study/group-study/",
+      "error": ""
+    },
+    {
+      "url": "https://library.illinoisstate.edu/services/technology/collaboration-station/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.illinoisstate.edu/services/technology/collaboration-station/",
+      "error": ""
+    },
+    {
+      "url": "https://library.illinoisstate.edu/services/technology/drop-in-office/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.illinoisstate.edu/services/technology/drop-in-office/",
+      "error": ""
+    },
+    {
+      "url": "https://library.illinoisstate.edu/services/technology/workstations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.illinoisstate.edu/services/technology/workstations/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

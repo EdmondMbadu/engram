@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.tacobell.com/sc/greenville/3709-pelham-road.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/sc/greenville/3709-pelham-road.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/sc/greenville/3409-w-blueridge-dr.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/sc/greenville/3409-w-blueridge-dr.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/sc/greenville/3207-n-pleasantburg-dr.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/sc/greenville/3207-n-pleasantburg-dr.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/sc/greenville/2031-wade-hampton-blvd.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/sc/greenville/2031-wade-hampton-blvd.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/sc/greenville/2-mills-avenue.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/sc/greenville/2-mills-avenue.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/sc/greenville/1770-woodruff-road.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/sc/greenville/1770-woodruff-road.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wafflehouse.com/sc/greenville/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wafflehouse.com/sc/greenville/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wafflehouse.com/greenville-sc-1175/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wafflehouse.com/greenville-sc-1175/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

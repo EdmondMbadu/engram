@@ -1,0 +1,97 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.gcc.edu/Home/Experience-the-Grove/Facilities/Buhl-Library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Home/Experience-the-Grove/Facilities/Buhl-Library",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcc.edu/Home/Experience-the-Grove/Facilities/Breen-Student-Union",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Home/Experience-the-Grove/Facilities/Breen-Student-Union",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcc.edu/Home/Experience-the-Grove/Facilities/Staley-Hall-of-Arts-and-Letters",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Home/Experience-the-Grove/Facilities/Staley-Hall-of-Arts-and-Letters",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcc.edu/Home/Experience-the-Grove/Facilities/STEM-Hall",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Home/Experience-the-Grove/Facilities/STEM-Hall",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcc.edu/Home/Experience-the-Grove/Facilities/Physical-Learning-Center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Home/Experience-the-Grove/Facilities/Physical-Learning-Center",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcc.edu/Celebrate-150/Campus-History-Tour/Pew-Fine-Arts-Center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Celebrate-150/Campus-History-Tour/Pew-Fine-Arts-Center",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcc.edu/Home/Experience-the-Grove/Facilities/Technological-Learning-Center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Home/Experience-the-Grove/Facilities/Technological-Learning-Center",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcc.edu/Home/Experience-the-Grove/Facilities/Rathburn-Hall",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Home/Experience-the-Grove/Facilities/Rathburn-Hall",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcc.edu/Celebrate-150/Campus-History-Tour/Harbison-Chapel",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Celebrate-150/Campus-History-Tour/Harbison-Chapel",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcc.edu/Home/Staff-Directory/Staff-Detail/engineering-aesthetics-hoyt-hall-gets-a-makeover",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Home/Staff-Directory/Staff-Detail/engineering-aesthetics-hoyt-hall-gets-a-makeover",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Henry Buhl Library",
+    "Breen Student Union",
+    "Physical Learning Center"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

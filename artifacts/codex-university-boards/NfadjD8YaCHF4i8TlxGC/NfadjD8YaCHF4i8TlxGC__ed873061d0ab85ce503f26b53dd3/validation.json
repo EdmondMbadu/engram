@@ -1,0 +1,80 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.emmanuel.edu/about/where-we-are/our-campus/jean-yawkey-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.emmanuel.edu/about/where-we-are/our-campus/jean-yawkey-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.emmanuel.edu/student-life/events-engagement/student-involvement/student-organizations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.emmanuel.edu/student-life/events-engagement/student-involvement/student-organizations",
+      "error": ""
+    },
+    {
+      "url": "https://www.emmanuel.edu/student-life/campus-commuter-experience/dining-services",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.emmanuel.edu/student-life/campus-commuter-experience/dining-services",
+      "error": ""
+    },
+    {
+      "url": "https://www.emmanuel.edu/academics/academic-support/academic-resources/study-spots-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.emmanuel.edu/academics/academic-support/academic-resources/study-spots-library",
+      "error": ""
+    },
+    {
+      "url": "https://www.emmanuel.edu/student-life/events-engagement/student-involvement/athletics-intramural-sports/fitness-facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.emmanuel.edu/student-life/events-engagement/student-involvement/athletics-intramural-sports/fitness-facilities",
+      "error": ""
+    },
+    {
+      "url": "https://www.emmanuel.edu/information/why-emmanuel",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.emmanuel.edu/information/why-emmanuel",
+      "error": ""
+    },
+    {
+      "url": "https://www.emmanuel.edu/sites/default/files/2025-06/student-orientation-schedule-2025.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.emmanuel.edu/sites/default/files/2025-06/student-orientation-schedule-2025.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.emmanuel.edu/about/whats-happening/research-partnerships-initiatives/yawkey-foundation-partnership/roberto-clemente-field",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.emmanuel.edu/about/whats-happening/research-partnerships-initiatives/yawkey-foundation-partnership/roberto-clemente-field",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Cardinal Cushing Library",
+    "Margaret L. McKenna '83 Media Center"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

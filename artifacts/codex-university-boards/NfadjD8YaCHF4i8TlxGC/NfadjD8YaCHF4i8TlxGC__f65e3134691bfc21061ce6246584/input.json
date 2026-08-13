@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "9hbuZymR4S3ruKFBcFOq",
+    "schoolName": "San Francisco State University",
+    "shortSchoolName": "San Francisco State University",
+    "townName": "San Francisco",
+    "state": "CA",
+    "countryCode": "US",
+    "unitId": "122597",
+    "website": "https://www.sfsu.edu/",
+    "latitude": 37.721224,
+    "longitude": -122.476799,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=sfsu.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=sfsu.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "GatorFest!",
+    "Entering Year Pinning Ceremony",
+    "Entering Class Photo",
+    "Rec the Night",
+    "Costume Dodgeball Tournament",
+    "5K Walk, Run and Roll",
+    "SF State Earth Week",
+    "Film Finals",
+    "BECAfest",
+    "Commencement Academic Hood Representatives"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

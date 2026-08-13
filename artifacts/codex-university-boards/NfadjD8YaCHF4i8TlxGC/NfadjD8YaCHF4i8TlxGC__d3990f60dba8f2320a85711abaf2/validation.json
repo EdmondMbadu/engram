@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://news.csusm.edu/robert-freeman-remembrance/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.csusm.edu/robert-freeman-remembrance/",
+      "error": ""
+    },
+    {
+      "url": "https://news.csusm.edu/stories-behind-building-names/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.csusm.edu/stories-behind-building-names/",
+      "error": ""
+    },
+    {
+      "url": "https://news.csusm.edu/the-new-heart-of-csusm-usu-opens-its-doors/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.csusm.edu/the-new-heart-of-csusm-usu-opens-its-doors/",
+      "error": ""
+    },
+    {
+      "url": "https://news.csusm.edu/on-campus-cafe-on-track-for-august-grand-opening/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.csusm.edu/on-campus-cafe-on-track-for-august-grand-opening/",
+      "error": ""
+    },
+    {
+      "url": "https://www.sanmarcosca.gov/City-Government/Communication-Engagement/City-News/Discover-the-great-outdoors-with-San-Marcos-at-Trails-Day",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sanmarcosca.gov/City-Government/Communication-Engagement/City-News/Discover-the-great-outdoors-with-San-Marcos-at-Trails-Day",
+      "error": ""
+    },
+    {
+      "url": "https://mesarim.com/northcity/location-hours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mesarim.com/northcity/location-hours/",
+      "error": ""
+    },
+    {
+      "url": "https://www.sanmarcosca.gov/Parks-Recreation/Find-Parks-Pools-Facilities/Double-Peak-Park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sanmarcosca.gov/Parks-Recreation/Find-Parks-Pools-Facilities/Double-Peak-Park",
+      "error": ""
+    },
+    {
+      "url": "https://library.csusm.edu/library-calendar",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csusm.edu/library-calendar",
+      "error": ""
+    },
+    {
+      "url": "https://library.csusm.edu/makerspace",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csusm.edu/makerspace",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

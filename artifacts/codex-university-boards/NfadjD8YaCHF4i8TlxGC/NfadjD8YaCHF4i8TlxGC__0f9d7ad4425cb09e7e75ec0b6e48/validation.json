@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.umw.edu/essentials/eaglespeak/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.umw.edu/essentials/eaglespeak/",
+      "error": ""
+    },
+    {
+      "url": "https://www.umw.edu/commencement/schedule/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.umw.edu/commencement/schedule/",
+      "error": ""
+    },
+    {
+      "url": "https://www.umw.edu/police/safety-resources/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.umw.edu/police/safety-resources/",
+      "error": ""
+    },
+    {
+      "url": "https://www.umw.edu/uc/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.umw.edu/uc/",
+      "error": ""
+    },
+    {
+      "url": "https://catalog.umw.edu/academic-resources/simpson-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.umw.edu/academic-resources/simpson-library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.umw.edu/about/research-and-cultural-facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.umw.edu/about/research-and-cultural-facilities/",
+      "error": ""
+    },
+    {
+      "url": "https://students.umw.edu/campusrec/facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://students.umw.edu/campusrec/facilities/",
+      "error": ""
+    },
+    {
+      "url": "https://students.umw.edu/tenniscenter/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://students.umw.edu/tenniscenter/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fredericksburgva.gov/199/Farmers-Market",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fredericksburgva.gov/199/Farmers-Market",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

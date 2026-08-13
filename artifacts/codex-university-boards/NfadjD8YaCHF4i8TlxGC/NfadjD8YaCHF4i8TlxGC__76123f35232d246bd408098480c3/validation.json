@@ -1,0 +1,54 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Decoration Day is documented as a tradition revived in 2025; the source does not establish that it will recur annually.",
+    "Current dates and participation rules were not available for several traditions, so no unverified scheduling or public-access claims were added."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.hillsdale.edu/campus-life/traditions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsdale.edu/campus-life/traditions/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hillsdale.edu/hillsdale-blog/student-life/garden-party/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsdale.edu/hillsdale-blog/student-life/garden-party/",
+      "error": ""
+    },
+    {
+      "url": "https://studentlife.hillsdale.edu/upcoming-events/mock-roc",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentlife.hillsdale.edu/upcoming-events/mock-roc",
+      "error": ""
+    },
+    {
+      "url": "https://www.hillsdale.edu/wp-content/uploads/2025/09/HC-PR-Freshman-Convocation.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsdale.edu/wp-content/uploads/2025/09/HC-PR-Freshman-Convocation.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.hillsdale.edu/wp-content/uploads/2025/12/HC-PR-Veterans-Day.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsdale.edu/wp-content/uploads/2025/12/HC-PR-Veterans-Day.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

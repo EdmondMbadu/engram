@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://history.army.mil/Army-Museum-Enterprise/Find-an-Army-Museum/West-Point-Museum/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://history.army.mil/Army-Museum-Enterprise/Find-an-Army-Museum/West-Point-Museum/",
+      "error": ""
+    },
+    {
+      "url": "https://history.army.mil/Portals/143/Images/Publications/ArmyHistoryMag/pdf/20102019/AH103%28W%29.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://history.army.mil/Portals/143/Images/Publications/ArmyHistoryMag/pdf/20102019/AH103%28W%29.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.lineofdeparture.army.mil/Journals/Army-History/Archive/Spring-2025-Issue/Washingtons-Pistols/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lineofdeparture.army.mil/Journals/Army-History/Archive/Spring-2025-Issue/Washingtons-Pistols/",
+      "error": ""
+    },
+    {
+      "url": "https://usmalibrary.omeka.net/exhibits/browse",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://usmalibrary.omeka.net/exhibits/browse",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

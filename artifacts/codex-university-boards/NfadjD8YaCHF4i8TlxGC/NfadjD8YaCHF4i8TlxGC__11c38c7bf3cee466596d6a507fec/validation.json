@@ -1,0 +1,94 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Late-hours evidence was verified from direct business pages on 2026-08-13. Confirm live availability before travel, particularly for independently operated locations and online-ordering pages.",
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.fiestamayamexicanrestaurant.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fiestamayamexicanrestaurant.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/nc/charlotte/10235-university-city-dr",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/nc/charlotte/10235-university-city-dr",
+      "error": ""
+    },
+    {
+      "url": "https://custom.order.online/store/ToppersPizza-131591",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://custom.order.online/store/ToppersPizza-131591",
+      "error": ""
+    },
+    {
+      "url": "https://order.online/store/halal-cart-university-2526931",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://order.online/store/halal-cart-university-2526931",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/nc/charlotte/5540-university-pointe-blvd.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/nc/charlotte/5540-university-pointe-blvd.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.culvers.com/restaurants/charlotte-nc-university-city-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.culvers.com/restaurants/charlotte-nc-university-city-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://www.soldelish.com/contact",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.soldelish.com/contact",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://api.insomniacookies.com/news/charlotteans-are-in-for-a-sweet-treat",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://api.insomniacookies.com/news/charlotteans-are-in-for-a-sweet-treat",
+      "error": ""
+    },
+    {
+      "url": "https://locations.chipotle.com/nc/charlotte/6925-university-city-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.chipotle.com/nc/charlotte/6925-university-city-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jimmyjohns.com/nc/charlotte/sandwiches-3225.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jimmyjohns.com/nc/charlotte/sandwiches-3225.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

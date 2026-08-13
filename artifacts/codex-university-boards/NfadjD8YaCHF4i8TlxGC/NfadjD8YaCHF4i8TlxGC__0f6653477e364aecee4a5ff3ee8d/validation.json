@@ -1,0 +1,71 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://library.csun.edu/about/transformation/lc-faq",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csun.edu/about/transformation/lc-faq",
+      "error": ""
+    },
+    {
+      "url": "https://catalog.csun.edu/about/colleges/lib/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.csun.edu/about/colleges/lib/",
+      "error": ""
+    },
+    {
+      "url": "https://www.csun.edu/student-success/learning-resource-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csun.edu/student-success/learning-resource-center",
+      "error": ""
+    },
+    {
+      "url": "https://library.csun.edu/services/study-rooms",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csun.edu/services/study-rooms",
+      "error": ""
+    },
+    {
+      "url": "https://library.csun.edu/technology/assistive-technology",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csun.edu/technology/assistive-technology",
+      "error": ""
+    },
+    {
+      "url": "https://library.csun.edu/about/building-floor-maps/fourth",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csun.edu/about/building-floor-maps/fourth",
+      "error": ""
+    },
+    {
+      "url": "https://library.csun.edu/technology",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csun.edu/technology",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "University Library Learning Commons"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

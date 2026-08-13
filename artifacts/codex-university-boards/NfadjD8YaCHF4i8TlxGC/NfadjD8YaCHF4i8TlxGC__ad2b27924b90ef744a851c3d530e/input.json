@@ -1,0 +1,41 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "Foj7gaW3nvJ2HfodHakj",
+    "schoolName": "Transylvania University",
+    "shortSchoolName": "Transylvania University",
+    "townName": "Lexington",
+    "state": "KY",
+    "countryCode": "US",
+    "unitId": "157818",
+    "website": "https://www.transy.edu/",
+    "latitude": 38.052983,
+    "longitude": -84.493202,
+    "heroUrl": "https://www.transy.edu/wp-content/uploads/2020/12/transylvania-university_carpenter-academic-center_lexington-kentucky-1200x630.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=transy.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at Transylvania University, Shared as Cards",
+  "excluded_subjects": [],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

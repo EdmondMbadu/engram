@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.marquette.edu/library/spaces/places-to-study.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marquette.edu/library/spaces/places-to-study.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.marquette.edu/student-success/lemonis-center-for-student-success.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marquette.edu/student-success/lemonis-center-for-student-success.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.marquette.edu/inclusion-belonging/center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marquette.edu/inclusion-belonging/center/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

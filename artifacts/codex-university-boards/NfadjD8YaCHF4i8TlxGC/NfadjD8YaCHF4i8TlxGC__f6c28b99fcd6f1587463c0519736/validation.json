@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.union.edu/about/campus/reamer-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.union.edu/about/campus/reamer-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.union.edu/about/campus/schaffer",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.union.edu/about/campus/schaffer",
+      "error": ""
+    },
+    {
+      "url": "https://www.union.edu/about/campus/nott",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.union.edu/about/campus/nott",
+      "error": ""
+    },
+    {
+      "url": "https://www.union.edu/about/campus/jacksons-garden",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.union.edu/about/campus/jacksons-garden",
+      "error": ""
+    },
+    {
+      "url": "https://www.union.edu/about/campus/old-chapel",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.union.edu/about/campus/old-chapel",
+      "error": ""
+    },
+    {
+      "url": "https://www.union.edu/visual-arts/resources",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.union.edu/visual-arts/resources",
+      "error": ""
+    },
+    {
+      "url": "https://www.union.edu/theater-dance/current-season",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.union.edu/theater-dance/current-season",
+      "error": ""
+    },
+    {
+      "url": "https://www.union.edu/news/stories/202104/four-students-honored-volunteer-service",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.union.edu/news/stories/202104/four-students-honored-volunteer-service",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

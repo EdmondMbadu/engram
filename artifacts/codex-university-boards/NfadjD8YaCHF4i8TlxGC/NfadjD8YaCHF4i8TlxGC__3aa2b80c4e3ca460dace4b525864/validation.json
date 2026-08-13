@@ -1,0 +1,90 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Specific event schedules, admission, and access can change; verify current listings before attending.",
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.union.edu/about/campus/nott",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.union.edu/about/campus/nott",
+      "error": ""
+    },
+    {
+      "url": "https://www.union.edu/about/campus/jacksons-garden",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.union.edu/about/campus/jacksons-garden",
+      "error": ""
+    },
+    {
+      "url": "https://www.union.edu/about/campus/reamer-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.union.edu/about/campus/reamer-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.union.edu/student-activities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.union.edu/student-activities",
+      "error": ""
+    },
+    {
+      "url": "https://www.union.edu/about/campus/schaffer",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.union.edu/about/campus/schaffer",
+      "error": ""
+    },
+    {
+      "url": "https://www.union.edu/schaffer-library/collections-exhibitions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.union.edu/schaffer-library/collections-exhibitions",
+      "error": ""
+    },
+    {
+      "url": "https://www.union.edu/academic/research",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.union.edu/academic/research",
+      "error": ""
+    },
+    {
+      "url": "https://www.union.edu/about/campus/memorial-chapel",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.union.edu/about/campus/memorial-chapel",
+      "error": ""
+    },
+    {
+      "url": "https://www.union.edu/student-activities/student-clubs-organizations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.union.edu/student-activities/student-clubs-organizations",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Nott Memorial",
+    "Jackson's Garden",
+    "Reamer Campus Center"
+  ],
+  "sourceCount": 9,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

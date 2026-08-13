@@ -1,0 +1,97 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.normalpl.org/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.normalpl.org/visit",
+      "error": ""
+    },
+    {
+      "url": "https://coffeehound.cafe/locations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://coffeehound.cafe/locations/",
+      "error": ""
+    },
+    {
+      "url": "https://www.normaltheater.com/92/Contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.normaltheater.com/92/Contact",
+      "error": ""
+    },
+    {
+      "url": "https://thecoffeehousenormal.com/pages/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thecoffeehousenormal.com/pages/contact",
+      "error": ""
+    },
+    {
+      "url": "https://www.normalil.gov/DocumentCenter/View/23558/Uptown-Normal-Visitor-Guide-adapted-for-web",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.normalil.gov/DocumentCenter/View/23558/Uptown-Normal-Visitor-Guide-adapted-for-web",
+      "error": ""
+    },
+    {
+      "url": "https://www.pizzapayaa.com/faqs",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pizzapayaa.com/faqs",
+      "error": ""
+    },
+    {
+      "url": "https://galleries.illinoisstate.edu/about/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://galleries.illinoisstate.edu/about/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.normalil.gov/1102/Uptown-Station",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.normalil.gov/1102/Uptown-Station",
+      "error": ""
+    },
+    {
+      "url": "https://www.normalil.gov/1622/History",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.normalil.gov/1622/History",
+      "error": ""
+    },
+    {
+      "url": "https://www.normalil.gov/1289/Biking-Trails",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.normalil.gov/1289/Biking-Trails",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "University Galleries of Illinois State University",
+    "Uptown Circle",
+    "Constitution Trail"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

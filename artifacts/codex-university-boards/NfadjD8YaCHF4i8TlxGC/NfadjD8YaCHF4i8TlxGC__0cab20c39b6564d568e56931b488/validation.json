@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.macalester.edu/admissions/admitted-students/102-things-to-do-at-mac/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.macalester.edu/admissions/admitted-students/102-things-to-do-at-mac/",
+      "error": ""
+    },
+    {
+      "url": "https://www.macalester.edu/leadership-engagement/programming-involvement/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.macalester.edu/leadership-engagement/programming-involvement/",
+      "error": ""
+    },
+    {
+      "url": "https://www.macalester.edu/founding-day/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.macalester.edu/founding-day/about/",
+      "error": ""
+    },
+    {
+      "url": "https://www.macalester.edu/news/2024/11/the-soundtrack-of-macalester/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.macalester.edu/news/2024/11/the-soundtrack-of-macalester/",
+      "error": ""
+    },
+    {
+      "url": "https://www.macalester.edu/the-words/the-words-december-2019/my-time-as-an-editor-for-the-mac-weekly/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.macalester.edu/the-words/the-words-december-2019/my-time-as-an-editor-for-the-mac-weekly/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

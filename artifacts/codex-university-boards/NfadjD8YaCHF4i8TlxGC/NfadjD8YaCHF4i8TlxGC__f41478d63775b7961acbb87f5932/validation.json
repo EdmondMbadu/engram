@@ -1,0 +1,82 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "4 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.lewisu.edu/academics/library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lewisu.edu/academics/library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lewisu.edu/writingcenter/appointments.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lewisu.edu/writingcenter/appointments.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.lewisu.edu/campuses/romeoville/maincampusmap.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lewisu.edu/campuses/romeoville/maincampusmap.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.lewisu.edu/studentservices/fitnesscenter/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lewisu.edu/studentservices/fitnesscenter/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lewisu.edu/sustainability/areas.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lewisu.edu/sustainability/areas.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.lewisu.edu/artgallery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lewisu.edu/artgallery/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lewisu.edu/studentservices/ministry/theplace.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lewisu.edu/studentservices/ministry/theplace.htm",
+      "error": ""
+    },
+    {
+      "url": "https://hub.lewisu.edu/apply",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://hub.lewisu.edu/apply",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Lewis University Library",
+    "Lewis University Writing Center",
+    "Brother James Gaffney, FSC Student Center",
+    "Burnham Centennial Nature Trail"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

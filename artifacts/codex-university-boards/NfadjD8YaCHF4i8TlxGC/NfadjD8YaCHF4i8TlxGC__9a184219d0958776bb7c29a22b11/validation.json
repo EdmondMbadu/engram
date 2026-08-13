@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://libraries.emory.edu/woodruff/study-spaces/find-quiet-study-area",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.emory.edu/woodruff/study-spaces/find-quiet-study-area",
+      "error": ""
+    },
+    {
+      "url": "https://ats.emory.edu/sdl/LC/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ats.emory.edu/sdl/LC/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.emory.edu/woodruff/marian-k-heilbrun-music-and-media-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.emory.edu/woodruff/marian-k-heilbrun-music-and-media-library",
+      "error": ""
+    },
+    {
+      "url": "https://studentcenter.emory.edu/centers/cox-hall.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentcenter.emory.edu/centers/cox-hall.html",
+      "error": ""
+    },
+    {
+      "url": "https://studentcenter.emory.edu/activities/student-lounges.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentcenter.emory.edu/activities/student-lounges.html",
+      "error": ""
+    },
+    {
+      "url": "https://hatchery.emory.edu/about/the-space.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://hatchery.emory.edu/about/the-space.html",
+      "error": ""
+    },
+    {
+      "url": "https://boilerplate.emory.edu/pages/emerson-hall-and-the-atwood-chemistry-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://boilerplate.emory.edu/pages/emerson-hall-and-the-atwood-chemistry-center",
+      "error": ""
+    },
+    {
+      "url": "https://dia.pitts.emory.edu/about/policies/index.cfm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dia.pitts.emory.edu/about/policies/index.cfm",
+      "error": ""
+    },
+    {
+      "url": "https://ats.emory.edu/sdl/student-resources/learning-toolkit.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ats.emory.edu/sdl/student-resources/learning-toolkit.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

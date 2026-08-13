@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://wp.stolaf.edu/admissions/traditions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wp.stolaf.edu/admissions/traditions/",
+      "error": ""
+    },
+    {
+      "url": "https://wp.stolaf.edu/news/student-organized-international-night-an-annual-st-olaf-tradition/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wp.stolaf.edu/news/student-organized-international-night-an-annual-st-olaf-tradition/",
+      "error": ""
+    },
+    {
+      "url": "https://wp.stolaf.edu/news/st-olaf-students-spread-holiday-cheer-with-multilingual-caroling-tradition/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wp.stolaf.edu/news/st-olaf-students-spread-holiday-cheer-with-multilingual-caroling-tradition/",
+      "error": ""
+    },
+    {
+      "url": "https://wp.stolaf.edu/magazine/files/2019/02/St.-Olaf-Magazine-Fall-2013.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wp.stolaf.edu/magazine/files/2019/02/St.-Olaf-Magazine-Fall-2013.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

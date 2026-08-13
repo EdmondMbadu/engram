@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.towson.edu/campus/landmarks/westvillage/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.towson.edu/campus/landmarks/westvillage/",
+      "error": ""
+    },
+    {
+      "url": "https://towson.campusdish.com/en/locationsandmenus/universityunion/denatpaws/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://towson.mydininghub.com/en/locations",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/md/towson/6861-loch-raven-blvd.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/md/towson/6861-loch-raven-blvd.html",
+      "error": ""
+    },
+    {
+      "url": "https://custom.order.online/store/2am-project-416-york-rd-34314392",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://custom.order.online/store/2am-project-416-york-rd-34314392",
+      "error": ""
+    },
+    {
+      "url": "https://www.7-eleven.com/locations/md/towson/321-york-road-32907",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.7-eleven.com/locations/md/towson/321-york-road-32907",
+      "error": ""
+    },
+    {
+      "url": "https://undergroundpizza.co/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://undergroundpizza.co/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.modpizza.com/usa/md/towson/740-york-rd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.modpizza.com/usa/md/towson/740-york-rd",
+      "error": ""
+    },
+    {
+      "url": "https://www.seasonspizza.com/stores/towson/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.seasonspizza.com/stores/towson/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.papajohns.com/united-states/md/21204/towson/201-york-rd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.papajohns.com/united-states/md/21204/towson/201-york-rd",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/maryland/towson/8010-loch-raven-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/maryland/towson/8010-loch-raven-blvd",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

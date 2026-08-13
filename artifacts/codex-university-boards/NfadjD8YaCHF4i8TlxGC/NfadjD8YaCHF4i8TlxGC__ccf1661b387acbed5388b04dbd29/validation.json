@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.lib.jmu.edu/students/study-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.jmu.edu/students/study-spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.jmu.edu/library-locations/etmc/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.jmu.edu/library-locations/etmc/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.jmu.edu/library-locations/music-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.jmu.edu/library-locations/music-library/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

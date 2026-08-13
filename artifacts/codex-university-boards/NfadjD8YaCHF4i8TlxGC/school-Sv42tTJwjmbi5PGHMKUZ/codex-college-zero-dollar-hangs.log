@@ -1,0 +1,284 @@
+Reading additional input from stdin...
+2026-08-13T07:24:28.767038Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa01-c74f-7841-b1ff-61c3f669b7e9.1786605848400017000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:24:28.774762Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:24:28.784526Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa02-1654-7de1-980f-ea1f9aedad34
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"Sv42tTJwjmbi5PGHMKUZ","schoolName":"Grinnell College","shortSchoolName":"Grinnell College","townName":"Grinnell","state":"IA","countryCode":"US","website":"https://www.grinnell.edu/","latitude":41.747952,"longitude":-92.722094},"templates":[{"id":"college-zero-dollar-hangs","version":"1.0","titlePattern":"Zero Dollars: {count} Hangs That Cost Nothing","editorialBrief":"Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.","researchQueries":["free student activities campus","free campus spaces students","free public places near campus"],"count":10,"icon":"money_off","primarySubjectType":"activity","allowedSubjectTypes":["activity","place"],"freshnessDays":180,"exactTitle":"Zero Dollars: 10 Hangs That Cost Nothing"}]}
+codex
+{
+  "complete": false,
+  "school_name": "Grinnell College",
+  "town_name": "Grinnell",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Grinnell College",
+      "town_name": "Grinnell",
+      "template_id": "college-zero-dollar-hangs",
+      "title": "Zero Dollars: 10 Hangs That Cost Nothing",
+      "description": "I’m verifying ten distinct, genuinely no-purchase activities using direct college, city, and cultural-institution pages.",
+      "icon": "money_off",
+      "cards": [
+        {
+          "subject_id": "research-in-progress",
+          "subject_type": "activity",
+          "entity_name": "Research in progress",
+          "title": "Research in progress",
+          "subtitle": "",
+          "notes": "Checking access terms and free-admission evidence before including any destination.",
+          "short_summary": "Verification underway.",
+          "evidence_claim": "",
+          "source_url": "https://www.grinnell.edu/",
+          "source_title": "Grinnell College",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+      
+        ,
+      
+        {
+          "subject_id": "research-queued-2",
+          "subject_type": "activity",
+          "entity_name": "Research queued",
+          "title": "Research queued",
+          "subtitle": "",
+          "notes": "A final card will replace this placeholder after direct-source verification.",
+          "short_summary": "Source check queued.",
+          "evidence_claim": "",
+          "source_url": "https://www.grinnell.edu/",
+          "source_title": "Grinnell College",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "research-queued-3",
+          "subject_type": "activity",
+          "entity_name": "Research queued",
+          "title": "Research queued",
+          "subtitle": "",
+          "notes": "A final card will replace this placeholder after direct-source verification.",
+          "short_summary": "Source check queued.",
+          "evidence_claim": "",
+          "source_url": "https://www.grinnell.edu/",
+          "source_title": "Grinnell College",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "research-queued-4",
+          "subject_type": "activity",
+          "entity_name": "Research queued",
+          "title": "Research queued",
+          "subtitle": "",
+          "notes": "A final card will replace this placeholder after direct-source verification.",
+          "short_summary": "Source check queued.",
+          "evidence_claim": "",
+          "source_url": "https://www.grinnell.edu/",
+          "source_title": "Grinnell College",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "research-queued-5",
+          "subject_type": "activity",
+          "entity_name": "Research queued",
+          "title": "Research queued",
+          "subtitle": "",
+          "notes": "A final card will replace this placeholder after direct-source verification.",
+          "short_summary": "Source check queued.",
+          "evidence_claim": "",
+          "source_url": "https://www.grinnell.edu/",
+          "source_title": "Grinnell College",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "research-queued-6",
+          "subject_type": "activity",
+          "entity_name": "Research queued",
+          "title": "Research queued",
+          "subtitle": "",
+          "notes": "A final card will replace this placeholder after direct-source verification.",
+          "short_summary": "Source check queued.",
+          "evidence_claim": "",
+          "source_url": "https://www.grinnell.edu/",
+          "source_title": "Grinnell College",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "research-queued-7",
+          "subject_type": "activity",
+          "entity_name": "Research queued",
+          "title": "Research queued",
+          "subtitle": "",
+          "notes": "A final card will replace this placeholder after direct-source verification.",
+          "short_summary": "Source check queued.",
+          "evidence_claim": "",
+          "source_url": "https://www.grinnell.edu/",
+          "source_title": "Grinnell College",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "research-queued-8",
+          "subject_type": "activity",
+          "entity_name": "Research queued",
+          "title": "Research queued",
+          "subtitle": "",
+          "notes": "A final card will replace this placeholder after direct-source verification.",
+          "short_summary": "Source check queued.",
+          "evidence_claim": "",
+          "source_url": "https://www.grinnell.edu/",
+          "source_title": "Grinnell College",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "research-queued-9",
+          "subject_type": "activity",
+          "entity_name": "Research queued",
+          "title": "Research queued",
+          "subtitle": "",
+          "notes": "A final card will replace this placeholder after direct-source verification.",
+          "short_summary": "Source check queued.",
+          "evidence_claim": "",
+          "source_url": "https://www.grinnell.edu/",
+          "source_title": "Grinnell College",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "research-queued-10",
+          "subject_type": "activity",
+          "entity_name": "Research queued",
+          "title": "Research queued",
+          "subtitle": "",
+          "notes": "A final card will replace this placeholder after direct-source verification.",
+          "short_summary": "Source check queued.",
+          "evidence_claim": "",
+          "source_url": "https://www.grinnell.edu/",
+          "source_title": "Grinnell College",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:grinnell.edu free admission museum gallery Grinnell College public ...
+web search: 
+web search: site:grinnelliowa.gov "Central Park" Grinnell park ...
+codex
+{"complete":true,"school_name":"Grinnell College","town_name":"Grinnell","boards":[{"complete":true,"school_name":"Grinnell College","town_name":"Grinnell","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"Ten verified, under-21-safe ways to gather around Grinnell without paying admission or making a purchase.","icon":"money_off","cards":[{"subject_id":"grinnell-college-museum-of-art-gallery-visit","subject_type":"activity","entity_name":"Grinnell College Museum of Art","title":"Browse the Museum of Art Together","subtitle":"A free gallery hang inside the Bucksbaum Center for the Arts","notes":"Meet inside Bucksbaum, browse the current exhibitions together, and leave time to compare one artwork each person noticed.","short_summary":"Share an unhurried art-viewing session in the college’s public museum.","evidence_claim":"Grinnell College states that the Grinnell College Museum of Art is free and open to all.","source_url":"https://www.grinnell.edu/campus-life/arts-culture/museum/visit","source_title":"Visit the Museum of Art","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to all. Check the official visit page for current semester hours before going.","cost_status":"free","under21_safe":true},{"subject_id":"cera-nature-walk","subject_type":"activity","entity_name":"Conard Environmental Research Area","title":"Take a CERA Nature Walk","subtitle":"Public trails at Grinnell College’s 365-acre field station","notes":"Coordinate a ride, bring water, and choose hiking, bird-watching, photography, sketching, or another quiet nature activity.","short_summary":"Spend a social afternoon exploring a college field station beyond campus.","evidence_claim":"Grinnell College says CERA is open to the public for hiking, bird-watching, photography, painting, drawing, and quiet enjoyment.","source_url":"https://www.grinnell.edu/visitor-guide/recreation-entertainment","source_title":"Recreation and Entertainment","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public access is documented by the College; the site is about 11 miles from campus, so arrange transportation and review the trail map.","cost_status":"free","under21_safe":true},{"subject_id":"bucksbaum-theatre-performance","subject_type":"activity","entity_name":"Bucksbaum Center for the Arts","title":"Catch a College Theatre Production","subtitle":"Free public performances with advance ticket reservations","notes":"Check the production calendar, reserve free tickets through the box office, and review any posted content notice with your group.","short_summary":"Make an evening of a student or departmental stage production at Bucksbaum.","evidence_claim":"The Grinnell College box-office FAQ states that tickets are free and performances are open to the public, with rare exceptions.","source_url":"https://www.grinnell.edu/academics/majors-concentrations/theatre-dance/productions/ticketing-livestream","source_title":"Ticketing and Livestream","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Tickets are free but should be reserved; sold-out performances may offer a door waitlist. Minors must be accompanied by an adult.","cost_status":"free","under21_safe":true},{"subject_id":"central-park-playground-picnic","subject_type":"activity","entity_name":"Central Park","title":"Gather at Central Park","subtitle":"Downtown green space with a shelter, stage, and accessible playground","notes":"Bring your own snacks or skip food, claim an open lawn spot, and use the playground or walking paths without reserving a shelter.","short_summary":"Meet downtown for an easy lawn, playground, or conversation hang.","evidence_claim":"Grinnell College’s visitor guide states that City of Grinnell neighborhood parks are free and available for public use and identifies Central Park’s amenities.","source_url":"https://www.grinnell.edu/visitor-guide/recreation-entertainment","source_title":"Recreation and Entertainment","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use of the public park requires no admission or purchase. Do not reserve facilities that carry a separate rental charge.","cost_status":"free","under21_safe":true},{"subject_id":"ahrens-park-walking-loop","subject_type":"activity","entity_name":"Ahrens/Paschall Memorial Park","title":"Walk the Ahrens Park Loop","subtitle":"A 1.5-mile outdoor path through a multi-use public park","notes":"Start near a shelter, walk the 1.5-mile path at a conversational pace, then use an open court or green space if available.","short_summary":"Turn a public park loop into a low-key walking meetup.","evidence_claim":"Grinnell College states that city parks are free for public use and describes Ahrens Park’s 1.5-mile walking path, courts, fields, and green spaces.","source_url":"https://www.grinnell.edu/visitor-guide/recreation-entertainment","source_title":"Recreation and Entertainment","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Walking and ordinary public-park use require no purchase. Some areas may be unavailable during construction; avoid the paid driving range.","cost_status":"free","under21_safe":true},{"subject_id":"ahrens-park-pickleball","subject_type":"activity","entity_name":"Ahrens/Paschall Memorial Park Pickleball Courts","title":"Play Pickleball at Ahrens Park","subtitle":"Four outdoor public courts at Ahrens/Paschall Memorial Park","notes":"Bring paddles and balls you already own, rotate players through short games, and yield the court promptly when others are waiting.","short_summary":"Organize a casual no-fee doubles session on the park’s outdoor courts.","evidence_claim":"Grinnell College says city parks are free and available for public use and identifies four pickleball courts at Ahrens Park.","source_url":"https://www.grinnell.edu/visitor-guide/recreation-entertainment","source_title":"Recreation and Entertainment","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"No admission or purchase is required for ordinary public-park use; this activity assumes participants bring equipment they already have.","cost_status":"free","under21_safe":true},{"subject_id":"ahrens-park-basketball","subject_type":"activity","entity_name":"Ahrens/Paschall Memorial Park Basketball Courts","title":"Run a Casual Basketball Shootaround","subtitle":"Outdoor basketball courts in a free public park","notes":"Bring a ball from home, choose HORSE or a relaxed shootaround, and keep the group small enough to share space with other users.","short_summary":"Use the outdoor courts for a flexible social game without paying admission.","evidence_claim":"Grinnell College states that city parks are free for public use and lists outdoor basketball courts among Ahrens Park’s amenities.","source_url":"https://www.grinnell.edu/visitor-guide/recreation-entertainment","source_title":"Recreation and Entertainment","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Ordinary court use requires no admission or purchase; bring a ball you already own and observe any posted closures.","cost_status":"free","under21_safe":true},{"subject_id":"ahrens-park-sand-volleyball","subject_type":"activity","entity_name":"Ahrens/Paschall Memorial Park Sand Volleyball Court","title":"Set Up a Sand Volleyball Game","subtitle":"A public sand court at Ahrens/Paschall Memorial Park","notes":"Bring a volleyball you already have, divide into flexible teams, and switch to cooperative rallies if the group is too small for a match.","short_summary":"Gather friends for rallies or a casual match on the park’s sand court.","evidence_claim":"Grinnell College says city parks are free and available for public use and specifically lists a sand volleyball court at Ahrens Park.","source_url":"https://www.grinnell.edu/visitor-guide/recreation-entertainment","source_title":"Recreation and Entertainment","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"No admission or purchase is required for ordinary park use; participants should supply a ball they already own.","cost_status":"free","under21_safe":true},{"subject_id":"arbor-lake-gart-walk","subject_type":"activity","entity_name":"Arbor Lake Park","title":"Walk the Trail at Arbor Lake","subtitle":"An 81.4-acre natural-resource park beside the GART","notes":"Meet at the east-side trail access, follow the lake edge together, and pause for conversation or nature observation along the route.","short_summary":"Pair a waterside walk with time outdoors in a large city natural area.","evidence_claim":"The City of Grinnell identifies Arbor Lake Park as an 81.4-acre natural-resource area with the Grinnell Area Recreational Trail along its east shore; Grinnell College states city parks are free for public use.","source_url":"https://www.grinnelliowa.gov/facilities/facility/details/Arbor-Lake-Shelter-3","source_title":"Arbor Lake Shelter","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"General park and trail access requires no admission or purchase. City parks close daily from 11 p.m. to 6 a.m.; shelter rental is not included.","cost_status":"free","under21_safe":true},{"subject_id":"central-park-veterans-monument-walk","subject_type":"activity","entity_name":"Grinnell Veterans Monument","title":"Walk Through the Veterans Monument","subtitle":"A 42-foot public artwork in Central Park","notes":"Approach from the park, follow the spiral pathway into the sculpture’s center, and give the group quiet time for reflection.","short_summary":"Visit a walk-through civic sculpture designed as a place of remembrance.","evidence_claim":"The City of Grinnell identifies the monument as a 42-foot steel sculpture in Central Park with a spiral path leading visitors into an open-air interior.","source_url":"https://www.grinnelliowa.gov/435/Veterans-Monument","source_title":"Veterans Monument","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The monument is within Central Park, which Grinnell College identifies among the city parks that are free and available for public use.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:26:08.882303Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa02-1654-7de1-980f-ea1f9aedad34.1786605868628841000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+25,688
+
+{"complete":true,"school_name":"Grinnell College","town_name":"Grinnell","boards":[{"complete":true,"school_name":"Grinnell College","town_name":"Grinnell","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"Ten verified, under-21-safe ways to gather around Grinnell without paying admission or making a purchase.","icon":"money_off","cards":[{"subject_id":"grinnell-college-museum-of-art-gallery-visit","subject_type":"activity","entity_name":"Grinnell College Museum of Art","title":"Browse the Museum of Art Together","subtitle":"A free gallery hang inside the Bucksbaum Center for the Arts","notes":"Meet inside Bucksbaum, browse the current exhibitions together, and leave time to compare one artwork each person noticed.","short_summary":"Share an unhurried art-viewing session in the college’s public museum.","evidence_claim":"Grinnell College states that the Grinnell College Museum of Art is free and open to all.","source_url":"https://www.grinnell.edu/campus-life/arts-culture/museum/visit","source_title":"Visit the Museum of Art","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to all. Check the official visit page for current semester hours before going.","cost_status":"free","under21_safe":true},{"subject_id":"cera-nature-walk","subject_type":"activity","entity_name":"Conard Environmental Research Area","title":"Take a CERA Nature Walk","subtitle":"Public trails at Grinnell College’s 365-acre field station","notes":"Coordinate a ride, bring water, and choose hiking, bird-watching, photography, sketching, or another quiet nature activity.","short_summary":"Spend a social afternoon exploring a college field station beyond campus.","evidence_claim":"Grinnell College says CERA is open to the public for hiking, bird-watching, photography, painting, drawing, and quiet enjoyment.","source_url":"https://www.grinnell.edu/visitor-guide/recreation-entertainment","source_title":"Recreation and Entertainment","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public access is documented by the College; the site is about 11 miles from campus, so arrange transportation and review the trail map.","cost_status":"free","under21_safe":true},{"subject_id":"bucksbaum-theatre-performance","subject_type":"activity","entity_name":"Bucksbaum Center for the Arts","title":"Catch a College Theatre Production","subtitle":"Free public performances with advance ticket reservations","notes":"Check the production calendar, reserve free tickets through the box office, and review any posted content notice with your group.","short_summary":"Make an evening of a student or departmental stage production at Bucksbaum.","evidence_claim":"The Grinnell College box-office FAQ states that tickets are free and performances are open to the public, with rare exceptions.","source_url":"https://www.grinnell.edu/academics/majors-concentrations/theatre-dance/productions/ticketing-livestream","source_title":"Ticketing and Livestream","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Tickets are free but should be reserved; sold-out performances may offer a door waitlist. Minors must be accompanied by an adult.","cost_status":"free","under21_safe":true},{"subject_id":"central-park-playground-picnic","subject_type":"activity","entity_name":"Central Park","title":"Gather at Central Park","subtitle":"Downtown green space with a shelter, stage, and accessible playground","notes":"Bring your own snacks or skip food, claim an open lawn spot, and use the playground or walking paths without reserving a shelter.","short_summary":"Meet downtown for an easy lawn, playground, or conversation hang.","evidence_claim":"Grinnell College’s visitor guide states that City of Grinnell neighborhood parks are free and available for public use and identifies Central Park’s amenities.","source_url":"https://www.grinnell.edu/visitor-guide/recreation-entertainment","source_title":"Recreation and Entertainment","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use of the public park requires no admission or purchase. Do not reserve facilities that carry a separate rental charge.","cost_status":"free","under21_safe":true},{"subject_id":"ahrens-park-walking-loop","subject_type":"activity","entity_name":"Ahrens/Paschall Memorial Park","title":"Walk the Ahrens Park Loop","subtitle":"A 1.5-mile outdoor path through a multi-use public park","notes":"Start near a shelter, walk the 1.5-mile path at a conversational pace, then use an open court or green space if available.","short_summary":"Turn a public park loop into a low-key walking meetup.","evidence_claim":"Grinnell College states that city parks are free for public use and describes Ahrens Park’s 1.5-mile walking path, courts, fields, and green spaces.","source_url":"https://www.grinnell.edu/visitor-guide/recreation-entertainment","source_title":"Recreation and Entertainment","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Walking and ordinary public-park use require no purchase. Some areas may be unavailable during construction; avoid the paid driving range.","cost_status":"free","under21_safe":true},{"subject_id":"ahrens-park-pickleball","subject_type":"activity","entity_name":"Ahrens/Paschall Memorial Park Pickleball Courts","title":"Play Pickleball at Ahrens Park","subtitle":"Four outdoor public courts at Ahrens/Paschall Memorial Park","notes":"Bring paddles and balls you already own, rotate players through short games, and yield the court promptly when others are waiting.","short_summary":"Organize a casual no-fee doubles session on the park’s outdoor courts.","evidence_claim":"Grinnell College says city parks are free and available for public use and identifies four pickleball courts at Ahrens Park.","source_url":"https://www.grinnell.edu/visitor-guide/recreation-entertainment","source_title":"Recreation and Entertainment","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"No admission or purchase is required for ordinary public-park use; this activity assumes participants bring equipment they already have.","cost_status":"free","under21_safe":true},{"subject_id":"ahrens-park-basketball","subject_type":"activity","entity_name":"Ahrens/Paschall Memorial Park Basketball Courts","title":"Run a Casual Basketball Shootaround","subtitle":"Outdoor basketball courts in a free public park","notes":"Bring a ball from home, choose HORSE or a relaxed shootaround, and keep the group small enough to share space with other users.","short_summary":"Use the outdoor courts for a flexible social game without paying admission.","evidence_claim":"Grinnell College states that city parks are free for public use and lists outdoor basketball courts among Ahrens Park’s amenities.","source_url":"https://www.grinnell.edu/visitor-guide/recreation-entertainment","source_title":"Recreation and Entertainment","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Ordinary court use requires no admission or purchase; bring a ball you already own and observe any posted closures.","cost_status":"free","under21_safe":true},{"subject_id":"ahrens-park-sand-volleyball","subject_type":"activity","entity_name":"Ahrens/Paschall Memorial Park Sand Volleyball Court","title":"Set Up a Sand Volleyball Game","subtitle":"A public sand court at Ahrens/Paschall Memorial Park","notes":"Bring a volleyball you already have, divide into flexible teams, and switch to cooperative rallies if the group is too small for a match.","short_summary":"Gather friends for rallies or a casual match on the park’s sand court.","evidence_claim":"Grinnell College says city parks are free and available for public use and specifically lists a sand volleyball court at Ahrens Park.","source_url":"https://www.grinnell.edu/visitor-guide/recreation-entertainment","source_title":"Recreation and Entertainment","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"No admission or purchase is required for ordinary park use; participants should supply a ball they already own.","cost_status":"free","under21_safe":true},{"subject_id":"arbor-lake-gart-walk","subject_type":"activity","entity_name":"Arbor Lake Park","title":"Walk the Trail at Arbor Lake","subtitle":"An 81.4-acre natural-resource park beside the GART","notes":"Meet at the east-side trail access, follow the lake edge together, and pause for conversation or nature observation along the route.","short_summary":"Pair a waterside walk with time outdoors in a large city natural area.","evidence_claim":"The City of Grinnell identifies Arbor Lake Park as an 81.4-acre natural-resource area with the Grinnell Area Recreational Trail along its east shore; Grinnell College states city parks are free for public use.","source_url":"https://www.grinnelliowa.gov/facilities/facility/details/Arbor-Lake-Shelter-3","source_title":"Arbor Lake Shelter","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"General park and trail access requires no admission or purchase. City parks close daily from 11 p.m. to 6 a.m.; shelter rental is not included.","cost_status":"free","under21_safe":true},{"subject_id":"central-park-veterans-monument-walk","subject_type":"activity","entity_name":"Grinnell Veterans Monument","title":"Walk Through the Veterans Monument","subtitle":"A 42-foot public artwork in Central Park","notes":"Approach from the park, follow the spiral pathway into the sculpture’s center, and give the group quiet time for reflection.","short_summary":"Visit a walk-through civic sculpture designed as a place of remembrance.","evidence_claim":"The City of Grinnell identifies the monument as a 42-foot steel sculpture in Central Park with a spiral path leading visitors into an open-air interior.","source_url":"https://www.grinnelliowa.gov/435/Veterans-Monument","source_title":"Veterans Monument","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The monument is within Central Park, which Grinnell College identifies among the city parks that are free and available for public use.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}

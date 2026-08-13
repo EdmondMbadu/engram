@@ -1,0 +1,79 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://news.utsa.edu/2026/04/viva-fiesta-spot-a-roadrunner-during-san-antonios-favorite-time-of-the-year/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.utsa.edu/2026/04/viva-fiesta-spot-a-roadrunner-during-san-antonios-favorite-time-of-the-year/",
+      "error": ""
+    },
+    {
+      "url": "https://lib.utsa.edu/services/find-a-study-space",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.utsa.edu/services/find-a-study-space",
+      "error": ""
+    },
+    {
+      "url": "https://lib.utsa.edu/news/utsa-libraries-opens-jpl-third-floor-with-goals-for-the-future",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.utsa.edu/news/utsa-libraries-opens-jpl-third-floor-with-goals-for-the-future",
+      "error": ""
+    },
+    {
+      "url": "https://www.utsa.edu/studentunion/entertainment/roost-gameroom.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.utsa.edu/studentunion/entertainment/roost-gameroom.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.utsa.edu/studentunion/map/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.utsa.edu/studentunion/map/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://colfa.utsa.edu/art/galleries/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://colfa.utsa.edu/art/galleries/",
+      "error": ""
+    },
+    {
+      "url": "https://campusrec.utsa.edu/outdoor-pursuits/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusrec.utsa.edu/outdoor-pursuits/",
+      "error": ""
+    },
+    {
+      "url": "https://campusrec.utsa.edu/facilities/rec-field-complex.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusrec.utsa.edu/facilities/rec-field-complex.html",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "GroupSpot"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

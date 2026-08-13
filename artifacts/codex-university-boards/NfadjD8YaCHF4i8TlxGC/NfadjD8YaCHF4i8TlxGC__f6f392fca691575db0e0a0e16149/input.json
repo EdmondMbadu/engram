@@ -1,0 +1,70 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "pSHOUfrdZWio0w4xbk0z",
+    "schoolName": "Saint Mary's College",
+    "shortSchoolName": "Saint Mary's College",
+    "townName": "Notre Dame",
+    "state": "IN",
+    "countryCode": "US",
+    "unitId": "152390",
+    "website": "https://www.saintmarys.edu/",
+    "latitude": 41.707274,
+    "longitude": -86.256947,
+    "heroUrl": "https://www.saintmarys.edu/files/smc-og-image.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=saintmarys.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Trumper Computer Cluster",
+    "Writing and Learning Center",
+    "Center for Academic Innovation Space",
+    "Rare Book Room",
+    "McCandless Hall Study Carrels",
+    "Niner's Lounge",
+    "Reignbeaux Lounge",
+    "Stapleton Lounge",
+    "Regina Hall North Lounge",
+    "Regina Hall South Lounge",
+    "Closing the Circle",
+    "Opening the Circle",
+    "First Walk Down The Avenue",
+    "Last Walk Down The Avenue",
+    "The Saint Mary's Ring",
+    "Bell Tower Tours",
+    "Senior Week",
+    "Handprints in the Tunnels",
+    "Christmas Madrigal Dinner",
+    "Founders' Day",
+    "Saint Mary's Student Center",
+    "Rice Commons",
+    "Noble Family Dining Hall",
+    "Vander Vennet Theatre",
+    "Cushwa-Leighton Library",
+    "Trumper Computer Center",
+    "Center for Academic Innovation",
+    "Angela Athletic & Wellness Complex",
+    "Holy Spirit Chapel"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

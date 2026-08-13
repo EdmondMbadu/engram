@@ -1,0 +1,59 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "pwBLNuFjKdQn7c6E6k2b",
+    "schoolName": "United States Coast Guard Academy",
+    "shortSchoolName": "United States Coast Guard Academy",
+    "townName": "New London",
+    "state": "CT",
+    "countryCode": "US",
+    "unitId": "130624",
+    "website": "https://www.uscga.edu/",
+    "latitude": 41.375823,
+    "longitude": -72.101583,
+    "heroUrl": "https://uscga.edu/wp-content/uploads/2026/06/washington-parade-field.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=uscga.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "Library Large Tables",
+    "Library Collaboration Workstations",
+    "Library Study Rooms",
+    "Library Small Group Tables",
+    "Library Individual Carrels",
+    "Hewitt Writing and Reading Center",
+    "Library Research Assistance",
+    "Library Quiet Study Space",
+    "Library Comfortable Chairs",
+    "Library Coffee and Tea Seating",
+    "Library at Waesche Hall",
+    "Chase Hall",
+    "Leamy Hall",
+    "Roland Hall Gym",
+    "Cadet Memorial Field",
+    "Sailing Center",
+    "Rowing Center",
+    "Barque Eagle",
+    "Bear Plaza"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Late-night access may be constrained by Harding’s documented residential and all-campus curfews: midnight Sunday–Thursday and 1 a.m. Friday–Saturday.",
+    "Restaurant and holiday hours can change; users should recheck each linked source on the day of travel.",
+    "The Domino’s source displays a live daily closing rather than a full weekly schedule, so its midnight availability should always be reconfirmed."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.harding.edu/life-at-harding/handbooks/under.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.harding.edu/life-at-harding/handbooks/under.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/ar/searcy/1707-e-race-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/ar/searcy/1707-e-race-ave",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wingstop.com/ar/searcy/wingstop-2908-searcy-ar-72143",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wingstop.com/ar/searcy/wingstop-2908-searcy-ar-72143",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/arkansas/searcy/3511-e-race-ave-ste-700",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/arkansas/searcy/3511-e-race-ave-ste-700",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ar/searcy/2513-w-beebe-capps-expy.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ar/searcy/2513-w-beebe-capps-expy.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.searcychamber.com/list/member/sonic-of-searcy-3-5013766",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.searcychamber.com/list/member/sonic-of-searcy-3-5013766",
+      "error": ""
+    },
+    {
+      "url": "https://www.dairyqueen.com/en-us/locations/ar/searcy/708-e-beebe-capps-expy/45833/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.dairyqueen.com/en-us/locations/ar/searcy/708-e-beebe-capps-expy/45833/",
+      "error": ""
+    },
+    {
+      "url": "https://www.zaxbys.com/locations/ar/searcy/1303-e-beebe-capps-expy?plt=lec6tn7bdma0baioc",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.zaxbys.com/locations/ar/searcy/1303-e-beebe-capps-expy?plt=lec6tn7bdma0baioc",
+      "error": ""
+    },
+    {
+      "url": "https://www.searcychamber.com/list/member/slim-chickens-searcy-ar-inc-5115650",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.searcychamber.com/list/member/slim-chickens-searcy-ar-inc-5115650",
+      "error": ""
+    },
+    {
+      "url": "https://www.searcychamber.com/list/member/freddy-s-frozen-custard-steakburgers-5115651",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.searcychamber.com/list/member/freddy-s-frozen-custard-steakburgers-5115651",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "inp02qqtKC7Nfan698u8",
+    "schoolName": "Iowa State University",
+    "shortSchoolName": "Iowa State University",
+    "townName": "Ames",
+    "state": "IA",
+    "countryCode": "US",
+    "unitId": "153603",
+    "website": "https://www.iastate.edu/",
+    "latitude": 42.026212,
+    "longitude": -93.648504,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Iowa_State_University_seal.svg/250px-Iowa_State_University_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=iastate.edu&sz=256"
+  },
+  "template": {
+    "id": "college-campus-tour-skips",
+    "version": "1.0",
+    "titlePattern": "What the Campus Tour Skips: {count} Places Students Share With Each Other",
+    "editorialBrief": "Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.",
+    "researchQueries": [
+      "student favorite campus places",
+      "campus map student spaces",
+      "student newspaper campus places"
+    ],
+    "count": 10,
+    "icon": "style",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place",
+      "study_space"
+    ],
+    "freshnessDays": 365
+  },
+  "exact_title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+  "excluded_subjects": [
+    "Brunnier Art Museum",
+    "Christian Petersen Art Museum",
+    "Farm House Museum",
+    "Elizabeth and Byron Anderson Sculpture Garden",
+    "Art on Campus Collection",
+    "Reiman Gardens",
+    "Ada Hayden Heritage Park",
+    "Lloyd Kurtz Park",
+    "Franklin Park",
+    "Ames Public Library Meeting and Study Rooms"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

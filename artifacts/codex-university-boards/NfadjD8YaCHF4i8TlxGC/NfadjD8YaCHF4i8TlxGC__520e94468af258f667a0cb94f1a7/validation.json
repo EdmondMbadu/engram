@@ -1,0 +1,79 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.lib.fsu.edu/visit-and-study/campus-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.fsu.edu/visit-and-study/campus-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.fsu.edu/visit-and-study/rooms-and-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.fsu.edu/visit-and-study/rooms-and-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.fsu.edu/special-collections/heritage-and-university-archives/heritage-museum",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.fsu.edu/special-collections/heritage-and-university-archives/heritage-museum",
+      "error": ""
+    },
+    {
+      "url": "https://union.fsu.edu/union-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://union.fsu.edu/union-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://www.innovation.fsu.edu/hub",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.innovation.fsu.edu/hub",
+      "error": ""
+    },
+    {
+      "url": "https://calendar.fsu.edu/global_and_multicultural_engagement_the_globegme",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calendar.fsu.edu/global_and_multicultural_engagement_the_globegme",
+      "error": ""
+    },
+    {
+      "url": "https://honors.fsu.edu/people-and-places/honors-scholars-fellows-house-hsf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://honors.fsu.edu/people-and-places/honors-scholars-fellows-house-hsf",
+      "error": ""
+    },
+    {
+      "url": "https://campusrec.fsu.edu/outdoors/lake/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusrec.fsu.edu/outdoors/lake/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "FSU Innovation Hub"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

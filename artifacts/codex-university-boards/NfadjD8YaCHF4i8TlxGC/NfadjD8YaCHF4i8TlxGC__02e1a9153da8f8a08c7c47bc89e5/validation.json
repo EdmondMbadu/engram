@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://ubdining.com/locations/unit/mainstreetmarket",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ubdining.com/locations/unit/mainstreetmarket",
+      "error": ""
+    },
+    {
+      "url": "https://ubdining.com/locations/unit/hubies",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ubdining.com/locations/unit/hubies",
+      "error": ""
+    },
+    {
+      "url": "https://ubdining.com/locations/unit/perks",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ubdining.com/locations/unit/perks",
+      "error": ""
+    },
+    {
+      "url": "https://ubdining.com/locations/unit/cellar",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ubdining.com/locations/unit/cellar",
+      "error": ""
+    },
+    {
+      "url": "https://www.jimssteakout.com/locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jimssteakout.com/locations",
+      "error": ""
+    },
+    {
+      "url": "https://www.ubdining.com/locations/vending-banking",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ubdining.com/locations/vending-banking",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

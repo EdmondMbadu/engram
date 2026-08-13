@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://sites.rowan.edu/centennial/stories/2024/favorite-student-traditions-still-fuel-rowan-pride.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sites.rowan.edu/centennial/stories/2024/favorite-student-traditions-still-fuel-rowan-pride.html",
+      "error": ""
+    },
+    {
+      "url": "https://sites.rowan.edu/homecoming/schedule-of-events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sites.rowan.edu/homecoming/schedule-of-events/",
+      "error": ""
+    },
+    {
+      "url": "https://sites.rowan.edu/scca/aboutus/signature_events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sites.rowan.edu/scca/aboutus/signature_events/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

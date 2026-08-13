@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.cpp.edu/aboutcpp/visitor-information/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cpp.edu/aboutcpp/visitor-information/",
+      "error": ""
+    },
+    {
+      "url": "https://www.cpp.edu/ilab/index.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cpp.edu/ilab/index.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.cpp.edu/maps/text-map.php?id=851526&list=loc",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cpp.edu/maps/text-map.php?id=851526&list=loc",
+      "error": ""
+    },
+    {
+      "url": "https://www.cpp.edu/licensingofspace/special-venues.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cpp.edu/licensingofspace/special-venues.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.cpp.edu/maps/text-map.php?id=276394&list=loc",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cpp.edu/maps/text-map.php?id=276394&list=loc",
+      "error": ""
+    },
+    {
+      "url": "https://cppdining.com/centerpointe?url=https%3A%2F%2Fcenterpointedining.com%2F",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cppdining.com/centerpointe/?url=https%3A%2F%2Fcenterpointedining.com%2F",
+      "error": ""
+    },
+    {
+      "url": "https://www.cpp.edu/biotrek/planning-your-visit/index.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cpp.edu/biotrek/planning-your-visit/index.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.cpp.edu/farmstore/contact.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cpp.edu/farmstore/contact.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.cpp.edu/news/content/2024/05/where-to-take-graduation-pictures-on-campus/index.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cpp.edu/news/content/2024/05/where-to-take-graduation-pictures-on-campus/index.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.cpp.edu/wkkelloggarabianhorsecenter/sunday-shows/about-sunday-shows.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cpp.edu/wkkelloggarabianhorsecenter/sunday-shows/about-sunday-shows.shtml",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

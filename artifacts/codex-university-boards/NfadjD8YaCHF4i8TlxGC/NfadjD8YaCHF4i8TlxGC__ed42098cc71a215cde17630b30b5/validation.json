@@ -1,0 +1,89 @@
+{
+  "ok": false,
+  "problems": [
+    "Card entities are not unique."
+  ],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://locations.in-n-out.com/67-irvine",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.in-n-out.com/67-irvine",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ca/irvine/4101-campus-drive/dinner.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ca/irvine/4101-campus-drive/dinner.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.deltaco.com/us/ca/irvine/4780-irvine-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.deltaco.com/us/ca/irvine/4780-irvine-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://dennys.com/location/denny-s-7348-235541",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://dennys.com/location/denny-s-7348-235541",
+      "error": ""
+    },
+    {
+      "url": "https://www.superyummyirvine.com/menu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.superyummyirvine.com/menu/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jackinthebox.com/us/ca/irvine/6565-burt-rd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jackinthebox.com/us/ca/irvine/6565-burt-rd",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/ca/irvine/14386-culver-drive",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/ca/irvine/14386-culver-drive",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/ca/irvine/63-technology-drive",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/ca/irvine/63-technology-drive",
+      "error": ""
+    },
+    {
+      "url": "https://eurekarestaurantgroup.com/locations/irvine",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://eurekarestaurantgroup.com/locations/irvine",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "In-N-Out Burger"
+  ],
+  "sourceCount": 9,
+  "generationScore": null,
+  "generationGrade": null
+}

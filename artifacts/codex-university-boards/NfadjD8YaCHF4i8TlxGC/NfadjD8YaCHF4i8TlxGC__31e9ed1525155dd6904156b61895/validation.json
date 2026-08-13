@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.northfieldhistory.org/220-nutting-block",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.northfieldhistory.org/220-nutting-block",
+      "error": ""
+    },
+    {
+      "url": "https://www.northfieldhistory.org/302-city-hall-real-one",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.northfieldhistory.org/302-city-hall-real-one",
+      "error": ""
+    },
+    {
+      "url": "https://www.northfieldhistory.org/311-313-northfield-news",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.northfieldhistory.org/311-313-northfield-news",
+      "error": ""
+    },
+    {
+      "url": "https://www.northfieldhistory.org/317-french",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.northfieldhistory.org/317-french",
+      "error": ""
+    },
+    {
+      "url": "https://www.northfieldhistory.org/first-mergen",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.northfieldhistory.org/first-mergen",
+      "error": ""
+    },
+    {
+      "url": "https://www.northfieldhistory.org/central-block",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.northfieldhistory.org/central-block",
+      "error": ""
+    },
+    {
+      "url": "https://www.northfieldhistory.org/digital-division-home",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.northfieldhistory.org/digital-division-home",
+      "error": ""
+    },
+    {
+      "url": "https://www.northfieldhistory.org/419-421-lockrem-opera",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.northfieldhistory.org/419-421-lockrem-opera",
+      "error": ""
+    },
+    {
+      "url": "https://www.northfieldhistory.org/501-scofield",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.northfieldhistory.org/501-scofield",
+      "error": ""
+    },
+    {
+      "url": "https://www.northfieldhistory.org/504-olson",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.northfieldhistory.org/504-olson",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

@@ -1,0 +1,62 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Several cited College event pages document specific 2026 offerings that have already occurred as of the supplied fetch date; verify future dates before visiting.",
+    "The Bick Nature Area page documents the trail and permitted enjoyment but does not explicitly state an admission policy."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.saintmarys.edu/2026-symposium-st-thomas-aquinas",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.saintmarys.edu/2026-symposium-st-thomas-aquinas",
+      "error": ""
+    },
+    {
+      "url": "https://www.saintmarys.edu/2026-madeleva-lecture",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.saintmarys.edu/2026-madeleva-lecture",
+      "error": ""
+    },
+    {
+      "url": "https://www.saintmarys.edu/preparing-dementia-tsunami-helping-people-care-cope-and-prepare",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.saintmarys.edu/preparing-dementia-tsunami-helping-people-care-cope-and-prepare",
+      "error": ""
+    },
+    {
+      "url": "https://www.saintmarys.edu/raise-your-voice-0",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.saintmarys.edu/raise-your-voice-0",
+      "error": ""
+    },
+    {
+      "url": "https://www.saintmarys.edu/moreau-marquee-accessible-version",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.saintmarys.edu/moreau-marquee-accessible-version",
+      "error": ""
+    },
+    {
+      "url": "https://www.saintmarys.edu/academics/departments/biology/facilities-nature-area",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.saintmarys.edu/academics/departments/biology/facilities-nature-area",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

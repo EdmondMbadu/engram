@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.samford.edu/events/step-sing/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.samford.edu/events/step-sing/",
+      "error": ""
+    },
+    {
+      "url": "https://www.samford.edu/student-life/files/Step-Sing-Program-2026.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.samford.edu/student-life/files/Step-Sing-Program-2026.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.samford.edu/students/connections",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.samford.edu/students/connections",
+      "error": ""
+    },
+    {
+      "url": "https://www.samford.edu/departments/event-planning/tailgate",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.samford.edu/departments/event-planning/tailgate",
+      "error": ""
+    },
+    {
+      "url": "https://www.samford.edu/news/2019/10/Samford-Homecoming-Cant-Miss-Traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.samford.edu/news/2019/10/Samford-Homecoming-Cant-Miss-Traditions",
+      "error": ""
+    },
+    {
+      "url": "https://www.samford.edu/students/student-leadership/sga-branches",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.samford.edu/students/student-leadership/sga-branches",
+      "error": ""
+    },
+    {
+      "url": "https://www.samford.edu/students/activities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.samford.edu/students/activities",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

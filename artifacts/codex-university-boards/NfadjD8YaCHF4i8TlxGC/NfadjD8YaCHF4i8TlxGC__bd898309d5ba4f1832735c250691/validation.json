@@ -1,0 +1,82 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "4 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.truman.edu/about/our-campus/facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.truman.edu/about/our-campus/facilities/",
+      "error": ""
+    },
+    {
+      "url": "https://library.truman.edu/study-room/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.truman.edu/study-room/",
+      "error": ""
+    },
+    {
+      "url": "https://library.truman.edu/special-collections-archives/reading-room-procedures-2/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.truman.edu/special-collections-archives/reading-room-procedures-2/",
+      "error": ""
+    },
+    {
+      "url": "https://planetarium.truman.edu/about-us/available-shows/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://planetarium.truman.edu/about-us/available-shows/",
+      "error": ""
+    },
+    {
+      "url": "https://observatory.truman.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://observatory.truman.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://www.truman.edu/academics/school-of-science-and-mathematics/about-the-agricultural-and-biological-sciences/agricultural-science-facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.truman.edu/academics/school-of-science-and-mathematics/about-the-agricultural-and-biological-sciences/agricultural-science-facilities/",
+      "error": ""
+    },
+    {
+      "url": "https://townemuseum.truman.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://townemuseum.truman.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://aaup.truman.edu/files/2023/10/ComparisonFacultyHB.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://aaup.truman.edu/files/2023/10/ComparisonFacultyHB.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Student Recreation Center",
+    "Truman State University Observatory",
+    "University Farm",
+    "University Art Gallery"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

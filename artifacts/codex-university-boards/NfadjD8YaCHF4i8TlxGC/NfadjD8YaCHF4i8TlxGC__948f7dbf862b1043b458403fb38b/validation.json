@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.regis.edu/life-at-regis/student-activities/ranger-traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.regis.edu/life-at-regis/student-activities/",
+      "error": ""
+    },
+    {
+      "url": "https://www.regis.edu/academics/student-success/first-year-experience/first-year-learning-community",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.regis.edu/academics/student-success/first-year-experience/first-year-learning-community",
+      "error": ""
+    },
+    {
+      "url": "https://www.regis.edu/admissions/admitted-students/first-year-students/soar/student-schedule",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.regis.edu/admissions/admitted-students/first-year-students/soar/student-schedule",
+      "error": ""
+    },
+    {
+      "url": "https://www.regis.edu/_documents/student-life/rusga-constitution.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.regis.edu/_documents/student-life/rusga-constitution.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

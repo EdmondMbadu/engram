@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://uncw.edu/seahawk-life/arts/venues/cultural-arts-building/cabartgallery/exhibitions/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncw.edu/seahawk-life/arts/venues/cultural-arts-building/cabartgallery/exhibitions/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.uncw.edu/seahawk-life/arts/venues/cultural-arts-building/cabartgallery/exhibitions/mezzanine",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncw.edu/seahawk-life/arts/venues/cultural-arts-building/cabartgallery/exhibitions/mezzanine",
+      "error": ""
+    },
+    {
+      "url": "https://www.uncw.edu/seahawk-life/arts/venues/uncw-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncw.edu/seahawk-life/arts/venues/uncw-library",
+      "error": ""
+    },
+    {
+      "url": "https://www.uncw.edu/about/know-us/campus/ev-henwood-preserve",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncw.edu/about/know-us/campus/ev-henwood-preserve",
+      "error": ""
+    },
+    {
+      "url": "https://maps.nhcgov.com/167/Demonstration-Gardens",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://maps.nhcgov.com/167/Demonstration-Gardens",
+      "error": ""
+    },
+    {
+      "url": "https://arboretum.nhcgov.com/1194/Visitor-Etiquette",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arboretum.nhcgov.com/1194/Visitor-Etiquette",
+      "error": ""
+    },
+    {
+      "url": "https://www.wilmingtonnc.gov/Departments-Divisions/Parks-Recreation/Parks-Trails/Riverfront-Park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.wilmingtonnc.gov/Departments-Divisions/Parks-Recreation/Parks-Trails/Riverfront-Park",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

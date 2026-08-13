@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.uncw.edu/myuncw/seahawk-life/services/campus-support/iprint/locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncw.edu/myuncw/seahawk-life/services/campus-support/iprint/locations",
+      "error": ""
+    },
+    {
+      "url": "https://www.uncw.edu/seahawk-life/services/conferences-events-reservations/event-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncw.edu/seahawk-life/services/conferences-events-reservations/event-spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://www.uncw.edu/seahawk-life/services/conferences-events-reservations/event-spaces/fisher-center/clock-tower",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncw.edu/seahawk-life/services/conferences-events-reservations/event-spaces/fisher-center/clock-tower",
+      "error": ""
+    },
+    {
+      "url": "https://www.uncw.edu/seahawk-life/services/conferences-events-reservations/event-spaces/fisher-union/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncw.edu/seahawk-life/services/conferences-events-reservations/event-spaces/fisher-union/",
+      "error": ""
+    },
+    {
+      "url": "https://uncw.edu/about/university-administration/student-affairs/departments/campus-life/facilities-operations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncw.edu/about/university-administration/student-affairs/departments/campus-life/facilities-operations/",
+      "error": ""
+    },
+    {
+      "url": "https://uncw.edu/about/university-administration/student-affairs/departments/dean-students/student-conduct/conduct-resources",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncw.edu/about/university-administration/student-affairs/departments/dean-students/student-conduct/conduct-resources",
+      "error": ""
+    },
+    {
+      "url": "https://uncw.edu/seahawk-life/health-wellness/campus-recreation/facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncw.edu/seahawk-life/health-wellness/campus-recreation/facilities/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

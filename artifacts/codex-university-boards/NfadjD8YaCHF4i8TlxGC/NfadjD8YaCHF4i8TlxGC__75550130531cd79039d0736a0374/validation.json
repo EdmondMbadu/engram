@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://usna.edu/PAO/faq_pages/herndon.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://usna.edu/PAO/faq_pages/herndon.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.usna.edu/NewsCenter/2023/02/NAVAL_ACADEMY_TO_HOLD_HERNDON_CLIMB_ON_MAY_17.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usna.edu/NewsCenter/2023/02/NAVAL_ACADEMY_TO_HOLD_HERNDON_CLIMB_ON_MAY_17.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.usna.edu/NewsCenter/2025/05/Commissioning_Week_Traditions.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usna.edu/NewsCenter/2025/05/Commissioning_Week_Traditions.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.usna.edu/NewsCenter/2015/04/bonds-of-gold-ceremony-connects-classes-of-1967-and-2017.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usna.edu/NewsCenter/2015/04/bonds-of-gold-ceremony-connects-classes-of-1967-and-2017.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.usna.edu/NewsCenter/2025/05/2025_May_Events_Open_to_the_Public_and_RoadBridge_Closures.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usna.edu/NewsCenter/2025/05/2025_May_Events_Open_to_the_Public_and_RoadBridge_Closures.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.usna.edu/NewsCenter/2026/03/Formal_Parade_Schedule_Spring_2026.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usna.edu/NewsCenter/2026/03/Formal_Parade_Schedule_Spring_2026.php",
+      "error": ""
+    },
+    {
+      "url": "https://usna.edu/NewsCenter/2019/10/The_Might_of_the_Chain.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://usna.edu/NewsCenter/2019/10/The_Might_of_the_Chain.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.usna.edu/Commandant/_files/documents/COMDTMIDNINST_1520.4D-PROFESSIONALISM_AND_CIVILITY_TRAINING_PROGRAM_NEW.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usna.edu/Commandant/_files/documents/COMDTMIDNINST_1520.4D-PROFESSIONALISM_AND_CIVILITY_TRAINING_PROGRAM_NEW.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.usna.edu/NewsCenter/2016/12/057-16-naval-academy-gears-up-for-army-navy-football.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usna.edu/NewsCenter/2016/12/057-16-naval-academy-gears-up-for-army-navy-football.php",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 100,
+  "generationGrade": "A"
+}

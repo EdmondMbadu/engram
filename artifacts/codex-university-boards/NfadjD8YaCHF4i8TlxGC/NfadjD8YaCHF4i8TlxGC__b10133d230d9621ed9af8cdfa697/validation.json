@@ -1,0 +1,79 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://zalatpizza.com/stores/z24-dallas-snider-plaza/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://zalatpizza.com/locations/dallas-snider-plaza/",
+      "error": ""
+    },
+    {
+      "url": "https://www.velvettaco.com/location/greenville/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.velvettaco.com/location/greenville/",
+      "error": ""
+    },
+    {
+      "url": "https://oishiirestaurants.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://oishiirestaurants.com/",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.ihop.com/en-us/tx/dallas/breakfast-7830-n.-central-expy-3027",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.ihop.com/en-us/tx/dallas/breakfast-7830-n.-central-expy-3027",
+      "error": ""
+    },
+    {
+      "url": "https://locations.whataburger.com/tx/dallas.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.whataburger.com/tx/dallas.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.smu.edu/businessfinance/facilities/resources/smu-building-operational-hours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smu.edu/businessfinance/facilities/resources/smu-building-operational-hours",
+      "error": ""
+    },
+    {
+      "url": "https://www.smu.edu/StudentAffairs/StudentCenterandActivities/EventInformation/RoomFeatures",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smu.edu/studentaffairs/hughes-trigg",
+      "error": ""
+    },
+    {
+      "url": "https://www.smu.edu/studentaffairs/campus-recreation/facilities/dedman-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smu.edu/studentaffairs/campus-recreation/facilities/dedman-center",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Dedman Center for Lifetime Sports"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

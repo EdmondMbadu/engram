@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.depts.ttu.edu/library/test/ground_floor_groups.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depts.ttu.edu/library/test/ground_floor_groups.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.depts.ttu.edu/library/news/stories/studyspace.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depts.ttu.edu/library/news/stories/studyspace.php",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 2,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

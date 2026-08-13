@@ -1,0 +1,82 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "4 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.iit.edu/student-affairs/student-handbook/mies-campus-services-and-facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iit.edu/student-affairs/student-handbook/mies-campus-services-and-facilities",
+      "error": ""
+    },
+    {
+      "url": "https://library.iit.edu/reserve-a-space",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.iit.edu/reserve-a-space",
+      "error": ""
+    },
+    {
+      "url": "https://catalog.iit.edu/undergraduate/campus-overview/campus-resources/academic-resource-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.iit.edu/undergraduate/campus-overview/campus-resources/academic-resource-center/",
+      "error": ""
+    },
+    {
+      "url": "https://catalog.iit.edu/undergraduate/campus-overview/campus-resources/idea-shop/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.iit.edu/undergraduate/campus-overview/campus-resources/idea-shop/",
+      "error": ""
+    },
+    {
+      "url": "https://www.iit.edu/student-life/get-involved/bog",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iit.edu/student-life/get-involved/bog",
+      "error": ""
+    },
+    {
+      "url": "https://www.iit.edu/esports",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iit.edu/esports",
+      "error": ""
+    },
+    {
+      "url": "https://www.iit.edu/keating-sports-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iit.edu/keating-sports-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.iit.edu/housing/housing-options/residence-halls/george-j-kacek-hall",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iit.edu/housing/housing-options/residence-halls/george-j-kacek-hall",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "McCormick Tribune Campus Center",
+    "Academic Resource Center",
+    "The BOG",
+    "Keating Sports Center"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

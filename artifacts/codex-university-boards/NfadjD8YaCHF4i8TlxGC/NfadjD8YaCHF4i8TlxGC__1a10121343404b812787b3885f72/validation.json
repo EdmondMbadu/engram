@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://studentlife.mit.edu/dining/dining-locations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentlife.mit.edu/dining/dining-locations/",
+      "error": ""
+    },
+    {
+      "url": "https://studentlife.mit.edu/app/uploads/2025/03/dining-terms-2024-25-v5.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentlife.mit.edu/app/uploads/2025/03/dining-terms-2024-25-v5.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://pinocchiospizza.net/hours.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pinocchiospizza.net/hours.html",
+      "error": ""
+    },
+    {
+      "url": "https://menu.cloverfoodlab.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://menu.cloverfoodlab.com/",
+      "error": ""
+    },
+    {
+      "url": "https://annas.com/locations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://annas.com/locations/",
+      "error": ""
+    },
+    {
+      "url": "https://annas.com/porter-square/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://annas.com/porter-square/",
+      "error": ""
+    },
+    {
+      "url": "https://tosci.com/about-us/locations-2/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://tosci.com/about-us/locations-2/",
+      "error": ""
+    },
+    {
+      "url": "https://www.wholefoodsmarket.com/stores/cambridge",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.wholefoodsmarket.com/stores/cambridge",
+      "error": ""
+    },
+    {
+      "url": "https://www.wholefoodsmarket.com/stores/riverstreet",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.wholefoodsmarket.com/stores/riverstreet",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

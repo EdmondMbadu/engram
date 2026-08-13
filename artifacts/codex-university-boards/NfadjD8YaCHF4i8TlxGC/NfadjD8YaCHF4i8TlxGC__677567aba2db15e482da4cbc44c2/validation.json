@@ -1,0 +1,74 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "4 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.mfa.org/visit/getting-here",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mfa.org/visit/getting-here",
+      "error": ""
+    },
+    {
+      "url": "https://www.gardnermuseum.org/visit/directions-and-parking",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gardnermuseum.org/visit/directions-and-parking",
+      "error": ""
+    },
+    {
+      "url": "https://maam.massart.edu/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://maam.massart.edu/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.emeraldnecklace.org/park-overview/back-bay-fens/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.emeraldnecklace.org/park-overview/back-bay-fens/",
+      "error": ""
+    },
+    {
+      "url": "https://www.emeraldnecklace.org/about-us/shattuck-visitor-center/guided-tours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.emeraldnecklace.org/about-us/shattuck-visitor-center/guided-tours/",
+      "error": ""
+    },
+    {
+      "url": "https://necmusic.edu/on-campus/visit-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://necmusic.edu/on-campus/visit-us/",
+      "error": ""
+    },
+    {
+      "url": "https://www.christianscience.com/the-mother-church-in-boston",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.christianscience.com/the-mother-church-in-boston",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Museum of Fine Arts, Boston",
+    "Isabella Stewart Gardner Museum",
+    "MassArt Art Museum",
+    "Shattuck Visitor Center"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

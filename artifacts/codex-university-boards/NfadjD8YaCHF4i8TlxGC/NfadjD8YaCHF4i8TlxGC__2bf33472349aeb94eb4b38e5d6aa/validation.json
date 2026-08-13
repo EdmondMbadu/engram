@@ -1,0 +1,47 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.iespokane.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iespokane.com/",
+      "error": ""
+    },
+    {
+      "url": "https://froyoearthunpub.squarespace.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://froyoearthunpub.squarespace.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.gonzaga.edu/about/offices-services/campus-card-services/bulldog-bucks/bulldog-bucks-welcomed-here",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.gonzaga.edu/about/offices-services/campus-card-services/bulldog-bucks/bulldog-bucks-welcomed-here",
+      "error": ""
+    },
+    {
+      "url": "https://www.gonzaga.edu/about/our-campus-location/spokane-our-community/local-dining",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.gonzaga.edu/about/our-campus-location/spokane-our-community/local-dining",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Osprey Restaurant & Bar"
+  ],
+  "sourceCount": 4,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

@@ -1,0 +1,69 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://wooster.edu/new-students",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wooster.edu/new-students",
+      "error": ""
+    },
+    {
+      "url": "https://explore.wooster.edu/you",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://explore.wooster.edu/you",
+      "error": ""
+    },
+    {
+      "url": "https://wooster.edu/living-on-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wooster.edu/living-on-campus",
+      "error": ""
+    },
+    {
+      "url": "https://thewoostervoice.spaces.wooster.edu/2018/08/31/scot-spirit-day-provides-opportunities-to-join-over-120-organizations/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://thewoostervoice.spaces.wooster.edu/2018/08/31/scot-spirit-day-provides-opportunities-to-join-over-120-organizations/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://wooster.edu/about/fast-facts",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wooster.edu/about/fast-facts",
+      "error": ""
+    },
+    {
+      "url": "https://wooster.edu/wp-content/uploads/2022/05/Wooster-Presidential-Prospectus.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wooster.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://explore.wooster.edu/discover",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://explore.wooster.edu/discover",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

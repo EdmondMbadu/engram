@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://millstation.shopkimco.com/stores/shopping",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://millstation.shopkimco.com/stores/shopping",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 1,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

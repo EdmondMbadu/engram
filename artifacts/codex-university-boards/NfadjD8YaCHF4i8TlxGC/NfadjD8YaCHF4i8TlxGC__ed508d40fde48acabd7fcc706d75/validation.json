@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.gbmcoffee.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gbmcoffee.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.cakewalknorthfield.com/contact-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cakewalknorthfield.com/contact-us",
+      "error": ""
+    },
+    {
+      "url": "https://business.northfieldchamber.com/list/member/content-bookstore-446",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://business.northfieldchamber.com/list/member/content-bookstore-446",
+      "error": ""
+    },
+    {
+      "url": "https://northfieldartsguild.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://northfieldartsguild.org/",
+      "error": ""
+    },
+    {
+      "url": "https://www.northfieldhistory.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.northfieldhistory.org/",
+      "error": ""
+    },
+    {
+      "url": "https://www.northfieldmn.gov/facilities/facility/details/Bridge-Square-5",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.northfieldmn.gov/facilities/facility/details/Bridge-Square-5",
+      "error": ""
+    },
+    {
+      "url": "https://www.northfieldmn.gov/110/Library-Board",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.northfieldmn.gov/110/Library-Board",
+      "error": ""
+    },
+    {
+      "url": "https://www.northfieldmn.gov/Facilities/Facility/Details/6",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.northfieldmn.gov/Facilities/Facility/Details/6",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

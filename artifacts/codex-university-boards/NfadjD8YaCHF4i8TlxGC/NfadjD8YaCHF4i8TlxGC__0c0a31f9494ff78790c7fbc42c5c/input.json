@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "S7ENBHs5DqAq82soUor1",
+    "schoolName": "North Dakota State University-Main Campus",
+    "shortSchoolName": "North Dakota State University",
+    "townName": "Fargo",
+    "state": "ND",
+    "countryCode": "US",
+    "unitId": "200332",
+    "website": "https://www.ndsu.edu/",
+    "latitude": 46.893127,
+    "longitude": -96.800838,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=ndsu.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=ndsu.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "Taco Bell — 2121 University Dr S",
+    "Taco Bell — 1599 19th Avenue North",
+    "Taco Bell — 4135 13th Avenue South",
+    "Denny's — 4437 13th Ave SW",
+    "IHOP — 1701 45th St SW",
+    "Papa Johns Pizza — 2730 32nd Ave S",
+    "Papa Johns Pizza — 5675 26th Avenue S",
+    "Papa Johns Pizza — 1100 19th Avenue North",
+    "McDonald's — 1001 38th St S",
+    "Domino's Pizza — 1109 19th Avenue North"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

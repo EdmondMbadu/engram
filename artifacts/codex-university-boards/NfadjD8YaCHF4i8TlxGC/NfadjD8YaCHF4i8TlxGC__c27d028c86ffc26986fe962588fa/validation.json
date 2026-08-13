@@ -1,0 +1,65 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://kc.edu/campus-resources/it-department/where-are-campus-computers-available/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://kc.edu/campus-resources/it-department/where-are-campus-computers-available/",
+      "error": ""
+    },
+    {
+      "url": "https://kc.edu/library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://kc.edu/library/",
+      "error": ""
+    },
+    {
+      "url": "https://kc.edu/wp-content/uploads/2025/04/campus-map-1-25.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://kc.edu/wp-content/uploads/2025/04/campus-map-1-25.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://kc.edu/about/campus/simulation-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://kc.edu/about/campus/simulation-center/",
+      "error": ""
+    },
+    {
+      "url": "https://kc.edu/wp-content/uploads/2026/06/2026-2027-KC-Academic-Bulletin-06-01-2026.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://kc.edu/wp-content/uploads/2026/06/2026-2027-KC-Academic-Bulletin-06-01-2026.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://kc.edu/campus-resources/student-success/studentaffairs/residence-hall/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://kc.edu/campus-resources/student-success/studentaffairs/residence-hall/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Kettering College Library",
+    "Learning Commons Group Study Rooms",
+    "Boonshoft Student Lounge"
+  ],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

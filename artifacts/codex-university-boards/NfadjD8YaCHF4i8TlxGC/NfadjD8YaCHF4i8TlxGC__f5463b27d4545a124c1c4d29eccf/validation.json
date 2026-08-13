@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://studentaffairs.fresnostate.edu/studentinvolvement/usu/hours.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentaffairs.fresnostate.edu/studentinvolvement/usu/hours.html",
+      "error": ""
+    },
+    {
+      "url": "https://adminfinance.fresnostate.edu/arboretum/peace-garden/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://adminfinance.fresnostate.edu/arboretum/peace-garden/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://library.fresnostate.edu/hours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.fresnostate.edu/hours",
+      "error": ""
+    },
+    {
+      "url": "https://cah.fresnostate.edu/armenianstudies/news-events/past-events.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cah.fresnostate.edu/armenianstudies/news-events/past-events.html",
+      "error": ""
+    },
+    {
+      "url": "https://auxiliary.fresnostate.edu/association/src/hours.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://auxiliary.fresnostate.edu/association/src/hours.html",
+      "error": ""
+    },
+    {
+      "url": "https://agf.fresnostate.edu/farmmarket/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://agf.fresnostate.edu/farmmarket/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://campusnews.fresnostate.edu/may-2-2022/bulldog-bowl-open-now",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusnews.fresnostate.edu/may-2-2022/bulldog-bowl-open-now",
+      "error": ""
+    },
+    {
+      "url": "https://auxiliary.fresnostate.edu/association/dining/hours-1.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://auxiliary.fresnostate.edu/association/dining/hours-1.html",
+      "error": ""
+    },
+    {
+      "url": "https://csm.fresnostate.edu/physics/downing-planetarium/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://csm.fresnostate.edu/physics/downing-planetarium/index.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

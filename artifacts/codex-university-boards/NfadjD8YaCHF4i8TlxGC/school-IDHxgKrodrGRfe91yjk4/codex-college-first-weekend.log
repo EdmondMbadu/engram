@@ -1,0 +1,287 @@
+Reading additional input from stdin...
+2026-08-13T07:54:09.020110Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1c-c8b7-7a52-80ca-30315f17a28a.1786607618231901000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:54:09.024919Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:54:09.032317Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:54:09.086658Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1c-c8a5-76c1-803c-b674167e0fab.1786607618214429000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa1d-4079-78f3-b9ea-2ac78a3279ae
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"IDHxgKrodrGRfe91yjk4","schoolName":"Kettering University","shortSchoolName":"Kettering University","townName":"Flint","state":"MI","countryCode":"US","website":"https://www.kettering.edu/","latitude":43.012468,"longitude":-83.71282},"templates":[{"id":"college-first-weekend","version":"1.0","titlePattern":"Your First Weekend at {school}, Shared as Cards","editorialBrief":"Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.","researchQueries":["new student orientation campus guide","first year student campus activities","weekend near campus students"],"count":10,"icon":"schedule","primarySubjectType":"sequence_stop","allowedSubjectTypes":["sequence_stop","place","activity"],"freshnessDays":180,"exactTitle":"Your First Weekend at Kettering University, Shared as Cards"}]}
+2026-08-13T07:54:09.169152Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1c-c8b0-7653-98ae-b100473fc826.1786607618225148000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:54:09.289881Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1c-c8b2-7282-8290-8a9ed0eacbdb.1786607618226692000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:54:09.353714Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1c-c8b9-7d80-92d3-27cd2b75dd8c.1786607618234086000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:54:09.415596Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1c-c8c6-73f1-a161-9d708dfd35e8.1786607618246866000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:54:09.472486Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1c-c8bd-7853-8bfc-a8171bb43102.1786607618237781000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Kettering University",
+  "town_name": "Flint",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Kettering University",
+      "town_name": "Flint",
+      "template_id": "college-first-weekend",
+      "title": "Your First Weekend at Kettering University, Shared as Cards",
+      "description": "",
+      "icon": "schedule",
+      "cards": [{
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }],
+      "warnings": ["Research in progress; final output will contain exactly 10 verified cards."]
+    }
+  ],
+  "warnings": ["I’m verifying direct sources, current access facts, and a coherent first-weekend sequence."]
+}
+web search: 
+web search: site:kettering.edu Kettering University campus student center library recreation center Flint ...
+web search: 
+web search: official Flint Farmers Market hours vendors ...
+web search: 
+web search: site:flintarts.org visit hours admission Flint Institute Arts ...
+codex
+{"complete":true,"school_name":"Kettering University","town_name":"Flint","boards":[{"complete":true,"school_name":"Kettering University","town_name":"Flint","template_id":"college-first-weekend","title":"Your First Weekend at Kettering University, Shared as Cards","description":"A Friday-to-Sunday sequence for settling into Thompson Hall, learning key campus spaces, sharing meals, getting active, and making a daytime trip into Flint.","icon":"schedule","cards":[{"subject_id":"kettering-thompson-hall","subject_type":"sequence_stop","entity_name":"Frances Willson Thompson Hall","title":"Friday: Set Up Your Home Base","subtitle":"Start in Kettering’s first-year residence hall","notes":"Unpack your essentials, locate the community kitchen, then use the lobby’s games and seating for an easy first-floor introduction.","short_summary":"Begin the weekend by learning the practical and social spaces inside Thompson Hall.","evidence_claim":"Kettering says all incoming first-year students live in Thompson Hall, which has single rooms, six smaller lounges, a lobby with games and televisions, and a second-floor community kitchen.","source_url":"https://www.kettering.edu/life-at-kettering/housing-dining/residence-life","source_title":"Residence Life","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Thompson Hall is residential space; entry and use are for residents and their authorized guests under residence-life rules.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"kettering-battenberg-cafe","subject_type":"sequence_stop","entity_name":"Battenberg Café","title":"Friday: Meet Over Dinner","subtitle":"Use the Learning Commons café as the first shared meal stop","notes":"Choose a station, compare schedules over dinner, and identify a familiar table where your group can reconnect during the week.","short_summary":"A structured first meal creates a simple meeting point without requiring an off-campus plan.","evidence_claim":"Kettering identifies Battenberg Café on the Learning Commons’ first floor, with eight food stations and weekday dinner service from 5 to 7 p.m.","source_url":"https://www.kettering.edu/life-at-kettering/housing-dining/dining-hours","source_title":"Dining Hours","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current posted dinner hours are Monday–Friday, 5–7 p.m.; meal-plan access or payment is required.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"kettering-bjs-lounge-grill","subject_type":"sequence_stop","entity_name":"BJ’s Lounge & Grill","title":"Friday: Keep the Evening on Campus","subtitle":"A student dining stop with posted weekend hours","notes":"Check the specialty menu, bring your student ID, and keep the first evening simple by staying inside the familiar Campus Center.","short_summary":"End Friday at an on-campus food venue instead of improvising a late trip around town.","evidence_claim":"Kettering lists BJ’s Lounge & Grill as a Campus Center dining venue with a specialty menu and Saturday and Sunday hours from 5 to 11 p.m.","source_url":"https://www.kettering.edu/life-at-kettering/housing-dining/dining-hours","source_title":"Dining Hours","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current posted weekend hours are Saturday and Sunday, 5–11 p.m.; campus buildings require a valid ID for weekend access.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"kettering-learning-commons-rooftop-terrace","subject_type":"sequence_stop","entity_name":"Learning Commons Rooftop Terrace","title":"Saturday: Start Above Campus","subtitle":"Get oriented from the Learning Commons rooftop","notes":"Bring your schedule, find the terrace seating, and use the elevated view to place the buildings you will revisit during the term.","short_summary":"A quiet outdoor reset doubles as a visual introduction to the campus layout.","evidence_claim":"Kettering documents a 1,600-square-foot rooftop terrace in the Learning Commons with seating, green space, hammocks, and electrical outlets.","source_url":"https://www.kettering.edu/who-we-are/campus-facilities/learning-commons","source_title":"Learning Commons","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Student ID access may be required on weekends; terrace availability can depend on building access and weather.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"kettering-connie-jim-john-recreation-center","subject_type":"sequence_stop","entity_name":"Connie and Jim John Recreation Center","title":"Saturday: Try One Recreation Option","subtitle":"Choose a low-pressure activity inside the student facility","notes":"Walk the suspended track or bring court gear, then note the equipment desk and locker-room locations for your next visit.","short_summary":"A short activity break introduces the recreation resources available to Kettering students.","evidence_claim":"The university says the private Recreation Center serves Kettering students, faculty, staff, and their families and includes courts, a walking track, fitness rooms, and a pool.","source_url":"https://www.kettering.edu/who-we-are/campus-facilities/recreation-center","source_title":"Recreation Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use is limited to eligible Kettering community members and authorized family members; consult the linked current-hours schedule before going.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"flint-farmers-market","subject_type":"sequence_stop","entity_name":"Flint Farmers’ Market","title":"Saturday: Explore the Public Market","subtitle":"Make a daytime trip to a year-round Flint destination","notes":"Go during market hours, browse the permanent vendors first, and agree on a meeting point before splitting up to compare food options.","short_summary":"The market offers an approachable daytime introduction to Flint’s vendors and public spaces.","evidence_claim":"The market’s official site describes it as a year-round public market at 300 East First Street with more than 50 vendors, open Tuesday, Thursday, and Saturday from 9 a.m. to 5 p.m.","source_url":"https://www.flintfarmersmarket.com/about-the-market/","source_title":"About The Market","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current market hours are Tuesday, Thursday, and Saturday, 9 a.m.–5 p.m.; verify holiday changes on the official site.","cost_status":"unknown","under21_safe":true},{"subject_id":"kettering-atwood-stadium","subject_type":"sequence_stop","entity_name":"Atwood Stadium at Kettering University","title":"Saturday: Find the Stadium Gate","subtitle":"Learn where campus recreation and Flint events meet","notes":"Walk the public-facing exterior, locate the entrance and posted rules, and return only for a scheduled event or authorized activity.","short_summary":"A daylight orientation stop makes future games and campus programs easier to navigate.","evidence_claim":"Kettering identifies Atwood Stadium as an 11,000-seat venue in Flint’s Carriage Town district used by university intramural and recreational programs and community teams.","source_url":"https://www.kettering.edu/who-we-are/campus-facilities/atwood-stadium","source_title":"Kettering University's Atwood Stadium","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The stadium is not represented as continuously open; enter only for a scheduled event, program, or authorized reservation.","cost_status":"unknown","under21_safe":true},{"subject_id":"kettering-campus-center","subject_type":"sequence_stop","entity_name":"Campus Center","title":"Saturday: Locate the Help Desk","subtitle":"Anchor essential services in the Campus Center","notes":"Find the Great Court and Campus Safety Service Center, save the service number, and check which entrances accept your student ID.","short_summary":"This practical stop establishes where to seek assistance and how weekend building access works.","evidence_claim":"Kettering says the Campus Center contains Campus Safety and student-activity areas; its Campus Safety Service Center is in the Great Court and operates with officers available around the clock.","source_url":"https://www.kettering.edu/life-at-kettering/campus-safety","source_title":"Campus Safety","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Campus Safety assistance is available 24/7 at 810-762-9501; after-hours and weekend Campus Center entry requires a valid ID.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"kettering-historic-academic-building","subject_type":"sequence_stop","entity_name":"Historic Academic Building","title":"Sunday: Preview the Academic Core","subtitle":"Trace Monday’s route through Kettering’s historic center","notes":"Find your main entrance and likely classroom wing, then photograph posted room signs for personal navigation without blocking doors.","short_summary":"A Sunday route check reduces uncertainty before the first full academic day.","evidence_claim":"Kettering describes the Academic Building as the historic center of campus, containing classrooms, science and computer laboratories, McKinnon Theatre, and offices.","source_url":"https://www.kettering.edu/who-we-are/campus-facilities","source_title":"Campus Facilities","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Kettering states students, faculty, and staff may access classrooms and labs with valid ID access; individual rooms may remain restricted.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"kettering-cs-mott-engineering-science-center","subject_type":"sequence_stop","entity_name":"C.S. Mott Engineering and Science Center","title":"Sunday: Finish With a Lab-Building Check","subtitle":"Close the weekend by locating a major STEM facility","notes":"Identify the building entrance and connect it to your Academic Building route; enter laboratories only when your course authorizes access.","short_summary":"The final stop turns a campus-map label into a recognizable destination before classes begin.","evidence_claim":"Kettering’s facilities page identifies the C.S. Mott Engineering and Science Center as a 130,000-square-foot building housing chemistry, biochemistry, mechanical engineering, energy, and automotive laboratories.","source_url":"https://www.kettering.edu/who-we-are/campus-facilities","source_title":"Campus Facilities","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Valid student ID access applies to the Mott building, but laboratories and specialized areas may have separate authorization requirements.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:56:04.976549Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa1d-4079-78f3-b9ea-2ac78a3279ae.1786607648890699000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+33,633
+
+{"complete":true,"school_name":"Kettering University","town_name":"Flint","boards":[{"complete":true,"school_name":"Kettering University","town_name":"Flint","template_id":"college-first-weekend","title":"Your First Weekend at Kettering University, Shared as Cards","description":"A Friday-to-Sunday sequence for settling into Thompson Hall, learning key campus spaces, sharing meals, getting active, and making a daytime trip into Flint.","icon":"schedule","cards":[{"subject_id":"kettering-thompson-hall","subject_type":"sequence_stop","entity_name":"Frances Willson Thompson Hall","title":"Friday: Set Up Your Home Base","subtitle":"Start in Kettering’s first-year residence hall","notes":"Unpack your essentials, locate the community kitchen, then use the lobby’s games and seating for an easy first-floor introduction.","short_summary":"Begin the weekend by learning the practical and social spaces inside Thompson Hall.","evidence_claim":"Kettering says all incoming first-year students live in Thompson Hall, which has single rooms, six smaller lounges, a lobby with games and televisions, and a second-floor community kitchen.","source_url":"https://www.kettering.edu/life-at-kettering/housing-dining/residence-life","source_title":"Residence Life","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Thompson Hall is residential space; entry and use are for residents and their authorized guests under residence-life rules.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"kettering-battenberg-cafe","subject_type":"sequence_stop","entity_name":"Battenberg Café","title":"Friday: Meet Over Dinner","subtitle":"Use the Learning Commons café as the first shared meal stop","notes":"Choose a station, compare schedules over dinner, and identify a familiar table where your group can reconnect during the week.","short_summary":"A structured first meal creates a simple meeting point without requiring an off-campus plan.","evidence_claim":"Kettering identifies Battenberg Café on the Learning Commons’ first floor, with eight food stations and weekday dinner service from 5 to 7 p.m.","source_url":"https://www.kettering.edu/life-at-kettering/housing-dining/dining-hours","source_title":"Dining Hours","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current posted dinner hours are Monday–Friday, 5–7 p.m.; meal-plan access or payment is required.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"kettering-bjs-lounge-grill","subject_type":"sequence_stop","entity_name":"BJ’s Lounge & Grill","title":"Friday: Keep the Evening on Campus","subtitle":"A student dining stop with posted weekend hours","notes":"Check the specialty menu, bring your student ID, and keep the first evening simple by staying inside the familiar Campus Center.","short_summary":"End Friday at an on-campus food venue instead of improvising a late trip around town.","evidence_claim":"Kettering lists BJ’s Lounge & Grill as a Campus Center dining venue with a specialty menu and Saturday and Sunday hours from 5 to 11 p.m.","source_url":"https://www.kettering.edu/life-at-kettering/housing-dining/dining-hours","source_title":"Dining Hours","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current posted weekend hours are Saturday and Sunday, 5–11 p.m.; campus buildings require a valid ID for weekend access.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"kettering-learning-commons-rooftop-terrace","subject_type":"sequence_stop","entity_name":"Learning Commons Rooftop Terrace","title":"Saturday: Start Above Campus","subtitle":"Get oriented from the Learning Commons rooftop","notes":"Bring your schedule, find the terrace seating, and use the elevated view to place the buildings you will revisit during the term.","short_summary":"A quiet outdoor reset doubles as a visual introduction to the campus layout.","evidence_claim":"Kettering documents a 1,600-square-foot rooftop terrace in the Learning Commons with seating, green space, hammocks, and electrical outlets.","source_url":"https://www.kettering.edu/who-we-are/campus-facilities/learning-commons","source_title":"Learning Commons","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Student ID access may be required on weekends; terrace availability can depend on building access and weather.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"kettering-connie-jim-john-recreation-center","subject_type":"sequence_stop","entity_name":"Connie and Jim John Recreation Center","title":"Saturday: Try One Recreation Option","subtitle":"Choose a low-pressure activity inside the student facility","notes":"Walk the suspended track or bring court gear, then note the equipment desk and locker-room locations for your next visit.","short_summary":"A short activity break introduces the recreation resources available to Kettering students.","evidence_claim":"The university says the private Recreation Center serves Kettering students, faculty, staff, and their families and includes courts, a walking track, fitness rooms, and a pool.","source_url":"https://www.kettering.edu/who-we-are/campus-facilities/recreation-center","source_title":"Recreation Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use is limited to eligible Kettering community members and authorized family members; consult the linked current-hours schedule before going.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"flint-farmers-market","subject_type":"sequence_stop","entity_name":"Flint Farmers’ Market","title":"Saturday: Explore the Public Market","subtitle":"Make a daytime trip to a year-round Flint destination","notes":"Go during market hours, browse the permanent vendors first, and agree on a meeting point before splitting up to compare food options.","short_summary":"The market offers an approachable daytime introduction to Flint’s vendors and public spaces.","evidence_claim":"The market’s official site describes it as a year-round public market at 300 East First Street with more than 50 vendors, open Tuesday, Thursday, and Saturday from 9 a.m. to 5 p.m.","source_url":"https://www.flintfarmersmarket.com/about-the-market/","source_title":"About The Market","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current market hours are Tuesday, Thursday, and Saturday, 9 a.m.–5 p.m.; verify holiday changes on the official site.","cost_status":"unknown","under21_safe":true},{"subject_id":"kettering-atwood-stadium","subject_type":"sequence_stop","entity_name":"Atwood Stadium at Kettering University","title":"Saturday: Find the Stadium Gate","subtitle":"Learn where campus recreation and Flint events meet","notes":"Walk the public-facing exterior, locate the entrance and posted rules, and return only for a scheduled event or authorized activity.","short_summary":"A daylight orientation stop makes future games and campus programs easier to navigate.","evidence_claim":"Kettering identifies Atwood Stadium as an 11,000-seat venue in Flint’s Carriage Town district used by university intramural and recreational programs and community teams.","source_url":"https://www.kettering.edu/who-we-are/campus-facilities/atwood-stadium","source_title":"Kettering University's Atwood Stadium","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The stadium is not represented as continuously open; enter only for a scheduled event, program, or authorized reservation.","cost_status":"unknown","under21_safe":true},{"subject_id":"kettering-campus-center","subject_type":"sequence_stop","entity_name":"Campus Center","title":"Saturday: Locate the Help Desk","subtitle":"Anchor essential services in the Campus Center","notes":"Find the Great Court and Campus Safety Service Center, save the service number, and check which entrances accept your student ID.","short_summary":"This practical stop establishes where to seek assistance and how weekend building access works.","evidence_claim":"Kettering says the Campus Center contains Campus Safety and student-activity areas; its Campus Safety Service Center is in the Great Court and operates with officers available around the clock.","source_url":"https://www.kettering.edu/life-at-kettering/campus-safety","source_title":"Campus Safety","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Campus Safety assistance is available 24/7 at 810-762-9501; after-hours and weekend Campus Center entry requires a valid ID.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"kettering-historic-academic-building","subject_type":"sequence_stop","entity_name":"Historic Academic Building","title":"Sunday: Preview the Academic Core","subtitle":"Trace Monday’s route through Kettering’s historic center","notes":"Find your main entrance and likely classroom wing, then photograph posted room signs for personal navigation without blocking doors.","short_summary":"A Sunday route check reduces uncertainty before the first full academic day.","evidence_claim":"Kettering describes the Academic Building as the historic center of campus, containing classrooms, science and computer laboratories, McKinnon Theatre, and offices.","source_url":"https://www.kettering.edu/who-we-are/campus-facilities","source_title":"Campus Facilities","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Kettering states students, faculty, and staff may access classrooms and labs with valid ID access; individual rooms may remain restricted.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"kettering-cs-mott-engineering-science-center","subject_type":"sequence_stop","entity_name":"C.S. Mott Engineering and Science Center","title":"Sunday: Finish With a Lab-Building Check","subtitle":"Close the weekend by locating a major STEM facility","notes":"Identify the building entrance and connect it to your Academic Building route; enter laboratories only when your course authorizes access.","short_summary":"The final stop turns a campus-map label into a recognizable destination before classes begin.","evidence_claim":"Kettering’s facilities page identifies the C.S. Mott Engineering and Science Center as a 130,000-square-foot building housing chemistry, biochemistry, mechanical engineering, energy, and automotive laboratories.","source_url":"https://www.kettering.edu/who-we-are/campus-facilities","source_title":"Campus Facilities","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Valid student ID access applies to the Mott building, but laboratories and specialized areas may have separate authorization requirements.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

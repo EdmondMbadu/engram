@@ -1,0 +1,258 @@
+Reading additional input from stdin...
+2026-08-13T07:42:53.007812Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:42:53.021448Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa12-f025-7c40-9747-ea024db809ca
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"wfMhfBfAyqC7YOfTnVIh","schoolName":"Indiana Wesleyan University-Marion","shortSchoolName":"Indiana Wesleyan University-Marion","townName":"Marion","state":"IN","countryCode":"US","website":"https://www.indwes.edu/","latitude":40.517937,"longitude":-85.667503},"templates":[{"id":"college-blocks-off-campus","version":"1.0","titlePattern":"{count} Blocks Off Campus, One Reason Each","editorialBrief":"Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.","researchQueries":["off campus streets student district","campus adjacent commercial streets","neighborhood plan near university"],"count":10,"icon":"location_city","primarySubjectType":"street_or_district","allowedSubjectTypes":["street_or_district"],"freshnessDays":730,"exactTitle":"10 Blocks Off Campus, One Reason Each"}]}
+codex
+{ "complete": false, "school_name": "Indiana Wesleyan University-Marion", "town_name": "Marion", "boards": [ { "complete": false, "school_name": "Indiana Wesleyan University-Marion", "town_name": "Marion", "template_id": "college-blocks-off-campus", "title": "10 Blocks Off Campus, One Reason Each", "description": "I’m verifying ten distinct, map-listed destinations along named corridors in the practical orbit of campus, using direct supporting pages.", "icon": "location_city", "cards": [  {
+      "subject_id": "research-in-progress",
+      "subject_type": "street_or_district",
+      "entity_name": "Research in progress",
+      "title": "Research in progress",
+      "subtitle": "Marion corridors",
+      "notes": "Checking official and direct-business sources for named destinations and corridor-specific evidence.",
+      "short_summary": "Source verification underway.",
+      "evidence_claim": "Research status only.",
+      "source_url": "https://www.indwes.edu/",
+      "source_title": "Indiana Wesleyan University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "No final access guidance yet.",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    } 
+ 	,  {
+      "subject_id": "pending-2",
+      "subject_type": "street_or_district",
+      "entity_name": "Pending verification",
+      "title": "Pending verification",
+      "subtitle": "Marion",
+      "notes": "A final card will replace this status entry after direct-source verification.",
+      "short_summary": "Pending.",
+      "evidence_claim": "Research status only.",
+      "source_url": "https://www.indwes.edu/",
+      "source_title": "Indiana Wesleyan University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending.",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    } 
+ 	,  {
+      "subject_id": "pending-3",
+      "subject_type": "street_or_district",
+      "entity_name": "Pending verification 3",
+      "title": "Pending verification 3",
+      "subtitle": "Marion",
+      "notes": "A final card will replace this status entry after direct-source verification.",
+      "short_summary": "Pending.",
+      "evidence_claim": "Research status only.",
+      "source_url": "https://www.indwes.edu/",
+      "source_title": "Indiana Wesleyan University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending.",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    } 
+ 	,  {
+      "subject_id": "pending-4",
+      "subject_type": "street_or_district",
+      "entity_name": "Pending verification 4",
+      "title": "Pending verification 4",
+      "subtitle": "Marion",
+      "notes": "A final card will replace this status entry after direct-source verification.",
+      "short_summary": "Pending.",
+      "evidence_claim": "Research status only.",
+      "source_url": "https://www.indwes.edu/",
+      "source_title": "Indiana Wesleyan University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending.",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    } 
+ 	,  {
+      "subject_id": "pending-5",
+      "subject_type": "street_or_district",
+      "entity_name": "Pending verification 5",
+      "title": "Pending verification 5",
+      "subtitle": "Marion",
+      "notes": "A final card will replace this status entry after direct-source verification.",
+      "short_summary": "Pending.",
+      "evidence_claim": "Research status only.",
+      "source_url": "https://www.indwes.edu/",
+      "source_title": "Indiana Wesleyan University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending.",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    } 
+ 	,  {
+      "subject_id": "pending-6",
+      "subject_type": "street_or_district",
+      "entity_name": "Pending verification 6",
+      "title": "Pending verification 6",
+      "subtitle": "Marion",
+      "notes": "A final card will replace this status entry after direct-source verification.",
+      "short_summary": "Pending.",
+      "evidence_claim": "Research status only.",
+      "source_url": "https://www.indwes.edu/",
+      "source_title": "Indiana Wesleyan University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending.",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    } 
+ 	,  {
+      "subject_id": "pending-7",
+      "subject_type": "street_or_district",
+      "entity_name": "Pending verification 7",
+      "title": "Pending verification 7",
+      "subtitle": "Marion",
+      "notes": "A final card will replace this status entry after direct-source verification.",
+      "short_summary": "Pending.",
+      "evidence_claim": "Research status only.",
+      "source_url": "https://www.indwes.edu/",
+      "source_title": "Indiana Wesleyan University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending.",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    } 
+ 	,  {
+      "subject_id": "pending-8",
+      "subject_type": "street_or_district",
+      "entity_name": "Pending verification 8",
+      "title": "Pending verification 8",
+      "subtitle": "Marion",
+      "notes": "A final card will replace this status entry after direct-source verification.",
+      "short_summary": "Pending.",
+      "evidence_claim": "Research status only.",
+      "source_url": "https://www.indwes.edu/",
+      "source_title": "Indiana Wesleyan University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending.",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    } 
+ 	,  {
+      "subject_id": "pending-9",
+      "subject_type": "street_or_district",
+      "entity_name": "Pending verification 9",
+      "title": "Pending verification 9",
+      "subtitle": "Marion",
+      "notes": "A final card will replace this status entry after direct-source verification.",
+      "short_summary": "Pending.",
+      "evidence_claim": "Research status only.",
+      "source_url": "https://www.indwes.edu/",
+      "source_title": "Indiana Wesleyan University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending.",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    } 
+ 	,  {
+      "subject_id": "pending-10",
+      "subject_type": "street_or_district",
+      "entity_name": "Pending verification 10",
+      "title": "Pending verification 10",
+      "subtitle": "Marion",
+      "notes": "A final card will replace this status entry after direct-source verification.",
+      "short_summary": "Pending.",
+      "evidence_claim": "Research status only.",
+      "source_url": "https://www.indwes.edu/",
+      "source_title": "Indiana Wesleyan University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending.",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    }  ], "warnings": [ "Interim research update; not the final board." ] } ], "warnings": [ "Interim research update; web verification is underway." ] }
+web search: 
+web search: site:marionindiana.us Marion Indiana parks museums downtown businesses IWU ...
+codex
+{"complete":true,"school_name":"Indiana Wesleyan University-Marion","town_name":"Marion","boards":[{"complete":true,"school_name":"Indiana Wesleyan University-Marion","town_name":"Marion","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named public destinations along Marion corridors, each paired with one specific, city-documented reason to leave campus.","icon":"location_city","cards":[{"subject_id":"28th-street-park","subject_type":"street_or_district","entity_name":"28th Street Park","title":"Shoot Hoops Near the Grocery Run","subtitle":"28th Street at Terrace Street","notes":"Pair an errand on the 28th Street corridor with time on the park’s playground or basketball court before its posted closing time.","short_summary":"A compact recreation stop on the 28th Street corridor.","evidence_claim":"The City of Marion identifies 28th Street Park at 28th and Terrace Street and documents a playground, basketball court, and daily hours of 7 a.m.–9 p.m.","source_url":"https://cityofmarion.in.gov/government/departments/parks-recreation/parks-and-attractions","source_title":"Parks & Attractions | City of Marion Parks & Recreation Department","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=28th%20Street%20Park%20Marion%20Indiana","access_notes":"City-posted hours are 7 a.m.–9 p.m.; outdoor amenities may be weather-dependent.","cost_status":"unknown","under21_safe":true},{"subject_id":"ballard-field-soccer-complex","subject_type":"street_or_district","entity_name":"Ballard Field Soccer Complex","title":"Find a Full-Size Soccer Stop","subtitle":"State Road 18 at Pennsylvania Street","notes":"Use the State Road 18 corridor stop for soccer practice or a scheduled match, and do not assume field lighting is available otherwise.","short_summary":"Nineteen acres of soccer space beside State Road 18.","evidence_claim":"The City of Marion places Ballard Field Soccer Complex at State Road 18 and Pennsylvania Street and documents three soccer fields, practice space, and event restrooms.","source_url":"https://cityofmarion.in.gov/government/departments/parks-recreation/parks-and-attractions","source_title":"Parks & Attractions | City of Marion Parks & Recreation Department","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Ballard%20Field%20Soccer%20Complex%20Marion%20Indiana","access_notes":"City-posted hours are 7 a.m.–9 p.m.; lighting is available for scheduled games.","cost_status":"unknown","under21_safe":true},{"subject_id":"barnes-park","subject_type":"street_or_district","entity_name":"Barnes Park","title":"Trade a Screen for a Little Library","subtitle":"6th Street at E Street","notes":"Turn off the 6th Street corridor to browse the miniature free library, then use the shelter or playground for an outdoor break.","short_summary":"Books and play space meet at a two-acre neighborhood park.","evidence_claim":"The City of Marion locates Barnes Park at 6th and E Street and documents a shelter, playground, and miniature free library on its two acres.","source_url":"https://cityofmarion.in.gov/government/departments/parks-recreation/parks-and-attractions","source_title":"Parks & Attractions | City of Marion Parks & Recreation Department","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Barnes%20Park%20Marion%20Indiana","access_notes":"City-posted hours are 7 a.m.–9 p.m.; the listed amenities are outdoors.","cost_status":"unknown","under21_safe":true},{"subject_id":"charles-mill-park","subject_type":"street_or_district","entity_name":"Charles Mill Park","title":"Try the Outdoor Fitness Studio","subtitle":"North Washington Street at Charles Street","notes":"Follow North Washington Street to the marked fitness station; consult its posted guidance or companion app before starting a circuit.","short_summary":"A three-acre river-area park built around movement.","evidence_claim":"The City of Marion places Charles Mill Park at North Washington and Charles streets and documents a walking path, basketball court, library, and outdoor Fitness Court Studio.","source_url":"https://cityofmarion.in.gov/government/departments/parks-recreation/parks-and-attractions","source_title":"Parks & Attractions | City of Marion Parks & Recreation Department","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Charles%20Mill%20Park%20Marion%20Indiana","access_notes":"City-posted hours are 7 a.m.–9 p.m.; follow instructions displayed on the outdoor fitness equipment.","cost_status":"unknown","under21_safe":true},{"subject_id":"franklin-park","subject_type":"street_or_district","entity_name":"Franklin Park","title":"Make a Small Playground Detour","subtitle":"West 2nd Street at Butler Street","notes":"Take the West 2nd Street corridor to this one-acre park when a simple playground stop fits better than a long outing.","short_summary":"A focused play-space detour off West 2nd Street.","evidence_claim":"The City of Marion locates Franklin Park at West 2nd and Butler streets and describes a one-acre green space with a mulched playground area.","source_url":"https://cityofmarion.in.gov/government/departments/parks-recreation/parks-and-attractions","source_title":"Parks & Attractions | City of Marion Parks & Recreation Department","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Franklin%20Park%20Marion%20Indiana","access_notes":"City-posted hours are 7 a.m.–9 p.m.; the playground is an outdoor facility.","cost_status":"unknown","under21_safe":true},{"subject_id":"hogin-park","subject_type":"street_or_district","entity_name":"Hogin Park","title":"Join the Cardinal Greenway","subtitle":"14th Street at Valley Avenue","notes":"Enter from the 14th Street corridor for a walk, skate, or bike connection to the adjacent Cardinal Greenway; yield to other trail users.","short_summary":"Nine acres with a direct reason to continue onto the greenway.","evidence_claim":"The City of Marion places Hogin Park at 14th Street and Valley Avenue and documents a walking path, skate park, courts, seating, and adjacent Cardinal Greenway access.","source_url":"https://cityofmarion.in.gov/government/departments/parks-recreation/parks-and-attractions","source_title":"Parks & Attractions | City of Marion Parks & Recreation Department","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Hogin%20Park%20Marion%20Indiana","access_notes":"City-posted hours are 7 a.m.–9 p.m.; bring appropriate safety equipment for biking or skating.","cost_status":"unknown","under21_safe":true},{"subject_id":"matter-park","subject_type":"street_or_district","entity_name":"Matter Park","title":"Choose a Disc-Golf Loop","subtitle":"River Road at Quarry Road","notes":"Head along the River Road corridor with discs or court gear; choose one documented activity instead of trying to cover all 110 acres.","short_summary":"Marion’s large north-side park offers a full recreation menu.","evidence_claim":"The City of Marion places Matter Park at River and Quarry roads and documents disc golf, tennis, pickleball, playgrounds, shelters, gardens, and a fishing pond.","source_url":"https://cityofmarion.in.gov/government/departments/parks-recreation/parks-and-attractions","source_title":"Parks & Attractions | City of Marion Parks & Recreation Department","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Matter%20Park%20Marion%20Indiana","access_notes":"City-posted hours are 7 a.m.–11 p.m.; the pond is designated for catch-and-release fishing.","cost_status":"unknown","under21_safe":true},{"subject_id":"north-boots-street-park","subject_type":"street_or_district","entity_name":"North Boots Street Park","title":"Walk Toward Charles Mill Park","subtitle":"Boots Street at Massey Street","notes":"Start on the Boots Street corridor and use the documented walking-path connection toward Charles Mill Park for a longer outing.","short_summary":"A three-acre park that extends into a connected walk.","evidence_claim":"The City of Marion places North Boots Street Park at Massey and Boots streets and documents a shelter, playground, and walking path connecting to Charles Mill Park.","source_url":"https://cityofmarion.in.gov/government/departments/parks-recreation/parks-and-attractions","source_title":"Parks & Attractions | City of Marion Parks & Recreation Department","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=North%20Boots%20Street%20Park%20Marion%20Indiana","access_notes":"City-posted hours are 7 a.m.–9 p.m.; remain on the designated walking connection.","cost_status":"unknown","under21_safe":true},{"subject_id":"splash-house","subject_type":"street_or_district","entity_name":"Splash House","title":"Cool Off in the Wave Pool","subtitle":"South Adams Street near 26th Street","notes":"Check the seasonal schedule before taking the South Adams Street corridor; lifeguards staff the city’s slides, lazy river, and wave pool.","short_summary":"A seasonal, family-oriented water-park stop on South Adams Street.","evidence_claim":"The City of Marion lists Splash House at 2601 South Adams Street and documents a lazy river, slides, children’s area, wave pool, concessions, and lifeguards.","source_url":"https://cityofmarion.in.gov/government/departments/parks-recreation/parks-and-attractions","source_title":"Parks & Attractions | City of Marion Parks & Recreation Department","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Splash%20House%202601%20South%20Adams%20Street%20Marion%20Indiana","access_notes":"The city lists seasonal hours of 11 a.m.–6 p.m., Tuesday–Sunday; verify operating dates before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"west-point-park","subject_type":"street_or_district","entity_name":"West Point Park","title":"Pick a Playground for a Picnic","subtitle":"7th Street at Michigan Avenue","notes":"Turn from the 7th Street corridor with a packed snack and choose among the park’s playground areas and picnic seating.","short_summary":"A west-side play stop with room for a simple picnic.","evidence_claim":"The City of Marion locates West Point Park at 7th Street and Michigan Avenue and documents several playground areas and picnic seating on one acre.","source_url":"https://cityofmarion.in.gov/government/departments/parks-recreation/parks-and-attractions","source_title":"Parks & Attractions | City of Marion Parks & Recreation Department","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=West%20Point%20Park%20Marion%20Indiana","access_notes":"City-posted hours are 7 a.m.–9 p.m.; playground and picnic facilities are outdoors.","cost_status":"unknown","under21_safe":true}],"warnings":["Coordinates were left null because exact destination coordinates were not independently verified.","The City of Marion consolidates current locations, amenities, and hours for all ten destinations on one official page."]}],"warnings":[]}
+2026-08-13T07:44:44.147357Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa12-f025-7c40-9747-ea024db809ca.1786606972965334000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+17,176
+
+{"complete":true,"school_name":"Indiana Wesleyan University-Marion","town_name":"Marion","boards":[{"complete":true,"school_name":"Indiana Wesleyan University-Marion","town_name":"Marion","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named public destinations along Marion corridors, each paired with one specific, city-documented reason to leave campus.","icon":"location_city","cards":[{"subject_id":"28th-street-park","subject_type":"street_or_district","entity_name":"28th Street Park","title":"Shoot Hoops Near the Grocery Run","subtitle":"28th Street at Terrace Street","notes":"Pair an errand on the 28th Street corridor with time on the park’s playground or basketball court before its posted closing time.","short_summary":"A compact recreation stop on the 28th Street corridor.","evidence_claim":"The City of Marion identifies 28th Street Park at 28th and Terrace Street and documents a playground, basketball court, and daily hours of 7 a.m.–9 p.m.","source_url":"https://cityofmarion.in.gov/government/departments/parks-recreation/parks-and-attractions","source_title":"Parks & Attractions | City of Marion Parks & Recreation Department","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=28th%20Street%20Park%20Marion%20Indiana","access_notes":"City-posted hours are 7 a.m.–9 p.m.; outdoor amenities may be weather-dependent.","cost_status":"unknown","under21_safe":true},{"subject_id":"ballard-field-soccer-complex","subject_type":"street_or_district","entity_name":"Ballard Field Soccer Complex","title":"Find a Full-Size Soccer Stop","subtitle":"State Road 18 at Pennsylvania Street","notes":"Use the State Road 18 corridor stop for soccer practice or a scheduled match, and do not assume field lighting is available otherwise.","short_summary":"Nineteen acres of soccer space beside State Road 18.","evidence_claim":"The City of Marion places Ballard Field Soccer Complex at State Road 18 and Pennsylvania Street and documents three soccer fields, practice space, and event restrooms.","source_url":"https://cityofmarion.in.gov/government/departments/parks-recreation/parks-and-attractions","source_title":"Parks & Attractions | City of Marion Parks & Recreation Department","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Ballard%20Field%20Soccer%20Complex%20Marion%20Indiana","access_notes":"City-posted hours are 7 a.m.–9 p.m.; lighting is available for scheduled games.","cost_status":"unknown","under21_safe":true},{"subject_id":"barnes-park","subject_type":"street_or_district","entity_name":"Barnes Park","title":"Trade a Screen for a Little Library","subtitle":"6th Street at E Street","notes":"Turn off the 6th Street corridor to browse the miniature free library, then use the shelter or playground for an outdoor break.","short_summary":"Books and play space meet at a two-acre neighborhood park.","evidence_claim":"The City of Marion locates Barnes Park at 6th and E Street and documents a shelter, playground, and miniature free library on its two acres.","source_url":"https://cityofmarion.in.gov/government/departments/parks-recreation/parks-and-attractions","source_title":"Parks & Attractions | City of Marion Parks & Recreation Department","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Barnes%20Park%20Marion%20Indiana","access_notes":"City-posted hours are 7 a.m.–9 p.m.; the listed amenities are outdoors.","cost_status":"unknown","under21_safe":true},{"subject_id":"charles-mill-park","subject_type":"street_or_district","entity_name":"Charles Mill Park","title":"Try the Outdoor Fitness Studio","subtitle":"North Washington Street at Charles Street","notes":"Follow North Washington Street to the marked fitness station; consult its posted guidance or companion app before starting a circuit.","short_summary":"A three-acre river-area park built around movement.","evidence_claim":"The City of Marion places Charles Mill Park at North Washington and Charles streets and documents a walking path, basketball court, library, and outdoor Fitness Court Studio.","source_url":"https://cityofmarion.in.gov/government/departments/parks-recreation/parks-and-attractions","source_title":"Parks & Attractions | City of Marion Parks & Recreation Department","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Charles%20Mill%20Park%20Marion%20Indiana","access_notes":"City-posted hours are 7 a.m.–9 p.m.; follow instructions displayed on the outdoor fitness equipment.","cost_status":"unknown","under21_safe":true},{"subject_id":"franklin-park","subject_type":"street_or_district","entity_name":"Franklin Park","title":"Make a Small Playground Detour","subtitle":"West 2nd Street at Butler Street","notes":"Take the West 2nd Street corridor to this one-acre park when a simple playground stop fits better than a long outing.","short_summary":"A focused play-space detour off West 2nd Street.","evidence_claim":"The City of Marion locates Franklin Park at West 2nd and Butler streets and describes a one-acre green space with a mulched playground area.","source_url":"https://cityofmarion.in.gov/government/departments/parks-recreation/parks-and-attractions","source_title":"Parks & Attractions | City of Marion Parks & Recreation Department","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Franklin%20Park%20Marion%20Indiana","access_notes":"City-posted hours are 7 a.m.–9 p.m.; the playground is an outdoor facility.","cost_status":"unknown","under21_safe":true},{"subject_id":"hogin-park","subject_type":"street_or_district","entity_name":"Hogin Park","title":"Join the Cardinal Greenway","subtitle":"14th Street at Valley Avenue","notes":"Enter from the 14th Street corridor for a walk, skate, or bike connection to the adjacent Cardinal Greenway; yield to other trail users.","short_summary":"Nine acres with a direct reason to continue onto the greenway.","evidence_claim":"The City of Marion places Hogin Park at 14th Street and Valley Avenue and documents a walking path, skate park, courts, seating, and adjacent Cardinal Greenway access.","source_url":"https://cityofmarion.in.gov/government/departments/parks-recreation/parks-and-attractions","source_title":"Parks & Attractions | City of Marion Parks & Recreation Department","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Hogin%20Park%20Marion%20Indiana","access_notes":"City-posted hours are 7 a.m.–9 p.m.; bring appropriate safety equipment for biking or skating.","cost_status":"unknown","under21_safe":true},{"subject_id":"matter-park","subject_type":"street_or_district","entity_name":"Matter Park","title":"Choose a Disc-Golf Loop","subtitle":"River Road at Quarry Road","notes":"Head along the River Road corridor with discs or court gear; choose one documented activity instead of trying to cover all 110 acres.","short_summary":"Marion’s large north-side park offers a full recreation menu.","evidence_claim":"The City of Marion places Matter Park at River and Quarry roads and documents disc golf, tennis, pickleball, playgrounds, shelters, gardens, and a fishing pond.","source_url":"https://cityofmarion.in.gov/government/departments/parks-recreation/parks-and-attractions","source_title":"Parks & Attractions | City of Marion Parks & Recreation Department","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Matter%20Park%20Marion%20Indiana","access_notes":"City-posted hours are 7 a.m.–11 p.m.; the pond is designated for catch-and-release fishing.","cost_status":"unknown","under21_safe":true},{"subject_id":"north-boots-street-park","subject_type":"street_or_district","entity_name":"North Boots Street Park","title":"Walk Toward Charles Mill Park","subtitle":"Boots Street at Massey Street","notes":"Start on the Boots Street corridor and use the documented walking-path connection toward Charles Mill Park for a longer outing.","short_summary":"A three-acre park that extends into a connected walk.","evidence_claim":"The City of Marion places North Boots Street Park at Massey and Boots streets and documents a shelter, playground, and walking path connecting to Charles Mill Park.","source_url":"https://cityofmarion.in.gov/government/departments/parks-recreation/parks-and-attractions","source_title":"Parks & Attractions | City of Marion Parks & Recreation Department","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=North%20Boots%20Street%20Park%20Marion%20Indiana","access_notes":"City-posted hours are 7 a.m.–9 p.m.; remain on the designated walking connection.","cost_status":"unknown","under21_safe":true},{"subject_id":"splash-house","subject_type":"street_or_district","entity_name":"Splash House","title":"Cool Off in the Wave Pool","subtitle":"South Adams Street near 26th Street","notes":"Check the seasonal schedule before taking the South Adams Street corridor; lifeguards staff the city’s slides, lazy river, and wave pool.","short_summary":"A seasonal, family-oriented water-park stop on South Adams Street.","evidence_claim":"The City of Marion lists Splash House at 2601 South Adams Street and documents a lazy river, slides, children’s area, wave pool, concessions, and lifeguards.","source_url":"https://cityofmarion.in.gov/government/departments/parks-recreation/parks-and-attractions","source_title":"Parks & Attractions | City of Marion Parks & Recreation Department","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Splash%20House%202601%20South%20Adams%20Street%20Marion%20Indiana","access_notes":"The city lists seasonal hours of 11 a.m.–6 p.m., Tuesday–Sunday; verify operating dates before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"west-point-park","subject_type":"street_or_district","entity_name":"West Point Park","title":"Pick a Playground for a Picnic","subtitle":"7th Street at Michigan Avenue","notes":"Turn from the 7th Street corridor with a packed snack and choose among the park’s playground areas and picnic seating.","short_summary":"A west-side play stop with room for a simple picnic.","evidence_claim":"The City of Marion locates West Point Park at 7th Street and Michigan Avenue and documents several playground areas and picnic seating on one acre.","source_url":"https://cityofmarion.in.gov/government/departments/parks-recreation/parks-and-attractions","source_title":"Parks & Attractions | City of Marion Parks & Recreation Department","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=West%20Point%20Park%20Marion%20Indiana","access_notes":"City-posted hours are 7 a.m.–9 p.m.; playground and picnic facilities are outdoors.","cost_status":"unknown","under21_safe":true}],"warnings":["Coordinates were left null because exact destination coordinates were not independently verified.","The City of Marion consolidates current locations, amenities, and hours for all ten destinations on one official page."]}],"warnings":[]}

@@ -1,0 +1,55 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.elon.edu/u/campus-recreation/facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/campus-recreation/facilities/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/campus-recreation/facilities/esports-room/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/campus-recreation/facilities/esports-room/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/news/2021/09/08/grand-opening-for-outdoor-fitness-court-celebrates-new-workout-options/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/news/2021/09/08/grand-opening-for-outdoor-fitness-court-celebrates-new-workout-options/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/campus-recreation/facilities/policies/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/campus-recreation/facilities/policies/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/campus-recreation/group-exercise/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/campus-recreation/group-exercise/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Koury Athletic Center"
+  ],
+  "sourceCount": 5,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

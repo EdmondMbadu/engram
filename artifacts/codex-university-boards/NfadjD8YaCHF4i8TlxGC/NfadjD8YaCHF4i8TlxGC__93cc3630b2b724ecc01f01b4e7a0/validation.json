@@ -1,0 +1,25 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.smu.edu/libraries/visit/spaces/study",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smu.edu/libraries/visit/spaces/study",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Fondren Library Centennial Reading Room",
+    "Fondren Library 1st Floor MeSpace Study Pod",
+    "Fondren Library Prothro Learning Commons"
+  ],
+  "sourceCount": 1,
+  "generationScore": 90,
+  "generationGrade": "A"
+}

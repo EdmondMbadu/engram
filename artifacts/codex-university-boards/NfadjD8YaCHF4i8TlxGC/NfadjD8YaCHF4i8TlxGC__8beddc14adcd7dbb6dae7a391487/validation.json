@@ -1,0 +1,33 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.gvsu.edu/library/mary-idema-pew-library-21.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gvsu.edu/library/mary-idema-pew-library-21.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.gvsu.edu/library/group-study-rooms-5.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gvsu.edu/library/group-study-rooms-5.htm",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Mary Idema Pew Library Atrium",
+    "Mary Idema Pew Library Reading Garden",
+    "Mary Idema Pew Library Roof Terrace"
+  ],
+  "sourceCount": 2,
+  "generationScore": 90,
+  "generationGrade": "A"
+}

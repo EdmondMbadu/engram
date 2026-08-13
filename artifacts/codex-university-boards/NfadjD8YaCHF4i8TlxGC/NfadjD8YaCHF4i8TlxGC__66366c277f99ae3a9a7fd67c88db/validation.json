@@ -1,0 +1,57 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.onu.edu/admissions-aid/accepted-students/summer-orientation-and-welcome-weekend",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/admissions-aid/accepted-students/summer-orientation-and-welcome-weekend",
+      "error": ""
+    },
+    {
+      "url": "https://www.onu.edu/student-life/dining",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/student-life/dining",
+      "error": ""
+    },
+    {
+      "url": "https://www.onu.edu/heterick-memorial-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/heterick-memorial-library",
+      "error": ""
+    },
+    {
+      "url": "https://www.onu.edu/admissions-aid/accepted-students",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/admissions-aid/accepted-students",
+      "error": ""
+    },
+    {
+      "url": "https://www.onu.edu/freed",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/freed",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "English Chapel",
+    "Heterick Memorial Library",
+    "Freed Center for the Performing Arts"
+  ],
+  "sourceCount": 5,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

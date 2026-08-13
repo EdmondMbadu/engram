@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://huntlibrary.erau.edu/about/policies/study-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://huntlibrary.erau.edu/about/policies/study-room",
+      "error": ""
+    },
+    {
+      "url": "https://huntlibrary.erau.edu/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://huntlibrary.erau.edu/about/",
+      "error": ""
+    },
+    {
+      "url": "https://huntlibrary.erau.edu/about/newsletter/spring-2019",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://huntlibrary.erau.edu/about/newsletter/spring-2019",
+      "error": ""
+    },
+    {
+      "url": "https://huntlibrary.erau.edu/services",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://huntlibrary.erau.edu/services",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

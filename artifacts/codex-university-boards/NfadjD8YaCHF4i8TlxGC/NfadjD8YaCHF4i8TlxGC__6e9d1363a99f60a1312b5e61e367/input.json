@@ -1,0 +1,39 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "msQDje3th0B5B6RAU5RX",
+    "schoolName": "University of Cincinnati-Main Campus",
+    "shortSchoolName": "University of Cincinnati",
+    "townName": "Cincinnati",
+    "state": "OH",
+    "countryCode": "US",
+    "unitId": "201885",
+    "website": "https://www.uc.edu/",
+    "latitude": 39.131159,
+    "longitude": -84.51428,
+    "heroUrl": "https://www.uc.edu/content/dam/refresh/apex-stock/student-life/230731aMullins095.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=uc.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain University of Cincinnati",
+  "excluded_subjects": [],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

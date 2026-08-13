@@ -1,0 +1,72 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.jefferson.edu/east-falls/student-engagement/kanbar-campus-center.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jefferson.edu/east-falls/student-engagement/kanbar-campus-center.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.jefferson.edu/east-falls/dining-services/ravenhill-dining-hall.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jefferson.edu/east-falls/dining-services/ravenhill-dining-hall.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.jefferson.edu/east-falls/residential-life/residence-halls/mott-hall.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jefferson.edu/east-falls/residential-life/residence-halls/mott-hall.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.jefferson.edu/content/dam/academic/about/maps/campus-map-east-falls-2023.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jefferson.edu/content/dam/academic/about/maps/campus-map-east-falls-2023.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.jefferson.edu/admissions/visit/virtual-tours-videos.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jefferson.edu/admissions/visit/virtual-tours-videos.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.jefferson.edu/east-falls/public-safety/emergency-preparedness.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jefferson.edu/east-falls/public-safety/emergency-preparedness.html",
+      "error": ""
+    },
+    {
+      "url": "https://catalog.jefferson.edu/welcome-thomas-jefferson-university/campus-locations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.jefferson.edu/welcome-thomas-jefferson-university/campus-locations/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Kanbar Campus Center",
+    "Paul J. Gutman Library"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

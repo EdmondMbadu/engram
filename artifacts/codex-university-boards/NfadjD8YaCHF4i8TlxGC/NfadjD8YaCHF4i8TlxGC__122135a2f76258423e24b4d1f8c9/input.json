@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "kpJ0WoVAS0mu3Qo2WUT9",
+    "schoolName": "University of Central Florida",
+    "shortSchoolName": "University of Central Florida",
+    "townName": "Orlando",
+    "state": "FL",
+    "countryCode": "US",
+    "unitId": "132903",
+    "website": "https://www.ucf.edu/",
+    "latitude": 28.602159,
+    "longitude": -81.200889,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/Seal_of_the_University_of_Central_Florida.svg/120px-Seal_of_the_University_of_Central_Florida.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=ucf.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "UCF Arboretum Self-Guided Tour",
+    "UCF Arboretum Trails Walk",
+    "UCF Art Gallery Exhibition Visit",
+    "UCF Art Gallery Reception",
+    "Recreation and Wellness Center Fitness Workout",
+    "Recreation and Wellness Center Leisure Pool Swim",
+    "Recreation and Wellness Center Lap Pool Swim",
+    "Recreation and Wellness Center Indoor Track Walk",
+    "Recreation and Wellness Center Basketball Court Game",
+    "Lake Claire Watercraft Rental"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

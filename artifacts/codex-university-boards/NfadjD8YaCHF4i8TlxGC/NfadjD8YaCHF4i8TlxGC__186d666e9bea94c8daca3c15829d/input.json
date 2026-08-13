@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "9MqxSSfCAWJiBwUaqq1d",
+    "schoolName": "University of Florida",
+    "shortSchoolName": "University of Florida",
+    "townName": "Gainesville",
+    "state": "FL",
+    "countryCode": "US",
+    "unitId": "134130",
+    "website": "https://www.ufl.edu/",
+    "latitude": 29.64629,
+    "longitude": -82.347911,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/6/6d/University_of_Florida_seal.svg/250px-University_of_Florida_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=ufl.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain University of Florida",
+  "excluded_subjects": [
+    "Alachua County Library District Headquarters",
+    "Matheson History Museum",
+    "Bo Diddley Plaza",
+    "Hippodrome State Theatre",
+    "Cade Museum for Creativity & Invention",
+    "Depot Park",
+    "Cotton Club Museum & Cultural Center",
+    "A. Quinn Jones Museum & Cultural Center",
+    "The Historic Thomas Center Museum and Art Galleries",
+    "Rosa B. Williams Center"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

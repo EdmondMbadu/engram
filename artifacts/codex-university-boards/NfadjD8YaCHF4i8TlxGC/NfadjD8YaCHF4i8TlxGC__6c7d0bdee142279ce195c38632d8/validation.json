@@ -1,0 +1,97 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.latech.edu/about/traditions.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latech.edu/about/traditions.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.latech.edu/academics/library/services/building-facilities.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latech.edu/academics/library/services/building-facilities.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.latech.edu/news/new-sensory-space-opens-in-prescott-memorial-library.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latech.edu/news/new-sensory-space-opens-in-prescott-memorial-library.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.latech.edu/liberal-arts/centers-and-spaces/art-galleries.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latech.edu/liberal-arts/centers-and-spaces/art-galleries.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.latech.edu/student-life/student-support-and-resources/intramural-sports-recreation/hideaway-park.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latech.edu/student-life/student-support-and-resources/intramural-sports-recreation/hideaway-park.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.latech.edu/student-life/student-support-and-resources/intramural-sports-recreation/bowling-alley.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latech.edu/student-life/student-support-and-resources/intramural-sports-recreation/bowling-alley.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.latech.edu/student-life/student-support-and-resources/intramural-sports-recreation/aquatics.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latech.edu/student-life/student-support-and-resources/intramural-sports-recreation/aquatics.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.latech.edu/student-life/student-support-and-resources/intramural-sports-recreation/fitness.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latech.edu/student-life/student-support-and-resources/intramural-sports-recreation/fitness.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.latech.edu/student-life/student-support-and-resources/intramural-sports-recreation/lambright-sports-wellness-center/rock-wall.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latech.edu/student-life/student-support-and-resources/intramural-sports-recreation/lambright-sports-wellness-center/rock-wall.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.latech.edu/documents/campus-map-july-2025.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latech.edu/documents/campus-map-july-2025.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Lady of the Mist",
+    "Prescott Memorial Library Sensory Space",
+    "Garland Gregory Hideaway Park"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.oxy.edu/magazine/issues/fall-2022/purposeful-plan-oxy",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oxy.edu/magazine/issues/fall-2022/purposeful-plan-oxy",
+      "error": ""
+    },
+    {
+      "url": "https://www.oxy.edu/student-life/involvement/clubs-organizations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oxy.edu/student-life/involvement/clubs-organizations",
+      "error": ""
+    },
+    {
+      "url": "https://www.oxy.edu/sites/default/files/Oxy_NavigatingOxyGuide_2024_8.5x11.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oxy.edu/sites/default/files/Oxy_NavigatingOxyGuide_2024_8.5x11.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.oxy.edu/news/2023-year-photos",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oxy.edu/news/2023-year-photos",
+      "error": ""
+    },
+    {
+      "url": "https://www.oxy.edu/arts",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oxy.edu/arts",
+      "error": ""
+    },
+    {
+      "url": "https://oxyathletics.com/sports/2023/7/31/aboutathletics-historytraditions.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://oxyathletics.com/sports/2023/7/31/aboutathletics-historytraditions.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.oxy.edu/magazine/issues/winter-2023/energy-anticipation-and-promise",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oxy.edu/magazine/issues/winter-2023/energy-anticipation-and-promise",
+      "error": ""
+    },
+    {
+      "url": "https://www.oxy.edu/commencement/general-information/info-graduating-seniors",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oxy.edu/commencement/general-information/info-graduating-seniors",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

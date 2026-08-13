@@ -1,0 +1,94 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Hours can change for holidays or temporary operating conditions; consult each direct location page before departure.",
+    "Several destinations require a vehicle or a longer trip from campus; no claim of walkability is made."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.7-eleven.com/locations/pa/philadelphia/9001-frankford-ave.-32661",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.7-eleven.com/locations/pa/philadelphia/9001-frankford-ave.-32661",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dunkindonuts.com/en/pa/philadelphia/9490-blue-grass-rd/338010",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dunkindonuts.com/en/pa/philadelphia/9490-blue-grass-rd/338010",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/pa/philadelphia/3200-red-lion-rd-frnt-5",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/pa/philadelphia/3200-red-lion-rd-frnt-5",
+      "error": ""
+    },
+    {
+      "url": "https://www.7-eleven.com/locations/pa/philadelphia/7901-frankford-ave-20006",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.7-eleven.com/locations/pa/philadelphia/7901-frankford-ave-20006",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dunkindonuts.com/en/pa/philadelphia/2327-cottman-ave/343501",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dunkindonuts.com/en/pa/philadelphia/2327-cottman-ave/343501",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.ihop.com/en-us/pa/philadelphia/breakfast-4310-roosevelt-blvd-559/late-night-food",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.ihop.com/en-us/pa/philadelphia/breakfast-4310-roosevelt-blvd-559/late-night-food",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dunkindonuts.com/en/pa/philadelphia/4046-woodhaven-blvd/330796",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dunkindonuts.com/en/pa/philadelphia/4046-woodhaven-blvd/330796",
+      "error": ""
+    },
+    {
+      "url": "https://www.7-eleven.com/locations/pa/philadelphia/1900-10-welsh-road-24839",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.7-eleven.com/locations/pa/philadelphia/1900-10-welsh-road-24839",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dunkindonuts.com/en/pa/philadelphia/11725-bustleton-ave/336598",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dunkindonuts.com/en/pa/philadelphia/11725-bustleton-ave/336598",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/pa/philadelphia/1801-torresdale-ave/8261.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/pa/philadelphia/1801-torresdale-ave/8261.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

@@ -1,0 +1,41 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "6gbgP1emRVg5PHqiotQF",
+    "schoolName": "University of North Dakota",
+    "shortSchoolName": "University of North Dakota",
+    "townName": "Grand Forks",
+    "state": "ND",
+    "countryCode": "US",
+    "unitId": "200280",
+    "website": "https://und.edu/",
+    "latitude": 47.921654,
+    "longitude": -97.071738,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/0/08/UNDseal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=und.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at University of North Dakota, Shared as Cards",
+  "excluded_subjects": [],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

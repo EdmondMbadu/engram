@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.maryville.edu/student-experience/engage/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.maryville.edu/student-experience/engage/",
+      "error": ""
+    },
+    {
+      "url": "https://www.maryville.edu/mpress/cram-jam-is-back/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.maryville.edu/mpress/cram-jam-is-back/",
+      "error": ""
+    },
+    {
+      "url": "https://www.maryville.edu/mpress/lets-celebrate-saints-success/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.maryville.edu/mpress/lets-celebrate-saints-success/",
+      "error": ""
+    },
+    {
+      "url": "https://www.maryville.edu/mpress/maryville-student-organizations-top-100/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.maryville.edu/mpress/maryville-student-organizations-top-100/",
+      "error": ""
+    },
+    {
+      "url": "https://www.maryville.edu/about/wp-content/uploads/sites/2/2017/08/17-MV-30634-Magazine-May-2017-FIN-REV4.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.maryville.edu/about/wp-content/uploads/sites/2/2017/08/17-MV-30634-Magazine-May-2017-FIN-REV4.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.maryville.edu/mpress/maryville-academy-scrapbook/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.maryville.edu/mpress/maryville-academy-scrapbook/",
+      "error": ""
+    },
+    {
+      "url": "https://www.maryville.edu/alumni/history-maryville-university/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.maryville.edu/alumni/history-maryville-university/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

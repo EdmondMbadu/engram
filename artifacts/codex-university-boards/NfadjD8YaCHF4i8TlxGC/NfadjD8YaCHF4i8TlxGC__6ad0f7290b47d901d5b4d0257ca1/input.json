@@ -1,0 +1,60 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "JQi3uiKyUcyb26u8BwPB",
+    "schoolName": "Samford University",
+    "shortSchoolName": "Samford University",
+    "townName": "Birmingham",
+    "state": "AL",
+    "countryCode": "US",
+    "unitId": "102049",
+    "website": "https://www.samford.edu/",
+    "latitude": 33.464128,
+    "longitude": -86.791799,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/2/2b/Samford_University_seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=samford.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "Third-Floor Individual Study Rooms",
+    "Study Room 211",
+    "Study Room 217",
+    "Study Room 236",
+    "Media Room 111",
+    "Media Room 112",
+    "Media Room 113",
+    "Media Room 114",
+    "Media Room 115",
+    "OBB 300",
+    "Central Park",
+    "Homewood Public Library",
+    "Sims Garden",
+    "Homewood City Hall",
+    "Big Spoon Creamery – Homewood",
+    "O.Henry’s Coffee – Homewood",
+    "Edgar’s Bakery – Homewood",
+    "Johnny’s Restaurant",
+    "Homewood Gourmet",
+    "Little Donkey – Homewood"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

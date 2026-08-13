@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://museums.jhu.edu/evergreen-museum-library/visitor-info/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://museums.jhu.edu/evergreen-museum-library/visitor-info/",
+      "error": ""
+    },
+    {
+      "url": "https://ndm.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ndm.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://www.loyola.edu/visit/directions-parking.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loyola.edu/visit/directions-parking.html",
+      "error": ""
+    },
+    {
+      "url": "https://belvederesquare.com/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://belvederesquare.com/about/",
+      "error": ""
+    },
+    {
+      "url": "https://thesenatortheatre.com/theatre-info/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thesenatortheatre.com/theatre-info/",
+      "error": ""
+    },
+    {
+      "url": "https://www.prattlibrary.org/locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.prattlibrary.org/locations",
+      "error": ""
+    },
+    {
+      "url": "https://www.sherwoodgardens.org/plan-your-visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sherwoodgardens.org/plan-your-visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.theivybookshop.com/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.theivybookshop.com/about/",
+      "error": ""
+    },
+    {
+      "url": "https://museums.jhu.edu/homewood-museum/visitor-info/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://museums.jhu.edu/homewood-museum/visitor-info/",
+      "error": ""
+    },
+    {
+      "url": "https://www.artbma.org/plan-your-visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.artbma.org/plan-your-visit/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

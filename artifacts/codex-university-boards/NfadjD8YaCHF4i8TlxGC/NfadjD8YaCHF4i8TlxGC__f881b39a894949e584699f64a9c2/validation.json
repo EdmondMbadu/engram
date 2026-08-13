@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://stories.nd.edu/stories/tradition/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stories.nd.edu/stories/tradition/",
+      "error": ""
+    },
+    {
+      "url": "https://admissions.nd.edu/visit-engage/stories-news/college-bound-notre-dame-traditions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://admissions.nd.edu/visit-engage/stories-news/college-bound-notre-dame-traditions/",
+      "error": ""
+    },
+    {
+      "url": "https://admissions.nd.edu/visit-engage/stories-news/six-stunningly-spectacular-signature-events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://admissions.nd.edu/visit-engage/stories-news/six-stunningly-spectacular-signature-events/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://ecu2.campusdish.com/en/locationsandmenus/subwayreadestreet/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ecu2.campusdish.com/en/locationsandmenus/subwayreadestreet/",
+      "error": ""
+    },
+    {
+      "url": "https://ecu2.campusdish.com/en/locationsandmenus/piratemarketreadestreet/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ecu2.campusdish.com/en/locationsandmenus/piratemarketreadestreet/",
+      "error": ""
+    },
+    {
+      "url": "https://insomniacookies.com/store/greenville",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://insomniacookies.com/store/greenville",
+      "error": ""
+    },
+    {
+      "url": "https://calistyleburger.com/calistyleburgergreenville",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://calistyleburger.com/calistyleburgergreenville",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/nc/greenville/310-e-10th-st/3819.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/nc/greenville/310-e-10th-st/3819.html",
+      "error": ""
+    },
+    {
+      "url": "https://site.krispykreme.com/nc/greenville/300-e-tenth-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://site.krispykreme.com/nc/greenville/300-e-tenth-st",
+      "error": ""
+    },
+    {
+      "url": "https://www.eatatnative.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.eatatnative.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wafflehouse.com/greenville-nc-187",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wafflehouse.com/greenville-nc-187/",
+      "error": ""
+    },
+    {
+      "url": "https://crumblcookies.com/stores/nc/ncuniversitycommons",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://crumblcookies.com/stores/nc/ncuniversitycommons",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://locations.wafflehouse.com/greenville-nc-995",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wafflehouse.com/greenville-nc-995/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

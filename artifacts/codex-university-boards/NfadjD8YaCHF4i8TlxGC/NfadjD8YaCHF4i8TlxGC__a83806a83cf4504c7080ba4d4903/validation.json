@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://uscga.edu/academics/library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://uscga.edu/academics/library/",
+      "error": ""
+    },
+    {
+      "url": "https://catalog.uscga.edu/about-cga/cadet-life",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.uscga.edu/about-cga/cadet-life",
+      "error": ""
+    },
+    {
+      "url": "https://uscga.edu/wp-content/uploads/2023/05/2023_USCGA_CAMPUS-MAP.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://uscga.edu/wp-content/uploads/2023/05/2023_USCGA_CAMPUS-MAP.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://uscga.edu/athletics/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://uscga.edu/athletics/",
+      "error": ""
+    },
+    {
+      "url": "https://uscga.edu/cadet-life/cga-tenants/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://uscga.edu/cadet-life/cga-tenants/",
+      "error": ""
+    },
+    {
+      "url": "https://uscga.edu/about/history/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://uscga.edu/about/history/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Hewitt Writing and Reading Center"
+  ],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

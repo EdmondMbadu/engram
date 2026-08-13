@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.gvsu.edu/food/remote-learning-hours-w26-205.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gvsu.mydininghub.com/en/locations",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/mi/allendale/4989-lake-michigan-dr/dinner.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mi/allendale/4989-lake-michigan-dr/dinner.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/mi/allendale/4755-lake-michigan-drive",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/mi/allendale/4755-lake-michigan-drive",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jimmyjohns.com/mi/allendale/delivery-0677.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jimmyjohns.com/mi/allendale/delivery-0677.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.peppinospizza.com/allendale2/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.peppinospizza.com/allendale2/",
+      "error": ""
+    },
+    {
+      "url": "https://www.culvers.com/restaurants/allendale-mi-lake-michigan-dr",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.culvers.com/restaurants/allendale-mi-lake-michigan-dr",
+      "error": ""
+    },
+    {
+      "url": "https://www.jetspizza.com/stores/michigan/allendale/5135-lake-michigan-dr/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jetspizza.com/stores/michigan/allendale/5135-lake-michigan-dr/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.sanmarcosca.gov/Parks-Recreation/Kids-Activities/Jacks-Pond-Nature-Center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sanmarcosca.gov/Parks-Recreation/Kids-Activities/Jacks-Pond-Nature-Center",
+      "error": ""
+    },
+    {
+      "url": "https://www.sanmarcosca.gov/Parks-Recreation/Hikes-Ranger-Program/Upcoming-Hikes",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sanmarcosca.gov/Parks-Recreation/Hikes-Ranger-Program/Upcoming-Hikes",
+      "error": ""
+    },
+    {
+      "url": "https://www.sanmarcosca.gov/City-Government/Communication-Engagement/City-News/Discover-the-great-outdoors-with-San-Marcos-at-Trails-Day",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sanmarcosca.gov/City-Government/Communication-Engagement/City-News/Discover-the-great-outdoors-with-San-Marcos-at-Trails-Day",
+      "error": ""
+    },
+    {
+      "url": "https://www.sanmarcosca.gov/City-Government/Communication-Engagement/City-News/Movies-in-the-Park-series-returns-this-summer",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sanmarcosca.gov/City-Government/Communication-Engagement/City-News/Movies-in-the-Park-series-returns-this-summer",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

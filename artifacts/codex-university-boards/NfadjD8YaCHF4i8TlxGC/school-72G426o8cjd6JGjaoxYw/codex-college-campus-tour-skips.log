@@ -1,0 +1,511 @@
+Reading additional input from stdin...
+2026-08-13T06:57:51.811101Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-7987-7f82-b97b-ea7a145e55b8.1786604255624481000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:57:51.814626Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:57:51.817743Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:57:51.853233Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-798a-7461-9edc-dd97abf41d2d.1786604255627254000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9e9-b85f-7cf1-a4ba-9d1e5ea97e0b
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"72G426o8cjd6JGjaoxYw","schoolName":"Elmhurst University","shortSchoolName":"Elmhurst University","townName":"Elmhurst","state":"IL","countryCode":"US","website":"https://www.elmhurst.edu/","latitude":41.897164,"longitude":-87.945369},"templates":[{"id":"college-campus-tour-skips","version":"1.0","titlePattern":"What the Campus Tour Skips: {count} Places Students Share With Each Other","editorialBrief":"Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.","researchQueries":["student favorite campus places","campus map student spaces","student newspaper campus places"],"count":10,"icon":"style","primarySubjectType":"place","allowedSubjectTypes":["place","study_space"],"freshnessDays":365,"exactTitle":"What the Campus Tour Skips: 10 Places Students Share With Each Other"}]}
+2026-08-13T06:57:51.893800Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-7987-7a71-a5c3-5b271b0e2efb.1786604255623815000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:57:51.981895Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-7985-7161-b763-db9b2ed589a7.1786604255621553000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:57:52.041075Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-7986-7f70-9ac0-01b5846d379e.1786604255622326000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:57:52.078377Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-799d-7e90-a88b-3f4e26e818e7.1786604255645974000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:57:52.110316Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-7985-7383-8b49-05bfee3caf34.1786604255621921000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Elmhurst University",
+  "town_name": "Elmhurst",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Elmhurst University",
+      "town_name": "Elmhurst",
+      "template_id": "college-campus-tour-skips",
+      "title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+      "description": "",
+      "icon": "style",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      		
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ],
+      "warnings": [
+        "Research in progress."
+      ]
+    }
+  ],
+  "warnings": [
+    "Research in progress."
+  ]
+}
+codex
+{"complete":false,"school_name":"Elmhurst University","town_name":"Elmhurst","boards":[{"complete":false,"school_name":"Elmhurst University","town_name":"Elmhurst","template_id":"college-campus-tour-skips","title":"What the Campus Tour Skips: 10 Places Students Share With Each Other","description":"Researching ten distinct, map-listed campus places and verifying each shared use against direct university sources.","icon":"style","cards": [{"subject_id":"research-in-progress","subject_type":"place","entity_name":"Elmhurst University campus","title":"Research in progress","subtitle":"Verifying direct sources","notes":"Checking official campus, library, student-life, arts, athletics, and map pages before completing all ten cards.","short_summary":"Direct-source verification is underway.","evidence_claim":"This temporary status card will be replaced after research.","source_url":"https://www.elmhurst.edu/","source_title":"Elmhurst University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":41.897164,"longitude":-87.945369,"maps_url":null,"access_notes":"Access varies by campus facility.","cost_status":"not_applicable","under21_safe":true}       		
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ],
+      "warnings": [
+        "Research in progress."
+      ]
+    }
+  ],
+  "warnings": [
+    "Research in progress."
+  ]
+}
+web search: 
+web search: site:elmhurst.edu campus map Elmhurst University buildings library student center ...
+web search: 
+web search: site:elmhurst.edu "Learning Center" "A.C. Buehler Library" Elmhurst University ...
+codex
+{"complete":true,"school_name":"Elmhurst University","town_name":"Elmhurst","boards":[{"complete":true,"school_name":"Elmhurst University","town_name":"Elmhurst","template_id":"college-campus-tour-skips","title":"What the Campus Tour Skips: 10 Places Students Share With Each Other","description":"Ten named Elmhurst University spaces where students can study, meet, recharge, exercise, eat or join campus activities, verified through current university sources.","icon":"style","cards":[{"subject_id":"elmhurst-founders-lounge","subject_type":"study_space","entity_name":"Founders Lounge","title":"Settle In Around the Fireplace","subtitle":"A flexible Frick Center lounge for work, conversation and meetings","notes":"Bring reading or meet a project partner here; the lounge supplies couches, work tables, campus equipment and a view across University Mall.","short_summary":"A fireplace lounge that shifts easily between solo work, informal meetings and downtime.","evidence_claim":"Elmhurst identifies Founders Lounge as a Frick Center space where students can study, relax, meet friends, attend events and club meetings, and use printers and other amenities.","source_url":"https://www.elmhurst.edu/admission/graduate-students/graduate-student-resources/","source_title":"Graduate Student Resources","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located in the Frick Center; campus services and hosted events may affect use of the space.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"elmhurst-bluejays-roost-game-room","subject_type":"place","entity_name":"Bluejays’ Roost/Game Room","title":"Take a Break Below Frick Center","subtitle":"Television, games, seating and food in one student hangout","notes":"Head to the lower level between commitments for television or a game; check dining hours separately if you also plan to order food.","short_summary":"A lower-level recreation space where students can eat, watch television and play tabletop games.","evidence_claim":"Elmhurst says students use the Bluejays’ Roost/Game Room to watch television, spend time with friends and eat; its connected game area includes pool and ping-pong.","source_url":"https://www.elmhurst.edu/student-life/commuter-students/","source_title":"Commuter Students | Info and Resources","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on the Frick Center’s lower level; food service follows separate academic-year dining hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"elmhurst-commuter-lounge","subject_type":"study_space","entity_name":"Commuter Lounge","title":"Use the Commuter Base Camp","subtitle":"Tables, seating and lockers beside the Bluejays’ Roost","notes":"Use the tables for work between classes, then ask at the Frick Center Information Desk if you need a commuter locker for your books.","short_summary":"A practical between-class workspace with seating and nearby storage for commuter students.","evidence_claim":"Elmhurst describes the Commuter Lounge beside the Bluejays’ Roost as a study and relaxation space with tables and seating, plus lockers for commuter belongings.","source_url":"https://www.elmhurst.edu/student-life/commuter-students/","source_title":"Commuter Students | Info and Resources","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located beside the Bluejays’ Roost in the Frick Center; locker arrangements go through the Information Desk.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"elmhurst-buehler-library-study-rooms","subject_type":"study_space","entity_name":"A.C. Buehler Library Study Rooms","title":"Rehearse Together on a Bigger Screen","subtitle":"Reservable rooms for individual and group study","notes":"Reserve the room size you need; for collaborative work or presentation practice, ask the Library Services Desk about display cables.","short_summary":"Bookable rooms support quiet individual work, group collaboration and presentation run-throughs.","evidence_claim":"Elmhurst documents group and single study rooms on different library levels; many group rooms have large displays for collaboration and presentation practice.","source_url":"https://library.elmhurst.edu/MBA","source_title":"MBA Program Orientation – A.C. Buehler Library","source_kind":"university_official","source_published_at":"2025-08-19","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Study rooms require reservation or checkout; equipment availability is handled at the Library Services Desk.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"elmhurst-buehler-library-cafe","subject_type":"study_space","entity_name":"Buehler Library Café","title":"Pair a Table With a Quick Refill","subtitle":"Main-level café seating inside A.C. Buehler Library","notes":"Use the café seating to review notes or reconnect with classmates; visit during posted academic-year service hours if you want refreshments.","short_summary":"A library-side seating area designed for schoolwork, conversation and optional snacks.","evidence_claim":"Elmhurst says the Library Café offers seating where students can relax, spend time with friends and do schoolwork; it serves drinks and snacks on the library’s main level.","source_url":"https://www.elmhurst.edu/student-life/commuter-students/faq/","source_title":"Commuter Student FAQ","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on the main level of A.C. Buehler Library; café service follows posted academic-year hours.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"elmhurst-frick-center-cafe","subject_type":"place","entity_name":"Frick Center Café","title":"Meet Over a Full Meal Window","subtitle":"The Mall-level campus café serving three daily meals","notes":"Coordinate a group meal here and check the academic-year schedule first; breakfast, lunch and dinner each have separate service windows.","short_summary":"A central dining room suited to planned meals and informal meetups between campus commitments.","evidence_claim":"Elmhurst places the Frick Center Café on the building’s Mall level and lists breakfast, lunch and dinner service during the academic year.","source_url":"https://www.elmhurst.edu/student-life/dining-options/","source_title":"Dining Options on Campus","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Meal service follows the current academic-year schedule published on the university dining page.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"elmhurst-tyrrell-fitness-center","subject_type":"place","entity_name":"Tyrrell Fitness Center","title":"Split Your Workout Across Two Floors","subtitle":"Student strength and cardiovascular facilities in Faganel Hall","notes":"Bring your Jaypass and choose the floor that fits your workout: strength equipment downstairs or cardiovascular equipment upstairs.","short_summary":"A two-level student facility separating strength training from cardiovascular exercise.","evidence_claim":"Elmhurst states that Tyrrell Fitness Center is available to all Elmhurst students and contains 3,000-square-foot strength and cardiovascular rooms plus locker rooms.","source_url":"https://www.elmhurst.edu/student-life/get-involved/campus-recreation/","source_title":"Tyrrell Fitness Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located at 221 Walter Street; a Jaypass is required for entry, and users should consult current hours and policies.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"elmhurst-wellness-serenity-room","subject_type":"place","entity_name":"Serenity Room","title":"Step Away for a Quieter Reset","subtitle":"A relaxation room inside the Niebuhr Hall Wellness Center","notes":"Use this room when you need to decompress between commitments; contact the Wellness Center before visiting if access details are unclear.","short_summary":"A dedicated Wellness Center room for students seeking a brief, low-stimulation pause.","evidence_claim":"Elmhurst says the Wellness Center’s Serenity Room lets students relax and de-escalate and includes a full-spectrum light.","source_url":"https://www.elmhurst.edu/student-life/commuter-students/faq/","source_title":"Commuter Student FAQ","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located in the Wellness Center on Niebuhr Hall’s lower level; confirm availability with the center before relying on access.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"elmhurst-university-mall","subject_type":"place","entity_name":"University Mall","title":"Find the Campus Gathering Lawn","subtitle":"The central green used for recreation and student events","notes":"Check the student-events calendar, or bring classmates outside for informal recreation when the lawn is not reserved for a campus program.","short_summary":"The central lawn doubles as open green space and a venue for organized student activities.","evidence_claim":"Elmhurst identifies University Mall as a wide-open campus green and documents student recreation there, including equipment-supported Jays on the Mall activities.","source_url":"https://www.elmhurst.edu/student-life/get-involved/campus-recreation/","source_title":"Tyrrell Fitness Center and Campus Recreation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor use is weather-dependent and may be limited when University events reserve the lawn.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"elmhurst-learning-center","subject_type":"study_space","entity_name":"Learning Center","title":"Bring the Assignment to Academic Support","subtitle":"Library-based tutoring and study assistance for Elmhurst students","notes":"Take a specific question or draft to the library-based center, and check its current appointment process before planning a tutoring visit.","short_summary":"A shared academic-support destination for tutoring, study strategies and assignment help.","evidence_claim":"Elmhurst identifies the Learning Center inside A.C. Buehler Library as an academic-support resource available to all Elmhurst University students.","source_url":"https://www.elmhurst.edu/admission/graduate-students/graduate-student-resources/","source_title":"Graduate Student Resources","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located in A.C. Buehler Library; confirm current service hours and appointment requirements before visiting.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:00:23.686967Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-b85f-7cf1-a4ba-9d1e5ea97e0b.1786604271712351000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+40,721
+
+{"complete":true,"school_name":"Elmhurst University","town_name":"Elmhurst","boards":[{"complete":true,"school_name":"Elmhurst University","town_name":"Elmhurst","template_id":"college-campus-tour-skips","title":"What the Campus Tour Skips: 10 Places Students Share With Each Other","description":"Ten named Elmhurst University spaces where students can study, meet, recharge, exercise, eat or join campus activities, verified through current university sources.","icon":"style","cards":[{"subject_id":"elmhurst-founders-lounge","subject_type":"study_space","entity_name":"Founders Lounge","title":"Settle In Around the Fireplace","subtitle":"A flexible Frick Center lounge for work, conversation and meetings","notes":"Bring reading or meet a project partner here; the lounge supplies couches, work tables, campus equipment and a view across University Mall.","short_summary":"A fireplace lounge that shifts easily between solo work, informal meetings and downtime.","evidence_claim":"Elmhurst identifies Founders Lounge as a Frick Center space where students can study, relax, meet friends, attend events and club meetings, and use printers and other amenities.","source_url":"https://www.elmhurst.edu/admission/graduate-students/graduate-student-resources/","source_title":"Graduate Student Resources","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located in the Frick Center; campus services and hosted events may affect use of the space.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"elmhurst-bluejays-roost-game-room","subject_type":"place","entity_name":"Bluejays’ Roost/Game Room","title":"Take a Break Below Frick Center","subtitle":"Television, games, seating and food in one student hangout","notes":"Head to the lower level between commitments for television or a game; check dining hours separately if you also plan to order food.","short_summary":"A lower-level recreation space where students can eat, watch television and play tabletop games.","evidence_claim":"Elmhurst says students use the Bluejays’ Roost/Game Room to watch television, spend time with friends and eat; its connected game area includes pool and ping-pong.","source_url":"https://www.elmhurst.edu/student-life/commuter-students/","source_title":"Commuter Students | Info and Resources","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on the Frick Center’s lower level; food service follows separate academic-year dining hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"elmhurst-commuter-lounge","subject_type":"study_space","entity_name":"Commuter Lounge","title":"Use the Commuter Base Camp","subtitle":"Tables, seating and lockers beside the Bluejays’ Roost","notes":"Use the tables for work between classes, then ask at the Frick Center Information Desk if you need a commuter locker for your books.","short_summary":"A practical between-class workspace with seating and nearby storage for commuter students.","evidence_claim":"Elmhurst describes the Commuter Lounge beside the Bluejays’ Roost as a study and relaxation space with tables and seating, plus lockers for commuter belongings.","source_url":"https://www.elmhurst.edu/student-life/commuter-students/","source_title":"Commuter Students | Info and Resources","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located beside the Bluejays’ Roost in the Frick Center; locker arrangements go through the Information Desk.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"elmhurst-buehler-library-study-rooms","subject_type":"study_space","entity_name":"A.C. Buehler Library Study Rooms","title":"Rehearse Together on a Bigger Screen","subtitle":"Reservable rooms for individual and group study","notes":"Reserve the room size you need; for collaborative work or presentation practice, ask the Library Services Desk about display cables.","short_summary":"Bookable rooms support quiet individual work, group collaboration and presentation run-throughs.","evidence_claim":"Elmhurst documents group and single study rooms on different library levels; many group rooms have large displays for collaboration and presentation practice.","source_url":"https://library.elmhurst.edu/MBA","source_title":"MBA Program Orientation – A.C. Buehler Library","source_kind":"university_official","source_published_at":"2025-08-19","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Study rooms require reservation or checkout; equipment availability is handled at the Library Services Desk.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"elmhurst-buehler-library-cafe","subject_type":"study_space","entity_name":"Buehler Library Café","title":"Pair a Table With a Quick Refill","subtitle":"Main-level café seating inside A.C. Buehler Library","notes":"Use the café seating to review notes or reconnect with classmates; visit during posted academic-year service hours if you want refreshments.","short_summary":"A library-side seating area designed for schoolwork, conversation and optional snacks.","evidence_claim":"Elmhurst says the Library Café offers seating where students can relax, spend time with friends and do schoolwork; it serves drinks and snacks on the library’s main level.","source_url":"https://www.elmhurst.edu/student-life/commuter-students/faq/","source_title":"Commuter Student FAQ","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on the main level of A.C. Buehler Library; café service follows posted academic-year hours.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"elmhurst-frick-center-cafe","subject_type":"place","entity_name":"Frick Center Café","title":"Meet Over a Full Meal Window","subtitle":"The Mall-level campus café serving three daily meals","notes":"Coordinate a group meal here and check the academic-year schedule first; breakfast, lunch and dinner each have separate service windows.","short_summary":"A central dining room suited to planned meals and informal meetups between campus commitments.","evidence_claim":"Elmhurst places the Frick Center Café on the building’s Mall level and lists breakfast, lunch and dinner service during the academic year.","source_url":"https://www.elmhurst.edu/student-life/dining-options/","source_title":"Dining Options on Campus","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Meal service follows the current academic-year schedule published on the university dining page.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"elmhurst-tyrrell-fitness-center","subject_type":"place","entity_name":"Tyrrell Fitness Center","title":"Split Your Workout Across Two Floors","subtitle":"Student strength and cardiovascular facilities in Faganel Hall","notes":"Bring your Jaypass and choose the floor that fits your workout: strength equipment downstairs or cardiovascular equipment upstairs.","short_summary":"A two-level student facility separating strength training from cardiovascular exercise.","evidence_claim":"Elmhurst states that Tyrrell Fitness Center is available to all Elmhurst students and contains 3,000-square-foot strength and cardiovascular rooms plus locker rooms.","source_url":"https://www.elmhurst.edu/student-life/get-involved/campus-recreation/","source_title":"Tyrrell Fitness Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located at 221 Walter Street; a Jaypass is required for entry, and users should consult current hours and policies.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"elmhurst-wellness-serenity-room","subject_type":"place","entity_name":"Serenity Room","title":"Step Away for a Quieter Reset","subtitle":"A relaxation room inside the Niebuhr Hall Wellness Center","notes":"Use this room when you need to decompress between commitments; contact the Wellness Center before visiting if access details are unclear.","short_summary":"A dedicated Wellness Center room for students seeking a brief, low-stimulation pause.","evidence_claim":"Elmhurst says the Wellness Center’s Serenity Room lets students relax and de-escalate and includes a full-spectrum light.","source_url":"https://www.elmhurst.edu/student-life/commuter-students/faq/","source_title":"Commuter Student FAQ","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located in the Wellness Center on Niebuhr Hall’s lower level; confirm availability with the center before relying on access.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"elmhurst-university-mall","subject_type":"place","entity_name":"University Mall","title":"Find the Campus Gathering Lawn","subtitle":"The central green used for recreation and student events","notes":"Check the student-events calendar, or bring classmates outside for informal recreation when the lawn is not reserved for a campus program.","short_summary":"The central lawn doubles as open green space and a venue for organized student activities.","evidence_claim":"Elmhurst identifies University Mall as a wide-open campus green and documents student recreation there, including equipment-supported Jays on the Mall activities.","source_url":"https://www.elmhurst.edu/student-life/get-involved/campus-recreation/","source_title":"Tyrrell Fitness Center and Campus Recreation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor use is weather-dependent and may be limited when University events reserve the lawn.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"elmhurst-learning-center","subject_type":"study_space","entity_name":"Learning Center","title":"Bring the Assignment to Academic Support","subtitle":"Library-based tutoring and study assistance for Elmhurst students","notes":"Take a specific question or draft to the library-based center, and check its current appointment process before planning a tutoring visit.","short_summary":"A shared academic-support destination for tutoring, study strategies and assignment help.","evidence_claim":"Elmhurst identifies the Learning Center inside A.C. Buehler Library as an academic-support resource available to all Elmhurst University students.","source_url":"https://www.elmhurst.edu/admission/graduate-students/graduate-student-resources/","source_title":"Graduate Student Resources","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located in A.C. Buehler Library; confirm current service hours and appointment requirements before visiting.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

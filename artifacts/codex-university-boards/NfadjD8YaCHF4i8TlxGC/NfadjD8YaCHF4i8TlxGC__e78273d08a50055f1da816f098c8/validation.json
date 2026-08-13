@@ -1,0 +1,87 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://studentcenters.ncsu.edu/location/talley/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentcenters.ncsu.edu/location/talley/",
+      "error": ""
+    },
+    {
+      "url": "https://studentcenters.ncsu.edu/events/resources/spaces/outdoor/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://studentcenters.ncsu.edu/events/resources/spaces/outdoor/",
+      "error": ""
+    },
+    {
+      "url": "https://wellness.ncsu.edu/topic-category/outdoor-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wellness.ncsu.edu/topic-category/outdoor-spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://parents.ncsu.edu/resources/learn-the-lingo/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://parents.ncsu.edu/resources/learn-the-lingo/",
+      "error": ""
+    },
+    {
+      "url": "https://chancellor.ncsu.edu/belltower-celebrations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://chancellor.ncsu.edu/belltower-celebrations/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ncsu.edu/hill",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ncsu.edu/hill",
+      "error": ""
+    },
+    {
+      "url": "https://news.ncsu.edu/2025/07/tour-the-nc-state-campus/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.ncsu.edu/2025/07/tour-the-nc-state-campus/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ncsu.edu/hunt",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ncsu.edu/hunt",
+      "error": ""
+    },
+    {
+      "url": "https://news.ncsu.edu/2023/10/the-oval-becomes-nc-states-newest-hallowed-place/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.ncsu.edu/2023/10/the-oval-becomes-nc-states-newest-hallowed-place/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "James B. Hunt Jr. Library"
+  ],
+  "sourceCount": 9,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

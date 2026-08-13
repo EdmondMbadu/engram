@@ -1,0 +1,85 @@
+{
+  "ok": false,
+  "problems": [
+    "Card entities are not unique."
+  ],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.tacobell.com/pa/philadelphia/1037-chestnut-st.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/pa/philadelphia/1037-chestnut-st.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/pa/philadelphia/1614-chestnut-st.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/pa/philadelphia/1614-chestnut-st.html",
+      "error": ""
+    },
+    {
+      "url": "https://shakeshack.com/location/midtown-village-12th-chestnut-pa",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://shakeshack.com/location/midtown-village-12th-chestnut-pa",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/pa/philadelphia/1515-chestnut-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/pa/philadelphia/1515-chestnut-street",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.bonchon.com/locations/pa/philadelphia/1020-cherry-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.bonchon.com/locations/pa/philadelphia/1020-cherry-st",
+      "error": ""
+    },
+    {
+      "url": "https://www.eatishkabibbles.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.eatishkabibbles.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.masalakitchen.com/location/rittenhouse-square/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.masalakitchen.com/location/rittenhouse-square/",
+      "error": ""
+    },
+    {
+      "url": "https://www.15thstpizza.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.15thstpizza.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/pa/philadelphia/801-arch-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/pa/philadelphia/801-arch-street",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": null,
+  "generationGrade": null
+}

@@ -1,0 +1,71 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.dominican.edu/campus-life/getting-involved/community-and-neighborhood-engagement",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.dominican.edu/campus-life/getting-involved/community-and-neighborhood-engagement",
+      "error": ""
+    },
+    {
+      "url": "https://www.dominican.edu/academics/archbishop-alemany-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.dominican.edu/academics/archbishop-alemany-library",
+      "error": ""
+    },
+    {
+      "url": "https://www.dominican.edu/academics/archbishop-alemany-library/services-students",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.dominican.edu/academics/archbishop-alemany-library/services-students",
+      "error": ""
+    },
+    {
+      "url": "https://www.artworksdowntown.org/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.artworksdowntown.org/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.artworksdowntown.org/2nd-friday-art-walk",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.artworksdowntown.org/2nd-friday-art-walk",
+      "error": ""
+    },
+    {
+      "url": "https://www.artworksdowntown.org/exhibit-space-rental",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.artworksdowntown.org/exhibit-space-rental",
+      "error": ""
+    },
+    {
+      "url": "https://marinlibrary.org/online-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://marinlibrary.org/online-library/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Art Works Downtown"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www2.cortland.edu/library/about/library-map-text-descriptions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.cortland.edu/library/about/library-map-text-descriptions",
+      "error": ""
+    },
+    {
+      "url": "https://sites.cortland.edu/library/2024/02/12/4th-floor-study-rooms/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sites.cortland.edu/library/2024/02/12/4th-floor-study-rooms/",
+      "error": ""
+    },
+    {
+      "url": "https://sites.cortland.edu/library/2024/02/09/reserve-a-group-study-room/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sites.cortland.edu/library/2024/02/09/reserve-a-group-study-room/",
+      "error": ""
+    },
+    {
+      "url": "https://www2.cortland.edu/library/about/maps",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.cortland.edu/library/about/maps",
+      "error": ""
+    },
+    {
+      "url": "https://www2.cortland.edu/library/resources/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.cortland.edu/library/resources/",
+      "error": ""
+    },
+    {
+      "url": "https://www2.cortland.edu/news/library-offers-crafting-space-for-recreation-and-education",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.cortland.edu/news/library-offers-crafting-space-for-recreation-and-education",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

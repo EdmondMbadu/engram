@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.westpoint.edu/about/commandant/simon-center-for-the-professional-military-ethic/cadet-honor-code",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.westpoint.edu/about/academy-leadership/office-of-the-commandant/simon-center-for-the-professional-military-ethic/cadet-honor-code",
+      "error": ""
+    },
+    {
+      "url": "https://www.westpointaog.org/news/tag/ring-weekend/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.westpointaog.org/news/tag/ring-weekend/",
+      "error": ""
+    },
+    {
+      "url": "https://www.westpointaog.org/news/gary-sinise-receives-thayer-award/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.westpointaog.org/news/gary-sinise-receives-thayer-award/",
+      "error": ""
+    },
+    {
+      "url": "https://www.army.mil/article/244429/firsties_celebrate_100th_night_weekend_with_banquet_show",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.army.mil/article/244429/firsties_celebrate_100th_night_weekend_with_banquet_show",
+      "error": ""
+    },
+    {
+      "url": "https://www.army.mil/article/282673/west_point_lrc_prepares_food_for_4400_hungry_cadets",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.army.mil/article/282673/west_point_lrc_prepares_food_for_4400_hungry_cadets",
+      "error": ""
+    },
+    {
+      "url": "https://www.army.mil/article/70614/another_army_navy_tradition_honored_at_west_point",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.army.mil/article/70614/another_army_navy_tradition_honored_at_west_point",
+      "error": ""
+    },
+    {
+      "url": "https://www.army.mil/article/214553/west_point_cadets_take_part_in_prisoner_exchange_before_army_navy",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.army.mil/article/214553/west_point_cadets_take_part_in_prisoner_exchange_before_army_navy",
+      "error": ""
+    },
+    {
+      "url": "https://www.army.mil/article/49277/spirit_alive_at_west_point_for_army_navy_game",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.army.mil/article/49277/spirit_alive_at_west_point_for_army_navy_game",
+      "error": ""
+    },
+    {
+      "url": "https://www.army.mil/article/268053/cadet_cadre_take_leadership_reign_to_guide_class_of_2027_through_cadet_basic_training_i",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.army.mil/article/268053/cadet_cadre_take_leadership_reign_to_guide_class_of_2027_through_cadet_basic_training_i",
+      "error": ""
+    },
+    {
+      "url": "https://www.army.mil/article/259395/class_of_2026_cadets_rejoice_during_a_day_parade",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.army.mil/article/259395/class_of_2026_cadets_rejoice_during_a_day_parade",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 100,
+  "generationGrade": "A"
+}

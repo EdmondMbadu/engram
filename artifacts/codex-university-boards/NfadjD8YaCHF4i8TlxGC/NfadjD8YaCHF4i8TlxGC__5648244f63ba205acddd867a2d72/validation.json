@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://studentcenters.ecu.edu/main-campus-student-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentcenters.ecu.edu/main-campus-student-center/",
+      "error": ""
+    },
+    {
+      "url": "https://rooms.lib.ecu.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://rooms.lib.ecu.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://digital.lib.ecu.edu/special/ead/findingaids/UA90-44",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://digital.lib.ecu.edu/special/ead/findingaids/UA90-44",
+      "error": ""
+    },
+    {
+      "url": "https://media.lib.ecu.edu/development/dcwjoynerfactsheet.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://media.lib.ecu.edu/development/dcwjoynerfactsheet.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://pasc.ecu.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pasc.ecu.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://crw.ecu.edu/facilities-services/student-recreation-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://crw.ecu.edu/facilities-services/student-recreation-center/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

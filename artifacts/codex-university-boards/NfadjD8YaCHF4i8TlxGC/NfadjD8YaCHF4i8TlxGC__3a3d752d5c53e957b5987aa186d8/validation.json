@@ -1,0 +1,47 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.gonzaga.edu/news-events/stories/2024/12/9/best-study-spots-on-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.gonzaga.edu/news-events/stories/2024/12/9/best-study-spots-on-campus",
+      "error": ""
+    },
+    {
+      "url": "https://www.gonzaga.edu/foley-library/about/policies/building-use-policy",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.gonzaga.edu/foley-library/about/policies/building-use-policy",
+      "error": ""
+    },
+    {
+      "url": "https://www.gonzaga.edu/-/media/Website/Documents/About/Offices-and-Services/GU-Event-Service-Team/Venues/John-J-Hemmingson-Center/HC-WEB-MASTER-v3.ashx?hash=CC67C4D2BDFDE66011286AC08FBA239F36F452D4&la=en",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.gonzaga.edu/-/media/Website/Documents/About/Offices-and-Services/GU-Event-Service-Team/Venues/John-J-Hemmingson-Center/HC-WEB-MASTER-v3.ashx?hash=CC67C4D2BDFDE66011286AC08FBA239F36F452D4&la=en",
+      "error": ""
+    },
+    {
+      "url": "https://www.gonzaga.edu/news-events/stories/gonzaga-students-favorite-spots-on-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.gonzaga.edu/news-events/stories/gonzaga-students-favorite-spots-on-campus",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Foley Library Group Study Rooms"
+  ],
+  "sourceCount": 4,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

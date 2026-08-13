@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://colfa.utsa.edu/art/galleries/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://colfa.utsa.edu/art/galleries/",
+      "error": ""
+    },
+    {
+      "url": "https://artpace.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://artpace.org/",
+      "error": ""
+    },
+    {
+      "url": "https://rubycity.org/plan-your-visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://rubycity.org/plan-your-visit/",
+      "error": ""
+    },
+    {
+      "url": "https://contemporarysa.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://contemporarysa.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.samuseum.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.samuseum.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.wittemuseum.org/plan-your-visit/free-tuesdays/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.wittemuseum.org/plan-your-visit/free-tuesdays/",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcnayart.org/images/uploads/Visitor_Guide_FINAL.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcnayart.org/images/uploads/Visitor_Guide_FINAL.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/saan/planyourvisit/guided-programs.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/saan/planyourvisit/guided-programs.htm",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

@@ -1,0 +1,59 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "8Nynqq63IyJkbjFkC2cd",
+    "schoolName": "Hampden-Sydney College",
+    "shortSchoolName": "Hampden-Sydney College",
+    "townName": "Hampden-Sydney",
+    "state": "VA",
+    "countryCode": "US",
+    "unitId": "232256",
+    "website": "https://www.hsc.edu/",
+    "latitude": 37.240615,
+    "longitude": -78.464216,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=hsc.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=hsc.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "H-SC Bicycle Loan",
+    "H-SC Camping Equipment Loan",
+    "H-SC Cornhole Equipment Loan",
+    "H-SC Kayak Loan",
+    "H-SC Canoe Loan",
+    "H-SC Stand-Up Paddleboard Loan",
+    "Tadpole Holes Disc Golf Course",
+    "The Hampden-Sydney Music Series",
+    "Hampden-Sydney Main-Stage Theatre",
+    "The Gallery at Brinkley Hall",
+    "The College Gate",
+    "Esther Thomas Atkinson Museum",
+    "Pannill Commons",
+    "Brown Student Center",
+    "Walter M. Bortz III Library",
+    "Wilson Trail",
+    "TigeRec Fitness Center",
+    "Chalgrove Lake",
+    "Hampden-Sydney College Observatory"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

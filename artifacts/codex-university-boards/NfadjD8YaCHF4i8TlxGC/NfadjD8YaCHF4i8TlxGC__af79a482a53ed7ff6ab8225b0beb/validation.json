@@ -1,0 +1,96 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.playkettering.org/lincoln-park-civic-commons/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.playkettering.org/lincoln-park-civic-commons/",
+      "error": ""
+    },
+    {
+      "url": "https://fraze.com/about-the-venue/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fraze.com/about-the-venue/",
+      "error": ""
+    },
+    {
+      "url": "https://www.playkettering.org/kettering-recreation-complex/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.playkettering.org/kettering-recreation-complex/",
+      "error": ""
+    },
+    {
+      "url": "https://www.playkettering.org/previous-exhibitions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.playkettering.org/previous-exhibitions/",
+      "error": ""
+    },
+    {
+      "url": "https://www.playkettering.org/locations/delco-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.playkettering.org/locations/delco-park/",
+      "error": ""
+    },
+    {
+      "url": "https://www.playkettering.org/ernst-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.playkettering.org/ernst-park/",
+      "error": ""
+    },
+    {
+      "url": "https://www.playkettering.org/kennedy-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.playkettering.org/kennedy-park/",
+      "error": ""
+    },
+    {
+      "url": "https://www.playkettering.org/gentile-nature-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.playkettering.org/gentile-nature-park/",
+      "error": ""
+    },
+    {
+      "url": "https://www.playkettering.org/polen-farm/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.playkettering.org/polen-farm/",
+      "error": ""
+    },
+    {
+      "url": "https://www.metroparks.org/wp-content/uploads/2020/06/ParkWays_Summer2020Web.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.metroparks.org/wp-content/uploads/2020/06/ParkWays_Summer2020Web.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Lincoln Park Civic Commons",
+    "Hills & Dales MetroPark"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

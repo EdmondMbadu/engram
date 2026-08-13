@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://coloradosprings.gov/gog",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://coloradosprings.gov/gog",
+      "error": ""
+    },
+    {
+      "url": "https://coloradosprings.gov/system/files/gog_detail_park_map_2022.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://coloradosprings.gov/system/files/gog_detail_park_map_2022.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 2,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

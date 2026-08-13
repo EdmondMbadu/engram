@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://admissions.seattleu.edu/portal/selfguidedtour",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://admissions.seattleu.edu/portal/selfguidedtour",
+      "error": ""
+    },
+    {
+      "url": "https://www.seattleu.edu/life-at-seattle-u/faith-spirituality-meaning/chapel-of-st-ignatius/architecture/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.seattleu.edu/life-at-seattle-u/faith-spirituality-meaning/chapel-of-st-ignatius/architecture/",
+      "error": ""
+    },
+    {
+      "url": "https://static.seattleu.edu/map/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://static.seattleu.edu/map/",
+      "error": ""
+    },
+    {
+      "url": "https://www.seattleu.edu/writingcenter/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.seattleu.edu/writingcenter/",
+      "error": ""
+    },
+    {
+      "url": "https://www.seattleu.edu/life-at-seattle-u/university-recreation/recreation-facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.seattleu.edu/life-at-seattle-u/university-recreation/recreation-facilities/",
+      "error": ""
+    },
+    {
+      "url": "https://www.seattleu.edu/facilities-and-campus-services/grounds-waste-management-and-pest-control/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.seattleu.edu/facilities-and-campus-services/grounds-waste-management-and-pest-control/",
+      "error": ""
+    },
+    {
+      "url": "https://www.seattleu.edu/newsroom/2025/championship-field-ready-for-its-closeup.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.seattleu.edu/newsroom/2025/championship-field-ready-for-its-closeup.php",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

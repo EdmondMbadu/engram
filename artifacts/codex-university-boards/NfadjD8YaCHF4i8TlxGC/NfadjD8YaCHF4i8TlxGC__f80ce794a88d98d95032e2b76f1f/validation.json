@@ -1,0 +1,87 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Endicott’s gallery exhibits currently require appointments; visitors should confirm availability before traveling.",
+    "Monday Mornings is seasonal, and its spring 2026 series has ended; the library says the series returns in fall.",
+    "The municipal free-entry evidence for Independence Park and Dane Street Beach comes from a 2021 Beverly City Council record; current posted parking and site rules should still be checked."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.endicott.edu/about/arts-culture/manninen-center-for-the-arts/carol-grillo-gallery",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.endicott.edu/about/arts-culture/manninen-center-for-the-arts/carol-grillo-gallery",
+      "error": ""
+    },
+    {
+      "url": "https://www.endicott.edu/about/arts-culture/manninen-center-for-the-arts/desnoyers-overlook-gallery",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.endicott.edu/about/arts-culture/manninen-center-for-the-arts/desnoyers-overlook-gallery",
+      "error": ""
+    },
+    {
+      "url": "https://www.endicott.edu/about/arts-culture/manninen-center-for-the-arts/heftler-visiting-artist-gallery",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.endicott.edu/about/arts-culture/manninen-center-for-the-arts/heftler-visiting-artist-gallery",
+      "error": ""
+    },
+    {
+      "url": "https://www.endicott.edu/about/arts-culture/manninen-center-for-the-arts/visitor-information-for-the-center-for-the-arts",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.endicott.edu/about/arts-culture/manninen-center-for-the-arts/visitor-information-for-the-center-for-the-arts",
+      "error": ""
+    },
+    {
+      "url": "https://beverlypubliclibrary.org/events/art-exhibits/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://beverlypubliclibrary.org/events/art-exhibits/",
+      "error": ""
+    },
+    {
+      "url": "https://beverlypubliclibrary.org/services/computers-printing-wifi/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://beverlypubliclibrary.org/services/computers-printing-wifi/",
+      "error": ""
+    },
+    {
+      "url": "https://beverlypubliclibrary.org/events/monday-mornings/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://beverlypubliclibrary.org/events/monday-mornings/",
+      "error": ""
+    },
+    {
+      "url": "https://beverlypubliclibrary.org/collections/library-of-things/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://beverlypubliclibrary.org/collections/library-of-things/",
+      "error": ""
+    },
+    {
+      "url": "https://www.beverlyma.gov/AgendaCenter/ViewFile/Minutes/_06222021-455",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.beverlyma.gov/AgendaCenter/ViewFile/Minutes/_06222021-455",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

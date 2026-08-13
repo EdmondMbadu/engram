@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.stlawu.edu/events/richard-f-brush-art-gallery-present-exhibition",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stlawu.edu/events/richard-f-brush-art-gallery-present-exhibition",
+      "error": ""
+    },
+    {
+      "url": "https://www.stlawu.edu/student-life/get-involved",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stlawu.edu/student-life/get-involved",
+      "error": ""
+    },
+    {
+      "url": "https://www.stlawu.edu/about/st-lawrence-community",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stlawu.edu/about/st-lawrence-community",
+      "error": ""
+    },
+    {
+      "url": "https://www.stlawu.edu/offices/outdoor-program/resources/local-hikes",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stlawu.edu/offices/outdoor-program/resources/local-hikes",
+      "error": ""
+    },
+    {
+      "url": "https://www.natureupnorth.org/orienteering",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.natureupnorth.org/orienteering",
+      "error": ""
+    },
+    {
+      "url": "https://www.stlawu.edu/offices/writers-series/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stlawu.edu/offices/writers-series/about",
+      "error": ""
+    },
+    {
+      "url": "https://www.stlawu.edu/events/writers-series-and-center-environment-present-alison-hawthorne-deming",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stlawu.edu/events/writers-series-and-center-environment-present-alison-hawthorne-deming",
+      "error": ""
+    },
+    {
+      "url": "https://www.stlawu.edu/offices/english/about-english/shakespeare-theatre-new-jersey",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stlawu.edu/offices/english/about-english/shakespeare-theatre-new-jersey",
+      "error": ""
+    },
+    {
+      "url": "https://www.stlawu.edu/documents/2016-17-catalog",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stlawu.edu/documents/2016-17-catalog",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

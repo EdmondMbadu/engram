@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.ttu.edu/traditions/gunsup.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ttu.edu/traditions/gunsup.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.ttu.edu/traditions/masked.php?v=preview",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ttu.edu/traditions/masked.php?v=preview",
+      "error": ""
+    },
+    {
+      "url": "https://www.ttu.edu/traditions/raiderred.php?v=preview",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ttu.edu/traditions/raiderred.php?v=preview",
+      "error": ""
+    },
+    {
+      "url": "https://www.ttu.edu/traditions/matadorsong.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ttu.edu/traditions/matadorsong.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.ttu.edu/traditions/fightsong.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ttu.edu/traditions/fightsong.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.ttu.edu/campus-events/carol-of-lights/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ttu.edu/campus-events/carol-of-lights/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ttu.edu/traditions/bertha.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ttu.edu/traditions/bertha.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.ttu.edu/traditions/bells.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ttu.edu/traditions/bells.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.ttu.edu/traditions/rogers.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ttu.edu/traditions/rogers.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.ttu.edu/traditions/tramps.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ttu.edu/traditions/tramps.php",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 100,
+  "generationGrade": "A"
+}

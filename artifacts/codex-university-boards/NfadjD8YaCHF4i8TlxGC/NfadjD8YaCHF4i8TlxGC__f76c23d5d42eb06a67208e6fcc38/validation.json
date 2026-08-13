@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://studentcenters.georgetown.edu/ourspaces/hfsc/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentcenters.georgetown.edu/ourspaces/hfsc/",
+      "error": ""
+    },
+    {
+      "url": "https://studentcenters.georgetown.edu/ourspaces/leavey-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentcenters.georgetown.edu/ourspaces/leavey-center/",
+      "error": ""
+    },
+    {
+      "url": "https://library.georgetown.edu/spaces/pierce-reading-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.georgetown.edu/spaces/pierce-reading-room",
+      "error": ""
+    },
+    {
+      "url": "https://library.georgetown.edu/makerhub",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.georgetown.edu/makerhub",
+      "error": ""
+    },
+    {
+      "url": "https://guides.library.georgetown.edu/theater/costumes",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://guides.library.georgetown.edu/theater/costumes",
+      "error": ""
+    },
+    {
+      "url": "https://library.georgetown.edu/spaces/millennium-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.georgetown.edu/spaces/millennium-room",
+      "error": ""
+    },
+    {
+      "url": "https://library.georgetown.edu/blommer/welcome",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.georgetown.edu/blommer/welcome",
+      "error": ""
+    },
+    {
+      "url": "https://www.georgetown.edu/speech-and-expression/policy/implementation-guidelines/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.georgetown.edu/speech-and-expression/policy/implementation-guidelines/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

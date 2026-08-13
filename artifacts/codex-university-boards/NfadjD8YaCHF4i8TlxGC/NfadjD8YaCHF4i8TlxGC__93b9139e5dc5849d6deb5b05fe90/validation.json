@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.stevenson.edu/student-life/student-activities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stevenson.edu/student-life/student-activities/",
+      "error": ""
+    },
+    {
+      "url": "https://www.stevenson.edu/about/arts-cultural-programs/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stevenson.edu/about/arts-cultural-programs/",
+      "error": ""
+    },
+    {
+      "url": "https://www.stevenson.edu/wp-content/uploads/FR-Fall26-Welcome-Guide-Digital-1.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stevenson.edu/wp-content/uploads/FR-Fall26-Welcome-Guide-Digital-1.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.stevenson.edu/academics/student-success/new-mustang-experience/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stevenson.edu/academics/student-success/new-mustang-experience/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

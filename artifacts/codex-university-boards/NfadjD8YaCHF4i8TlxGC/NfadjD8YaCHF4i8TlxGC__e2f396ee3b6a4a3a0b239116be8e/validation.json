@@ -1,0 +1,98 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "4 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.fgcu.edu/cohenstudentunion/officesanddepartments",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fgcu.edu/cohenstudentunion/officesanddepartments",
+      "error": ""
+    },
+    {
+      "url": "https://fgcu.libcal.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fgcu.libcal.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fgcu.edu/cas/communityimpact/foodforest/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fgcu.edu/cas/communityimpact/foodforest/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fgcu.edu/university-recreation-and-wellness/outdoorpursuits/waterfront",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fgcu.edu/university-recreation-and-wellness/outdoorpursuits/waterfront",
+      "error": ""
+    },
+    {
+      "url": "https://www.fgcu.edu/university-recreation-and-wellness/fitness/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fgcu.edu/university-recreation-and-wellness/fitness/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fgcu.edu/university-recreation-and-wellness/aquatics/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fgcu.edu/university-recreation-and-wellness/aquatics/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fgcu.edu/about/officeofthepresident/inauguration",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fgcu.edu/about/officeofthepresident/inauguration",
+      "error": ""
+    },
+    {
+      "url": "https://www.fgcu.edu/commencement/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fgcu.edu/commencement/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fgcu.edu/thewaterschool/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fgcu.edu/thewaterschool/about/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fgcu.edu/inside/news/ribbon-cutting-ceremony-at-the-cohen-student-union",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fgcu.edu/inside/news/ribbon-cutting-ceremony-at-the-cohen-student-union",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "FGCU Food Forest",
+    "FGCU Waterfront at Lake Como",
+    "FGCU Group Fitness",
+    "Lee County/FGCU Aquatics Center"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

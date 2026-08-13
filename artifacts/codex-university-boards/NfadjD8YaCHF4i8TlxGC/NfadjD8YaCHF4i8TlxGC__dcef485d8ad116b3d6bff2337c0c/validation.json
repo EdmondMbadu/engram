@@ -1,0 +1,45 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Several documented event cards are recurring or season-specific; their cited sources establish no-cost access, but attendees should confirm a current date and availability before going."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.nmt.edu/library/community.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nmt.edu/library/community.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.nmt.edu/news/2025/nmt-host-world-renown-artists.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nmt.edu/news/2025/nmt-host-world-renown-artists.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.socorronm.gov/events/29th-annual-4th-july-celebration/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.socorronm.gov/events/29th-annual-4th-july-celebration/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nmt.edu/pas/about.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nmt.edu/pas/about.php",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

@@ -1,0 +1,21 @@
+{
+  "ok": false,
+  "problems": [
+    "Prohibited ranking, generic, adult-only, or unsafe language found."
+  ],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.utsa.edu/about/traditions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.utsa.edu/about/traditions/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 1,
+  "generationScore": null,
+  "generationGrade": null
+}

@@ -1,0 +1,67 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "YGHdWPQurb7yOn0WnqqQ",
+    "schoolName": "University of Kansas",
+    "shortSchoolName": "University of Kansas",
+    "townName": "Lawrence",
+    "state": "KS",
+    "countryCode": "US",
+    "unitId": "155317",
+    "website": "https://ku.edu/",
+    "latitude": 38.958549,
+    "longitude": -95.247567,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/0/0b/University_of_Kansas_seal.svg/120px-University_of_Kansas_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=ku.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "Watson Library Third Floor Study Space",
+    "Watson Library Fourth Floor Study Space",
+    "Watson Library Fifth Floor Study Space",
+    "Studio K",
+    "Anschutz Library Second Floor Quiet Study",
+    "Anschutz Library Third Floor Group Study Space",
+    "David Beaham Reading Room",
+    "Murphy Art & Architecture Library Study Rooms",
+    "Joe and Joyce Hale Media Center",
+    "Spahr Engineering Library Study Spaces",
+    "Watson Library",
+    "Anschutz Library",
+    "Anschutz Library Makerspace",
+    "Anschutz Library Reflection Room",
+    "Spahr Engineering Library",
+    "Murphy Art & Architecture Library",
+    "Marilyn Stokstad Reading Room",
+    "Spencer Museum of Art",
+    "Watkins Museum of History",
+    "South Park",
+    "Burcham Park",
+    "Buford M. Watson, Jr. Park",
+    "Centennial Park",
+    "Clinton Lake Outlet Park",
+    "Riverfront Park",
+    "Prairie Park",
+    "Holcom Park"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

@@ -1,0 +1,88 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://maps.sfsu.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://maps.sfsu.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://library.sfsu.edu/spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.sfsu.edu/spaces",
+      "error": ""
+    },
+    {
+      "url": "https://library.sfsu.edu/students",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.sfsu.edu/students",
+      "error": ""
+    },
+    {
+      "url": "https://ces.sfsu.edu/event-centers",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ces.sfsu.edu/event-centers",
+      "error": ""
+    },
+    {
+      "url": "https://asi.sfsu.edu/information-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://asi.sfsu.edu/information-center",
+      "error": ""
+    },
+    {
+      "url": "https://asi.sfsu.edu/rack-n-cue",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://asi.sfsu.edu/rack-n-cue",
+      "error": ""
+    },
+    {
+      "url": "https://gallery.sfsu.edu/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gallery.sfsu.edu/visit",
+      "error": ""
+    },
+    {
+      "url": "https://campusrec.sfsu.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusrec.sfsu.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://asi.sfsu.edu/the-depot",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://asi.sfsu.edu/the-depot",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "J. Paul Leonard Library",
+    "The Depot"
+  ],
+  "sourceCount": 9,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

@@ -1,0 +1,278 @@
+Reading additional input from stdin...
+2026-08-13T06:42:22.229707Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9db-7037-7172-b6a6-cd404a6dcd14.1786603335736013000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9db-8910-7c03-8192-f72dfc8977d6
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"W19bBm2hYTm2Y4pHTH1i","schoolName":"California State University-East Bay","shortSchoolName":"California State University-East Bay","townName":"Hayward","state":"CA","countryCode":"US","website":"https://www.csueastbay.edu/","latitude":37.657694,"longitude":-122.054135},"templates":[{"id":"college-zero-dollar-hangs","version":"1.0","titlePattern":"Zero Dollars: {count} Hangs That Cost Nothing","editorialBrief":"Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.","researchQueries":["free student activities campus","free campus spaces students","free public places near campus"],"count":10,"icon":"money_off","primarySubjectType":"activity","allowedSubjectTypes":["activity","place"],"freshnessDays":180,"exactTitle":"Zero Dollars: 10 Hangs That Cost Nothing"}]}
+2026-08-13T06:42:22.280973Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9db-7035-7521-b677-ee9d8957e667.1786603335733472000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:42:22.365834Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9db-7039-7132-be72-9313a81df073.1786603335737805000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:42:22.441395Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9db-702f-7ef3-bb9e-3c7a414197ec.1786603335727942000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:42:22.480440Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9db-7064-7982-abf4-597f7ca80d55.1786603335780946000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:42:22.491695Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:42:22.531922Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:42:22.715173Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9db-7036-7150-a3e8-4cce4d39d58b.1786603335735034000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:42:22.771052Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9db-702e-71c3-99d6-56272a625e8e.1786603335727193000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "California State University-East Bay",
+  "town_name": "Hayward",
+  "boards": [{
+    "complete": false,
+    "school_name": "California State University-East Bay",
+    "town_name": "Hayward",
+    "template_id": "college-zero-dollar-hangs",
+    "title": "Zero Dollars: 10 Hangs That Cost Nothing",
+    "description": "",
+    "icon": "money_off",
+    "cards": [{
+      "subject_id": "",
+      "subject_type": "place",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "place",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "place",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "place",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "place",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "place",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "place",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "place",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "place",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "place",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    }],
+    "warnings": ["Research in progress; fields are placeholders and not final."]
+  }],
+  "warnings": ["Verifying ten distinct no-purchase activities against direct official sources."]
+}
+web search: 
+web search: site:csueastbay.edu free admission gallery museum campus Hayward ...
+web search: 
+web search: site:haywardrec.org "free" Hayward park concert garden ...
+web search: 
+web search: site:haywardrec.org/ "free" "Hayward" "park" ...
+web search: 
+web search: site:csueastbay.edu/artgallery "free" admission 2026 ...
+codex
+{"complete":true,"school_name":"California State University-East Bay","town_name":"Hayward","boards":[{"complete":true,"school_name":"California State University-East Bay","town_name":"Hayward","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"Ten verified, under-21-safe activities around CSU East Bay and Hayward that require no admission or purchase.","icon":"money_off","cards":[{"subject_id":"csueb-recital-hall-free-concerts","subject_type":"activity","entity_name":"CSU East Bay Recital Hall","title":"Catch a Recital Hall Concert","subtitle":"Free public performances inside CSU East Bay’s Music Building","notes":"Check the Music Events calendar, meet outside the north-side entrance, and enjoy a recital without buying a ticket.","short_summary":"Hear student, faculty, or guest musicians perform in an intimate campus hall.","evidence_claim":"CSU East Bay states that all events held in its Recital Hall are free and open to the public.","source_url":"https://www.csueastbay.edu/music/news-events/index.html","source_title":"Music Events","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use the department’s current calendar and confirm the event is in Recital Hall MB1055; University Theatre events follow different ticket rules.","cost_status":"free","under21_safe":true},{"subject_id":"csueb-preview-day-2026","subject_type":"activity","entity_name":"Preview Day 2026","title":"Explore Campus at Preview Day","subtitle":"Tours, showcases, lunch, and entertainment on the Hayward campus","notes":"Register when the form opens, bring prospective-student questions, and follow the event program through campus showcases.","short_summary":"Spend an afternoon sampling campus life with family or friends.","evidence_claim":"CSU East Bay’s October 24, 2026 Preview Day includes campus activities and free lunch, with free event parking.","source_url":"https://www.csueastbay.edu/preview-day/","source_title":"Preview Day 2026","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Saturday, October 24, 2026, 10 a.m.–1 p.m.; intended for prospective or admitted students and their families and friends. Registration is expected to open in early fall.","cost_status":"free","under21_safe":true},{"subject_id":"hayward-regional-shoreline-trails","subject_type":"activity","entity_name":"Hayward Regional Shoreline","title":"Walk the Shoreline Trails","subtitle":"Five miles of public gravel trails beside San Francisco Bay","notes":"Start at West Winton, stay on signed trails, and bring binoculars for a walk combining bay views and birdwatching.","short_summary":"Take a no-fee hike through marshes and former salt-pond landscapes.","evidence_claim":"The East Bay Regional Park District lists no parking fee and identifies hiking, bicycling, jogging, birdwatching, and picnicking as shoreline activities.","source_url":"https://www.ebparks.org/parks/hayward","source_title":"Hayward Regional Shoreline","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The park is generally open 5 a.m.–10 p.m.; gate hours are 7 a.m.–5 p.m. Stay out of signed restricted habitat, and note that dogs are prohibited south of the West Winton flood-control channel.","cost_status":"free","under21_safe":true},{"subject_id":"cannery-park-splash-pad","subject_type":"activity","entity_name":"Cannery Park Splash Pad","title":"Cool Off at the Splash Pad","subtitle":"A free seasonal water-play space at Cannery Park","notes":"Wear water-ready clothes, bring sun protection, and check the seasonal schedule before gathering at the splash pad.","short_summary":"Meet friends for an admission-free break beside Cannery Park’s water jets.","evidence_claim":"The Hayward Area Recreation and Park District lists admission to Cannery Park Splash Pad as free.","source_url":"https://www.haywardrec.org/Facilities/Facility/Details/Cannery-Park-Splash-Pad-111?mobile=ON","source_title":"Cannery Park Splash Pad","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Seasonal operation runs from Memorial Day through Labor Day, with days and hours varying across the summer; check the official page before leaving.","cost_status":"free","under21_safe":true},{"subject_id":"tennyson-park-outdoor-movie-2026","subject_type":"activity","entity_name":"Free Outdoor Movie Night at Tennyson Park","title":"Watch “Hoppers” Under the Stars","subtitle":"A free PG-rated movie night on Tennyson Park’s giant screen","notes":"Bring a blanket or low chair, keep flashlights pointed down, and settle in with friends before the film begins.","short_summary":"Turn a Friday night into a free outdoor movie picnic.","evidence_claim":"H.A.R.D. lists “Hoppers” at Tennyson Park as part of its Free Outdoor Movie Nights series.","source_url":"https://www.haywardrec.org/2058/Special-Events","source_title":"Special Events","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Friday, August 14, 2026, at 7 p.m. at Tennyson Park, 28377 Huntwood Avenue; bring your own blanket or low-back chair.","cost_status":"free","under21_safe":true},{"subject_id":"touch-a-truck-2026","subject_type":"activity","entity_name":"Touch-A-Truck 2026","title":"Climb Aboard Community Vehicles","subtitle":"A free hands-on vehicle showcase at San Lorenzo Community Park","notes":"Arrive early, explore the driver’s views with your group, and leave room for families moving between the vehicles.","short_summary":"See fire trucks, emergency vehicles, and utility equipment up close.","evidence_claim":"H.A.R.D. describes Touch-A-Truck as a free hands-on event featuring emergency, police, fire, and utility vehicles.","source_url":"https://www.haywardrec.org/2058/Special-Events","source_title":"Special Events","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Saturday, August 15, 2026, 9:30–11:30 a.m. at San Lorenzo Community Park, 1970 Via Buena Vista, San Lorenzo. The official page offers an optional place-saving link.","cost_status":"free","under21_safe":true},{"subject_id":"agricultural-day-meek-park-2026","subject_type":"activity","entity_name":"Agricultural Day 2026","title":"Try Agricultural Day Activities","subtitle":"Free hands-on learning with local agricultural groups at Meek Park","notes":"Gather classmates for demonstrations and hands-on stations, then explore the park between scheduled activities.","short_summary":"Connect farming history with present-day agricultural work through public activities.","evidence_claim":"H.A.R.D. identifies Agricultural Day at Meek Park as a free, family-friendly event with hands-on learning.","source_url":"https://www.haywardrec.org/2058/Special-Events","source_title":"Special Events","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Saturday, September 19, 2026, 10 a.m.–2 p.m. at Meek Park, 240 Hampton Road, Hayward.","cost_status":"free","under21_safe":true},{"subject_id":"music-at-mt-eden-mansion-2026","subject_type":"activity","entity_name":"Music at the Mansion: The JC Smith Band","title":"Lounge at Music at the Mansion","subtitle":"Free blues and soul on the Mt. Eden Mansion lawn","notes":"Reserve a free spot if requested, bring lawn-ready seating, and enjoy the concert without using the paid donor area.","short_summary":"Spend a Sunday afternoon listening to live blues and soul outdoors.","evidence_claim":"The event page states that admission to the September 13 Music at the Mansion concert is free and open to all.","source_url":"https://haywardrec.org/Calendar.aspx?EID=2676&calType=0&day=6&month=9&year=2026","source_title":"Music at the Mansion Feat. The JC Smith Band","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Sunday, September 13, 2026, 1–5 p.m. at Mt. Eden Mansion, 2451 W. Tennyson Road. General admission is free; avoid the optional $50 donor circle and optional food purchases.","cost_status":"free","under21_safe":true},{"subject_id":"hayward-airport-open-house","subject_type":"activity","entity_name":"Hayward Airport Open House","title":"Tour the Airport Open House","subtitle":"A free annual aviation event for visitors of all ages","notes":"Check the city calendar for the September date, arrive with aviation questions, and explore the public displays together.","short_summary":"Get a ground-level look at local aviation during Hayward’s annual open house.","evidence_claim":"The City of Hayward says its annual Airport Open House features all-ages entertainment with free admission and parking.","source_url":"https://www.hayward-ca.gov/community-events","source_title":"Community Events","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The city identifies this as an annual September event but does not publish the 2026 date on the cited page; verify the community calendar before attending.","cost_status":"free","under21_safe":true},{"subject_id":"hard-holiday-lights-mcconaghy-house-2026","subject_type":"activity","entity_name":"H.A.R.D. Holiday Lights at McConaghy House","title":"Walk Through Holiday Lights","subtitle":"A free seasonal open house at historic McConaghy House","notes":"Meet at the historic house, walk through the light display, and join the included activities without planning a purchase.","short_summary":"Pair a winter lights walk with a free historic-house open house.","evidence_claim":"H.A.R.D. lists Holiday Lights as a free event with mansion lighting, activities, an open house, and hot chocolate.","source_url":"https://www.haywardrec.org/2058/Special-Events","source_title":"Special Events","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Wednesday, December 2, 2026, 5:30–7:30 p.m. at McConaghy House, 18701 Hesperian Boulevard, Hayward.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T06:44:50.190962Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9db-8910-7c03-8192-f72dfc8977d6.1786603342096876000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+44,069
+
+{"complete":true,"school_name":"California State University-East Bay","town_name":"Hayward","boards":[{"complete":true,"school_name":"California State University-East Bay","town_name":"Hayward","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"Ten verified, under-21-safe activities around CSU East Bay and Hayward that require no admission or purchase.","icon":"money_off","cards":[{"subject_id":"csueb-recital-hall-free-concerts","subject_type":"activity","entity_name":"CSU East Bay Recital Hall","title":"Catch a Recital Hall Concert","subtitle":"Free public performances inside CSU East Bay’s Music Building","notes":"Check the Music Events calendar, meet outside the north-side entrance, and enjoy a recital without buying a ticket.","short_summary":"Hear student, faculty, or guest musicians perform in an intimate campus hall.","evidence_claim":"CSU East Bay states that all events held in its Recital Hall are free and open to the public.","source_url":"https://www.csueastbay.edu/music/news-events/index.html","source_title":"Music Events","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use the department’s current calendar and confirm the event is in Recital Hall MB1055; University Theatre events follow different ticket rules.","cost_status":"free","under21_safe":true},{"subject_id":"csueb-preview-day-2026","subject_type":"activity","entity_name":"Preview Day 2026","title":"Explore Campus at Preview Day","subtitle":"Tours, showcases, lunch, and entertainment on the Hayward campus","notes":"Register when the form opens, bring prospective-student questions, and follow the event program through campus showcases.","short_summary":"Spend an afternoon sampling campus life with family or friends.","evidence_claim":"CSU East Bay’s October 24, 2026 Preview Day includes campus activities and free lunch, with free event parking.","source_url":"https://www.csueastbay.edu/preview-day/","source_title":"Preview Day 2026","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Saturday, October 24, 2026, 10 a.m.–1 p.m.; intended for prospective or admitted students and their families and friends. Registration is expected to open in early fall.","cost_status":"free","under21_safe":true},{"subject_id":"hayward-regional-shoreline-trails","subject_type":"activity","entity_name":"Hayward Regional Shoreline","title":"Walk the Shoreline Trails","subtitle":"Five miles of public gravel trails beside San Francisco Bay","notes":"Start at West Winton, stay on signed trails, and bring binoculars for a walk combining bay views and birdwatching.","short_summary":"Take a no-fee hike through marshes and former salt-pond landscapes.","evidence_claim":"The East Bay Regional Park District lists no parking fee and identifies hiking, bicycling, jogging, birdwatching, and picnicking as shoreline activities.","source_url":"https://www.ebparks.org/parks/hayward","source_title":"Hayward Regional Shoreline","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The park is generally open 5 a.m.–10 p.m.; gate hours are 7 a.m.–5 p.m. Stay out of signed restricted habitat, and note that dogs are prohibited south of the West Winton flood-control channel.","cost_status":"free","under21_safe":true},{"subject_id":"cannery-park-splash-pad","subject_type":"activity","entity_name":"Cannery Park Splash Pad","title":"Cool Off at the Splash Pad","subtitle":"A free seasonal water-play space at Cannery Park","notes":"Wear water-ready clothes, bring sun protection, and check the seasonal schedule before gathering at the splash pad.","short_summary":"Meet friends for an admission-free break beside Cannery Park’s water jets.","evidence_claim":"The Hayward Area Recreation and Park District lists admission to Cannery Park Splash Pad as free.","source_url":"https://www.haywardrec.org/Facilities/Facility/Details/Cannery-Park-Splash-Pad-111?mobile=ON","source_title":"Cannery Park Splash Pad","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Seasonal operation runs from Memorial Day through Labor Day, with days and hours varying across the summer; check the official page before leaving.","cost_status":"free","under21_safe":true},{"subject_id":"tennyson-park-outdoor-movie-2026","subject_type":"activity","entity_name":"Free Outdoor Movie Night at Tennyson Park","title":"Watch “Hoppers” Under the Stars","subtitle":"A free PG-rated movie night on Tennyson Park’s giant screen","notes":"Bring a blanket or low chair, keep flashlights pointed down, and settle in with friends before the film begins.","short_summary":"Turn a Friday night into a free outdoor movie picnic.","evidence_claim":"H.A.R.D. lists “Hoppers” at Tennyson Park as part of its Free Outdoor Movie Nights series.","source_url":"https://www.haywardrec.org/2058/Special-Events","source_title":"Special Events","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Friday, August 14, 2026, at 7 p.m. at Tennyson Park, 28377 Huntwood Avenue; bring your own blanket or low-back chair.","cost_status":"free","under21_safe":true},{"subject_id":"touch-a-truck-2026","subject_type":"activity","entity_name":"Touch-A-Truck 2026","title":"Climb Aboard Community Vehicles","subtitle":"A free hands-on vehicle showcase at San Lorenzo Community Park","notes":"Arrive early, explore the driver’s views with your group, and leave room for families moving between the vehicles.","short_summary":"See fire trucks, emergency vehicles, and utility equipment up close.","evidence_claim":"H.A.R.D. describes Touch-A-Truck as a free hands-on event featuring emergency, police, fire, and utility vehicles.","source_url":"https://www.haywardrec.org/2058/Special-Events","source_title":"Special Events","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Saturday, August 15, 2026, 9:30–11:30 a.m. at San Lorenzo Community Park, 1970 Via Buena Vista, San Lorenzo. The official page offers an optional place-saving link.","cost_status":"free","under21_safe":true},{"subject_id":"agricultural-day-meek-park-2026","subject_type":"activity","entity_name":"Agricultural Day 2026","title":"Try Agricultural Day Activities","subtitle":"Free hands-on learning with local agricultural groups at Meek Park","notes":"Gather classmates for demonstrations and hands-on stations, then explore the park between scheduled activities.","short_summary":"Connect farming history with present-day agricultural work through public activities.","evidence_claim":"H.A.R.D. identifies Agricultural Day at Meek Park as a free, family-friendly event with hands-on learning.","source_url":"https://www.haywardrec.org/2058/Special-Events","source_title":"Special Events","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Saturday, September 19, 2026, 10 a.m.–2 p.m. at Meek Park, 240 Hampton Road, Hayward.","cost_status":"free","under21_safe":true},{"subject_id":"music-at-mt-eden-mansion-2026","subject_type":"activity","entity_name":"Music at the Mansion: The JC Smith Band","title":"Lounge at Music at the Mansion","subtitle":"Free blues and soul on the Mt. Eden Mansion lawn","notes":"Reserve a free spot if requested, bring lawn-ready seating, and enjoy the concert without using the paid donor area.","short_summary":"Spend a Sunday afternoon listening to live blues and soul outdoors.","evidence_claim":"The event page states that admission to the September 13 Music at the Mansion concert is free and open to all.","source_url":"https://haywardrec.org/Calendar.aspx?EID=2676&calType=0&day=6&month=9&year=2026","source_title":"Music at the Mansion Feat. The JC Smith Band","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Sunday, September 13, 2026, 1–5 p.m. at Mt. Eden Mansion, 2451 W. Tennyson Road. General admission is free; avoid the optional $50 donor circle and optional food purchases.","cost_status":"free","under21_safe":true},{"subject_id":"hayward-airport-open-house","subject_type":"activity","entity_name":"Hayward Airport Open House","title":"Tour the Airport Open House","subtitle":"A free annual aviation event for visitors of all ages","notes":"Check the city calendar for the September date, arrive with aviation questions, and explore the public displays together.","short_summary":"Get a ground-level look at local aviation during Hayward’s annual open house.","evidence_claim":"The City of Hayward says its annual Airport Open House features all-ages entertainment with free admission and parking.","source_url":"https://www.hayward-ca.gov/community-events","source_title":"Community Events","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The city identifies this as an annual September event but does not publish the 2026 date on the cited page; verify the community calendar before attending.","cost_status":"free","under21_safe":true},{"subject_id":"hard-holiday-lights-mcconaghy-house-2026","subject_type":"activity","entity_name":"H.A.R.D. Holiday Lights at McConaghy House","title":"Walk Through Holiday Lights","subtitle":"A free seasonal open house at historic McConaghy House","notes":"Meet at the historic house, walk through the light display, and join the included activities without planning a purchase.","short_summary":"Pair a winter lights walk with a free historic-house open house.","evidence_claim":"H.A.R.D. lists Holiday Lights as a free event with mansion lighting, activities, an open house, and hot chocolate.","source_url":"https://www.haywardrec.org/2058/Special-Events","source_title":"Special Events","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Wednesday, December 2, 2026, 5:30–7:30 p.m. at McConaghy House, 18701 Hesperian Boulevard, Hayward.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}

@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.longbeach.gov/park/park-and-facilities/directory/whaley-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.longbeach.gov/park/park-and-facilities/directory/whaley-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.lazyacres.com/find-a-store",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lazyacres.com/find-a-store",
+      "error": ""
+    },
+    {
+      "url": "https://www.rancholosalamitos.org/faq.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rancholosalamitos.org/faq.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.wolfsbrewlb.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.wolfsbrewlb.com/",
+      "error": ""
+    },
+    {
+      "url": "https://littlecoyotelbc.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://littlecoyotelbc.com/",
+      "error": ""
+    },
+    {
+      "url": "https://longbeach.gov/park/park-and-facilities/parks-centers-pier/el-dorado-nature-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://longbeach.gov/park/park-and-facilities/parks-centers-pier/el-dorado-nature-center/",
+      "error": ""
+    },
+    {
+      "url": "https://2ndandpch.com/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://2ndandpch.com/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.longbeach.gov/Park/Park-and-Facilities/Directory/Recreation-Park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.longbeach.gov/Park/Park-and-Facilities/Directory/Recreation-Park/",
+      "error": ""
+    },
+    {
+      "url": "https://longbeach.gov/library/locations/losaltos/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://longbeach.gov/library/locations/losaltos/",
+      "error": ""
+    },
+    {
+      "url": "https://arttheatrelongbeach.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arttheatrelongbeach.org/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

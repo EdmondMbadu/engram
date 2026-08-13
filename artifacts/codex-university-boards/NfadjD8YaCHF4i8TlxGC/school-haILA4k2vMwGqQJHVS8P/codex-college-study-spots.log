@@ -1,0 +1,288 @@
+Reading additional input from stdin...
+2026-08-13T07:58:10.206505Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa20-8842-77b3-8c45-e88e3425ee44.1786607863875061000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:58:10.209742Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:58:10.212823Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa20-eea0-74e0-a2cb-fd023ee90220
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"haILA4k2vMwGqQJHVS8P","schoolName":"Lehigh University","shortSchoolName":"Lehigh University","townName":"Bethlehem","state":"PA","countryCode":"US","website":"https://www.lehigh.edu/","latitude":40.606822,"longitude":-75.380236},"templates":[{"id":"college-study-spots","version":"1.0","titlePattern":"Claimed by 9am: {count} Study Spots Worth Showing Up Early For","editorialBrief":"Choose ten distinct study environments. Verify access rules, room or reservation constraints, and the physical affordance that makes each useful. Treat “Claimed by 9am” as editorial framing; never assert crowding or student behavior without evidence.","researchQueries":["campus study spaces","library study rooms students","quiet study campus"],"count":10,"icon":"menu_book","primarySubjectType":"study_space","allowedSubjectTypes":["study_space","place"],"freshnessDays":180,"exactTitle":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For"}]}
+codex
+{
+  "complete": false,
+  "school_name": "Lehigh University",
+  "town_name": "Bethlehem",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Lehigh University",
+      "town_name": "Bethlehem",
+      "template_id": "college-study-spots",
+      "title": "Claimed by 9am: 10 Study Spots Worth Showing Up Early For",
+      "description": "",
+      "icon": "menu_book",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:library.lehigh.edu study spaces Fairchild Martindale Linderman Lehigh University ...
+web search: 
+web search: 
+web search: 
+web search: 
+web search: 
+web search: https://library.lehigh.edu/space/circle
+web search: 
+web search: site:library.lehigh.edu/space/circle Lehigh CIRCLE capacity features ...
+codex
+{"complete":true,"school_name":"Lehigh University","town_name":"Bethlehem","boards":[{"complete":true,"school_name":"Lehigh University","town_name":"Bethlehem","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten distinct Lehigh study settings, from silent individual carrels and historic reading rooms to reservable group rooms and an outdoor wireless plaza.","icon":"menu_book","cards":[{"subject_id":"lehigh-linderman-rotunda","subject_type":"study_space","entity_name":"Linderman Library Rotunda","title":"Read Beneath the Stained-Glass Skylight","subtitle":"Low-volume study seating in Linderman Library","notes":"Choose a seat with a rotunda view for reading or research; fixed and movable tables support both short sessions and longer projects.","short_summary":"Historic library seating pairs a low-volume setting with views of Linderman’s stained-glass rotunda.","evidence_claim":"Lehigh Libraries identifies the Rotunda as a low-volume study and small-group space with fixed and movable tables and plentiful seating overlooking its stained-glass skylight.","source_url":"https://library.lehigh.edu/space/rotunda","source_title":"Rotunda | Lehigh University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located inside Linderman Library; reservable by request and otherwise subject to current library hours and access rules.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lehigh-fml-549-group-study-rooms","subject_type":"study_space","entity_name":"Fairchild-Martindale Library Rooms 549A, 549B, and 549C","title":"Put the Whiteboard at the Center","subtitle":"Reservable glass-walled rooms for groups of up to eight","notes":"Reserve ahead for collaborative work, then use the whiteboard and extra outlets to keep an eight-person session organized and powered.","short_summary":"Three light-filled rooms combine group seating, whiteboards, glass walls, and additional electrical outlets.","evidence_claim":"Lehigh Libraries describes Rooms 549A, 549B, and 549C as reservable group-study spaces with seating for eight, whiteboards, and additional power outlets.","source_url":"https://library.lehigh.edu/space/group-study-rooms-rooms-549a-549b-549c","source_title":"Group Study Rooms: Rooms 549A, 549B, 549C | Lehigh University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Reservation is required through the library’s space system; rooms are available during regular Fairchild-Martindale Library hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lehigh-fml-620-634-huddle-rooms","subject_type":"study_space","entity_name":"Fairchild-Martindale Library Huddle Rooms 620–634","title":"Close the Door on Group Distractions","subtitle":"Eight glass-enclosed huddle rooms with nearby whiteboards","notes":"Select one of the eight sunlit rooms for a small team, and bring markers if you plan to use the movable whiteboards stationed nearby.","short_summary":"Colorful enclosed rooms give small groups a defined workspace with flexible furniture and whiteboard access.","evidence_claim":"Lehigh Libraries lists eight private, glass-enclosed Huddle Rooms in Rooms 620–634, with tables, seating for four to six, and movable whiteboards nearby.","source_url":"https://library.lehigh.edu/space/huddle-rooms-rooms-620-634","source_title":"Huddle Rooms: Rooms 620-634 | Lehigh University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official listing marks the rooms reservable but also notes first-come availability; check the current booking system before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lehigh-linderman-group-study-rooms","subject_type":"study_space","entity_name":"Linderman Library Group Study Rooms","title":"Connect the Laptop and Work Together","subtitle":"Four first-come rooms overlooking the rotunda","notes":"Arrive during library hours with an appropriate display adapter, then use the wall monitor to review shared drafts or presentation slides.","short_summary":"Four enclosed rooms offer small-group seating, a wall display, and elevated views into Linderman’s rotunda.","evidence_claim":"Lehigh Libraries documents four glass-enclosed Linderman group-study rooms with seating for four to six, fixed tables, and large wall monitors; they are first-come, first-served.","source_url":"https://library.lehigh.edu/space/group-study-rooms","source_title":"Group Study Rooms | Lehigh University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"No reservation is offered; rooms are first-come, first-served during regular Linderman Library hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lehigh-linderman-grand-reading-room","subject_type":"study_space","entity_name":"Linderman Library Grand Reading Room","title":"Settle Into the Grand Reading Room","subtitle":"Low-volume open study near desks, computers, and a fireplace","notes":"Pick a study desk for focused work or use a west-side computer; the room also offers seating near the fireplace and Packer Church views.","short_summary":"A spacious historic room supports quiet reading, computer work, and desk-based study in several seating zones.","evidence_claim":"Lehigh Libraries names the Grand Reading Room among Linderman’s low-volume open spaces and documents study desks, fireplace seating, PCs, Macs, and a printer.","source_url":"https://library.lehigh.edu/node/2643","source_title":"Open Spaces | Lehigh University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This non-reservable space is inside Linderman Library and follows the building’s current hours and entrance requirements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lehigh-fml-north-study-carrels","subject_type":"study_space","entity_name":"Fairchild-Martindale Library North-Side Study Carrels","title":"Take a Carrel for Silent Work","subtitle":"More than 50 individual stations on floors five through seven","notes":"Head to the north side of floors five, six, or seven for a carrel with its own light, shelf, and outlet in the silent-study zone.","short_summary":"Individual carrels combine dedicated lighting, storage, and power within FML’s designated quiet side.","evidence_claim":"Lehigh Libraries documents more than 50 individual carrels on the north side of floors 5, 6, and 7, each with lighting, shelving, and an outlet in a quiet-study area.","source_url":"https://library.lehigh.edu/space/study-carrels-floors-5-6-7-north","source_title":"Study Carrels: Floors 5, 6, 7 North | Lehigh University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Carrels are non-reservable and available during Fairchild-Martindale Library hours; use the north side designated for quiet study.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lehigh-fml-south-open-spaces","subject_type":"study_space","entity_name":"Fairchild-Martindale Library South-Side Open Spaces","title":"Build a Conversation-Friendly Work Zone","subtitle":"Flexible seating and mobile whiteboards on FML’s social side","notes":"Use the south side when discussion is part of the assignment; movable tables, soft seating, and nearby whiteboards support active teamwork.","short_summary":"FML’s conversation-friendly side offers varied seating and flexible surfaces for collaborative study.","evidence_claim":"Lehigh Libraries designates FML’s south side for conversation-friendly activity and lists movable tables and chairs, soft seating, group beehives, and mobile whiteboards.","source_url":"https://library.lehigh.edu/space/open-spaces","source_title":"Open Spaces | Lehigh University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The open seating is not reservable and follows Fairchild-Martindale Library hours; select the north side instead when quiet is required.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lehigh-lts-circle","subject_type":"study_space","entity_name":"LTS CIRCLE","title":"Study Among Curated Books and Art","subtitle":"A flexible community-centered space inside FML","notes":"Use the flexible furnishings for reading or discussion, but check for scheduled programs because the room can be reserved for eligible events.","short_summary":"The CIRCLE blends study seating, curated materials, art, and digital displays in a flexible library environment.","evidence_claim":"Lehigh states that the LTS CIRCLE is an FML space where students, faculty, and staff can study or relax among curated books, periodicals, movies, art, and display panels.","source_url":"https://library.lehigh.edu/news/lehigh-celebrates-grand-opening-lts-circle-fml","source_title":"Lehigh celebrates grand opening of the LTS CIRCLE at FML | Lehigh University Libraries","source_kind":"university_official","source_published_at":"2023-02-20","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located in FML’s southeast corner beside The Grind; open study use may yield to reserved programs and follows current library access rules.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lehigh-butz-plaza","subject_type":"place","entity_name":"Butz Plaza","title":"Take the Work Session Outdoors","subtitle":"A wireless courtyard with seating for 50","notes":"Bring a charged device and choose a plaza table for outdoor reading or group planning; move inside if weather interrupts the session.","short_summary":"This named lower-campus courtyard provides wireless connectivity and fixed outdoor seating between major campus destinations.","evidence_claim":"Lehigh Libraries describes Butz Plaza as an outdoor public space between the Computing Center and Fairchild-Martindale Library with wireless access, tables, and seating for 50.","source_url":"https://library.lehigh.edu/space/butz-plaza","source_title":"Butz Plaza | Lehigh University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor seating is weather-dependent; formal reservation requests are handled through Campus Facility Reservations.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lehigh-bayer-galleria-room-342","subject_type":"study_space","entity_name":"Bayer Galleria of Rare Books, Room 342","title":"Turn an Archive Visit Into Focused Research","subtitle":"Linderman’s Special Collections research setting","notes":"Contact Special Collections before working with rare or archival material, and arrive with a defined research question and handling guidance in mind.","short_summary":"Room 342 provides a documented destination for appointment-based work with Lehigh’s rare books and archives.","evidence_claim":"Lehigh Libraries locates Special Collections in Linderman Library’s third-floor Bayer Galleria, Room 342, and offers research access to archival material and more than 40,000 rare books.","source_url":"https://library.lehigh.edu/find/special-collections","source_title":"Special Collections | Lehigh University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Special Collections is open by appointment Monday–Friday, 8 a.m.–5 p.m., with walk-in consultations available; confirm arrangements before research use.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:59:59.227430Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa20-eea0-74e0-a2cb-fd023ee90220.1786607890081371000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+33,588
+
+{"complete":true,"school_name":"Lehigh University","town_name":"Bethlehem","boards":[{"complete":true,"school_name":"Lehigh University","town_name":"Bethlehem","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten distinct Lehigh study settings, from silent individual carrels and historic reading rooms to reservable group rooms and an outdoor wireless plaza.","icon":"menu_book","cards":[{"subject_id":"lehigh-linderman-rotunda","subject_type":"study_space","entity_name":"Linderman Library Rotunda","title":"Read Beneath the Stained-Glass Skylight","subtitle":"Low-volume study seating in Linderman Library","notes":"Choose a seat with a rotunda view for reading or research; fixed and movable tables support both short sessions and longer projects.","short_summary":"Historic library seating pairs a low-volume setting with views of Linderman’s stained-glass rotunda.","evidence_claim":"Lehigh Libraries identifies the Rotunda as a low-volume study and small-group space with fixed and movable tables and plentiful seating overlooking its stained-glass skylight.","source_url":"https://library.lehigh.edu/space/rotunda","source_title":"Rotunda | Lehigh University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located inside Linderman Library; reservable by request and otherwise subject to current library hours and access rules.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lehigh-fml-549-group-study-rooms","subject_type":"study_space","entity_name":"Fairchild-Martindale Library Rooms 549A, 549B, and 549C","title":"Put the Whiteboard at the Center","subtitle":"Reservable glass-walled rooms for groups of up to eight","notes":"Reserve ahead for collaborative work, then use the whiteboard and extra outlets to keep an eight-person session organized and powered.","short_summary":"Three light-filled rooms combine group seating, whiteboards, glass walls, and additional electrical outlets.","evidence_claim":"Lehigh Libraries describes Rooms 549A, 549B, and 549C as reservable group-study spaces with seating for eight, whiteboards, and additional power outlets.","source_url":"https://library.lehigh.edu/space/group-study-rooms-rooms-549a-549b-549c","source_title":"Group Study Rooms: Rooms 549A, 549B, 549C | Lehigh University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Reservation is required through the library’s space system; rooms are available during regular Fairchild-Martindale Library hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lehigh-fml-620-634-huddle-rooms","subject_type":"study_space","entity_name":"Fairchild-Martindale Library Huddle Rooms 620–634","title":"Close the Door on Group Distractions","subtitle":"Eight glass-enclosed huddle rooms with nearby whiteboards","notes":"Select one of the eight sunlit rooms for a small team, and bring markers if you plan to use the movable whiteboards stationed nearby.","short_summary":"Colorful enclosed rooms give small groups a defined workspace with flexible furniture and whiteboard access.","evidence_claim":"Lehigh Libraries lists eight private, glass-enclosed Huddle Rooms in Rooms 620–634, with tables, seating for four to six, and movable whiteboards nearby.","source_url":"https://library.lehigh.edu/space/huddle-rooms-rooms-620-634","source_title":"Huddle Rooms: Rooms 620-634 | Lehigh University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official listing marks the rooms reservable but also notes first-come availability; check the current booking system before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lehigh-linderman-group-study-rooms","subject_type":"study_space","entity_name":"Linderman Library Group Study Rooms","title":"Connect the Laptop and Work Together","subtitle":"Four first-come rooms overlooking the rotunda","notes":"Arrive during library hours with an appropriate display adapter, then use the wall monitor to review shared drafts or presentation slides.","short_summary":"Four enclosed rooms offer small-group seating, a wall display, and elevated views into Linderman’s rotunda.","evidence_claim":"Lehigh Libraries documents four glass-enclosed Linderman group-study rooms with seating for four to six, fixed tables, and large wall monitors; they are first-come, first-served.","source_url":"https://library.lehigh.edu/space/group-study-rooms","source_title":"Group Study Rooms | Lehigh University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"No reservation is offered; rooms are first-come, first-served during regular Linderman Library hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lehigh-linderman-grand-reading-room","subject_type":"study_space","entity_name":"Linderman Library Grand Reading Room","title":"Settle Into the Grand Reading Room","subtitle":"Low-volume open study near desks, computers, and a fireplace","notes":"Pick a study desk for focused work or use a west-side computer; the room also offers seating near the fireplace and Packer Church views.","short_summary":"A spacious historic room supports quiet reading, computer work, and desk-based study in several seating zones.","evidence_claim":"Lehigh Libraries names the Grand Reading Room among Linderman’s low-volume open spaces and documents study desks, fireplace seating, PCs, Macs, and a printer.","source_url":"https://library.lehigh.edu/node/2643","source_title":"Open Spaces | Lehigh University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This non-reservable space is inside Linderman Library and follows the building’s current hours and entrance requirements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lehigh-fml-north-study-carrels","subject_type":"study_space","entity_name":"Fairchild-Martindale Library North-Side Study Carrels","title":"Take a Carrel for Silent Work","subtitle":"More than 50 individual stations on floors five through seven","notes":"Head to the north side of floors five, six, or seven for a carrel with its own light, shelf, and outlet in the silent-study zone.","short_summary":"Individual carrels combine dedicated lighting, storage, and power within FML’s designated quiet side.","evidence_claim":"Lehigh Libraries documents more than 50 individual carrels on the north side of floors 5, 6, and 7, each with lighting, shelving, and an outlet in a quiet-study area.","source_url":"https://library.lehigh.edu/space/study-carrels-floors-5-6-7-north","source_title":"Study Carrels: Floors 5, 6, 7 North | Lehigh University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Carrels are non-reservable and available during Fairchild-Martindale Library hours; use the north side designated for quiet study.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lehigh-fml-south-open-spaces","subject_type":"study_space","entity_name":"Fairchild-Martindale Library South-Side Open Spaces","title":"Build a Conversation-Friendly Work Zone","subtitle":"Flexible seating and mobile whiteboards on FML’s social side","notes":"Use the south side when discussion is part of the assignment; movable tables, soft seating, and nearby whiteboards support active teamwork.","short_summary":"FML’s conversation-friendly side offers varied seating and flexible surfaces for collaborative study.","evidence_claim":"Lehigh Libraries designates FML’s south side for conversation-friendly activity and lists movable tables and chairs, soft seating, group beehives, and mobile whiteboards.","source_url":"https://library.lehigh.edu/space/open-spaces","source_title":"Open Spaces | Lehigh University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The open seating is not reservable and follows Fairchild-Martindale Library hours; select the north side instead when quiet is required.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lehigh-lts-circle","subject_type":"study_space","entity_name":"LTS CIRCLE","title":"Study Among Curated Books and Art","subtitle":"A flexible community-centered space inside FML","notes":"Use the flexible furnishings for reading or discussion, but check for scheduled programs because the room can be reserved for eligible events.","short_summary":"The CIRCLE blends study seating, curated materials, art, and digital displays in a flexible library environment.","evidence_claim":"Lehigh states that the LTS CIRCLE is an FML space where students, faculty, and staff can study or relax among curated books, periodicals, movies, art, and display panels.","source_url":"https://library.lehigh.edu/news/lehigh-celebrates-grand-opening-lts-circle-fml","source_title":"Lehigh celebrates grand opening of the LTS CIRCLE at FML | Lehigh University Libraries","source_kind":"university_official","source_published_at":"2023-02-20","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located in FML’s southeast corner beside The Grind; open study use may yield to reserved programs and follows current library access rules.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lehigh-butz-plaza","subject_type":"place","entity_name":"Butz Plaza","title":"Take the Work Session Outdoors","subtitle":"A wireless courtyard with seating for 50","notes":"Bring a charged device and choose a plaza table for outdoor reading or group planning; move inside if weather interrupts the session.","short_summary":"This named lower-campus courtyard provides wireless connectivity and fixed outdoor seating between major campus destinations.","evidence_claim":"Lehigh Libraries describes Butz Plaza as an outdoor public space between the Computing Center and Fairchild-Martindale Library with wireless access, tables, and seating for 50.","source_url":"https://library.lehigh.edu/space/butz-plaza","source_title":"Butz Plaza | Lehigh University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor seating is weather-dependent; formal reservation requests are handled through Campus Facility Reservations.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lehigh-bayer-galleria-room-342","subject_type":"study_space","entity_name":"Bayer Galleria of Rare Books, Room 342","title":"Turn an Archive Visit Into Focused Research","subtitle":"Linderman’s Special Collections research setting","notes":"Contact Special Collections before working with rare or archival material, and arrive with a defined research question and handling guidance in mind.","short_summary":"Room 342 provides a documented destination for appointment-based work with Lehigh’s rare books and archives.","evidence_claim":"Lehigh Libraries locates Special Collections in Linderman Library’s third-floor Bayer Galleria, Room 342, and offers research access to archival material and more than 40,000 rare books.","source_url":"https://library.lehigh.edu/find/special-collections","source_title":"Special Collections | Lehigh University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Special Collections is open by appointment Monday–Friday, 8 a.m.–5 p.m., with walk-in consultations available; confirm arrangements before research use.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

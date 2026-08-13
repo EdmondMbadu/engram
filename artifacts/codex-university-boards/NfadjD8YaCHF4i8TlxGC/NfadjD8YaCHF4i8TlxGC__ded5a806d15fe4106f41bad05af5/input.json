@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "dW1T5y0cELueSv3Ph5Zz",
+    "schoolName": "University of Maryland-College Park",
+    "shortSchoolName": "University of Maryland-College Park",
+    "townName": "College Park",
+    "state": "MD",
+    "countryCode": "US",
+    "unitId": "163286",
+    "website": "https://www.umd.edu/",
+    "latitude": 38.988178,
+    "longitude": -76.944721,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/3/3e/University_of_Maryland_seal.svg/250px-University_of_Maryland_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=umd.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "College Park Diner",
+    "Dog Haus Biergarten College Park",
+    "Raising Cane's Baltimore Ave",
+    "Shake Shack College Park",
+    "Taco Bell Baltimore Avenue",
+    "Marathon Deli",
+    "MidnighTreats College Park",
+    "The Board and Brew",
+    "Maman Joon College Park",
+    "Yahentamitsi Dining Hall"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://nau.edu/flagstaff-campus/cline-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://nau.edu/flagstaff-campus/cline-library/",
+      "error": ""
+    },
+    {
+      "url": "https://nau.edu/flagstaff-campus/cline-library/learning-study-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://nau.edu/flagstaff-campus/cline-library/learning-study-spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://in.nau.edu/unions-and-student-activities/university-union/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://in.nau.edu/unions-and-student-activities/university-union/",
+      "error": ""
+    },
+    {
+      "url": "https://nau.edu/flagstaff-campus/campus-learning-study-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://nau.edu/flagstaff-campus/campus-learning-study-spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://nau.edu/stories/nau-native-american-cultural-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://in.nau.edu/stories/nau-native-american-cultural-center/",
+      "error": ""
+    },
+    {
+      "url": "https://nau.edu/flagstaff-campus/campus-recreation/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://nau.edu/flagstaff-campus/campus-recreation/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

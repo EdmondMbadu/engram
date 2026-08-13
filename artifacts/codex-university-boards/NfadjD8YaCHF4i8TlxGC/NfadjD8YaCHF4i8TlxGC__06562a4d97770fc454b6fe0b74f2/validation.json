@@ -1,0 +1,80 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://arboretum.kzoo.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arboretum.kzoo.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://kalamazoomuseum.org/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://kalamazoomuseum.org/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.kiarts.org/connect-visit/plan-your-visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.kiarts.org/connect-visit/plan-your-visit/",
+      "error": ""
+    },
+    {
+      "url": "https://glassartkalamazoo.org/faq/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://glassartkalamazoo.org/faq/",
+      "error": ""
+    },
+    {
+      "url": "https://www.kpl.gov/event/356339/2026-07-23/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.kpl.gov/event/356339/2026-07-23/",
+      "error": ""
+    },
+    {
+      "url": "https://www.kzooparks.org/News-articles/Kzoo-Parks-Summer-Cinema-Event-Series-Starts-Friday-June-26",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.kzooparks.org/News-articles/Kzoo-Parks-Summer-Cinema-Event-Series-Starts-Friday-June-26",
+      "error": ""
+    },
+    {
+      "url": "https://www.kzooparks.org/Events/Kzoo-Parks-Events/Lunchtime-Live-presented-by-Lake-Michigan-Credit-Union",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.kzooparks.org/Events/Kzoo-Parks-Events/Lunchtime-Live-presented-by-Lake-Michigan-Credit-Union",
+      "error": ""
+    },
+    {
+      "url": "https://www.kzooparks.org/Events",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.kzooparks.org/Events",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Lillian Anderson Arboretum",
+    "Kalamazoo Valley Museum"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

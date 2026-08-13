@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.lapl.org/branches/westchester-loyola-village",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lapl.org/branches/westchester-loyola-village",
+      "error": ""
+    },
+    {
+      "url": "https://thebookjewel.com/event/2025-08-09/second-saturday-stroll-lps",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thebookjewel.com/event/2025-08-09/second-saturday-stroll-lps",
+      "error": ""
+    },
+    {
+      "url": "https://www.ymcala.org/locations/westchester-family-ymca/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ymcala.org/locations/westchester-family-ymca/",
+      "error": ""
+    },
+    {
+      "url": "https://truxtonsamericanbistro.com/locations/westchester/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://truxtonsamericanbistro.com/locations/westchester/",
+      "error": ""
+    },
+    {
+      "url": "https://admissions.otis.edu/portal/campus-tours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://admissions.otis.edu/portal/campus-tours",
+      "error": ""
+    },
+    {
+      "url": "https://www.lapl.org/branches/playa-vista",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lapl.org/branches/playa-vista",
+      "error": ""
+    },
+    {
+      "url": "https://ballonadiscoverypark.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ballonadiscoverypark.org/",
+      "error": ""
+    },
+    {
+      "url": "https://www.cinemark.com/theatres/ca-playa-vista/cinemark-playa-vista-and-xd",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.cinemark.com/theatres/ca-playa-vista/cinemark-playa-vista-and-xd",
+      "error": ""
+    },
+    {
+      "url": "https://www.wholefoodsmarket.com/stores/playavista",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.wholefoodsmarket.com/stores/playavista",
+      "error": ""
+    },
+    {
+      "url": "https://playavista.com/plan-a-visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://playavista.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

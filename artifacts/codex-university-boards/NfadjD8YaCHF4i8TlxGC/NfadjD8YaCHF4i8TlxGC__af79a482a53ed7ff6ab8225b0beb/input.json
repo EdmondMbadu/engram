@@ -1,0 +1,68 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "903vg39PGvgsfcB38gJ6",
+    "schoolName": "Kettering College",
+    "shortSchoolName": "Kettering College",
+    "townName": "Kettering",
+    "state": "OH",
+    "countryCode": "US",
+    "unitId": "203544",
+    "website": "https://kc.edu/",
+    "latitude": 39.695052,
+    "longitude": -84.192006,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=kc.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=kc.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "Kettering College Student Life",
+    "Kettering College Library",
+    "Collective",
+    "Dorothy Lane Market Oakwood",
+    "Kettering Adventist Church",
+    "Hills & Dales MetroPark",
+    "Rosewood Arts Center",
+    "Lincoln Park Civic Commons",
+    "Wilmington-Stroop Branch",
+    "National Museum of the United States Air Force",
+    "McDonald's — 2901 Wilmington Pike",
+    "Taco Bell — 2101 East Dorothy Lane",
+    "Wendy's — 4003 Wilmington Pike",
+    "Domino's — 5293 Cornerstone North Boulevard",
+    "Raising Cane's — 4384 Indian Ripple Road",
+    "Raising Cane's — 2755 Fairfield Commons",
+    "Steak 'n Shake — 6380 Wilmington Pike",
+    "IHOP — 6930 Miller Lane",
+    "Waffle House #394 — 7800 Brandt Pike",
+    "McDonald's — 8240 Springboro Pike",
+    "Learning Commons Group Study Rooms",
+    "Boonshoft Student Lounge",
+    "Kettering-Moraine Branch",
+    "Southeast Branch",
+    "Miami Township Branch",
+    "West Carrollton Branch",
+    "Dayton Metro Library Main Library",
+    "Burkhardt Branch"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

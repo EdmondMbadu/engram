@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://nelson-atkins.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://nelson-atkins.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://gala.kemperart.org/know-before-you-go",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gala.kemperart.org/know-before-you-go",
+      "error": ""
+    },
+    {
+      "url": "https://kcai.edu/about/news/KCAI-Artspace-Unveils-Bold-New-Era-with-Renaming-to-The-Emily-and-Todd-Voth-Artspace/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://kcai.edu/about/news/KCAI-Artspace-Unveils-Bold-New-Era-with-Renaming-to-The-Emily-and-Todd-Voth-Artspace/",
+      "error": ""
+    },
+    {
+      "url": "https://community4kc.org/visit/frank-lloyd-wright",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://community4kc.org/visit/frank-lloyd-wright",
+      "error": ""
+    },
+    {
+      "url": "https://kclibrary.org/locations/plaza",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://kclibrary.org/locations/plaza",
+      "error": ""
+    },
+    {
+      "url": "https://www.kauffman.org/our-campus/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.kauffman.org/our-campus/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lindahall.org/research/using-the-library/reference-services/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lindahall.org/research/using-the-library/reference-services/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lindahall.org/visit-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lindahall.org/visit-us/",
+      "error": ""
+    },
+    {
+      "url": "https://toyandminiaturemuseum.org/plan-your-visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://toyandminiaturemuseum.org/plan-your-visit/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

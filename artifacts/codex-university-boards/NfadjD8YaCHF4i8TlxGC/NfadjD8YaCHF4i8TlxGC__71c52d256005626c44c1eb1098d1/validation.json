@@ -1,0 +1,86 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "The Midnight Walk is explicitly labeled historical because the direct source documents its 2013 orientation use rather than a current offering.",
+    "The President’s Colloquium source documents the annual tradition but predates the template freshness window; current scheduling should be confirmed."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.oakland.edu/oumagazine/campus-highlights/2022/Fall/then-and-now-the-ouaas-50-year-journey/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oakland.edu/oumagazine/campus-highlights/2022/Fall/then-and-now-the-ouaas-50-year-journey/",
+      "error": ""
+    },
+    {
+      "url": "https://www.oakland.edu/osi/student-organizations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oakland.edu/osi/student-organizations/",
+      "error": ""
+    },
+    {
+      "url": "https://ucmapps.oakland.edu/NewsArchive/Data/20130709-OU-legends-abound-at-Midnight-Walk-to-Meadow-Brook-Hall.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ucmapps.oakland.edu/NewsArchive/Data/20130709-OU-legends-abound-at-Midnight-Walk-to-Meadow-Brook-Hall.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.oakland.edu/advancing-oakland/2025/meet-me-at-the-tower/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oakland.edu/advancing-oakland/2025/meet-me-at-the-tower/",
+      "error": ""
+    },
+    {
+      "url": "https://oakland.edu/newsletters/ways-to-engage/2025/new-student-welcome",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://oakland.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://oakland.edu/news/smtd/2025/oakland-university-hosts-11th-annual-24-hour-film-challenge/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://oakland.edu/news/smtd/2025/oakland-university-hosts-11th-annual-24-hour-film-challenge/",
+      "error": ""
+    },
+    {
+      "url": "https://oakland.edu/news/cmi/2025/oakland-university-celebrates-national-hispanic-heritage-month/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://oakland.edu/news/cmi/2025/oakland-university-celebrates-national-hispanic-heritage-month/",
+      "error": ""
+    },
+    {
+      "url": "https://www.oakland.edu/about/ou-medallion-mace-seal/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oakland.edu/about/ou-medallion-mace-seal/",
+      "error": ""
+    },
+    {
+      "url": "https://oakland.edu/media/Oakland/Assets/President/files/communications/remarks/2019/Nov/November-5---President_s-Colloquium---Remarks.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://oakland.edu/media/Oakland/Assets/President/files/communications/remarks/2019/Nov/November-5---President_s-Colloquium---Remarks.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.ndsu.edu/about/campus/history-traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ndsu.edu/about/campus/history-traditions",
+      "error": ""
+    },
+    {
+      "url": "https://www.ndsu.edu/story/top-things-do-you-graduate-ndsu",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ndsu.edu/story/top-things-do-you-graduate-ndsu",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 2,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

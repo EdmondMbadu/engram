@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.ohio.edu/admissions/visit/plan-your-visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ohio.edu/admissions/visit/plan-your-visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.ohio.edu/ucm/calendar",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ohio.edu/ucm/calendar",
+      "error": ""
+    },
+    {
+      "url": "https://www.ohio.edu/library/services/borrowing",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ohio.edu/library/services/borrowing",
+      "error": ""
+    },
+    {
+      "url": "https://www.ohio.edu/recreation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ohio.edu/recreation",
+      "error": ""
+    },
+    {
+      "url": "https://www.athensfarmersmarket.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.athensfarmersmarket.org/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ohio.edu/transportation-parking/transit-services/cats-campus-transit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ohio.edu/transportation-parking/transit-services/cats-campus-transit",
+      "error": ""
+    },
+    {
+      "url": "https://www.ohio.edu/ridges/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ohio.edu/ridges/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.ohio.edu/cas/physics-astronomy/research/facilities-labs/observatory/public-telescope-nights",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ohio.edu/cas/physics-astronomy/research/facilities-labs/observatory/public-telescope-nights",
+      "error": ""
+    },
+    {
+      "url": "https://www.ohio.edu/engagement",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ohio.edu/engagement",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

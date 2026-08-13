@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.allendalelibrary.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.allendalelibrary.org/",
+      "error": ""
+    },
+    {
+      "url": "https://allendalemi.gov/community-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://allendalemi.gov/community-park/",
+      "error": ""
+    },
+    {
+      "url": "https://www.eatmancinos.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.eatmancinos.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.peppinospizza.com/allendale/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.peppinospizza.com/allendale/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jimmyjohns.com/mi/allendale/delivery-0677.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jimmyjohns.com/mi/allendale/delivery-0677.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.culvers.com/restaurants/allendale-mi-lake-michigan-dr",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.culvers.com/restaurants/allendale-mi-lake-michigan-dr",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/michigan/allendale/5164-lake-michigan-dr-suite-a",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/michigan/allendale/5164-lake-michigan-dr-suite-a",
+      "error": ""
+    },
+    {
+      "url": "https://business.allendalechamber.org/list/member/biggby-coffee-of-allendale-112",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://business.allendalechamber.org/list/member/biggby-coffee-of-allendale-112",
+      "error": ""
+    },
+    {
+      "url": "https://www.dairyqueen.com/en-us/locations/mi/allendale/5053-lake-michigan-dr-ste-a/41942/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.dairyqueen.com/en-us/locations/mi/allendale/5053-lake-michigan-dr-ste-a/41942/",
+      "error": ""
+    },
+    {
+      "url": "https://www.shopfamilyfare.com/stores/family-fare-allendale",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.shopfamilyfare.com/stores/family-fare-allendale",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

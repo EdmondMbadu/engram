@@ -1,0 +1,72 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.pitzer.edu/murals",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pitzer.edu/murals",
+      "error": ""
+    },
+    {
+      "url": "https://www.pitzer.edu/get-involved-sustainability",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pitzer.edu/get-involved-sustainability",
+      "error": ""
+    },
+    {
+      "url": "https://www.pitzer.edu/documents/claremont-colleges-walking-tour-brochure",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pitzer.edu/documents/claremont-colleges-walking-tour-brochure",
+      "error": ""
+    },
+    {
+      "url": "https://clmoa.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://clmoa.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.claremontlibrary.org/monthly-poetry-readings.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.claremontlibrary.org/monthly-poetry-readings.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.claremontlibrary.org/on-the-same-page.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.claremontlibrary.org/on-the-same-page.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.pitzer.edu/documents/pitzer-walking-tour",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pitzer.edu/admission-aid/digital-publications",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Pitzer Free Wall",
+    "Claremont Lewis Museum of Art"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

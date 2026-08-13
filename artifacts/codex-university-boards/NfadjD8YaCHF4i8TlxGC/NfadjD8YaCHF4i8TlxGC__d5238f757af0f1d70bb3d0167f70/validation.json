@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://stockton.edu/wgsc/wgsclounge.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stockton.edu/wgsc/wgsclounge.html",
+      "error": ""
+    },
+    {
+      "url": "https://stockton.edu/forest-management/northeast-forests.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stockton.edu/forest-management/northeast-forests.html",
+      "error": ""
+    },
+    {
+      "url": "https://stockton.edu/art-gallery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stockton.edu/art-gallery/",
+      "error": ""
+    },
+    {
+      "url": "https://www.stockton.edu/event-services/galloway-venues.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stockton.edu/event-services/galloway-venues.html",
+      "error": ""
+    },
+    {
+      "url": "https://stockton.edu/campus-services/documents/GallowayVendingMap3.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stockton.edu/campus-services/documents/GallowayVendingMap3.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

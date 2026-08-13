@@ -1,0 +1,39 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.csus.edu/college/arts-letters/art/art-special-events.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csus.edu/college/arts-letters/art/art-special-events.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.csus.edu/student-affairs/campus-life/spotlight/hornet-welcome-bbq.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csus.edu/student-affairs/campus-life/spotlight/hornet-welcome-bbq.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.csus.edu/student-affairs/spotlights/lantern-festival-popo-up-market.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csus.edu/student-affairs/spotlights/lantern-festival-popo-up-market.html",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "University Union Gallery"
+  ],
+  "sourceCount": 3,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

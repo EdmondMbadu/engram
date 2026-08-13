@@ -1,0 +1,93 @@
+{
+  "ok": false,
+  "problems": [
+    "Card entities are not unique."
+  ],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.lib.ncsu.edu/spaces/quiet-reading-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ncsu.edu/spaces/quiet-reading-room",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ncsu.edu/spaces/skyline-reading-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ncsu.edu/spaces/skyline-reading-room",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ncsu.edu/spaces/oval-view-reading-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ncsu.edu/spaces/oval-view-reading-room",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ncsu.edu/spaces/lake-raleigh-learning-commons",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ncsu.edu/spaces/lake-raleigh-learning-commons",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ncsu.edu/spaces/idea-alcove",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ncsu.edu/spaces/idea-alcove",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ncsu.edu/spaces/hunt-study-3315",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ncsu.edu/spaces/hunt-study-3315",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ncsu.edu/spaces/quiet-reading-room-dhhill",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ncsu.edu/spaces/quiet-reading-room-dhhill",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ncsu.edu/spaces/ground-floor-reading-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ncsu.edu/spaces/ground-floor-reading-room",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ncsu.edu/spaces/north-forum",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ncsu.edu/spaces/north-forum",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ncsu.edu/spaces/study-lounge-2301",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ncsu.edu/spaces/study-lounge-2301",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": null,
+  "generationGrade": null
+}

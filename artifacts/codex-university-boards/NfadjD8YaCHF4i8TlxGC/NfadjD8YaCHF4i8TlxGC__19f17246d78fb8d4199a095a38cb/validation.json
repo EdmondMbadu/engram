@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://library.lehigh.edu/space/rotunda",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.lehigh.edu/space/rotunda",
+      "error": ""
+    },
+    {
+      "url": "https://library.lehigh.edu/space/group-study-rooms-rooms-549a-549b-549c",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.lehigh.edu/space/group-study-rooms-rooms-549a-549b-549c",
+      "error": ""
+    },
+    {
+      "url": "https://library.lehigh.edu/space/huddle-rooms-rooms-620-634",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.lehigh.edu/space/huddle-rooms-rooms-620-634",
+      "error": ""
+    },
+    {
+      "url": "https://library.lehigh.edu/space/group-study-rooms",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.lehigh.edu/space/group-study-rooms",
+      "error": ""
+    },
+    {
+      "url": "https://library.lehigh.edu/node/2643",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.lehigh.edu/node/2643",
+      "error": ""
+    },
+    {
+      "url": "https://library.lehigh.edu/space/study-carrels-floors-5-6-7-north",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.lehigh.edu/space/study-carrels-floors-5-6-7-north",
+      "error": ""
+    },
+    {
+      "url": "https://library.lehigh.edu/space/open-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.lehigh.edu/space/open-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://library.lehigh.edu/news/lehigh-celebrates-grand-opening-lts-circle-fml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.lehigh.edu/news/lehigh-celebrates-grand-opening-lts-circle-fml",
+      "error": ""
+    },
+    {
+      "url": "https://library.lehigh.edu/space/butz-plaza",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.lehigh.edu/space/butz-plaza",
+      "error": ""
+    },
+    {
+      "url": "https://library.lehigh.edu/find/special-collections",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.lehigh.edu/find/special-collections",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

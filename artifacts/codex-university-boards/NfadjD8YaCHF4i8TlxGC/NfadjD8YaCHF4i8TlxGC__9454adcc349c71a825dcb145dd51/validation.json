@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://oxyarts.oxy.edu/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://oxyarts.oxy.edu/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.bobbakermarionettetheater.com/planning-your-visit-1",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bobbakermarionettetheater.com/planning-your-visit-1",
+      "error": ""
+    },
+    {
+      "url": "https://www.oxy.edu/about-oxy/los-angeles/eagle-rock-highland-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oxy.edu/about-oxy/los-angeles/eagle-rock-highland-park",
+      "error": ""
+    },
+    {
+      "url": "https://recreation.parks.lacity.gov/park/york-boulevard-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://recreation.parks.lacity.gov/park/york-boulevard-park",
+      "error": ""
+    },
+    {
+      "url": "https://vidiotsfoundation.org/faq/how-to-reach-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://vidiotsfoundation.org/faq/how-to-reach-us/",
+      "error": ""
+    },
+    {
+      "url": "https://culture.lacity.gov/cultural-centers/center-for-the-arts-eagle-rock",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://culture.lacity.gov/cultural-centers/center-for-the-arts-eagle-rock",
+      "error": ""
+    },
+    {
+      "url": "https://www.audubon.org/debs-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.audubon.org/debs-park",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

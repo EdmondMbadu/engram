@@ -1,0 +1,70 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "The official McDonald’s directory confirms the Socorro location but did not expose a stable late-hours value in the accessible page view; its card is included only as a verify-before-travel option.",
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.nmt.edu/fidel/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nmt.edu/fidel/",
+      "error": ""
+    },
+    {
+      "url": "https://losmariosmexicanfoodnm.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://losmariosmexicanfoodnm.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.walmart.com/store/5492-socorro-nm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.walmart.com/blocked?url=L3N0b3JlLzU0OTItc29jb3Jyby1ubQ==&uuid=f262f822-96f2-11f1-b8b2-176bca679e23&vid=&g=b",
+      "error": ""
+    },
+    {
+      "url": "https://www.bk.com/store-locator/store/9584",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bk.com/store-locator/store/9584",
+      "error": ""
+    },
+    {
+      "url": "https://locations.sonicdrivein.com/nm/socorro/1103-california-street.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sonicdrivein.com/locations/us/nm/socorro/1103-california-street/store-2891/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.arbys.com/us/nm/socorro/1010-s-hwy-85.html",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://locations.arbys.com/us/nm/socorro/1010-s-hwy-85.html",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/restaurant-directory/new-mexico/socorro.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/restaurant-directory/new-mexico/socorro.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

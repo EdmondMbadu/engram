@@ -1,0 +1,179 @@
+Reading additional input from stdin...
+2026-08-13T09:37:19.303532Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa7b-71c0-7392-b88f-02afc44afea5.1786613821889327000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:37:19.349188Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa7b-71bf-72c3-af66-524603b36b57.1786613821887604000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:37:19.419511Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa7b-71b4-7581-ae05-21ef7aafbd1b.1786613821877694000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-terra
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa7b-b52d-7ec0-b825-9e3158cec66f
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"rRI3Y3tFwDqElUspHNE5","schoolName":"University of New Hampshire-Main Campus","shortSchoolName":"University of New Hampshire","townName":"Durham","state":"NH","countryCode":"US","website":"https://www.unh.edu/","latitude":43.135934,"longitude":-70.932465},"templates":[{"id":"college-campus-tour-skips","version":"1.0","titlePattern":"What the Campus Tour Skips: {count} Places Students Share With Each Other","editorialBrief":"Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.","researchQueries":["student favorite campus places","campus map student spaces","student newspaper campus places"],"count":10,"icon":"style","primarySubjectType":"place","allowedSubjectTypes":["place","study_space"],"freshnessDays":365,"exactTitle":"What the Campus Tour Skips: 10 Places Students Share With Each Other"}]}
+2026-08-13T09:37:19.439067Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T09:37:19.492575Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa7b-71be-7f71-af25-8e863efb67b6.1786613821886778000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:37:19.585587Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T09:37:19.661155Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa7b-71be-7b32-aa8e-44f8a84fb102.1786613821887441000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:37:19.831430Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa7b-719a-77a2-8e68-6369e3a874f6.1786613821850472000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:37:20.350653Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa7b-71ba-7a72-b8a4-f5f69ac3a00c.1786613821882735000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{"complete":false,"school_name":"University of New Hampshire-Main Campus","town_name":"Durham","boards":[{"complete":false,"school_name":"University of New Hampshire-Main Campus","town_name":"Durham","template_id":"college-campus-tour-skips","title":"What the Campus Tour Skips: 10 Places Students Share With Each Other","description":"I’m verifying ten distinct map-listed or officially documented UNH spaces and will return the completed research set as JSON.","icon":"style","cards": [{"subject_id":"research-in-progress","subject_type":"place","entity_name":"Research in progress","title":"Researching verified UNH spaces","subtitle":"Durham, New Hampshire","notes":"Checking official campus, library, and student-affairs pages for specific shared places and evidence-backed access details.","short_summary":"Verification in progress.","evidence_claim":"No final evidence claim yet.","source_url":"https://www.unh.edu/","source_title":"University of New Hampshire","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"unknown","under21_safe":true}                                                                                                                                                                                                     
+                                                              
+                 
+              
+           
+           
+           
+     
+       
+           
+        
+        
+     
+       
+        
+        
+        
+        
+   
+           
+        
+        
+     
+        
+        
+   
+        
+        
+        
+   
+        
+        
+      
+      
+     
+     
+     
+     
+           
+        
+        
+     
+      
+     
+     
+       
+        
+        
+      
+           
+        
+    
+       
+       
+       
+        
+        
+     
+        
+     
+        
+     
+   	    
+                                      
+      
+     
+     
+           
+      
+     
+   
+     
+      
+       
+    
+        
+       
+      
+        
+        
+   	
+         
+     
+       
+        
+         
+     
+        
+   
+      
+      
+      
+     
+     
+     
+      
+     
+      
+            
+     
+         
+     
+        
+         
+     
+    
+      
+   
+    
+    
+     
+      
+
+       
+      
+     
+      
+     
+        
+       
+     
+        ,{"subject_id":"research-in-progress-2","subject_type":"place","entity_name":"Research in progress","title":"Researching verified UNH spaces","subtitle":"Durham, New Hampshire","notes":"Checking official campus, library, and student-affairs pages for specific shared places and evidence-backed access details.","short_summary":"Verification in progress.","evidence_claim":"No final evidence claim yet.","source_url":"https://www.unh.edu/","source_title":"University of New Hampshire","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"unknown","under21_safe":true},{"subject_id":"research-in-progress-3","subject_type":"place","entity_name":"Research in progress","title":"Researching verified UNH spaces","subtitle":"Durham, New Hampshire","notes":"Checking official campus, library, and student-affairs pages for specific shared places and evidence-backed access details.","short_summary":"Verification in progress.","evidence_claim":"No final evidence claim yet.","source_url":"https://www.unh.edu/","source_title":"University of New Hampshire","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"unknown","under21_safe":true},{"subject_id":"research-in-progress-4","subject_type":"place","entity_name":"Research in progress","title":"Researching verified UNH spaces","subtitle":"Durham, New Hampshire","notes":"Checking official campus, library, and student-affairs pages for specific shared places and evidence-backed access details.","short_summary":"Verification in progress.","evidence_claim":"No final evidence claim yet.","source_url":"https://www.unh.edu/","source_title":"University of New Hampshire","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"unknown","under21_safe":true},{"subject_id":"research-in-progress-5","subject_type":"place","entity_name":"Research in progress","title":"Researching verified UNH spaces","subtitle":"Durham, New Hampshire","notes":"Checking official campus, library, and student-affairs pages for specific shared places and evidence-backed access details.","short_summary":"Verification in progress.","evidence_claim":"No final evidence claim yet.","source_url":"https://www.unh.edu/","source_title":"University of New Hampshire","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"unknown","under21_safe":true},{"subject_id":"research-in-progress-6","subject_type":"place","entity_name":"Research in progress","title":"Researching verified UNH spaces","subtitle":"Durham, New Hampshire","notes":"Checking official campus, library, and student-affairs pages for specific shared places and evidence-backed access details.","short_summary":"Verification in progress.","evidence_claim":"No final evidence claim yet.","source_url":"https://www.unh.edu/","source_title":"University of New Hampshire","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"unknown","under21_safe":true},{"subject_id":"research-in-progress-7","subject_type":"place","entity_name":"Research in progress","title":"Researching verified UNH spaces","subtitle":"Durham, New Hampshire","notes":"Checking official campus, library, and student-affairs pages for specific shared places and evidence-backed access details.","short_summary":"Verification in progress.","evidence_claim":"No final evidence claim yet.","source_url":"https://www.unh.edu/","source_title":"University of New Hampshire","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"unknown","under21_safe":true},{"subject_id":"research-in-progress-8","subject_type":"place","entity_name":"Research in progress","title":"Researching verified UNH spaces","subtitle":"Durham, New Hampshire","notes":"Checking official campus, library, and student-affairs pages for specific shared places and evidence-backed access details.","short_summary":"Verification in progress.","evidence_claim":"No final evidence claim yet.","source_url":"https://www.unh.edu/","source_title":"University of New Hampshire","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"unknown","under21_safe":true},{"subject_id":"research-in-progress-9","subject_type":"place","entity_name":"Research in progress","title":"Researching verified UNH spaces","subtitle":"Durham, New Hampshire","notes":"Checking official campus, library, and student-affairs pages for specific shared places and evidence-backed access details.","short_summary":"Verification in progress.","evidence_claim":"No final evidence claim yet.","source_url":"https://www.unh.edu/","source_title":"University of New Hampshire","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"unknown","under21_safe":true},{"subject_id":"research-in-progress-10","subject_type":"place","entity_name":"Research in progress","title":"Researching verified UNH spaces","subtitle":"Durham, New Hampshire","notes":"Checking official campus, library, and student-affairs pages for specific shared places and evidence-backed access details.","short_summary":"Verification in progress.","evidence_claim":"No final evidence claim yet.","source_url":"https://www.unh.edu/","source_title":"University of New Hampshire","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"unknown","under21_safe":true}],"warnings":["Research in progress; final output will replace this placeholder."]}],"warnings":["Research in progress."]}
+web search: 
+web search: site:unh.edu Durham campus "Memorial Union Building" student spaces ...
+web search: 
+web search: site:unh.edu Durham campus "Memorial Union Building" student spaces ...
+codex
+{"complete":true,"school_name":"University of New Hampshire-Main Campus","town_name":"Durham","boards":[{"complete":true,"school_name":"University of New Hampshire-Main Campus","town_name":"Durham","template_id":"college-campus-tour-skips","title":"What the Campus Tour Skips: 10 Places Students Share With Each Other","description":"Ten named UNH spaces for studying, meeting, making media, playing games, or taking a quiet break between classes.","icon":"style","cards":[{"subject_id":"unh-dimond-hubbard-reading-room","subject_type":"study_space","entity_name":"Hubbard Reading Room","title":"Hubbard Reading Room","subtitle":"Dimond Library, Level 3","notes":"Use this designated quiet area for individual reading or focused work; keep calls and audible devices outside the space.","short_summary":"A named quiet-study room on Dimond Library’s main floor.","evidence_claim":"UNH Libraries lists the Hubbard Reading Room on Dimond Library Level 3 as a designated quiet space for individual study.","source_url":"https://library.unh.edu/services/spaces-study-work","source_title":"Spaces to Study & Work | UNH Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Follow current Dimond Library access rules and quiet-area expectations.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"unh-dimond-addison-reading-room","subject_type":"study_space","entity_name":"Addison Reading Room","title":"Addison Reading Room","subtitle":"Dimond Library, Level 3","notes":"Bring a solo task and use the designated quiet setting; move conversations or phone calls to an approved area.","short_summary":"A second named quiet-study room on Dimond’s main floor.","evidence_claim":"UNH Libraries identifies the Addison Reading Room on Dimond Library Level 3 as a designated quiet area for individual study.","source_url":"https://library.unh.edu/services/spaces-study-work","source_title":"Spaces to Study & Work | UNH Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Follow current Dimond Library access rules and quiet-area expectations.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"unh-dimond-courtyard-reading-room","subject_type":"study_space","entity_name":"Courtyard Reading Room","title":"Courtyard Reading Room","subtitle":"Dimond Library, Level 5","notes":"Head to Level 5 when you need a designated quiet-study setting and can work independently without conversation.","short_summary":"A named Level 5 quiet space inside Dimond Library.","evidence_claim":"UNH Libraries lists the Courtyard Reading Room on Dimond Library Level 5 among its designated quiet spaces.","source_url":"https://library.unh.edu/services/spaces-study-work","source_title":"Spaces to Study & Work | UNH Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Follow current Dimond Library access rules and quiet-area expectations.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"unh-dimond-parker-media-lab","subject_type":"study_space","entity_name":"Parker Media Lab","title":"Parker Media Lab","subtitle":"Dimond Library, Room 257","notes":"Plan a media-focused work session here; confirm current equipment availability or assistance needs with library staff first.","short_summary":"A named media-work destination on Dimond Library’s second level.","evidence_claim":"UNH Libraries lists Parker Media Lab, Room 257, on Level 2 of Dimond Library.","source_url":"https://library.unh.edu/locations/dimond-library","source_title":"Dimond Library | UNH Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Check current library access and any equipment-use requirements before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"unh-dimond-studio-235","subject_type":"study_space","entity_name":"Studio 235","title":"Studio 235","subtitle":"Dimond Library, Level 2","notes":"Use the library floor listing to locate this named studio, then check locally for current setup and availability.","short_summary":"A named studio destination on Dimond Library’s second level.","evidence_claim":"UNH Libraries lists Studio 235 on Level 2 of Dimond Library.","source_url":"https://library.unh.edu/locations/dimond-library","source_title":"Dimond Library | UNH Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Check current library access and room-use requirements before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"unh-mub-games-room","subject_type":"place","entity_name":"Games Room","title":"Games Room","subtitle":"Memorial Union Building, Room 154A","notes":"Meet a friend for billiards, table tennis, or video games in Room 154A; verify the room’s current availability on arrival.","short_summary":"A named MUB room for casual table and video games.","evidence_claim":"UNH’s MUB venues page says the Games Room in Room 154A offers billiards, table tennis, and video games.","source_url":"https://www.unh.edu/mub/venues-services","source_title":"Venues & Services | Memorial Union & Student Activities","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Room availability may vary with MUB operations and scheduled use.","cost_status":"unknown","under21_safe":true},{"subject_id":"unh-mub-commuter-lounge","subject_type":"place","entity_name":"Commuter Lounge","title":"Commuter Lounge","subtitle":"Memorial Union Building, first floor","notes":"Commuting students can use the couches, tables, whiteboard, and charging station during regular MUB hours.","short_summary":"A first-floor MUB multipurpose lounge for commuting students.","evidence_claim":"UNH states that its first-floor MUB Commuter Lounge provides commuters with couches, tables, chairs, a whiteboard, and a charging station.","source_url":"https://www.unh.edu/offcampus/campus-engagement/commuter-spaces","source_title":"Commuter Spaces | UNH Off-Campus Engagement","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Specified for commuters and available during regular MUB hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"unh-mub-commuter-kitchenette","subject_type":"place","entity_name":"Commuter Kitchenette","title":"Commuter Kitchenette","subtitle":"Memorial Union Building, first floor","notes":"Commuting students can stop in to use the fridge or microwave and make space for lunch during regular MUB hours.","short_summary":"A first-floor MUB kitchenette for commuting students.","evidence_claim":"UNH says the first-floor MUB Commuter Kitchenette offers commuters a fridge, microwave, and a place to eat lunch.","source_url":"https://www.unh.edu/offcampus/campus-engagement/commuter-spaces","source_title":"Commuter Spaces | UNH Off-Campus Engagement","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Specified for commuters and available during regular MUB hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"unh-mub-interfaith-prayer-meditation-room","subject_type":"place","entity_name":"Interfaith Prayer & Meditation Room","title":"Interfaith Prayer & Meditation Room","subtitle":"Memorial Union Building","notes":"Use this inclusive room for quiet prayer, contemplation, meditation, reflection, or personal practice; preserve its calm purpose.","short_summary":"A named MUB space for quiet reflection and practice.","evidence_claim":"UNH describes the MUB Interfaith Prayer & Meditation Room as an inclusive space for quiet prayer, contemplation, meditation, reflection, and practice.","source_url":"https://www.unh.edu/mub/venues-services","source_title":"Venues & Services | Memorial Union & Student Activities","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use respectfully and confirm current MUB building access before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"unh-mub-union-court","subject_type":"place","entity_name":"Union Court","title":"Union Court","subtitle":"Memorial Union Building","notes":"Choose a table here to meet between classes or pair a meal stop with a conversation; check current dining operations separately.","short_summary":"A named MUB gathering and dining area.","evidence_claim":"UNH’s MUB venues page identifies Union Court as a place to eat or hang out with friends.","source_url":"https://www.unh.edu/mub/venues-services","source_title":"Venues & Services | Memorial Union & Student Activities","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Food purchases may be required for dining; seating and operations can vary.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T09:39:16.055456Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa7b-b52d-7ec0-b825-9e3158cec66f.1786613839152039000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+18,175
+
+{"complete":true,"school_name":"University of New Hampshire-Main Campus","town_name":"Durham","boards":[{"complete":true,"school_name":"University of New Hampshire-Main Campus","town_name":"Durham","template_id":"college-campus-tour-skips","title":"What the Campus Tour Skips: 10 Places Students Share With Each Other","description":"Ten named UNH spaces for studying, meeting, making media, playing games, or taking a quiet break between classes.","icon":"style","cards":[{"subject_id":"unh-dimond-hubbard-reading-room","subject_type":"study_space","entity_name":"Hubbard Reading Room","title":"Hubbard Reading Room","subtitle":"Dimond Library, Level 3","notes":"Use this designated quiet area for individual reading or focused work; keep calls and audible devices outside the space.","short_summary":"A named quiet-study room on Dimond Library’s main floor.","evidence_claim":"UNH Libraries lists the Hubbard Reading Room on Dimond Library Level 3 as a designated quiet space for individual study.","source_url":"https://library.unh.edu/services/spaces-study-work","source_title":"Spaces to Study & Work | UNH Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Follow current Dimond Library access rules and quiet-area expectations.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"unh-dimond-addison-reading-room","subject_type":"study_space","entity_name":"Addison Reading Room","title":"Addison Reading Room","subtitle":"Dimond Library, Level 3","notes":"Bring a solo task and use the designated quiet setting; move conversations or phone calls to an approved area.","short_summary":"A second named quiet-study room on Dimond’s main floor.","evidence_claim":"UNH Libraries identifies the Addison Reading Room on Dimond Library Level 3 as a designated quiet area for individual study.","source_url":"https://library.unh.edu/services/spaces-study-work","source_title":"Spaces to Study & Work | UNH Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Follow current Dimond Library access rules and quiet-area expectations.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"unh-dimond-courtyard-reading-room","subject_type":"study_space","entity_name":"Courtyard Reading Room","title":"Courtyard Reading Room","subtitle":"Dimond Library, Level 5","notes":"Head to Level 5 when you need a designated quiet-study setting and can work independently without conversation.","short_summary":"A named Level 5 quiet space inside Dimond Library.","evidence_claim":"UNH Libraries lists the Courtyard Reading Room on Dimond Library Level 5 among its designated quiet spaces.","source_url":"https://library.unh.edu/services/spaces-study-work","source_title":"Spaces to Study & Work | UNH Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Follow current Dimond Library access rules and quiet-area expectations.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"unh-dimond-parker-media-lab","subject_type":"study_space","entity_name":"Parker Media Lab","title":"Parker Media Lab","subtitle":"Dimond Library, Room 257","notes":"Plan a media-focused work session here; confirm current equipment availability or assistance needs with library staff first.","short_summary":"A named media-work destination on Dimond Library’s second level.","evidence_claim":"UNH Libraries lists Parker Media Lab, Room 257, on Level 2 of Dimond Library.","source_url":"https://library.unh.edu/locations/dimond-library","source_title":"Dimond Library | UNH Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Check current library access and any equipment-use requirements before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"unh-dimond-studio-235","subject_type":"study_space","entity_name":"Studio 235","title":"Studio 235","subtitle":"Dimond Library, Level 2","notes":"Use the library floor listing to locate this named studio, then check locally for current setup and availability.","short_summary":"A named studio destination on Dimond Library’s second level.","evidence_claim":"UNH Libraries lists Studio 235 on Level 2 of Dimond Library.","source_url":"https://library.unh.edu/locations/dimond-library","source_title":"Dimond Library | UNH Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Check current library access and room-use requirements before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"unh-mub-games-room","subject_type":"place","entity_name":"Games Room","title":"Games Room","subtitle":"Memorial Union Building, Room 154A","notes":"Meet a friend for billiards, table tennis, or video games in Room 154A; verify the room’s current availability on arrival.","short_summary":"A named MUB room for casual table and video games.","evidence_claim":"UNH’s MUB venues page says the Games Room in Room 154A offers billiards, table tennis, and video games.","source_url":"https://www.unh.edu/mub/venues-services","source_title":"Venues & Services | Memorial Union & Student Activities","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Room availability may vary with MUB operations and scheduled use.","cost_status":"unknown","under21_safe":true},{"subject_id":"unh-mub-commuter-lounge","subject_type":"place","entity_name":"Commuter Lounge","title":"Commuter Lounge","subtitle":"Memorial Union Building, first floor","notes":"Commuting students can use the couches, tables, whiteboard, and charging station during regular MUB hours.","short_summary":"A first-floor MUB multipurpose lounge for commuting students.","evidence_claim":"UNH states that its first-floor MUB Commuter Lounge provides commuters with couches, tables, chairs, a whiteboard, and a charging station.","source_url":"https://www.unh.edu/offcampus/campus-engagement/commuter-spaces","source_title":"Commuter Spaces | UNH Off-Campus Engagement","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Specified for commuters and available during regular MUB hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"unh-mub-commuter-kitchenette","subject_type":"place","entity_name":"Commuter Kitchenette","title":"Commuter Kitchenette","subtitle":"Memorial Union Building, first floor","notes":"Commuting students can stop in to use the fridge or microwave and make space for lunch during regular MUB hours.","short_summary":"A first-floor MUB kitchenette for commuting students.","evidence_claim":"UNH says the first-floor MUB Commuter Kitchenette offers commuters a fridge, microwave, and a place to eat lunch.","source_url":"https://www.unh.edu/offcampus/campus-engagement/commuter-spaces","source_title":"Commuter Spaces | UNH Off-Campus Engagement","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Specified for commuters and available during regular MUB hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"unh-mub-interfaith-prayer-meditation-room","subject_type":"place","entity_name":"Interfaith Prayer & Meditation Room","title":"Interfaith Prayer & Meditation Room","subtitle":"Memorial Union Building","notes":"Use this inclusive room for quiet prayer, contemplation, meditation, reflection, or personal practice; preserve its calm purpose.","short_summary":"A named MUB space for quiet reflection and practice.","evidence_claim":"UNH describes the MUB Interfaith Prayer & Meditation Room as an inclusive space for quiet prayer, contemplation, meditation, reflection, and practice.","source_url":"https://www.unh.edu/mub/venues-services","source_title":"Venues & Services | Memorial Union & Student Activities","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use respectfully and confirm current MUB building access before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"unh-mub-union-court","subject_type":"place","entity_name":"Union Court","title":"Union Court","subtitle":"Memorial Union Building","notes":"Choose a table here to meet between classes or pair a meal stop with a conversation; check current dining operations separately.","short_summary":"A named MUB gathering and dining area.","evidence_claim":"UNH’s MUB venues page identifies Union Court as a place to eat or hang out with friends.","source_url":"https://www.unh.edu/mub/venues-services","source_title":"Venues & Services | Memorial Union & Student Activities","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Food purchases may be required for dining; seating and operations can vary.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}

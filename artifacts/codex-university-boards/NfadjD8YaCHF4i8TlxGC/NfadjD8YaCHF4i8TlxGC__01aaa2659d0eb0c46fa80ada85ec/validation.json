@@ -1,0 +1,73 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Indoor access, dining service, recreation availability, and worship schedules can change with the academic calendar; cards conservatively direct users to check current postings.",
+    "Unverified card-level coordinates and Google Maps destination URLs are returned as null.",
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.lewisu.edu/studentcenter/index.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lewisu.edu/studentcenter/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lewisu.edu/welcomeweek/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lewisu.edu/welcomeweek/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lewisu.edu/campuses/romeoville/maincampusmap.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lewisu.edu/campuses/romeoville/maincampusmap.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.lewisu.edu/welcome/timeline.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lewisu.edu/welcome/timeline.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.lewisu.edu/academics/library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lewisu.edu/academics/library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lewisu.edu/sustainability/areas.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lewisu.edu/sustainability/areas.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.lewisu.edu/studentservices/ministry/theplace.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lewisu.edu/studentservices/ministry/theplace.htm",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Lewis University Library"
+  ],
+  "sourceCount": 7,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

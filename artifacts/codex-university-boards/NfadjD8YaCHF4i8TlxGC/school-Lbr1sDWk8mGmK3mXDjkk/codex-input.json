@@ -1,0 +1,73 @@
+{
+  "target": {
+    "atlasId": "Lbr1sDWk8mGmK3mXDjkk",
+    "schoolName": "George Washington University",
+    "shortSchoolName": "George Washington University",
+    "townName": "Washington",
+    "state": "DC",
+    "countryCode": "US",
+    "website": "https://www.gwu.edu/",
+    "latitude": 38.89923,
+    "longitude": -77.048363
+  },
+  "templates": [
+    {
+      "id": "college-late-night-runs",
+      "version": "1.0",
+      "titlePattern": "{count} Late-Night Runs That Explain {school}",
+      "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+      "researchQueries": [
+        "late night dining students",
+        "campus dining late hours",
+        "restaurants open late near campus"
+      ],
+      "count": 10,
+      "icon": "nightlife",
+      "primarySubjectType": "place",
+      "allowedSubjectTypes": [
+        "place"
+      ],
+      "freshnessDays": 120,
+      "exactTitle": "10 Late-Night Runs That Explain George Washington University"
+    },
+    {
+      "id": "college-campus-tour-skips",
+      "version": "1.0",
+      "titlePattern": "What the Campus Tour Skips: {count} Places Students Share With Each Other",
+      "editorialBrief": "Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.",
+      "researchQueries": [
+        "student favorite campus places",
+        "campus map student spaces",
+        "student newspaper campus places"
+      ],
+      "count": 10,
+      "icon": "style",
+      "primarySubjectType": "place",
+      "allowedSubjectTypes": [
+        "place",
+        "study_space"
+      ],
+      "freshnessDays": 365,
+      "exactTitle": "What the Campus Tour Skips: 10 Places Students Share With Each Other"
+    },
+    {
+      "id": "college-blocks-off-campus",
+      "version": "1.0",
+      "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+      "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+      "researchQueries": [
+        "off campus streets student district",
+        "campus adjacent commercial streets",
+        "neighborhood plan near university"
+      ],
+      "count": 10,
+      "icon": "location_city",
+      "primarySubjectType": "street_or_district",
+      "allowedSubjectTypes": [
+        "street_or_district"
+      ],
+      "freshnessDays": 730,
+      "exactTitle": "10 Blocks Off Campus, One Reason Each"
+    }
+  ]
+}

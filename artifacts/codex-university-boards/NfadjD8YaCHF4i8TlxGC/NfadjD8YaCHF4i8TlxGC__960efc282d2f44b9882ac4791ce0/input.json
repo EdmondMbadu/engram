@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "fk0u7b8ah6hFRHVlWQmh",
+    "schoolName": "Stonehill College",
+    "shortSchoolName": "Stonehill College",
+    "townName": "Easton",
+    "state": "MA",
+    "countryCode": "US",
+    "unitId": "167996",
+    "website": "https://www.stonehill.edu/",
+    "latitude": 42.05905,
+    "longitude": -71.080632,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/b/bb/Stonehill_Emblem.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=stonehill.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain Stonehill College",
+  "excluded_subjects": [
+    "Ames Free Library",
+    "Queset House at Ames Free Library",
+    "Oakes Ames Memorial Hall",
+    "The Children's Museum in Easton",
+    "Frothingham Hall",
+    "Easton Community Access Television",
+    "The Beanery on Washington",
+    "Farmer's Daughter",
+    "Simpson Spring",
+    "Borderland State Park"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

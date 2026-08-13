@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.lewisu.edu/studentservices/fitnesscenter/intramurals.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lewisu.edu/studentservices/fitnesscenter/intramurals.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.lewisu.edu/studentservices/fitnesscenter/faq.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lewisu.edu/studentservices/fitnesscenter/faq.htm",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 2,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

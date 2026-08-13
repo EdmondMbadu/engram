@@ -1,0 +1,65 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://uscga.edu/about/visit-cga/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://uscga.edu/about/visit-cga/",
+      "error": ""
+    },
+    {
+      "url": "https://uscga.edu/wp-content/uploads/2023/05/2023_USCGA_CAMPUS-MAP.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://uscga.edu/wp-content/uploads/2023/05/2023_USCGA_CAMPUS-MAP.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://uscga.edu/cadet-life/cga-tenants/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://uscga.edu/cadet-life/cga-tenants/",
+      "error": ""
+    },
+    {
+      "url": "https://uscga.edu/academics/library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://uscga.edu/academics/library/",
+      "error": ""
+    },
+    {
+      "url": "https://uscga.edu/cadet-life/religious-programs/chapel/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://uscga.edu/cadet-life/religious-programs/chapel/",
+      "error": ""
+    },
+    {
+      "url": "https://uscga.edu/cadet-life/clubs-and-societies/music-and-drama/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://uscga.edu/cadet-life/clubs-and-societies/music-and-drama/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Bear Plaza",
+    "Sailing Center",
+    "Cadet Memorial Field"
+  ],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

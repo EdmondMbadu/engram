@@ -1,0 +1,48 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "The directly documented 2026 performances have already occurred as of the fetch date. Each card therefore directs readers to confirm the next scheduled edition rather than implying current availability.",
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.gcc.edu/Home/News-Archive/News-Article/family-weekend-showcases-student-talent",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Home/News-Archive/News-Article/family-weekend-showcases-student-talent",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcc.edu/Home/News-Archive/News-Article/meet-the-fleet-brings-hopecat-artists-to-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Home/News-Archive/News-Article/meet-the-fleet-brings-hopecat-artists-to-campus",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcc.edu/Home/News-Archive/News-Article/concert-features-symphony-and-chamber-orchestras",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Home/News-Archive/News-Article/concert-features-symphony-and-chamber-orchestras",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcc.edu/Home/News-Archive/News-Article/touring-choir-brings-its-road-songs-home-to-harbison",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Home/News-Archive/News-Article/touring-choir-brings-its-road-songs-home-to-harbison",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "All-College Sing"
+  ],
+  "sourceCount": 4,
+  "generationScore": 90,
+  "generationGrade": "A"
+}

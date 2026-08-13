@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://nobts.edu/library/about.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://nobts.edu/library/about.html",
+      "error": ""
+    },
+    {
+      "url": "https://nobts.edu/library/locating-items.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://nobts.edu/library/locating-items.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.nobts.edu/_resources/pdf/Academics/Syllabi/S2023/COUN5321GarrettSum2023Inet.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nobts.edu/_resources/pdf/Academics/Syllabi/S2023/COUN5321GarrettSum2023Inet.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

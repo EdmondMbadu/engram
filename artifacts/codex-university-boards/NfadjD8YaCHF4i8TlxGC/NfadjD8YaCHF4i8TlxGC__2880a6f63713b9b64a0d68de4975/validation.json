@@ -1,0 +1,61 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "5 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://lib.lsu.edu/spaces#collaborativestudyrooms",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://lib.lsu.edu/spaces#collaborativestudyrooms",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://lib.lsu.edu/spaces#studentmeetingrooms",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://lib.lsu.edu/spaces#studentmeetingrooms",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://lib.lsu.edu/spaces#quietstudyrooms",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://lib.lsu.edu/spaces#quietstudyrooms",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://lib.lsu.edu/spaces#bookablestudybooths",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://lib.lsu.edu/spaces#bookablestudybooths",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.lsu.edu/blog/2026/04/study-spots.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lsu.edu/blog/2026/04/study-spots.php",
+      "error": ""
+    },
+    {
+      "url": "https://lib.lsu.edu/spaces#quietstudyhill",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://lib.lsu.edu/spaces#quietstudyhill",
+      "error": "fetch failed"
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

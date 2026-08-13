@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://kuathletics.com/sports/2024/4/11/traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://kuathletics.com/sports/2024/4/11/traditions",
+      "error": ""
+    },
+    {
+      "url": "https://union.ku.edu/wave-wheat-wall",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://union.ku.edu/wave-wheat-wall",
+      "error": ""
+    },
+    {
+      "url": "https://commencement.ku.edu/about-ceremony",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://commencement.ku.edu/about-ceremony",
+      "error": ""
+    },
+    {
+      "url": "https://union.ku.edu/campus-faq",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://union.ku.edu/campus-faq",
+      "error": ""
+    },
+    {
+      "url": "https://otp.ku.edu/hawk-week",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://otp.ku.edu/hawk-week",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

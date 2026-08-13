@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://library.oakland.edu/building/floor_map.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.oakland.edu/building/floor_map.html",
+      "error": ""
+    },
+    {
+      "url": "https://library.oakland.edu/services/spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.oakland.edu/services/spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://library.oakland.edu/building/hours.php?lid=6639",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.oakland.edu/building/hours.php?lid=6639",
+      "error": ""
+    },
+    {
+      "url": "https://www.oakland.edu/osi/commuterconnection/index",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oakland.edu/osi/commuterconnection/index",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

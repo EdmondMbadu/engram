@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.lib.umn.edu/spaces/list/walter-206",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.umn.edu/spaces/list/walter-206",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.umn.edu/spaces/list/walter-sub-basement-floor",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.umn.edu/spaces/list/walter-sub-basement-floor",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.umn.edu/spaces/list/walter-204f",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.umn.edu/spaces/list/walter-204f",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.umn.edu/spaces/list/wilson-2nd-floor",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.umn.edu/spaces/list/wilson-2nd-floor",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.umn.edu/spaces/list/wilson-4th-floor",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.umn.edu/spaces/list/wilson-4th-floor",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.umn.edu/spaces/list/wilson-301b",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.umn.edu/spaces/list/wilson-301b",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.umn.edu/spaces/list/wilson-research-collaboration-studio",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.umn.edu/spaces/list/wilson-research-collaboration-studio",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.umn.edu/spaces/list/wilson-423",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.umn.edu/spaces/list/wilson-423",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.umn.edu/spaces/list/magrath-1st-floor",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.lib.umn.edu/spaces/list/magrath-1st-floor",
+      "error": ""
+    },
+    {
+      "url": "https://hsl.lib.umn.edu/spaces/study-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://hsl.lib.umn.edu/spaces/study-spaces",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

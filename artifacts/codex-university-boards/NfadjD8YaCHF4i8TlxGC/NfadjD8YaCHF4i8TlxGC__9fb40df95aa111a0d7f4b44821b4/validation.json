@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.francis.edu/orientation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.francis.edu/orientation",
+      "error": ""
+    },
+    {
+      "url": "https://www.francis.edu/campus-life/explore-campus/jfk-student-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.francis.edu/campus-life/explore-campus/jfk-student-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.francis.edu/campus-life/student-success-services/residence-life",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.francis.edu/campus-life/student-success-services/residence-life",
+      "error": ""
+    },
+    {
+      "url": "https://www.francis.edu/campus-life/clubs-and-organizations/esports",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.francis.edu/campus-life/clubs-and-organizations/esports",
+      "error": ""
+    },
+    {
+      "url": "https://www.francis.edu/athletics-and-recreation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.francis.edu/athletics-and-recreation",
+      "error": ""
+    },
+    {
+      "url": "https://www.francis.edu/maps-and-directions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.francis.edu/maps-and-directions",
+      "error": ""
+    },
+    {
+      "url": "https://www.francis.edu/campus-ministry/chapel",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.francis.edu/campus-ministry",
+      "error": ""
+    },
+    {
+      "url": "https://www.francis.edu/about-us/community-resources",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.francis.edu/about-us/community-resources",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

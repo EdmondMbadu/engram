@@ -1,0 +1,290 @@
+Reading additional input from stdin...
+2026-08-13T06:47:35.428240Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:47:35.456895Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:47:35.530745Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9df-c05c-7292-bd63-5f5fde945f2a.1786603618396593000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9e0-50ed-7ba0-803f-471df79519f6
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"rCHBtu3npdly8mTu33Gs","schoolName":"California State University-Northridge","shortSchoolName":"California State University-Northridge","townName":"Northridge","state":"CA","countryCode":"US","website":"https://www.csun.edu/","latitude":34.240126,"longitude":-118.529319},"templates":[{"id":"college-study-spots","version":"1.0","titlePattern":"Claimed by 9am: {count} Study Spots Worth Showing Up Early For","editorialBrief":"Choose ten distinct study environments. Verify access rules, room or reservation constraints, and the physical affordance that makes each useful. Treat “Claimed by 9am” as editorial framing; never assert crowding or student behavior without evidence.","researchQueries":["campus study spaces","library study rooms students","quiet study campus"],"count":10,"icon":"menu_book","primarySubjectType":"study_space","allowedSubjectTypes":["study_space","place"],"freshnessDays":180,"exactTitle":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For"}]}
+codex
+{
+  "complete": false,
+  "school_name": "California State University-Northridge",
+  "town_name": "Northridge",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "California State University-Northridge",
+      "town_name": "Northridge",
+      "template_id": "college-study-spots",
+      "title": "Claimed by 9am: 10 Study Spots Worth Showing Up Early For",
+      "description": "",
+      "icon": "menu_book",
+      "cards": [
+        {
+          "subject_id": "research_status",
+          "subject_type": "place",
+          "entity_name": "CSUN",
+          "title": "Research in progress",
+          "subtitle": "",
+          "notes": "I’m checking current CSUN library and campus pages for ten distinct, access-verified study environments.",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "https://www.csun.edu/",
+          "source_title": "California State University, Northridge",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+      {
+        "subject_id": "research_status_2",
+        "subject_type": "place",
+        "entity_name": "CSUN University Library",
+        "title": "Source verification underway",
+        "subtitle": "",
+        "notes": "Direct supporting pages, reservation rules, access details, and map-listed names are being verified.",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "https://library.csun.edu/",
+        "source_title": "CSUN University Library",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "research_status_3",
+        "subject_type": "place",
+        "entity_name": "CSUN Campus Map",
+        "title": "Location checks underway",
+        "subtitle": "",
+        "notes": "Coordinates and exact named destinations will remain null unless an authoritative map supports them.",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "https://www.csun.edu/",
+        "source_title": "California State University, Northridge",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "research_status_4",
+        "subject_type": "place",
+        "entity_name": "CSUN Study Spaces",
+        "title": "Card selection underway",
+        "subtitle": "",
+        "notes": "Each final card will use a distinct named study setting and specific, action-oriented guidance.",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "https://library.csun.edu/",
+        "source_title": "CSUN University Library",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "research_status_5",
+        "subject_type": "place",
+        "entity_name": "CSUN Library Services",
+        "title": "Rules checks underway",
+        "subtitle": "",
+        "notes": "Room reservations, user eligibility, quiet-zone expectations, and physical affordances are being sourced.",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "https://library.csun.edu/",
+        "source_title": "CSUN University Library",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "research_status_6",
+        "subject_type": "place",
+        "entity_name": "CSUN Learning Spaces",
+        "title": "Evidence checks underway",
+        "subtitle": "",
+        "notes": "No claim about demand, usage, hours, or amenities will appear without direct public evidence.",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "https://www.csun.edu/",
+        "source_title": "California State University, Northridge",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "research_status_7",
+        "subject_type": "place",
+        "entity_name": "CSUN Student Spaces",
+        "title": "Access checks underway",
+        "subtitle": "",
+        "notes": "The final access notes will distinguish open seating from reservable or eligibility-limited spaces.",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "https://www.csun.edu/",
+        "source_title": "California State University, Northridge",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "research_status_8",
+        "subject_type": "place",
+        "entity_name": "CSUN Academic Spaces",
+        "title": "Affordance checks underway",
+        "subtitle": "",
+        "notes": "The final set will identify concrete features such as quiet floors, computers, tables, or group rooms.",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "https://www.csun.edu/",
+        "source_title": "California State University, Northridge",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "research_status_9",
+        "subject_type": "place",
+        "entity_name": "CSUN Quiet Study",
+        "title": "Quiet-space checks underway",
+        "subtitle": "",
+        "notes": "Official conduct and noise guidance will support any quiet-study designation in the finished board.",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "https://library.csun.edu/",
+        "source_title": "CSUN University Library",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "research_status_10",
+        "subject_type": "place",
+        "entity_name": "CSUN Group Study",
+        "title": "Reservation checks underway",
+        "subtitle": "",
+        "notes": "Direct booking pages will support any claims about group rooms, time limits, or student eligibility.",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "https://library.csun.edu/",
+        "source_title": "CSUN University Library",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+    ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:library.csun.edu study spaces quiet study CSUN floor group rooms ...
+web search: 
+web search: site:csun.edu/usu "Plaza Vista Study Lounge" ...
+codex
+{"complete":true,"school_name":"California State University-Northridge","town_name":"Northridge","boards":[{"complete":true,"school_name":"California State University-Northridge","town_name":"Northridge","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten distinct CSUN University Library environments for quiet work, collaborative projects, technology-assisted study, tutoring, and accessible research.","icon":"menu_book","cards":[{"subject_id":"csun-library-learning-commons","subject_type":"study_space","entity_name":"University Library Learning Commons","title":"Set Up in the Learning Commons","subtitle":"Flexible individual and collaborative study on the main floor","notes":"Choose ergonomic seating for solo work or a group configuration for collaboration, then use the nearby research and technology support desks.","short_summary":"A flexible main-floor workspace with seating, computers, printing, and on-site research support.","evidence_claim":"CSUN says the Learning Commons spans the University Library’s first floor and provides ergonomic individual seating, group configurations, desktop computers, printing, and research help.","source_url":"https://library.csun.edu/about/transformation/lc-faq","source_title":"Learning Commons FAQ | CSUN University Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The Learning Commons occupies the first floor. Library operating hours vary during the academic year; consult the current library-hours page before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csun-library-quiet-study-lounge","subject_type":"study_space","entity_name":"Quiet Study Lounge","title":"Take a Pod in the Quiet Study Lounge","subtitle":"Fourth-floor east-wing seating for focused individual work","notes":"Bring a charger-compatible device and settle into a pod or other individual seat; keep conversation and phone calls outside this quiet zone.","short_summary":"A purpose-designed quiet lounge with individual pods and furnishings equipped with built-in chargers.","evidence_claim":"CSUN identifies the Quiet Study Lounge in the fourth-floor east wing as an individual-study space with pods and other furnishings that include built-in chargers.","source_url":"https://catalog.csun.edu/about/colleges/lib/","source_title":"Library | California State University, Northridge Catalog","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on the University Library’s fourth floor, east wing. This is a quiet individual-study area; talking and phone conversations are not allowed.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csun-library-gohstand-leisure-reading-room","subject_type":"study_space","entity_name":"Robert and Maureen Gohstand Leisure Reading Room","title":"Read Quietly in the Gohstand Room","subtitle":"A second-floor west-wing room specifically designated for reading","notes":"Use this room when your task is sustained reading rather than discussion, and follow the library’s quiet-area rules while you work.","short_summary":"A named reading room set apart for quiet, text-focused study on the library’s second floor.","evidence_claim":"CSUN states that the Gohstand Leisure Reading Room is on the second floor in the west wing and provides a quiet space specifically designated for reading.","source_url":"https://catalog.csun.edu/about/colleges/lib/","source_title":"Library | California State University, Northridge Catalog","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on the second floor, west wing. The library designates the room for quiet reading; follow posted library access and noise rules.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csun-library-tcc-music-media","subject_type":"study_space","entity_name":"Teacher Curriculum Center/Music & Media","title":"Work Alongside Teaching and Media Collections","subtitle":"Second-floor east-wing space for study and collection-based research","notes":"Set up here when an assignment draws on teaching materials, juvenile literature, music, or media, and check service availability before seeking staff help.","short_summary":"A collection-centered study environment suited to education, music, and media coursework.","evidence_claim":"CSUN describes the Teacher Curriculum Center/Music & Media on the second-floor east wing as an environment for study, research, relaxation, and personal enjoyment.","source_url":"https://catalog.csun.edu/about/colleges/lib/","source_title":"Library | California State University, Northridge Catalog","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on the second floor, east wing. Service-point hours may differ from building hours, so verify current availability before requesting materials or assistance.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csun-learning-resource-center","subject_type":"study_space","entity_name":"Learning Resource Center","title":"Pair Study Time with Academic Support","subtitle":"Third-floor east-wing tutoring and writing support","notes":"Bring the assignment, course instructions, and a working draft or problem set; schedule ahead when possible, since walk-in help is not guaranteed.","short_summary":"An academic-support setting for writing consultations, subject tutoring, workshops, and collaborative learning.","evidence_claim":"CSUN locates the Learning Resource Center on the University Library’s third-floor east wing and says it provides tutoring, supplemental instruction, writing support, and workshops.","source_url":"https://www.csun.edu/student-success/learning-resource-center","source_title":"Learning Resource Center | CSU Northridge","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The LRC maintains a schedule separate from the University Library. Writing Center appointments are strongly recommended, though walk-in or drop-in sessions may be available.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csun-library-individual-study-rooms","subject_type":"study_space","entity_name":"University Library Individual Study Rooms","title":"Reserve a Room for Solo Focus","subtitle":"Enclosed individual rooms on the second, third, and fourth floors","notes":"Reserve a north-side room online or look for a first-come south-wall room; use the room alone and retain your confirmation during the session.","short_summary":"Single-user rooms offering a more enclosed setting than the library’s open study floors.","evidence_claim":"CSUN says individual study rooms are on floors two through four; north-side rooms on floors two and three require reservations, while south-wall rooms are first-come, first-served.","source_url":"https://library.csun.edu/services/study-rooms","source_title":"Study Rooms | CSUN University Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"For CSUN students only and limited to one occupant. Reservations require an @csun.edu or @my.csun.edu address and may be made up to two days ahead.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csun-library-group-study-rooms","subject_type":"study_space","entity_name":"University Library Group Study Rooms","title":"Book a Room for the Group Project","subtitle":"Reservable collaborative rooms across floors one through four","notes":"Gather at least two students, reserve with a CSUN email, confirm promptly, and arrive within ten minutes so the group does not forfeit the slot.","short_summary":"Enclosed collaborative rooms intended for student teams working together on projects and coursework.","evidence_claim":"CSUN provides group study rooms in the Learning Commons and on upper floors, dedicates them to groups of two or more CSUN students, and requires online reservations.","source_url":"https://library.csun.edu/services/study-rooms","source_title":"Study Rooms | CSUN University Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"CSUN student groups of at least two may reserve up to two days ahead. Reservations require confirmation, and the room is forfeited after a ten-minute no-show.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csun-library-assistive-technology-rooms","subject_type":"study_space","entity_name":"Assistive Technology Rooms LC-5–LC-7","title":"Use an Accessibility-Equipped Study Room","subtitle":"Adjustable workstations and assistive software in the Learning Commons","notes":"Complete DRES equipment training first, then present the issued card at Guest Services to obtain a room key for an accessibility-supported session.","short_summary":"Three dedicated rooms with adjustable furniture, assistive software, scanning, magnification, and text-to-speech tools.","evidence_claim":"CSUN says rooms LC-5 through LC-7 contain adjustable tables, ergonomic chairs, computers, OCR scanning, magnification, text-to-speech systems, and assistive software.","source_url":"https://library.csun.edu/technology/assistive-technology","source_title":"Assistive Technology Rooms | CSUN University Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Limited to CSUN students registered with DRES and trained on the equipment. Present the DRES card at Guest Services to check out a key for up to three hours per day.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csun-library-fourth-floor-core","subject_type":"study_space","entity_name":"University Library Fourth Floor Core","title":"Move to the Fourth-Floor Quiet Core","subtitle":"Open quiet-study seating among the library’s upper-level collections","notes":"Choose this floor for individual work, silence devices, and move to floors one through three or a stairwell before taking a phone conversation.","short_summary":"A broad quiet-study option for students who prefer open seating over an enclosed room.","evidence_claim":"CSUN designates the fourth-floor core as quiet study and states that the fourth floor also contains study areas plus graduate, group, and individual study rooms.","source_url":"https://library.csun.edu/about/building-floor-maps/fourth","source_title":"Fourth Floor | CSUN University Library","source_kind":"university_official","source_published_at":"2025-04-24","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The fourth-floor core is governed by the library’s quiet-study policy: no talking or phone conversations, no amplified media, and headphones at low volume.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csun-library-media-scape-tables","subject_type":"study_space","entity_name":"University Library Media Scape Tables","title":"Put the Group’s Screen on Display","subtitle":"Technology-enabled collaboration tables in designated study areas","notes":"Bring an HDMI-ready device or borrow a compatible adapter from Library Technology Services, then mirror shared material for the group to review.","short_summary":"Collaborative tables that connect personal devices to a shared monitor for presentations and group work.","evidence_claim":"CSUN says Media Scape tables in designated collaborative study areas let users connect personal devices to an HD monitor for group work and discussion.","source_url":"https://library.csun.edu/technology","source_title":"Technology Services | CSUN University Library","source_kind":"university_official","source_published_at":"2026-06-05","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located in technology-supported collaborative areas in the Learning Commons and on the second floor. Adapter checkout depends on Library Technology Services availability.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T06:49:26.766110Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9e0-50ed-7ba0-803f-471df79519f6.1786603655405740000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+36,136
+
+{"complete":true,"school_name":"California State University-Northridge","town_name":"Northridge","boards":[{"complete":true,"school_name":"California State University-Northridge","town_name":"Northridge","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten distinct CSUN University Library environments for quiet work, collaborative projects, technology-assisted study, tutoring, and accessible research.","icon":"menu_book","cards":[{"subject_id":"csun-library-learning-commons","subject_type":"study_space","entity_name":"University Library Learning Commons","title":"Set Up in the Learning Commons","subtitle":"Flexible individual and collaborative study on the main floor","notes":"Choose ergonomic seating for solo work or a group configuration for collaboration, then use the nearby research and technology support desks.","short_summary":"A flexible main-floor workspace with seating, computers, printing, and on-site research support.","evidence_claim":"CSUN says the Learning Commons spans the University Library’s first floor and provides ergonomic individual seating, group configurations, desktop computers, printing, and research help.","source_url":"https://library.csun.edu/about/transformation/lc-faq","source_title":"Learning Commons FAQ | CSUN University Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The Learning Commons occupies the first floor. Library operating hours vary during the academic year; consult the current library-hours page before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csun-library-quiet-study-lounge","subject_type":"study_space","entity_name":"Quiet Study Lounge","title":"Take a Pod in the Quiet Study Lounge","subtitle":"Fourth-floor east-wing seating for focused individual work","notes":"Bring a charger-compatible device and settle into a pod or other individual seat; keep conversation and phone calls outside this quiet zone.","short_summary":"A purpose-designed quiet lounge with individual pods and furnishings equipped with built-in chargers.","evidence_claim":"CSUN identifies the Quiet Study Lounge in the fourth-floor east wing as an individual-study space with pods and other furnishings that include built-in chargers.","source_url":"https://catalog.csun.edu/about/colleges/lib/","source_title":"Library | California State University, Northridge Catalog","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on the University Library’s fourth floor, east wing. This is a quiet individual-study area; talking and phone conversations are not allowed.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csun-library-gohstand-leisure-reading-room","subject_type":"study_space","entity_name":"Robert and Maureen Gohstand Leisure Reading Room","title":"Read Quietly in the Gohstand Room","subtitle":"A second-floor west-wing room specifically designated for reading","notes":"Use this room when your task is sustained reading rather than discussion, and follow the library’s quiet-area rules while you work.","short_summary":"A named reading room set apart for quiet, text-focused study on the library’s second floor.","evidence_claim":"CSUN states that the Gohstand Leisure Reading Room is on the second floor in the west wing and provides a quiet space specifically designated for reading.","source_url":"https://catalog.csun.edu/about/colleges/lib/","source_title":"Library | California State University, Northridge Catalog","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on the second floor, west wing. The library designates the room for quiet reading; follow posted library access and noise rules.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csun-library-tcc-music-media","subject_type":"study_space","entity_name":"Teacher Curriculum Center/Music & Media","title":"Work Alongside Teaching and Media Collections","subtitle":"Second-floor east-wing space for study and collection-based research","notes":"Set up here when an assignment draws on teaching materials, juvenile literature, music, or media, and check service availability before seeking staff help.","short_summary":"A collection-centered study environment suited to education, music, and media coursework.","evidence_claim":"CSUN describes the Teacher Curriculum Center/Music & Media on the second-floor east wing as an environment for study, research, relaxation, and personal enjoyment.","source_url":"https://catalog.csun.edu/about/colleges/lib/","source_title":"Library | California State University, Northridge Catalog","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on the second floor, east wing. Service-point hours may differ from building hours, so verify current availability before requesting materials or assistance.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csun-learning-resource-center","subject_type":"study_space","entity_name":"Learning Resource Center","title":"Pair Study Time with Academic Support","subtitle":"Third-floor east-wing tutoring and writing support","notes":"Bring the assignment, course instructions, and a working draft or problem set; schedule ahead when possible, since walk-in help is not guaranteed.","short_summary":"An academic-support setting for writing consultations, subject tutoring, workshops, and collaborative learning.","evidence_claim":"CSUN locates the Learning Resource Center on the University Library’s third-floor east wing and says it provides tutoring, supplemental instruction, writing support, and workshops.","source_url":"https://www.csun.edu/student-success/learning-resource-center","source_title":"Learning Resource Center | CSU Northridge","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The LRC maintains a schedule separate from the University Library. Writing Center appointments are strongly recommended, though walk-in or drop-in sessions may be available.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csun-library-individual-study-rooms","subject_type":"study_space","entity_name":"University Library Individual Study Rooms","title":"Reserve a Room for Solo Focus","subtitle":"Enclosed individual rooms on the second, third, and fourth floors","notes":"Reserve a north-side room online or look for a first-come south-wall room; use the room alone and retain your confirmation during the session.","short_summary":"Single-user rooms offering a more enclosed setting than the library’s open study floors.","evidence_claim":"CSUN says individual study rooms are on floors two through four; north-side rooms on floors two and three require reservations, while south-wall rooms are first-come, first-served.","source_url":"https://library.csun.edu/services/study-rooms","source_title":"Study Rooms | CSUN University Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"For CSUN students only and limited to one occupant. Reservations require an @csun.edu or @my.csun.edu address and may be made up to two days ahead.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csun-library-group-study-rooms","subject_type":"study_space","entity_name":"University Library Group Study Rooms","title":"Book a Room for the Group Project","subtitle":"Reservable collaborative rooms across floors one through four","notes":"Gather at least two students, reserve with a CSUN email, confirm promptly, and arrive within ten minutes so the group does not forfeit the slot.","short_summary":"Enclosed collaborative rooms intended for student teams working together on projects and coursework.","evidence_claim":"CSUN provides group study rooms in the Learning Commons and on upper floors, dedicates them to groups of two or more CSUN students, and requires online reservations.","source_url":"https://library.csun.edu/services/study-rooms","source_title":"Study Rooms | CSUN University Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"CSUN student groups of at least two may reserve up to two days ahead. Reservations require confirmation, and the room is forfeited after a ten-minute no-show.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csun-library-assistive-technology-rooms","subject_type":"study_space","entity_name":"Assistive Technology Rooms LC-5–LC-7","title":"Use an Accessibility-Equipped Study Room","subtitle":"Adjustable workstations and assistive software in the Learning Commons","notes":"Complete DRES equipment training first, then present the issued card at Guest Services to obtain a room key for an accessibility-supported session.","short_summary":"Three dedicated rooms with adjustable furniture, assistive software, scanning, magnification, and text-to-speech tools.","evidence_claim":"CSUN says rooms LC-5 through LC-7 contain adjustable tables, ergonomic chairs, computers, OCR scanning, magnification, text-to-speech systems, and assistive software.","source_url":"https://library.csun.edu/technology/assistive-technology","source_title":"Assistive Technology Rooms | CSUN University Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Limited to CSUN students registered with DRES and trained on the equipment. Present the DRES card at Guest Services to check out a key for up to three hours per day.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csun-library-fourth-floor-core","subject_type":"study_space","entity_name":"University Library Fourth Floor Core","title":"Move to the Fourth-Floor Quiet Core","subtitle":"Open quiet-study seating among the library’s upper-level collections","notes":"Choose this floor for individual work, silence devices, and move to floors one through three or a stairwell before taking a phone conversation.","short_summary":"A broad quiet-study option for students who prefer open seating over an enclosed room.","evidence_claim":"CSUN designates the fourth-floor core as quiet study and states that the fourth floor also contains study areas plus graduate, group, and individual study rooms.","source_url":"https://library.csun.edu/about/building-floor-maps/fourth","source_title":"Fourth Floor | CSUN University Library","source_kind":"university_official","source_published_at":"2025-04-24","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The fourth-floor core is governed by the library’s quiet-study policy: no talking or phone conversations, no amplified media, and headphones at low volume.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csun-library-media-scape-tables","subject_type":"study_space","entity_name":"University Library Media Scape Tables","title":"Put the Group’s Screen on Display","subtitle":"Technology-enabled collaboration tables in designated study areas","notes":"Bring an HDMI-ready device or borrow a compatible adapter from Library Technology Services, then mirror shared material for the group to review.","short_summary":"Collaborative tables that connect personal devices to a shared monitor for presentations and group work.","evidence_claim":"CSUN says Media Scape tables in designated collaborative study areas let users connect personal devices to an HD monitor for group work and discussion.","source_url":"https://library.csun.edu/technology","source_title":"Technology Services | CSUN University Library","source_kind":"university_official","source_published_at":"2026-06-05","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located in technology-supported collaborative areas in the Learning Commons and on the second floor. Adapter checkout depends on Library Technology Services availability.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

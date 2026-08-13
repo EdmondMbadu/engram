@@ -1,0 +1,96 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation.",
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://archaeologicalmuseum.jhu.edu/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://archaeologicalmuseum.jhu.edu/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.jhu.edu/staff_location/george-peabody-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.library.jhu.edu/staff_location/george-peabody-library/",
+      "error": ""
+    },
+    {
+      "url": "https://artbma.org/plan-your-visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://artbma.org/plan-your-visit/",
+      "error": ""
+    },
+    {
+      "url": "https://artbma.org/faq/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://artbma.org/faq/",
+      "error": ""
+    },
+    {
+      "url": "https://thewalters.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://thewalters.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://cylburn.org/know-before-you-go/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cylburn.org/know-before-you-go/",
+      "error": ""
+    },
+    {
+      "url": "https://www.sherwoodgardens.org/plan-your-visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sherwoodgardens.org/plan-your-visit/",
+      "error": ""
+    },
+    {
+      "url": "https://baltimorecityparks.com/druid-hill-park/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://baltimorecityparks.com/druid-hill-park/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://hopkinssports.com/sports/2018/6/15/frequently-asked-questions.aspx?path=jays-unlimited",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://hopkinssports.com/sports/2018/6/15/frequently-asked-questions.aspx?path=jays-unlimited",
+      "error": ""
+    },
+    {
+      "url": "https://www.prattlibrary.org/locations/central",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.prattlibrary.org/locations/central",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "George Peabody Library"
+  ],
+  "sourceCount": 10,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

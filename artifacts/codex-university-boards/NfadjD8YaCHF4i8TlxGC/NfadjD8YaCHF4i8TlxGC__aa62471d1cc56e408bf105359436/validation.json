@@ -1,0 +1,88 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation.",
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.lsu.edu/mikethetiger/hours.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lsu.edu/mikethetiger/hours.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.lsu.edu/mns/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lsu.edu/mns/index.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.lsu.edu/mediacenter/news/2023/05/29_jamesgregorymilitarymuseum.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lsu.edu/mediacenter/news/2023/05/29_jamesgregorymilitarymuseum.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.lsu.edu/hilltop/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lsu.edu/hilltop/index.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.lsu.edu/botanic-gardens/gardens/childrens.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lsu.edu/botanic-gardens/gardens/childrens.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.lsu.edu/botanic-gardens/support/volunteer-handbook.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lsu.edu/botanic-gardens/support/volunteer-handbook.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://design.lsu.edu/page/6/?p=bjgtiuvtkglji",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://design.lsu.edu/page/6/?p=bjgtiuvtkglji",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.lsumoa.org/hours-admission",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lsumoa.org/hours-admission",
+      "error": ""
+    },
+    {
+      "url": "https://www.lsu.edu/parking/faqs.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lsu.edu/parking/faqs.php",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Mike the Tiger Habitat"
+  ],
+  "sourceCount": 9,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

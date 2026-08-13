@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://jerusalemrestaurant.com/places/university",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://jerusalemrestaurant.com/places/university",
+      "error": ""
+    },
+    {
+      "url": "https://pitafreshdenver.com/university/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pitafreshdenver.com/university/",
+      "error": ""
+    },
+    {
+      "url": "https://www.eatbirdcall.com/location/birdcall-evans-denver-co/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.eatbirdcall.com/location/birdcall-evans-denver-co/",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/colorado/denver/1136-s-colorado-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/colorado/denver/1136-s-colorado-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://sexy.pizza/locations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sexy.pizza/locations/",
+      "error": ""
+    },
+    {
+      "url": "https://www.petesrestaurants.com/petes-kitchen",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.petesrestaurants.com/petes-kitchen",
+      "error": ""
+    },
+    {
+      "url": "https://www.donutstowndenver.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.donutstowndenver.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.bigdaddyspizzaofdenver.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bigdaddyspizzaofdenver.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

@@ -1,0 +1,96 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.k-state.edu/maps/buildings/A/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.k-state.edu/maps/buildings/A/",
+      "error": ""
+    },
+    {
+      "url": "https://union.k-state.edu/about/2026-building-maps",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://union.k-state.edu/about/2026-building-maps",
+      "error": ""
+    },
+    {
+      "url": "https://www.asi.k-state.edu/about/services/call-hall-dairy-bar/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.asi.k-state.edu/about/services/call-hall-dairy-bar/",
+      "error": ""
+    },
+    {
+      "url": "https://lib.k-state.edu/libraries-hours/hale-library/study-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.k-state.edu/libraries-hours/hale-library/study-spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://www.k-state.edu/gardens/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.k-state.edu/gardens/",
+      "error": ""
+    },
+    {
+      "url": "https://beach.k-state.edu/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://beach.k-state.edu/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.k-state.edu/about/engage-with-us/manhattan/memorials/wwi/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.k-state.edu/about/engage-with-us/manhattan/memorials/wwi/",
+      "error": ""
+    },
+    {
+      "url": "https://www.k-state.edu/maps/buildings/AFH/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.k-state.edu/maps/buildings/AFH/",
+      "error": ""
+    },
+    {
+      "url": "https://recservices.k-state.edu/complex/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recservices.k-state.edu/complex/",
+      "error": ""
+    },
+    {
+      "url": "https://mccain.k-state.edu/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mccain.k-state.edu/about/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "K-State Student Union",
+    "Historic Farrell Library Great Room"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

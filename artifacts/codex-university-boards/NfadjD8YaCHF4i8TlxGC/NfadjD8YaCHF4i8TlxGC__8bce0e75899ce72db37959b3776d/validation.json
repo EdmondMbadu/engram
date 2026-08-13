@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.anselm.edu/campus-life",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.anselm.edu/campus-life",
+      "error": ""
+    },
+    {
+      "url": "https://www.anselm.edu/academics/departments-programs/english/annual-shakespeares-birthday-celebration",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.anselm.edu/academics/departments-programs/english/annual-shakespeares-birthday-celebration",
+      "error": ""
+    },
+    {
+      "url": "https://www.anselm.edu/about/anselmian-hub/events/2026-blessing-hands/january-31st-2026-0930am",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.anselm.edu/about/anselmian-hub/events/2026-blessing-hands/january-31st-2026-0930am",
+      "error": ""
+    },
+    {
+      "url": "https://www.anselm.edu/about/nursing",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.anselm.edu/about/nursing",
+      "error": ""
+    },
+    {
+      "url": "https://www.anselm.edu/about/information/parents-families/new-student-orientation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.anselm.edu/about/information/parents-families/new-student-orientation",
+      "error": ""
+    },
+    {
+      "url": "https://www.anselm.edu/about/information/prospective-students/discover-saint-anselm/why-apply",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.anselm.edu/about/information/prospective-students/discover-saint-anselm/why-apply",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

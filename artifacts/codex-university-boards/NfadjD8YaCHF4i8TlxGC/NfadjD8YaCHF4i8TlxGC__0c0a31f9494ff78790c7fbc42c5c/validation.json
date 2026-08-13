@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.fargodome.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fargodome.com/",
+      "error": ""
+    },
+    {
+      "url": "https://ndsu.hangryjoes.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ndsu.hangryjoes.com/",
+      "error": ""
+    },
+    {
+      "url": "https://bisonblockfargo.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bisonblockfargo.com/",
+      "error": ""
+    },
+    {
+      "url": "https://brunoscoffee.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://brunoscoffee.com/",
+      "error": ""
+    },
+    {
+      "url": "https://fargotheatre.org/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fargotheatre.org/about/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fargoparks.com/parks-and-facilities/broadway-square",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fargoparks.com/parks-and-facilities/broadway-square",
+      "error": ""
+    },
+    {
+      "url": "https://fargond.gov/city-government/departments/library/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fargond.gov/city-government/departments/library/about",
+      "error": ""
+    },
+    {
+      "url": "https://visitfargo.com/attractions/arts_theatre/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visitfargo.com/attractions/arts_theatre/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fargoparks.com/parks-and-facilities/trollwood-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fargoparks.com/parks-and-facilities/trollwood-park",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.lawrence.edu/library/spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lawrence.edu/academics/advising-support/library/spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lawrence.edu/academics/advising-support/library/spaces/makerspace/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lawrence.edu/academics/advising-support/library/spaces/makerspace/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 2,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

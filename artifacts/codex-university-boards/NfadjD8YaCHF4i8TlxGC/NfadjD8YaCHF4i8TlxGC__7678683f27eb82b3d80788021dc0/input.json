@@ -1,0 +1,40 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "FZRaWoHopw0Trbxv8GFJ",
+    "schoolName": "Harding University",
+    "shortSchoolName": "Harding University",
+    "townName": "Searcy",
+    "state": "AR",
+    "countryCode": "US",
+    "unitId": "107044",
+    "website": "https://www.harding.edu/",
+    "latitude": 35.247386,
+    "longitude": -91.726143,
+    "heroUrl": "https://www.harding.edu/_files/img/16-9_standard/05-02-2023-9885-1.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=harding.edu&sz=256"
+  },
+  "template": {
+    "id": "college-campus-tour-skips",
+    "version": "1.0",
+    "titlePattern": "What the Campus Tour Skips: {count} Places Students Share With Each Other",
+    "editorialBrief": "Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.",
+    "researchQueries": [
+      "student favorite campus places",
+      "campus map student spaces",
+      "student newspaper campus places"
+    ],
+    "count": 10,
+    "icon": "style",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place",
+      "study_space"
+    ],
+    "freshnessDays": 365
+  },
+  "exact_title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+  "excluded_subjects": [],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

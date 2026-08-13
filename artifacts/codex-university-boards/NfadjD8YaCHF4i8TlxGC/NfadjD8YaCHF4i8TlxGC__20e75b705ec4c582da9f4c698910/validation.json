@@ -1,0 +1,96 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://locations.tacobell.com/oh/ada.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/oh/ada.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.hccba.com/divisions/tourism/places-to-sip",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hccba.com/divisions/tourism/places-to-sip",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.subway.com/united-states/oh/ada",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.subway.com/united-states/oh/ada",
+      "error": ""
+    },
+    {
+      "url": "https://www.adapadrones.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.adapadrones.com/",
+      "error": ""
+    },
+    {
+      "url": "https://adatheatre.com/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://adatheatre.com/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.elcampomexicanrestaurant.com/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elcampomexicanrestaurant.com/contact",
+      "error": ""
+    },
+    {
+      "url": "https://www.adalibrary.org/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.adalibrary.org/contact",
+      "error": ""
+    },
+    {
+      "url": "https://www.adaoh.gov/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.adaoh.gov/",
+      "error": ""
+    },
+    {
+      "url": "https://www.adaoh.gov/sites/default/files/2024-06/7.2.24_combined.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.adaoh.gov/sites/default/files/2024-06/7.2.24_combined.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.wilson.com/en-us/explore/football/ada-ohio-factory",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.wilson.com/en-us/explore/football/ada-ohio-factory",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Subway",
+    "Ada Padrone's"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

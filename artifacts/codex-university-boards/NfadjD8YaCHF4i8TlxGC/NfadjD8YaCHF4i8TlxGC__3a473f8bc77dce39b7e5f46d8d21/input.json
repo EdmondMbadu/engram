@@ -1,0 +1,67 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "UBDdVoMV7KeCORWML3Jg",
+    "schoolName": "Towson University",
+    "shortSchoolName": "Towson University",
+    "townName": "Towson",
+    "state": "MD",
+    "countryCode": "US",
+    "unitId": "164076",
+    "website": "https://www.towson.edu/",
+    "latitude": 39.393622,
+    "longitude": -76.611164,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/b/b2/Towson_University_seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=towson.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "Tiger Express",
+    "The Den @ PAWS",
+    "Taco Bell",
+    "2AM Project",
+    "7-Eleven",
+    "Underground Pizza Company Towson",
+    "MOD Pizza Towson Station",
+    "Seasons Pizza Towson",
+    "Papa Johns Pizza York Rd",
+    "Domino's Pizza",
+    "Study Lounge",
+    "Group Study Spaces",
+    "Presentation Practice Room",
+    "Data Studio",
+    "Graduate Reading Room",
+    "Quiet Study Room CK200C",
+    "Interfaith Meditation Room",
+    "Special Collections & University Archives",
+    "University Union",
+    "Burdick Turf Fields",
+    "Absolute Quiet Room",
+    "Zoom and Study Pods",
+    "Fifth-Floor Quiet Study Workstations",
+    "Fifth-Floor Study Cubicles",
+    "Fourth-Floor Quiet Study Zone",
+    "Individual Semi-Private Study Cubbies",
+    "Second-Floor Reservable Study Rooms"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

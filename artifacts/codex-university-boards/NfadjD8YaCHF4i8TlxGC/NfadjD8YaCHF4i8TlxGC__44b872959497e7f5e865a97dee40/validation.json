@@ -1,0 +1,66 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "The Graham Center source is FIU’s 2023–2024 graduate catalog; confirm building access conditions on the day of use.",
+    "1 source URL check(s) were inconclusive and need editorial confirmation.",
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://dasa.fiu.edu/all-departments/survival-guide/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dasa.fiu.edu/all-departments/survival-guide/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://dasa.fiu.edu/all-departments/student-athlete-academic-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dasa.fiu.edu/all-departments/student-athlete-academic-center/",
+      "error": ""
+    },
+    {
+      "url": "https://digitalcommons.fiu.edu/nanna/record/2188/files/2023__2024_GRAD_PDF.pdf?registerDownload=1&version=1&withMetadata=0&withWatermark=0",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://digitalscholarship.fiu.edu/nanna/record/2188/files/2023__2024_GRAD_PDF.pdf?registerDownload=1&version=1&withMetadata=0&withWatermark=0",
+      "error": ""
+    },
+    {
+      "url": "https://law.fiu.edu/about/law-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://law.fiu.edu/about/law-library/",
+      "error": ""
+    },
+    {
+      "url": "https://lacic.fiu.edu/about/location.cfm",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://lacic.fiu.edu/about/location.cfm",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://dss.fiu.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dss.fiu.edu/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Steven and Dorothea Green Library",
+    "Glenn Hubert Library"
+  ],
+  "sourceCount": 6,
+  "generationScore": 90,
+  "generationGrade": "A"
+}

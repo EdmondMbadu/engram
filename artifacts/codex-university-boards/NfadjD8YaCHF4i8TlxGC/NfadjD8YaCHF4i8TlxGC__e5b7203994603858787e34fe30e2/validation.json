@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://arts-sciences.buffalo.edu/art/research/department-galleries/exhibitions-archive/2024-2025-Exhibitions/circulation-issues.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arts-sciences.buffalo.edu/art/research/department-galleries/exhibitions-archive/2024-2025-Exhibitions/circulation-issues.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.buffalo.edu/news/releases/2008/04/9320.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.buffalo.edu/news/releases/2008/04/9320.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.sciencebuff.org/wp-content/uploads/2026/02/Newsletter-2026_MarApr_8.5x11.FINAL_.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sciencebuff.org/wp-content/uploads/2026/02/Newsletter-2026_MarApr_8.5x11.FINAL_.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://buffalowaterfront.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://buffalowaterfront.com/",
+      "error": ""
+    },
+    {
+      "url": "https://buffalowaterfront.com/outer-harbor",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://buffalowaterfront.com/outer-harbor",
+      "error": ""
+    },
+    {
+      "url": "https://buffalowaterfront.com/venue/outer-harbor-bike-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://buffalowaterfront.com/venue/outer-harbor-bike-park",
+      "error": ""
+    },
+    {
+      "url": "https://buffalowaterfront.com/events/the-lakeside-spoke-social",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://buffalowaterfront.com/events/the-lakeside-spoke-social",
+      "error": ""
+    },
+    {
+      "url": "https://buffalowaterfront.com/events/music-is-art",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://buffalowaterfront.com/events/music-is-art",
+      "error": ""
+    },
+    {
+      "url": "https://www.steelplantmuseumwny.org/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.steelplantmuseumwny.org/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.buffalolib.org/sites/default/files/users/dcteam/new-releases/2026/Press_Release_-_AP_Gorny_FINAL.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.buffalolib.org/sites/default/files/users/dcteam/new-releases/2026/Press_Release_-_AP_Gorny_FINAL.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

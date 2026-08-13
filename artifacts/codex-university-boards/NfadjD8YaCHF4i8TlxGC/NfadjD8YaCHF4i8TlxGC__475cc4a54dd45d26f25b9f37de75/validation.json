@@ -1,0 +1,96 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.farmingdale.edu/business/vis-comm/gallery.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.farmingdale.edu/business/vis-comm/gallery.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.farmingdale.edu/library/hours.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.farmingdale.edu/library/hours.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.farmingdale.edu/auxiliary-service-corporation/campus-dining.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.farmingdale.edu/auxiliary-service-corporation/campus-dining.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.farmingdale.edu/student-activities/gettinginvolved.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.farmingdale.edu/student-activities/gettinginvolved.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.americanairpowermuseum.com/visit-us/general-admission-hours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.americanairpowermuseum.com/visit-us/general-admission-hours/",
+      "error": ""
+    },
+    {
+      "url": "https://parks.ny.gov/visit/state-parks/bethpage-state-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://parks.ny.gov/visit/state-parks/bethpage-state-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.farmingdalemusiconmain.com/about-music-on-main.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.farmingdalemusiconmain.com/about-music-on-main.html",
+      "error": ""
+    },
+    {
+      "url": "https://farmingdalebid.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://farmingdalebid.com/",
+      "error": ""
+    },
+    {
+      "url": "https://blogs.farmingdale.edu/sites/campus-times/2016/04/25/teaching-gardens-dedicated-to-horticulturist-robert-f-ench-60/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://blogs.farmingdale.edu/sites/campus-times/2016/04/25/teaching-gardens-dedicated-to-horticulturist-robert-f-ench-60/",
+      "error": ""
+    },
+    {
+      "url": "https://map.farmingdale.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://map.farmingdale.edu/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Thomas D. Greenley Library",
+    "Campus Center"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

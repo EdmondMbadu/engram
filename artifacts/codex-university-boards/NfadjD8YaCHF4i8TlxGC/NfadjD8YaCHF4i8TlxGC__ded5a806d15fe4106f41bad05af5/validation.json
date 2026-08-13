@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://umd.edu/about/history",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://umd.edu/about/history",
+      "error": ""
+    },
+    {
+      "url": "https://umd.edu/about/landmarks",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://umd.edu/about/landmarks",
+      "error": ""
+    },
+    {
+      "url": "https://alumni.umd.edu/networks/mbook",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://alumni.umd.edu/get-involved/mbook",
+      "error": ""
+    },
+    {
+      "url": "https://umd.edu/about/songs",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://umd.edu/about/songs",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

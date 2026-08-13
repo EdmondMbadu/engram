@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.pa.gov/agencies/dcnr/recreation/where-to-go/state-parks/find-a-park/frances-slocum-state-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pa.gov/agencies/dcnr/recreation/where-to-go/state-parks/find-a-park/frances-slocum-state-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.pa.gov/agencies/dcnr/recreation/where-to-go/state-parks/find-a-park/nescopeck-state-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pa.gov/agencies/dcnr/recreation/where-to-go/state-parks/find-a-park/nescopeck-state-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.pa.gov/agencies/dcnr/recreation/where-to-go/scenic-features/natural-areas",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pa.gov/agencies/dcnr/recreation/where-to-go/scenic-features/natural-areas",
+      "error": ""
+    },
+    {
+      "url": "https://www.pa.gov/agencies/dcnr/recreation/where-to-go/scenic-features/geologic-features",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pa.gov/agencies/dcnr/recreation/where-to-go/scenic-features/geologic-features",
+      "error": ""
+    },
+    {
+      "url": "https://www.misericordia.edu/life-at-mu/officeformissionministryandservice/liturgical-ministries",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.misericordia.edu/life-at-mu/officeformissionministryandservice/liturgical-ministries",
+      "error": ""
+    },
+    {
+      "url": "https://www.misericordia.edu/campus-community/pauly-friedman-art-gallery/plan-your-visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.misericordia.edu/campus-community/pauly-friedman-art-gallery/plan-your-visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.misericordia.edu/campus-community/pauly-friedman-art-gallery/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.misericordia.edu/campus-community/pauly-friedman-art-gallery/about",
+      "error": ""
+    },
+    {
+      "url": "https://www.misericordia.edu/academics/library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.misericordia.edu/academics/library",
+      "error": ""
+    },
+    {
+      "url": "https://www.misericordia.edu/athletics-wellness-homepage/facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.misericordia.edu/athletics-wellness-homepage/facilities",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

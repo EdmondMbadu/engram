@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.gonzaga.edu/student-life/arts-culture/crosby-museum",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.gonzaga.edu/student-life/arts-culture/crosby-museum",
+      "error": ""
+    },
+    {
+      "url": "https://static.spokanecity.org/documents/parks/manito/manito-park-walking-tour-brochure-2025-08-22.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://static.spokanecity.org/documents/parks/manito/manito-park-walking-tour-brochure-2025-08-22.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://my.spokanecity.org/parksrec/news/2021/05/06/riverfront-ice-age-floods-playground-north-bank-open-may-21/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://my.spokanecity.org/parksrec/news/2021/05/06/riverfront-ice-age-floods-playground-north-bank-open-may-21/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

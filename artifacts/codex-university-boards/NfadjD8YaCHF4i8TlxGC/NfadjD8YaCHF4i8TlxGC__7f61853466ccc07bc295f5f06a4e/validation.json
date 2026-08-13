@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.candrski.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.candrski.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.theroottrackside.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.theroottrackside.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/alumni/homecoming/resources/on-campus/things-to-do/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/alumni/homecoming/resources/on-campus/things-to-do/",
+      "error": ""
+    },
+    {
+      "url": "https://mediterraneandeli.com/location",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mediterraneandeli.com/location",
+      "error": ""
+    },
+    {
+      "url": "https://www.linkedin.com/company/all-that-jas",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.linkedin.com/company/all-that-jas",
+      "error": ""
+    },
+    {
+      "url": "https://www.smittysicecream.com/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smittysicecream.com/about",
+      "error": ""
+    },
+    {
+      "url": "https://s3.amazonaws.com/snwceomedia/enn/7b1bb398-baa4-4261-91b7-82ddd85f3bb2.original.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://s3.amazonaws.com/snwceomedia/enn/7b1bb398-baa4-4261-91b7-82ddd85f3bb2.original.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/admissions/graduate/student-experience/elon-campus/shopping/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/admissions/graduate/student-experience/elon-campus/shopping/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/partners-program/proud-elon-partners/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/partners-program/proud-elon-partners/",
+      "error": ""
+    },
+    {
+      "url": "https://eloncdn.blob.core.windows.net/eu3/sites/811/2024/09/Building-Legend-June-2024.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://eloncdn.blob.core.windows.net/eu3/sites/811/2024/09/Building-Legend-June-2024.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

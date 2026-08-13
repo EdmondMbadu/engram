@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://northmuseum.org/plan-your-trip/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://northmuseum.org/plan-your-trip/",
+      "error": ""
+    },
+    {
+      "url": "https://www.cityoflancasterpa.gov/services/parks/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cityoflancasterpa.gov/services/parks/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lancasterhistory.org/visit/directions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lancasterhistory.org/visit/directions/",
+      "error": ""
+    },
+    {
+      "url": "https://lancasterpubliclibrary.org/lancaster-city-branch/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lancasterpubliclibrary.org/lancaster-city-branch/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lancasterstormers.com/stadium/directions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lancasterstormers.com/stadium/directions/",
+      "error": ""
+    },
+    {
+      "url": "https://artsmu.com/plan-your-visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://artsmu.com/plan-your-visit/",
+      "error": ""
+    },
+    {
+      "url": "https://thefulton.org/contact/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thefulton.org/contact/",
+      "error": ""
+    },
+    {
+      "url": "https://centralmarketlancaster.com/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://centralmarketlancaster.com/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.discoverlancaster.com/directory/demuth-museum-of-art/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.discoverlancaster.com/directory/demuth-museum-of-art/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.pennstatehalalguys.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.medibeautyklinik.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.sherhalalgyro.com/location",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sherhalalgyro.com/location",
+      "error": ""
+    },
+    {
+      "url": "https://locations.raisingcanes.com/pa/state-college/228-east-college-avenue",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.raisingcanes.com/pa/state-college/228-east-college-avenue",
+      "error": ""
+    },
+    {
+      "url": "https://maps.apple.com/place?place-id=I28A4AFB8A808E5F4",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://maps.apple.com/place?place-id=I28A4AFB8A808E5F4",
+      "error": ""
+    },
+    {
+      "url": "https://yallahtaco.com/tags/dinner",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://yallahtaco.com/tags/dinner",
+      "error": ""
+    },
+    {
+      "url": "https://www.canyonpizzapsu.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.canyonpizzapsu.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.bennyleonespizza.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bennyleonespizza.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/pa/state-college/1909-north-atherton-street.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/pa/state-college/1909-north-atherton-street.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.papajohns.com/united-states/pa/16803/state-college/2110-n-atherton-st/pizza-near-me",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.papajohns.com/united-states/pa/16803/state-college/2110-n-atherton-st/pizza-near-me",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/pa/state-college/2821-e-college-ave/4428.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/pa/state-college/2821-e-college-ave/4428.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

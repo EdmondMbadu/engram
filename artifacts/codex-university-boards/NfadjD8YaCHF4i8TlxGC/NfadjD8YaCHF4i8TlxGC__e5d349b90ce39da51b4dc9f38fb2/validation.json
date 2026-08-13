@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://m.csusm.edu/default/weeks_of_welcome/detail?feed=weeks_of_welcome&id=c11fc1d8-fb78-5aef-b999-99d7f334030d",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://m.csusm.edu/default/weeks_of_welcome/detail?feed=weeks_of_welcome&id=c11fc1d8-fb78-5aef-b999-99d7f334030d",
+      "error": ""
+    },
+    {
+      "url": "https://m.csusm.edu/default/weeks_of_welcome/detail?feed=weeks_of_welcome&id=704eae97-1897-5006-95bf-2e5bb80e3fa3",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://m.csusm.edu/default/weeks_of_welcome/detail?feed=weeks_of_welcome&id=704eae97-1897-5006-95bf-2e5bb80e3fa3",
+      "error": ""
+    },
+    {
+      "url": "https://news.csusm.edu/weeks-of-welcome-2016/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.csusm.edu/weeks-of-welcome-2016/",
+      "error": ""
+    },
+    {
+      "url": "https://news.csusm.edu/building-game-atmosphere/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.csusm.edu/building-game-atmosphere/",
+      "error": ""
+    },
+    {
+      "url": "https://news.csusm.edu/basketball-teams-kick-off-season-in-style-at-cougar-madness/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.csusm.edu/basketball-teams-kick-off-season-in-style-at-cougar-madness/",
+      "error": ""
+    },
+    {
+      "url": "https://news.csusm.edu/celebrating-on-campus-class-of-2011-welcomes-graduation-ceremonies-back-to-campus/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.csusm.edu/celebrating-on-campus-class-of-2011-welcomes-graduation-ceremonies-back-to-campus/",
+      "error": ""
+    },
+    {
+      "url": "https://news.csusm.edu/more-than-1000-graduate-as-fall-commencement-moves-to-new-venue/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.csusm.edu/more-than-1000-graduate-as-fall-commencement-moves-to-new-venue/",
+      "error": ""
+    },
+    {
+      "url": "https://news.csusm.edu/science-to-engage-thousands-at-annual-super-stem-saturday/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.csusm.edu/science-to-engage-thousands-at-annual-super-stem-saturday/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

@@ -1,0 +1,85 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Several cards are student services or student-access spaces rather than public social venues; access requirements are stated in each card."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.holyfamily.edu/student-experience/clubs-activities/esports",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.holyfamily.edu/student-experience/clubs-activities/esports",
+      "error": ""
+    },
+    {
+      "url": "https://www.holyfamily.edu/mfa/our-community",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.holyfamily.edu/mfa/our-community",
+      "error": ""
+    },
+    {
+      "url": "https://www.holyfamily.edu/tigertutoring/tutorcom-resources",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.holyfamily.edu/tigertutoring/tutorcom-resources",
+      "error": ""
+    },
+    {
+      "url": "https://www.holyfamily.edu/academics/library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.holyfamily.edu/academics/library",
+      "error": ""
+    },
+    {
+      "url": "https://www.holyfamily.edu/student-experience/center-wellness-and-spirituality",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.holyfamily.edu/student-experience/center-wellness-and-spirituality",
+      "error": ""
+    },
+    {
+      "url": "https://www.holyfamily.edu/counseling-services",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.holyfamily.edu/counseling-services",
+      "error": ""
+    },
+    {
+      "url": "https://www.holyfamily.edu/student-experience/health-wellness",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.holyfamily.edu/student-experience/health-wellness",
+      "error": ""
+    },
+    {
+      "url": "https://www.holyfamily.edu/student-experience/living-campus/residence-halls",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.holyfamily.edu/student-experience/living-campus/residence-halls",
+      "error": ""
+    },
+    {
+      "url": "https://www.holyfamily.edu/newtown-west-shuttle-schedule",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.holyfamily.edu/newtown-west-shuttle-schedule",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

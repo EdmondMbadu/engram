@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://tacoselkingks.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://tacoselkingks.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hawaiianbros.com/locations/lawrence",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hawaiianbros.com/locations/lawrence",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/kansas/lawrence/832-iowa-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/kansas/lawrence/832-iowa-street",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ks/lawrence/1220-w-6th-st.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ks/lawrence/1220-w-6th-st.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ks/lawrence/1408-w-23rd-st.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ks/lawrence/1408-w-23rd-st.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ks/lawrence/4721-bauer-farm-drive.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ks/lawrence/4721-bauer-farm-drive.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/ks/lawrence/523-w-23rd-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/ks/lawrence/523-w-23rd-st",
+      "error": ""
+    },
+    {
+      "url": "https://locations.papajohns.com/united-states/ks/66044/lawrence/918-mississippi-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.papajohns.com/united-states/ks/66044/lawrence/918-mississippi-st",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jimmyjohns.com/ks/lawrence/delivery-0486.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jimmyjohns.com/ks/lawrence/delivery-0486.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

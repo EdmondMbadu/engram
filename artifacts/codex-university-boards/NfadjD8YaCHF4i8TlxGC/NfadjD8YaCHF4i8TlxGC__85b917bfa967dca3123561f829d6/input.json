@@ -1,0 +1,69 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "kcnIbSnVvSpcln08hSQs",
+    "schoolName": "Smith College",
+    "shortSchoolName": "Smith College",
+    "townName": "Northampton",
+    "state": "MA",
+    "countryCode": "US",
+    "unitId": "167835",
+    "website": "https://www.smith.edu/",
+    "latitude": 42.318111,
+    "longitude": -72.638097,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/1/1d/Smith_College_seal.svg/250px-Smith_College_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=smith.edu&sz=256"
+  },
+  "template": {
+    "id": "college-campus-tour-skips",
+    "version": "1.0",
+    "titlePattern": "What the Campus Tour Skips: {count} Places Students Share With Each Other",
+    "editorialBrief": "Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.",
+    "researchQueries": [
+      "student favorite campus places",
+      "campus map student spaces",
+      "student newspaper campus places"
+    ],
+    "count": 10,
+    "icon": "style",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place",
+      "study_space"
+    ],
+    "freshnessDays": 365
+  },
+  "exact_title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+  "excluded_subjects": [
+    "Smith College Interactive Campus Map",
+    "Paradise Pond",
+    "Lyman Plant House & Conservatory",
+    "Campus Arboretum and Gardens",
+    "Smith College Museum of Art",
+    "Neilson Library",
+    "Smith College Campus Center",
+    "Chapin Lawn",
+    "Smith College Music Event at Sage Hall",
+    "Theatre 14",
+    "Amanouz Café",
+    "Teapot",
+    "Joe's Cafe",
+    "Domino's Pizza — 241 King Street",
+    "Taco Bell — 203 King Street",
+    "Stop & Shop — 228 King Street",
+    "Taco Bell — 348 Russell Street",
+    "Taco Bell — 2199 Northampton Street",
+    "Packard's",
+    "Campus Pizza",
+    "Campus Arboretum",
+    "Capen Garden",
+    "Happy Chace 1928 Garden",
+    "Japanese Garden",
+    "Systematics Garden",
+    "Smith College Music Department events",
+    "Hess Performance Stage",
+    "Forbes Library Neighborhood Free Book Boxes"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.wendys.com/united-states/il/bloomington/1522-w-market-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/il/bloomington/1522-w-market-street",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dennys.com/il/bloomington/9513-breakfast",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dennys.com/il/bloomington/9513-breakfast",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dennys.com/il/normal/248790",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dennys.com/il/normal/248790",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/il/bloomington/1702-w--market-st.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/il/bloomington/1702-w--market-st.html",
+      "error": ""
+    },
+    {
+      "url": "https://order.toasttab.com/online/wesley-s-grill-1804-s-hershey-rd-10",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://order.toasttab.com/online/wesley-s-grill-1804-s-hershey-rd-10",
+      "error": ""
+    },
+    {
+      "url": "https://tobinspizza.com/menu/tobins",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://tobinspizza.com/file/10/Table%20Menu_3-24-23.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/illinois/normal/1910-east-college-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/illinois/normal/1910-east-college-ave",
+      "error": ""
+    },
+    {
+      "url": "https://eatlocalbn.com/places/insomnia-cookies/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://eatlocalbn.com/places/insomnia-cookies/",
+      "error": ""
+    },
+    {
+      "url": "https://order.online/en-US/store/DPDOUGH-26144212",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://order.online/en-US/store/DPDOUGH-26144212",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/il/bloomington/2507-e-oakland-ave/6393.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/il/bloomington/2507-e-oakland-ave/6393.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

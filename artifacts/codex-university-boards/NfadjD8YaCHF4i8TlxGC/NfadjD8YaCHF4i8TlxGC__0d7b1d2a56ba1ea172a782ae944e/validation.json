@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://nazshalal.com/stores/nazs-halal-food-annapolis/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://nazshalal.com/stores/nazs-halal-food-annapolis/",
+      "error": ""
+    },
+    {
+      "url": "https://www.pizzabolis.com/locations/annapolis/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pizzabolis.com/locations/annapolis/",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/maryland/annapolis/914-bay-ridge-rd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/maryland/annapolis/914-bay-ridge-rd",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/maryland/annapolis/77-forest-plaza",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/maryland/annapolis/77-forest-plaza",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/md/annapolis/1941-west-st/103.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/md/annapolis/1941-west-st/103.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/md/annapolis/1803-west-st.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/md/annapolis/1803-west-st.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/md/annapolis/1949-west-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/md/annapolis/1949-west-st",
+      "error": ""
+    },
+    {
+      "url": "https://eltorobravomexicanmd.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://eltorobravomexicanmd.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.broadneckgrill.com/directions",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.broadneckgrill.com/directions",
+      "error": ""
+    },
+    {
+      "url": "https://www.hilton.com/en/hotels/anpdtdt-doubletree-annapolis/dining/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.hilton.com/en/hotels/anpdtdt-doubletree-annapolis/dining/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

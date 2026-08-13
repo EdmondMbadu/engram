@@ -1,0 +1,61 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Several library room-access details come from Purdue’s legacy “Where to Study on Campus” page; each applicable card directs visitors to verify current hours and reservation rules."
+  ],
+  "reachability": [
+    {
+      "url": "https://archives.lib.purdue.edu/agents/corporate_entities/727",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://archives.lib.purdue.edu/agents/corporate_entities/727",
+      "error": ""
+    },
+    {
+      "url": "https://webapps.lib.purdue.edu/covid-19/pages/where-to-study-on-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://webapps.lib.purdue.edu/covid-19/pages/where-to-study-on-campus",
+      "error": ""
+    },
+    {
+      "url": "https://lib.purdue.edu/wp-content/uploads/2024/10/LIB2024.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.purdue.edu/wp-content/uploads/2024/10/LIB2024.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://housing.purdue.edu/my-housing/options/residence-halls/shreve.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://housing.purdue.edu/my-housing/options/residence-halls/shreve.html",
+      "error": ""
+    },
+    {
+      "url": "https://stories.purdue.edu/restoring-purdues-university-hall-as-a-campus-crown-jewel/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stories.purdue.edu/restoring-purdues-university-hall-as-a-campus-crown-jewel/",
+      "error": ""
+    },
+    {
+      "url": "https://ag.purdue.edu/department/biochem/academics/current-students-undergrad-program/academic-assistance-and-student-resources.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ag.purdue.edu/department/biochem/academics/current-students-undergrad-program/academic-assistance-and-student-resources.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

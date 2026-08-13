@@ -1,0 +1,73 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.pomona.edu/new-students/orientation/families",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pomona.edu/new-students/orientation/families",
+      "error": ""
+    },
+    {
+      "url": "https://catalog.pomona.edu/information/campus/facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.pomona.edu/information/campus/facilities",
+      "error": ""
+    },
+    {
+      "url": "https://www.pomona.edu/timeline/1970s/1975",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pomona.edu/timeline/1970s/1975",
+      "error": ""
+    },
+    {
+      "url": "https://www.pomona.edu/timeline/1950s/1958",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pomona.edu/timeline/1950s/1958",
+      "error": ""
+    },
+    {
+      "url": "https://www.pomona.edu/new-students/orientation/orientation-adventure",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pomona.edu/new-students/orientation/orientation-adventure",
+      "error": ""
+    },
+    {
+      "url": "https://www.pomona.edu/life-at-pomona/campus-events",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pomona.edu/life-at-pomona/campus-events",
+      "error": ""
+    },
+    {
+      "url": "https://www.claremontfarmersmarket.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.claremontfarmersmarket.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Marston Quadrangle",
+    "Walker Wall",
+    "Benton Museum of Art at Pomona College"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

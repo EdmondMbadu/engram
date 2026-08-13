@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.pitzer.edu/student-life/arts-culture",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pitzer.edu/student-life/arts-culture",
+      "error": ""
+    },
+    {
+      "url": "https://www.pitzer.edu/documents/pitzer-college-viewbook-2025-2026",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pitzer.edu/documents/pitzer-college-viewbook-2025-2026",
+      "error": ""
+    },
+    {
+      "url": "https://www.pitzer.edu/murals",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pitzer.edu/murals",
+      "error": ""
+    },
+    {
+      "url": "https://www.pitzer.edu/offices/new-student-orientation-office/orientation-adventures",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pitzer.edu/offices/new-student-orientation-office/orientation-adventures",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

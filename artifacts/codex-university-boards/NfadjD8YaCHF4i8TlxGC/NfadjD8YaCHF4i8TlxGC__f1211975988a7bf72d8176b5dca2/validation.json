@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.reed.edu/MALS/instructional_resources/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.reed.edu/MALS/instructional_resources/",
+      "error": ""
+    },
+    {
+      "url": "https://library.reed.edu/facilities.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.reed.edu/facilities.html",
+      "error": ""
+    },
+    {
+      "url": "https://library.reed.edu/about/maps.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.reed.edu/about/maps.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.reed.edu/language_resources/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.reed.edu/language_resources/",
+      "error": ""
+    },
+    {
+      "url": "https://library.reed.edu/imc/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.reed.edu/imc/",
+      "error": ""
+    },
+    {
+      "url": "https://library.reed.edu/parc/rooms.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.reed.edu/parc/rooms.html",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Eric V. Hauser Memorial Library"
+  ],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

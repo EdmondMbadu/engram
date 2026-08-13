@@ -1,0 +1,71 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "MrY2YCAL8TweNAtA0uj7",
+    "schoolName": "St Olaf College",
+    "shortSchoolName": "St Olaf College",
+    "townName": "Northfield",
+    "state": "MN",
+    "countryCode": "US",
+    "unitId": "174844",
+    "website": "https://wp.stolaf.edu/",
+    "latitude": 44.461529,
+    "longitude": -93.182039,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/8/8b/St._Olaf_College_seal.svg/250px-St._Olaf_College_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=wp.stolaf.edu&sz=256"
+  },
+  "template": {
+    "id": "college-campus-tour-skips",
+    "version": "1.0",
+    "titlePattern": "What the Campus Tour Skips: {count} Places Students Share With Each Other",
+    "editorialBrief": "Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.",
+    "researchQueries": [
+      "student favorite campus places",
+      "campus map student spaces",
+      "student newspaper campus places"
+    ],
+    "count": 10,
+    "icon": "style",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place",
+      "study_space"
+    ],
+    "freshnessDays": 365
+  },
+  "exact_title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+  "excluded_subjects": [
+    "Buntrock Commons Information Desk",
+    "Fireside Lounge",
+    "Rolvaag Memorial Library",
+    "Flaten Art Museum",
+    "Boe Memorial Chapel",
+    "St. Olaf Rock",
+    "Norway Valley",
+    "Big Pond Loop",
+    "Big Ole",
+    "St. Olaf Natural Lands",
+    "Reference Room",
+    "DiSCO",
+    "Ole’s Cave",
+    "Rolvaag Library First Floor",
+    "Science Library",
+    "Tomson Hall Classrooms",
+    "Holland Hall Classrooms",
+    "Boe Undercroft",
+    "Halvorson Music Library",
+    "Hong Kierkegaard Library",
+    "The Lion’s Pause",
+    "The Cave",
+    "Carbone’s Pizza Northfield",
+    "Taco Bell",
+    "Culver’s of Northfield",
+    "Pizza Hut",
+    "Casey’s",
+    "Rosemary Italian Kitchen",
+    "Stav Hall",
+    "The Cage"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

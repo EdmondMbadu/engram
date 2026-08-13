@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://nolalibrary.org/2026/01/05/new-year-new-hobbies/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://nolalibrary.org/2026/01/05/new-year-new-hobbies/",
+      "error": ""
+    },
+    {
+      "url": "https://nolalibrary.org/in-the-library/reach-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://nolalibrary.org/in-the-library/reach-center/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 2,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

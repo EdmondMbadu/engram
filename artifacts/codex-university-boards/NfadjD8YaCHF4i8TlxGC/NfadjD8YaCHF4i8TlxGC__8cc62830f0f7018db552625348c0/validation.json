@@ -1,0 +1,78 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Hours can change during university breaks, holidays, or operational disruptions; verify the direct source before departure.",
+    "Some off-campus choices require driving or another safe transportation plan from Butler University."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.butler.edu/student-life/orientation/orientation-faq/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.butler.edu/student-life/orientation/orientation-faq/",
+      "error": ""
+    },
+    {
+      "url": "https://broadripple.theoriginalpizzaking.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://broadripple.theoriginalpizzaking.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/in/indianapolis/5509-n-keystone",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/in/indianapolis/5509-n-keystone",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/in/indianapolis/2245-n-meridian-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/in/indianapolis/2245-n-meridian-st",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/in/indianapolis/6165-n-keystone-ave-.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/in/indianapolis/6165-n-keystone-ave-.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/in/indianapolis/2809-east-38th-street.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/in/indianapolis/2809-east-38th-street.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.steaknshake.com/locations/in-indianapolis-michigan-road/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.steaknshake.com/locations/in-indianapolis-michigan-road/",
+      "error": ""
+    },
+    {
+      "url": "https://www.steaknshake.com/locations/in-indianapolis-west-maryland/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.steaknshake.com/locations/in-indianapolis-west-maryland/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

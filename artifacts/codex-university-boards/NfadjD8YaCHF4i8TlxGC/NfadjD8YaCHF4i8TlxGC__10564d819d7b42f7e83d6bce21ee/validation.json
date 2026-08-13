@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://ucorp.sfsu.edu/convenience-stores",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ucorp.sfsu.edu/convenience-stores",
+      "error": ""
+    },
+    {
+      "url": "https://locations.papajohns.com/united-states/ca/94132/san-francisco/-69-cambon-drive",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.papajohns.com/united-states/ca/94132/san-francisco/-69-cambon-drive",
+      "error": ""
+    },
+    {
+      "url": "https://shakeshack.com/location/stonestown-galleria-ca",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://shakeshack.com/location/stonestown-galleria-ca",
+      "error": ""
+    },
+    {
+      "url": "https://www.round1usa.com/locations/059stg",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.round1usa.com/locations/059stg",
+      "error": ""
+    },
+    {
+      "url": "https://www.marugameudon.com/locations/stonestown/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marugameudon.com/locations/stonestown/",
+      "error": ""
+    },
+    {
+      "url": "https://www.originaljoes.com/westlake/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.originaljoes.com/westlake/",
+      "error": ""
+    },
+    {
+      "url": "https://ucorp.sfsu.edu/food-vendors",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ucorp.sfsu.edu/food-vendors",
+      "error": ""
+    },
+    {
+      "url": "https://www.tangbarstonestown.com/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.tangbarstonestown.com/contact",
+      "error": ""
+    },
+    {
+      "url": "https://blondiespizza.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://blondiespizza.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lesoleilsf.com/reservationsstonestown",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lesoleilsf.com/reservationsstonestown",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

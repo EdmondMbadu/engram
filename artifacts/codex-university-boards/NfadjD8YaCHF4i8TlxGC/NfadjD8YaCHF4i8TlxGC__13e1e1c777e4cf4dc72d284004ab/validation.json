@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.lib.ncsu.edu/spaces/quiet-reading-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ncsu.edu/spaces/quiet-reading-room",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ncsu.edu/hunt-library-map/directory",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ncsu.edu/hunt-library-map/directory",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ncsu.edu/hunt/map",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ncsu.edu/hunt/map",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ncsu.edu/spaces/dataspace",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ncsu.edu/spaces/dataspace",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ncsu.edu/do/3d-printing",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ncsu.edu/do/3d-printing",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

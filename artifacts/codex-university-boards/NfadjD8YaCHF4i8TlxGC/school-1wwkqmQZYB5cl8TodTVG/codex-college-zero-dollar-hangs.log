@@ -1,0 +1,304 @@
+Reading additional input from stdin...
+2026-08-13T07:21:54.432319Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9ff-0e9f-7293-8d35-003c024ab135.1786605670047514000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:21:54.457518Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9ff-0ec5-70e0-9cf4-15e759c732bc.1786605670085722000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9ff-bb8a-73e0-9335-cfee06b0df15
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"1wwkqmQZYB5cl8TodTVG","schoolName":"Gonzaga University","shortSchoolName":"Gonzaga University","townName":"Spokane","state":"WA","countryCode":"US","website":"https://www.gonzaga.edu/","latitude":47.666531,"longitude":-117.400625},"templates":[{"id":"college-zero-dollar-hangs","version":"1.0","titlePattern":"Zero Dollars: {count} Hangs That Cost Nothing","editorialBrief":"Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.","researchQueries":["free student activities campus","free campus spaces students","free public places near campus"],"count":10,"icon":"money_off","primarySubjectType":"activity","allowedSubjectTypes":["activity","place"],"freshnessDays":180,"exactTitle":"Zero Dollars: 10 Hangs That Cost Nothing"}]}
+2026-08-13T07:21:54.494437Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9ff-0e9b-7d23-be35-75ddb42044c2.1786605670044123000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:21:54.689184Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9ff-0e98-7531-9dd9-8ff78b6afacc.1786605670041386000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:21:54.743473Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:21:54.758516Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:21:54.858468Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9ff-0e98-7431-baba-84cc731f40ec.1786605670041187000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:21:54.950138Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9ff-0e9e-7c93-89d9-6fd42395008c.1786605670047236000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:21:55.073910Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9ff-0e98-7543-8368-af04eedf9b6e.1786605670040478000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{"complete":false,"school_name":"Gonzaga University","town_name":"Spokane","boards":[{"complete":false,"school_name":"Gonzaga University","town_name":"Spokane","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"Researching ten independently documented, no-purchase activities and places.","icon":"money_off","cards": 
+
+[
+
+  {
+    "subject_id": "research-in-progress",
+    "subject_type": "activity",
+    "entity_name": "Research in progress",
+    "title": "Verifying direct sources",
+    "subtitle": "Gonzaga University and Spokane",
+    "notes": "Checking official access and admission language so every selection has direct evidence that it costs nothing.",
+    "short_summary": "Current sources are being verified.",
+    "evidence_claim": "Research underway.",
+    "source_url": "https://www.gonzaga.edu/",
+    "source_title": "Gonzaga University",
+    "source_kind": "university_official",
+    "source_published_at": null,
+    "source_fetched_at": "2026-08-13",
+    "latitude": null,
+    "longitude": null,
+    "maps_url": null,
+    "access_notes": "Pending verification.",
+    "cost_status": "unknown",
+    "under21_safe": true
+  }
+ 
+  
+  ,
+  {
+    "subject_id": "",
+    "subject_type": "activity",
+    "entity_name": "",
+    "title": "",
+    "subtitle": "",
+    "notes": "",
+    "short_summary": "",
+    "evidence_claim": "",
+    "source_url": "",
+    "source_title": "",
+    "source_kind": "university_official",
+    "source_published_at": null,
+    "source_fetched_at": "2026-08-13",
+    "latitude": null,
+    "longitude": null,
+    "maps_url": null,
+    "access_notes": "",
+    "cost_status": "free",
+    "under21_safe": true
+  }
+ 
+  
+  ,
+  {
+    "subject_id": "",
+    "subject_type": "activity",
+    "entity_name": "",
+    "title": "",
+    "subtitle": "",
+    "notes": "",
+    "short_summary": "",
+    "evidence_claim": "",
+    "source_url": "",
+    "source_title": "",
+    "source_kind": "university_official",
+    "source_published_at": null,
+    "source_fetched_at": "2026-08-13",
+    "latitude": null,
+    "longitude": null,
+    "maps_url": null,
+    "access_notes": "",
+    "cost_status": "free",
+    "under21_safe": true
+  }
+ 
+  
+  ,
+  {
+    "subject_id": "",
+    "subject_type": "activity",
+    "entity_name": "",
+    "title": "",
+    "subtitle": "",
+    "notes": "",
+    "short_summary": "",
+    "evidence_claim": "",
+    "source_url": "",
+    "source_title": "",
+    "source_kind": "university_official",
+    "source_published_at": null,
+    "source_fetched_at": "2026-08-13",
+    "latitude": null,
+    "longitude": null,
+    "maps_url": null,
+    "access_notes": "",
+    "cost_status": "free",
+    "under21_safe": true
+  }
+ 
+  
+  ,
+  {
+    "subject_id": "",
+    "subject_type": "activity",
+    "entity_name": "",
+    "title": "",
+    "subtitle": "",
+    "notes": "",
+    "short_summary": "",
+    "evidence_claim": "",
+    "source_url": "",
+    "source_title": "",
+    "source_kind": "university_official",
+    "source_published_at": null,
+    "source_fetched_at": "2026-08-13",
+    "latitude": null,
+    "longitude": null,
+    "maps_url": null,
+    "access_notes": "",
+    "cost_status": "free",
+    "under21_safe": true
+  }
+ 
+  
+  ,
+  {
+    "subject_id": "",
+    "subject_type": "activity",
+    "entity_name": "",
+    "title": "",
+    "subtitle": "",
+    "notes": "",
+    "short_summary": "",
+    "evidence_claim": "",
+    "source_url": "",
+    "source_title": "",
+    "source_kind": "university_official",
+    "source_published_at": null,
+    "source_fetched_at": "2026-08-13",
+    "latitude": null,
+    "longitude": null,
+    "maps_url": null,
+    "access_notes": "",
+    "cost_status": "free",
+    "under21_safe": true
+  }
+ 
+  
+  ,
+  {
+    "subject_id": "",
+    "subject_type": "activity",
+    "entity_name": "",
+    "title": "",
+    "subtitle": "",
+    "notes": "",
+    "short_summary": "",
+    "evidence_claim": "",
+    "source_url": "",
+    "source_title": "",
+    "source_kind": "university_official",
+    "source_published_at": null,
+    "source_fetched_at": "2026-08-13",
+    "latitude": null,
+    "longitude": null,
+    "maps_url": null,
+    "access_notes": "",
+    "cost_status": "free",
+    "under21_safe": true
+  }
+ 
+  
+  ,
+  {
+    "subject_id": "",
+    "subject_type": "activity",
+    "entity_name": "",
+    "title": "",
+    "subtitle": "",
+    "notes": "",
+    "short_summary": "",
+    "evidence_claim": "",
+    "source_url": "",
+    "source_title": "",
+    "source_kind": "university_official",
+    "source_published_at": null,
+    "source_fetched_at": "2026-08-13",
+    "latitude": null,
+    "longitude": null,
+    "maps_url": null,
+    "access_notes": "",
+    "cost_status": "free",
+    "under21_safe": true
+  }
+ 
+  
+  ,
+  {
+    "subject_id": "",
+    "subject_type": "activity",
+    "entity_name": "",
+    "title": "",
+    "subtitle": "",
+    "notes": "",
+    "short_summary": "",
+    "evidence_claim": "",
+    "source_url": "",
+    "source_title": "",
+    "source_kind": "university_official",
+    "source_published_at": null,
+    "source_fetched_at": "2026-08-13",
+    "latitude": null,
+    "longitude": null,
+    "maps_url": null,
+    "access_notes": "",
+    "cost_status": "free",
+    "under21_safe": true
+  }
+ 
+  
+  ,
+  {
+    "subject_id": "",
+    "subject_type": "activity",
+    "entity_name": "",
+    "title": "",
+    "subtitle": "",
+    "notes": "",
+    "short_summary": "",
+    "evidence_claim": "",
+    "source_url": "",
+    "source_title": "",
+    "source_kind": "university_official",
+    "source_published_at": null,
+    "source_fetched_at": "2026-08-13",
+    "latitude": null,
+    "longitude": null,
+    "maps_url": null,
+    "access_notes": "",
+    "cost_status": "free",
+    "under21_safe": true
+  }
+ 
+  
+  ],
+  "warnings":["Research in progress; this is not the final board."]}],"warnings":["Direct-source verification underway."]}
+web search: 
+web search: site:gonzaga.edu Spokane free admission museum campus public art library chapel walking tour ...
+web search: 
+web search: site:my.spokanecity.org/riverfrontpark free "admission" playground Spokane ...
+web search: 
+web search: site:gonzaga.edu/student-life/arts-culture/jundt-art-museum admission free public ...
+codex
+{"complete":true,"school_name":"Gonzaga University","town_name":"Spokane","boards":[{"complete":true,"school_name":"Gonzaga University","town_name":"Spokane","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"Ten free, under-21-safe outings at Gonzaga and in Spokane parks, each supported by a university or city source confirming public, no-admission access.","icon":"money_off","cards":[{"subject_id":"gonzaga-bing-crosby-house-museum","subject_type":"place","entity_name":"Bing Crosby House Museum","title":"Browse Bing Crosby’s Boyhood Home","subtitle":"A free public museum on Gonzaga’s campus","notes":"Bring a friend to compare more than 200 records, trophies, awards, and other Crosby artifacts displayed on the main floor.","short_summary":"Explore Gonzaga’s collection of Bing Crosby memorabilia inside his childhood home.","evidence_claim":"Gonzaga states that the Bing Crosby House Museum is free and open to the public and displays more than 200 Crosby items.","source_url":"https://www.gonzaga.edu/student-life/arts-culture/crosby-museum","source_title":"Bing Crosby House Museum","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to the public; consult the museum page for current operating hours and university-holiday closures.","cost_status":"free","under21_safe":true},{"subject_id":"manito-nishinomiya-tsutakawa-japanese-garden","subject_type":"activity","entity_name":"Nishinomiya Tsutakawa Japanese Garden","title":"Walk the Japanese Garden Paths","subtitle":"A no-admission garden outing in Manito Park","notes":"Take a slow group walk through the gated garden, pausing to notice how its paths, water, plants, and stonework frame each view.","short_summary":"Share a quiet walk through Manito Park’s Japanese-style garden.","evidence_claim":"The City’s 2025 Manito walking-tour brochure says every inch of Manito Park, including the Japanese Garden, is free and open to the public.","source_url":"https://static.spokanecity.org/documents/parks/manito/manito-park-walking-tour-brochure-2025-08-22.pdf","source_title":"A Walking Tour of Manito Park – August 2025","source_kind":"government","source_published_at":"2025-08-22","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to the public; the gated garden may follow seasonal hours, so check posted access information before visiting.","cost_status":"free","under21_safe":true},{"subject_id":"manito-duncan-garden","subject_type":"activity","entity_name":"Duncan Garden","title":"Trace the Symmetry at Duncan Garden","subtitle":"Formal garden paths with no entry charge","notes":"Meet at the central path, walk the garden’s geometric layout together, and use the seasonal flower beds as photo backdrops.","short_summary":"Study the changing colors and formal geometry of a Renaissance-style garden.","evidence_claim":"The City’s 2025 Manito walking-tour brochure identifies Duncan Garden within Manito Park and says every inch of the park is free and open to the public.","source_url":"https://static.spokanecity.org/documents/parks/manito/manito-park-walking-tour-brochure-2025-08-22.pdf","source_title":"A Walking Tour of Manito Park – August 2025","source_kind":"government","source_published_at":"2025-08-22","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to the public every day of the year; ordinary park rules and any posted garden restrictions apply.","cost_status":"free","under21_safe":true},{"subject_id":"manito-gaiser-conservatory","subject_type":"place","entity_name":"Gaiser Conservatory","title":"Compare Plants in Gaiser Conservatory","subtitle":"A free greenhouse visit inside Manito Park","notes":"Walk room by room with a friend and choose one unfamiliar plant each to identify from the conservatory’s labels or displays.","short_summary":"Warm up among seasonal displays and tropical plants without buying a ticket.","evidence_claim":"The City’s 2025 Manito walking-tour brochure includes Gaiser Conservatory and states that every inch of Manito Park is free and open to the public.","source_url":"https://static.spokanecity.org/documents/parks/manito/manito-park-walking-tour-brochure-2025-08-22.pdf","source_title":"A Walking Tour of Manito Park – August 2025","source_kind":"government","source_published_at":"2025-08-22","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"No admission is required; enter only during the conservatory’s posted operating hours and observe posted plant-protection rules.","cost_status":"free","under21_safe":true},{"subject_id":"manito-joel-e-ferris-perennial-garden","subject_type":"activity","entity_name":"Joel E. Ferris Perennial Garden","title":"Make a Perennial Color Survey","subtitle":"A free seasonal garden walk at Manito Park","notes":"Pick a color and walk the sloping beds together, photographing or listing each different perennial bloom you find in that shade.","short_summary":"Turn a garden stroll into a collaborative search for seasonal colors.","evidence_claim":"The City’s Manito walking-tour brochure names the Joel E. Ferris Perennial Garden and says all of Manito Park is free and open to the public.","source_url":"https://static.spokanecity.org/documents/parks/manito/manito-park-walking-tour-brochure-2025-08-22.pdf","source_title":"A Walking Tour of Manito Park – August 2025","source_kind":"government","source_published_at":"2025-08-22","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to the public; remain on established paths and do not pick flowers or disturb plantings.","cost_status":"free","under21_safe":true},{"subject_id":"manito-rose-hill","subject_type":"activity","entity_name":"Rose Hill","title":"Compare the Roses on Rose Hill","subtitle":"A no-ticket horticultural stop in Manito Park","notes":"Walk the beds with friends and compare bloom shape, color, and fragrance while leaving flowers and identification labels undisturbed.","short_summary":"Use the labeled rose collection as the focus of a relaxed outdoor meetup.","evidence_claim":"The City’s 2025 Manito walking-tour brochure includes Rose Hill and explicitly says every inch of Manito Park is free and open to the public.","source_url":"https://static.spokanecity.org/documents/parks/manito/manito-park-walking-tour-brochure-2025-08-22.pdf","source_title":"A Walking Tour of Manito Park – August 2025","source_kind":"government","source_published_at":"2025-08-22","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to the public; visit during park hours and keep to paths while viewing the seasonal plantings.","cost_status":"free","under21_safe":true},{"subject_id":"riverfront-ice-age-floods-playground","subject_type":"activity","entity_name":"Ice Age Floods Playground","title":"Dig into Ice Age Floods","subtitle":"Free geology-themed play on Riverfront Park’s North Bank","notes":"Try the fossil dig, log-jam climber, and flood-themed features together, then connect each element to the region’s geology.","short_summary":"Mix active play with an outdoor introduction to Spokane’s Ice Age flood landscape.","evidence_claim":"The City says the North Bank amenities are free for everyone and identifies the Ice Age Floods Playground among them.","source_url":"https://my.spokanecity.org/parksrec/news/2021/05/06/riverfront-ice-age-floods-playground-north-bank-open-may-21/","source_title":"Riverfront Ice Age Floods Playground & North Bank Open May 21","source_kind":"government","source_published_at":"2021-05-06","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free for everyone; use during posted playground hours, with the splash pad operating on its own seasonal schedule.","cost_status":"free","under21_safe":true},{"subject_id":"riverfront-skate-and-wheels-park","subject_type":"activity","entity_name":"Skate and Wheels Park","title":"Run a Wheels Session","subtitle":"A free public skate park at Riverfront Park","notes":"Bring your own suitable wheels and helmet, agree on a line before starting, and take turns while respecting other park users.","short_summary":"Practice skate-park lines together on the North Bank’s bowls and street features.","evidence_claim":"The City lists Skate and Wheels Park as a North Bank amenity and states that the redeveloped area is free for everyone to use.","source_url":"https://my.spokanecity.org/parksrec/news/2021/05/06/riverfront-ice-age-floods-playground-north-bank-open-may-21/","source_title":"Riverfront Ice Age Floods Playground & North Bank Open May 21","source_kind":"government","source_published_at":"2021-05-06","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"No admission or purchase is required; bring your own equipment and follow posted safety rules and park hours.","cost_status":"free","under21_safe":true},{"subject_id":"riverfront-hooptown-usa-courts","subject_type":"activity","entity_name":"Hooptown USA Courts","title":"Start a Half-Court Shootaround","subtitle":"Free outdoor basketball space on the North Bank","notes":"Bring a basketball, divide the court fairly with other users, and rotate through shooting games or a casual half-court session.","short_summary":"Gather for an informal basketball session on colorful public courts.","evidence_claim":"The City identifies Hooptown USA Courts among the North Bank amenities and says the area is free for everyone in the community to use.","source_url":"https://my.spokanecity.org/parksrec/news/2021/05/06/riverfront-ice-age-floods-playground-north-bank-open-may-21/","source_title":"Riverfront Ice Age Floods Playground & North Bank Open May 21","source_kind":"government","source_published_at":"2021-05-06","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free public use requires no reservation when courts are available; bring your own ball and yield to scheduled activities.","cost_status":"free","under21_safe":true},{"subject_id":"riverfront-roskelley-performance-climbing-boulder","subject_type":"activity","entity_name":"Roskelley Performance Climbing Boulder","title":"Try the Roskelley Boulder","subtitle":"Free outdoor bouldering at Riverfront Park","notes":"Warm up first, choose moves within your ability, keep the landing clear, and spot one another without climbing beneath others.","short_summary":"Work through outdoor bouldering moves with friends on a purpose-built public feature.","evidence_claim":"The City names the Roskelley Performance Climbing Boulder as a North Bank amenity and states that the area is free for everyone to use.","source_url":"https://my.spokanecity.org/parksrec/news/2021/05/06/riverfront-ice-age-floods-playground-north-bank-open-may-21/","source_title":"Riverfront Ice Age Floods Playground & North Bank Open May 21","source_kind":"government","source_published_at":"2021-05-06","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free public use requires no admission; climb at your own risk and obey posted rules, closures, and park hours.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:23:47.121488Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9ff-bb8a-73e0-9335-cfee06b0df15.1786605714314472000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+33,304
+
+{"complete":true,"school_name":"Gonzaga University","town_name":"Spokane","boards":[{"complete":true,"school_name":"Gonzaga University","town_name":"Spokane","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"Ten free, under-21-safe outings at Gonzaga and in Spokane parks, each supported by a university or city source confirming public, no-admission access.","icon":"money_off","cards":[{"subject_id":"gonzaga-bing-crosby-house-museum","subject_type":"place","entity_name":"Bing Crosby House Museum","title":"Browse Bing Crosby’s Boyhood Home","subtitle":"A free public museum on Gonzaga’s campus","notes":"Bring a friend to compare more than 200 records, trophies, awards, and other Crosby artifacts displayed on the main floor.","short_summary":"Explore Gonzaga’s collection of Bing Crosby memorabilia inside his childhood home.","evidence_claim":"Gonzaga states that the Bing Crosby House Museum is free and open to the public and displays more than 200 Crosby items.","source_url":"https://www.gonzaga.edu/student-life/arts-culture/crosby-museum","source_title":"Bing Crosby House Museum","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to the public; consult the museum page for current operating hours and university-holiday closures.","cost_status":"free","under21_safe":true},{"subject_id":"manito-nishinomiya-tsutakawa-japanese-garden","subject_type":"activity","entity_name":"Nishinomiya Tsutakawa Japanese Garden","title":"Walk the Japanese Garden Paths","subtitle":"A no-admission garden outing in Manito Park","notes":"Take a slow group walk through the gated garden, pausing to notice how its paths, water, plants, and stonework frame each view.","short_summary":"Share a quiet walk through Manito Park’s Japanese-style garden.","evidence_claim":"The City’s 2025 Manito walking-tour brochure says every inch of Manito Park, including the Japanese Garden, is free and open to the public.","source_url":"https://static.spokanecity.org/documents/parks/manito/manito-park-walking-tour-brochure-2025-08-22.pdf","source_title":"A Walking Tour of Manito Park – August 2025","source_kind":"government","source_published_at":"2025-08-22","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to the public; the gated garden may follow seasonal hours, so check posted access information before visiting.","cost_status":"free","under21_safe":true},{"subject_id":"manito-duncan-garden","subject_type":"activity","entity_name":"Duncan Garden","title":"Trace the Symmetry at Duncan Garden","subtitle":"Formal garden paths with no entry charge","notes":"Meet at the central path, walk the garden’s geometric layout together, and use the seasonal flower beds as photo backdrops.","short_summary":"Study the changing colors and formal geometry of a Renaissance-style garden.","evidence_claim":"The City’s 2025 Manito walking-tour brochure identifies Duncan Garden within Manito Park and says every inch of the park is free and open to the public.","source_url":"https://static.spokanecity.org/documents/parks/manito/manito-park-walking-tour-brochure-2025-08-22.pdf","source_title":"A Walking Tour of Manito Park – August 2025","source_kind":"government","source_published_at":"2025-08-22","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to the public every day of the year; ordinary park rules and any posted garden restrictions apply.","cost_status":"free","under21_safe":true},{"subject_id":"manito-gaiser-conservatory","subject_type":"place","entity_name":"Gaiser Conservatory","title":"Compare Plants in Gaiser Conservatory","subtitle":"A free greenhouse visit inside Manito Park","notes":"Walk room by room with a friend and choose one unfamiliar plant each to identify from the conservatory’s labels or displays.","short_summary":"Warm up among seasonal displays and tropical plants without buying a ticket.","evidence_claim":"The City’s 2025 Manito walking-tour brochure includes Gaiser Conservatory and states that every inch of Manito Park is free and open to the public.","source_url":"https://static.spokanecity.org/documents/parks/manito/manito-park-walking-tour-brochure-2025-08-22.pdf","source_title":"A Walking Tour of Manito Park – August 2025","source_kind":"government","source_published_at":"2025-08-22","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"No admission is required; enter only during the conservatory’s posted operating hours and observe posted plant-protection rules.","cost_status":"free","under21_safe":true},{"subject_id":"manito-joel-e-ferris-perennial-garden","subject_type":"activity","entity_name":"Joel E. Ferris Perennial Garden","title":"Make a Perennial Color Survey","subtitle":"A free seasonal garden walk at Manito Park","notes":"Pick a color and walk the sloping beds together, photographing or listing each different perennial bloom you find in that shade.","short_summary":"Turn a garden stroll into a collaborative search for seasonal colors.","evidence_claim":"The City’s Manito walking-tour brochure names the Joel E. Ferris Perennial Garden and says all of Manito Park is free and open to the public.","source_url":"https://static.spokanecity.org/documents/parks/manito/manito-park-walking-tour-brochure-2025-08-22.pdf","source_title":"A Walking Tour of Manito Park – August 2025","source_kind":"government","source_published_at":"2025-08-22","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to the public; remain on established paths and do not pick flowers or disturb plantings.","cost_status":"free","under21_safe":true},{"subject_id":"manito-rose-hill","subject_type":"activity","entity_name":"Rose Hill","title":"Compare the Roses on Rose Hill","subtitle":"A no-ticket horticultural stop in Manito Park","notes":"Walk the beds with friends and compare bloom shape, color, and fragrance while leaving flowers and identification labels undisturbed.","short_summary":"Use the labeled rose collection as the focus of a relaxed outdoor meetup.","evidence_claim":"The City’s 2025 Manito walking-tour brochure includes Rose Hill and explicitly says every inch of Manito Park is free and open to the public.","source_url":"https://static.spokanecity.org/documents/parks/manito/manito-park-walking-tour-brochure-2025-08-22.pdf","source_title":"A Walking Tour of Manito Park – August 2025","source_kind":"government","source_published_at":"2025-08-22","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to the public; visit during park hours and keep to paths while viewing the seasonal plantings.","cost_status":"free","under21_safe":true},{"subject_id":"riverfront-ice-age-floods-playground","subject_type":"activity","entity_name":"Ice Age Floods Playground","title":"Dig into Ice Age Floods","subtitle":"Free geology-themed play on Riverfront Park’s North Bank","notes":"Try the fossil dig, log-jam climber, and flood-themed features together, then connect each element to the region’s geology.","short_summary":"Mix active play with an outdoor introduction to Spokane’s Ice Age flood landscape.","evidence_claim":"The City says the North Bank amenities are free for everyone and identifies the Ice Age Floods Playground among them.","source_url":"https://my.spokanecity.org/parksrec/news/2021/05/06/riverfront-ice-age-floods-playground-north-bank-open-may-21/","source_title":"Riverfront Ice Age Floods Playground & North Bank Open May 21","source_kind":"government","source_published_at":"2021-05-06","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free for everyone; use during posted playground hours, with the splash pad operating on its own seasonal schedule.","cost_status":"free","under21_safe":true},{"subject_id":"riverfront-skate-and-wheels-park","subject_type":"activity","entity_name":"Skate and Wheels Park","title":"Run a Wheels Session","subtitle":"A free public skate park at Riverfront Park","notes":"Bring your own suitable wheels and helmet, agree on a line before starting, and take turns while respecting other park users.","short_summary":"Practice skate-park lines together on the North Bank’s bowls and street features.","evidence_claim":"The City lists Skate and Wheels Park as a North Bank amenity and states that the redeveloped area is free for everyone to use.","source_url":"https://my.spokanecity.org/parksrec/news/2021/05/06/riverfront-ice-age-floods-playground-north-bank-open-may-21/","source_title":"Riverfront Ice Age Floods Playground & North Bank Open May 21","source_kind":"government","source_published_at":"2021-05-06","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"No admission or purchase is required; bring your own equipment and follow posted safety rules and park hours.","cost_status":"free","under21_safe":true},{"subject_id":"riverfront-hooptown-usa-courts","subject_type":"activity","entity_name":"Hooptown USA Courts","title":"Start a Half-Court Shootaround","subtitle":"Free outdoor basketball space on the North Bank","notes":"Bring a basketball, divide the court fairly with other users, and rotate through shooting games or a casual half-court session.","short_summary":"Gather for an informal basketball session on colorful public courts.","evidence_claim":"The City identifies Hooptown USA Courts among the North Bank amenities and says the area is free for everyone in the community to use.","source_url":"https://my.spokanecity.org/parksrec/news/2021/05/06/riverfront-ice-age-floods-playground-north-bank-open-may-21/","source_title":"Riverfront Ice Age Floods Playground & North Bank Open May 21","source_kind":"government","source_published_at":"2021-05-06","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free public use requires no reservation when courts are available; bring your own ball and yield to scheduled activities.","cost_status":"free","under21_safe":true},{"subject_id":"riverfront-roskelley-performance-climbing-boulder","subject_type":"activity","entity_name":"Roskelley Performance Climbing Boulder","title":"Try the Roskelley Boulder","subtitle":"Free outdoor bouldering at Riverfront Park","notes":"Warm up first, choose moves within your ability, keep the landing clear, and spot one another without climbing beneath others.","short_summary":"Work through outdoor bouldering moves with friends on a purpose-built public feature.","evidence_claim":"The City names the Roskelley Performance Climbing Boulder as a North Bank amenity and states that the area is free for everyone to use.","source_url":"https://my.spokanecity.org/parksrec/news/2021/05/06/riverfront-ice-age-floods-playground-north-bank-open-may-21/","source_title":"Riverfront Ice Age Floods Playground & North Bank Open May 21","source_kind":"government","source_published_at":"2021-05-06","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free public use requires no admission; climb at your own risk and obey posted rules, closures, and park hours.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}

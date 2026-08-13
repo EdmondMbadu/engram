@@ -1,0 +1,60 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "sMTl9XBwJH7NbROz5Crf",
+    "schoolName": "University of Minnesota-Twin Cities",
+    "shortSchoolName": "University of Minnesota-Twin Cities",
+    "townName": "Minneapolis",
+    "state": "MN",
+    "countryCode": "US",
+    "unitId": "174066",
+    "website": "https://twin-cities.umn.edu/",
+    "latitude": 44.972851,
+    "longitude": -93.235464,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Seal_of_the_University_of_Minnesota.svg/250px-Seal_of_the_University_of_Minnesota.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=twin-cities.umn.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain University of Minnesota-Twin Cities",
+  "excluded_subjects": [
+    "Rubbing Goldy’s Teeth",
+    "Minnesota Rouser",
+    "Ski-U-Mah",
+    "Block M Formation",
+    "University of Minnesota Homecoming",
+    "University of Minnesota Homecoming Parade",
+    "Homecoming Royalty",
+    "New Student Convocation",
+    "Spring Jam",
+    "Minnesota Marching Band Indoor Concert",
+    "Walter Library 206",
+    "Walter Library Sub-basement Floor",
+    "Walter Library 204F",
+    "Wilson Library Second Floor",
+    "Wilson Library Fourth Floor",
+    "Wilson Library 301B",
+    "Wilson Library Research Collaboration Studio",
+    "Wilson Library 423",
+    "Magrath Library First Floor",
+    "Health Sciences Education Center Room 5-105"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

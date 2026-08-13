@@ -1,0 +1,283 @@
+Reading additional input from stdin...
+2026-08-13T06:49:37.293133Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:49:37.366553Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e1-b846-74f0-afdc-8b0686f2727b.1786603747399040000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9e2-2cc0-7ed1-8975-007634070cb2
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"bQIlmwbhpS5iLxm9sslo","schoolName":"California State University-Stanislaus","shortSchoolName":"California State University-Stanislaus","townName":"Turlock","state":"CA","countryCode":"US","website":"https://www.csustan.edu/","latitude":37.52577,"longitude":-120.852511},"templates":[{"id":"college-late-night-runs","version":"1.0","titlePattern":"{count} Late-Night Runs That Explain {school}","editorialBrief":"Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.","researchQueries":["late night dining students","campus dining late hours","restaurants open late near campus"],"count":10,"icon":"nightlife","primarySubjectType":"place","allowedSubjectTypes":["place"],"freshnessDays":120,"exactTitle":"10 Late-Night Runs That Explain California State University-Stanislaus"}]}
+2026-08-13T06:49:37.429510Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e1-b82b-7402-a463-2d8c3908f8d6.1786603747371688000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:49:37.455118Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:49:37.588396Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e1-b813-7bc0-8e1d-75d93ffb257a.1786603747347727000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:49:37.642990Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e1-b82b-7c83-8d6f-28832e091700.1786603747371724000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:49:37.723267Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e1-b864-72e0-8212-da93390c643a.1786603747429379000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:49:37.880232Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e1-b836-7782-b436-dc4f7cb19c34.1786603747382765000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{"complete":false,"school_name":"California State University-Stanislaus","town_name":"Turlock","boards":[{"complete":false,"school_name":"California State University-Stanislaus","town_name":"Turlock","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain California State University-Stanislaus","description":"Researching current late-hours evidence for 10 under-21-safe destinations on or near campus.","icon":"nightlife","cards":  [
+  {
+    "subject_id": "status",
+    "subject_type": "place",
+    "entity_name": "Research in progress",
+    "title": "Verifying late-night destinations",
+    "subtitle": "Turlock, California",
+    "notes": "I’m checking direct business and university pages for current late hours, location details, and under-21-safe access.",
+    "short_summary": "Current-source verification is underway.",
+    "evidence_claim": "Pending verification.",
+    "source_url": "https://www.csustan.edu/",
+    "source_title": "California State University, Stanislaus",
+    "source_kind": "university_official",
+    "source_published_at": null,
+    "source_fetched_at": "2026-08-13",
+    "latitude": null,
+    "longitude": null,
+    "maps_url": null,
+    "access_notes": "Pending current late-hours verification.",
+    "cost_status": "unknown",
+    "under21_safe": true
+  }
+  ,
+  {
+    "subject_id": "status2",
+    "subject_type": "place",
+    "entity_name": "Research in progress 2",
+    "title": "Verifying late-night destinations",
+    "subtitle": "Turlock, California",
+    "notes": "I’m checking direct business and university pages for current late hours, location details, and under-21-safe access.",
+    "short_summary": "Current-source verification is underway.",
+    "evidence_claim": "Pending verification.",
+    "source_url": "https://www.csustan.edu/",
+    "source_title": "California State University, Stanislaus",
+    "source_kind": "university_official",
+    "source_published_at": null,
+    "source_fetched_at": "2026-08-13",
+    "latitude": null,
+    "longitude": null,
+    "maps_url": null,
+    "access_notes": "Pending current late-hours verification.",
+    "cost_status": "unknown",
+    "under21_safe": true
+  }
+  ,
+  {
+    "subject_id": "status3",
+    "subject_type": "place",
+    "entity_name": "Research in progress 3",
+    "title": "Verifying late-night destinations",
+    "subtitle": "Turlock, California",
+    "notes": "I’m checking direct business and university pages for current late hours, location details, and under-21-safe access.",
+    "short_summary": "Current-source verification is underway.",
+    "evidence_claim": "Pending verification.",
+    "source_url": "https://www.csustan.edu/",
+    "source_title": "California State University, Stanislaus",
+    "source_kind": "university_official",
+    "source_published_at": null,
+    "source_fetched_at": "2026-08-13",
+    "latitude": null,
+    "longitude": null,
+    "maps_url": null,
+    "access_notes": "Pending current late-hours verification.",
+    "cost_status": "unknown",
+    "under21_safe": true
+  }
+  ,
+  {
+    "subject_id": "status4",
+    "subject_type": "place",
+    "entity_name": "Research in progress 4",
+    "title": "Verifying late-night destinations",
+    "subtitle": "Turlock, California",
+    "notes": "I’m checking direct business and university pages for current late hours, location details, and under-21-safe access.",
+    "short_summary": "Current-source verification is underway.",
+    "evidence_claim": "Pending verification.",
+    "source_url": "https://www.csustan.edu/",
+    "source_title": "California State University, Stanislaus",
+    "source_kind": "university_official",
+    "source_published_at": null,
+    "source_fetched_at": "2026-08-13",
+    "latitude": null,
+    "longitude": null,
+    "maps_url": null,
+    "access_notes": "Pending current late-hours verification.",
+    "cost_status": "unknown",
+    "under21_safe": true
+  }
+  ,
+  {
+    "subject_id": "status5",
+    "subject_type": "place",
+    "entity_name": "Research in progress 5",
+    "title": "Verifying late-night destinations",
+    "subtitle": "Turlock, California",
+    "notes": "I’m checking direct business and university pages for current late hours, location details, and under-21-safe access.",
+    "short_summary": "Current-source verification is underway.",
+    "evidence_claim": "Pending verification.",
+    "source_url": "https://www.csustan.edu/",
+    "source_title": "California State University, Stanislaus",
+    "source_kind": "university_official",
+    "source_published_at": null,
+    "source_fetched_at": "2026-08-13",
+    "latitude": null,
+    "longitude": null,
+    "maps_url": null,
+    "access_notes": "Pending current late-hours verification.",
+    "cost_status": "unknown",
+    "under21_safe": true
+  }
+  ,
+  {
+    "subject_id": "status6",
+    "subject_type": "place",
+    "entity_name": "Research in progress 6",
+    "title": "Verifying late-night destinations",
+    "subtitle": "Turlock, California",
+    "notes": "I’m checking direct business and university pages for current late hours, location details, and under-21-safe access.",
+    "short_summary": "Current-source verification is underway.",
+    "evidence_claim": "Pending verification.",
+    "source_url": "https://www.csustan.edu/",
+    "source_title": "California State University, Stanislaus",
+    "source_kind": "university_official",
+    "source_published_at": null,
+    "source_fetched_at": "2026-08-13",
+    "latitude": null,
+    "longitude": null,
+    "maps_url": null,
+    "access_notes": "Pending current late-hours verification.",
+    "cost_status": "unknown",
+    "under21_safe": true
+  }
+  ,
+  {
+    "subject_id": "status7",
+    "subject_type": "place",
+    "entity_name": "Research in progress 7",
+    "title": "Verifying late-night destinations",
+    "subtitle": "Turlock, California",
+    "notes": "I’m checking direct business and university pages for current late hours, location details, and under-21-safe access.",
+    "short_summary": "Current-source verification is underway.",
+    "evidence_claim": "Pending verification.",
+    "source_url": "https://www.csustan.edu/",
+    "source_title": "California State University, Stanislaus",
+    "source_kind": "university_official",
+    "source_published_at": null,
+    "source_fetched_at": "2026-08-13",
+    "latitude": null,
+    "longitude": null,
+    "maps_url": null,
+    "access_notes": "Pending current late-hours verification.",
+    "cost_status": "unknown",
+    "under21_safe": true
+  }
+  ,
+  {
+    "subject_id": "status8",
+    "subject_type": "place",
+    "entity_name": "Research in progress 8",
+    "title": "Verifying late-night destinations",
+    "subtitle": "Turlock, California",
+    "notes": "I’m checking direct business and university pages for current late hours, location details, and under-21-safe access.",
+    "short_summary": "Current-source verification is underway.",
+    "evidence_claim": "Pending verification.",
+    "source_url": "https://www.csustan.edu/",
+    "source_title": "California State University, Stanislaus",
+    "source_kind": "university_official",
+    "source_published_at": null,
+    "source_fetched_at": "2026-08-13",
+    "latitude": null,
+    "longitude": null,
+    "maps_url": null,
+    "access_notes": "Pending current late-hours verification.",
+    "cost_status": "unknown",
+    "under21_safe": true
+  }
+  ,
+  {
+    "subject_id": "status9",
+    "subject_type": "place",
+    "entity_name": "Research in progress 9",
+    "title": "Verifying late-night destinations",
+    "subtitle": "Turlock, California",
+    "notes": "I’m checking direct business and university pages for current late hours, location details, and under-21-safe access.",
+    "short_summary": "Current-source verification is underway.",
+    "evidence_claim": "Pending verification.",
+    "source_url": "https://www.csustan.edu/",
+    "source_title": "California State University, Stanislaus",
+    "source_kind": "university_official",
+    "source_published_at": null,
+    "source_fetched_at": "2026-08-13",
+    "latitude": null,
+    "longitude": null,
+    "maps_url": null,
+    "access_notes": "Pending current late-hours verification.",
+    "cost_status": "unknown",
+    "under21_safe": true
+  }
+  ,
+  {
+    "subject_id": "status10",
+    "subject_type": "place",
+    "entity_name": "Research in progress 10",
+    "title": "Verifying late-night destinations",
+    "subtitle": "Turlock, California",
+    "notes": "I’m checking direct business and university pages for current late hours, location details, and under-21-safe access.",
+    "short_summary": "Current-source verification is underway.",
+    "evidence_claim": "Pending verification.",
+    "source_url": "https://www.csustan.edu/",
+    "source_title": "California State University, Stanislaus",
+    "source_kind": "university_official",
+    "source_published_at": null,
+    "source_fetched_at": "2026-08-13",
+    "latitude": null,
+    "longitude": null,
+    "maps_url": null,
+    "access_notes": "Pending current late-hours verification.",
+    "cost_status": "unknown",
+    "under21_safe": true
+  }
+],"warnings":["Interim status only; final response will contain one complete board with exactly 10 verified cards."]}],"warnings":["Research in progress."]}
+web search: 
+web search: site:locations.tacobell.com Turlock CA hours ...
+web search: 
+web search: site:mcdonalds.com/us/en-us/location/ca/turlock hours Turlock ...
+web search: 
+web search: site:locations.jackinthebox.com/us/ca/turlock/2601-geer-rd ...
+web search: 
+web search: site:restaurants.ihop.com/en-us/ca/turlock Turlock hours ...
+web search: 
+web search: https://locations.jackinthebox.com/us/ca/turlock/1951-lander-rd
+codex
+{"complete":true,"school_name":"California State University-Stanislaus","town_name":"Turlock","boards":[{"complete":true,"school_name":"California State University-Stanislaus","town_name":"Turlock","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain California State University-Stanislaus","description":"Ten under-21-safe Turlock food stops with late availability documented by current official location pages. Confirm holiday hours and distinguish drive-through from lobby access before leaving campus.","icon":"nightlife","cards":[{"subject_id":"dennys-1991-lander-ave-turlock","subject_type":"place","entity_name":"Denny’s — 1991 Lander Avenue","title":"Round-the-Clock Diner Stop","subtitle":"Open 24 hours on Lander Avenue","notes":"Use this south-Turlock diner when the hour is uncertain; check the official location page before relying on holiday access.","short_summary":"A continuously open diner serving breakfast, lunch, and dinner.","evidence_claim":"Denny’s official location page identifies the restaurant at 1991 Lander Avenue, lists it as open 24 hours every day, and says it welcomes children.","source_url":"https://locations.dennys.com/ca/turlock/246984","source_title":"Denny’s 1991 Lander Ave Restaurant","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page lists restaurant service as open 24 hours daily; contact the location to confirm holiday hours.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-2700-geer-rd-turlock","subject_type":"place","entity_name":"Taco Bell — 2700 Geer Road","title":"All-Night Geer Road Drive-Through","subtitle":"Twenty-four-hour service near the campus side of Turlock","notes":"Choose this Geer Road counter for overnight takeout, and verify whether the lobby or only the drive-through is operating.","short_summary":"A 24-hour fast-food option on the principal commercial road west of campus.","evidence_claim":"Taco Bell’s official page identifies the 2700 Geer Road restaurant and lists its drive-through as open 24 hours seven days a week.","source_url":"https://locations.tacobell.com/ca/turlock/2700-geer-rd.html","source_title":"Taco Bell in Turlock, CA — 2700 Geer Rd","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-through hours are listed as 24 hours daily; lobby access may differ, so check the page before walking over.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-2050-w-main-st-turlock","subject_type":"place","entity_name":"Taco Bell — 2050 West Main Street","title":"West Main Street Until 3","subtitle":"Drive-through service through 3 a.m.","notes":"Use the drive-through for the documented late window; the official page shows dine-in ending earlier than vehicle service.","short_summary":"A West Main Street takeout stop with a consistent 3 a.m. closing time.","evidence_claim":"Taco Bell’s official location page lists the 2050 West Main Street drive-through from 7 a.m. to 3 a.m. every day.","source_url":"https://locations.tacobell.com/ca/turlock/2050-w-main-st.html","source_title":"Taco Bell in Turlock, CA — 2050 W Main St","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-through service is listed until 3 a.m. daily; the displayed dine-in schedule ends at 11 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-3606-n-golden-state-blvd-turlock","subject_type":"place","entity_name":"Taco Bell — 3606 North Golden State Boulevard","title":"North Golden State Late Window","subtitle":"Open past midnight every night","notes":"Head north for takeout after midnight, noting that Friday and Saturday extend one hour later than the weekday schedule.","short_summary":"A north-Turlock drive-through closing at 1 or 2 a.m., depending on the night.","evidence_claim":"The official Taco Bell page lists drive-through service until 1 a.m. Sunday–Thursday and 2 a.m. Friday–Saturday at 3606 North Golden State Boulevard.","source_url":"https://locations.tacobell.com/ca/turlock/3606-n-golden-state-blvd-.html","source_title":"Taco Bell in Turlock, CA — 3606 N Golden State Blvd","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-through closes at 1 a.m. Sunday–Thursday and 2 a.m. Friday–Saturday; dine-in closes earlier.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jack-in-the-box-2601-geer-rd-turlock","subject_type":"place","entity_name":"Jack in the Box — 2601 Geer Road","title":"Twenty-Four-Hour Campus-Side Drive-Through","subtitle":"Continuous drive-through service on Geer Road","notes":"Treat this as a vehicle-service option overnight; review the official listing because no matching late lobby schedule is shown.","short_summary":"A round-the-clock drive-through on the commercial corridor nearest campus.","evidence_claim":"Jack in the Box’s official page identifies 2601 Geer Road and displays drive-through hours of 4 a.m. to 4 a.m. every day, indicating continuous service.","source_url":"https://locations.jackinthebox.com/us/ca/turlock/2601-geer-rd","source_title":"Jack in the Box — 2601 Geer Rd, Turlock","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The drive-through schedule runs 4 a.m. to 4 a.m. daily, effectively 24 hours; do not assume overnight lobby access.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jack-in-the-box-1951-lander-rd-turlock","subject_type":"place","entity_name":"Jack in the Box — 1951 Lander Road","title":"Lander Road All-Night Window","subtitle":"Drive-through access around the clock","notes":"Use the drive-through after the lobby closes at 9 p.m.; confirm the posted schedule before making the longer trip south.","short_summary":"A 24-hour drive-through paired with an earlier-closing lobby.","evidence_claim":"The official Jack in the Box page lists 1951 Lander Road and shows drive-through hours of 4 a.m. to 4 a.m. daily, with the lobby closing at 9 p.m.","source_url":"https://locations.jackinthebox.com/us/ca/turlock/1951-lander-rd","source_title":"Jack in the Box — 1951 Lander Rd, Turlock","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-through service is effectively 24 hours daily; the official page lists lobby service only until 9 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jack-in-the-box-100-n-golden-state-blvd-turlock","subject_type":"place","entity_name":"Jack in the Box — 100 North Golden State Boulevard","title":"Downtown-Edge Weekend Extension","subtitle":"Drive-through until 3 a.m. Friday and Saturday","notes":"Save this address for a weekend run, when its drive-through stays two hours later than the Sunday–Thursday schedule.","short_summary":"A central Turlock drive-through with extended Friday and Saturday hours.","evidence_claim":"Jack in the Box’s official page lists the 100 North Golden State Boulevard drive-through until 1 a.m. Sunday–Thursday and 3 a.m. Friday–Saturday.","source_url":"https://locations.jackinthebox.com/us/ca/turlock/100-n-golden-state-blvd","source_title":"Jack in the Box — 100 N Golden State Blvd, Turlock","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-through closes at 1 a.m. Sunday–Thursday and 3 a.m. Friday–Saturday; the lobby closes earlier.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wendys-2395-geer-rd-turlock","subject_type":"place","entity_name":"Wendy’s — 2395 Geer Road","title":"Geer Road Midnight Cutoff","subtitle":"Restaurant and drive-through open until midnight","notes":"Plan this as a before-midnight stop: both the dining room and drive-through share the same closing time on the official page.","short_summary":"A near-campus Geer Road option with a nightly midnight closing.","evidence_claim":"Wendy’s official page lists both restaurant and drive-through hours at 2395 Geer Road from 6:30 a.m. to midnight every day.","source_url":"https://locations.wendys.com/united-states/ca/turlock/2395-geer-rd","source_title":"Wendy’s Turlock — 2395 Geer Rd","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Restaurant and drive-through service are listed until midnight seven days a week; holiday hours may vary.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wendys-3450-w-monte-vista-ave-turlock","subject_type":"place","entity_name":"Wendy’s — 3450 West Monte Vista Avenue","title":"Monte Vista Midnight Stop","subtitle":"Nightly service through midnight","notes":"Use this west-side location when traveling along Monte Vista Avenue, allowing time to order before its firm midnight closing.","short_summary":"A west-Turlock restaurant and drive-through available until midnight nightly.","evidence_claim":"Wendy’s official location page lists restaurant and drive-through hours at 3450 West Monte Vista Avenue from 6:30 a.m. to midnight daily.","source_url":"https://locations.wendys.com/united-states/ca/turlock/3450-w-monte-vista-ave","source_title":"Wendy’s Monte Vista — 3450 W Monte Vista Ave","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The restaurant and drive-through are listed until midnight every day; the page notes that holiday hours may vary.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"pizza-hut-920-lander-avenue-turlock","subject_type":"place","entity_name":"Pizza Hut — 920 Lander Avenue","title":"Friday-and-Saturday Pizza Cutoff","subtitle":"Delivery and carryout until midnight on weekends","notes":"Reserve this for Friday or Saturday and place the order early; weekday and Sunday service ends at 11 p.m.","short_summary":"A weekend-only midnight option for pizza delivery or carryout.","evidence_claim":"Pizza Hut’s official page identifies 920 Lander Avenue and lists delivery and carryout until midnight Friday and Saturday, with 11 p.m. closing on other days.","source_url":"https://locations.pizzahut.com/ca/turlock/920-lander-avenue","source_title":"Pizza Hut — 920 Lander Avenue, Turlock","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Delivery and carryout close at midnight Friday–Saturday and 11 p.m. Sunday–Thursday; delivery hours may vary.","cost_status":"purchase_required","under21_safe":true}],"warnings":["Late access is frequently drive-through or takeout rather than lobby service; verify the official page before departure.","Holiday hours and delivery availability can differ from the regular schedules documented here."]}],"warnings":[]}
+2026-08-13T06:51:43.372341Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9e2-2cc0-7ed1-8975-007634070cb2.1786603777216545000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+51,680
+
+{"complete":true,"school_name":"California State University-Stanislaus","town_name":"Turlock","boards":[{"complete":true,"school_name":"California State University-Stanislaus","town_name":"Turlock","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain California State University-Stanislaus","description":"Ten under-21-safe Turlock food stops with late availability documented by current official location pages. Confirm holiday hours and distinguish drive-through from lobby access before leaving campus.","icon":"nightlife","cards":[{"subject_id":"dennys-1991-lander-ave-turlock","subject_type":"place","entity_name":"Denny’s — 1991 Lander Avenue","title":"Round-the-Clock Diner Stop","subtitle":"Open 24 hours on Lander Avenue","notes":"Use this south-Turlock diner when the hour is uncertain; check the official location page before relying on holiday access.","short_summary":"A continuously open diner serving breakfast, lunch, and dinner.","evidence_claim":"Denny’s official location page identifies the restaurant at 1991 Lander Avenue, lists it as open 24 hours every day, and says it welcomes children.","source_url":"https://locations.dennys.com/ca/turlock/246984","source_title":"Denny’s 1991 Lander Ave Restaurant","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page lists restaurant service as open 24 hours daily; contact the location to confirm holiday hours.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-2700-geer-rd-turlock","subject_type":"place","entity_name":"Taco Bell — 2700 Geer Road","title":"All-Night Geer Road Drive-Through","subtitle":"Twenty-four-hour service near the campus side of Turlock","notes":"Choose this Geer Road counter for overnight takeout, and verify whether the lobby or only the drive-through is operating.","short_summary":"A 24-hour fast-food option on the principal commercial road west of campus.","evidence_claim":"Taco Bell’s official page identifies the 2700 Geer Road restaurant and lists its drive-through as open 24 hours seven days a week.","source_url":"https://locations.tacobell.com/ca/turlock/2700-geer-rd.html","source_title":"Taco Bell in Turlock, CA — 2700 Geer Rd","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-through hours are listed as 24 hours daily; lobby access may differ, so check the page before walking over.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-2050-w-main-st-turlock","subject_type":"place","entity_name":"Taco Bell — 2050 West Main Street","title":"West Main Street Until 3","subtitle":"Drive-through service through 3 a.m.","notes":"Use the drive-through for the documented late window; the official page shows dine-in ending earlier than vehicle service.","short_summary":"A West Main Street takeout stop with a consistent 3 a.m. closing time.","evidence_claim":"Taco Bell’s official location page lists the 2050 West Main Street drive-through from 7 a.m. to 3 a.m. every day.","source_url":"https://locations.tacobell.com/ca/turlock/2050-w-main-st.html","source_title":"Taco Bell in Turlock, CA — 2050 W Main St","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-through service is listed until 3 a.m. daily; the displayed dine-in schedule ends at 11 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-3606-n-golden-state-blvd-turlock","subject_type":"place","entity_name":"Taco Bell — 3606 North Golden State Boulevard","title":"North Golden State Late Window","subtitle":"Open past midnight every night","notes":"Head north for takeout after midnight, noting that Friday and Saturday extend one hour later than the weekday schedule.","short_summary":"A north-Turlock drive-through closing at 1 or 2 a.m., depending on the night.","evidence_claim":"The official Taco Bell page lists drive-through service until 1 a.m. Sunday–Thursday and 2 a.m. Friday–Saturday at 3606 North Golden State Boulevard.","source_url":"https://locations.tacobell.com/ca/turlock/3606-n-golden-state-blvd-.html","source_title":"Taco Bell in Turlock, CA — 3606 N Golden State Blvd","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-through closes at 1 a.m. Sunday–Thursday and 2 a.m. Friday–Saturday; dine-in closes earlier.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jack-in-the-box-2601-geer-rd-turlock","subject_type":"place","entity_name":"Jack in the Box — 2601 Geer Road","title":"Twenty-Four-Hour Campus-Side Drive-Through","subtitle":"Continuous drive-through service on Geer Road","notes":"Treat this as a vehicle-service option overnight; review the official listing because no matching late lobby schedule is shown.","short_summary":"A round-the-clock drive-through on the commercial corridor nearest campus.","evidence_claim":"Jack in the Box’s official page identifies 2601 Geer Road and displays drive-through hours of 4 a.m. to 4 a.m. every day, indicating continuous service.","source_url":"https://locations.jackinthebox.com/us/ca/turlock/2601-geer-rd","source_title":"Jack in the Box — 2601 Geer Rd, Turlock","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The drive-through schedule runs 4 a.m. to 4 a.m. daily, effectively 24 hours; do not assume overnight lobby access.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jack-in-the-box-1951-lander-rd-turlock","subject_type":"place","entity_name":"Jack in the Box — 1951 Lander Road","title":"Lander Road All-Night Window","subtitle":"Drive-through access around the clock","notes":"Use the drive-through after the lobby closes at 9 p.m.; confirm the posted schedule before making the longer trip south.","short_summary":"A 24-hour drive-through paired with an earlier-closing lobby.","evidence_claim":"The official Jack in the Box page lists 1951 Lander Road and shows drive-through hours of 4 a.m. to 4 a.m. daily, with the lobby closing at 9 p.m.","source_url":"https://locations.jackinthebox.com/us/ca/turlock/1951-lander-rd","source_title":"Jack in the Box — 1951 Lander Rd, Turlock","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-through service is effectively 24 hours daily; the official page lists lobby service only until 9 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jack-in-the-box-100-n-golden-state-blvd-turlock","subject_type":"place","entity_name":"Jack in the Box — 100 North Golden State Boulevard","title":"Downtown-Edge Weekend Extension","subtitle":"Drive-through until 3 a.m. Friday and Saturday","notes":"Save this address for a weekend run, when its drive-through stays two hours later than the Sunday–Thursday schedule.","short_summary":"A central Turlock drive-through with extended Friday and Saturday hours.","evidence_claim":"Jack in the Box’s official page lists the 100 North Golden State Boulevard drive-through until 1 a.m. Sunday–Thursday and 3 a.m. Friday–Saturday.","source_url":"https://locations.jackinthebox.com/us/ca/turlock/100-n-golden-state-blvd","source_title":"Jack in the Box — 100 N Golden State Blvd, Turlock","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-through closes at 1 a.m. Sunday–Thursday and 3 a.m. Friday–Saturday; the lobby closes earlier.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wendys-2395-geer-rd-turlock","subject_type":"place","entity_name":"Wendy’s — 2395 Geer Road","title":"Geer Road Midnight Cutoff","subtitle":"Restaurant and drive-through open until midnight","notes":"Plan this as a before-midnight stop: both the dining room and drive-through share the same closing time on the official page.","short_summary":"A near-campus Geer Road option with a nightly midnight closing.","evidence_claim":"Wendy’s official page lists both restaurant and drive-through hours at 2395 Geer Road from 6:30 a.m. to midnight every day.","source_url":"https://locations.wendys.com/united-states/ca/turlock/2395-geer-rd","source_title":"Wendy’s Turlock — 2395 Geer Rd","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Restaurant and drive-through service are listed until midnight seven days a week; holiday hours may vary.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wendys-3450-w-monte-vista-ave-turlock","subject_type":"place","entity_name":"Wendy’s — 3450 West Monte Vista Avenue","title":"Monte Vista Midnight Stop","subtitle":"Nightly service through midnight","notes":"Use this west-side location when traveling along Monte Vista Avenue, allowing time to order before its firm midnight closing.","short_summary":"A west-Turlock restaurant and drive-through available until midnight nightly.","evidence_claim":"Wendy’s official location page lists restaurant and drive-through hours at 3450 West Monte Vista Avenue from 6:30 a.m. to midnight daily.","source_url":"https://locations.wendys.com/united-states/ca/turlock/3450-w-monte-vista-ave","source_title":"Wendy’s Monte Vista — 3450 W Monte Vista Ave","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The restaurant and drive-through are listed until midnight every day; the page notes that holiday hours may vary.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"pizza-hut-920-lander-avenue-turlock","subject_type":"place","entity_name":"Pizza Hut — 920 Lander Avenue","title":"Friday-and-Saturday Pizza Cutoff","subtitle":"Delivery and carryout until midnight on weekends","notes":"Reserve this for Friday or Saturday and place the order early; weekday and Sunday service ends at 11 p.m.","short_summary":"A weekend-only midnight option for pizza delivery or carryout.","evidence_claim":"Pizza Hut’s official page identifies 920 Lander Avenue and lists delivery and carryout until midnight Friday and Saturday, with 11 p.m. closing on other days.","source_url":"https://locations.pizzahut.com/ca/turlock/920-lander-avenue","source_title":"Pizza Hut — 920 Lander Avenue, Turlock","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Delivery and carryout close at midnight Friday–Saturday and 11 p.m. Sunday–Thursday; delivery hours may vary.","cost_status":"purchase_required","under21_safe":true}],"warnings":["Late access is frequently drive-through or takeout rather than lobby service; verify the official page before departure.","Holiday hours and delivery availability can differ from the regular schedules documented here."]}],"warnings":[]}

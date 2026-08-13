@@ -1,0 +1,94 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "The observatory finale is conditional because public access is limited to announced Visitor Nights and depends on weather.",
+    "Campus dining, recreation, library, arena, museum, and student-union schedules can change between academic terms; verify same-day access."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.csusb.edu/join-the-pack/future-students/explore-csusb/csusb-traditions-and-landmarks",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusb.edu/join-the-pack/future-students/explore-csusb/csusb-traditions-and-landmarks",
+      "error": ""
+    },
+    {
+      "url": "https://resources.academic.csusb.edu/library/primoLoc/loc_1.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://resources.academic.csusb.edu/library/primoLoc/loc_1.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.csusb.edu/raffma",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusb.edu/raffma",
+      "error": ""
+    },
+    {
+      "url": "https://www.csusb.edu/guided-tour/santos-manuel-student-union-north",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusb.edu/guided-tour/santos-manuel-student-union-north",
+      "error": ""
+    },
+    {
+      "url": "https://www.csusb.edu/inside/article/450521/csusb-department-housing-and-residential-education-offer-faculty-staff-tours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusb.edu/inside/article/450521/csusb-department-housing-and-residential-education-offer-faculty-staff-tours",
+      "error": ""
+    },
+    {
+      "url": "https://www.csusb.edu/guided-tour/santos-manuel-student-union-south",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusb.edu/guided-tour/santos-manuel-student-union-south",
+      "error": ""
+    },
+    {
+      "url": "https://www.csusb.edu/smsu/resources/esports-arena",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusb.edu/smsu/resources/esports-arena",
+      "error": ""
+    },
+    {
+      "url": "https://www.csusb.edu/guided-tour/student-recreation-wellness-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusb.edu/guided-tour/student-recreation-wellness-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.csusb.edu/guided-tour/james-and-aerianthi-coussoulis-arena",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusb.edu/guided-tour/james-and-aerianthi-coussoulis-arena",
+      "error": ""
+    },
+    {
+      "url": "https://www.csusb.edu/observatory",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusb.edu/observatory",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

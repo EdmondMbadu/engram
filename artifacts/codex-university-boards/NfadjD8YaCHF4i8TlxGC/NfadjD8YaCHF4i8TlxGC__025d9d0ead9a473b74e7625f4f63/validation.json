@@ -1,0 +1,99 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Campus entry and gallery/event access are conditional; confirm the current calendar, posted building hours, and ID requirements before visiting.",
+    "4 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.nyc.gov/site/cecm/permitting/astor-place-plaza.page",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nyc.gov/site/cecm/permitting/astor-place-plaza.page",
+      "error": ""
+    },
+    {
+      "url": "https://cooper.edu/admissions/facts",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cooper.edu/admissions/facts",
+      "error": ""
+    },
+    {
+      "url": "https://cooper.edu/architecture/facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cooper.edu/architecture/facilities",
+      "error": ""
+    },
+    {
+      "url": "https://cooper.edu/about/news/great-hall-history-comes-alive-new-digital-archive",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cooper.edu/about/news/great-hall-history-comes-alive-new-digital-archive",
+      "error": ""
+    },
+    {
+      "url": "https://cooper.edu/about/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cooper.edu/about/contact",
+      "error": ""
+    },
+    {
+      "url": "https://cooper.edu/art/current-student-exhibition-calendar",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cooper.edu/art/current-student-exhibition-calendar",
+      "error": ""
+    },
+    {
+      "url": "https://cooper.edu/students/student-affairs/activities/student-organizations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cooper.edu/students/student-affairs/activities/student-organizations",
+      "error": ""
+    },
+    {
+      "url": "https://cooper.edu/sites/default/files/uploads/assets/site/2022_snapshot_FINAL2.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cooper.edu/sites/default/files/uploads/assets/site/2022_snapshot_FINAL2.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.nypl.org/locations/ottendorfer/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nypl.org/locations/ottendorfer/",
+      "error": ""
+    },
+    {
+      "url": "https://cooper.edu/events-and-exhibitions/events/sam-waterston-hosts-voices-great-hall",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cooper.edu/events-and-exhibitions/events/sam-waterston-hosts-voices-great-hall",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "The Cooper Union Library",
+    "41 Cooper Gallery",
+    "Herb Lubalin Study Center of Design and Typography",
+    "Ottendorfer Library"
+  ],
+  "sourceCount": 10,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

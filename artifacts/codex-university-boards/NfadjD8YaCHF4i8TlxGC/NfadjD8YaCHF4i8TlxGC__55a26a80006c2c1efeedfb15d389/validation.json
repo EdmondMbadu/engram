@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Hours can change for holidays, academic breaks, or exceptional closures; confirm shortly before departure.",
+    "Several destinations are beyond an easy walk from campus and may require a safe ride.",
+    "Late-night access at some fast-food locations is drive-through only after the lobby closes."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.csuchico.edu/housing/food/index.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csuchico.edu/housing/food/index.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://thesocialchico.com/faq/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thesocialchico.com/faq/",
+      "error": ""
+    },
+    {
+      "url": "https://www.windyschinesechico.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://order.menufy.com/?404Location",
+      "error": ""
+    },
+    {
+      "url": "https://cfa-chico.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cfachicosouth.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ca/chico/2398-esplanade.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ca/chico/2398-esplanade.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ca/chico/1930-east-20th-st.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ca/chico/1930-east-20th-st.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jackinthebox.com/us/ca/chico/500-broadway-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jackinthebox.com/us/ca/chico/500-broadway-st",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dennys.com/ca/chico/248542",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dennys.com/ca/chico/248542",
+      "error": ""
+    },
+    {
+      "url": "https://locations.in-n-out.com/147-Chico",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.in-n-out.com/147-Chico",
+      "error": ""
+    },
+    {
+      "url": "https://maps.apple.com/place?place-id=I2B4B60D0C47615EF",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://maps.apple.com/place?place-id=I2B4B60D0C47615EF",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://library.umkc.edu/welcome/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.umkc.edu/welcome/",
+      "error": ""
+    },
+    {
+      "url": "https://library.umkc.edu/now-open-digital-collaboration-studio/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.umkc.edu/now-open-digital-collaboration-studio/",
+      "error": ""
+    },
+    {
+      "url": "https://www.umkc.edu/news/posts/2025/may/umkc-opens-victor-wilson-learning-collaborative-to-boost-student-achievement.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.umkc.edu/news/posts/2025/may/umkc-opens-victor-wilson-learning-collaborative-to-boost-student-achievement.html",
+      "error": ""
+    },
+    {
+      "url": "https://library.umkc.edu/mnl/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.umkc.edu/mnl/",
+      "error": ""
+    },
+    {
+      "url": "https://www.umkc.edu/campus/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.umkc.edu/campus/",
+      "error": ""
+    },
+    {
+      "url": "https://www.umkc.edu/student-affairs/student-handbook/campus-resources.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.umkc.edu/student-affairs/student-handbook/campus-resources.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.umkc.edu/campus/student-union/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.umkc.edu/campus/student-union/",
+      "error": ""
+    },
+    {
+      "url": "https://www.umkc.edu/wellness/resources/mental-health/mindbody-connection.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.umkc.edu/wellness/resources/mental-health/mindbody-connection.html",
+      "error": ""
+    },
+    {
+      "url": "https://staging.umkc.edu/brand/writing-guidelines/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://staging.umkc.edu/brand/writing-guidelines/",
+      "error": ""
+    },
+    {
+      "url": "https://catalog.umkc.edu/student-success-services/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.umkc.edu/student-success-services/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

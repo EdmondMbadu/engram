@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://osa.universitylife.upenn.edu/campus-traditions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://osa.universitylife.upenn.edu/campus-traditions/",
+      "error": ""
+    },
+    {
+      "url": "https://penntoday.upenn.edu/news/penn-hey-day-class-2027",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://penntoday.upenn.edu/news/penn-hey-day-class-2027",
+      "error": ""
+    },
+    {
+      "url": "https://osa.universitylife.upenn.edu/ivydaystones/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://osa.universitylife.upenn.edu/ivydaystones/",
+      "error": ""
+    },
+    {
+      "url": "https://penntoday.upenn.edu/news/penn-class-2026-ivy-day-ceremony",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://penntoday.upenn.edu/news/penn-class-2026-ivy-day-ceremony",
+      "error": ""
+    },
+    {
+      "url": "https://penntoday.upenn.edu/news/penns-class-2027-marks-midway-u-night",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://penntoday.upenn.edu/news/penns-class-2027-marks-midway-u-night",
+      "error": ""
+    },
+    {
+      "url": "https://secretary.upenn.edu/index.php/ceremonies/convocation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://secretary.upenn.edu/index.php/ceremonies/convocation",
+      "error": ""
+    },
+    {
+      "url": "https://penntoday.upenn.edu/node/481",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://penntoday.upenn.edu/node/481",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

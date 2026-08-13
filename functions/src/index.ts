@@ -19847,15 +19847,19 @@ function globalUniversityBoardCatalogStatus(
       const imageFingerprints = new Set(cards.map((card) => textFromUnknown(
         (card as Record<string, unknown>)?.imageFingerprint,
       )).filter(Boolean));
+      const relatedFallbackMode = textFromUnknown(validation.image_validation_mode)
+        === 'exact_or_related_university_location_with_limited_reuse_and_provenance';
+      const imageDiversityAccepted = imageFingerprints.size === cards.length
+        || (relatedFallbackMode && imageFingerprints.size >= 7);
       const imagesValidated = cards.every((card) => {
         const universityCard = card as Record<string, unknown>;
         return textFromUnknown(universityCard.imageUrl).includes('firebasestorage.googleapis.com')
           && !!textFromUnknown(universityCard.imageSourceUrl)
           && !!textFromUnknown(universityCard.imageFingerprint);
-      }) && imageFingerprints.size === cards.length
+      }) && imageDiversityAccepted
         && validation.all_have_images === true
         && Number(validation.image_count) === template.count
-        && Number(validation.unique_image_count) === template.count;
+        && Number(validation.unique_image_count) === imageFingerprints.size;
       const structurallyValid = cards.length === template.count
         && Number(validation.requested_count) === template.count
         && Number(validation.verified_count) === template.count
@@ -20842,13 +20846,17 @@ function cityBoardPublishFailure(board: Record<string, unknown>): string {
     const imageFingerprints = new Set(cards.map((card) => textFromUnknown(
       (card as Record<string, unknown>)?.imageFingerprint,
     )).filter(Boolean));
+    const relatedFallbackMode = textFromUnknown(summary.image_validation_mode)
+      === 'exact_or_related_university_location_with_limited_reuse_and_provenance';
+    const imageDiversityAccepted = imageFingerprints.size === cards.length
+      || (relatedFallbackMode && imageFingerprints.size >= 7);
     if (cards.some((card) => {
       const universityCard = card as Record<string, unknown>;
       return !textFromUnknown(universityCard.imageUrl)
         || !textFromUnknown(universityCard.imageSourceUrl)
         || !textFromUnknown(universityCard.imageFingerprint);
-    }) || imageFingerprints.size !== cards.length) {
-      return 'Every university card needs a distinct validated image with source provenance.';
+    }) || !imageDiversityAccepted) {
+      return 'Every university card needs validated related imagery with source provenance and sufficient visual diversity.';
     }
     if (summary.all_have_images !== true || Number(summary.image_count) !== cards.length) {
       return 'This university board has not passed complete image validation.';

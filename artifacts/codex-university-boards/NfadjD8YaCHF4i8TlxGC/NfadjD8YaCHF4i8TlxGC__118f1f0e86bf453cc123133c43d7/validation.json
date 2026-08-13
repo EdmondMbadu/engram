@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.farmingdale.edu/transfer-services/keys-to-transfer-success.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.farmingdale.edu/transfer-services/keys-to-transfer-success.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.farmingdale.edu/aaic/aaic-handbook.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.farmingdale.edu/aaic/aaic-handbook.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://farmingdalelibrary.org/tech-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://farmingdalelibrary.org/tech-center/",
+      "error": ""
+    },
+    {
+      "url": "https://farmingdalelibrary.org/careers-testing/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://farmingdalelibrary.org/careers-testing/",
+      "error": ""
+    },
+    {
+      "url": "https://farmingdalelibrary.org/how-to-apply-for-a-farmingdale-public-library-card/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://farmingdalelibrary.org/how-to-apply-for-a-farmingdale-public-library-card/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

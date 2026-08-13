@@ -1,0 +1,79 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.towson.edu/news/2021/jordandeveaux.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.towson.edu/news/",
+      "error": ""
+    },
+    {
+      "url": "https://www.towson.edu/campus/landmarks/union.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.towson.edu/campus/landmarks/union.html",
+      "error": ""
+    },
+    {
+      "url": "https://catalog.towson.edu/undergraduate/student-support-services/albert-s-cook-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.towson.edu/undergraduate/student-support-services/albert-s-cook-library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.towson.edu/campus/artsculture/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.towson.edu/campus/artsculture/",
+      "error": ""
+    },
+    {
+      "url": "https://www.towson.edu/campus/landmarks/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.towson.edu/campus/landmarks/",
+      "error": ""
+    },
+    {
+      "url": "https://www.towson.edu/campus/landmarks/glen/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.towson.edu/campus/landmarks/glen/",
+      "error": ""
+    },
+    {
+      "url": "https://catalog.towson.edu/undergraduate/tu-life/campus-recreation/campus-recreation.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.towson.edu/undergraduate/tu-life/campus-recreation/campus-recreation.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.towson.edu/campus/landmarks/arena/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.towson.edu/campus/landmarks/arena/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "University Union"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

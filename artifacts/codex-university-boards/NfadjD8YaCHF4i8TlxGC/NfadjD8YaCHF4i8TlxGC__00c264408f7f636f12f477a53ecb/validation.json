@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://wmmi.org/who-we-are/mission-history.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wmmi.org/who-we-are/mission-history.html",
+      "error": ""
+    },
+    {
+      "url": "https://parks.elpasoco.com/parks-and-recreation/fox-run-regional-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://parks.elpasoco.com/parks-and-recreation/fox-run-regional-park/",
+      "error": ""
+    },
+    {
+      "url": "https://parks.elpasoco.com/parks-and-recreation/black-forest-regional-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://parks.elpasoco.com/parks-and-recreation/black-forest-regional-park/",
+      "error": ""
+    },
+    {
+      "url": "https://parks.elpasoco.com/parks-and-recreation/pineries-open-space/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://parks.elpasoco.com/parks-and-recreation/pineries-open-space/",
+      "error": ""
+    },
+    {
+      "url": "https://parks.elpasoco.com/parks-and-recreation/black-forest-section-16/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://parks.elpasoco.com/parks-and-recreation/black-forest-section-16/",
+      "error": ""
+    },
+    {
+      "url": "https://parks.elpasoco.com/parks-and-recreation/santa-fe-open-space/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://parks.elpasoco.com/parks-and-recreation/santa-fe-open-space/",
+      "error": ""
+    },
+    {
+      "url": "https://parks.elpasoco.com/parks-and-recreation/palmer-lake-recreation-area/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://parks.elpasoco.com/parks-and-recreation/palmer-lake-recreation-area/",
+      "error": ""
+    },
+    {
+      "url": "https://parks.elpasoco.com/parks-and-recreation/bear-creek-regional-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://parks.elpasoco.com/parks-and-recreation/bear-creek-regional-park/",
+      "error": ""
+    },
+    {
+      "url": "https://coloradosprings.gov/parks/page/monument-valley-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://coloradosprings.gov/parks/page/monument-valley-park",
+      "error": ""
+    },
+    {
+      "url": "https://coloradosprings.gov/gog",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://coloradosprings.gov/gog",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Garden of the Gods Visitor & Nature Center"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

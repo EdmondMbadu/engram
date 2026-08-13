@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.regis.edu/news/2021/discern-learn/10/best-places-to-study-at-regis-university",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.regis.edu/news/2021/discern-learn/10/best-places-to-study-at-regis-university",
+      "error": ""
+    },
+    {
+      "url": "https://www.regis.edu/academics/student-success/library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.regis.edu/academics/student-success/library",
+      "error": ""
+    },
+    {
+      "url": "https://catalog.regis.edu/general-information/academic-integrity-policy/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.regis.edu/general-information/academic-integrity-policy/",
+      "error": ""
+    },
+    {
+      "url": "https://www.regis.edu/_documents/policies-and-procedures/handbooks/four-college-faculty-handbook.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.regis.edu/_documents/policies-and-procedures/handbooks/four-college-faculty-handbook.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.regis.edu/life-at-regis/commuting-to-regis",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.regis.edu/life-at-regis/commuting-to-regis",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

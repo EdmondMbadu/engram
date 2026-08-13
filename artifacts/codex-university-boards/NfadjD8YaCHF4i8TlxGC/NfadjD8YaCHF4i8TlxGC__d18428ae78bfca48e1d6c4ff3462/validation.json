@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.fairfield.edu/academics/academic-support/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/academics/academic-support/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/library/services/reservearoom/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/library/services/reservearoom/",
+      "error": ""
+    },
+    {
+      "url": "https://catalog.fairfield.edu/graduate/overview/resources-services/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.fairfield.edu/graduate/overview/resources-services/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/_files/documents/pdfs/about_office-and-departments_institutional-research_fact-book-2024-2025.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/_files/documents/pdfs/about_office-and-departments_institutional-research_fact-book-2024-2025.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://thednlreport.fairfield.edu/access-to-library-resources-services/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thednlreport.fairfield.edu/access-to-library-resources-services/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/academics/academic-support/writing-math-and-science-centers/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/academics/academic-support/writing-math-and-science-centers/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "DiMenna-Nyselius Library"
+  ],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

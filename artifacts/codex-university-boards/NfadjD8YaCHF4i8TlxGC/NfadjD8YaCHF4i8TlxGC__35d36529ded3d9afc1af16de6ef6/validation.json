@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.csulb.edu/university-library/study-areas",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/university-library/study-areas",
+      "error": ""
+    },
+    {
+      "url": "https://www.csulb.edu/academic-technology-services/academic-technology-resources-for-students",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/academic-technology-services/academic-technology-resources-for-students",
+      "error": ""
+    },
+    {
+      "url": "https://www.csulb.edu/navigating-grad-studies-at-the-beach/graduate-study-space",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/navigating-grad-studies-at-the-beach/graduate-study-space",
+      "error": ""
+    },
+    {
+      "url": "https://www.csulb.edu/japanese-garden/learn-at-the-garden",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/japanese-garden/learn-at-the-garden",
+      "error": ""
+    },
+    {
+      "url": "https://www.csulb.edu/sites/default/files/2026/documents/KCAM_Spring%202026%20Exhibitions%20Press%20Release_01212026_0.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/sites/default/files/2026/documents/KCAM_Spring%202026%20Exhibitions%20Press%20Release_01212026_0.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.csulb.edu/student-affairs/beach-wellness/student-wellness-resources",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/student-affairs/beach-wellness/student-wellness-resources",
+      "error": ""
+    },
+    {
+      "url": "https://www.csulb.edu/student-affairs/dream-success-center/dsc-services",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/student-affairs/dream-success-center/dsc-services-and-resources",
+      "error": ""
+    },
+    {
+      "url": "https://www.csulb.edu/student-affairs/asian-pacific-islander-desi-resource-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/student-affairs/asian-pacific-islander-desi-resource-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.csulb.edu/student-affairs/black-resource-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/student-affairs/black-resource-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.csulb.edu/sites/default/files/document/2021_black_student_resource_guide_bsrg_created_by_laruyn_westbrook_art_work_by_esther_kasue.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/sites/default/files/document/2021_black_student_resource_guide_bsrg_created_by_laruyn_westbrook_art_work_by_esther_kasue.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

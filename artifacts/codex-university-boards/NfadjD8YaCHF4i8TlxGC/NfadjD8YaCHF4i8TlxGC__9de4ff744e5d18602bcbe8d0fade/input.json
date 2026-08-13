@@ -1,0 +1,52 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "RzMmU1nibZhPY8j3PqeN",
+    "schoolName": "University of California-Santa Cruz",
+    "shortSchoolName": "University of California-Santa Cruz",
+    "townName": "Santa Cruz",
+    "state": "CA",
+    "countryCode": "US",
+    "unitId": "110714",
+    "website": "https://www.ucsc.edu/",
+    "latitude": 36.995584,
+    "longitude": -122.058801,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/The_University_of_California_1868_UCSC.svg/960px-The_University_of_California_1868_UCSC.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=ucsc.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at University of California-Santa Cruz, Shared as Cards",
+  "excluded_subjects": [
+    "Banana Slug Mascot",
+    "Fiat Slug",
+    "“Slime ’em!” Cheer",
+    "Kresge Presents PRIDE",
+    "Chicane Latiné Year-End Celebration",
+    "UC Santa Cruz Powwow",
+    "UC Santa Cruz Family Weekend",
+    "Return to the Redwoods",
+    "Morton Marcus Poetry Reading",
+    "Annual Dizikes Concert"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

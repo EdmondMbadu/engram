@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.amoca.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.amoca.org/",
+      "error": ""
+    },
+    {
+      "url": "https://www.pomonaca.gov/government/departments/library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pomonaca.gov/government/departments/library",
+      "error": ""
+    },
+    {
+      "url": "https://www.dacenter.org/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.dacenter.org/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.pomonaartscolony.com/museums-and-galleries",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pomonaartscolony.com/museums-and-galleries",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://bealbotanicalgarden.msu.edu/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bealbotanicalgarden.msu.edu/visit",
+      "error": ""
+    },
+    {
+      "url": "https://broadmuseum.msu.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://broadmuseum.msu.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://virtualtour.msu.edu/tour/social-cultural-studies/wells-hall/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://virtualtour.msu.edu/tour/social-cultural-studies/wells-hall/",
+      "error": ""
+    },
+    {
+      "url": "https://art.msu.edu/galleries/msu-union-art-gallery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://art.msu.edu/galleries/msu-union-art-gallery/",
+      "error": ""
+    },
+    {
+      "url": "https://lib.msu.edu/dsl/faq",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.msu.edu/dsl/faq",
+      "error": ""
+    },
+    {
+      "url": "https://lib.msu.edu/makerspace/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.msu.edu/makerspace/about",
+      "error": ""
+    },
+    {
+      "url": "https://lib.msu.edu/dmc/aboutus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.msu.edu/dmc/aboutus",
+      "error": ""
+    },
+    {
+      "url": "https://lib.msu.edu/dmc/gaming",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.msu.edu/dmc/gaming",
+      "error": ""
+    },
+    {
+      "url": "https://www.canr.msu.edu/4hgarden/information",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.canr.msu.edu/4hgarden/information",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

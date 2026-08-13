@@ -1,0 +1,60 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "t78rP1AKSA5rZ50h5CIJ",
+    "schoolName": "Loyola Marymount University",
+    "shortSchoolName": "Loyola Marymount University",
+    "townName": "Los Angeles",
+    "state": "CA",
+    "countryCode": "US",
+    "unitId": "117946",
+    "website": "https://www.lmu.edu/",
+    "latitude": 33.97085,
+    "longitude": -118.415744,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/7/72/Loyola_Marymount_University_%28LMU%29_ceremonial_mark.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=lmu.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "Rose Hills Reading Room",
+    "Information Commons",
+    "Burns Recreation Center",
+    "Fountains on Shea Terrace",
+    "Interfaith Peace Garden",
+    "Labyrinth at the Garden of Slow Time",
+    "Tongva Memorial",
+    "Marymount Center for Prayer and Peace",
+    "Sacred Heart Chapel",
+    "“Ad Astra per Aspera” Student Memorial",
+    "Lion's Den Coffee Shop",
+    "Wendy's LAX — 7360 La Tijera Blvd.",
+    "In-N-Out Burger — 9149 S. Sepulveda Blvd.",
+    "In-N-Out Burger — 13425 Washington Blvd.",
+    "In-N-Out Burger — 3411 W. Century Blvd.",
+    "Jack in the Box — 12403 Washington Pl.",
+    "Jack in the Box — 5400 Sepulveda Blvd.",
+    "Jack in the Box — 10701 Venice Blvd.",
+    "Jack in the Box — 2025 Lincoln Blvd.",
+    "Jack in the Box — 8605 W. Pico Blvd."
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

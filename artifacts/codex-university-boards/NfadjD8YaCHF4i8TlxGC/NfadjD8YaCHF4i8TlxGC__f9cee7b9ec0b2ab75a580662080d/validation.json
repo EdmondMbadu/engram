@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "The farmers market is a Wednesday/Saturday activity, so it is included as a seasonal alternate rather than a literal Sunday stop. Check current university, museum, and city schedules before visiting."
+  ],
+  "reachability": [
+    {
+      "url": "https://calendar.utk.edu/ut_gardens_knoxville",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calendar.utk.edu/ut_gardens_knoxville",
+      "error": ""
+    },
+    {
+      "url": "https://calendar.utk.edu/torchbearer_statue_785_457",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calendar.utk.edu/torchbearer_statue_785_457",
+      "error": ""
+    },
+    {
+      "url": "https://mcclungmuseum.utk.edu/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mcclungmuseum.utk.edu/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://torchbearer.utk.edu/2026/05/200-years-on-the-hill/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://torchbearer.utk.edu/2026/05/200-years-on-the-hill/",
+      "error": ""
+    },
+    {
+      "url": "https://lib.utk.edu/about/about-the-john-c-hodges-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.utk.edu/about/about-the-john-c-hodges-library",
+      "error": ""
+    },
+    {
+      "url": "https://studentlife.utk.edu/studentunion/visit/hours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentlife.utk.edu/studentunion/visit/hours/",
+      "error": ""
+    },
+    {
+      "url": "https://www.knoxvilletn.gov/government/city_departments_offices/parks_and_recreation/parks/world_s_fair_park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.knoxvilletn.gov/government/city_departments_offices/parks_and_recreation/parks/world_s_fair_park",
+      "error": ""
+    },
+    {
+      "url": "https://www.knoxvilletn.gov/workspaces/one.aspx?contextId=123284&objectId=21242666",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.knoxvilletn.gov/workspaces/one.aspx?contextId=123284&objectId=21242666",
+      "error": ""
+    },
+    {
+      "url": "https://www.knoxvilletn.gov/government/city_departments_offices/special_events/market_square_info",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.knoxvilletn.gov/government/city_departments_offices/special_events/market_square_info",
+      "error": ""
+    },
+    {
+      "url": "https://torchbearer.utk.edu/2019/08/10-historic-buildings/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://torchbearer.utk.edu/2019/08/10-historic-buildings/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

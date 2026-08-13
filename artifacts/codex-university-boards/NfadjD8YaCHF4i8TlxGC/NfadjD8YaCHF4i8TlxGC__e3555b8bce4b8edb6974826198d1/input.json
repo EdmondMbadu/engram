@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "esMNNgDJZXBgaaVcWAis",
+    "schoolName": "University of North Carolina at Charlotte",
+    "shortSchoolName": "University of North Carolina at Charlotte",
+    "townName": "Charlotte",
+    "state": "NC",
+    "countryCode": "US",
+    "unitId": "199139",
+    "website": "https://www.charlotte.edu/",
+    "latitude": 35.306022,
+    "longitude": -80.730919,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/8/8f/UNC_Charlotte_seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=charlotte.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "Atkins Room G02 — Compact Shelving & Graduate and Silent Study",
+    "Atkins Room 115 — Graduate & Silent Study Room",
+    "West Side Third-Floor Quiet Study Area",
+    "Mary & Harry L. Dalton Rare Book and Manuscript Room",
+    "Atkins Tenth-Floor Open Quiet Study Area",
+    "Charles C. Hight Architecture Library",
+    "Area 49",
+    "ANSWER Family-Friendly Library Room 206",
+    "ANSWER Family-Friendly Library Room 209",
+    "Atkins Video Viewing Room 114A"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

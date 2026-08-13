@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.lsu.edu/about/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lsu.edu/about/index.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.lsu.edu/blog/2025/10/football-student-experience.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lsu.edu/blog/2025/10/football-student-experience.php",
+      "error": ""
+    },
+    {
+      "url": "https://lsusports.net/gameday-soundtrack-geico",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lsusports.net/gameday-soundtrack-geico",
+      "error": ""
+    },
+    {
+      "url": "https://lsusports.net/news/2007/12/18/1354158",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lsusports.net/news/2007/12/18/1354158",
+      "error": ""
+    },
+    {
+      "url": "https://lsusports.net/news/2019/07/11/209483442-2",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lsusports.net/news/2019/07/11/209483442-2",
+      "error": ""
+    },
+    {
+      "url": "https://www.lsu.edu/student-affairs/lsu-ring.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lsu.edu/student-affairs/lsu-ring.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.lsu.edu/student-affairs/tiger-twelve/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lsu.edu/student-affairs/tiger-twelve/index.php",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

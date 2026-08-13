@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.truman.edu/wp-content/uploads/2018/10/Campus-Map.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.truman.edu/wp-content/uploads/2018/10/Campus-Map.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://union.truman.edu/files/2018/01/07-QUAD-MAP.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://union.truman.edu/files/2018/01/07-QUAD-MAP.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://library.truman.edu/services/borrowing/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.truman.edu/services/borrowing/",
+      "error": ""
+    },
+    {
+      "url": "https://involvement.truman.edu/index-5/csievents/engagement/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://involvement.truman.edu/index-5/csievents/engagement/",
+      "error": ""
+    },
+    {
+      "url": "https://sab.truman.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sab.truman.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://recreation.truman.edu/general/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recreation.truman.edu/general/",
+      "error": ""
+    },
+    {
+      "url": "https://www.truman.edu/academics/school-of-arts-and-humanities/about-the-art-and-design-department/art-gallery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.truman.edu/academics/school-of-arts-and-humanities/about-the-art-and-design-department/art-gallery/",
+      "error": ""
+    },
+    {
+      "url": "https://www.truman.edu/student-life/health-safety-and-wellness/fitness-recreation/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.truman.edu/student-life/health-safety-and-wellness/fitness-recreation/",
+      "error": ""
+    },
+    {
+      "url": "https://www.truman.edu/residence-life/housing-options/university-farm/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.truman.edu/residence-life/housing-options/university-farm/",
+      "error": ""
+    },
+    {
+      "url": "https://observatory.truman.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://observatory.truman.edu/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

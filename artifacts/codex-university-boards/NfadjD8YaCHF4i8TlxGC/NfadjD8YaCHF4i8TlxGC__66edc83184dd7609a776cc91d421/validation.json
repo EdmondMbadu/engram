@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://raclinmurphymuseum.nd.edu/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://raclinmurphymuseum.nd.edu/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://raclinmurphymuseum.nd.edu/learn/education/opportunities-for-wellness-and-belonging/mary-queen-of-families-chapel/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://raclinmurphymuseum.nd.edu/learn/education/opportunities-for-wellness-and-belonging/mary-queen-of-families-chapel/",
+      "error": ""
+    },
+    {
+      "url": "https://raclinmurphymuseum.nd.edu/explore/galleries/international-modern-and-contemporary-art/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://raclinmurphymuseum.nd.edu/explore/galleries/international-modern-and-contemporary-art/",
+      "error": ""
+    },
+    {
+      "url": "https://raclinmurphymuseum.nd.edu/explore/sculpture-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://raclinmurphymuseum.nd.edu/explore/sculpture-park/",
+      "error": ""
+    },
+    {
+      "url": "https://raclinmurphymuseum.nd.edu/assets/516553/coe_fall_winter_2017_online2.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://raclinmurphymuseum.nd.edu/assets/516553/coe_fall_winter_2017_online2.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://basilica.nd.edu/about/visit-and-tours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://basilica.nd.edu/about/visit-and-tours/",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.nd.edu/visitor-information/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.nd.edu/visitor-information",
+      "error": ""
+    },
+    {
+      "url": "https://www.nd.edu/about/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nd.edu/about/visit/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

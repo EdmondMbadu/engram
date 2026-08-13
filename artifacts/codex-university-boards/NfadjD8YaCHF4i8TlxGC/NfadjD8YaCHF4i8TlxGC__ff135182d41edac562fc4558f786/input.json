@@ -1,0 +1,39 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "pXJOb7dTx7Rf0Rw0TrZH",
+    "schoolName": "Mercer University",
+    "shortSchoolName": "Mercer University",
+    "townName": "Macon",
+    "state": "GA",
+    "countryCode": "US",
+    "unitId": "140447",
+    "website": "https://www.mercer.edu/",
+    "latitude": 32.829134,
+    "longitude": -83.649392,
+    "heroUrl": "https://www.mercer.edu/wp-content/uploads/2019/04/cropped-android-chrome-512x512.png",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=mercer.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain Mercer University",
+  "excluded_subjects": [],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

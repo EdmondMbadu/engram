@@ -1,0 +1,61 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://emerson.edu/departments/campus-centers/griffs-game-room",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://emerson.edu/departments/campus-centers/griffs-game-room",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://emerson.edu/departments/campus-centers/172-tremont",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://emerson.edu/departments/campus-centers/172-tremont",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://emerson.edu/departments/student-affairs/student-handbook/campus-resources",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sso-cedf2f54.sso.duosecurity.com/saml2/sp/DI4ULWHUR71ILNFY6O6W/sso?SAMLRequest=jZJRb9owEMffJ%2B07WH53nKQUgkWoWBFqJNYiCKu2l8k4F7CU2JnPbtdvvwBD6h6o5rfz3el%2B%2F%2F%2Fd5O5325AXcKityWkSxZSAUbbSZp%2FTbblgGb2bTlC2TSdmwR%2FMGn4FQE%2F6PoPilMhpcEZYiRqFkS2g8EpsZl%2BXIo1i0TnrrbINPbd8XCwRwfmehZJintOfo5u0luMqrjNQsarSwaACGNdporLRbhcno0SOb4dVPawp%2BXZRkR5VFIgBCoNeGt9%2FxemQxRlLbso4E0kmBtkPSlZ%2F0b5ocxb8EdruXITioSxXbPW0KSmZXXDvrcHQgtuAe9EKtutlTg%2Fedyg4P4RdBH0OrYmgCpySeW%2BgNtKfaC9liJYpqOq0vh1EfRBVwSKo4LR%2Fi5Rt%2BdHrlGPH58Vgu3x%2B2K5HSbF8XHwfPg2fj%2B30vChxku7ebeh%2FPZ9eQ37tmLLGg%2FG8a8JeG%2BStNto6afbAjiNYGjPs7Wn6UO8Ns4ZP%2BDuayw099uOL%2Bco2Wr2RWdPY13sH0kNOvQtAycK6VvrrwEmUnH50xepTqQgGO1C61lDRz5%2FIlcenZ5x%2Fr3j6Bw%3D%3D&RelayState=hub.emerson.edu%2Fstudent-affairs%2Fstudent-handbook%2Fcampus-resources%2F&SigAlg=http%3A%2F%2Fwww.w3.org%2F2001%2F04%2Fxmldsig-more%23rsa-sha256&Signature=opsAYgxo7B6gwO%2F6%2Bz61H%2BELLajG0%2Be%2Fq5ihmkrNQN%2FFux%2F98eyFaZExpS4Wso1LCoWPbE4ltaoTpXDr4nyUYSTjLS3vNkQeGZvaXbAV2a9HXScMYnwTn93g6KSlJ2FdOBDR5olZ1%2Fx13fdIA9RQhh3cXRBBVFZcD%2BOV%2BfUe8O%2F0YvVhWTqnHjX%2Bgqdvnr8VB%2BJCsb3gWauIS57gD9QIBFu%2FmZQ77Z9fA%2F7ZeDn%2Fyki0zOMZxkDfE81rtRgGnZ7wqr%2FscBhbDH9S%2BTSMr0PS1o2YcecXO895%2BjM4jT2qm03LiO6s%2BIQecDo%2F3cp44XnUagMNwu%2FBzlHx2exRYo2NwwE%3D",
+      "error": ""
+    },
+    {
+      "url": "https://emerson.edu/departments/campus-centers/max-mutchnick-campus-center",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://emerson.edu/departments/campus-centers/max-mutchnick-campus-center",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://emerson.edu/departments/business-services/events-and-meetings",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sso-cedf2f54.sso.duosecurity.com/saml2/sp/DI4ULWHUR71ILNFY6O6W/sso?SAMLRequest=jZJNb9swDIbvA%2FYfBN1ly47jeEKcImsQ1EDWBvlosV0GR6YTAbbkiVI%2F%2Fv2cZAG6Q4rqRpEEn%2FclxzevbUOewaIyOqdRwCkBLU2l9D6n282cZfRmMsaybTox9e6gV%2FDHAzrS92kUp0ROvdXClKhQ6LIFFE6K9fTHQsQBF501zkjT0HPLx8UlIljXs1BSzHL6m%2B8kT4dQwWgAfFBno9EwqdOUD3kCo0TWg29ZXCfDmEtKHi8q4qOKAtFDodGV2vVfPE4Zz1g02PBMRJlIsl%2BULP%2BhfVf6LPgjtN25CMXdZrNky4f1hpLpBffWaPQt2DXYZyVhu1rk9OBchyIMD34XQJ9DowOofEjJrDdQ6dKdaC9liIZJqOq4HiZBHwSVNwjSW%2BXeAmna8Oh1HGIXzopku3i6265GUbG4n%2F9MH9KnYzs9L0qcpNt3G%2Fqs55NryC8dk0Y70C7sGr9XGsNWaWVsqffAjiNYzBn29jR9qPaaGR2Ow3c0lxu678cXs6VplHwj06YxL7cWSgc5ddYDJXNj29JdB46C6PSjKlafSoXX2IFUtYKKfv1Crrxwcsb5%2F4onfwE%3D&RelayState=hub.emerson.edu%2Fbusiness-services%2Fevents-and-meetings%2F&SigAlg=http%3A%2F%2Fwww.w3.org%2F2001%2F04%2Fxmldsig-more%23rsa-sha256&Signature=IPxQyiqd%2Bs7L2zuT1VMiTu9GKvGemqN1SmFc4QIe6M4bdc24jX%2BSOrTNtSQrXTemEGsoKuQvBUteFI%2Ba2MFdOdsL2r%2FNVGdMwv01sxz0vw9npvDidgVjt9aPrLeOtxZJGdgTFFnYtkb6qCDD%2BtpCoVMUNZR87i%2FE2T8C89FW3I8M0EfM4Fgn6dlVGJh2dnHfOT5Nz3StCJ88JaYGibHlOfCedES8%2FJMePlFpbCFXn9A7Cn2BMB8%2FCcFCAOtweI40pPtQ7kOUIrtCgo0f%2FK6MyBDf8eF28DqDZjltcV6rs0XCohc26VDDDH5fpXJlORQjuq0z0CCAN%2BVlqNZDRK4fCys%3D",
+      "error": ""
+    },
+    {
+      "url": "https://support.emerson.edu/hc/en-us/articles/207162373-Lab-and-kiosk-locations-and-resources",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://support.emerson.edu/hc/en-us/articles/207162373-Lab-and-kiosk-locations-and-resources",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.beansonbroad.com/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.beansonbroad.com/contact",
+      "error": ""
+    },
+    {
+      "url": "https://www.broadstgrille.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.broadstgrille.com/",
+      "error": ""
+    },
+    {
+      "url": "https://jinsushigc.com/order/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://jinsushigc.com/order/",
+      "error": ""
+    },
+    {
+      "url": "https://www.collage.coffee/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.collage.coffee/contact",
+      "error": ""
+    },
+    {
+      "url": "https://www.naiba.com/naiba-bookstores/bookends-bookstore-and-homeschool-resource-center-llc",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.naiba.com/naiba-bookstores/bookends-bookstore-and-homeschool-resource-center-llc",
+      "error": ""
+    },
+    {
+      "url": "https://www.grovecityhistoricalsociety.org/contact-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.grovecityhistoricalsociety.org/contact-us/",
+      "error": ""
+    },
+    {
+      "url": "https://www.grovecitypalibrary.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.grovecitypalibrary.org/",
+      "error": ""
+    },
+    {
+      "url": "https://grovecityonline.com/parks-rec/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://grovecityonline.com/parks-rec/",
+      "error": ""
+    },
+    {
+      "url": "https://www.pizzajoes.com/locations/grove-city/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pizzajoes.com/locations/grove-city/",
+      "error": ""
+    },
+    {
+      "url": "https://10pinalley.com/bowlodrome/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://10pinalley.com/bowlodrome/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://franciscan.edu/franciscan-university-students-furbish-new-totus-tuus-group-study-room/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://franciscan.edu/franciscan-university-students-furbish-new-totus-tuus-group-study-room/",
+      "error": ""
+    },
+    {
+      "url": "https://franciscan.edu/quiz-where-will-you-be-on-campus/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://franciscan.edu/quiz-where-will-you-be-on-campus/",
+      "error": ""
+    },
+    {
+      "url": "https://franciscan.edu/new-student-orientation/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://franciscan.edu/new-student-orientation/",
+      "error": ""
+    },
+    {
+      "url": "https://chapel.franciscan.edu/campus-faith-life/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://chapel.franciscan.edu/campus-faith-life/",
+      "error": ""
+    },
+    {
+      "url": "https://franciscan.edu/franciscan-university-celebrates-solemn-blessing-of-renovated-christ-the-king-chapel/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://franciscan.edu/franciscan-university-celebrates-solemn-blessing-of-renovated-christ-the-king-chapel/",
+      "error": ""
+    },
+    {
+      "url": "https://franciscan.edu/franciscan-university-opens-christ-the-teacher-academic-hall-and-conference-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://franciscan.edu/franciscan-university-opens-christ-the-teacher-academic-hall-and-conference-center/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Totus Tuus Group Study Room"
+  ],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

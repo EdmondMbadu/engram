@@ -1,0 +1,42 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "4 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.lsu.edu/blog/2026/04/study-spots.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lsu.edu/blog/2026/04/study-spots.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.lsu.edu/student-affairs/contact/who/amy.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lsu.edu/student-affairs/contact/who/amy.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.lsu.edu/honors/about/ohc-ourcampus.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lsu.edu/honors/about/ohc-ourcampus.php",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "The Quad",
+    "LSU Student Union Terrace",
+    "Business Education Complex Rotunda",
+    "Business Education Complex Courtyard"
+  ],
+  "sourceCount": 3,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.whataburger.com/tx/irving.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.whataburger.com/tx/irving.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/tx/irving/1025-west-airport-freeway/fast-food.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/tx/irving/1025-west-airport-freeway/fast-food.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/tx/irving.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/tx/irving.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/tx/irving/801-s-belt-line-rd-.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/tx/irving/801-s-belt-line-rd-.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/tx/irving/2410-n-story-rd/1844.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/tx/irving/2410-n-story-rd/1844.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dennys.com/tx/irving/249646",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dennys.com/tx/irving/249646",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.ihop.com/en-us/tx/irving/breakfast-1801-n-belt-line-rd-1468/late-night-food",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.ihop.com/en-us/tx/irving/breakfast-1801-n-belt-line-rd-1468/late-night-food",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.subway.com/united-states/tx/irving/3601-regent-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.subway.com/united-states/tx/irving/3601-regent-blvd",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

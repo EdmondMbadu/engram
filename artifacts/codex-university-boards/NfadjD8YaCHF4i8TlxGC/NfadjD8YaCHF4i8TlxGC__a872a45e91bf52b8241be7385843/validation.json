@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://lib.utsa.edu/about/john-peace-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.utsa.edu/about/john-peace-library",
+      "error": ""
+    },
+    {
+      "url": "https://www.utsa.edu/students/being-a-roadrunner/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.utsa.edu/students/being-a-roadrunner/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.utsa.edu/commencement/photo-locations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.utsa.edu/commencement/photo-locations/",
+      "error": ""
+    },
+    {
+      "url": "https://future.utsa.edu/wp-content/uploads/Spring2024-OneDay-OR-Schedule-Dec1.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://future.utsa.edu/wp-content/uploads/Spring2024-OneDay-OR-Schedule-Dec1.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://campusrec.utsa.edu/facilities/Recreation-Wellness-Center.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusrec.utsa.edu/facilities/Recreation-Wellness-Center.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.utsa.edu/about/traditions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.utsa.edu/about/traditions/",
+      "error": ""
+    },
+    {
+      "url": "https://news.utsa.edu/2019/08/navigating-utsa-your-road-map-to-get-around-campus/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.utsa.edu/2019/08/navigating-utsa-your-road-map-to-get-around-campus/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

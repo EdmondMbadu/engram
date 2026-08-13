@@ -1,0 +1,305 @@
+Reading additional input from stdin...
+2026-08-13T07:32:09.453081Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa08-7155-78b3-a048-f34d88112b7c.1786606285142023000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:32:09.513073Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa08-7159-7582-ad59-355cd71f4d0c.1786606285145805000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:32:09.638462Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa08-7157-7533-9326-24370e59540e.1786606285143678000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa09-1e09-78b0-969f-d4d515f621b9
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"utW04YoH2LZ6mpfdDXx8","schoolName":"High Point University","shortSchoolName":"High Point University","townName":"High Point","state":"NC","countryCode":"US","website":"https://www.highpoint.edu/","latitude":35.972035,"longitude":-79.994675},"templates":[{"id":"college-late-night-runs","version":"1.0","titlePattern":"{count} Late-Night Runs That Explain {school}","editorialBrief":"Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.","researchQueries":["late night dining students","campus dining late hours","restaurants open late near campus"],"count":10,"icon":"nightlife","primarySubjectType":"place","allowedSubjectTypes":["place"],"freshnessDays":120,"exactTitle":"10 Late-Night Runs That Explain High Point University"}]}
+2026-08-13T07:32:09.735671Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa08-7150-7fe1-9fc8-15893e6d96d3.1786606285137042000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:32:09.741793Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:32:09.749117Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:32:09.839675Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa08-715b-7602-8851-74950e6546bd.1786606285148178000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:32:09.878503Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa08-7156-74f3-ad82-e8db32448838.1786606285143382000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:32:09.961988Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa08-7149-7871-96d4-7cf90e74cf97.1786606285130458000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "High Point University",
+  "town_name": "High Point",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "High Point University",
+      "town_name": "High Point",
+      "template_id": "college-late-night-runs",
+      "title": "10 Late-Night Runs That Explain High Point University",
+      "description": "",
+      "icon": "nightlife",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     			,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     		,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     		,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     		,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     		,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     		,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     		,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     		,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     		,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     		]
+,
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+codex
+{"complete":false,"school_name":"High Point University","town_name":"High Point","boards":[{"complete":false,"school_name":"High Point University","town_name":"High Point","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain High Point University","description":"Researching ten distinct, under-21-safe destinations with directly verified current late hours.","icon":"nightlife","cards":[{"subject_id":"research-in-progress","subject_type":"place","entity_name":"Research in progress","title":"Research in progress","subtitle":"Verifying direct sources","notes":"Checking official university and business pages for current late availability and conservative access details.","short_summary":"Source verification is underway.","evidence_claim":"No final claim yet.","source_url":"https://www.highpoint.edu/","source_title":"High Point University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending direct current late-hours evidence.","cost_status":"unknown","under21_safe":true} ,{"subject_id":"pending-2","subject_type":"place","entity_name":"Pending","title":"Pending","subtitle":"Pending","notes":"Pending verified research for this card; final response will replace this placeholder with sourced details.","short_summary":"Pending.","evidence_claim":"Pending.","source_url":"https://www.highpoint.edu/","source_title":"High Point University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending.","cost_status":"unknown","under21_safe":true},{"subject_id":"pending-3","subject_type":"place","entity_name":"Pending","title":"Pending","subtitle":"Pending","notes":"Pending verified research for this card; final response will replace this placeholder with sourced details.","short_summary":"Pending.","evidence_claim":"Pending.","source_url":"https://www.highpoint.edu/","source_title":"High Point University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending.","cost_status":"unknown","under21_safe":true},{"subject_id":"pending-4","subject_type":"place","entity_name":"Pending","title":"Pending","subtitle":"Pending","notes":"Pending verified research for this card; final response will replace this placeholder with sourced details.","short_summary":"Pending.","evidence_claim":"Pending.","source_url":"https://www.highpoint.edu/","source_title":"High Point University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending.","cost_status":"unknown","under21_safe":true},{"subject_id":"pending-5","subject_type":"place","entity_name":"Pending","title":"Pending","subtitle":"Pending","notes":"Pending verified research for this card; final response will replace this placeholder with sourced details.","short_summary":"Pending.","evidence_claim":"Pending.","source_url":"https://www.highpoint.edu/","source_title":"High Point University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending.","cost_status":"unknown","under21_safe":true},{"subject_id":"pending-6","subject_type":"place","entity_name":"Pending","title":"Pending","subtitle":"Pending","notes":"Pending verified research for this card; final response will replace this placeholder with sourced details.","short_summary":"Pending.","evidence_claim":"Pending.","source_url":"https://www.highpoint.edu/","source_title":"High Point University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending.","cost_status":"unknown","under21_safe":true},{"subject_id":"pending-7","subject_type":"place","entity_name":"Pending","title":"Pending","subtitle":"Pending","notes":"Pending verified research for this card; final response will replace this placeholder with sourced details.","short_summary":"Pending.","evidence_claim":"Pending.","source_url":"https://www.highpoint.edu/","source_title":"High Point University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending.","cost_status":"unknown","under21_safe":true},{"subject_id":"pending-8","subject_type":"place","entity_name":"Pending","title":"Pending","subtitle":"Pending","notes":"Pending verified research for this card; final response will replace this placeholder with sourced details.","short_summary":"Pending.","evidence_claim":"Pending.","source_url":"https://www.highpoint.edu/","source_title":"High Point University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending.","cost_status":"unknown","under21_safe":true},{"subject_id":"pending-9","subject_type":"place","entity_name":"Pending","title":"Pending","subtitle":"Pending","notes":"Pending verified research for this card; final response will replace this placeholder with sourced details.","short_summary":"Pending.","evidence_claim":"Pending.","source_url":"https://www.highpoint.edu/","source_title":"High Point University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending.","cost_status":"unknown","under21_safe":true},{"subject_id":"pending-10","subject_type":"place","entity_name":"Pending","title":"Pending","subtitle":"Pending","notes":"Pending verified research for this card; final response will replace this placeholder with sourced details.","short_summary":"Pending.","evidence_claim":"Pending.","source_url":"https://www.highpoint.edu/","source_title":"High Point University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending.","cost_status":"unknown","under21_safe":true}],"warnings":["Final verification is in progress."]}],"warnings":["Final verification is in progress."]}
+web search: 
+web search: site:highpoint.edu dining hours High Point University late night ...
+web search: 
+web search: site:locations.wendys.com High Point NC North Main Street hours ...
+web search: 
+web search: site:dining.highpoint.edu/locations "The Market @ Yadkin" hours ...
+web search: 
+web search: site:locations.sonicdrivein.com nc high-point hours ...
+web search: 
+web search: Cook Out High Point NC official location hours North Main ...
+codex
+{"complete":true,"school_name":"High Point University","town_name":"High Point","boards":[{"complete":true,"school_name":"High Point University","town_name":"High Point","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain High Point University","description":"A practical mix of campus markets, HPU dining, and nearby High Point counters with directly documented service at 10 p.m. or later.","icon":"nightlife","cards":[{"subject_id":"hpu-market-wanek","subject_type":"place","entity_name":"The Market @ Wanek","title":"Market @ Wanek After Hours","subtitle":"A 2 a.m. campus-market option in the R.G. Wanek Center","notes":"Bring your HPU Passport and check the live dining schedule before walking over, since academic-break hours can differ.","short_summary":"A campus market documented to remain available until 2 a.m. nightly during the academic schedule.","evidence_claim":"HPU Dining’s 2026–2027 meal-plan FAQ states that The Market @ Wanek is open until 2 a.m. each night.","source_url":"https://dining.highpoint.edu/meal-plans/meal-plan-faqs/","source_title":"2026–2027 Meal Plans — Frequently Asked Questions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The university documents a 2 a.m. nightly closing; verify the live schedule during summer, holidays, and academic breaks. Campus access requires a valid HPU Passport from 10 p.m. to 6 a.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"hpu-market-yadkin","subject_type":"place","entity_name":"The Market @ Yadkin","title":"Market @ Yadkin at 2 a.m.","subtitle":"Late provisions inside Yadkin Hall","notes":"Use this stop for packaged food or dorm necessities, and confirm the day’s listing before heading into Yadkin Hall.","short_summary":"Yadkin Hall’s named campus market extends HPU’s food access into the early morning.","evidence_claim":"HPU Dining’s 2026–2027 meal-plan FAQ states that The Market @ Yadkin is open until 2 a.m. each night.","source_url":"https://dining.highpoint.edu/meal-plans/meal-plan-faqs/","source_title":"2026–2027 Meal Plans — Frequently Asked Questions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The university documents a 2 a.m. nightly closing; check live hours when classes are not in session. Campus access requires a valid HPU Passport from 10 p.m. to 6 a.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"hpu-point-sports-grille","subject_type":"place","entity_name":"The Point Sports Grille","title":"The Point Before Midnight","subtitle":"A late campus grill in the R.G. Wanek Center","notes":"Check the current menu, order before the posted cutoff, and keep your HPU Passport ready for entry after 10 p.m.","short_summary":"A sit-down campus grill documented as an every-evening option through midnight.","evidence_claim":"HPU Dining’s 2026–2027 meal-plan FAQ says The Point is available until midnight each evening.","source_url":"https://dining.highpoint.edu/meal-plans/meal-plan-faqs/","source_title":"2026–2027 Meal Plans — Frequently Asked Questions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"HPU documents availability until midnight each evening; summer and break schedules may vary. A valid HPU Passport is required for campus access after 10 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wendys-2001-n-main","subject_type":"place","entity_name":"Wendy's N. Main St.","title":"Wendy’s Until 2 a.m.","subtitle":"A North Main Street drive-thru and dining room","notes":"Choose dine-in or drive-thru, confirm mobile availability, and arrange a safe ride rather than walking from campus late.","short_summary":"A nearby North Main Street counter with the same documented 2 a.m. close every day.","evidence_claim":"Wendy’s official location page lists restaurant and drive-thru hours of 10 a.m.–2 a.m. daily at 2001 N Main Street.","source_url":"https://locations.wendys.com/united-states/nc/high-point/2001-n-main-st","source_title":"Wendy's N. Main St. in High Point, NC","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official hours list both the restaurant and drive-thru open until 2 a.m. Monday through Sunday; verify holiday exceptions before departure.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-205-eastchester","subject_type":"place","entity_name":"Taco Bell — 205 Eastchester Drive","title":"Eastchester Drive at 3 a.m.","subtitle":"A late drive-thru northwest of campus","notes":"Use the drive-thru after the dining room closes, verify ordering availability, and plan transportation before leaving campus.","short_summary":"The Eastchester location provides a documented drive-thru window extending to 3 a.m. nightly.","evidence_claim":"Taco Bell’s official page lists drive-thru hours of 9 a.m.–3 a.m. every day at 205 Eastchester Drive.","source_url":"https://locations.tacobell.com/nc/high-point/205-eastchester-dr.html","source_title":"Taco Bell in High Point, NC — 205 Eastchester Dr","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The drive-thru is officially listed until 3 a.m. daily, while the displayed dine-in closing is 10 p.m.; late service therefore requires a vehicle.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-2701-s-main","subject_type":"place","entity_name":"Taco Bell — 2701 South Main Street","title":"South Main’s Weekend Extension","subtitle":"A drive-thru open later on Friday and Saturday","notes":"Reserve this farther run for a planned drive, check the day-specific cutoff, and do not assume the dining room stays open late.","short_summary":"A South Main drive-thru with 2 a.m. weekday service and a later weekend schedule.","evidence_claim":"Taco Bell lists the drive-thru until 2 a.m. Sunday–Thursday and 3 a.m. Friday–Saturday at 2701 South Main Street.","source_url":"https://locations.tacobell.com/nc/high-point/2701-s-main-st.html","source_title":"Taco Bell in High Point, NC — 2701 S Main St","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-thru hours run until 2 a.m. Sunday–Thursday and 3 a.m. Friday–Saturday; the displayed dine-in closing is 10 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"ihop-110-e-parris","subject_type":"place","entity_name":"IHOP — 110 East Parris Avenue","title":"Saturday Runs Around the Clock","subtitle":"A seated late-night option near North Main Street","notes":"Check the weekday schedule before leaving: the all-night window is Saturday, while Friday service ends at midnight.","short_summary":"This High Point dining room offers a documented 24-hour Saturday alongside later Friday hours.","evidence_claim":"IHOP’s official location page lists a midnight Friday close and 24-hour operation on Saturday at 110 East Parris Avenue.","source_url":"https://restaurants.ihop.com/en-us/nc/high-point/breakfast-110-e-parris-ave-4407","source_title":"IHOP Breakfast Restaurant at 110 E Parris Ave","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Friday closes at midnight and Saturday is listed open 24 hours; Monday–Thursday and Sunday close at 10 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"mcdonalds-930-mall-loop","subject_type":"place","entity_name":"McDonald's — 930 Mall Loop Road","title":"Mall Loop Before Midnight","subtitle":"A late Friday-and-Saturday drive-thru","notes":"Target Friday or Saturday for the midnight window, order ahead when available, and confirm the store status before driving.","short_summary":"A weekend-focused run with both lobby and drive-thru documented through midnight.","evidence_claim":"McDonald’s lists its lobby and drive-thru at 930 Mall Loop Road until midnight Friday and Saturday and 11 p.m. other nights.","source_url":"https://www.mcdonalds.com/us/en-us/location/nc/high-point/930-mall-loop-rd/8283.html","source_title":"McDonald's — 930 Mall Loop Rd, High Point, NC","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Lobby and drive-thru close at midnight Friday–Saturday and 11 p.m. Sunday–Thursday according to the official store schedule.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dominos-2205-kirkwood","subject_type":"place","entity_name":"Domino's Pizza — 2205 Kirkwood Street","title":"Kirkwood Pizza Until Midnight","subtitle":"A takeout and delivery counter close to North Main Street","notes":"Start the order online before the cutoff, confirm delivery coverage to your building, or arrange transportation for pickup.","short_summary":"A named Kirkwood Street pizza counter whose official city listing documents midnight service.","evidence_claim":"Domino’s official High Point location listing identifies the 2205 Kirkwood Street store and shows it open until midnight.","source_url":"https://pizza.dominos.com/north-carolina/high-point","source_title":"Domino's in High Point, North Carolina","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official city listing displayed a midnight close when fetched; because it is a day-sensitive status, reconfirm the selected date before ordering.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"mcdonalds-2738-s-main","subject_type":"place","entity_name":"McDonald's — 2738 South Main Street","title":"South Main’s Overnight Drive-Thru","subtitle":"A 24-hour drive-thru on selected nights","notes":"Use a vehicle for overnight service, check the day-specific schedule, and note that lobby hours end before the drive-thru.","short_summary":"A farther South Main option with documented overnight drive-thru service Thursday through Saturday.","evidence_claim":"McDonald’s lists the 2738 South Main Street drive-thru as open 24 hours Thursday, Friday, and Saturday.","source_url":"https://www.mcdonalds.com/us/es-us/location/nc/high-point/2738-s-main-st/4088.html","source_title":"McDonald's — 2738 S Main St, High Point, NC","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-thru service is listed for 24 hours Thursday–Saturday; lobby hours end at midnight on those nights, and other days have earlier cutoffs.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:34:34.179350Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa09-1e09-78b0-969f-d4d515f621b9.1786606329353968000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+53,772
+
+{"complete":true,"school_name":"High Point University","town_name":"High Point","boards":[{"complete":true,"school_name":"High Point University","town_name":"High Point","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain High Point University","description":"A practical mix of campus markets, HPU dining, and nearby High Point counters with directly documented service at 10 p.m. or later.","icon":"nightlife","cards":[{"subject_id":"hpu-market-wanek","subject_type":"place","entity_name":"The Market @ Wanek","title":"Market @ Wanek After Hours","subtitle":"A 2 a.m. campus-market option in the R.G. Wanek Center","notes":"Bring your HPU Passport and check the live dining schedule before walking over, since academic-break hours can differ.","short_summary":"A campus market documented to remain available until 2 a.m. nightly during the academic schedule.","evidence_claim":"HPU Dining’s 2026–2027 meal-plan FAQ states that The Market @ Wanek is open until 2 a.m. each night.","source_url":"https://dining.highpoint.edu/meal-plans/meal-plan-faqs/","source_title":"2026–2027 Meal Plans — Frequently Asked Questions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The university documents a 2 a.m. nightly closing; verify the live schedule during summer, holidays, and academic breaks. Campus access requires a valid HPU Passport from 10 p.m. to 6 a.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"hpu-market-yadkin","subject_type":"place","entity_name":"The Market @ Yadkin","title":"Market @ Yadkin at 2 a.m.","subtitle":"Late provisions inside Yadkin Hall","notes":"Use this stop for packaged food or dorm necessities, and confirm the day’s listing before heading into Yadkin Hall.","short_summary":"Yadkin Hall’s named campus market extends HPU’s food access into the early morning.","evidence_claim":"HPU Dining’s 2026–2027 meal-plan FAQ states that The Market @ Yadkin is open until 2 a.m. each night.","source_url":"https://dining.highpoint.edu/meal-plans/meal-plan-faqs/","source_title":"2026–2027 Meal Plans — Frequently Asked Questions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The university documents a 2 a.m. nightly closing; check live hours when classes are not in session. Campus access requires a valid HPU Passport from 10 p.m. to 6 a.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"hpu-point-sports-grille","subject_type":"place","entity_name":"The Point Sports Grille","title":"The Point Before Midnight","subtitle":"A late campus grill in the R.G. Wanek Center","notes":"Check the current menu, order before the posted cutoff, and keep your HPU Passport ready for entry after 10 p.m.","short_summary":"A sit-down campus grill documented as an every-evening option through midnight.","evidence_claim":"HPU Dining’s 2026–2027 meal-plan FAQ says The Point is available until midnight each evening.","source_url":"https://dining.highpoint.edu/meal-plans/meal-plan-faqs/","source_title":"2026–2027 Meal Plans — Frequently Asked Questions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"HPU documents availability until midnight each evening; summer and break schedules may vary. A valid HPU Passport is required for campus access after 10 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wendys-2001-n-main","subject_type":"place","entity_name":"Wendy's N. Main St.","title":"Wendy’s Until 2 a.m.","subtitle":"A North Main Street drive-thru and dining room","notes":"Choose dine-in or drive-thru, confirm mobile availability, and arrange a safe ride rather than walking from campus late.","short_summary":"A nearby North Main Street counter with the same documented 2 a.m. close every day.","evidence_claim":"Wendy’s official location page lists restaurant and drive-thru hours of 10 a.m.–2 a.m. daily at 2001 N Main Street.","source_url":"https://locations.wendys.com/united-states/nc/high-point/2001-n-main-st","source_title":"Wendy's N. Main St. in High Point, NC","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official hours list both the restaurant and drive-thru open until 2 a.m. Monday through Sunday; verify holiday exceptions before departure.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-205-eastchester","subject_type":"place","entity_name":"Taco Bell — 205 Eastchester Drive","title":"Eastchester Drive at 3 a.m.","subtitle":"A late drive-thru northwest of campus","notes":"Use the drive-thru after the dining room closes, verify ordering availability, and plan transportation before leaving campus.","short_summary":"The Eastchester location provides a documented drive-thru window extending to 3 a.m. nightly.","evidence_claim":"Taco Bell’s official page lists drive-thru hours of 9 a.m.–3 a.m. every day at 205 Eastchester Drive.","source_url":"https://locations.tacobell.com/nc/high-point/205-eastchester-dr.html","source_title":"Taco Bell in High Point, NC — 205 Eastchester Dr","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The drive-thru is officially listed until 3 a.m. daily, while the displayed dine-in closing is 10 p.m.; late service therefore requires a vehicle.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-2701-s-main","subject_type":"place","entity_name":"Taco Bell — 2701 South Main Street","title":"South Main’s Weekend Extension","subtitle":"A drive-thru open later on Friday and Saturday","notes":"Reserve this farther run for a planned drive, check the day-specific cutoff, and do not assume the dining room stays open late.","short_summary":"A South Main drive-thru with 2 a.m. weekday service and a later weekend schedule.","evidence_claim":"Taco Bell lists the drive-thru until 2 a.m. Sunday–Thursday and 3 a.m. Friday–Saturday at 2701 South Main Street.","source_url":"https://locations.tacobell.com/nc/high-point/2701-s-main-st.html","source_title":"Taco Bell in High Point, NC — 2701 S Main St","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-thru hours run until 2 a.m. Sunday–Thursday and 3 a.m. Friday–Saturday; the displayed dine-in closing is 10 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"ihop-110-e-parris","subject_type":"place","entity_name":"IHOP — 110 East Parris Avenue","title":"Saturday Runs Around the Clock","subtitle":"A seated late-night option near North Main Street","notes":"Check the weekday schedule before leaving: the all-night window is Saturday, while Friday service ends at midnight.","short_summary":"This High Point dining room offers a documented 24-hour Saturday alongside later Friday hours.","evidence_claim":"IHOP’s official location page lists a midnight Friday close and 24-hour operation on Saturday at 110 East Parris Avenue.","source_url":"https://restaurants.ihop.com/en-us/nc/high-point/breakfast-110-e-parris-ave-4407","source_title":"IHOP Breakfast Restaurant at 110 E Parris Ave","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Friday closes at midnight and Saturday is listed open 24 hours; Monday–Thursday and Sunday close at 10 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"mcdonalds-930-mall-loop","subject_type":"place","entity_name":"McDonald's — 930 Mall Loop Road","title":"Mall Loop Before Midnight","subtitle":"A late Friday-and-Saturday drive-thru","notes":"Target Friday or Saturday for the midnight window, order ahead when available, and confirm the store status before driving.","short_summary":"A weekend-focused run with both lobby and drive-thru documented through midnight.","evidence_claim":"McDonald’s lists its lobby and drive-thru at 930 Mall Loop Road until midnight Friday and Saturday and 11 p.m. other nights.","source_url":"https://www.mcdonalds.com/us/en-us/location/nc/high-point/930-mall-loop-rd/8283.html","source_title":"McDonald's — 930 Mall Loop Rd, High Point, NC","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Lobby and drive-thru close at midnight Friday–Saturday and 11 p.m. Sunday–Thursday according to the official store schedule.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dominos-2205-kirkwood","subject_type":"place","entity_name":"Domino's Pizza — 2205 Kirkwood Street","title":"Kirkwood Pizza Until Midnight","subtitle":"A takeout and delivery counter close to North Main Street","notes":"Start the order online before the cutoff, confirm delivery coverage to your building, or arrange transportation for pickup.","short_summary":"A named Kirkwood Street pizza counter whose official city listing documents midnight service.","evidence_claim":"Domino’s official High Point location listing identifies the 2205 Kirkwood Street store and shows it open until midnight.","source_url":"https://pizza.dominos.com/north-carolina/high-point","source_title":"Domino's in High Point, North Carolina","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official city listing displayed a midnight close when fetched; because it is a day-sensitive status, reconfirm the selected date before ordering.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"mcdonalds-2738-s-main","subject_type":"place","entity_name":"McDonald's — 2738 South Main Street","title":"South Main’s Overnight Drive-Thru","subtitle":"A 24-hour drive-thru on selected nights","notes":"Use a vehicle for overnight service, check the day-specific schedule, and note that lobby hours end before the drive-thru.","short_summary":"A farther South Main option with documented overnight drive-thru service Thursday through Saturday.","evidence_claim":"McDonald’s lists the 2738 South Main Street drive-thru as open 24 hours Thursday, Friday, and Saturday.","source_url":"https://www.mcdonalds.com/us/es-us/location/nc/high-point/2738-s-main-st/4088.html","source_title":"McDonald's — 2738 S Main St, High Point, NC","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-thru service is listed for 24 hours Thursday–Saturday; lobby hours end at midnight on those nights, and other days have earlier cutoffs.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}

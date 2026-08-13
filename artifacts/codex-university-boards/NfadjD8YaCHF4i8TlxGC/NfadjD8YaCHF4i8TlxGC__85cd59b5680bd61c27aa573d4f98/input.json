@@ -1,0 +1,40 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "msQDje3th0B5B6RAU5RX",
+    "schoolName": "University of Cincinnati-Main Campus",
+    "shortSchoolName": "University of Cincinnati",
+    "townName": "Cincinnati",
+    "state": "OH",
+    "countryCode": "US",
+    "unitId": "201885",
+    "website": "https://www.uc.edu/",
+    "latitude": 39.131159,
+    "longitude": -84.51428,
+    "heroUrl": "https://www.uc.edu/content/dam/refresh/apex-stock/student-life/230731aMullins095.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=uc.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

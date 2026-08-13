@@ -1,0 +1,53 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "4 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://library.uncw.edu/policies/space_usage_and_reservation_guidelines",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://library.uncw.edu/policies/space_usage_and_reservation_guidelines",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.uncw.edu/seahawk-life/arts/venues/uncw-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncw.edu/seahawk-life/arts/venues/uncw-library",
+      "error": ""
+    },
+    {
+      "url": "https://library.uncw.edu/expansion/new_library_spaces",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://library.uncw.edu/expansion/new_library_spaces",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://library.uncw.edu/news/sensory_friendly_study_space",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://library.uncw.edu/news/sensory_friendly_study_space",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://library.uncw.edu/library-spaces/study_room_rl1001c4",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://library.uncw.edu/library-spaces/study_room_rl1001c4",
+      "error": "fetch failed"
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

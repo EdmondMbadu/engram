@@ -1,0 +1,94 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Coordinates and maps URLs are null because exact values were not independently verified from direct authoritative pages.",
+    "Several destinations have cost_status unknown because the cited sources do not directly establish admission requirements."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.tandemcc.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.tandemcc.com/",
+      "error": ""
+    },
+    {
+      "url": "https://freshonthemenu.com/restaurant/top-soil-kitchen-and-market/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://freshonthemenu.com/restaurant/top-soil-kitchen-and-market/",
+      "error": ""
+    },
+    {
+      "url": "https://assets.simpleviewinc.com/sv-greenville/image/upload/v1/clients/greenville/Preferred_Perks_Around_Town_Itinerary_85ab416a-c77f-4613-a59c-306ad34770b7.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://assets.simpleviewinc.com/sv-greenville/image/upload/v1/clients/greenville/Preferred_Perks_Around_Town_Itinerary_85ab416a-c77f-4613-a59c-306ad34770b7.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.travelersrestfarmersmarket.com/home",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.travelersrestfarmersmarket.com/home",
+      "error": ""
+    },
+    {
+      "url": "https://travelersresthistoricalsociety.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://travelersresthistoricalsociety.org/",
+      "error": ""
+    },
+    {
+      "url": "https://travelersrestsc.com/wp-content/uploads/2019/09/TR-Masterplan-Document-JH09-1.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://travelersrestsc.com/wp-content/uploads/2019/09/TR-Masterplan-Document-JH09-1.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://asthepageturnsbooks.myshopify.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://asthepageturnsbooks.myshopify.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visittravelersrest.com/shop-travelers-rest",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visittravelersrest.com/shop-travelers-rest",
+      "error": ""
+    },
+    {
+      "url": "https://travelersrestsc.com/wp-content/uploads/2019/05/Bicycle-Master-Plan-final.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://travelersrestsc.com/wp-content/uploads/2019/05/Bicycle-Master-Plan-final.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://travelersresthere.com/town-guide/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://travelersresthere.com/town-guide/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

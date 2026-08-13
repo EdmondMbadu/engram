@@ -1,0 +1,96 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://exhibits.uflib.ufl.edu/UFplaza/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://exhibits.uflib.ufl.edu/UFplaza/",
+      "error": ""
+    },
+    {
+      "url": "https://union.ufl.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://union.ufl.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://uflib.ufl.edu/using-the-libraries/studyareas/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://uflib.ufl.edu/using-the-libraries/studyareas/",
+      "error": ""
+    },
+    {
+      "url": "https://librarywest.uflib.ufl.edu/spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://librarywest.uflib.ufl.edu/spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://recsports.ufl.edu/locations/southwest-recreation-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recsports.ufl.edu/locations/southwest-recreation-center/",
+      "error": ""
+    },
+    {
+      "url": "https://recsports.ufl.edu/locations/student-recreation-fitness-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recsports.ufl.edu/locations/student-recreation-fitness-center/",
+      "error": ""
+    },
+    {
+      "url": "https://harn.ufl.edu/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://harn.ufl.edu/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://performingarts.ufl.edu/venues/baughman-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://performingarts.ufl.edu/venues/baughman-center/",
+      "error": ""
+    },
+    {
+      "url": "https://recsports.ufl.edu/locations/fields/lake-alice-field/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recsports.ufl.edu/locations/fields/lake-alice-field/",
+      "error": ""
+    },
+    {
+      "url": "https://recsports.ufl.edu/locations/pools/florida-pool/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recsports.ufl.edu/locations/pools/florida-pool/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Plaza of the Americas",
+    "Library West"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

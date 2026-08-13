@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.library.miami.edu/richter/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.miami.edu/richter/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.miami.edu/learningcommons/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.miami.edu/learningcommons/",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.miami.edu/creative-studio/computers.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.miami.edu/creative-studio/computers.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.miami.edu/spaces/study-zones.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.miami.edu/spaces/study-zones.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.miami.edu/kislak-center/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.miami.edu/kislak-center/about",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.miami.edu/chc/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.miami.edu/chc/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.miami.edu/architecture/visitor-info.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.miami.edu/architecture/visitor-info.html",
+      "error": ""
+    },
+    {
+      "url": "https://greenu.miami.edu/initiatives/nature/tree-campus-usa/tree-care-plan-um2023def.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://greenu.miami.edu/initiatives/nature/tree-campus-usa/tree-care-plan-um2023def.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

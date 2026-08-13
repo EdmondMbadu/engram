@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://durhampubliclibrary.org/library-services/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://durhampubliclibrary.org/library-services/",
+      "error": ""
+    },
+    {
+      "url": "https://www.durhamhouseofpizza.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.durhamhouseofpizza.com/",
+      "error": ""
+    },
+    {
+      "url": "https://bngcoffeenh.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bngcoffeenh.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ci.durham.nh.us/directory?field_business_categories_tid=181",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.durhamnh.gov/m/directory",
+      "error": ""
+    },
+    {
+      "url": "https://strafford.org/uploads/maps/durhamdowntownbusinessdirectory_digital.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://strafford.org/uploads/maps/durhamdowntownbusinessdirectory_digital.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://stores.hannaford.com/nh/durham",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stores.hannaford.com/nh/durham",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "UNH Dairy Bar"
+  ],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://tcnjartgallery.tcnj.edu/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://tcnjartgallery.tcnj.edu/about/",
+      "error": ""
+    },
+    {
+      "url": "https://creativewriting.tcnj.edu/the-college-of-new-jerseys-visiting-writers-series/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://creativewriting.tcnj.edu/the-college-of-new-jerseys-visiting-writers-series/",
+      "error": ""
+    },
+    {
+      "url": "https://tcnj.edu/2026/01/28/tcnj-celebrates-black-history-month-by-honoring-the-power-of-black-expressionism/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://tcnj.edu/2026/01/28/tcnj-celebrates-black-history-month-by-honoring-the-power-of-black-expressionism/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nj.gov/state/museum/visit-hours-admission.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nj.gov/state/museum/visit-hours-admission.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.nj.gov/state/museum/learn.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nj.gov/state/museum/learn.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://nj.gov/nj/things/index.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://nj.gov/nj/things/index.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.mercercounty.org/departments/culture-and-heritage/cultural-festival",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mercercounty.org/departments/culture-and-heritage/cultural-festival",
+      "error": ""
+    },
+    {
+      "url": "https://www.mercercounty.org/departments/mercer-county-park-commission/mercer-county-marina/spray-park-information",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mercercounty.org/departments/mercer-county-park-commission/mercer-county-marina/spray-park-information",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

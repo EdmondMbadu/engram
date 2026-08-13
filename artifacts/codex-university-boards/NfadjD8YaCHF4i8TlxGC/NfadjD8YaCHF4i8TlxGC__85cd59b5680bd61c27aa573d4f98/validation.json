@@ -1,0 +1,88 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.daap.uc.edu/exhibitions-collections/galleries/reed-gallery-past-exhibits.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.daap.uc.edu/exhibitions-collections/galleries/reed-gallery-past-exhibits.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.daap.uc.edu/exhibitions-collections/galleries.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.daap.uc.edu/exhibitions-collections/galleries.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.uc.edu/blog/the-ultimate-guide-to-cincinnati-for-college-students.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uc.edu/blog/the-ultimate-guide-to-cincinnati-for-college-students.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/wiho/planyourvisit/fees.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/wiho/planyourvisit/fees.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.cincinnati-oh.gov/cincyparks/visit-a-park/find-a-parkfacility/burnet-woods-trailside-nature-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cincinnati-oh.gov/cincyparks/visit-a-park/find-a-parkfacility/burnet-woods-trailside-nature-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.cincinnati-oh.gov/cincyparks/visit-a-park/find-a-parkfacility/eden-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cincinnati-oh.gov/cincyparks/visit-a-park/find-a-parkfacility/eden-park/",
+      "error": ""
+    },
+    {
+      "url": "https://www.cincinnati-oh.gov/cincyparks/visit-a-park/find-a-parkfacility/smale-riverfront-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cincinnati-oh.gov/cincyparks/visit-a-park/find-a-parkfacility/smale-riverfront-park/",
+      "error": ""
+    },
+    {
+      "url": "https://www.cincinnati-oh.gov/cincyparks/visit-a-park/find-a-parkfacility/washington-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cincinnati-oh.gov/cincyparks/visit-a-park/find-a-parkfacility/washington-park/",
+      "error": ""
+    },
+    {
+      "url": "https://www.cincinnati-oh.gov/cincyparks/visit-a-park/find-a-parkfacility/bellevue-hill-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cincinnati-oh.gov/cincyparks/visit-a-park/find-a-parkfacility/bellevue-hill-park/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Philip M. Meyers, Jr. Memorial Gallery",
+    "Cincinnati Art Museum"
+  ],
+  "sourceCount": 9,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

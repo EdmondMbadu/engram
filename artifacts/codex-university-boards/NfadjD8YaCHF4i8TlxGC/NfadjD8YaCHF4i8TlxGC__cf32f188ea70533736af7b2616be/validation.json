@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.georgefox.edu/college-admissions/campus-life/challenge-coin.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.georgefox.edu/college-admissions/campus-life/challenge-coin.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.georgefox.edu/college-admissions/campus-life/bruin-brawl.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.georgefox.edu/college-admissions/campus-life/bruin-brawl.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.georgefox.edu/offices/student-life/student-activities/events/traditions.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.georgefox.edu/offices/student-life/student-activities/events/traditions.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

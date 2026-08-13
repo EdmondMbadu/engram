@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.misericordia.edu/library/services/group-study-rooms",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.misericordia.edu/library/services/group-study-rooms",
+      "error": ""
+    },
+    {
+      "url": "https://www.misericordia.edu/library/services/second-floor-computer-lab",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.misericordia.edu/library/services/second-floor-computer-lab",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 2,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

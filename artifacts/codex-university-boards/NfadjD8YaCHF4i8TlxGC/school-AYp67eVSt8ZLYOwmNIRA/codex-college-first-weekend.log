@@ -1,0 +1,292 @@
+Reading additional input from stdin...
+2026-08-13T07:13:48.989450Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f7-a7ba-72c3-a470-b047b280ff30.1786605184954476000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:13:48.994950Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:13:49.001736Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9f8-532d-7203-8df6-5355ee61d2ce
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"AYp67eVSt8ZLYOwmNIRA","schoolName":"Furman University","shortSchoolName":"Furman University","townName":"Greenville","state":"SC","countryCode":"US","website":"https://www.furman.edu/","latitude":34.924676,"longitude":-82.440458},"templates":[{"id":"college-first-weekend","version":"1.0","titlePattern":"Your First Weekend at {school}, Shared as Cards","editorialBrief":"Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.","researchQueries":["new student orientation campus guide","first year student campus activities","weekend near campus students"],"count":10,"icon":"schedule","primarySubjectType":"sequence_stop","allowedSubjectTypes":["sequence_stop","place","activity"],"freshnessDays":180,"exactTitle":"Your First Weekend at Furman University, Shared as Cards"}]}
+codex
+{
+  "complete": false,
+  "school_name": "Furman University",
+  "town_name": "Greenville",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Furman University",
+      "town_name": "Greenville",
+      "template_id": "college-first-weekend",
+      "title": "Your First Weekend at Furman University, Shared as Cards",
+      "description": "",
+      "icon": "schedule",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     ,
+      {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+codex
+{"complete":false,"school_name":"Furman University","town_name":"Greenville","boards":[{"complete":false,"school_name":"Furman University","town_name":"Greenville","template_id":"college-first-weekend","title":"Your First Weekend at Furman University, Shared as Cards","description":"Researching ten current, source-backed stops for an under-21-safe weekend sequence.","icon":"schedule","cards":				[{"subject_id":"research-in-progress","subject_type":"sequence_stop","entity_name":"Furman University","title":"Research in progress","subtitle":"Verifying direct sources","notes":"Checking official pages for named destinations, current access details, and evergreen weekend activities.","short_summary":"Source verification is underway.","evidence_claim":"This is an interim progress update.","source_url":"https://www.furman.edu/","source_title":"Furman University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":34.924676,"longitude":-82.440458,"maps_url":null,"access_notes":"Final access details pending verification.","cost_status":"unknown","under21_safe":true}			,{"subject_id":"","subject_type":"sequence_stop","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true},{"subject_id":"","subject_type":"sequence_stop","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true},{"subject_id":"","subject_type":"sequence_stop","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true},{"subject_id":"","subject_type":"sequence_stop","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true},{"subject_id":"","subject_type":"sequence_stop","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true},{"subject_id":"","subject_type":"sequence_stop","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true},{"subject_id":"","subject_type":"sequence_stop","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true},{"subject_id":"","subject_type":"sequence_stop","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true},{"subject_id":"","subject_type":"sequence_stop","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}
+web search: 
+web search: site:furman.edu campus Furman Lake Bell Tower Asia Garden Trone Student Center ...
+web search: 
+web search: site:furman.edu "Place of Peace" Furman ...
+codex
+{"complete":true,"school_name":"Furman University","town_name":"Greenville","boards":[{"complete":true,"school_name":"Furman University","town_name":"Greenville","template_id":"college-first-weekend","title":"Your First Weekend at Furman University, Shared as Cards","description":"A source-backed Friday-to-Sunday sequence for learning Furman's central gathering spaces, outdoor landmarks, study spots, and reflective places.","icon":"schedule","cards":[{"subject_id":"furman-trone-student-center","subject_type":"sequence_stop","entity_name":"Trone Student Center","title":"Friday: Find the Student-Life Hub","subtitle":"Begin at Trone Student Center","notes":"Walk through the Hill Atrium, locate student-life offices, and use the lake-facing common areas to get oriented.","short_summary":"Start with the campus crossroads for gathering, studying, dining, and student organizations.","evidence_claim":"Furman describes Trone Student Center as a place to meet, eat, socialize, or study, with student organizations, student resources, meeting spaces, and views of Furman Lake.","source_url":"https://www.furman.edu/campus-life/trone-student-center/","source_title":"Trone Student Center | Furman University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page currently lists summer public hours of 8 a.m.–5 p.m. Monday–Friday and says enrolled students may swipe into commons spaces 24/7; check current term hours before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"furman-janie-earle-furman-rose-garden","subject_type":"sequence_stop","entity_name":"Janie Earle Furman Rose Garden","title":"Friday: Cross the Rose Garden","subtitle":"Continue between Trone and the dining hall","notes":"Use the garden as a short outdoor transition, then identify its position relative to Trone and the dining hall.","short_summary":"A named garden provides an easy first landmark between two central campus buildings.","evidence_claim":"Furman's official wellness route names the Janie Earle Furman Rose Garden as a feature along the paved 1.5-mile lake course.","source_url":"https://blogs.furman.edu/wellness/2022/09/28/furman-campus-walking-running-routes-2/","source_title":"Furman Campus Walking/Running Routes – Live Well Furman","source_kind":"university_official","source_published_at":"2022-09-28","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor conditions and campus restrictions may affect access; remain on established paths.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"furman-swan-lake-walk","subject_type":"sequence_stop","entity_name":"Furman Swan Lake","title":"Friday: Learn the Lake Loop","subtitle":"Follow the paved route around Swan Lake","notes":"Walk the documented 1.5-mile paved circuit and note the bridges and landmarks that make the lake useful for navigation.","short_summary":"The lake loop turns an evening walk into a practical campus-orientation circuit.","evidence_claim":"Furman's wellness site documents a 1.5-mile paved course around Furman Swan Lake that passes the rose garden, bookstore, Asian Garden, Place of Peace, and Bell Tower.","source_url":"https://blogs.furman.edu/wellness/2022/09/28/furman-campus-walking-running-routes-2/","source_title":"Furman Campus Walking/Running Routes – Live Well Furman","source_kind":"university_official","source_published_at":"2022-09-28","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use the paved route in suitable weather and follow posted campus rules; the source does not state operating hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"furman-bell-tower","subject_type":"sequence_stop","entity_name":"Furman Bell Tower","title":"Friday: Mark the Bell Tower","subtitle":"Finish the lake circuit at a visual anchor","notes":"Pause on the established lakeside route for a clear landmark photo, keeping paths and shore boundaries unobstructed.","short_summary":"The Italianate tower is an easy reference point for remembering the lake-side campus layout.","evidence_claim":"Furman's campus gallery identifies an Italianate bell tower beside Furman Lake, while the university wellness route lists the Furman Bell Tower on the lake circuit.","source_url":"https://www.furman.edu/about/campus-photo-gallery/","source_title":"Campus Photo Gallery | About | Furman University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"View from established public paths and observe any posted limitations; interior or tower access is not established by the source.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"furman-james-b-duke-library","subject_type":"sequence_stop","entity_name":"James B. Duke Library","title":"Saturday: Choose a Duke Library Study Zone","subtitle":"Start the morning by mapping study options","notes":"Compare the lower level and first floor, then identify a quiet area or a reservable scholar study room for later use.","short_summary":"A quick walkthrough distinguishes conversational, quiet, and reservable study settings.","evidence_claim":"Furman's study-space inventory identifies quiet areas in James B. Duke Library and says lower-level Scholar Study Rooms can be reserved through the library website.","source_url":"https://www.furman.edu/wp-content/uploads/sites/145/2022/08/Study-Spaces-Inventory.pdf","source_title":"Study Spaces Inventory | Furman University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Consult the library's current hours and room-reservation system before going; building access may vary by date or university status.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"furman-mall-walking-route","subject_type":"sequence_stop","entity_name":"Furman Mall","title":"Saturday: Trace the Furman Mall Route","subtitle":"Connect the academic and performance core","notes":"Follow the nearly one-mile route and practice locating the PAC, Daniel Chapel, McAlister Auditorium, and Duke Library.","short_summary":"This compact circuit links several buildings first-year students will repeatedly encounter.","evidence_claim":"Furman's wellness site documents an almost one-mile Furman Mall route passing the Physical Activities Center, Daniel Chapel, McAlister Auditorium, and James B. Duke Library.","source_url":"https://blogs.furman.edu/wellness/2022/09/28/furman-campus-walking-running-routes-2/","source_title":"Furman Campus Walking/Running Routes – Live Well Furman","source_kind":"university_official","source_published_at":"2022-09-28","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The activity is an outdoor walking route; use designated paths and account for weather or campus events.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"furman-farm","subject_type":"sequence_stop","entity_name":"Furman Farm","title":"Saturday: See the Campus Farm System","subtitle":"Continue to the Shi Institute's practice farm","notes":"Observe the growing and compost areas without disturbing operations, then connect the site to campus food-waste cycles.","short_summary":"The small working farm makes Furman's composting and food-production systems visible.","evidence_claim":"The Shi Institute describes Furman Farm as a quarter-acre organic practice farm with a comprehensive composting program that processes dining-hall and landscaping waste.","source_url":"https://www.furman.edu/shi-institute/get-involved/","source_title":"Get Involved | Shi Institute | Furman University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The page invites people to visit or volunteer but gives no drop-in hours; contact the Shi Institute before entering operational areas.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"furman-swamp-rabbit-trail-connection","subject_type":"sequence_stop","entity_name":"Prisma Health Swamp Rabbit Trail at Furman University","title":"Saturday: Find the Swamp Rabbit Connection","subtitle":"Identify Furman's link toward Travelers Rest and Greenville","notes":"Locate the campus trail connection and take a short out-and-back walk or ride suited to daylight, weather, and your ability.","short_summary":"The regional greenway shows how campus connects without a car to nearby communities.","evidence_claim":"Furman's location page says students can walk or bike the Swamp Rabbit Trail directly from campus toward Travelers Rest or downtown Greenville.","source_url":"https://www.furman.edu/about/location/","source_title":"Location | About | Furman University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Plan distance, daylight, weather, hydration, and a return route; observe trail etiquette and any posted closures.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"furman-place-of-peace","subject_type":"sequence_stop","entity_name":"Place of Peace","title":"Sunday: Visit the Place of Peace","subtitle":"Use the documented weekend docent window","notes":"Arrive during the listed docent period, ask about the reconstructed structure, and leave time for quiet reflection.","short_summary":"A staffed weekend visit adds cultural context to the Japanese structure and adjoining garden.","evidence_claim":"Furman says the Place of Peace was dismantled in Japan, reconstructed on campus, and welcomes the public with docents Saturdays and Sundays from 1–3 p.m.","source_url":"https://www.furman.edu/place-peace/","source_title":"Place of Peace | Furman University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page currently lists public docents Saturday and Sunday, 1–3 p.m.; verify the page for holiday or event changes.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"furman-daniel-chapel-labyrinth","subject_type":"sequence_stop","entity_name":"Labyrinth at Daniel Chapel","title":"Sunday: Close with the Chapel Labyrinth","subtitle":"Finish with a quiet walking practice","notes":"Walk the labyrinth slowly or pause nearby, keeping the space quiet and yielding to any scheduled chapel activity.","short_summary":"A named contemplative space offers an unhurried final stop before the academic week.","evidence_claim":"Furman's spiritual-wellbeing page identifies the Labyrinth behind Daniel Chapel as an on-campus place for mindfulness and meditation.","source_url":"https://www.furman.edu/health-and-wellbeing/spiritual-wellbeing/","source_title":"Spiritual Wellbeing | Furman University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The source gives no hours; respect services, scheduled events, posted restrictions, and the quiet character of the site.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:15:57.747343Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9f8-532d-7203-8df6-5355ee61d2ce.1786605228846838000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+26,648
+
+{"complete":true,"school_name":"Furman University","town_name":"Greenville","boards":[{"complete":true,"school_name":"Furman University","town_name":"Greenville","template_id":"college-first-weekend","title":"Your First Weekend at Furman University, Shared as Cards","description":"A source-backed Friday-to-Sunday sequence for learning Furman's central gathering spaces, outdoor landmarks, study spots, and reflective places.","icon":"schedule","cards":[{"subject_id":"furman-trone-student-center","subject_type":"sequence_stop","entity_name":"Trone Student Center","title":"Friday: Find the Student-Life Hub","subtitle":"Begin at Trone Student Center","notes":"Walk through the Hill Atrium, locate student-life offices, and use the lake-facing common areas to get oriented.","short_summary":"Start with the campus crossroads for gathering, studying, dining, and student organizations.","evidence_claim":"Furman describes Trone Student Center as a place to meet, eat, socialize, or study, with student organizations, student resources, meeting spaces, and views of Furman Lake.","source_url":"https://www.furman.edu/campus-life/trone-student-center/","source_title":"Trone Student Center | Furman University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page currently lists summer public hours of 8 a.m.–5 p.m. Monday–Friday and says enrolled students may swipe into commons spaces 24/7; check current term hours before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"furman-janie-earle-furman-rose-garden","subject_type":"sequence_stop","entity_name":"Janie Earle Furman Rose Garden","title":"Friday: Cross the Rose Garden","subtitle":"Continue between Trone and the dining hall","notes":"Use the garden as a short outdoor transition, then identify its position relative to Trone and the dining hall.","short_summary":"A named garden provides an easy first landmark between two central campus buildings.","evidence_claim":"Furman's official wellness route names the Janie Earle Furman Rose Garden as a feature along the paved 1.5-mile lake course.","source_url":"https://blogs.furman.edu/wellness/2022/09/28/furman-campus-walking-running-routes-2/","source_title":"Furman Campus Walking/Running Routes – Live Well Furman","source_kind":"university_official","source_published_at":"2022-09-28","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor conditions and campus restrictions may affect access; remain on established paths.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"furman-swan-lake-walk","subject_type":"sequence_stop","entity_name":"Furman Swan Lake","title":"Friday: Learn the Lake Loop","subtitle":"Follow the paved route around Swan Lake","notes":"Walk the documented 1.5-mile paved circuit and note the bridges and landmarks that make the lake useful for navigation.","short_summary":"The lake loop turns an evening walk into a practical campus-orientation circuit.","evidence_claim":"Furman's wellness site documents a 1.5-mile paved course around Furman Swan Lake that passes the rose garden, bookstore, Asian Garden, Place of Peace, and Bell Tower.","source_url":"https://blogs.furman.edu/wellness/2022/09/28/furman-campus-walking-running-routes-2/","source_title":"Furman Campus Walking/Running Routes – Live Well Furman","source_kind":"university_official","source_published_at":"2022-09-28","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use the paved route in suitable weather and follow posted campus rules; the source does not state operating hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"furman-bell-tower","subject_type":"sequence_stop","entity_name":"Furman Bell Tower","title":"Friday: Mark the Bell Tower","subtitle":"Finish the lake circuit at a visual anchor","notes":"Pause on the established lakeside route for a clear landmark photo, keeping paths and shore boundaries unobstructed.","short_summary":"The Italianate tower is an easy reference point for remembering the lake-side campus layout.","evidence_claim":"Furman's campus gallery identifies an Italianate bell tower beside Furman Lake, while the university wellness route lists the Furman Bell Tower on the lake circuit.","source_url":"https://www.furman.edu/about/campus-photo-gallery/","source_title":"Campus Photo Gallery | About | Furman University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"View from established public paths and observe any posted limitations; interior or tower access is not established by the source.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"furman-james-b-duke-library","subject_type":"sequence_stop","entity_name":"James B. Duke Library","title":"Saturday: Choose a Duke Library Study Zone","subtitle":"Start the morning by mapping study options","notes":"Compare the lower level and first floor, then identify a quiet area or a reservable scholar study room for later use.","short_summary":"A quick walkthrough distinguishes conversational, quiet, and reservable study settings.","evidence_claim":"Furman's study-space inventory identifies quiet areas in James B. Duke Library and says lower-level Scholar Study Rooms can be reserved through the library website.","source_url":"https://www.furman.edu/wp-content/uploads/sites/145/2022/08/Study-Spaces-Inventory.pdf","source_title":"Study Spaces Inventory | Furman University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Consult the library's current hours and room-reservation system before going; building access may vary by date or university status.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"furman-mall-walking-route","subject_type":"sequence_stop","entity_name":"Furman Mall","title":"Saturday: Trace the Furman Mall Route","subtitle":"Connect the academic and performance core","notes":"Follow the nearly one-mile route and practice locating the PAC, Daniel Chapel, McAlister Auditorium, and Duke Library.","short_summary":"This compact circuit links several buildings first-year students will repeatedly encounter.","evidence_claim":"Furman's wellness site documents an almost one-mile Furman Mall route passing the Physical Activities Center, Daniel Chapel, McAlister Auditorium, and James B. Duke Library.","source_url":"https://blogs.furman.edu/wellness/2022/09/28/furman-campus-walking-running-routes-2/","source_title":"Furman Campus Walking/Running Routes – Live Well Furman","source_kind":"university_official","source_published_at":"2022-09-28","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The activity is an outdoor walking route; use designated paths and account for weather or campus events.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"furman-farm","subject_type":"sequence_stop","entity_name":"Furman Farm","title":"Saturday: See the Campus Farm System","subtitle":"Continue to the Shi Institute's practice farm","notes":"Observe the growing and compost areas without disturbing operations, then connect the site to campus food-waste cycles.","short_summary":"The small working farm makes Furman's composting and food-production systems visible.","evidence_claim":"The Shi Institute describes Furman Farm as a quarter-acre organic practice farm with a comprehensive composting program that processes dining-hall and landscaping waste.","source_url":"https://www.furman.edu/shi-institute/get-involved/","source_title":"Get Involved | Shi Institute | Furman University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The page invites people to visit or volunteer but gives no drop-in hours; contact the Shi Institute before entering operational areas.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"furman-swamp-rabbit-trail-connection","subject_type":"sequence_stop","entity_name":"Prisma Health Swamp Rabbit Trail at Furman University","title":"Saturday: Find the Swamp Rabbit Connection","subtitle":"Identify Furman's link toward Travelers Rest and Greenville","notes":"Locate the campus trail connection and take a short out-and-back walk or ride suited to daylight, weather, and your ability.","short_summary":"The regional greenway shows how campus connects without a car to nearby communities.","evidence_claim":"Furman's location page says students can walk or bike the Swamp Rabbit Trail directly from campus toward Travelers Rest or downtown Greenville.","source_url":"https://www.furman.edu/about/location/","source_title":"Location | About | Furman University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Plan distance, daylight, weather, hydration, and a return route; observe trail etiquette and any posted closures.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"furman-place-of-peace","subject_type":"sequence_stop","entity_name":"Place of Peace","title":"Sunday: Visit the Place of Peace","subtitle":"Use the documented weekend docent window","notes":"Arrive during the listed docent period, ask about the reconstructed structure, and leave time for quiet reflection.","short_summary":"A staffed weekend visit adds cultural context to the Japanese structure and adjoining garden.","evidence_claim":"Furman says the Place of Peace was dismantled in Japan, reconstructed on campus, and welcomes the public with docents Saturdays and Sundays from 1–3 p.m.","source_url":"https://www.furman.edu/place-peace/","source_title":"Place of Peace | Furman University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page currently lists public docents Saturday and Sunday, 1–3 p.m.; verify the page for holiday or event changes.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"furman-daniel-chapel-labyrinth","subject_type":"sequence_stop","entity_name":"Labyrinth at Daniel Chapel","title":"Sunday: Close with the Chapel Labyrinth","subtitle":"Finish with a quiet walking practice","notes":"Walk the labyrinth slowly or pause nearby, keeping the space quiet and yielding to any scheduled chapel activity.","short_summary":"A named contemplative space offers an unhurried final stop before the academic week.","evidence_claim":"Furman's spiritual-wellbeing page identifies the Labyrinth behind Daniel Chapel as an on-campus place for mindfulness and meditation.","source_url":"https://www.furman.edu/health-and-wellbeing/spiritual-wellbeing/","source_title":"Spiritual Wellbeing | Furman University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The source gives no hours; respect services, scheduled events, posted restrictions, and the quiet character of the site.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

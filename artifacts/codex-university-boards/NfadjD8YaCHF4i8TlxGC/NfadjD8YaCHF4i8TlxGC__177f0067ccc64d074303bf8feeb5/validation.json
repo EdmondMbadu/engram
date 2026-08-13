@@ -1,0 +1,25 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.montclair.edu/library/services-and-spaces/study-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://inside.montclair.edu/colleges-schools-research/university-libraries/study-spaces",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Commuter Study Space",
+    "Creative Collaboration Pod",
+    "The Sensory Space"
+  ],
+  "sourceCount": 1,
+  "generationScore": 90,
+  "generationGrade": "A"
+}

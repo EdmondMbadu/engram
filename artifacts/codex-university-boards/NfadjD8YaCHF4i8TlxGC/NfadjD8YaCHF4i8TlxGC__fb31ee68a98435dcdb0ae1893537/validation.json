@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.whataburger.com/tx/lubbock/2412-9th-st.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.whataburger.com/tx/lubbock/2412-9th-st.html",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.ihop.com/en-us/tx/lubbock/breakfast-1627-university-ave-1330",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.ihop.com/en-us/tx/lubbock/breakfast-1627-university-ave-1330",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dennys.com/tx/lubbock/6676-breakfast",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dennys.com/tx/lubbock/6676-breakfast",
+      "error": ""
+    },
+    {
+      "url": "https://locations.raisingcanes.com/tx/lubbock/5702-4th-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.raisingcanes.com/tx/lubbock/5702-4th-street",
+      "error": ""
+    },
+    {
+      "url": "https://locations.raisingcanes.com/tx/lubbock/2725-82nd-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.raisingcanes.com/tx/lubbock/2725-82nd-street",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/tx/lubbock/402-ave-q.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/tx/lubbock/402-ave-q.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/tx/lubbock/5713-fourth-street.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/tx/lubbock/5713-fourth-street.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/tx/lubbock/5010-milwaukee-ave/takeout.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/tx/lubbock/5010-milwaukee-ave/takeout.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/tx/lubbock/6501-4th-st/43742.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/tx/lubbock/6501-4th-st/43742.html",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.subway.com/united-states/tx/lubbock",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.subway.com/united-states/tx/lubbock",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

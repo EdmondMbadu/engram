@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://visit.cstx.gov/visitor-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visit.cstx.gov/visitor-center/",
+      "error": ""
+    },
+    {
+      "url": "https://visit.cstx.gov/getting-around/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visit.cstx.gov/getting-around/",
+      "error": ""
+    },
+    {
+      "url": "https://visit.cstx.gov/things-to-do/attractions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visit.cstx.gov/things-to-do/attractions/",
+      "error": ""
+    },
+    {
+      "url": "https://visit.cstx.gov/directory/and-sew-on/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visit.cstx.gov/directory/and-sew-on/",
+      "error": ""
+    },
+    {
+      "url": "https://visit.cstx.gov/directory/lupe-tortilla/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visit.cstx.gov/directory/lupe-tortilla/",
+      "error": ""
+    },
+    {
+      "url": "https://visit.cstx.gov/directory/freebirds-texas-ave-dining/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visit.cstx.gov/directory/freebirds-texas-ave-dining/",
+      "error": ""
+    },
+    {
+      "url": "https://visit.cstx.gov/directory/dsw/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visit.cstx.gov/directory/dsw/",
+      "error": ""
+    },
+    {
+      "url": "https://visit.cstx.gov/directory/juicing-to-be-gooden-fit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visit.cstx.gov/directory/juicing-to-be-gooden-fit/",
+      "error": ""
+    },
+    {
+      "url": "https://visit.cstx.gov/directory/mojo-tortilla-co/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visit.cstx.gov/directory/mojo-tortilla-co/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

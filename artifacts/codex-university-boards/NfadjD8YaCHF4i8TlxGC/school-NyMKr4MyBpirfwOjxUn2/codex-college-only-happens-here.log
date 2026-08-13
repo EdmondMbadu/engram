@@ -1,0 +1,304 @@
+Reading additional input from stdin...
+2026-08-13T06:53:07.502874Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e5-2344-7253-913e-7378c69a154f.1786603971396537000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:53:07.540095Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e5-2348-7002-9ee8-5747ec344af7.1786603971400333000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9e5-61ae-7841-b252-5a08514b7ae0
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"NyMKr4MyBpirfwOjxUn2","schoolName":"Carleton College","shortSchoolName":"Carleton College","townName":"Northfield","state":"MN","countryCode":"US","website":"https://www.carleton.edu/","latitude":44.462318,"longitude":-93.154666},"templates":[{"id":"college-only-happens-here","version":"1.0","titlePattern":"Only Happens Here: {count} Traditions That Make No Sense Anywhere Else","editorialBrief":"Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.","researchQueries":["university traditions alumni","campus traditions student newspaper","school rituals history"],"count":10,"icon":"fingerprint","primarySubjectType":"tradition","allowedSubjectTypes":["tradition"],"freshnessDays":1095,"exactTitle":"Only Happens Here: 10 Traditions That Make No Sense Anywhere Else"}]}
+2026-08-13T06:53:07.613468Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e5-2348-7de0-afdc-bbac1ab4c017.1786603971401069000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:53:07.692874Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e5-2348-7a60-9a22-8582dfc3632d.1786603971401208000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:53:07.809509Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e5-2343-7593-8d4a-abf7796585a2.1786603971395756000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:53:07.892997Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e5-2347-7571-af40-db89b728f370.1786603971400309000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:53:07.914459Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:53:07.981319Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:53:08.171878Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e5-2343-7430-b9f8-213da961fe83.1786603971396086000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Carleton College",
+  "town_name": "Northfield",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Carleton College",
+      "town_name": "Northfield",
+      "template_id": "college-only-happens-here",
+      "title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+      "description": "",
+      "icon": "fingerprint",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "I’m researching ten documented Carleton-specific traditions and checking each claim against a direct source.",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "https://www.carleton.edu/",
+          "source_title": "Carleton College",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+     ,
+      {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "https://www.carleton.edu/",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "https://www.carleton.edu/",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "https://www.carleton.edu/",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "https://www.carleton.edu/",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "https://www.carleton.edu/",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "https://www.carleton.edu/",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "https://www.carleton.edu/",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "https://www.carleton.edu/",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "https://www.carleton.edu/",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ]
+    ,
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:carleton.edu traditions Carleton College Rotblatt Schiller bust Friday flowers silent dance ...
+web search: 
+web search: site:carleton.edu OR site:thecarletonian.com Carleton "Rotblatt" tradition ...
+web search: 
+web search: 
+web search: site:carleton.edu "Carleton traditions" "Silent Dance Party" ...
+web search: 
+web search: site:carleton.edu "Midwinter Ball" Carleton 2025 ...
+web search: 
+web search: site:carleton.edu OR site:thecarletonian.com "Sproncert" 2025 Carleton ...
+codex
+{"complete":true,"school_name":"Carleton College","town_name":"Northfield","boards":[{"complete":true,"school_name":"Carleton College","town_name":"Northfield","template_id":"college-only-happens-here","title":"Only Happens Here: 10 Traditions That Make No Sense Anywhere Else","description":"Ten documented Carleton rituals involving a wandering bust, airborne Frisbees, mailbox flowers, shared cookies, winter spectacles, dances, concerts, blind-date programming and convocation bubbles.","icon":"fingerprint","cards":[{"subject_id":"carleton-schiller-bust","subject_type":"tradition","entity_name":"Schiller Bust","title":"Watch for Schiller’s Next Appearance","subtitle":"Carleton’s elusive traveling bust","notes":"Look for brief public appearances at major campus gatherings; observe from a safe distance and leave any pursuit or handling to its keepers.","short_summary":"A library bust became a secretively guarded campus traveler that keepers periodically reveal to the wider Carleton community.","evidence_claim":"The Schiller bust has circulated among Carleton students for decades, and its keepers traditionally display it publicly from time to time.","source_url":"https://thecarletonian.com/20081/arts-and-features/archive-schiller-a-community-tradition-turned-exclusive/","source_title":"Archive: Schiller: a community tradition turned exclusive","source_kind":"student_media","source_published_at":"2025-05-02","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Schiller’s location and appearances are intentionally unpredictable; the source describes less-frequent showings in recent years.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"carleton-friday-flowers","subject_type":"tradition","entity_name":"Friday Flowers","title":"Send a Flower Through Campus Mail","subtitle":"A Friday note delivered with a bloom","notes":"Choose a recipient, add a short personal note and follow the current campus-mail instructions; compost the flower and wrapping when finished.","short_summary":"Friday Flowers turns campus mailboxes into small displays of appreciation at the end of the week.","evidence_claim":"Carleton identifies Friday Flowers as a campus tradition in which students, staff and alumni share flowers; the practice continued remotely in 2020.","source_url":"https://digitalcommons.carleton.edu/covid19archive_documents/125/","source_title":"Distance Friday Flowers","source_kind":"university_official","source_published_at":"2020-04-10","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited archive documents the tradition, not current ordering deadlines or distribution procedures; verify those on campus.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"carleton-first-year-frisbee-toss","subject_type":"tradition","entity_name":"First-Year Frisbee Toss","title":"Launch a Class Frisbee on the Bald Spot","subtitle":"New Student Week’s airborne introduction","notes":"Bring the class-issued disc to the scheduled New Student Week gathering, follow event directions and watch the Bald Spot fill with simultaneous throws.","short_summary":"A new class marks its arrival by sending a field’s worth of Frisbees into the air together.","evidence_claim":"Carleton’s 2024 Move-in Day record describes the Frisbee toss on the Bald Spot as a traditional part of New Student Week.","source_url":"https://imagencloud.carleton.edu/record/76734","source_title":"Move-in Day 2024 | Class of 2028 New Student Week","source_kind":"university_official","source_published_at":"2024-09-10","source_fetched_at":"2026-08-13","latitude":44.462318,"longitude":-93.154666,"maps_url":null,"access_notes":"This is a scheduled New Student Week activity for the incoming class; follow current orientation instructions.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"carleton-dacie-cookie-house","subject_type":"tradition","entity_name":"Dacie Moses House Cookies","title":"Bake Cookies and Leave Some to Share","subtitle":"Dacie Moses’s edible house rule","notes":"Confirm that the house is open, use the supplied baking materials as directed and honor Dacie’s request by leaving the finished cookies for others.","short_summary":"A former librarian’s home carries on her hospitality through communal baking supplies and cookies meant to be shared.","evidence_claim":"Dacie Moses left her house to Carleton’s Alumni Association with the request that cookie-baking materials remain available and that baked cookies be left to share.","source_url":"https://thecarletonian.com/18102/arts-and-features/a-history-of-carleton-traditions-both-new-and-old/","source_title":"A history of Carleton traditions, both new and old","source_kind":"student_media","source_published_at":"2023-09-29","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The 2023 source reported the house under renovation and brunches temporarily relocated; verify current access before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"carleton-winter-carnival","subject_type":"tradition","entity_name":"Carleton Winter Carnival","title":"See Winter Carnival Reappear in the Snow","subtitle":"A 1930s tradition in evolving form","notes":"Check the current winter calendar for announced installations or activities, then photograph only designated displays without climbing on sculptures.","short_summary":"An old cold-weather celebration periodically returns through wintry campus programming such as ice sculptures.","evidence_claim":"Carleton’s Winter Carnival dates to the 1930s, and the college made a revitalization effort featuring ice sculptures in 2021.","source_url":"https://thecarletonian.com/18102/arts-and-features/a-history-of-carleton-traditions-both-new-and-old/","source_title":"A history of Carleton traditions, both new and old","source_kind":"student_media","source_published_at":"2023-09-29","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The source notes that the tradition had declined and describes a 2021 revival; future formats and dates are not guaranteed.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"carleton-midwinter-ball","subject_type":"tradition","entity_name":"Midwinter Ball","title":"Cross Three Dance Floors at Midwinter Ball","subtitle":"Carleton’s winter-spanning formal dance","notes":"Check the Student Activities announcement, dress for travel between buildings and sample the student-DJ, big-band and salsa floors at your pace.","short_summary":"A long-running winter ball spreads contrasting styles of music and dancing across multiple campus spaces.","evidence_claim":"The 45th annual Midwinter Ball in 2025 offered dancing in Sayles-Hill and Severance Hall with student DJs, Roseville Big Band and Salsa del Soul.","source_url":"https://imagencloud.carleton.edu/record/78663","source_title":"Midwinter Ball 2025","source_kind":"university_official","source_published_at":"2025-02-08","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited record documents the 2025 student event; consult Student Activities for the next date, admission rules and accommodations.","cost_status":"unknown","under21_safe":true},{"subject_id":"carleton-sproncert","subject_type":"tradition","entity_name":"Sproncert","title":"Spend a Spring Day at Sproncert","subtitle":"The concert whose nickname became official","notes":"Watch campus announcements for the lineup, register any permitted guest by the deadline and arrive early enough to hear the student-band finalists.","short_summary":"Carleton compresses “Spring Concert” into Sproncert, a day-long program mixing student performers with invited acts.","evidence_claim":"The 43rd Sproncert in 2024 was a day-long Carleton tradition featuring a headliner, opening acts and the top two Battle of the Bands groups.","source_url":"https://thecarletonian.com/19175/news/hippo-campus-announced-as-sproncert-headliner/","source_title":"Hippo Campus announced as Sproncert headliner","source_kind":"student_media","source_published_at":"2024-05-02","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The 2024 event was open to Carleton students, while guests required advance registration; verify current rules and location.","cost_status":"unknown","under21_safe":true},{"subject_id":"carleton-date-knight","subject_type":"tradition","entity_name":"Date Knight","title":"Let Friends Arrange a Date Knight Match","subtitle":"A blind-date tradition with campus programming","notes":"Set up only consenting friends, agree on expectations before the event and use the scheduled concerts, films or activities as a low-pressure itinerary.","short_summary":"Friends make the introductions, while student groups supply a night of structured activities for pairs or new acquaintances.","evidence_claim":"Modern Date Knight is a longstanding Carleton tradition in which friends arrange matches and campus groups host activities such as concerts, dancing and films.","source_url":"https://thecarletonian.com/16143/arts-and-features/from-auctions-to-a-capella-a-history-of-date-knight/","source_title":"From auctions to a capella: A history of Date Knight","source_kind":"student_media","source_published_at":"2022-11-10","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Programming and timing change by year; participation should always be voluntary and based on clear consent.","cost_status":"unknown","under21_safe":true},{"subject_id":"carleton-battle-of-the-bands","subject_type":"tradition","entity_name":"Carleton Battle of the Bands","title":"Hear Student Bands Compete for Sproncert","subtitle":"The Cave-to-main-stage pathway","notes":"Check The Cave’s event listing, support every competing student act and stay for the result that determines who advances to the Sproncert stage.","short_summary":"Student groups compete in The Cave for the chance to open Carleton’s annual spring concert.","evidence_claim":"Carleton’s Battle of the Bands is described as a time-honored tradition whose top two student bands earn places at Sproncert.","source_url":"https://thecarletonian.com/13153/arts-and-features/from-cave-to-stage-a-qa-with-the-battle-of-the-bands-winners/","source_title":"From cave to stage: A Q&A with the Battle of the Bands winners","source_kind":"student_media","source_published_at":"2022-05-12","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited article covers the 2022 competition; verify the current venue, schedule, eligibility and audience policy.","cost_status":"unknown","under21_safe":true},{"subject_id":"carleton-opening-convocation-bubbles","subject_type":"tradition","entity_name":"Opening Convocation Bubbles","title":"Watch Seniors Blow Bubbles at Opening Convocation","subtitle":"A playful welcome for the entering faculty","notes":"Take a seat before the academic procession, watch for bubbles as faculty enter and keep aisles clear throughout the formal convocation program.","short_summary":"Seniors add floating soap bubbles to the otherwise ceremonial opening of Carleton’s academic year.","evidence_claim":"A Carleton campus tour booklet documents the Opening Convocation practice of seniors blowing bubbles as professors enter.","source_url":"https://apps.carleton.edu/student/orgs/schiller/assets/FINALTOURBOOKLET2011_2012.pdf","source_title":"Carleton College Tour Booklet 2011–2012","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The source documents the custom historically; confirm the current convocation schedule and whether the practice continues before attending.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T06:57:32.637378Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9e5-61ae-7841-b252-5a08514b7ae0.1786603987377471000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+45,896
+
+{"complete":true,"school_name":"Carleton College","town_name":"Northfield","boards":[{"complete":true,"school_name":"Carleton College","town_name":"Northfield","template_id":"college-only-happens-here","title":"Only Happens Here: 10 Traditions That Make No Sense Anywhere Else","description":"Ten documented Carleton rituals involving a wandering bust, airborne Frisbees, mailbox flowers, shared cookies, winter spectacles, dances, concerts, blind-date programming and convocation bubbles.","icon":"fingerprint","cards":[{"subject_id":"carleton-schiller-bust","subject_type":"tradition","entity_name":"Schiller Bust","title":"Watch for Schiller’s Next Appearance","subtitle":"Carleton’s elusive traveling bust","notes":"Look for brief public appearances at major campus gatherings; observe from a safe distance and leave any pursuit or handling to its keepers.","short_summary":"A library bust became a secretively guarded campus traveler that keepers periodically reveal to the wider Carleton community.","evidence_claim":"The Schiller bust has circulated among Carleton students for decades, and its keepers traditionally display it publicly from time to time.","source_url":"https://thecarletonian.com/20081/arts-and-features/archive-schiller-a-community-tradition-turned-exclusive/","source_title":"Archive: Schiller: a community tradition turned exclusive","source_kind":"student_media","source_published_at":"2025-05-02","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Schiller’s location and appearances are intentionally unpredictable; the source describes less-frequent showings in recent years.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"carleton-friday-flowers","subject_type":"tradition","entity_name":"Friday Flowers","title":"Send a Flower Through Campus Mail","subtitle":"A Friday note delivered with a bloom","notes":"Choose a recipient, add a short personal note and follow the current campus-mail instructions; compost the flower and wrapping when finished.","short_summary":"Friday Flowers turns campus mailboxes into small displays of appreciation at the end of the week.","evidence_claim":"Carleton identifies Friday Flowers as a campus tradition in which students, staff and alumni share flowers; the practice continued remotely in 2020.","source_url":"https://digitalcommons.carleton.edu/covid19archive_documents/125/","source_title":"Distance Friday Flowers","source_kind":"university_official","source_published_at":"2020-04-10","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited archive documents the tradition, not current ordering deadlines or distribution procedures; verify those on campus.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"carleton-first-year-frisbee-toss","subject_type":"tradition","entity_name":"First-Year Frisbee Toss","title":"Launch a Class Frisbee on the Bald Spot","subtitle":"New Student Week’s airborne introduction","notes":"Bring the class-issued disc to the scheduled New Student Week gathering, follow event directions and watch the Bald Spot fill with simultaneous throws.","short_summary":"A new class marks its arrival by sending a field’s worth of Frisbees into the air together.","evidence_claim":"Carleton’s 2024 Move-in Day record describes the Frisbee toss on the Bald Spot as a traditional part of New Student Week.","source_url":"https://imagencloud.carleton.edu/record/76734","source_title":"Move-in Day 2024 | Class of 2028 New Student Week","source_kind":"university_official","source_published_at":"2024-09-10","source_fetched_at":"2026-08-13","latitude":44.462318,"longitude":-93.154666,"maps_url":null,"access_notes":"This is a scheduled New Student Week activity for the incoming class; follow current orientation instructions.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"carleton-dacie-cookie-house","subject_type":"tradition","entity_name":"Dacie Moses House Cookies","title":"Bake Cookies and Leave Some to Share","subtitle":"Dacie Moses’s edible house rule","notes":"Confirm that the house is open, use the supplied baking materials as directed and honor Dacie’s request by leaving the finished cookies for others.","short_summary":"A former librarian’s home carries on her hospitality through communal baking supplies and cookies meant to be shared.","evidence_claim":"Dacie Moses left her house to Carleton’s Alumni Association with the request that cookie-baking materials remain available and that baked cookies be left to share.","source_url":"https://thecarletonian.com/18102/arts-and-features/a-history-of-carleton-traditions-both-new-and-old/","source_title":"A history of Carleton traditions, both new and old","source_kind":"student_media","source_published_at":"2023-09-29","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The 2023 source reported the house under renovation and brunches temporarily relocated; verify current access before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"carleton-winter-carnival","subject_type":"tradition","entity_name":"Carleton Winter Carnival","title":"See Winter Carnival Reappear in the Snow","subtitle":"A 1930s tradition in evolving form","notes":"Check the current winter calendar for announced installations or activities, then photograph only designated displays without climbing on sculptures.","short_summary":"An old cold-weather celebration periodically returns through wintry campus programming such as ice sculptures.","evidence_claim":"Carleton’s Winter Carnival dates to the 1930s, and the college made a revitalization effort featuring ice sculptures in 2021.","source_url":"https://thecarletonian.com/18102/arts-and-features/a-history-of-carleton-traditions-both-new-and-old/","source_title":"A history of Carleton traditions, both new and old","source_kind":"student_media","source_published_at":"2023-09-29","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The source notes that the tradition had declined and describes a 2021 revival; future formats and dates are not guaranteed.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"carleton-midwinter-ball","subject_type":"tradition","entity_name":"Midwinter Ball","title":"Cross Three Dance Floors at Midwinter Ball","subtitle":"Carleton’s winter-spanning formal dance","notes":"Check the Student Activities announcement, dress for travel between buildings and sample the student-DJ, big-band and salsa floors at your pace.","short_summary":"A long-running winter ball spreads contrasting styles of music and dancing across multiple campus spaces.","evidence_claim":"The 45th annual Midwinter Ball in 2025 offered dancing in Sayles-Hill and Severance Hall with student DJs, Roseville Big Band and Salsa del Soul.","source_url":"https://imagencloud.carleton.edu/record/78663","source_title":"Midwinter Ball 2025","source_kind":"university_official","source_published_at":"2025-02-08","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited record documents the 2025 student event; consult Student Activities for the next date, admission rules and accommodations.","cost_status":"unknown","under21_safe":true},{"subject_id":"carleton-sproncert","subject_type":"tradition","entity_name":"Sproncert","title":"Spend a Spring Day at Sproncert","subtitle":"The concert whose nickname became official","notes":"Watch campus announcements for the lineup, register any permitted guest by the deadline and arrive early enough to hear the student-band finalists.","short_summary":"Carleton compresses “Spring Concert” into Sproncert, a day-long program mixing student performers with invited acts.","evidence_claim":"The 43rd Sproncert in 2024 was a day-long Carleton tradition featuring a headliner, opening acts and the top two Battle of the Bands groups.","source_url":"https://thecarletonian.com/19175/news/hippo-campus-announced-as-sproncert-headliner/","source_title":"Hippo Campus announced as Sproncert headliner","source_kind":"student_media","source_published_at":"2024-05-02","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The 2024 event was open to Carleton students, while guests required advance registration; verify current rules and location.","cost_status":"unknown","under21_safe":true},{"subject_id":"carleton-date-knight","subject_type":"tradition","entity_name":"Date Knight","title":"Let Friends Arrange a Date Knight Match","subtitle":"A blind-date tradition with campus programming","notes":"Set up only consenting friends, agree on expectations before the event and use the scheduled concerts, films or activities as a low-pressure itinerary.","short_summary":"Friends make the introductions, while student groups supply a night of structured activities for pairs or new acquaintances.","evidence_claim":"Modern Date Knight is a longstanding Carleton tradition in which friends arrange matches and campus groups host activities such as concerts, dancing and films.","source_url":"https://thecarletonian.com/16143/arts-and-features/from-auctions-to-a-capella-a-history-of-date-knight/","source_title":"From auctions to a capella: A history of Date Knight","source_kind":"student_media","source_published_at":"2022-11-10","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Programming and timing change by year; participation should always be voluntary and based on clear consent.","cost_status":"unknown","under21_safe":true},{"subject_id":"carleton-battle-of-the-bands","subject_type":"tradition","entity_name":"Carleton Battle of the Bands","title":"Hear Student Bands Compete for Sproncert","subtitle":"The Cave-to-main-stage pathway","notes":"Check The Cave’s event listing, support every competing student act and stay for the result that determines who advances to the Sproncert stage.","short_summary":"Student groups compete in The Cave for the chance to open Carleton’s annual spring concert.","evidence_claim":"Carleton’s Battle of the Bands is described as a time-honored tradition whose top two student bands earn places at Sproncert.","source_url":"https://thecarletonian.com/13153/arts-and-features/from-cave-to-stage-a-qa-with-the-battle-of-the-bands-winners/","source_title":"From cave to stage: A Q&A with the Battle of the Bands winners","source_kind":"student_media","source_published_at":"2022-05-12","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited article covers the 2022 competition; verify the current venue, schedule, eligibility and audience policy.","cost_status":"unknown","under21_safe":true},{"subject_id":"carleton-opening-convocation-bubbles","subject_type":"tradition","entity_name":"Opening Convocation Bubbles","title":"Watch Seniors Blow Bubbles at Opening Convocation","subtitle":"A playful welcome for the entering faculty","notes":"Take a seat before the academic procession, watch for bubbles as faculty enter and keep aisles clear throughout the formal convocation program.","short_summary":"Seniors add floating soap bubbles to the otherwise ceremonial opening of Carleton’s academic year.","evidence_claim":"A Carleton campus tour booklet documents the Opening Convocation practice of seniors blowing bubbles as professors enter.","source_url":"https://apps.carleton.edu/student/orgs/schiller/assets/FINALTOURBOOKLET2011_2012.pdf","source_title":"Carleton College Tour Booklet 2011–2012","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The source documents the custom historically; confirm the current convocation schedule and whether the practice continues before attending.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://library.ucf.edu/library-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.ucf.edu/library-spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://library.ucf.edu/about/john-c-hitt-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.ucf.edu/about/john-c-hitt-library/",
+      "error": ""
+    },
+    {
+      "url": "https://library.ucf.edu/services/study-rooms/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.ucf.edu/services/study-rooms/",
+      "error": ""
+    },
+    {
+      "url": "https://library.ucf.edu/services/accessibility-services/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.ucf.edu/services/accessibility-services/",
+      "error": ""
+    },
+    {
+      "url": "https://academicadvocacy.sswb.ucf.edu/student-resources/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://academicadvocacy.sswb.ucf.edu/student-resources/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

@@ -1,0 +1,82 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "4 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.anselm.edu/admission/visit/audio-tour",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.anselm.edu/admission/visit/audio-tour",
+      "error": ""
+    },
+    {
+      "url": "https://www.anselm.edu/about/information/parents-families/new-student-orientation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.anselm.edu/about/information/parents-families/new-student-orientation",
+      "error": ""
+    },
+    {
+      "url": "https://www.anselm.edu/campus-life/housing-dining/dining-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.anselm.edu/campus-life/housing-dining/dining-campus",
+      "error": ""
+    },
+    {
+      "url": "https://www.anselm.edu/campus-life/roger-and-francine-jean-student-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.anselm.edu/campus-life/roger-and-francine-jean-student-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.anselm.edu/about/offices-centers-institutes/geisel-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.anselm.edu/about/offices-centers-institutes/geisel-library",
+      "error": ""
+    },
+    {
+      "url": "https://www.anselm.edu/about/arts-saint-anselm-college",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.anselm.edu/about/arts-saint-anselm-college",
+      "error": ""
+    },
+    {
+      "url": "https://www.anselm.edu/admission/faqcontact/admission-faq",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.anselm.edu/admission/faqcontact/admission-faq",
+      "error": ""
+    },
+    {
+      "url": "https://www.anselm.edu/campus-life/spiritual-life/mass-prayer-schedule",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.anselm.edu/campus-life/spiritual-life/mass-prayer-schedule",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Roger and Francine Jean Student Center",
+    "Geisel Library",
+    "Alva de Mars Megan Chapel Art Center",
+    "Carr Center and Stoutenburgh Gymnasium"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

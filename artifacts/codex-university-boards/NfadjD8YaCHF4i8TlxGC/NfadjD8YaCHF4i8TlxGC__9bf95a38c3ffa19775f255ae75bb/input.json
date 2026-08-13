@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "XdKvC5s98qxNAbPfZKO4",
+    "schoolName": "University of Arizona",
+    "shortSchoolName": "University of Arizona",
+    "townName": "Tucson",
+    "state": "AZ",
+    "countryCode": "US",
+    "unitId": "104179",
+    "website": "https://www.arizona.edu/",
+    "latitude": 32.232672,
+    "longitude": -110.950815,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/e/e4/University_of_Arizona_seal.svg/250px-University_of_Arizona_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=arizona.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "Silent Study Room",
+    "Scholars’ Corner",
+    "Main Library Quiet Study Area, Floor 4",
+    "Main Library Quiet Study Area, Floor 5",
+    "Weaver Library Quiet Study Area, Floor 1",
+    "Weaver Library Quiet Study Area, Floor 4",
+    "Main Library Group Study Rooms",
+    "Weaver Library Group Study Rooms",
+    "Maker Studio",
+    "Virtual Reality (VR) Studio"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

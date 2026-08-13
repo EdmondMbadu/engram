@@ -1,0 +1,81 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.lib.ku.edu/locations/watson/study-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ku.edu/locations/watson/study-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ku.edu/locations/watson",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ku.edu/locations/watson",
+      "error": ""
+    },
+    {
+      "url": "https://lib.ku.edu/library-spaces-study-rooms-policies",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.ku.edu/library-spaces-study-rooms-policies",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ku.edu/locations/anschutz",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ku.edu/locations/anschutz",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ku.edu/anschutz-study-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ku.edu/anschutz-study-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ku.edu/locations/art-and-architecture",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ku.edu/locations/art-and-architecture",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ku.edu/locations/music-and-dance/media-facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ku.edu/locations/music-and-dance/media-facilities",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ku.edu/locations/spahr",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ku.edu/locations/spahr",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Watson Library Fifth Floor Study Space",
+    "Studio K",
+    "David Beaham Reading Room"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.moraga.ca.us/249/Moraga-Commons-Park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.moraga.ca.us/249/Moraga-Commons-Park",
+      "error": ""
+    },
+    {
+      "url": "https://ccclib.org/locations/15/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ccclib.org/locations/15/",
+      "error": ""
+    },
+    {
+      "url": "https://www.moraga.ca.us/177/Moraga-Center-Specific-Plan-Implementati",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.moraga.ca.us/177/Moraga-Center-Specific-Plan-Implementati",
+      "error": ""
+    },
+    {
+      "url": "https://www.moraga.ca.us/DocumentCenter/View/8124/2023-2031-Moraga-Housing-Element-with-Track-Changes-PDF",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.moraga.ca.us/DocumentCenter/View/8124/2023-2031-Moraga-Housing-Element-with-Track-Changes-PDF",
+      "error": ""
+    },
+    {
+      "url": "https://www.moraga.ca.us/DocumentCenter/View/9467/Moraga-General-Plan-2040-Effective-1125-PDF?bidId=",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.moraga.ca.us/DocumentCenter/View/9467/Moraga-General-Plan-2040-Effective-1125-PDF?bidId=",
+      "error": ""
+    },
+    {
+      "url": "https://www.moraga.ca.us/239/Facility-Rentals",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.moraga.ca.us/239/Facility-Rentals",
+      "error": ""
+    },
+    {
+      "url": "https://www.moraga.ca.us/439/Mulholland-Ridge-Open-Space-Preserve",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.moraga.ca.us/439/Mulholland-Ridge-Open-Space-Preserve",
+      "error": ""
+    },
+    {
+      "url": "https://www.moraga.ca.us/251/Rancho-Laguna-Park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.moraga.ca.us/251/Rancho-Laguna-Park",
+      "error": ""
+    },
+    {
+      "url": "https://www.moraga.ca.us/DocumentCenter/View/8438/6A-Rheem-Valley-Shopping-Center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.moraga.ca.us/DocumentCenter/View/8438/6A-Rheem-Valley-Shopping-Center",
+      "error": ""
+    },
+    {
+      "url": "https://www.moraga.ca.us/252/Trails",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.moraga.ca.us/252/Trails",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

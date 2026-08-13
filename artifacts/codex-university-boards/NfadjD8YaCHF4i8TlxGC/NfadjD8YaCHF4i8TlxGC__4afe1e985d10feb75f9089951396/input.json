@@ -1,0 +1,68 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "pXJOb7dTx7Rf0Rw0TrZH",
+    "schoolName": "Mercer University",
+    "shortSchoolName": "Mercer University",
+    "townName": "Macon",
+    "state": "GA",
+    "countryCode": "US",
+    "unitId": "140447",
+    "website": "https://www.mercer.edu/",
+    "latitude": 32.829134,
+    "longitude": -83.649392,
+    "heroUrl": "https://www.mercer.edu/wp-content/uploads/2019/04/cropped-android-chrome-512x512.png",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=mercer.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Jack Tarver Library",
+    "Academic Resource Center",
+    "Mac Lab",
+    "Historic Quad",
+    "Cruz Plaza",
+    "University Center",
+    "Bear Statue",
+    "A.V. Elliott Science and Innovation Quadrangle",
+    "Wiggs Hall",
+    "Tattnall Square Center for the Arts",
+    "Admissions and Welcome Center",
+    "Jesse Mercer Statue",
+    "Fresh Food Company",
+    "University Center Fitness Center",
+    "Bear Fair",
+    "Five Star Stadium",
+    "Ocmulgee Mounds National Historical Park",
+    "Waffle House #872",
+    "Waffle House #40",
+    "Waffle House #218",
+    "Waffle House #2036",
+    "Waffle House #103",
+    "Waffle House #959",
+    "Waffle House #1811",
+    "Waffle House #1061",
+    "Waffle House #2402",
+    "Waffle House #2332"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

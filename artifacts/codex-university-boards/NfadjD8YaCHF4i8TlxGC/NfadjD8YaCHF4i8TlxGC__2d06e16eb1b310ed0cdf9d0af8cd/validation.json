@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://eltablazopa.com/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://eltablazopa.com/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://849restaurantpa.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://849restaurantpa.com/",
+      "error": ""
+    },
+    {
+      "url": "https://dennys.com/location/denny-s-8775-720740/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://dennys.com/location/denny-s-8775-720740/",
+      "error": ""
+    },
+    {
+      "url": "https://www.anthonyspizzaria.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.anthonyspizzaria.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/pa/allentown/1761-s-4th-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/pa/allentown/1761-s-4th-st",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/pennsylvania/allentown/2-east-susquehanna-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/pennsylvania/allentown/2-east-susquehanna-street",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/pa/allentown/4688-broadway-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/pa/allentown/4688-broadway-street",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/pa/allentown/450-s-cedar-crest-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/pa/allentown/450-s-cedar-crest-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/pa/allentown/301-cooper-st.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/pa/allentown/301-cooper-st.html",
+      "error": ""
+    },
+    {
+      "url": "https://thedimeallentown.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thedimeallentown.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

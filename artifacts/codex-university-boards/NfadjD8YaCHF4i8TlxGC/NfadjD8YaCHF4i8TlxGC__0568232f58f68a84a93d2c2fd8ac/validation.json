@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.linfield.edu/library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.linfield.edu/library/",
+      "error": ""
+    },
+    {
+      "url": "https://linfield.sodexomyway.com/en-us/locations/hours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://linfield.sodexomyway.com/en-us/locations/hours",
+      "error": ""
+    },
+    {
+      "url": "https://muchasgraciasmexicanfood.com/page/locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://muchasgraciasmexicanfood.com/page/locations",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/or/mcminnville/915-ne-highway-99w.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/or/mcminnville/915-ne-highway-99w.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jackinthebox.com/us/or/mcminnville/2565-ne-highway-99w",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jackinthebox.com/us/or/mcminnville/2565-ne-highway-99w",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/or/mcminnville/1730-n-hwy-99w",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/or/mcminnville/1730-n-hwy-99w",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/oregon/mcminnville/635-ne-highway-99w-b",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/oregon/mcminnville/635-ne-highway-99w-b",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/or/mcminnville/1691-n-hwy-99-w/5679.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/or/mcminnville/1691-n-hwy-99-w/5679.html",
+      "error": ""
+    },
+    {
+      "url": "https://local.safeway.com/safeway/or/mcminnville/2490-n-hwy-99-w.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://local.safeway.com/safeway/or/mcminnville/2490-n-hwy-99-w.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.walmart.com/store/1843-mcminnville-or",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.walmart.com/blocked?url=L3N0b3JlLzE4NDMtbWNtaW5udmlsbGUtb3I=&uuid=ce566ac9-96ed-11f1-a75a-5a6c07b6adde&vid=&g=b",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Jereld R. Nicholson Library"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

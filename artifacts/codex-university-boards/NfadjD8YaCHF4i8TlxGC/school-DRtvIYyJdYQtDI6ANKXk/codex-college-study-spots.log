@@ -1,0 +1,287 @@
+Reading additional input from stdin...
+2026-08-13T07:08:07.044446Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:08:07.107116Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f2-0a28-7bf2-ab06-0de9ad9a9658.1786604816937127000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:08:07.109452Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9f3-1be2-74f3-afc7-d19bfadcbf00
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"DRtvIYyJdYQtDI6ANKXk","schoolName":"Florida International University","shortSchoolName":"Florida International University","townName":"Miami","state":"FL","countryCode":"US","website":"https://www.fiu.edu/","latitude":25.75732,"longitude":-80.373928},"templates":[{"id":"college-study-spots","version":"1.0","titlePattern":"Claimed by 9am: {count} Study Spots Worth Showing Up Early For","editorialBrief":"Choose ten distinct study environments. Verify access rules, room or reservation constraints, and the physical affordance that makes each useful. Treat “Claimed by 9am” as editorial framing; never assert crowding or student behavior without evidence.","researchQueries":["campus study spaces","library study rooms students","quiet study campus"],"count":10,"icon":"menu_book","primarySubjectType":"study_space","allowedSubjectTypes":["study_space","place"],"freshnessDays":180,"exactTitle":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For"}]}
+codex
+{
+  "complete": false,
+  "school_name": "Florida International University",
+  "town_name": "Miami",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Florida International University",
+      "town_name": "Miami",
+      "template_id": "college-study-spots",
+      "title": "Claimed by 9am: 10 Study Spots Worth Showing Up Early For",
+      "description": "",
+      "icon": "menu_book",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+     
+        ,
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:library.fiu.edu study spaces Green Library floors FIU ...
+web search: 
+web search: site:library.fiu.edu "Group Study Rooms" FIU ...
+web search: 
+web search: FIU Libraries study spaces Green Library quiet study room ...
+web search: 
+web search: site:fiu.edu "study room" "MARC" FIU ...
+codex
+{"complete":true,"school_name":"Florida International University","town_name":"Miami","boards":[{"complete":true,"school_name":"Florida International University","town_name":"Miami","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten verified FIU study environments spanning quiet library floors, reservable rooms, computer-equipped labs, collaborative lounges and appointment-only research collections.","icon":"menu_book","cards":[{"subject_id":"fiu-green-library","subject_type":"study_space","entity_name":"Steven and Dorothea Green Library","title":"Settle Into Green Library","subtitle":"Quiet zones, group rooms and computer labs at MMC","notes":"Choose a quiet zone for solo work or reserve a group room when conversation is essential; bring your FIU One Card for entry.","short_summary":"A flexible main-campus library with distinct settings for silent, collaborative and computer-based work.","evidence_claim":"FIU identifies Green Library as an MMC study destination with abundant seating, quiet zones, computer labs and group study rooms.","source_url":"https://dasa.fiu.edu/all-departments/survival-guide/index.html","source_title":"Survival Guide | FIU Division of Student Affairs","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Entry requires an FIU One Card; consult the FIU Libraries hours listing before visiting because building hours vary.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fiu-hubert-library","subject_type":"study_space","entity_name":"Glenn Hubert Library","title":"Work by the Bay at Hubert Library","subtitle":"Quiet zones and reservable rooms on Biscayne Bay Campus","notes":"Use the quiet zones for reading or book a group room before collaborative work; confirm BBC library hours for your planned session.","short_summary":"The Biscayne Bay Campus library pairs individual quiet areas with rooms intended for group work.","evidence_claim":"FIU states that Hubert Library offers abundant seating, quiet zones, computer labs and group study rooms.","source_url":"https://dasa.fiu.edu/all-departments/survival-guide/index.html","source_title":"Survival Guide | FIU Division of Student Affairs","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located at Biscayne Bay Campus; check current library hours and room-reservation availability before traveling.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fiu-medical-library","subject_type":"study_space","entity_name":"FIU Medical Library","title":"Focus Quietly in the Medical Library","subtitle":"Individual study on Green Library's third floor","notes":"Pick this space for quiet individual work, and verify eligibility before arriving because its collections and services prioritize medical programs.","short_summary":"A specialized third-floor library designed for concentrated individual study alongside health-sciences resources.","evidence_claim":"The FIU medical-student handbook identifies the Medical Library on Green Library's third floor as a quiet individual-study space.","source_url":"https://medicine.fiu.edu/resources/current-students/_assets/docs/2024-2025-gcp-student-handbook-final1.pdf","source_title":"Student Handbook","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The library primarily supports medical and graduate curricula; verify current access requirements and Green Library hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fiu-law-library","subject_type":"study_space","entity_name":"FIU Law Library","title":"Match the Task to a Law Library Space","subtitle":"Private rooms, individual desks and collaborative areas","notes":"Use an individual desk for focused reading or reserve a private room for group preparation; review after-hours eligibility first.","short_summary":"Three floors of purpose-built study options support individual research and collaborative legal work.","evidence_claim":"FIU Law lists private study rooms, individual desks, computer workstations, collaborative spaces and Wi-Fi in its Law Library.","source_url":"https://law.fiu.edu/about/law-library/","source_title":"Law Library | FIU College of Law","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Legal researchers are welcome during public hours; after-hours access is limited to enrolled law students and recent FIU Law graduates studying for the bar.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fiu-green-library-bridge-breezeway","subject_type":"study_space","entity_name":"Green Library Bridge/Breezeway","title":"Spread Out in the Bridge/Breezeway","subtitle":"A designated second-floor academic and collaborative space","notes":"Bring a charged laptop and use this open second-floor zone for coursework or collaboration near the elevator lobby and GRID.","short_summary":"A documented Green Library transition space adapted for academic work and technology-supported collaboration.","evidence_claim":"An FIU Libraries report identifies the Bridge/Breezeway as a designated second-floor Green Library space between the elevator lobby and GRID.","source_url":"https://digitalcommons.fiu.edu/record/17712","source_title":"The Bridge/Breezeway Use of Space Report","source_kind":"university_official","source_published_at":"2024-03-22","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Access follows Green Library entry rules and building hours; the space is open rather than a privately reservable room.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fiu-gis-teaching-lab-gl274","subject_type":"study_space","entity_name":"GIS Teaching Lab GL 274","title":"Use a GIS-Ready Workstation","subtitle":"Green Library computers with mapping and data software","notes":"Choose GL 274 when coursework needs ArcGIS Pro, QGIS, RStudio or related tools; check the posted class schedule before settling in.","short_summary":"A software-equipped teaching lab for geospatial, remote-sensing and data-analysis assignments.","evidence_claim":"The FIU GIS Center states that GL 274 contains computers with Microsoft Office, ArcGIS Pro, QGIS, RStudio and other data software.","source_url":"https://giscloud.fiu.edu/gis/services/space-hosting/","source_title":"Space Hosting – FIU GIS Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Lab hours follow Green Library hours, but scheduled classes may occupy the room; review the GIS Center schedule before use.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fiu-graham-center-study-spaces","subject_type":"study_space","entity_name":"Ernest R. Graham Center","title":"Take Coursework Upstairs at Graham Center","subtitle":"Student-center study areas beyond the busy first floor","notes":"Head upstairs to find the documented study areas, and expect a more social setting than a designated quiet library floor.","short_summary":"A central student-center option for studying between classes while staying close to campus services and dining.","evidence_claim":"FIU's official MMC self-guided tour says students study upstairs in one of Graham Center's many study spaces.","source_url":"https://admissions.fiu.edu/experience-fiu/campus-tours/mmc-self-guided-tour-map.pdf","source_title":"Explore Campus: MMC Self-Guided Tour Map","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use during Graham Center operating hours; events and everyday student-center activity may affect noise and seating availability.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fiu-at-i75-study-room","subject_type":"study_space","entity_name":"FIU at I-75 Study Room","title":"Reserve Focus Time at FIU at I-75","subtitle":"A reservable room for quiet work or collaboration","notes":"Reserve through FIU's study-room link before traveling to Miramar, especially when your work needs privacy or group conversation.","short_summary":"A bookable study room serving FIU students at the university's shared Miramar academic facility.","evidence_claim":"FIU at I-75 directs people seeking a quiet place to focus or collaborate to reserve a study room through its official booking link.","source_url":"https://broward.fiu.edu/reserve-a-space/","source_title":"Reserve a Space | FIU at I-75","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Advance reservation is required through the linked FIU study-room system; confirm booking eligibility and facility hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fiu-academic-resource-center","subject_type":"study_space","entity_name":"Academic Resource Center","title":"Pair Study Time With Academic Support","subtitle":"Resident-only spaces alongside tutoring and advising","notes":"If you live on campus, bring assignments that may benefit from nearby tutoring, workshops or undergraduate academic advising.","short_summary":"A residential-student study setting connected directly to structured academic-support services.","evidence_claim":"FIU Student Affairs says residential students can access the Academic Resource Center's study spaces, workshops, tutors and advising.","source_url":"https://dasa.fiu.edu/all-departments/survival-guide/index.html","source_title":"Survival Guide | FIU Division of Student Affairs","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Access is limited to residential students; verify current program hours and service schedules before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"wolfsonian-fiu-library-reading-room","subject_type":"study_space","entity_name":"The Wolfsonian–FIU Library Reading Room","title":"Schedule a Collection-Based Research Session","subtitle":"Appointment-only reading room in Miami Beach","notes":"Request an appointment and specify materials in advance; use the visit for focused research with rare books, archives and ephemera.","short_summary":"A supervised research room for working directly with The Wolfsonian's extensive design and cultural collections.","evidence_claim":"The Wolfsonian–FIU states that its library serves scholars and the public by appointment and provides requested materials in its reading room.","source_url":"https://wolfsonian.org/research/library/","source_title":"Library | The Wolfsonian–FIU","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Appointment required. Published research hours are Monday–Friday 9am–5pm and Saturday 11am–5:30pm; request materials in advance.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:10:03.304694Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9f3-1be2-74f3-afc7-d19bfadcbf00.1786604887010861000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+46,978
+
+{"complete":true,"school_name":"Florida International University","town_name":"Miami","boards":[{"complete":true,"school_name":"Florida International University","town_name":"Miami","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten verified FIU study environments spanning quiet library floors, reservable rooms, computer-equipped labs, collaborative lounges and appointment-only research collections.","icon":"menu_book","cards":[{"subject_id":"fiu-green-library","subject_type":"study_space","entity_name":"Steven and Dorothea Green Library","title":"Settle Into Green Library","subtitle":"Quiet zones, group rooms and computer labs at MMC","notes":"Choose a quiet zone for solo work or reserve a group room when conversation is essential; bring your FIU One Card for entry.","short_summary":"A flexible main-campus library with distinct settings for silent, collaborative and computer-based work.","evidence_claim":"FIU identifies Green Library as an MMC study destination with abundant seating, quiet zones, computer labs and group study rooms.","source_url":"https://dasa.fiu.edu/all-departments/survival-guide/index.html","source_title":"Survival Guide | FIU Division of Student Affairs","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Entry requires an FIU One Card; consult the FIU Libraries hours listing before visiting because building hours vary.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fiu-hubert-library","subject_type":"study_space","entity_name":"Glenn Hubert Library","title":"Work by the Bay at Hubert Library","subtitle":"Quiet zones and reservable rooms on Biscayne Bay Campus","notes":"Use the quiet zones for reading or book a group room before collaborative work; confirm BBC library hours for your planned session.","short_summary":"The Biscayne Bay Campus library pairs individual quiet areas with rooms intended for group work.","evidence_claim":"FIU states that Hubert Library offers abundant seating, quiet zones, computer labs and group study rooms.","source_url":"https://dasa.fiu.edu/all-departments/survival-guide/index.html","source_title":"Survival Guide | FIU Division of Student Affairs","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located at Biscayne Bay Campus; check current library hours and room-reservation availability before traveling.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fiu-medical-library","subject_type":"study_space","entity_name":"FIU Medical Library","title":"Focus Quietly in the Medical Library","subtitle":"Individual study on Green Library's third floor","notes":"Pick this space for quiet individual work, and verify eligibility before arriving because its collections and services prioritize medical programs.","short_summary":"A specialized third-floor library designed for concentrated individual study alongside health-sciences resources.","evidence_claim":"The FIU medical-student handbook identifies the Medical Library on Green Library's third floor as a quiet individual-study space.","source_url":"https://medicine.fiu.edu/resources/current-students/_assets/docs/2024-2025-gcp-student-handbook-final1.pdf","source_title":"Student Handbook","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The library primarily supports medical and graduate curricula; verify current access requirements and Green Library hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fiu-law-library","subject_type":"study_space","entity_name":"FIU Law Library","title":"Match the Task to a Law Library Space","subtitle":"Private rooms, individual desks and collaborative areas","notes":"Use an individual desk for focused reading or reserve a private room for group preparation; review after-hours eligibility first.","short_summary":"Three floors of purpose-built study options support individual research and collaborative legal work.","evidence_claim":"FIU Law lists private study rooms, individual desks, computer workstations, collaborative spaces and Wi-Fi in its Law Library.","source_url":"https://law.fiu.edu/about/law-library/","source_title":"Law Library | FIU College of Law","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Legal researchers are welcome during public hours; after-hours access is limited to enrolled law students and recent FIU Law graduates studying for the bar.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fiu-green-library-bridge-breezeway","subject_type":"study_space","entity_name":"Green Library Bridge/Breezeway","title":"Spread Out in the Bridge/Breezeway","subtitle":"A designated second-floor academic and collaborative space","notes":"Bring a charged laptop and use this open second-floor zone for coursework or collaboration near the elevator lobby and GRID.","short_summary":"A documented Green Library transition space adapted for academic work and technology-supported collaboration.","evidence_claim":"An FIU Libraries report identifies the Bridge/Breezeway as a designated second-floor Green Library space between the elevator lobby and GRID.","source_url":"https://digitalcommons.fiu.edu/record/17712","source_title":"The Bridge/Breezeway Use of Space Report","source_kind":"university_official","source_published_at":"2024-03-22","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Access follows Green Library entry rules and building hours; the space is open rather than a privately reservable room.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fiu-gis-teaching-lab-gl274","subject_type":"study_space","entity_name":"GIS Teaching Lab GL 274","title":"Use a GIS-Ready Workstation","subtitle":"Green Library computers with mapping and data software","notes":"Choose GL 274 when coursework needs ArcGIS Pro, QGIS, RStudio or related tools; check the posted class schedule before settling in.","short_summary":"A software-equipped teaching lab for geospatial, remote-sensing and data-analysis assignments.","evidence_claim":"The FIU GIS Center states that GL 274 contains computers with Microsoft Office, ArcGIS Pro, QGIS, RStudio and other data software.","source_url":"https://giscloud.fiu.edu/gis/services/space-hosting/","source_title":"Space Hosting – FIU GIS Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Lab hours follow Green Library hours, but scheduled classes may occupy the room; review the GIS Center schedule before use.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fiu-graham-center-study-spaces","subject_type":"study_space","entity_name":"Ernest R. Graham Center","title":"Take Coursework Upstairs at Graham Center","subtitle":"Student-center study areas beyond the busy first floor","notes":"Head upstairs to find the documented study areas, and expect a more social setting than a designated quiet library floor.","short_summary":"A central student-center option for studying between classes while staying close to campus services and dining.","evidence_claim":"FIU's official MMC self-guided tour says students study upstairs in one of Graham Center's many study spaces.","source_url":"https://admissions.fiu.edu/experience-fiu/campus-tours/mmc-self-guided-tour-map.pdf","source_title":"Explore Campus: MMC Self-Guided Tour Map","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use during Graham Center operating hours; events and everyday student-center activity may affect noise and seating availability.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fiu-at-i75-study-room","subject_type":"study_space","entity_name":"FIU at I-75 Study Room","title":"Reserve Focus Time at FIU at I-75","subtitle":"A reservable room for quiet work or collaboration","notes":"Reserve through FIU's study-room link before traveling to Miramar, especially when your work needs privacy or group conversation.","short_summary":"A bookable study room serving FIU students at the university's shared Miramar academic facility.","evidence_claim":"FIU at I-75 directs people seeking a quiet place to focus or collaborate to reserve a study room through its official booking link.","source_url":"https://broward.fiu.edu/reserve-a-space/","source_title":"Reserve a Space | FIU at I-75","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Advance reservation is required through the linked FIU study-room system; confirm booking eligibility and facility hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fiu-academic-resource-center","subject_type":"study_space","entity_name":"Academic Resource Center","title":"Pair Study Time With Academic Support","subtitle":"Resident-only spaces alongside tutoring and advising","notes":"If you live on campus, bring assignments that may benefit from nearby tutoring, workshops or undergraduate academic advising.","short_summary":"A residential-student study setting connected directly to structured academic-support services.","evidence_claim":"FIU Student Affairs says residential students can access the Academic Resource Center's study spaces, workshops, tutors and advising.","source_url":"https://dasa.fiu.edu/all-departments/survival-guide/index.html","source_title":"Survival Guide | FIU Division of Student Affairs","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Access is limited to residential students; verify current program hours and service schedules before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"wolfsonian-fiu-library-reading-room","subject_type":"study_space","entity_name":"The Wolfsonian–FIU Library Reading Room","title":"Schedule a Collection-Based Research Session","subtitle":"Appointment-only reading room in Miami Beach","notes":"Request an appointment and specify materials in advance; use the visit for focused research with rare books, archives and ephemera.","short_summary":"A supervised research room for working directly with The Wolfsonian's extensive design and cultural collections.","evidence_claim":"The Wolfsonian–FIU states that its library serves scholars and the public by appointment and provides requested materials in its reading room.","source_url":"https://wolfsonian.org/research/library/","source_title":"Library | The Wolfsonian–FIU","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Appointment required. Published research hours are Monday–Friday 9am–5pm and Saturday 11am–5:30pm; request materials in advance.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

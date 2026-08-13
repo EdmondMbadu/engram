@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://as.sdsu.edu/aztecunion/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://as.sdsu.edu/aztecunion/",
+      "error": ""
+    },
+    {
+      "url": "https://art.sdsu.edu/gallery-program/university",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://art.sdsu.edu/gallery-program/university",
+      "error": ""
+    },
+    {
+      "url": "https://medgarden.sdsu.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://medgarden.sdsu.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://www.sdsu.edu/healing-garden/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sdsu.edu/healing-garden/visit",
+      "error": ""
+    },
+    {
+      "url": "https://arc.sdsu.edu/arc/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arc.sdsu.edu/arc/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

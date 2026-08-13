@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://library.stlawu.edu/space/study-area",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.stlawu.edu/space/study-area",
+      "error": ""
+    },
+    {
+      "url": "https://library.stlawu.edu/space/tree-room-study-area",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.stlawu.edu/space/tree-room-study-area",
+      "error": ""
+    },
+    {
+      "url": "https://library.stlawu.edu/space/study-carrels-ody-lower-level-east",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.stlawu.edu/space/study-carrels-ody-lower-level-east",
+      "error": ""
+    },
+    {
+      "url": "https://library.stlawu.edu/space/study-alcove",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.stlawu.edu/space/study-alcove",
+      "error": ""
+    },
+    {
+      "url": "https://library.stlawu.edu/space/24-hour-study-macallaster-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.stlawu.edu/space/24-hour-study-macallaster-room",
+      "error": ""
+    },
+    {
+      "url": "https://library.stlawu.edu/space/204-frost-ferguson-library-instruction-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.stlawu.edu/space/204-frost-ferguson-library-instruction-room",
+      "error": ""
+    },
+    {
+      "url": "https://library.stlawu.edu/space/study-carrels-ody-upper-level",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.stlawu.edu/space/study-carrels-ody-upper-level",
+      "error": ""
+    },
+    {
+      "url": "https://library.stlawu.edu/space/mezzanine-study-area",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.stlawu.edu/space/mezzanine-study-area",
+      "error": ""
+    },
+    {
+      "url": "https://library.stlawu.edu/taxonomy/term/126",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.stlawu.edu/taxonomy/term/126",
+      "error": ""
+    },
+    {
+      "url": "https://library.stlawu.edu/taxonomy/term/139",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.stlawu.edu/taxonomy/term/139",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Mezzanine Study Area"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

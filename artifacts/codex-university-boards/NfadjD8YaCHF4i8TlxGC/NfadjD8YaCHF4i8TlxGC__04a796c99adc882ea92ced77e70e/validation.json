@@ -1,0 +1,45 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "The Mount Holyoke College Art Museum is currently closed for renovation until fall 2026, so it was not included despite its free admission."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.southhadley.org/1200/Buttery-Brook-Park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.southhadley.org/1200/Buttery-Brook-Park",
+      "error": ""
+    },
+    {
+      "url": "https://www.southhadley.org/DocumentCenter/View/15124/2026-BBPk-GrandReopening_EventDetails-Map-051626",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.southhadley.org/DocumentCenter/View/15124/2026-BBPk-GrandReopening_EventDetails-Map-051626",
+      "error": ""
+    },
+    {
+      "url": "https://www.mass.gov/locations/mount-holyoke-range-state-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mass.gov/locations/mount-holyoke-range-state-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.mtholyoke.edu/student-experience/community-and-belonging/religion-and-spirituality/quiet-contemplative-and-spiritual-places-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mtholyoke.edu/student-experience/community-and-belonging/religion-and-spirituality/quiet-contemplative-and-spiritual-places-campus",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

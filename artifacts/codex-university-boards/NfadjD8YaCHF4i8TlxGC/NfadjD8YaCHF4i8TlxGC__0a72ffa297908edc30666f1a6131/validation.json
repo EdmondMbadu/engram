@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://visittuscaloosa.com/eat-and-drink/dining-near-campus/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visittuscaloosa.com/eat-and-drink/dining-near-campus/",
+      "error": ""
+    },
+    {
+      "url": "https://visittuscaloosa.com/eat-and-drink/dining-near-campus/page/2/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visittuscaloosa.com/eat-and-drink/dining-near-campus/page/2/",
+      "error": ""
+    },
+    {
+      "url": "https://visittuscaloosa.com/listing/thai-basil-sushi/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visittuscaloosa.com/listing/thai-basil-sushi/",
+      "error": ""
+    },
+    {
+      "url": "https://visittuscaloosa.com/listing/loco-lupes/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visittuscaloosa.com/listing/loco-lupes/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

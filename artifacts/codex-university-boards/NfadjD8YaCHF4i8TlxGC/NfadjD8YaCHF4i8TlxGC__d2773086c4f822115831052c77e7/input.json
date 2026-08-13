@@ -1,0 +1,61 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "jbhLyUicmsn0DIcsmpRQ",
+    "schoolName": "The College of Wooster",
+    "shortSchoolName": "The College of Wooster",
+    "townName": "Wooster",
+    "state": "OH",
+    "countryCode": "US",
+    "unitId": "206589",
+    "website": "https://wooster.edu/",
+    "latitude": 40.81046,
+    "longitude": -81.934674,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/e/e8/College_of_Wooster_seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=wooster.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Lowry Center",
+    "The Alley",
+    "Collaborative Research Environment (CoRE)",
+    "Gault Library for Independent Study",
+    "Timken Science Library",
+    "Scot Center",
+    "The College of Wooster Art Museum",
+    "McGaw Chapel",
+    "Freedlander Theatre",
+    "Kauke Hall Steps",
+    "Wayne County Public Library",
+    "Before I Die Wall",
+    "Clark Building / Broken Rocks Cafe & Bakery",
+    "Wayne County Courthouse",
+    "Downtown Wooster Pavilion",
+    "Local Roots Market & Cafe",
+    "E&H Ace Hardware / Carver Club site",
+    "Blue Spruce Boutique / Brenner Brothers site",
+    "Children’s Arch at Wayne Center for the Arts",
+    "Historic Downtown Wooster Public Square"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

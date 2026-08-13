@@ -1,0 +1,23 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.northfieldmn.gov/DocumentCenter/View/16518",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.northfieldmn.gov/DocumentCenter/View/16518/Green-Booklet?bidId=",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Big Pond Loop"
+  ],
+  "sourceCount": 1,
+  "generationScore": 90,
+  "generationGrade": "A"
+}

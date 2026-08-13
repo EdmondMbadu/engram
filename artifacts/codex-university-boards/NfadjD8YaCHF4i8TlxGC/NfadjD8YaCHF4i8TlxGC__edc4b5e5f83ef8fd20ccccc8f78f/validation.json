@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://calvin.edu/places/hekman-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calvin.edu/places/hekman-library",
+      "error": ""
+    },
+    {
+      "url": "https://calvin.edu/construction/hekman-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calvin.edu/construction/hekman-library",
+      "error": ""
+    },
+    {
+      "url": "https://calvin.edu/meeter-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calvin.edu/meeter-center",
+      "error": ""
+    },
+    {
+      "url": "https://calvin.edu/places/ecosystem-preserve",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calvin.edu/places/ecosystem-preserve",
+      "error": ""
+    },
+    {
+      "url": "https://calvin.edu/places/bunker-interpretive-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calvin.edu/places/bunker-interpretive-center",
+      "error": ""
+    },
+    {
+      "url": "https://calvin.edu/ecosystem-preserve/native-gardens",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calvin.edu/ecosystem-preserve/native-gardens",
+      "error": ""
+    },
+    {
+      "url": "https://calvin.edu/bruce-dice-mineralogical-museum",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calvin.edu/bruce-dice-mineralogical-museum",
+      "error": ""
+    },
+    {
+      "url": "https://calvin.edu/center-art-gallery",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calvin.edu/center-art-gallery",
+      "error": ""
+    },
+    {
+      "url": "https://calvin.edu/places/calvin-observatory",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calvin.edu/places/calvin-observatory",
+      "error": ""
+    },
+    {
+      "url": "https://calvin.edu/places/calvin-climbing-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calvin.edu/places/calvin-climbing-center",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

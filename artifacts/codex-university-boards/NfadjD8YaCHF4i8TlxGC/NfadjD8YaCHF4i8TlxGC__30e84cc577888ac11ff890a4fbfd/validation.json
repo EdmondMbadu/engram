@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.swarthmore.edu/sites/default/files/assets/documents/student-handbook/Student-Handbook-2025-2026_Final-PDF-for-Website.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.swarthmore.edu/sites/default/files/assets/documents/student-handbook/Student-Handbook-2025-2026_Final-PDF-for-Website.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 1,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.library.illinois.edu/enx/study-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.illinois.edu/enx/study-spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.illinois.edu/enx/idea-lab-homepage/policies/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.illinois.edu/enx/idea-lab-homepage/policies/",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.illinois.edu/tlas/spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.illinois.edu/tlas/spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.illinois.edu/sc/about/hours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.illinois.edu/sc/about/hours/",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.illinois.edu/funkaces/services/room_reservation/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.illinois.edu/funkaces/services/room_reservation/",
+      "error": ""
+    },
+    {
+      "url": "https://www.union.illinois.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.union.illinois.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://campusrec.illinois.edu/facilities/arc",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusrec.illinois.edu/facilities/arc",
+      "error": ""
+    },
+    {
+      "url": "https://arboretum.illinois.edu/maps-directions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arboretum.illinois.edu/maps-directions/",
+      "error": ""
+    },
+    {
+      "url": "https://japanhouse.illinois.edu/visit/gardens",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://japanhouse.illinois.edu/visit/gardens",
+      "error": ""
+    },
+    {
+      "url": "https://arboretum.illinois.edu/the-noel-welcome-garden/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arboretum.illinois.edu/the-noel-welcome-garden/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "The Orange Room"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

@@ -1,0 +1,1245 @@
+Reading additional input from stdin...
+2026-08-13T09:42:57.715229Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T09:42:57.717023Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-terra
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa80-dfae-7401-8171-e848414f8bdd
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+Do not cite these URLs because the live validator found them broken: https://www.up.edu/hr/files/2014_17_fac_handbook.pdf
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"7Isj0HUpg4NpqpnmWjve","schoolName":"University of Portland","shortSchoolName":"University of Portland","townName":"Portland","state":"OR","countryCode":"US","website":"https://www.up.edu/","latitude":45.572724,"longitude":-122.726691},"templates":[{"id":"college-first-weekend","version":"1.0","titlePattern":"Your First Weekend at {school}, Shared as Cards","editorialBrief":"Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.","researchQueries":["new student orientation campus guide","first year student campus activities","weekend near campus students"],"count":10,"icon":"schedule","primarySubjectType":"sequence_stop","allowedSubjectTypes":["sequence_stop","place","activity"],"freshnessDays":180,"exactTitle":"Your First Weekend at University of Portland, Shared as Cards","excludedSourceUrls":["https://www.up.edu/hr/files/2014_17_fac_handbook.pdf"]}]}
+codex
+{"complete":false,"school_name":"University of Portland","town_name":"Portland","boards":[{"complete":false,"school_name":"University of Portland","town_name":"Portland","template_id":"college-first-weekend","title":"Your First Weekend at University of Portland, Shared as Cards","description":"I’m verifying ten distinct, under-21-safe weekend stops from direct public sources, including access and cost claims.","icon":"schedule","cards": [{"subject_id":"research-in-progress","subject_type":"sequence_stop","entity_name":"Research in progress","title":"Verifying sources","subtitle":"University of Portland","notes":"Checking official University of Portland, campus, and Portland-area sources for current facts and direct HTTPS pages.","short_summary":"Research is underway.","evidence_claim":"Sources are being verified before finalizing the board.","source_url":"https://www.up.edu/","source_title":"University of Portland","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"unknown","under21_safe":true}  
+    
+    
+   
+  
+   
+    
+    
+   
+    
+    
+  
+   
+    
+    
+  ,{"subject_id":"research-in-progress-2","subject_type":"sequence_stop","entity_name":"Research in progress","title":"Verifying sources","subtitle":"University of Portland","notes":"Checking official University of Portland, campus, and Portland-area sources for current facts and direct HTTPS pages.","short_summary":"Research is underway.","evidence_claim":"Sources are being verified before finalizing the board.","source_url":"https://www.up.edu/","source_title":"University of Portland","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"unknown","under21_safe":true}  
+    
+    
+   
+  
+   
+    
+    
+    
+   
+    
+    
+  
+   
+    
+    
+  ,{"subject_id":"research-in-progress-3","subject_type":"sequence_stop","entity_name":"Research in progress","title":"Verifying sources","subtitle":"University of Portland","notes":"Checking official University of Portland, campus, and Portland-area sources for current facts and direct HTTPS pages.","short_summary":"Research is underway.","evidence_claim":"Sources are being verified before finalizing the board.","source_url":"https://www.up.edu/","source_title":"University of Portland","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"unknown","under21_safe":true}  
+    
+     
+   
+    
+     
+   
+     
+   
+     
+   
+     
+   
+     
+   
+     
+   
+     
+                                
+   
+     
+    
+   
+     
+    
+    
+   
+     
+      
+   
+     
+  
+    
+                  
+   
+     
+  
+   
+     
+      
+  
+    
+  
+   
+     
+    
+  
+   
+     
+      
+  
+    
+   
+   
+     
+     
+   
+     
+  
+  
+  
+ 
+   
+     
+    
+    
+    
+    
+  
+  
+    
+   
+   
+     
+     
+    
+  
+    
+  
+    
+      
+    
+   
+    
+     
+    
+  
+    
+    
+     
+    
+    
+    
+  
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+   
+     
+     
+    
+     
+  
+    
+    
+   ,{"subject_id":"research-in-progress-4","subject_type":"sequence_stop","entity_name":"Research in progress","title":"Verifying sources","subtitle":"University of Portland","notes":"Checking official University of Portland, campus, and Portland-area sources for current facts and direct HTTPS pages.","short_summary":"Research is underway.","evidence_claim":"Sources are being verified before finalizing the board.","source_url":"https://www.up.edu/","source_title":"University of Portland","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"unknown","under21_safe":true}   
+   
+   
+   
+    
+   
+   
+   
+    
+   
+   
+   
+    
+     
+   
+   
+  
+            
+   
+   
+  
+  
+   
+   
+  
+
+   
+   
+  
+   
+   
+  
+   
+   
+  
+   
+   
+  
+      
+    
+   
+   
+  
+   
+   
+  
+    
+   
+   
+  
+   
+   
+  
+  	
+   
+   
+  
+   
+   
+    
+   
+   
+  
+     
+   
+  
+   
+   
+    
+    
+   
+   
+  
+   
+   
+    
+   
+   
+  
+   
+   
+     
+   
+   
+    
+   
+   
+  
+  
+   
+   
+    
+     
+   
+   
+  
+  
+   
+   
+  
+   
+   
+    
+   
+   
+   
+  
+   
+   
+    
+  
+   
+   
+   
+  
+  
+   
+   
+  
+   
+   
+  
+   
+   
+  
+    
+    
+                  
+                
+   
+   
+  
+   
+   
+  
+  
+   
+   
+    
+    
+  
+            
+   
+   
+    
+    
+    
+   
+   
+   
+  
+  
+  
+   
+   
+  
+  
+   
+   
+    
+        
+     
+   
+   
+  
+  
+  
+  
+    
+    
+  
+   
+   
+  
+   
+   
+    
+  
+   
+   
+    
+    
+   
+   
+    
+   
+   
+   
+  
+  
+      
+   
+   
+     
+   
+   
+     
+   
+   
+  
+  
+ 
+   
+   
+  
+  
+  
+    
+     
+     
+     
+   
+   
+   
+  
+   
+   
+    
+   
+   
+     
+   
+   
+    
+   
+   
+   
+   
+   
+  
+     
+    
+      
+     
+   
+   ,{"subject_id":"research-in-progress-5","subject_type":"sequence_stop","entity_name":"Research in progress","title":"Verifying sources","subtitle":"University of Portland","notes":"Checking official University of Portland, campus, and Portland-area sources for current facts and direct HTTPS pages.","short_summary":"Research is underway.","evidence_claim":"Sources are being verified before finalizing the board.","source_url":"https://www.up.edu/","source_title":"University of Portland","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"unknown","under21_safe":true}   
+   
+   
+   
+   
+
+   
+   
+   
+   
+    
+      
+   
+   
+   
+   
+  
+   
+   
+  
+  
+    
+   
+   
+  
+   
+   
+  
+   
+   
+  
+   
+   
+  
+   
+   
+   
+  
+   
+   
+  
+   
+   
+  
+   
+   
+  
+   
+   
+  
+   
+   
+  
+   
+   
+    
+   
+   
+  
+   
+   
+  
+   
+   
+   
+   
+   
+  
+   
+   
+  
+   
+    
+   
+   
+  
+   
+   
+  
+   
+   
+  
+  
+   
+   
+  
+   
+   
+    
+   
+  
+   
+   
+  
+    
+    
+   
+   
+  
+  
+   
+   
+    
+  
+   
+   
+    
+  
+   
+   
+  
+  
+  
+   
+   
+  
+  
+   
+   
+  
+  
+   
+   
+  
+  
+   
+   
+   
+  
+  
+   
+    
+   
+   
+  
+  
+   
+   
+     
+   
+   
+   ,{"subject_id":"research-in-progress-6","subject_type":"sequence_stop","entity_name":"Research in progress","title":"Verifying sources","subtitle":"University of Portland","notes":"Checking official University of Portland, campus, and Portland-area sources for current facts and direct HTTPS pages.","short_summary":"Research is underway.","evidence_claim":"Sources are being verified before finalizing the board.","source_url":"https://www.up.edu/","source_title":"University of Portland","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"unknown","under21_safe":true}   
+   
+   
+  
+   
+   
+   
+   
+   
+   
+  
+   
+   
+  
+   
+   
+  
+   
+   
+  
+   
+   
+  
+   
+   
+  
+   
+   
+  
+   
+   
+  
+   
+   
+  
+   
+   
+    
+      
+    
+    
+    
+  
+   
+   
+  
+  
+   
+   
+  
+  
+   
+   
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+  ,{"subject_id":"research-in-progress-7","subject_type":"sequence_stop","entity_name":"Research in progress","title":"Verifying sources","subtitle":"University of Portland","notes":"Checking official University of Portland, campus, and Portland-area sources for current facts and direct HTTPS pages.","short_summary":"Research is underway.","evidence_claim":"Sources are being verified before finalizing the board.","source_url":"https://www.up.edu/","source_title":"University of Portland","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"unknown","under21_safe":true}  
+   
+   
+   
+   
+  
+   
+   
+  
+  
+   
+   
+  
+  
+   
+   
+  
+            
+    
+  
+  
+  
+  
+  
+
+   
+     
+   
+   
+  
+      
+   
+   
+  
+  
+    
+   
+   
+   
+  
+  
+  
+    
+   
+   
+  
+  
+        
+      
+    
+    
+   
+   
+  
+  
+  
+   
+   
+  
+  
+    
+   
+   
+ 
+   
+   
+   
+   
+   
+  
+  
+   
+   
+  
+  
+   
+   
+        
+   
+   
+   
+    
+        
+    
+   
+   
+  
+   
+   
+    
+   
+     
+   
+   
+     
+   
+   
+    
+   
+   
+    
+   
+   
+  
+   
+   
+    
+   
+   
+  
+   
+   
+    
+   
+   
+    
+   
+   
+                          
+   
+   
+  
+  
+    
+   
+   
+  
+  
+   
+   
+  
+ 
+   
+   
+   
+   
+   
+   
+  
+        
+   
+   
+     
+    
+   
+   
+  
+     
+   
+   
+  
+   
+   
+    
+   
+   
+  
+   
+   
+   ,{"subject_id":"research-in-progress-8","subject_type":"sequence_stop","entity_name":"Research in progress","title":"Verifying sources","subtitle":"University of Portland","notes":"Checking official University of Portland, campus, and Portland-area sources for current facts and direct HTTPS pages.","short_summary":"Research is underway.","evidence_claim":"Sources are being verified before finalizing the board.","source_url":"https://www.up.edu/","source_title":"University of Portland","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"unknown","under21_safe":true}  
+  
+        
+    
+  	
+  
+  
+  			
+   
+    
+    
+   
+   
+   
+   
+     
+   
+   
+     
+   
+   
+  
+   
+   
+              
+   
+   
+   
+  
+  
+   
+   
+  
+  
+  
+   
+   
+  
+   
+   
+  
+   
+   
+  
+  
+   
+   
+  
+  
+  
+  
+  
+  
+  
+   
+        
+   
+   
+  
+      
+   
+   
+   
+    
+   
+   
+   
+  
+  
+  
+   
+   
+   
+   
+   
+  
+   
+   
+  
+  
+  
+ 
+   
+   
+     
+   
+   
+  
+  
+  
+  
+   
+   
+   
+    
+   
+   
+     
+    
+   
+   
+  
+  
+  
+    
+   
+   
+  
+  
+   
+   
+  
+   
+   
+  
+   
+   
+  
+  
+   
+   
+  
+  
+  
+   
+   
+  
+  
+   
+   
+    
+  
+   
+   
+    
+   
+   
+    
+   
+   
+  
+   
+   
+  
+   
+   
+   
+   
+   
+  
+   
+   
+  
+   
+   
+  
+   
+   
+   
+     
+    
+   
+   
+  
+  
+   
+   
+    
+   
+   
+    
+  
+    
+   
+   
+  
+   
+     
+   
+   
+  
+   
+   
+  
+   
+   
+  
+   
+   
+  
+   
+   
+  
+   
+   
+   
+  
+    
+    
+   
+   
+  
+  
+   
+   
+   
+   
+   
+  
+   
+   
+  
+   
+   
+  
+   
+   
+   
+   
+   
+  
+   
+   
+   
+   
+   
+  
+   
+   
+  
+   
+   
+   
+    
+   
+    
+    
+     
+   
+   
+  
+  
+   
+   
+  
+  
+   
+   
+    
+   
+   
+  
+  
+   
+   
+  
+   
+   
+   
+   
+   
+  
+   
+   
+  
+  
+ 
+   
+   
+  
+   
+   
+    
+  
+   
+   
+  
+   
+   
+        
+   
+    
+   
+   
+  
+  
+   
+   
+  
+      
+    
+    
+    
+   
+   
+  
+
+
+   
+   
+      
+    
+   
+   
+  
+   
+   
+  
+   
+   
+  
+  
+   
+   
+  
+   
+   
+    
+   
+   
+  
+   
+   
+    
+    
+   
+   
+   
+  
+  
+   
+   
+   
+  
+   
+   
+  
+   
+   
+   
+   
+   
+  
+   
+   
+    
+    
+   
+   
+    
+   ,{"subject_id":"research-in-progress-9","subject_type":"sequence_stop","entity_name":"Research in progress","title":"Verifying sources","subtitle":"University of Portland","notes":"Checking official University of Portland, campus, and Portland-area sources for current facts and direct HTTPS pages.","short_summary":"Research is underway.","evidence_claim":"Sources are being verified before finalizing the board.","source_url":"https://www.up.edu/","source_title":"University of Portland","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"unknown","under21_safe":true}  ,{"subject_id":"research-in-progress-10","subject_type":"sequence_stop","entity_name":"Research in progress","title":"Verifying sources","subtitle":"University of Portland","notes":"Checking official University of Portland, campus, and Portland-area sources for current facts and direct HTTPS pages.","short_summary":"Research is underway.","evidence_claim":"Sources are being verified before finalizing the board.","source_url":"https://www.up.edu/","source_title":"University of Portland","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}
+web search: 
+web search: site:up.edu University of Portland campus map Chapel of Christ the Teacher Library Franz River Campus ...
+web search: 
+web search: site:up.edu "Clark Library" University of Portland hours ...
+codex
+{"complete":true,"school_name":"University of Portland","town_name":"Portland","boards":[{"complete":true,"school_name":"University of Portland","town_name":"Portland","template_id":"college-first-weekend","title":"Your First Weekend at University of Portland, Shared as Cards","description":"A calm, under-21-safe first-weekend sequence that begins with campus orientation, makes room for food and activity, and ends with a nearby riverfront walk.","icon":"schedule","cards":[{"subject_id":"up-campus-map","subject_type":"sequence_stop","entity_name":"University of Portland Campus Map","title":"Start by finding the Bluff","subtitle":"Friday afternoon · campus orientation stop","notes":"Open the official map before heading out. Use it to locate key buildings, accessible entrances, transit stops, and visitor information around the Bluff.","short_summary":"Get the lay of the land before choosing your next stop.","evidence_claim":"University of Portland publishes an updated campus map and an interactive campus map for visitors and the campus community.","source_url":"https://sites.up.edu/upbeat/new-updated-campus-maps/","source_title":"NEW Updated Campus Maps","source_kind":"university_official","source_published_at":"2024-08-02","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://campusmap.up.edu/","access_notes":"Use the official interactive map for current building and resource details.","cost_status":"free","under21_safe":true},{"subject_id":"clark-library","subject_type":"sequence_stop","entity_name":"Clark Library","title":"Make Clark Library your landmark","subtitle":"Friday afternoon · campus hub","notes":"Walk to Clark Library and use its central location as a reset point. It is a practical place to identify nearby academic and student-life destinations.","short_summary":"A central campus landmark for getting oriented.","evidence_claim":"The University’s Weekend on The Bluff schedule describes Clark Library as a campus hub for studying, group meetings, printing, scanning, and equipment checkout.","source_url":"https://www.up.edu/admissions/files/weekend_on_the_bluff_sample_schedule.pdf","source_title":"Weekend on The Bluff Sample Schedule","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Check current library access and service availability before relying on specific services.","cost_status":"free","under21_safe":true},{"subject_id":"bauccio-commons","subject_type":"sequence_stop","entity_name":"Bauccio Commons","title":"Pause for a campus meal","subtitle":"Friday evening · Bauccio Commons","notes":"Choose a meal or snack break at Bauccio Commons, then use the dining room as a natural meet-up before continuing through the evening.","short_summary":"A meal-plan dining stop on the Bluff.","evidence_claim":"University of Portland identifies Bauccio Commons as one of its two dining halls and states that meal plans cover meals offered there.","source_url":"https://www.up.edu/finaid/cost2526","source_title":"2025-26 Undergraduate Cost Information","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Food requires payment or applicable meal-plan funds; confirm current dining service before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"pilot-house","subject_type":"sequence_stop","entity_name":"Pilot House","title":"Find the student center","subtitle":"Friday evening · food, seating, and a stage","notes":"Step into the Pilot House to orient yourself to a student-focused campus building. Keep it simple: meet up, sit down, and check posted programming.","short_summary":"A campus gathering spot with food-service options.","evidence_claim":"University of Portland’s international student guide describes the remodeled Pilot House as having a grill, small market, seating, pub, and stage for live entertainment.","source_url":"https://www.up.edu/iss/files/up-intl-student-guide.pdf","source_title":"University of Portland International Student Guide","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Food and market items require payment; choose all-ages programming and verify current event details.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"pilots-after-dark","subject_type":"activity","entity_name":"Pilots After Dark","title":"Check the Pilots After Dark listing","subtitle":"Friday or Saturday evening · student activity","notes":"Look for the current Pilots After Dark program through Student Activities. Pick an announced all-ages event and go with a new classmate or roommate.","short_summary":"Recurring student programming for Friday and Saturday evenings.","evidence_claim":"A 2025 University of Portland Student Affairs report states that more than 200 students attended Pilots After Dark events each Friday and Saturday evening.","source_url":"https://www.up.edu/studentaffairs/files/regents-saie-committee-report-may-2025.pdf","source_title":"Division of Student Affairs Regents SAIE Committee Report, May 2025","source_kind":"university_official","source_published_at":"2025-05-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Programming, locations, and any charges vary; check the current Student Activities listing before attending.","cost_status":"unknown","under21_safe":true},{"subject_id":"beauchamp-recreation-wellness-center","subject_type":"sequence_stop","entity_name":"Beauchamp Recreation & Wellness Center","title":"Move between plans","subtitle":"Saturday morning · recreation and wellness","notes":"Visit the recreation center for a low-pressure activity break. Check in with staff about current access, equipment availability, and any class schedules.","short_summary":"An on-campus option for indoor movement and wellness.","evidence_claim":"University of Portland describes the Beauchamp Recreation & Wellness Center as a two-story facility with cardio machines, weights, three basketball courts, an indoor track, and exercise studios.","source_url":"https://www.up.edu/iss/files/up-intl-student-guide.pdf","source_title":"University of Portland International Student Guide","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Access requirements and recreation schedules may vary; verify with the recreation center before visiting.","cost_status":"unknown","under21_safe":true},{"subject_id":"chapel-of-christ-the-teacher","subject_type":"sequence_stop","entity_name":"Chapel of Christ the Teacher","title":"Take a quiet architecture break","subtitle":"Saturday afternoon · Chapel of Christ the Teacher","notes":"Walk by the Chapel of Christ the Teacher and notice its Belluschi design. Use the stop for a few quiet minutes, respecting any worship or campus activity.","short_summary":"A documented campus landmark designed by Pietro Belluschi.","evidence_claim":"University of Portland’s digital collections state that the Chapel of Christ the Teacher was designed by Oregon architect Pietro Belluschi and dedicated on October 5, 1986.","source_url":"https://digital.up.edu/chapel-of-christ-the-teacher","source_title":"Chapel of Christ the Teacher","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Respect services and posted building-access guidance; access may be limited during events.","cost_status":"free","under21_safe":true},{"subject_id":"bell-tower","subject_type":"sequence_stop","entity_name":"Bell Tower","title":"Meet at the Bell Tower","subtitle":"Saturday afternoon · Bell Tower Plaza","notes":"Use the Bell Tower as an easy outdoor meeting point, then continue through the plaza toward the chapel and garden paths with your group.","short_summary":"A 106-foot campus landmark beside the chapel.","evidence_claim":"University of Portland’s digital collections identify the Bell Tower as the tallest structure on campus at 106 feet.","source_url":"https://digital.up.edu/chapel-of-christ-the-teacher","source_title":"Chapel of Christ the Teacher","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor landmark; follow posted campus access guidance.","cost_status":"free","under21_safe":true},{"subject_id":"o-cruceiro","subject_type":"sequence_stop","entity_name":"O Cruceiro","title":"Spot O Cruceiro by the library","subtitle":"Saturday afternoon · Clark Library approach","notes":"On the way around Clark Library, pause at O Cruceiro and read it as a campus wayfinding landmark. Keep the stop brief and pedestrian-friendly.","short_summary":"A granite campus path-marker near Clark Library.","evidence_claim":"The University Museum identifies O Cruceiro as a granite path-marker opposite the south steps of the Clark Library entrance.","source_url":"https://sites.up.edu/museum/university-chapel/","source_title":"University Chapel","source_kind":"university_official","source_published_at":"2016-09-29","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor campus artwork; observe it from public walking paths.","cost_status":"free","under21_safe":true},{"subject_id":"cathedral-park","subject_type":"sequence_stop","entity_name":"Cathedral Park","title":"End with a riverfront walk","subtitle":"Sunday daytime · Cathedral Park, St. Johns","notes":"If you can arrange transportation, take a daytime walk on Cathedral Park’s paved paths and pause for Willamette River and St. Johns Bridge views.","short_summary":"A nearby city park with paved paths and riverfront views.","evidence_claim":"Portland Parks & Recreation lists Cathedral Park’s paved paths, riverfront views, picnic tables, and open hours of 5 a.m. to midnight.","source_url":"https://www.portland.gov/parks/cathedral-park","source_title":"Cathedral Park","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Park hours are 5 a.m.–midnight. Stay on open paved paths and review the city’s current park notices before visiting.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T09:46:47.340663Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa80-dfae-7401-8171-e848414f8bdd.1786614177711339000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+28,320
+
+{"complete":true,"school_name":"University of Portland","town_name":"Portland","boards":[{"complete":true,"school_name":"University of Portland","town_name":"Portland","template_id":"college-first-weekend","title":"Your First Weekend at University of Portland, Shared as Cards","description":"A calm, under-21-safe first-weekend sequence that begins with campus orientation, makes room for food and activity, and ends with a nearby riverfront walk.","icon":"schedule","cards":[{"subject_id":"up-campus-map","subject_type":"sequence_stop","entity_name":"University of Portland Campus Map","title":"Start by finding the Bluff","subtitle":"Friday afternoon · campus orientation stop","notes":"Open the official map before heading out. Use it to locate key buildings, accessible entrances, transit stops, and visitor information around the Bluff.","short_summary":"Get the lay of the land before choosing your next stop.","evidence_claim":"University of Portland publishes an updated campus map and an interactive campus map for visitors and the campus community.","source_url":"https://sites.up.edu/upbeat/new-updated-campus-maps/","source_title":"NEW Updated Campus Maps","source_kind":"university_official","source_published_at":"2024-08-02","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://campusmap.up.edu/","access_notes":"Use the official interactive map for current building and resource details.","cost_status":"free","under21_safe":true},{"subject_id":"clark-library","subject_type":"sequence_stop","entity_name":"Clark Library","title":"Make Clark Library your landmark","subtitle":"Friday afternoon · campus hub","notes":"Walk to Clark Library and use its central location as a reset point. It is a practical place to identify nearby academic and student-life destinations.","short_summary":"A central campus landmark for getting oriented.","evidence_claim":"The University’s Weekend on The Bluff schedule describes Clark Library as a campus hub for studying, group meetings, printing, scanning, and equipment checkout.","source_url":"https://www.up.edu/admissions/files/weekend_on_the_bluff_sample_schedule.pdf","source_title":"Weekend on The Bluff Sample Schedule","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Check current library access and service availability before relying on specific services.","cost_status":"free","under21_safe":true},{"subject_id":"bauccio-commons","subject_type":"sequence_stop","entity_name":"Bauccio Commons","title":"Pause for a campus meal","subtitle":"Friday evening · Bauccio Commons","notes":"Choose a meal or snack break at Bauccio Commons, then use the dining room as a natural meet-up before continuing through the evening.","short_summary":"A meal-plan dining stop on the Bluff.","evidence_claim":"University of Portland identifies Bauccio Commons as one of its two dining halls and states that meal plans cover meals offered there.","source_url":"https://www.up.edu/finaid/cost2526","source_title":"2025-26 Undergraduate Cost Information","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Food requires payment or applicable meal-plan funds; confirm current dining service before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"pilot-house","subject_type":"sequence_stop","entity_name":"Pilot House","title":"Find the student center","subtitle":"Friday evening · food, seating, and a stage","notes":"Step into the Pilot House to orient yourself to a student-focused campus building. Keep it simple: meet up, sit down, and check posted programming.","short_summary":"A campus gathering spot with food-service options.","evidence_claim":"University of Portland’s international student guide describes the remodeled Pilot House as having a grill, small market, seating, pub, and stage for live entertainment.","source_url":"https://www.up.edu/iss/files/up-intl-student-guide.pdf","source_title":"University of Portland International Student Guide","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Food and market items require payment; choose all-ages programming and verify current event details.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"pilots-after-dark","subject_type":"activity","entity_name":"Pilots After Dark","title":"Check the Pilots After Dark listing","subtitle":"Friday or Saturday evening · student activity","notes":"Look for the current Pilots After Dark program through Student Activities. Pick an announced all-ages event and go with a new classmate or roommate.","short_summary":"Recurring student programming for Friday and Saturday evenings.","evidence_claim":"A 2025 University of Portland Student Affairs report states that more than 200 students attended Pilots After Dark events each Friday and Saturday evening.","source_url":"https://www.up.edu/studentaffairs/files/regents-saie-committee-report-may-2025.pdf","source_title":"Division of Student Affairs Regents SAIE Committee Report, May 2025","source_kind":"university_official","source_published_at":"2025-05-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Programming, locations, and any charges vary; check the current Student Activities listing before attending.","cost_status":"unknown","under21_safe":true},{"subject_id":"beauchamp-recreation-wellness-center","subject_type":"sequence_stop","entity_name":"Beauchamp Recreation & Wellness Center","title":"Move between plans","subtitle":"Saturday morning · recreation and wellness","notes":"Visit the recreation center for a low-pressure activity break. Check in with staff about current access, equipment availability, and any class schedules.","short_summary":"An on-campus option for indoor movement and wellness.","evidence_claim":"University of Portland describes the Beauchamp Recreation & Wellness Center as a two-story facility with cardio machines, weights, three basketball courts, an indoor track, and exercise studios.","source_url":"https://www.up.edu/iss/files/up-intl-student-guide.pdf","source_title":"University of Portland International Student Guide","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Access requirements and recreation schedules may vary; verify with the recreation center before visiting.","cost_status":"unknown","under21_safe":true},{"subject_id":"chapel-of-christ-the-teacher","subject_type":"sequence_stop","entity_name":"Chapel of Christ the Teacher","title":"Take a quiet architecture break","subtitle":"Saturday afternoon · Chapel of Christ the Teacher","notes":"Walk by the Chapel of Christ the Teacher and notice its Belluschi design. Use the stop for a few quiet minutes, respecting any worship or campus activity.","short_summary":"A documented campus landmark designed by Pietro Belluschi.","evidence_claim":"University of Portland’s digital collections state that the Chapel of Christ the Teacher was designed by Oregon architect Pietro Belluschi and dedicated on October 5, 1986.","source_url":"https://digital.up.edu/chapel-of-christ-the-teacher","source_title":"Chapel of Christ the Teacher","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Respect services and posted building-access guidance; access may be limited during events.","cost_status":"free","under21_safe":true},{"subject_id":"bell-tower","subject_type":"sequence_stop","entity_name":"Bell Tower","title":"Meet at the Bell Tower","subtitle":"Saturday afternoon · Bell Tower Plaza","notes":"Use the Bell Tower as an easy outdoor meeting point, then continue through the plaza toward the chapel and garden paths with your group.","short_summary":"A 106-foot campus landmark beside the chapel.","evidence_claim":"University of Portland’s digital collections identify the Bell Tower as the tallest structure on campus at 106 feet.","source_url":"https://digital.up.edu/chapel-of-christ-the-teacher","source_title":"Chapel of Christ the Teacher","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor landmark; follow posted campus access guidance.","cost_status":"free","under21_safe":true},{"subject_id":"o-cruceiro","subject_type":"sequence_stop","entity_name":"O Cruceiro","title":"Spot O Cruceiro by the library","subtitle":"Saturday afternoon · Clark Library approach","notes":"On the way around Clark Library, pause at O Cruceiro and read it as a campus wayfinding landmark. Keep the stop brief and pedestrian-friendly.","short_summary":"A granite campus path-marker near Clark Library.","evidence_claim":"The University Museum identifies O Cruceiro as a granite path-marker opposite the south steps of the Clark Library entrance.","source_url":"https://sites.up.edu/museum/university-chapel/","source_title":"University Chapel","source_kind":"university_official","source_published_at":"2016-09-29","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor campus artwork; observe it from public walking paths.","cost_status":"free","under21_safe":true},{"subject_id":"cathedral-park","subject_type":"sequence_stop","entity_name":"Cathedral Park","title":"End with a riverfront walk","subtitle":"Sunday daytime · Cathedral Park, St. Johns","notes":"If you can arrange transportation, take a daytime walk on Cathedral Park’s paved paths and pause for Willamette River and St. Johns Bridge views.","short_summary":"A nearby city park with paved paths and riverfront views.","evidence_claim":"Portland Parks & Recreation lists Cathedral Park’s paved paths, riverfront views, picnic tables, and open hours of 5 a.m. to midnight.","source_url":"https://www.portland.gov/parks/cathedral-park","source_title":"Cathedral Park","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Park hours are 5 a.m.–midnight. Stay on open paved paths and review the city’s current park notices before visiting.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}

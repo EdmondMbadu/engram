@@ -1,0 +1,74 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "4 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://libraries.mit.edu/barker/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.mit.edu/barker/",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.mit.edu/study/24x7/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.mit.edu/study/24x7/",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.mit.edu/study/group/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.mit.edu/study/group/",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.mit.edu/music/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.mit.edu/music/",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.mit.edu/locations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.mit.edu/locations/",
+      "error": ""
+    },
+    {
+      "url": "https://studentlife.mit.edu/campus-communities/student-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentlife.mit.edu/campus-communities/student-center/",
+      "error": ""
+    },
+    {
+      "url": "https://studentlife.mit.edu/campus-communities/events/host-an-event/event-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentlife.mit.edu/campus-communities/events/host-an-event/event-spaces/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Hayden Library",
+    "The Nexus",
+    "Athena Lounge",
+    "Stratton Student Center Reading Rooms"
+  ],
+  "sourceCount": 7,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

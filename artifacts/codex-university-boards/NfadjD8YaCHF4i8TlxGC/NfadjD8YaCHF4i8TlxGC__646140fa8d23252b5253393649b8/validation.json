@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.mtholyoke.edu/student-experience/campus-experience/traditions-and-annual-events/mountain-day",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mtholyoke.edu/student-experience/campus-experience/traditions-and-annual-events/mountain-day",
+      "error": ""
+    },
+    {
+      "url": "https://www.mtholyoke.edu/student-experience/campus-experience/traditions-and-annual-events/laurel-parade",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mtholyoke.edu/student-experience/campus-experience/traditions-and-annual-events/laurel-parade",
+      "error": ""
+    },
+    {
+      "url": "https://www.mtholyoke.edu/student-experience/campus-experience/traditions-and-annual-events",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mtholyoke.edu/student-experience/campus-experience/traditions-and-annual-events",
+      "error": ""
+    },
+    {
+      "url": "https://www.mtholyoke.edu/student-handbook/student-life-and-engagement",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mtholyoke.edu/student-handbook/student-life-and-engagement",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

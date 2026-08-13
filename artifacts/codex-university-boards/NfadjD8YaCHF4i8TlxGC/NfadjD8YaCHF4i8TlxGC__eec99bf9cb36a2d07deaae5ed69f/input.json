@@ -1,0 +1,61 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "QD3WsrY409F7UfWHAMlx",
+    "schoolName": "Hendrix College",
+    "shortSchoolName": "Hendrix College",
+    "townName": "Conway",
+    "state": "AR",
+    "countryCode": "US",
+    "unitId": "107080",
+    "website": "https://www.hendrix.edu/",
+    "latitude": 35.101565,
+    "longitude": -92.443256,
+    "heroUrl": "https://via.hendrix.edu/wp-content/uploads/2026/08/hendrix-carnegie-481-2-scaled.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=hendrix.edu&sz=256"
+  },
+  "template": {
+    "id": "college-campus-tour-skips",
+    "version": "1.0",
+    "titlePattern": "What the Campus Tour Skips: {count} Places Students Share With Each Other",
+    "editorialBrief": "Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.",
+    "researchQueries": [
+      "student favorite campus places",
+      "campus map student spaces",
+      "student newspaper campus places"
+    ],
+    "count": 10,
+    "icon": "style",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place",
+      "study_space"
+    ],
+    "freshnessDays": 365
+  },
+  "exact_title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+  "excluded_subjects": [
+    "Bailey Library Learning Commons",
+    "Bailey Library Reading Room",
+    "Bailey Library Seminar Room",
+    "Snoddy Computer Lab",
+    "Snoddy Study Carrels",
+    "Bailey Library Group Study Rooms",
+    "Bailey Library Senior Researcher Space",
+    "Murphy House First-Floor Library",
+    "Educational Technology Center",
+    "Mills Lab (Mills 104C)",
+    "Windgate Museum Exhibition Visit",
+    "Windgate Museum Educational Program",
+    "Windgate Museum Lecture",
+    "Windgate Museum Workshop",
+    "Windgate Museum Film Screening",
+    "Windgate Museum Social Program",
+    "Matthew Dicks Public Lecture",
+    "Hendrix Players Performance",
+    "Hendrix Career Services Event",
+    "Faulkner County Library ESL Class"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

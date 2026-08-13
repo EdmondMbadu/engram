@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Several Rec Center activities are free for eligible Oakland University students through access included in tuition; visitors and community members may face membership or pass charges. Confirm facility schedules before visiting.",
+    "1 source URL check(s) were inconclusive and need editorial confirmation.",
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.oakland.edu/oc/grizzden/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oakland.edu/oc/grizzden/",
+      "error": ""
+    },
+    {
+      "url": "https://library.oakland.edu/services/you/guests.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.oakland.edu/services/you/guests.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.oakland.edu/art-arthistory/ou-art-gallery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oakland.edu/art-arthistory/ou-art-gallery/",
+      "error": ""
+    },
+    {
+      "url": "https://www.oakland.edu/elliott-tower/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oakland.edu/elliott-tower/",
+      "error": ""
+    },
+    {
+      "url": "https://wwwt.oakland.edu/recwell/recreation-facilities/fit-court/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wwwt.oakland.edu/recwell/recreation-facilities/fit-court/",
+      "error": ""
+    },
+    {
+      "url": "https://wwwp.oakland.edu/recwell/recreation-facilities/rec-center/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://wwwp.oakland.edu/recwell/recreation-facilities/rec-center/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.oakland.edu/recwell/fitness/group-exercise/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oakland.edu/recwell/fitness/group-exercise/",
+      "error": ""
+    },
+    {
+      "url": "https://oakland.edu/recwell/memberships/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://oakland.edu/recwell/memberships/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Kresge Library",
+    "Oakland University Art Gallery",
+    "Elliott Tower"
+  ],
+  "sourceCount": 8,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

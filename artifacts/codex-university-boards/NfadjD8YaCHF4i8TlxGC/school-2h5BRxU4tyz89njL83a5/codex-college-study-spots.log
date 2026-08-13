@@ -1,0 +1,285 @@
+Reading additional input from stdin...
+2026-08-13T07:22:00.730745Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9ff-bb8a-73e0-9335-cfee06b0df15.1786605714314472000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:22:00.770256Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:22:00.774212Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9ff-d42e-7e41-9f54-44bceaf665b9
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"2h5BRxU4tyz89njL83a5","schoolName":"Grand Valley State University","shortSchoolName":"Grand Valley State University","townName":"Allendale","state":"MI","countryCode":"US","website":"https://www.gvsu.edu/","latitude":42.963001,"longitude":-85.889826},"templates":[{"id":"college-study-spots","version":"1.0","titlePattern":"Claimed by 9am: {count} Study Spots Worth Showing Up Early For","editorialBrief":"Choose ten distinct study environments. Verify access rules, room or reservation constraints, and the physical affordance that makes each useful. Treat “Claimed by 9am” as editorial framing; never assert crowding or student behavior without evidence.","researchQueries":["campus study spaces","library study rooms students","quiet study campus"],"count":10,"icon":"menu_book","primarySubjectType":"study_space","allowedSubjectTypes":["study_space","place"],"freshnessDays":180,"exactTitle":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For"}]}
+2026-08-13T07:22:00.863646Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9ff-bb9c-7c11-9be0-7d5f63f5ef82.1786605714333984000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:22:00.911579Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9ff-bb7a-7032-8eb0-aeb1b4c2dde9.1786605714299075000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:22:01.012905Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9ff-bb95-77a2-84c4-21df250d75ef.1786605714326364000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:22:01.221272Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9ff-bb89-7c21-8fb3-403bd3d8dc8c.1786605714314291000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:22:01.370370Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9ff-bb9e-7d50-8663-511bfec4294a.1786605714335382000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Grand Valley State University",
+  "town_name": "Allendale",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Grand Valley State University",
+      "town_name": "Allendale",
+      "template_id": "college-study-spots",
+      "title": "Claimed by 9am: 10 Study Spots Worth Showing Up Early For",
+      "description": "",
+      "icon": "menu_book",
+      "cards": [
+        {
+          "subject_id": "research_in_progress",
+          "subject_type": "study_space",
+          "entity_name": "Research in progress",
+          "title": "Research in progress",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "research_placeholder_2",
+          "subject_type": "study_space",
+          "entity_name": "Research placeholder 2",
+          "title": "Research placeholder 2",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "research_placeholder_3",
+          "subject_type": "study_space",
+          "entity_name": "Research placeholder 3",
+          "title": "Research placeholder 3",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "research_placeholder_4",
+          "subject_type": "study_space",
+          "entity_name": "Research placeholder 4",
+          "title": "Research placeholder 4",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "research_placeholder_5",
+          "subject_type": "study_space",
+          "entity_name": "Research placeholder 5",
+          "title": "Research placeholder 5",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "research_placeholder_6",
+          "subject_type": "study_space",
+          "entity_name": "Research placeholder 6",
+          "title": "Research placeholder 6",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "research_placeholder_7",
+          "subject_type": "study_space",
+          "entity_name": "Research placeholder 7",
+          "title": "Research placeholder 7",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "research_placeholder_8",
+          "subject_type": "study_space",
+          "entity_name": "Research placeholder 8",
+          "title": "Research placeholder 8",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "research_placeholder_9",
+          "subject_type": "study_space",
+          "entity_name": "Research placeholder 9",
+          "title": "Research placeholder 9",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "research_placeholder_10",
+          "subject_type": "study_space",
+          "entity_name": "Research placeholder 10",
+          "title": "Research placeholder 10",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:gvsu.edu/library study spaces Mary Idema Pew Library study rooms quiet floors ...
+codex
+{"complete":true,"school_name":"Grand Valley State University","town_name":"Allendale","boards":[{"complete":true,"school_name":"Grand Valley State University","town_name":"Allendale","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten distinct study environments inside Grand Valley State University’s Mary Idema Pew Library, spanning silent reading rooms, reservable rooms, collaborative zones, individual pods, and seasonal outdoor spaces.","icon":"menu_book","cards":[{"subject_id":"gvsu-mary-idema-pew-atrium","subject_type":"study_space","entity_name":"Mary Idema Pew Library Atrium","title":"Start Flexible in the Atrium","subtitle":"Moveable furniture, whiteboards, and tall windows","notes":"Bring a group plan or a solo task, then rearrange the moveable furniture and use the whiteboards to map ideas in natural light.","short_summary":"A flexible, window-lined setting suited to either independent work or active collaboration.","evidence_claim":"The official library page identifies the Atrium as a study space with moveable furniture, whiteboards, floor-to-ceiling windows, and room for group or solo work.","source_url":"https://www.gvsu.edu/library/mary-idema-pew-library-21.htm","source_title":"Mary Idema Pew Library - University Libraries - Grand Valley State University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited page does not list a reservation requirement for Atrium seating; consult current Mary Idema Pew Library hours before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-mary-idema-pew-third-floor-reading-room","subject_type":"study_space","entity_name":"Mary Idema Pew Library Third-Floor Reading Room","title":"Settle In Beside the Fireplace","subtitle":"A quiet third-floor room with tables, cubicles, and views","notes":"Choose this room for concentration-heavy reading, silence your devices, and use a table or cubicle near the 20-foot fireplace.","short_summary":"The fireplace distinguishes this silent reading room from the library’s more collaborative areas.","evidence_claim":"The official library page says the quiet third-floor Reading Room offers work tables, comfortable cubicles, campus views, and a 20-foot fireplace.","source_url":"https://www.gvsu.edu/library/mary-idema-pew-library-21.htm","source_title":"Mary Idema Pew Library - University Libraries - Grand Valley State University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This is a quiet Reading Room on the third floor; the library’s current room page directs quiet-study seekers here.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-mary-idema-pew-fourth-floor-reading-room","subject_type":"study_space","entity_name":"Mary Idema Pew Library Fourth-Floor Reading Room","title":"Take Focus to the Fourth Floor","subtitle":"Quiet work tables and cubicles overlooking campus","notes":"Head to the fourth floor when your assignment needs quiet focus, then choose between an open work table and a more sheltered cubicle.","short_summary":"An upper-floor quiet room with both communal tables and more enclosed individual seating.","evidence_claim":"The official library page identifies a quiet Reading Room on the fourth floor with work tables, comfortable cubicles, and campus views.","source_url":"https://www.gvsu.edu/library/mary-idema-pew-library-21.htm","source_title":"Mary Idema Pew Library - University Libraries - Grand Valley State University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This is a quiet Reading Room on the fourth floor; use it in accordance with posted library access and quiet-space expectations.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-mary-idema-pew-conference-style-study-rooms","subject_type":"study_space","entity_name":"Mary Idema Pew Library Conference-Style Study Rooms","title":"Reserve a Table for the Team","subtitle":"Enclosed rooms with a large table and whiteboard","notes":"Reserve ahead for a group session, arrive within 15 minutes, and use the large table and whiteboard to keep everyone on the same page.","short_summary":"A structured group-work option with reservable rooms across three library floors.","evidence_claim":"The official room page lists conference-style study rooms on floors two through four, each with a large table and whiteboard; some also have audiovisual equipment.","source_url":"https://www.gvsu.edu/library/group-study-rooms-5.htm","source_title":"Group Study Rooms - University Libraries - Grand Valley State University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Rooms may be reserved up to 10 days ahead, with up to three one-hour reservations daily; arrive within 15 minutes.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-mary-idema-pew-innovation-zone-study-alcoves","subject_type":"study_space","entity_name":"Mary Idema Pew Library Innovation-Zone Study Alcoves","title":"Build Ideas Across the Walls","subtitle":"Third-floor alcoves with configurable furniture","notes":"Arrive with markers and a project outline, then configure the furniture and spread diagrams across the floor-to-ceiling whiteboards.","short_summary":"Three first-come alcoves designed for visual thinking and adaptable group arrangements.","evidence_claim":"The official room page says the third-floor Innovation Zone has three study alcoves with floor-to-ceiling whiteboards and configurable furniture.","source_url":"https://www.gvsu.edu/library/group-study-rooms-5.htm","source_title":"Group Study Rooms - University Libraries - Grand Valley State University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The three Innovation-Zone Study Alcoves are available on a first-come, first-served basis.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-mary-idema-pew-stacks-seating","subject_type":"study_space","entity_name":"Mary Idema Pew Library Stacks Seating","title":"Work Quietly Among the Stacks","subtitle":"Individual seating on the east side of floors two through four","notes":"Walk to the east-side book stacks on floors two through four, then choose a semi-private workspace, chair, or work table for solo focus.","short_summary":"Quiet individual seating distributed beside the collections on three floors.","evidence_claim":"The official library page says quiet individual study spaces surround the east-side book stacks on floors two through four, including chairs, semi-private workspaces, and tables.","source_url":"https://www.gvsu.edu/library/mary-idema-pew-library-21.htm","source_title":"Mary Idema Pew Library - University Libraries - Grand Valley State University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"These quiet seats are located around the east-side stacks on floors two through four; no reservation rule is stated.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-mary-idema-pew-collaboration-areas","subject_type":"study_space","entity_name":"Mary Idema Pew Library Collaboration Areas","title":"Gather at a West-Wing Table","subtitle":"Large tables arranged for collaborative work","notes":"Meet in the west wing of your chosen floor, claim a large table, and bring shared materials for a study session built around conversation.","short_summary":"Group-oriented seating available in the west wing on each library floor.","evidence_claim":"The official library page states that Collaboration Areas in the west wing of each floor provide large tables and seating for group work.","source_url":"https://www.gvsu.edu/library/mary-idema-pew-library-21.htm","source_title":"Mary Idema Pew Library - University Libraries - Grand Valley State University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Find these areas in each floor’s west wing; the cited page does not state that the tables are reservable.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-mary-idema-pew-individual-study-pods","subject_type":"study_space","entity_name":"Mary Idema Pew Library Individual Study Pods","title":"Close Out Distractions in a Pod","subtitle":"Three second-floor pods with a desk and power","notes":"Bring a charged-down task list to the Digital Creator Lab, then use a single-person pod’s small desk and power connection for quiet work.","short_summary":"Compact, sound-resistant individual workspaces inside the second-floor Digital Creator Lab.","evidence_claim":"The official room page identifies Individual Study Pods 1–3 on the second floor, describing each as a quiet single-person space with power and a small desk.","source_url":"https://www.gvsu.edu/library/group-study-rooms-5.htm","source_title":"Group Study Rooms - University Libraries - Grand Valley State University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Library patrons may use the pods during open library hours; student need may receive priority during high-volume periods.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-mary-idema-pew-reading-garden","subject_type":"study_space","entity_name":"Mary Idema Pew Library Reading Garden","title":"Move the Reading List Outdoors","subtitle":"A seasonal garden in the center of the third floor","notes":"Check the weather before heading to the third floor, then bring reading or light laptop work into this seasonal open-air setting.","short_summary":"A centrally located outdoor alternative for fair-weather study without leaving the library.","evidence_claim":"The official library page describes the Reading Garden as a seasonal outdoor study place located in the center of the third floor.","source_url":"https://www.gvsu.edu/library/mary-idema-pew-library-21.htm","source_title":"Mary Idema Pew Library - University Libraries - Grand Valley State University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This is a seasonal outdoor space; confirm current library access and weather conditions before planning to use it.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-mary-idema-pew-roof-terrace","subject_type":"study_space","entity_name":"Mary Idema Pew Library Roof Terrace","title":"Take Notes Above the Campus","subtitle":"A rooftop study setting intended for good weather","notes":"Save this terrace for a dry, calm day, secure loose papers, and bring a reading task that benefits from a change of scenery.","short_summary":"A weather-dependent rooftop workspace with an elevated view across campus.","evidence_claim":"The official library page identifies the Roof Terrace as a rooftop, good-weather study space with views of campus.","source_url":"https://www.gvsu.edu/library/mary-idema-pew-library-21.htm","source_title":"Mary Idema Pew Library - University Libraries - Grand Valley State University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The library describes this as a good-weather space; verify current library access and conditions before going upstairs.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:24:21.724910Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9ff-d42e-7e41-9f54-44bceaf665b9.1786605720624552000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+17,075
+
+{"complete":true,"school_name":"Grand Valley State University","town_name":"Allendale","boards":[{"complete":true,"school_name":"Grand Valley State University","town_name":"Allendale","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten distinct study environments inside Grand Valley State University’s Mary Idema Pew Library, spanning silent reading rooms, reservable rooms, collaborative zones, individual pods, and seasonal outdoor spaces.","icon":"menu_book","cards":[{"subject_id":"gvsu-mary-idema-pew-atrium","subject_type":"study_space","entity_name":"Mary Idema Pew Library Atrium","title":"Start Flexible in the Atrium","subtitle":"Moveable furniture, whiteboards, and tall windows","notes":"Bring a group plan or a solo task, then rearrange the moveable furniture and use the whiteboards to map ideas in natural light.","short_summary":"A flexible, window-lined setting suited to either independent work or active collaboration.","evidence_claim":"The official library page identifies the Atrium as a study space with moveable furniture, whiteboards, floor-to-ceiling windows, and room for group or solo work.","source_url":"https://www.gvsu.edu/library/mary-idema-pew-library-21.htm","source_title":"Mary Idema Pew Library - University Libraries - Grand Valley State University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited page does not list a reservation requirement for Atrium seating; consult current Mary Idema Pew Library hours before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-mary-idema-pew-third-floor-reading-room","subject_type":"study_space","entity_name":"Mary Idema Pew Library Third-Floor Reading Room","title":"Settle In Beside the Fireplace","subtitle":"A quiet third-floor room with tables, cubicles, and views","notes":"Choose this room for concentration-heavy reading, silence your devices, and use a table or cubicle near the 20-foot fireplace.","short_summary":"The fireplace distinguishes this silent reading room from the library’s more collaborative areas.","evidence_claim":"The official library page says the quiet third-floor Reading Room offers work tables, comfortable cubicles, campus views, and a 20-foot fireplace.","source_url":"https://www.gvsu.edu/library/mary-idema-pew-library-21.htm","source_title":"Mary Idema Pew Library - University Libraries - Grand Valley State University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This is a quiet Reading Room on the third floor; the library’s current room page directs quiet-study seekers here.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-mary-idema-pew-fourth-floor-reading-room","subject_type":"study_space","entity_name":"Mary Idema Pew Library Fourth-Floor Reading Room","title":"Take Focus to the Fourth Floor","subtitle":"Quiet work tables and cubicles overlooking campus","notes":"Head to the fourth floor when your assignment needs quiet focus, then choose between an open work table and a more sheltered cubicle.","short_summary":"An upper-floor quiet room with both communal tables and more enclosed individual seating.","evidence_claim":"The official library page identifies a quiet Reading Room on the fourth floor with work tables, comfortable cubicles, and campus views.","source_url":"https://www.gvsu.edu/library/mary-idema-pew-library-21.htm","source_title":"Mary Idema Pew Library - University Libraries - Grand Valley State University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This is a quiet Reading Room on the fourth floor; use it in accordance with posted library access and quiet-space expectations.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-mary-idema-pew-conference-style-study-rooms","subject_type":"study_space","entity_name":"Mary Idema Pew Library Conference-Style Study Rooms","title":"Reserve a Table for the Team","subtitle":"Enclosed rooms with a large table and whiteboard","notes":"Reserve ahead for a group session, arrive within 15 minutes, and use the large table and whiteboard to keep everyone on the same page.","short_summary":"A structured group-work option with reservable rooms across three library floors.","evidence_claim":"The official room page lists conference-style study rooms on floors two through four, each with a large table and whiteboard; some also have audiovisual equipment.","source_url":"https://www.gvsu.edu/library/group-study-rooms-5.htm","source_title":"Group Study Rooms - University Libraries - Grand Valley State University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Rooms may be reserved up to 10 days ahead, with up to three one-hour reservations daily; arrive within 15 minutes.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-mary-idema-pew-innovation-zone-study-alcoves","subject_type":"study_space","entity_name":"Mary Idema Pew Library Innovation-Zone Study Alcoves","title":"Build Ideas Across the Walls","subtitle":"Third-floor alcoves with configurable furniture","notes":"Arrive with markers and a project outline, then configure the furniture and spread diagrams across the floor-to-ceiling whiteboards.","short_summary":"Three first-come alcoves designed for visual thinking and adaptable group arrangements.","evidence_claim":"The official room page says the third-floor Innovation Zone has three study alcoves with floor-to-ceiling whiteboards and configurable furniture.","source_url":"https://www.gvsu.edu/library/group-study-rooms-5.htm","source_title":"Group Study Rooms - University Libraries - Grand Valley State University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The three Innovation-Zone Study Alcoves are available on a first-come, first-served basis.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-mary-idema-pew-stacks-seating","subject_type":"study_space","entity_name":"Mary Idema Pew Library Stacks Seating","title":"Work Quietly Among the Stacks","subtitle":"Individual seating on the east side of floors two through four","notes":"Walk to the east-side book stacks on floors two through four, then choose a semi-private workspace, chair, or work table for solo focus.","short_summary":"Quiet individual seating distributed beside the collections on three floors.","evidence_claim":"The official library page says quiet individual study spaces surround the east-side book stacks on floors two through four, including chairs, semi-private workspaces, and tables.","source_url":"https://www.gvsu.edu/library/mary-idema-pew-library-21.htm","source_title":"Mary Idema Pew Library - University Libraries - Grand Valley State University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"These quiet seats are located around the east-side stacks on floors two through four; no reservation rule is stated.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-mary-idema-pew-collaboration-areas","subject_type":"study_space","entity_name":"Mary Idema Pew Library Collaboration Areas","title":"Gather at a West-Wing Table","subtitle":"Large tables arranged for collaborative work","notes":"Meet in the west wing of your chosen floor, claim a large table, and bring shared materials for a study session built around conversation.","short_summary":"Group-oriented seating available in the west wing on each library floor.","evidence_claim":"The official library page states that Collaboration Areas in the west wing of each floor provide large tables and seating for group work.","source_url":"https://www.gvsu.edu/library/mary-idema-pew-library-21.htm","source_title":"Mary Idema Pew Library - University Libraries - Grand Valley State University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Find these areas in each floor’s west wing; the cited page does not state that the tables are reservable.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-mary-idema-pew-individual-study-pods","subject_type":"study_space","entity_name":"Mary Idema Pew Library Individual Study Pods","title":"Close Out Distractions in a Pod","subtitle":"Three second-floor pods with a desk and power","notes":"Bring a charged-down task list to the Digital Creator Lab, then use a single-person pod’s small desk and power connection for quiet work.","short_summary":"Compact, sound-resistant individual workspaces inside the second-floor Digital Creator Lab.","evidence_claim":"The official room page identifies Individual Study Pods 1–3 on the second floor, describing each as a quiet single-person space with power and a small desk.","source_url":"https://www.gvsu.edu/library/group-study-rooms-5.htm","source_title":"Group Study Rooms - University Libraries - Grand Valley State University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Library patrons may use the pods during open library hours; student need may receive priority during high-volume periods.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-mary-idema-pew-reading-garden","subject_type":"study_space","entity_name":"Mary Idema Pew Library Reading Garden","title":"Move the Reading List Outdoors","subtitle":"A seasonal garden in the center of the third floor","notes":"Check the weather before heading to the third floor, then bring reading or light laptop work into this seasonal open-air setting.","short_summary":"A centrally located outdoor alternative for fair-weather study without leaving the library.","evidence_claim":"The official library page describes the Reading Garden as a seasonal outdoor study place located in the center of the third floor.","source_url":"https://www.gvsu.edu/library/mary-idema-pew-library-21.htm","source_title":"Mary Idema Pew Library - University Libraries - Grand Valley State University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This is a seasonal outdoor space; confirm current library access and weather conditions before planning to use it.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-mary-idema-pew-roof-terrace","subject_type":"study_space","entity_name":"Mary Idema Pew Library Roof Terrace","title":"Take Notes Above the Campus","subtitle":"A rooftop study setting intended for good weather","notes":"Save this terrace for a dry, calm day, secure loose papers, and bring a reading task that benefits from a change of scenery.","short_summary":"A weather-dependent rooftop workspace with an elevated view across campus.","evidence_claim":"The official library page identifies the Roof Terrace as a rooftop, good-weather study space with views of campus.","source_url":"https://www.gvsu.edu/library/mary-idema-pew-library-21.htm","source_title":"Mary Idema Pew Library - University Libraries - Grand Valley State University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The library describes this as a good-weather space; verify current library access and conditions before going upstairs.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

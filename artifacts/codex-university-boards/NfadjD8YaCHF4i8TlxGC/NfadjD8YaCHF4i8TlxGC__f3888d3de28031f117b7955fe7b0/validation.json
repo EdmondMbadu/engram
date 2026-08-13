@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.muhlenberg.edu/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.muhlenberg.edu/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.muhlenberg.edu/academics/trexler-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.muhlenberg.edu/academics/trexler-library/",
+      "error": ""
+    },
+    {
+      "url": "https://dining.muhlenberg.edu/en-us/locations/wood-dining-commons",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dining.muhlenberg.edu/en-us/locations/wood-dining-commons",
+      "error": ""
+    },
+    {
+      "url": "https://www.muhlenberg.edu/academics/learning-environments/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.muhlenberg.edu/academics/learning-environments/",
+      "error": ""
+    },
+    {
+      "url": "https://www.muhlenberg.edu/program/theatre/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.muhlenberg.edu/program/theatre/",
+      "error": ""
+    },
+    {
+      "url": "https://www.muhlenberg.edu/muhlenberg-experience/student-life/athletics/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.muhlenberg.edu/muhlenberg-experience/student-life/athletics/",
+      "error": ""
+    },
+    {
+      "url": "https://dining.muhlenberg.edu/en-us/meal-plan/2025-26",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dining.muhlenberg.edu/en-us/meal-plan/2025-26",
+      "error": ""
+    },
+    {
+      "url": "https://www.muhlenberg.edu/about-us/muhlenbergs-history/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.muhlenberg.edu/about-us/muhlenbergs-history/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

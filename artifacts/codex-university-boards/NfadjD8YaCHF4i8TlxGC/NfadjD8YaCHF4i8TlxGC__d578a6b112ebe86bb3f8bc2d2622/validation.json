@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.wendys.com/united-states/nc/winston-salem/2735-reynolda-rd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/nc/winston-salem/2735-reynolda-rd",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/nc/winston-salem/2218-cloverdale-avenue",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/nc/winston-salem/2218-cloverdale-avenue",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/nc/winston-salem/600-jonestown-road",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/nc/winston-salem/600-jonestown-road",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/nc/winston-salem/3007-waughtown-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/nc/winston-salem/3007-waughtown-st",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/nc/winston-salem/3182-peters-creek-parkway",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/nc/winston-salem/3182-peters-creek-parkway",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/nc/winston-salem/538-akron-dr",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/nc/winston-salem/538-akron-dr",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/north-carolina/winston-salem/450-knollwood-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/north-carolina/winston-salem/450-knollwood-st",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/north-carolina/winston-salem/630-w-fourth-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/north-carolina/winston-salem/630-w-fourth-st",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/north-carolina/winston-salem/4890-country-club-rd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/north-carolina/winston-salem/4890-country-club-rd",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.ihop.com/en-us/nc/winston-salem/breakfast-1295-silas-creek-pkwy-4403/late-night-food",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.ihop.com/en-us/nc/winston-salem/breakfast-1295-silas-creek-pkwy-4403/late-night-food",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

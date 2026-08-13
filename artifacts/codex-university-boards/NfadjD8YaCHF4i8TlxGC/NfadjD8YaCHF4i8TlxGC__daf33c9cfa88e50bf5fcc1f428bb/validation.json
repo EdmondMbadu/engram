@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://events.miami.edu/event/boat_burning_ceremony_and_fireworks_show",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.miami.edu/event/boat_burning_ceremony_and_fireworks_show",
+      "error": ""
+    },
+    {
+      "url": "https://news.miami.edu/frost/_assets/pdf/the-score/2022-score.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.miami.edu/frost/_assets/pdf/the-score/2022-score.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.fop.miami.edu/_assets/pdf/cpd-pdf/um_medical_campus_tour_2017_v2.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fop.miami.edu/_assets/pdf/cpd-pdf/um_medical_campus_tour_2017_v2.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://digitalcollections.library.miami.edu/digital/api/collection/asu0053/id/31726/download",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://digitalcollections.library.miami.edu/digital/api/collection/asu0053/id/31726/download",
+      "error": ""
+    },
+    {
+      "url": "https://events.miami.edu/event/umbas-senior-mwambo-with-multicultural-student-affairs",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.miami.edu/event/umbas-senior-mwambo-with-multicultural-student-affairs",
+      "error": ""
+    },
+    {
+      "url": "https://miamihurricanes.com/news/2017/06/26/general-being-sebastian/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://miamihurricanes.com/news/2017/06/26/general-being-sebastian/",
+      "error": ""
+    },
+    {
+      "url": "https://miamihurricanes.com/news/2020/07/13/birth-of-a-maniac/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://miamihurricanes.com/news/2020/07/13/birth-of-a-maniac/",
+      "error": ""
+    },
+    {
+      "url": "https://multimedia.miami.edu/cane-kickoff-2025",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://multimedia.miami.edu/cane-kickoff-2025",
+      "error": ""
+    },
+    {
+      "url": "https://themiamihurricane.com/2012/10/14/statue-revealed-at-homecoming-opening-ceremonies/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://themiamihurricane.com/2012/10/14/statue-revealed-at-homecoming-opening-ceremonies/",
+      "error": ""
+    },
+    {
+      "url": "https://miamihurricanes.com/news/2023/08/31/fb-feature-miami-oh-preview-its-the-beginning-of-a-long-journey/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://miamihurricanes.com/news/2023/08/31/fb-feature-miami-oh-preview-its-the-beginning-of-a-long-journey/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 100,
+  "generationGrade": "A"
+}

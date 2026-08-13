@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://kweek.uky.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://kweek.uky.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://studentsuccess.uky.edu/news/uk-tradition-campus-ruckus-kick-off-k-week",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentsuccess.uky.edu/news/uk-tradition-campus-ruckus-kick-off-k-week",
+      "error": ""
+    },
+    {
+      "url": "https://uknow.uky.edu/student-news/your-uk-bucket-list",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://uknow.uky.edu/student-news/your-uk-bucket-list",
+      "error": ""
+    },
+    {
+      "url": "https://studentsuccess.uky.edu/uk-traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentsuccess.uky.edu/uk-traditions",
+      "error": ""
+    },
+    {
+      "url": "https://homecoming.uky.edu/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://homecoming.uky.edu/about",
+      "error": ""
+    },
+    {
+      "url": "https://www.uky.edu/traditions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uky.edu/traditions/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

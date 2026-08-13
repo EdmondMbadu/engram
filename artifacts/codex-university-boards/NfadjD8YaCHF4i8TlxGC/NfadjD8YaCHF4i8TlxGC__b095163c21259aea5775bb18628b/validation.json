@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Public access varies by space. Several locations require a Caltech ID, reservation, program participation, event admission, training, or Recreation eligibility; cards preserve those restrictions.",
+    "4 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://hr.caltech.edu/news/campus-celebrates-opening-hameetman-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://hr.caltech.edu/news/campus-celebrates-opening-hameetman-center",
+      "error": ""
+    },
+    {
+      "url": "https://catalog.caltech.edu/current/general-information/student-life/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.caltech.edu/current/general-information/student-life/",
+      "error": ""
+    },
+    {
+      "url": "https://www.caltech.edu/campus-life-events/calendar/techhub-open-house-2",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.caltech.edu/campus-life-events/calendar/techhub-open-house-2",
+      "error": ""
+    },
+    {
+      "url": "https://catalog.caltech.edu/current/general-information/education-and-research/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.caltech.edu/current/general-information/education-and-research/",
+      "error": ""
+    },
+    {
+      "url": "https://ccid.caltech.edu/resources/ccid-services",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ccid.caltech.edu/resources/ccid-services",
+      "error": ""
+    },
+    {
+      "url": "https://pva.caltech.edu/music/chamber-music/chamber-music-qa",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pva.caltech.edu/music/chamber-music/chamber-music-qa",
+      "error": ""
+    },
+    {
+      "url": "https://pva.caltech.edu/venues",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pva.caltech.edu/venues",
+      "error": ""
+    },
+    {
+      "url": "https://gocaltech.com/sports/2023/4/12/recreational-facilities.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gocaltech.com/sports/2023/4/12/recreational-facilities.aspx",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Hameetman Center",
+    "Student Activities Center",
+    "Sherman Fairchild Library",
+    "Braun Athletic Center"
+  ],
+  "sourceCount": 8,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

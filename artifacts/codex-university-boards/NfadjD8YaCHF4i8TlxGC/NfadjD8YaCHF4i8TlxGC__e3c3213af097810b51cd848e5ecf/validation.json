@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.ohio.edu/about/history-traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ohio.edu/about/history-traditions",
+      "error": ""
+    },
+    {
+      "url": "https://www.ohio.edu/marching-110/about/history",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ohio.edu/marching-110/about/history",
+      "error": ""
+    },
+    {
+      "url": "https://www.ohio.edu/news/2024/09/welcome-week-24-lets-get-it-started",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ohio.edu/news/2024/09/welcome-week-24-lets-get-it-started",
+      "error": ""
+    },
+    {
+      "url": "https://www.ohio.edu/library/about/news-events/all-news/2019-homecoming-display-provided-exciting-look-ohio-s-past",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ohio.edu/library/about/news-events/all-news/2019-homecoming-display-provided-exciting-look-ohio-s-past",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

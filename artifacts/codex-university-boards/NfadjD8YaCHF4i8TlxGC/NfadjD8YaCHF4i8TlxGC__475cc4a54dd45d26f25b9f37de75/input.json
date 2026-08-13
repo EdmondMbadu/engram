@@ -1,0 +1,52 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "UZleLt6KwJZlcSQ1IOCe",
+    "schoolName": "Farmingdale State College",
+    "shortSchoolName": "Farmingdale State College",
+    "townName": "Farmingdale",
+    "state": "NY",
+    "countryCode": "US",
+    "unitId": "196042",
+    "website": "https://www.farmingdale.edu/",
+    "latitude": 40.754224,
+    "longitude": -73.42832,
+    "heroUrl": "https://fsc-main.b-cdn.net/images/fsc-social-link-share.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=farmingdale.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at Farmingdale State College, Shared as Cards",
+  "excluded_subjects": [
+    "Thomas D. Greenley Library",
+    "School of Business Lounge Areas",
+    "Ralph Bunche Plaza",
+    "Campus Center Open Lounges",
+    "Gleeson Hall Lounge Areas",
+    "Hale Hall Lounge Areas",
+    "Lupton Hall Lounge Areas",
+    "Roosevelt Hall Lobby",
+    "Sinclair Hall Pit Lounge",
+    "Whitman Hall First-Floor Lounge"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.usafa.edu/mcdermott-library-renovations-give-cadets-study-space/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usafa.edu/mcdermott-library-renovations-give-cadets-study-space/",
+      "error": ""
+    },
+    {
+      "url": "https://www.usafa.edu/facilities/mcdermott-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usafa.edu/facilities/mcdermott-library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.usafa.edu/academics/academic-success-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usafa.edu/academics/academic-success-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.usafa.edu/academics/academic-success-center/quantitative-reasoning-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usafa.edu/academics/academic-success-center/quantitative-reasoning-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.usafa.edu/app/uploads/Polaris_Hall_Reservation_Form.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usafa.edu/app/uploads/Polaris_Hall_Reservation_Form.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.usafa.edu/cadet-life/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usafa.edu/cadet-life/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

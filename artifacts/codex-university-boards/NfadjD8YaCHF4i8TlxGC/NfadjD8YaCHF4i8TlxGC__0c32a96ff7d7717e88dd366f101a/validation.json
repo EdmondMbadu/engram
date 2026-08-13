@@ -1,0 +1,45 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Library and room access can change; verify current availability and posted building hours before visiting."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.stevenson.edu/about/campus-services/library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stevenson.edu/about/campus-services/library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.stevenson.edu/about/news-events/news/the-philip-a-zaffere-library-is-open-and-ready-to-welcome-stevenson-students-faculty-and-staff/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stevenson.edu/about/news-events/news/the-philip-a-zaffere-library-is-open-and-ready-to-welcome-stevenson-students-faculty-and-staff/",
+      "error": ""
+    },
+    {
+      "url": "https://www.stevenson.edu/wp-content/uploads/PDF-VERSION-10-23-25-Stevenson-Undergraduate-Catalog-25-26-saved-on-11-4-2025.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stevenson.edu/wp-content/uploads/PDF-VERSION-10-23-25-Stevenson-Undergraduate-Catalog-25-26-saved-on-11-4-2025.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.stevenson.edu/wp-content/uploads/Stevenson-University-Undergraduate-Catalog3-8-25-2023.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stevenson.edu/wp-content/uploads/Stevenson-University-Undergraduate-Catalog3-8-25-2023.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://news.fiu.edu/2024/come-for-the-camaraderie-stay-for-the-game",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.fiu.edu/2024/come-for-the-camaraderie-stay-for-the-game",
+      "error": ""
+    },
+    {
+      "url": "https://dasa.fiu.edu/all-departments/homecoming/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dasa.fiu.edu/all-departments/homecoming/",
+      "error": ""
+    },
+    {
+      "url": "https://dasa.fiu.edu/all-departments/orientation-family-programs/panthers-first-night/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dasa.fiu.edu/all-departments/orientation-family-programs/panthers-first-night/",
+      "error": ""
+    },
+    {
+      "url": "https://dasa.fiu.edu/all-departments/orientation-family-programs/panther-camp/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dasa.fiu.edu/all-departments/orientation-family-programs/panther-camp/",
+      "error": ""
+    },
+    {
+      "url": "https://news.fiu.edu/2023/sophomore-architecture-students-learn-about-methods-and-materials-in-construction-by-walking-on-water",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.fiu.edu/2023/sophomore-architecture-students-learn-about-methods-and-materials-in-construction-by-walking-on-water",
+      "error": ""
+    },
+    {
+      "url": "https://news.fiu.edu/2024/powered-up-for-good",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.fiu.edu/2024/powered-up-for-good",
+      "error": ""
+    },
+    {
+      "url": "https://honors.fiu.edu/admissions/honors-housing/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://honors.fiu.edu/admissions/honors-housing/",
+      "error": ""
+    },
+    {
+      "url": "https://commencement.fiu.edu/grads/grad-gear/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://commencement.fiu.edu/grads/grad-gear/",
+      "error": ""
+    },
+    {
+      "url": "https://business.fiu.edu/news/2026/fiu-business-students-top-10k-goal-for-make-a-wish.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://business.fiu.edu/news/2026/fiu-business-students-top-10k-goal-for-make-a-wish.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 100,
+  "generationGrade": "A"
+}

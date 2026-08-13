@@ -1,0 +1,79 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.mercer.edu/about-mercer/profile/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mercer.edu/about-mercer/profile/",
+      "error": ""
+    },
+    {
+      "url": "https://visitmacon.org/directory/the-567-center-for-renewal/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visitmacon.org/directory/the-567-center-for-renewal/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/articles/ocmulgee.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/articles/ocmulgee.htm",
+      "error": ""
+    },
+    {
+      "url": "https://visitmacon.org/directory/amerson-river-park-water-sports/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visitmacon.org/directory/amerson-river-park-water-sports/",
+      "error": ""
+    },
+    {
+      "url": "https://visitmacon.org/directory/tattnall-square-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visitmacon.org/directory/tattnall-square-park/",
+      "error": ""
+    },
+    {
+      "url": "https://visitmacon.org/blog/free-things-to-do/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visitmacon.org/blog/free-things-to-do/",
+      "error": ""
+    },
+    {
+      "url": "https://visitmacon.org/directory/lights-on-macon-architectural-tour/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visitmacon.org/directory/lights-on-macon-architectural-tour/",
+      "error": ""
+    },
+    {
+      "url": "https://visitmacon.org/blog/dog-friendly-places-in-macon/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visitmacon.org/blog/dog-friendly-places-in-macon/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Ocmulgee Mounds National Historical Park"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

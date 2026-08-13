@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.nypl.org/events/exhibitions/treasures/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.nypl.org/events/exhibitions/treasures/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nypl.org/events/tours/schwarzman",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.nypl.org/events/tours/schwarzman",
+      "error": ""
+    },
+    {
+      "url": "https://www.nypl.org/locations/schwarzman/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.nypl.org/locations/schwarzman/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nypl.org/about/locations/schwarzman",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.nypl.org/about/locations/schwarzman",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/feha/planyourvisit/fees.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/feha/planyourvisit/fees.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/planyourvisit/event-details.htm?id=E2214AE5-F7F6-297F-3131D768ACD7CEB2",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/planyourvisit/event-details.htm?id=E2214AE5-F7F6-297F-3131D768ACD7CEB2",
+      "error": ""
+    },
+    {
+      "url": "https://www.nycgovparks.org/events/talks/ajax/aggregate/p1",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nycgovparks.org/events/talks/ajax/aggregate/p1",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

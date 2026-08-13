@@ -1,0 +1,96 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://calendar.ohio.edu/event/waves-of-influence",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calendar.ohio.edu/event/waves-of-influence",
+      "error": ""
+    },
+    {
+      "url": "https://www.ohio.edu/museum/art/exhibitions/material-matters",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ohio.edu/museum/art/exhibitions/material-matters",
+      "error": ""
+    },
+    {
+      "url": "https://www.ohio.edu/museum/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ohio.edu/museum/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.ohio.edu/cas/physics-astronomy/research/facilities-labs/observatory/public-telescope-nights",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ohio.edu/cas/physics-astronomy/research/facilities-labs/observatory/public-telescope-nights",
+      "error": ""
+    },
+    {
+      "url": "https://www.ohio.edu/library/about/policies-guidelines",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ohio.edu/library/about/policies-guidelines",
+      "error": ""
+    },
+    {
+      "url": "https://www.ohio.edu/library/collections/government-documents",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ohio.edu/library/physical-collections/government-documents",
+      "error": ""
+    },
+    {
+      "url": "https://www.ohio.edu/library/about/policies-guidelines/hours-access-policy",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ohio.edu/library/about/policies-guidelines/hours-access-policy",
+      "error": ""
+    },
+    {
+      "url": "https://dairybarn.org/craft-festivals/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dairybarn.org/craft-festivals/",
+      "error": ""
+    },
+    {
+      "url": "https://dairybarn.org/opening-reception/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dairybarn.org/calendar-event/opening-reception-reanimated/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ohio.edu/community-impact/community-programs",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ohio.edu/community-impact/community-programs",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Kennedy Museum of Art",
+    "Vernon R. Alden Library"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

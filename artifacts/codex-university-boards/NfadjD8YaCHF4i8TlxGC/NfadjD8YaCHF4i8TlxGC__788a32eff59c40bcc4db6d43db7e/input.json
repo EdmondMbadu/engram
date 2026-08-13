@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "qnGvtnI5V3dBjhuh9UoP",
+    "schoolName": "The University of Texas at San Antonio",
+    "shortSchoolName": "The University of Texas at San Antonio",
+    "townName": "San Antonio",
+    "state": "TX",
+    "countryCode": "US",
+    "unitId": "229027",
+    "website": "https://www.utsa.edu/",
+    "latitude": 29.583709,
+    "longitude": -98.620657,
+    "heroUrl": "https://www.utsa.edu/_files/images/previews/ut-san-antonio.png",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=utsa.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Villas at Babcock",
+    "The Reserve",
+    "Campus Edge on UTSA Boulevard",
+    "Avalon Place",
+    "Hill Country Place",
+    "Broadstone",
+    "The Oasis",
+    "High View Place",
+    "Maverick Creek",
+    "Lark San Antonio"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://old.lib.utk.edu/hours/spaces/quiet-study-carrels/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://old.lib.utk.edu/hours/spaces/quiet-study-carrels/",
+      "error": ""
+    },
+    {
+      "url": "https://old.lib.utk.edu/hours/spaces/group-study-tables-quiet-floors/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://old.lib.utk.edu/hours/spaces/group-study-tables-quiet-floors/",
+      "error": ""
+    },
+    {
+      "url": "https://old.lib.utk.edu/hours/spaces/study-carrels/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://old.lib.utk.edu/hours/spaces/study-carrels/",
+      "error": ""
+    },
+    {
+      "url": "https://old.lib.utk.edu/hours/spaces/commons-north/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://old.lib.utk.edu/hours/spaces/commons-north/",
+      "error": ""
+    },
+    {
+      "url": "https://old.lib.utk.edu/hours/spaces/graduate-commons-group-study-rooms-small/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://old.lib.utk.edu/hours/spaces/graduate-commons-group-study-rooms-small/",
+      "error": ""
+    },
+    {
+      "url": "https://old.lib.utk.edu/hours/spaces/graduate-commons-group-study-room-large/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://old.lib.utk.edu/hours/spaces/graduate-commons-group-study-room-large/",
+      "error": ""
+    },
+    {
+      "url": "https://old.lib.utk.edu/hours/spaces/study-rooms/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://old.lib.utk.edu/hours/spaces/study-rooms/",
+      "error": ""
+    },
+    {
+      "url": "https://studentsuccess.utk.edu/academicsuccess/vol-study-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentsuccess.utk.edu/academicsuccess/vol-study-center/",
+      "error": ""
+    },
+    {
+      "url": "https://old.lib.utk.edu/hours/spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://old.lib.utk.edu/hours/spaces/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

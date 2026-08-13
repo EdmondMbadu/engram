@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://ww2.freshthyme.com/store-location/grand-rapids-michigan-49546",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ww2.freshthyme.com/store-location/grand-rapids-michigan-49546",
+      "error": ""
+    },
+    {
+      "url": "https://www.wsdevelopment.com/our-properties/breton-village/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.wsdevelopment.com/our-properties/breton-village/",
+      "error": ""
+    },
+    {
+      "url": "https://www.shopdwfreshmarket.com/stores/dw-fresh-market-3",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.shopdwfreshmarket.com/stores/dw-fresh-market-3",
+      "error": ""
+    },
+    {
+      "url": "https://www.michigan.org/property/schuler-books-grand-rapids",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.michigan.org/property/schuler-books-grand-rapids",
+      "error": ""
+    },
+    {
+      "url": "https://www.shopwoodlandmall.com/Directory",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.shopwoodlandmall.com/Directory",
+      "error": ""
+    },
+    {
+      "url": "https://locations.traderjoes.com/mi/kentwood/707/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.traderjoes.com/mi/kentwood/707/",
+      "error": ""
+    },
+    {
+      "url": "https://kdl.org/locations/EGR/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://kdl.org/locations/EGR/",
+      "error": ""
+    },
+    {
+      "url": "https://www.eastgrmi.gov/170/Parks-Trails-Reeds-Lake",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.eastgrmi.gov/170/Parks-Trails-Reeds-Lake",
+      "error": ""
+    },
+    {
+      "url": "https://www.michigan.org/property/frederik-meijer-gardens-sculpture-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.michigan.org/property/frederik-meijer-gardens-sculpture-park",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

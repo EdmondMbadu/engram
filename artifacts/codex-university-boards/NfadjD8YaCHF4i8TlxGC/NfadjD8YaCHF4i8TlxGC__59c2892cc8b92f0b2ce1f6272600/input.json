@@ -1,0 +1,60 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "omSFe9ojqjgqymTAI45G",
+    "schoolName": "Endicott College",
+    "shortSchoolName": "Endicott College",
+    "townName": "Beverly",
+    "state": "MA",
+    "countryCode": "US",
+    "unitId": "165699",
+    "website": "https://www.endicott.edu/",
+    "latitude": 42.553296,
+    "longitude": -70.840847,
+    "heroUrl": "https://www.endicott.edu/-/media/endicott/shared/home/default-open-graph-image.png",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=endicott.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain Endicott College",
+  "excluded_subjects": [
+    "Callahan Center",
+    "Safe Ride Shuttle",
+    "Mingo Beach",
+    "Tupper (Patch) Beach",
+    "Walter J. Manninen Center for the Arts",
+    "Endicott Beach",
+    "Endicott Weekend Shuttle",
+    "Downtown Beverly",
+    "Diane M. Halle Library Cyber Café",
+    "Endicott College Self-Guided Tour",
+    "Endicott College Convocation",
+    "Dinner Around the Lakes",
+    "Endicott College Alma Mater",
+    "The Stole of Gratitude",
+    "Campbell Highlanders Commencement Procession",
+    "Endicott College Seal",
+    "Endicott Honor Society Regalia",
+    "Endicott Senior Awards",
+    "Cummings School Nurse Pinning Ceremony",
+    "Endicott Homecoming Lobster Dinner"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

@@ -1,0 +1,73 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.stlawu.edu/offices/student-activities-and-leadership/sullivan-student-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stlawu.edu/offices/student-activities-and-leadership/sullivan-student-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.stlawu.edu/student-life/dining",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stlawu.edu/student-life/dining",
+      "error": ""
+    },
+    {
+      "url": "https://www.stlawu.edu/offices/chaplains-office/gunnison-memorial-chapel-history-and-photos",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stlawu.edu/offices/chaplains-office/gunnison-memorial-chapel-history-and-photos",
+      "error": ""
+    },
+    {
+      "url": "https://www.stlawu.edu/offices/alumni/360-degree-campus-tours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stlawu.edu/offices/alumni/360-degree-campus-tours",
+      "error": ""
+    },
+    {
+      "url": "https://www.stlawu.edu/offices/wellness-education-office/wellness-zones",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stlawu.edu/offices/wellness-education-office/wellness-zones",
+      "error": ""
+    },
+    {
+      "url": "https://www.stlawu.edu/academics/programs/art-and-art-history",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stlawu.edu/academics/programs/art-and-art-history",
+      "error": ""
+    },
+    {
+      "url": "https://www.stlawu.edu/academics/first-year-program",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stlawu.edu/academics/first-year-program",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Sullivan Student Center",
+    "Richard F. Brush Art Gallery",
+    "First-Year Cup"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

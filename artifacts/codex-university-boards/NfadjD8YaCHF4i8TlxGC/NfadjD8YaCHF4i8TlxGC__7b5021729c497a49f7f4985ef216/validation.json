@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://motonmuseum.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://motonmuseum.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://lcva.longwood.edu/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lcva.longwood.edu/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.dcr.virginia.gov/state-parks/high-bridge-trail",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.dcr.virginia.gov/state-parks/high-bridge-trail",
+      "error": ""
+    },
+    {
+      "url": "https://visitfarmville.com/visitor-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visitfarmville.com/visitor-center/",
+      "error": ""
+    },
+    {
+      "url": "https://cvrl.net/venue/farmville-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cvrl.net/venue/farmville-library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.farmvilleva.com/facilities/facility/details/wilckslakepark-14",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.farmvilleva.com/facilities/facility/details/wilckslakepark-14",
+      "error": ""
+    },
+    {
+      "url": "https://www.farmvilleva.gov/230/Farmers-Market",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.farmvilleva.gov/230/Farmers-Market",
+      "error": ""
+    },
+    {
+      "url": "https://www.sandyriveroutdooradventures.com/about-our-store",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sandyriveroutdooradventures.com/about-our-store",
+      "error": ""
+    },
+    {
+      "url": "https://paddleva.com/pages/about-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://paddleva.com/pages/about-us",
+      "error": ""
+    },
+    {
+      "url": "https://visitfarmville.com/shopping/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visitfarmville.com/shopping/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

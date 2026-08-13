@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://redirectapp.uncw.edu/seahawk-life/services/parking-transportation/transportation/campus-shuttles",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://redirectapp.uncw.edu/seahawk-life/services/parking-transportation/transportation/campus-shuttles",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 1,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

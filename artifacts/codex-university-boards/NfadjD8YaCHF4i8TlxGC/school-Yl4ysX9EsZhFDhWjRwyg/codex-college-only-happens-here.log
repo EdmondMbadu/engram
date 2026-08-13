@@ -1,0 +1,284 @@
+Reading additional input from stdin...
+2026-08-13T06:37:16.631150Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:37:16.647825Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9d6-df18-7a90-ac70-b08d4f58776c
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"Yl4ysX9EsZhFDhWjRwyg","schoolName":"California Institute of Technology","shortSchoolName":"California Institute of Technology","townName":"Pasadena","state":"CA","countryCode":"US","website":"https://www.caltech.edu/","latitude":34.137349,"longitude":-118.125878},"templates":[{"id":"college-only-happens-here","version":"1.0","titlePattern":"Only Happens Here: {count} Traditions That Make No Sense Anywhere Else","editorialBrief":"Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.","researchQueries":["university traditions alumni","campus traditions student newspaper","school rituals history"],"count":10,"icon":"fingerprint","primarySubjectType":"tradition","allowedSubjectTypes":["tradition"],"freshnessDays":1095,"exactTitle":"Only Happens Here: 10 Traditions That Make No Sense Anywhere Else"}]}
+2026-08-13T06:37:26.473061Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for zsh: Snapshot command timed out for zsh
+codex
+{
+  "complete": false,
+  "school_name": "California Institute of Technology",
+  "town_name": "Pasadena",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "California Institute of Technology",
+      "town_name": "Pasadena",
+      "template_id": "college-only-happens-here",
+      "title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+      "description": "",
+      "icon": "fingerprint",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "tradition",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "tradition",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "tradition",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "tradition",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "tradition",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "tradition",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "tradition",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "tradition",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "tradition",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+    ],
+      "warnings": []
+    }
+  ],
+  "warnings": ["Unable to perform the required web research because the execution time expired before search could begin."]
+}
+web search: 
+web search: site:caltech.edu Caltech traditions Ditch Day pranks pumpkin drop Millikan pond ...
+web search: 
+web search: 
+web search: 
+web search: site:caltech.edu/about/news Caltech Pi Day celebration 1:59 26 pies ...
+codex
+{"complete":true,"school_name":"California Institute of Technology","town_name":"Pasadena","boards":[{"complete":true,"school_name":"California Institute of Technology","town_name":"Pasadena","template_id":"college-only-happens-here","title":"Only Happens Here: 10 Traditions That Make No Sense Anywhere Else","description":"Ten documented Caltech rituals shaped by its House system, puzzle culture, scientific humor, and highly engineered celebrations.","icon":"fingerprint","cards":[{"subject_id":"caltech-ditch-day","subject_type":"tradition","entity_name":"Ditch Day","title":"Wake Up—Ditch Day Is Today","subtitle":"A secret-date campus ritual built around senior-designed “stacks”","notes":"Wait for the surprise morning announcement, then join an assigned stack and solve its themed puzzles with your undergraduate team.","short_summary":"Seniors turn one secretly scheduled day into a campus-wide sequence of collaborative puzzles and challenges.","evidence_claim":"Caltech states that Ditch Day began in 1921 and now centers on themed puzzle-solving adventures called stacks, designed by graduating fourth-year students.","source_url":"https://www.caltech.edu/about/news/ditch-day-2023","source_title":"Ditch Day 2023: Puzzles, Pool Noodles, and Pond Diving","source_kind":"university_official","source_published_at":"2023-06-02","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Participation is an undergraduate campus activity; follow the current instructions issued to students when the secret date is announced.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-pi-day-pies","subject_type":"tradition","entity_name":"Caltech Pi Day Celebration","title":"Eat Pie at 1:59 a.m.","subtitle":"March 14 turns the digits 3.1415926 into an edible timetable","notes":"Watch official campus announcements for the March 14 location, then arrive before 1:59 a.m. if the annual pie gathering is scheduled.","short_summary":"Caltech translates the opening digits of pi into a precisely timed, pie-centered celebration.","evidence_claim":"Caltech Magazine documents an annual March 14 pie celebration held at precisely 1:59 a.m., with 26 kinds of pie served in the featured edition.","source_url":"https://magazine.caltech.edu/post/caltech-traditions-ditch-day","source_title":"The Traditions That Make Caltech","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited tradition describes a 1:59 a.m. event; verify the current year's date, location, eligibility, and entry instructions before attending.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-pumpkin-drop","subject_type":"tradition","entity_name":"Dabney House Pumpkin Drop","title":"Look for a Flash in the Pumpkin Smash","subtitle":"Frozen Halloween gourds meet physics at Caltech Hall","notes":"Attend only from the designated spectator area and let authorized organizers handle the liquid nitrogen, rooftop work, and falling pumpkins.","short_summary":"A Dabney House Halloween experiment sends frozen pumpkins downward in search of a fleeting triboluminescent glow.","evidence_claim":"Caltech says Dabney House stages a Halloween liquid-nitrogen pumpkin drop from Caltech Hall while spectators watch for a brief triboluminescent glow.","source_url":"https://www.admissions.caltech.edu/why-caltech/student-life/traditions-pranks","source_title":"Traditions & Pranks","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Observe only through the officially organized event and its marked viewing arrangements; do not handle cryogenic materials or access the roof.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-lloyd-lights","subject_type":"tradition","entity_name":"Lloyd Lights","title":"Spell Lloyd Down Nine Stories","subtitle":"A winter light structure transforms the face of Caltech Hall","notes":"Look toward Caltech Hall before winter break, and confirm the current installation schedule through Lloyd House before planning a visit.","short_summary":"Lloyd House makes its residential identity visible by suspending a large illuminated name display from Caltech Hall.","evidence_claim":"Lloyd House identifies Lloyd Lights as a winter tradition in which members build a large structure that hangs from Caltech Hall and spells “Lloyd.”","source_url":"https://lloyd.caltech.edu/lloyd/index","source_title":"Lloyd House","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Visibility and installation timing can vary; view from permitted campus areas and follow any current access guidance.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-fleming-cannon-firing","subject_type":"tradition","entity_name":"Fleming Cannon Firing","title":"Hear the Fleming Cannon Mark the Year","subtitle":"A House artifact punctuates selected Caltech occasions","notes":"Check event notices and keep a comfortable distance during announced firings; consider hearing protection if sudden, loud sounds affect you.","short_summary":"Fleming House uses its historic cannon as a loud ceremonial marker at several points in the academic calendar.","evidence_claim":"Caltech Admissions documents that Fleming House fires its cannon several times each year as one of the House system's distinctive customs.","source_url":"https://www.admissions.caltech.edu/why-caltech/student-life/traditions-pranks","source_title":"Traditions & Pranks","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cannon produces a sudden loud report. Observe only at an officially managed firing and do not touch or approach operating equipment.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-interhouse","subject_type":"tradition","entity_name":"Caltech Interhouse","title":"Engineer an Entire Party World","subtitle":"Each House takes a turn building a themed undergraduate event","notes":"If eligible, follow the host House's invitation and event rules; spend time noticing the student-built sets, murals, lighting, and mechanisms.","short_summary":"Residential Houses combine social planning with ambitious fabrication to create rotating, themed undergraduate events.","evidence_claim":"Caltech Magazine describes Interhouse as a tradition in which Houses host themed all-undergraduate events featuring student-built sets, light shows, mazes, and murals.","source_url":"https://magazine.caltech.edu/post/caltech-traditions-ditch-day","source_title":"The Traditions That Make Caltech","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Interhouse events are intended for the undergraduate community; attendance depends on the host's current eligibility and registration rules.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-house-rotation","subject_type":"tradition","entity_name":"Caltech House Rotation","title":"Rotate Before Choosing a House","subtitle":"New students meet eight residential communities before ranking them","notes":"Use the assigned meals and events to meet each House, ask concrete questions, and submit preferences only after reviewing every option.","short_summary":"Caltech turns residential affiliation into a structured introductory circuit through all eight undergraduate Houses.","evidence_claim":"Caltech's Interhouse Committee defines Rotation as the first-year process for meeting the eight undergraduate Houses, attending activities, and ranking affiliation preferences.","source_url":"https://ihc.caltech.edu/rotation","source_title":"Rotation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Rotation is available to eligible first-year, transfer, and exchange students, and participants may opt out of House affiliation.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-family-style-house-dinner","subject_type":"tradition","entity_name":"Caltech House Family-Style Dinner","title":"Let Student Waiters Run Dinner","subtitle":"Weeknight House meals carry their own table customs","notes":"Attend through your residence or House invitation, arrive on time, and ask members about the particular dinner customs before joining in.","short_summary":"The residential system sustains its culture through recurring shared dinners served by paid student waiters.","evidence_claim":"Caltech Admissions states that each undergraduate House holds family-style dinner every weeknight, served by paid student waiters and shaped by House traditions.","source_url":"https://www.admissions.caltech.edu/why-caltech/student-life/traditions-pranks","source_title":"Traditions & Pranks","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"House dinners are residential community activities; meal access, invitations, and dietary arrangements depend on current campus procedures.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-physics-1a-skit-prank","subject_type":"tradition","entity_name":"Blacker House Physics 1a Skit Prank","title":"Interrupt Physics with a Freshman Skit","subtitle":"Blacker first-years stage a recurring classroom prank","notes":"Experience the prank only as part of the authorized class setting, and keep any performance compatible with course rules and the Honor Code.","short_summary":"Blacker House first-years insert a student-created skit into the foundational Physics 1a experience.","evidence_claim":"Caltech Admissions documents that Blacker House freshmen create and perform a skit prank during Physics 1a each year.","source_url":"https://www.admissions.caltech.edu/why-caltech/student-life/traditions-pranks","source_title":"Traditions & Pranks","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This is a course- and student-community tradition, not a public performance; participation must follow instructor and Institute requirements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-house-commencement-salutes","subject_type":"tradition","entity_name":"Caltech House Commencement Salutes","title":"Ring, Gong, and Whistle for the Graduates","subtitle":"Residential Houses answer diploma names with distinct sounds","notes":"Listen as House members salute their graduates, while respecting Commencement ticketing, seating, and instructions for audience noise.","short_summary":"Caltech's residential affiliations become audible when Houses recognize their graduates with different ceremonial signals.","evidence_claim":"Caltech's 129th Commencement report says Fleming rang a bell, Venerable used a whistle, and Lloyd rang a gong when their graduates' names were called.","source_url":"https://www.admissions.caltech.edu/explore-more/news/129th-commencement-2023","source_title":"Caltech Celebrates 129th Commencement","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Commencement access is governed by the current ceremony's guest, ticketing, security, and seating policies.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+tokens used
+46,965
+
+{"complete":true,"school_name":"California Institute of Technology","town_name":"Pasadena","boards":[{"complete":true,"school_name":"California Institute of Technology","town_name":"Pasadena","template_id":"college-only-happens-here","title":"Only Happens Here: 10 Traditions That Make No Sense Anywhere Else","description":"Ten documented Caltech rituals shaped by its House system, puzzle culture, scientific humor, and highly engineered celebrations.","icon":"fingerprint","cards":[{"subject_id":"caltech-ditch-day","subject_type":"tradition","entity_name":"Ditch Day","title":"Wake Up—Ditch Day Is Today","subtitle":"A secret-date campus ritual built around senior-designed “stacks”","notes":"Wait for the surprise morning announcement, then join an assigned stack and solve its themed puzzles with your undergraduate team.","short_summary":"Seniors turn one secretly scheduled day into a campus-wide sequence of collaborative puzzles and challenges.","evidence_claim":"Caltech states that Ditch Day began in 1921 and now centers on themed puzzle-solving adventures called stacks, designed by graduating fourth-year students.","source_url":"https://www.caltech.edu/about/news/ditch-day-2023","source_title":"Ditch Day 2023: Puzzles, Pool Noodles, and Pond Diving","source_kind":"university_official","source_published_at":"2023-06-02","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Participation is an undergraduate campus activity; follow the current instructions issued to students when the secret date is announced.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-pi-day-pies","subject_type":"tradition","entity_name":"Caltech Pi Day Celebration","title":"Eat Pie at 1:59 a.m.","subtitle":"March 14 turns the digits 3.1415926 into an edible timetable","notes":"Watch official campus announcements for the March 14 location, then arrive before 1:59 a.m. if the annual pie gathering is scheduled.","short_summary":"Caltech translates the opening digits of pi into a precisely timed, pie-centered celebration.","evidence_claim":"Caltech Magazine documents an annual March 14 pie celebration held at precisely 1:59 a.m., with 26 kinds of pie served in the featured edition.","source_url":"https://magazine.caltech.edu/post/caltech-traditions-ditch-day","source_title":"The Traditions That Make Caltech","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited tradition describes a 1:59 a.m. event; verify the current year's date, location, eligibility, and entry instructions before attending.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-pumpkin-drop","subject_type":"tradition","entity_name":"Dabney House Pumpkin Drop","title":"Look for a Flash in the Pumpkin Smash","subtitle":"Frozen Halloween gourds meet physics at Caltech Hall","notes":"Attend only from the designated spectator area and let authorized organizers handle the liquid nitrogen, rooftop work, and falling pumpkins.","short_summary":"A Dabney House Halloween experiment sends frozen pumpkins downward in search of a fleeting triboluminescent glow.","evidence_claim":"Caltech says Dabney House stages a Halloween liquid-nitrogen pumpkin drop from Caltech Hall while spectators watch for a brief triboluminescent glow.","source_url":"https://www.admissions.caltech.edu/why-caltech/student-life/traditions-pranks","source_title":"Traditions & Pranks","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Observe only through the officially organized event and its marked viewing arrangements; do not handle cryogenic materials or access the roof.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-lloyd-lights","subject_type":"tradition","entity_name":"Lloyd Lights","title":"Spell Lloyd Down Nine Stories","subtitle":"A winter light structure transforms the face of Caltech Hall","notes":"Look toward Caltech Hall before winter break, and confirm the current installation schedule through Lloyd House before planning a visit.","short_summary":"Lloyd House makes its residential identity visible by suspending a large illuminated name display from Caltech Hall.","evidence_claim":"Lloyd House identifies Lloyd Lights as a winter tradition in which members build a large structure that hangs from Caltech Hall and spells “Lloyd.”","source_url":"https://lloyd.caltech.edu/lloyd/index","source_title":"Lloyd House","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Visibility and installation timing can vary; view from permitted campus areas and follow any current access guidance.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-fleming-cannon-firing","subject_type":"tradition","entity_name":"Fleming Cannon Firing","title":"Hear the Fleming Cannon Mark the Year","subtitle":"A House artifact punctuates selected Caltech occasions","notes":"Check event notices and keep a comfortable distance during announced firings; consider hearing protection if sudden, loud sounds affect you.","short_summary":"Fleming House uses its historic cannon as a loud ceremonial marker at several points in the academic calendar.","evidence_claim":"Caltech Admissions documents that Fleming House fires its cannon several times each year as one of the House system's distinctive customs.","source_url":"https://www.admissions.caltech.edu/why-caltech/student-life/traditions-pranks","source_title":"Traditions & Pranks","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cannon produces a sudden loud report. Observe only at an officially managed firing and do not touch or approach operating equipment.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-interhouse","subject_type":"tradition","entity_name":"Caltech Interhouse","title":"Engineer an Entire Party World","subtitle":"Each House takes a turn building a themed undergraduate event","notes":"If eligible, follow the host House's invitation and event rules; spend time noticing the student-built sets, murals, lighting, and mechanisms.","short_summary":"Residential Houses combine social planning with ambitious fabrication to create rotating, themed undergraduate events.","evidence_claim":"Caltech Magazine describes Interhouse as a tradition in which Houses host themed all-undergraduate events featuring student-built sets, light shows, mazes, and murals.","source_url":"https://magazine.caltech.edu/post/caltech-traditions-ditch-day","source_title":"The Traditions That Make Caltech","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Interhouse events are intended for the undergraduate community; attendance depends on the host's current eligibility and registration rules.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-house-rotation","subject_type":"tradition","entity_name":"Caltech House Rotation","title":"Rotate Before Choosing a House","subtitle":"New students meet eight residential communities before ranking them","notes":"Use the assigned meals and events to meet each House, ask concrete questions, and submit preferences only after reviewing every option.","short_summary":"Caltech turns residential affiliation into a structured introductory circuit through all eight undergraduate Houses.","evidence_claim":"Caltech's Interhouse Committee defines Rotation as the first-year process for meeting the eight undergraduate Houses, attending activities, and ranking affiliation preferences.","source_url":"https://ihc.caltech.edu/rotation","source_title":"Rotation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Rotation is available to eligible first-year, transfer, and exchange students, and participants may opt out of House affiliation.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-family-style-house-dinner","subject_type":"tradition","entity_name":"Caltech House Family-Style Dinner","title":"Let Student Waiters Run Dinner","subtitle":"Weeknight House meals carry their own table customs","notes":"Attend through your residence or House invitation, arrive on time, and ask members about the particular dinner customs before joining in.","short_summary":"The residential system sustains its culture through recurring shared dinners served by paid student waiters.","evidence_claim":"Caltech Admissions states that each undergraduate House holds family-style dinner every weeknight, served by paid student waiters and shaped by House traditions.","source_url":"https://www.admissions.caltech.edu/why-caltech/student-life/traditions-pranks","source_title":"Traditions & Pranks","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"House dinners are residential community activities; meal access, invitations, and dietary arrangements depend on current campus procedures.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-physics-1a-skit-prank","subject_type":"tradition","entity_name":"Blacker House Physics 1a Skit Prank","title":"Interrupt Physics with a Freshman Skit","subtitle":"Blacker first-years stage a recurring classroom prank","notes":"Experience the prank only as part of the authorized class setting, and keep any performance compatible with course rules and the Honor Code.","short_summary":"Blacker House first-years insert a student-created skit into the foundational Physics 1a experience.","evidence_claim":"Caltech Admissions documents that Blacker House freshmen create and perform a skit prank during Physics 1a each year.","source_url":"https://www.admissions.caltech.edu/why-caltech/student-life/traditions-pranks","source_title":"Traditions & Pranks","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This is a course- and student-community tradition, not a public performance; participation must follow instructor and Institute requirements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-house-commencement-salutes","subject_type":"tradition","entity_name":"Caltech House Commencement Salutes","title":"Ring, Gong, and Whistle for the Graduates","subtitle":"Residential Houses answer diploma names with distinct sounds","notes":"Listen as House members salute their graduates, while respecting Commencement ticketing, seating, and instructions for audience noise.","short_summary":"Caltech's residential affiliations become audible when Houses recognize their graduates with different ceremonial signals.","evidence_claim":"Caltech's 129th Commencement report says Fleming rang a bell, Venerable used a whistle, and Lloyd rang a gong when their graduates' names were called.","source_url":"https://www.admissions.caltech.edu/explore-more/news/129th-commencement-2023","source_title":"Caltech Celebrates 129th Commencement","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Commencement access is governed by the current ceremony's guest, ticketing, security, and seating policies.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

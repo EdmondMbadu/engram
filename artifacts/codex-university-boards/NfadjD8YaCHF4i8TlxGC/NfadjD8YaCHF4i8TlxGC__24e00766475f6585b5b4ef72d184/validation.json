@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.rmu.edu/about/news/robert-morris-university-announces-new-named-spaces-campus-made-possible-multi-million",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rmu.edu/about/news/robert-morris-university-announces-new-named-spaces-campus-made-possible-multi-million",
+      "error": ""
+    },
+    {
+      "url": "https://www.rmu.edu/about/facilities-management/campus-buildings",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rmu.edu/about/facilities-management/campus-buildings",
+      "error": ""
+    },
+    {
+      "url": "https://www.rmu.edu/student-life/campus-recreation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rmu.edu/student-life/campus-recreation",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

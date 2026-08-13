@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://theorionhuntsville.com/visit-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://theorionhuntsville.com/visit-us/",
+      "error": ""
+    },
+    {
+      "url": "https://topgolf.com/us/huntsville/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://topgolf.com/us/huntsville/",
+      "error": ""
+    },
+    {
+      "url": "https://www.midcitydistrict.com/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.midcitydistrict.com/visit",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

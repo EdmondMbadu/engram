@@ -1,0 +1,39 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "inp02qqtKC7Nfan698u8",
+    "schoolName": "Iowa State University",
+    "shortSchoolName": "Iowa State University",
+    "townName": "Ames",
+    "state": "IA",
+    "countryCode": "US",
+    "unitId": "153603",
+    "website": "https://www.iastate.edu/",
+    "latitude": 42.026212,
+    "longitude": -93.648504,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Iowa_State_University_seal.svg/250px-Iowa_State_University_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=iastate.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

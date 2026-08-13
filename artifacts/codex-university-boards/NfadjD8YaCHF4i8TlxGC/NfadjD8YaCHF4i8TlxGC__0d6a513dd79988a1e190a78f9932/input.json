@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "LWPC6GMHUUNuvtEgenx9",
+    "schoolName": "John Carroll University",
+    "shortSchoolName": "John Carroll University",
+    "townName": "University Heights",
+    "state": "OH",
+    "countryCode": "US",
+    "unitId": "203368",
+    "website": "https://jcu.edu/",
+    "latitude": 41.490259,
+    "longitude": -81.531224,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/3/3a/John_Carroll_University_seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=jcu.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Ben & Jerry’s",
+    "Bialy’s Bagels",
+    "BIBIBOP Asian Grill",
+    "Boris’ Kosher Meats",
+    "Chicken Ranch",
+    "Chocolate Emporium",
+    "Amazing Wok II",
+    "A. Garber Upholstery",
+    "Adam’s Barber Shop",
+    "Amy R. Roth & Co. Tailoring"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

@@ -1,0 +1,60 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "Foj7gaW3nvJ2HfodHakj",
+    "schoolName": "Transylvania University",
+    "shortSchoolName": "Transylvania University",
+    "townName": "Lexington",
+    "state": "KY",
+    "countryCode": "US",
+    "unitId": "157818",
+    "website": "https://www.transy.edu/",
+    "latitude": 38.052983,
+    "longitude": -84.493202,
+    "heroUrl": "https://www.transy.edu/wp-content/uploads/2020/12/transylvania-university_carpenter-academic-center_lexington-kentucky-1200x630.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=transy.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "William T. Young Campus Center",
+    "The Great Hall",
+    "Rafskeller",
+    "Hearth Room",
+    "Valvoline Game Room",
+    "J. Douglas Gay Jr. Library",
+    "Alumni Plaza",
+    "Transylvania Community Garden",
+    "Old Morrison Chapel",
+    "Sanders-Siebers Entrepreneurship Hub",
+    "Morlan Gallery",
+    "Lexington Public Library Central Library",
+    "University of Kentucky Art Museum",
+    "21c Museum Hotel Lexington",
+    "Artists' Attic",
+    "The Arboretum, State Botanical Garden of Kentucky",
+    "Institute 193",
+    "LexArts HOP",
+    "McConnell Springs Park",
+    "The Lexington Cemetery"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

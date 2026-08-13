@@ -1,0 +1,71 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "6gbgP1emRVg5PHqiotQF",
+    "schoolName": "University of North Dakota",
+    "shortSchoolName": "University of North Dakota",
+    "townName": "Grand Forks",
+    "state": "ND",
+    "countryCode": "US",
+    "unitId": "200280",
+    "website": "https://und.edu/",
+    "latitude": 47.921654,
+    "longitude": -97.071738,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/0/08/UNDseal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=und.edu&sz=256"
+  },
+  "template": {
+    "id": "college-campus-tour-skips",
+    "version": "1.0",
+    "titlePattern": "What the Campus Tour Skips: {count} Places Students Share With Each Other",
+    "editorialBrief": "Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.",
+    "researchQueries": [
+      "student favorite campus places",
+      "campus map student spaces",
+      "student newspaper campus places"
+    ],
+    "count": 10,
+    "icon": "style",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place",
+      "study_space"
+    ],
+    "freshnessDays": 365
+  },
+  "exact_title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+  "excluded_subjects": [
+    "Memorial Union Social Stairs",
+    "Chester Fritz Library",
+    "Memorial Union Gallery",
+    "Wellness Center Rock Wall",
+    "NEXUS Esport Gaming Lounge",
+    "Wellness Center Table Tennis",
+    "North Dakota Museum of Art",
+    "The Greenway",
+    "University Park",
+    "Chester Fritz Performing Arts Center",
+    "Reading Room (The Fishbowl)",
+    "Chester Fritz Library Study Rooms",
+    "Chester Fritz Library Main Computer Lab",
+    "Chester Fritz Library Collab Stations",
+    "Thormodsgard Law Library Quiet Floors",
+    "Thormodsgard Law Library Collaborative Floors",
+    "Thormodsgard Law Library Study Rooms",
+    "Gordon Erickson Music Library",
+    "Gershman Graduate Center Meeting Rooms",
+    "Student Group Collaboration Space",
+    "UND Founders Day Banquet",
+    "Feast of Nations",
+    "UND Homecoming Week",
+    "Stand Up and Cheer",
+    "Green and Pink Legacy",
+    "RAIN Traditional Meal and Honor Ceremony",
+    "College of Engineering & Mines Ring Ceremony",
+    "Constitution Day Naturalization Ceremony",
+    "Holiday Magic From Markus",
+    "University of North Dakota Mace"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

@@ -1,0 +1,40 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Campus dining hours are subject to change; check the linked official schedule on the date of a visit.",
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.eatatsdsu.com/Semester-Hours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.eatatsdsu.com/Semester-Hours",
+      "error": ""
+    },
+    {
+      "url": "https://azteclanes.sdsu.edu/locationhours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://azteclanes.sdsu.edu/locationhours",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ca/san-diego/4545-el-cajon-blvd/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ca/san-diego/4545-el-cajon-blvd/restaurant.html",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Aztec Lanes"
+  ],
+  "sourceCount": 3,
+  "generationScore": 90,
+  "generationGrade": "A"
+}

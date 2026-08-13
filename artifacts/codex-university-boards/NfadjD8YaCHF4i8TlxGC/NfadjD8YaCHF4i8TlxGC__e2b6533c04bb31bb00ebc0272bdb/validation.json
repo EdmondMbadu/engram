@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Hours can change for holidays, academic breaks, weather, or operating conditions; verify each direct source on the day of travel.",
+    "Some destinations require a longer walk or transit trip from Rose Hill; use a well-lit route and travel with companions late at night.",
+    "The McDonald's drive-thru may not accommodate pedestrians overnight; confirm the available service mode before departure."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.pugsleypizzastore.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pugsleypizzastore.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/ny/bronx/342-e-fordham-rd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/ny/bronx/342-e-fordham-rd",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ny/bronx/8-w-fordham-rd/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ny/bronx/8-w-fordham-rd/restaurant.html",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.ihop.com/en-us/ny/new-york/breakfast-410-e-189th-st-3886",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.ihop.com/en-us/ny/new-york/breakfast-410-e-189th-st-3886",
+      "error": ""
+    },
+    {
+      "url": "https://www.frankiesrestaurantarthurave.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.frankiesrestaurantarthurave.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.noyacafe.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.noyacafe.com/",
+      "error": ""
+    },
+    {
+      "url": "https://robertosbronx.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://robertosbronx.com/",
+      "error": ""
+    },
+    {
+      "url": "https://moisesrestaurantny.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://moisesrestaurantny.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/ny/bronx/2505-southern-blvd/7975.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/ny/bronx/2505-southern-blvd/7975.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.roccosofbronx.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.roccosofbronx.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

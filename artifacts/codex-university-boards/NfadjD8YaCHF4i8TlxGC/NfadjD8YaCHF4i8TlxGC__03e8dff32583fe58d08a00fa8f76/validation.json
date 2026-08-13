@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.eddycommons.com/directory/7-eleven",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.eddycommons.com/directory/7-eleven",
+      "error": ""
+    },
+    {
+      "url": "https://www.eddycommons.com/directory/bibibop",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.eddycommons.com/directory/bibibop",
+      "error": ""
+    },
+    {
+      "url": "https://www.eddycommons.com/directory",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.eddycommons.com/directory",
+      "error": ""
+    },
+    {
+      "url": "https://www.eddycommons.com/directory/five-guys",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.eddycommons.com/directory/five-guys",
+      "error": ""
+    },
+    {
+      "url": "https://www.eddycommons.com/directory/hammes",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.eddycommons.com/directory/hammes",
+      "error": ""
+    },
+    {
+      "url": "https://www.eddycommons.com/directory/jinya-ramen-bar",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.eddycommons.com/directory/jinya-ramen-bar",
+      "error": ""
+    },
+    {
+      "url": "https://www.eddycommons.com/directory/noodles-and-company",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.eddycommons.com/directory/noodles-and-company",
+      "error": ""
+    },
+    {
+      "url": "https://www.eddycommons.com/directory/trader-joes",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.eddycommons.com/directory/trader-joes",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

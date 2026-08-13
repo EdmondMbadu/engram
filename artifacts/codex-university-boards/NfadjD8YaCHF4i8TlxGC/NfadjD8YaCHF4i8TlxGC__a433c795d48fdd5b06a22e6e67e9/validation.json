@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://mercycollege.edu/my-mercy/library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mercycollege.edu/my-mercy/library",
+      "error": ""
+    },
+    {
+      "url": "https://mercycollege.edu/student-affairs/fitness-center-2",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mercycollege.edu/student-affairs/fitness-center-2",
+      "error": ""
+    },
+    {
+      "url": "https://mercycollege.edu/student-affairs/mercy-college-food-pantry",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mercycollege.edu/student-affairs/mercy-college-food-pantry",
+      "error": ""
+    },
+    {
+      "url": "https://mercycollege.edu/student-affairs/student-life/government",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mercycollege.edu/student-affairs/student-life/government",
+      "error": ""
+    },
+    {
+      "url": "https://mercycollege.edu/student-affairs",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mercycollege.edu/student-affairs",
+      "error": ""
+    },
+    {
+      "url": "https://toledomuseum.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://toledomuseum.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://toledomuseum.org/amenities/glassblowing-demonstrations",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://toledomuseum.org/amenities/glassblowing-demonstrations",
+      "error": ""
+    },
+    {
+      "url": "https://metroparkstoledo.com/explore-your-parks/middlegrounds-metropark/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://metroparkstoledo.com/explore-your-parks/middlegrounds-metropark/",
+      "error": ""
+    },
+    {
+      "url": "https://metroparkstoledo.com/learn-and-play/socially-responsible-activities/metroparks-technology-explorer-middlegrounds-metropark/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://metroparkstoledo.com/learn-and-play/socially-responsible-activities/metroparks-technology-explorer-middlegrounds-metropark/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

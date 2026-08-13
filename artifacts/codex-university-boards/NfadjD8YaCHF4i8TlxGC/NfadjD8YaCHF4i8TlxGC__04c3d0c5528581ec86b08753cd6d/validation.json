@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.library.gatech.edu/spaces-technology/reserve/event-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.gatech.edu/spaces-technology/reserve/event-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://library.gatech.edu/about/hours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.gatech.edu/about/hours",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.gatech.edu/study-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.gatech.edu/study-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.gatech.edu/innovation-ideation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.gatech.edu/innovation-ideation",
+      "error": ""
+    },
+    {
+      "url": "https://studentcenter.gatech.edu/graduate-student-lounge",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentcenter.gatech.edu/graduate-student-lounge",
+      "error": ""
+    },
+    {
+      "url": "https://www.postoffice.studentcenter.gatech.edu/beth-cabrera-reflection-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.postoffice.studentcenter.gatech.edu/beth-cabrera-reflection-room",
+      "error": ""
+    },
+    {
+      "url": "https://www.scpc.studentcenter.gatech.edu/multicultural-programs-lounge",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scpc.studentcenter.gatech.edu/multicultural-programs-lounge",
+      "error": ""
+    },
+    {
+      "url": "https://studentcenter.gatech.edu/reservable-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentcenter.gatech.edu/reservable-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://sustainability.campusservices.gatech.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sustainability.campusservices.gatech.edu/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

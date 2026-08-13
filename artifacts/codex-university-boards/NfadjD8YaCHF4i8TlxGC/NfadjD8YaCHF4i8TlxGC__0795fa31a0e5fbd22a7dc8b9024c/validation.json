@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.csueastbay.edu/about/files/docs/hayward-hills-campus-map.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csueastbay.edu/about/files/docs/hayward-hills-campus-map.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.csueastbay.edu/artgallery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csueastbay.edu/artgallery/",
+      "error": ""
+    },
+    {
+      "url": "https://library.csueastbay.edu/usingthelibraries/collections",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csueastbay.edu/usingthelibraries/collections",
+      "error": ""
+    },
+    {
+      "url": "https://www.csueastbay.edu/uu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csueastbay.edu/uu/",
+      "error": ""
+    },
+    {
+      "url": "https://www.csueastbay.edu/raw/raw-programs/drop-in-recreation.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csueastbay.edu/raw/raw-programs/drop-in-recreation.html",
+      "error": ""
+    },
+    {
+      "url": "https://haywardrec.org/facilities/facility/details/japanese-gardens-100",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://haywardrec.org/facilities/facility/details/japanese-gardens-100",
+      "error": ""
+    },
+    {
+      "url": "https://hayward-ca.gov/residents/arts-leisure/heritage-plaza-public-art",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://hayward-ca.gov/residents/arts-leisure/heritage-plaza-public-art",
+      "error": ""
+    },
+    {
+      "url": "https://hayward-ca.gov/residents/arts-leisure/mural-program",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://hayward-ca.gov/residents/arts-leisure/mural-program",
+      "error": ""
+    },
+    {
+      "url": "https://haywardrec.org/1991/Nature-Centers",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://haywardrec.org/1991/Nature-Centers",
+      "error": ""
+    },
+    {
+      "url": "https://www.ebparks.org/parks/garin",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ebparks.org/parks/garin",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.csus.edu/information-resources-technology/get-support-consultation/airc-building-service-hours.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csus.edu/information-resources-technology/get-support-consultation/airc-building-service-hours.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.csus.edu/information-resources-technology/academic-technology-classrooms/computer-labs.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csus.edu/information-resources-technology/academic-technology-classrooms/computer-labs.html",
+      "error": ""
+    },
+    {
+      "url": "https://library.csus.edu/reserve-a-study-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csus.edu/reserve-a-study-room",
+      "error": ""
+    },
+    {
+      "url": "https://library.csus.edu/study-rooms-and-carrels/family-study-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csus.edu/study-rooms-and-carrels/family-study-room",
+      "error": ""
+    },
+    {
+      "url": "https://library.csus.edu/spotlight-and-events/library-presentation-practice-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csus.edu/spotlight-and-events/library-presentation-practice-room",
+      "error": ""
+    },
+    {
+      "url": "https://library.csus.edu/zoom-room-policy",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csus.edu/zoom-room-policy",
+      "error": ""
+    },
+    {
+      "url": "https://library.csus.edu/index.php/tsakopoulos-hellenic-collection-rooms",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csus.edu/index.php/tsakopoulos-hellenic-collection-rooms",
+      "error": ""
+    },
+    {
+      "url": "https://library.csus.edu/index.php/study-rooms-and-carrels",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csus.edu/index.php/study-rooms-and-carrels",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

@@ -1,0 +1,39 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "ZH538zRxwlzoa7xGHpOv",
+    "schoolName": "Pitzer College",
+    "shortSchoolName": "Pitzer College",
+    "townName": "Claremont",
+    "state": "CA",
+    "countryCode": "US",
+    "unitId": "121257",
+    "website": "https://www.pitzer.edu/",
+    "latitude": 34.104107,
+    "longitude": -117.706675,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/a/a0/Pitzer_College_seal%2C_cali.svg/330px-Pitzer_College_seal%2C_cali.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=pitzer.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

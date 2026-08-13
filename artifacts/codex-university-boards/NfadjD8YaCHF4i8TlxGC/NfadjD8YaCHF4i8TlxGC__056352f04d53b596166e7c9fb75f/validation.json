@@ -1,0 +1,47 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.stkate.edu/about/visit-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stkate.edu/about/visit-campus",
+      "error": ""
+    },
+    {
+      "url": "https://www.stkate.edu/about/visit-campus/cdc",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stkate.edu/about/visit-campus/cdc",
+      "error": ""
+    },
+    {
+      "url": "https://library.stkate.edu/services/accessibility",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.stkate.edu/services/accessibility",
+      "error": ""
+    },
+    {
+      "url": "https://www.stkate.edu/newswire/news/welcoming-new-academic-year-and-new-president-2024",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stkate.edu/newswire/news/welcoming-new-academic-year-and-new-president-2024",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Student Organization Center"
+  ],
+  "sourceCount": 4,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

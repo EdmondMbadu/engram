@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "zrt4DttZYe6m2yPl3l6V",
+    "schoolName": "New York Institute of Technology",
+    "shortSchoolName": "New York Institute of Technology",
+    "townName": "Old Westbury",
+    "state": "NY",
+    "countryCode": "US",
+    "unitId": "194091",
+    "website": "https://www.nyit.edu/",
+    "latitude": 40.812447,
+    "longitude": -73.6078,
+    "heroUrl": "https://www.nyit.edu/wp-content/uploads/home-hero.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=nyit.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Salten Hall Library",
+    "Salten Hall Reading Room",
+    "Salten Commons",
+    "Anna Rubin Hall Reservable Study Rooms",
+    "Orso Lounge",
+    "Midge Karr Parklet",
+    "Riland Pond Parklet",
+    "Academic Quad",
+    "Medical School Quad",
+    "NYIT de Seversky Mansion Annex Study Spaces"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

@@ -1,0 +1,64 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.lakeforest.edu/student-life/commuter-students",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakeforest.edu/student-life/commuter-students",
+      "error": ""
+    },
+    {
+      "url": "https://www.lakeforest.edu/academic-resources/library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakeforest.edu/academic-resources/library",
+      "error": ""
+    },
+    {
+      "url": "https://www.lakeforest.edu/news-and-events/college-and-art-institute-unite-for-cultural-exploration",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakeforest.edu/news-and-events/college-and-art-institute-unite-for-cultural-exploration",
+      "error": ""
+    },
+    {
+      "url": "https://www.lakeforest.edu/about-us/administration/campus-life/office-for-community-advocacy-resources-and-empowerment/first-connection",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakeforest.edu/about-us/administration/campus-life/office-for-community-advocacy-resources-and-empowerment/first-connection",
+      "error": ""
+    },
+    {
+      "url": "https://www.lakeforest.edu/academics/majors-and-minors/theater/upcoming-shows",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakeforest.edu/academics/majors-and-minors/theater/upcoming-shows",
+      "error": ""
+    },
+    {
+      "url": "https://www.lcfpd.org/fort-sheridan/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.lcfpd.org/fort-sheridan/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Center for Chicago Programs Lobby",
+    "Donnelley and Lee Library"
+  ],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

@@ -1,0 +1,82 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "4 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://library.georgetown.edu/libraries/lauinger",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.georgetown.edu/libraries/lauinger",
+      "error": ""
+    },
+    {
+      "url": "https://library.georgetown.edu/study-spaces/pierce",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.georgetown.edu/spaces/pierce-reading-room",
+      "error": ""
+    },
+    {
+      "url": "https://library.georgetown.edu/spaces/quiet-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.georgetown.edu/spaces/quiet-room",
+      "error": ""
+    },
+    {
+      "url": "https://library.georgetown.edu/maps/lau/2nd-floor",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.georgetown.edu/maps/lau/2nd-floor",
+      "error": ""
+    },
+    {
+      "url": "https://library.georgetown.edu/carrels-lockers-space/study-space/lounges",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.georgetown.edu/carrels-lockers-space/study-space/lounges",
+      "error": ""
+    },
+    {
+      "url": "https://library.georgetown.edu/study-space/quiet",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.georgetown.edu/study-space/quiet",
+      "error": ""
+    },
+    {
+      "url": "https://library.georgetown.edu/accessibility",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.georgetown.edu/accessibility",
+      "error": ""
+    },
+    {
+      "url": "https://library.georgetown.edu/carrels-lockers-space/group-study",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.georgetown.edu/carrels-lockers-space/group-study",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Joseph Mark Lauinger Memorial Library",
+    "Pierce Reading Room",
+    "Blommer Science Library",
+    "Millennium Room"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

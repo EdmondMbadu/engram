@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/oh/kettering/2901-wilmington-pike/187.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/oh/kettering/2901-wilmington-pike/187.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/oh/kettering/2101-east-dorothy-lane.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/oh/kettering/2101-east-dorothy-lane.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/oh/kettering/4003-wilmington-pike",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/oh/kettering/4003-wilmington-pike",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/ohio/kettering/5293-cornerstone-n-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/ohio/kettering/5293-cornerstone-n-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://locations.raisingcanes.com/oh/beavercreek/4384-indian-ripple-road",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.raisingcanes.com/oh/beavercreek/4384-indian-ripple-road",
+      "error": ""
+    },
+    {
+      "url": "https://locations.raisingcanes.com/oh/beavercreek/2755-fairfield-commons",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.raisingcanes.com/oh/beavercreek/2755-fairfield-commons",
+      "error": ""
+    },
+    {
+      "url": "https://www.steaknshake.com/locations/oh-dayton-wilmington-pike/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.steaknshake.com/locations/oh-dayton-wilmington-pike/",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.ihop.com/en-us/oh/dayton/breakfast-6930-miller-lane-3703/late-night-food",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.ihop.com/en-us/oh/dayton/breakfast-6930-miller-lane-3703/late-night-food",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wafflehouse.com/dayton-oh-394",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wafflehouse.com/dayton-oh-394/",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/oh/miamisburg/8240-springboro-pike/20210.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/oh/miamisburg/8240-springboro-pike/20210.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

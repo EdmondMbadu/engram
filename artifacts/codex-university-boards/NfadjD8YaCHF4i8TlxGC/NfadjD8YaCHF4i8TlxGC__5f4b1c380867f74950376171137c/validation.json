@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.csueastbay.edu/slic/signature-events/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csueastbay.edu/slic/signature-events/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.csueastbay.edu/commencement/ceremonies/cultural-academic-grads.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csueastbay.edu/commencement/ceremonies/cultural-academic-grads.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 2,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

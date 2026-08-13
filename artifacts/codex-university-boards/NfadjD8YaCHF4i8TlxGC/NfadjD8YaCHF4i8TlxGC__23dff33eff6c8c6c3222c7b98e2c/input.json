@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "R8dzAFrK7TbCXzUZIoiM",
+    "schoolName": "Hillsdale College",
+    "shortSchoolName": "Hillsdale College",
+    "townName": "Hillsdale",
+    "state": "MI",
+    "countryCode": "US",
+    "unitId": "170286",
+    "website": "https://www.hillsdale.edu/",
+    "latitude": 41.933682,
+    "longitude": -84.633195,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=hillsdale.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=hillsdale.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain Hillsdale College",
+  "excluded_subjects": [
+    "Autumn in the Arb",
+    "Classical Liberal Organization Presentations and Discussions",
+    "Center for Constructive Alternatives Lectures",
+    "Daughtrey Art Gallery Exhibitions",
+    "College Choir and Chamber Choir Concerts",
+    "Markel Auditorium Theatre Performances",
+    "Hillsdale College Big Band Concerts",
+    "McNamara Rehearsal Hall Music Masterclasses",
+    "Conrad Recital Hall Faculty Recitals",
+    "Choral Evensong Services"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

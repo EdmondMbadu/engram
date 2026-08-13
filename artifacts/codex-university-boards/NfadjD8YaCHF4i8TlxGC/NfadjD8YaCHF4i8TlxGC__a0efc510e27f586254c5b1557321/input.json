@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "QD3WsrY409F7UfWHAMlx",
+    "schoolName": "Hendrix College",
+    "shortSchoolName": "Hendrix College",
+    "townName": "Conway",
+    "state": "AR",
+    "countryCode": "US",
+    "unitId": "107080",
+    "website": "https://www.hendrix.edu/",
+    "latitude": 35.101565,
+    "longitude": -92.443256,
+    "heroUrl": "https://via.hendrix.edu/wp-content/uploads/2026/08/hendrix-carnegie-481-2-scaled.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=hendrix.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "Bailey Library Learning Commons",
+    "Bailey Library Reading Room",
+    "Bailey Library Seminar Room",
+    "Snoddy Computer Lab",
+    "Snoddy Study Carrels",
+    "Bailey Library Group Study Rooms",
+    "Bailey Library Senior Researcher Space",
+    "Murphy House First-Floor Library",
+    "Educational Technology Center",
+    "Mills Lab (Mills 104C)"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

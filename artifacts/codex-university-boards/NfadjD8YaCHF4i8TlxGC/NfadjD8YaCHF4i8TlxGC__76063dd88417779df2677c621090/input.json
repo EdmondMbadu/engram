@@ -1,0 +1,71 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "zI5TKvxzX9r8mSyHCcz9",
+    "schoolName": "University of Missouri-Columbia",
+    "shortSchoolName": "University of Missouri-Columbia",
+    "townName": "Columbia",
+    "state": "MO",
+    "countryCode": "US",
+    "unitId": "178396",
+    "website": "https://missouri.edu/",
+    "latitude": 38.94531,
+    "longitude": -92.328843,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/b/b8/University_of_Missouri_seal.svg/250px-University_of_Missouri_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=missouri.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Room 114",
+    "Room 202 (Cast Gallery)",
+    "Grand Reading Room (201)",
+    "Information Commons",
+    "The Colonnade",
+    "East Stacks, Third Floor",
+    "East Stacks, Fourth Floor",
+    "Room 4A51",
+    "Sensory Room 2E21",
+    "Room 4D12",
+    "Peace Park",
+    "Francis Quadrangle",
+    "Ellis Library Grand Reading Room",
+    "Nutter Information Commons",
+    "Bookmark Café",
+    "Journalism Library",
+    "MizzouRec Trail",
+    "Stankowski Field",
+    "Rothwell Lawn",
+    "Tiger Garden installation at MizzouRec",
+    "Bite",
+    "Pickleman's Gourmet Cafe — Downtown Columbia",
+    "Pickleman's Gourmet Cafe — Old 63",
+    "Southside Pizza & Pub",
+    "The Grind — South",
+    "Taco Bell — 411 S Providence Rd",
+    "Taco Bell — 508 E Nifong Blvd",
+    "Taco Bell — 220 Business Loop 70 E",
+    "Taco Bell — 1421 Cinnamon Hill Lane",
+    "Papa Johns — 1205 E Broadway"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

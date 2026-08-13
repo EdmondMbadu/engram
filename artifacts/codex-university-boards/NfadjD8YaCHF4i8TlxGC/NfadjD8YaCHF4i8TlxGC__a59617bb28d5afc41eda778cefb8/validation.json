@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://gardens.charlotte.edu/visiting-the-gardens/admission-and-hours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gardens.charlotte.edu/visiting-the-gardens/admission-and-hours/",
+      "error": ""
+    },
+    {
+      "url": "https://gardens.charlotte.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gardens.charlotte.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://gardens.charlotte.edu/gardens-and-greenhouse/susie-harwood-garden/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gardens.charlotte.edu/gardens-and-greenhouse/susie-harwood-garden/",
+      "error": ""
+    },
+    {
+      "url": "https://gardens.charlotte.edu/visiting-the-gardens/seasonal/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gardens.charlotte.edu/visiting-the-gardens/seasonal/",
+      "error": ""
+    },
+    {
+      "url": "https://gardens.charlotte.edu/niner-nation/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gardens.charlotte.edu/niner-nation/",
+      "error": ""
+    },
+    {
+      "url": "https://online.charlotte.edu/student-resources/faq/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://online.charlotte.edu/student-resources/faq/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

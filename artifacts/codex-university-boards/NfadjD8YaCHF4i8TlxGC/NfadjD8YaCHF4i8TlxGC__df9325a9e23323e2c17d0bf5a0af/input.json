@@ -1,0 +1,67 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "2h5BRxU4tyz89njL83a5",
+    "schoolName": "Grand Valley State University",
+    "shortSchoolName": "Grand Valley State University",
+    "townName": "Allendale",
+    "state": "MI",
+    "countryCode": "US",
+    "unitId": "170082",
+    "website": "https://www.gvsu.edu/",
+    "latitude": 42.963001,
+    "longitude": -85.889826,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=gvsu.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=gvsu.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain Grand Valley State University",
+  "excluded_subjects": [
+    "Allendale Township Library",
+    "Allendale Community Park",
+    "Mancino's Pizza & Grinders – Allendale",
+    "Peppino's Pizza – Allendale",
+    "Jimmy John's Allendale #0677",
+    "Culver's of Allendale",
+    "Domino's Allendale",
+    "BIGGBY Coffee of Allendale",
+    "DQ / Orange Julius Allendale",
+    "Family Fare – Allendale",
+    "Mary Idema Pew Library Atrium",
+    "Mary Idema Pew Library Reading Rooms",
+    "Mary Idema Pew Library Innovation Zone",
+    "Mary Idema Pew Library Reading Garden",
+    "Mary Idema Pew Library Roof Terrace",
+    "Knowledge Market",
+    "Russel H. Kirkhof Center",
+    "GVSU Arboretum",
+    "Ravines Natural Area Trails",
+    "GVSU Climbing Center",
+    "Mary Idema Pew Library Third-Floor Reading Room",
+    "Mary Idema Pew Library Fourth-Floor Reading Room",
+    "Mary Idema Pew Library Conference-Style Study Rooms",
+    "Mary Idema Pew Library Innovation-Zone Study Alcoves",
+    "Mary Idema Pew Library Stacks Seating",
+    "Mary Idema Pew Library Collaboration Areas",
+    "Mary Idema Pew Library Individual Study Pods"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "WqTIq43W46PdkgX2HQ5D",
+    "schoolName": "United States Military Academy",
+    "shortSchoolName": "United States Military Academy",
+    "townName": "West Point",
+    "state": "NY",
+    "countryCode": "US",
+    "unitId": "197036",
+    "website": "https://www.westpoint.edu/",
+    "latitude": 41.388988,
+    "longitude": -73.956772,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/U.S._Military_Academy_Coat_of_Arms.svg/250px-U.S._Military_Academy_Coat_of_Arms.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=westpoint.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "West Point Museum",
+    "Highland Falls Library",
+    "Town of Highlands Town Hall",
+    "Hacienda Restaurant",
+    "Brother's Pizza",
+    "Grandma's Bagels & Pizza",
+    "Andy's Restaurant",
+    "West Point Pizza",
+    "Bear Mountain Bakery",
+    "The Wintermarket"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

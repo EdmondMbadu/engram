@@ -1,0 +1,60 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "TOqlVEXRP7GUk0vQJIp1",
+    "schoolName": "Muhlenberg College",
+    "shortSchoolName": "Muhlenberg College",
+    "townName": "Allentown",
+    "state": "PA",
+    "countryCode": "US",
+    "unitId": "214175",
+    "website": "https://www.muhlenberg.edu/",
+    "latitude": 40.596416,
+    "longitude": -75.508502,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/d/d1/Muhlenberg_college_seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=muhlenberg.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "Orientation Candle-lighting",
+    "Scarving",
+    "Welcome Back Picnic",
+    "A Cappella Fest",
+    "Greek Week and Greek Sing",
+    "Jefferson Field Day",
+    "Late Night Breakfast",
+    "Senior Days Candle-lighting",
+    "Senior Class Bell Tower Tours",
+    "National Mule Day",
+    "Academic Row",
+    "Trexler Library",
+    "Wood Dining Commons",
+    "Dorothy and Dexter Baker Center for the Arts",
+    "Martin Art Gallery",
+    "Trexler Pavilion for Theatre and Dance",
+    "Life Sports Center",
+    "Scotty Wood Stadium",
+    "General's Quarters",
+    "Haas College Center"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

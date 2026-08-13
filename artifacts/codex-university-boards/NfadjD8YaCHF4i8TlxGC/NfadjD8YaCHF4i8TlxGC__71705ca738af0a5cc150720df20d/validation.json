@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://library.buffalo.edu/use/studyspaces.html?tag=ub-entity%3Alibraries%2Fstudy-spaces%2Flocation%2Flockwood-memorial-library&tag=ub-entity%3Alibraries%2Fstudy-spaces%2Fnoise-level%2Fconversational",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.buffalo.edu/use/studyspaces.html?tag=ub-entity%3Alibraries%2Fstudy-spaces%2Flocation%2Flockwood-memorial-library&tag=ub-entity%3Alibraries%2Fstudy-spaces%2Fnoise-level%2Fconversational",
+      "error": ""
+    },
+    {
+      "url": "https://library.buffalo.edu/use/studyspaces.html?tag=ub-entity%3Alibraries%2Fstudy-spaces%2Ffeatures%2Fcomfy-furniture&tag=ub-entity%3Alibraries%2Fstudy-spaces%2Flocation%2Flockwood-memorial-library&tag=ub-entity%3Alibraries%2Fstudy-spaces%2Fspace-type%2Findividual-study",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.buffalo.edu/use/studyspaces.html?tag=ub-entity%3Alibraries%2Fstudy-spaces%2Ffeatures%2Fcomfy-furniture&tag=ub-entity%3Alibraries%2Fstudy-spaces%2Flocation%2Flockwood-memorial-library&tag=ub-entity%3Alibraries%2Fstudy-spaces%2Fspace-type%2Findividual-study",
+      "error": ""
+    },
+    {
+      "url": "https://library.buffalo.edu/use/studyspaces.html?tag=ub-entity%3Alibraries%2Fstudy-spaces%2Ffeatures%2Fnatural-light&tag=ub-entity%3Alibraries%2Fstudy-spaces%2Ffeatures%2Freservable&tag=ub-entity%3Alibraries%2Fstudy-spaces%2Ffeatures%2Fwhiteboard",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.buffalo.edu/use/studyspaces.html?tag=ub-entity%3Alibraries%2Fstudy-spaces%2Ffeatures%2Fnatural-light&tag=ub-entity%3Alibraries%2Fstudy-spaces%2Ffeatures%2Freservable&tag=ub-entity%3Alibraries%2Fstudy-spaces%2Ffeatures%2Fwhiteboard",
+      "error": ""
+    },
+    {
+      "url": "https://library.buffalo.edu/use/studyspaces.html?tag=ub-entity%3Alibraries%2Fstudy-spaces%2Ffeatures%2Fnatural-light&tag=ub-entity%3Alibraries%2Fstudy-spaces%2Ffeatures%2Fquiet&tag=ub-entity%3Alibraries%2Fstudy-spaces%2Fspace-type%2Findividual-study",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.buffalo.edu/use/studyspaces.html?tag=ub-entity%3Alibraries%2Fstudy-spaces%2Ffeatures%2Fnatural-light&tag=ub-entity%3Alibraries%2Fstudy-spaces%2Ffeatures%2Fquiet&tag=ub-entity%3Alibraries%2Fstudy-spaces%2Fspace-type%2Findividual-study",
+      "error": ""
+    },
+    {
+      "url": "https://library.buffalo.edu/use/studyspaces.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.buffalo.edu/use/studyspaces.html",
+      "error": ""
+    },
+    {
+      "url": "https://library.buffalo.edu/use/studyspaces.html?tag=ub-entity%3Alibraries%2Fstudy-spaces%2Ffeatures%2Fnatural-light&tag=ub-entity%3Alibraries%2Fstudy-spaces%2Fnoise-level%2Fconversational",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.buffalo.edu/use/studyspaces.html?tag=ub-entity%3Alibraries%2Fstudy-spaces%2Ffeatures%2Fnatural-light&tag=ub-entity%3Alibraries%2Fstudy-spaces%2Fnoise-level%2Fconversational",
+      "error": ""
+    },
+    {
+      "url": "https://www.buffalo.edu/campusliving/for-current-students/academic-support/academic-success-centers-and-study-spaces.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.buffalo.edu/campusliving/for-current-students/academic-support/academic-success-centers-and-study-spaces.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

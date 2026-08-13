@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://myrtleavenue.org/explore/myrtle-merchants/bergen-bagels/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://myrtleavenue.org/explore/myrtle-merchants/bergen-bagels/",
+      "error": ""
+    },
+    {
+      "url": "https://myrtleavenue.org/its-on-myrtle-2025-myrtle-avenue-neighborhood-guide/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://myrtleavenue.org/wp-content/uploads/2025/09/Myrtle_Guide_Layout_2025_final.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://myrtleavenue.org/explore/myrtle-merchants/green-in-bklyn/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://myrtleavenue.org/explore/myrtle-merchants/green-in-bklyn/",
+      "error": ""
+    },
+    {
+      "url": "https://myrtleavenue.org/explore/myrtle-merchants/myrtle-ave-bagels/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://myrtleavenue.org/explore/myrtle-merchants/myrtle-ave-bagels/",
+      "error": ""
+    },
+    {
+      "url": "https://myrtleavenue.org/explore/myrtle-merchants/petees-pie/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://myrtleavenue.org/explore/myrtle-merchants/petees-pie/",
+      "error": ""
+    },
+    {
+      "url": "https://myrtleavenue.org/explore/myrtle-merchants/business-category/cafe-sandwiches-diner/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://myrtleavenue.org/explore/myrtle-merchants/business-category/cafe-sandwiches-diner/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

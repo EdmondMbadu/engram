@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.westpoint.edu/cadet-journey/cadet-life/day-in-the-life",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.westpoint.edu/cadet-journey/day-in-the-life",
+      "error": ""
+    },
+    {
+      "url": "https://www.westpoint.edu/news/west-point-news/company-teams-fight-earn-fall-brigade-titles",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.westpoint.edu/news/west-point-news/company-teams-fight-earn-fall-brigade-titles",
+      "error": ""
+    },
+    {
+      "url": "https://mwi.westpoint.edu/mwi-speaker-series-hon-christopher-wray-fbi-director/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mwi.westpoint.edu/mwi-speaker-series-hon-christopher-wray-fbi-director/",
+      "error": ""
+    },
+    {
+      "url": "https://mwi.westpoint.edu/mwi-hosts-inaugural-sandhurst-conference/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mwi.westpoint.edu/mwi-hosts-inaugural-sandhurst-conference/",
+      "error": ""
+    },
+    {
+      "url": "https://dhc.westpoint.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dhc.westpoint.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://press.westpoint.edu/books/biography-of-sylvanus-thayer/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://press.westpoint.edu/books/biography-of-sylvanus-thayer/",
+      "error": ""
+    },
+    {
+      "url": "https://press.westpoint.edu/wp-content/uploads/sites/5/2026/03/Agenda.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://press.westpoint.edu/wp-content/uploads/sites/5/2026/03/Agenda.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

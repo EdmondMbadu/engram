@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://uknow.uky.edu/campus-news/wow-american-eats-gives-uk-s-campus-new-dining-option",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://uknow.uky.edu/campus-news/wow-american-eats-gives-uk-s-campus-new-dining-option",
+      "error": ""
+    },
+    {
+      "url": "https://nazshalal.com/stores/nazs-halal-food-lexington/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://nazshalal.com/stores/nazs-halal-food-lexington/",
+      "error": ""
+    },
+    {
+      "url": "https://mail.madmushroom.com/lexington.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mail.madmushroom.com/lexington.htm",
+      "error": ""
+    },
+    {
+      "url": "https://locations.raisingcanes.com/ky/lexington/544-s-upper-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.raisingcanes.com/ky/lexington/544-s-upper-street",
+      "error": ""
+    },
+    {
+      "url": "https://locations.raisingcanes.com/ky/lexington/2030-harrodsburg-rd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.raisingcanes.com/ky/lexington/2030-harrodsburg-road",
+      "error": ""
+    },
+    {
+      "url": "https://locations.papajohns.com/united-states/ky/40508/lexington/265a-avenue-of-champions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.papajohns.com/united-states/ky/40508/lexington/265a-avenue-of-champions",
+      "error": ""
+    },
+    {
+      "url": "https://locations.papajohns.com/united-states/ky/40503/lexington/123-southland-drive",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.papajohns.com/united-states/ky/40503/lexington/123-southland-drive",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wafflehouse.com/ky/lexington/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wafflehouse.com/ky/lexington/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wafflehouse.com/lexington-ky-1408",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wafflehouse.com/lexington-ky-1408/",
+      "error": ""
+    },
+    {
+      "url": "https://www.goodfellaspizzeria.com/mill-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.goodfellaspizzeria.com/mill-street",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

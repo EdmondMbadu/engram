@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "9hdO8p9iKWmiZcVWQLtp",
+    "schoolName": "Misericordia University",
+    "shortSchoolName": "Misericordia University",
+    "townName": "Dallas",
+    "state": "PA",
+    "countryCode": "US",
+    "unitId": "214069",
+    "website": "https://www.misericordia.edu/",
+    "latitude": 41.345277,
+    "longitude": -75.971541,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=misericordia.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=misericordia.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "Welcome Week",
+    "Convocation",
+    "Homecoming",
+    "Annual Homecoming Talent Show",
+    "Annual David A. Evans Memorial Color Run",
+    "Family Weekend",
+    "Fall Fest",
+    "5 Days of Give-a-ways",
+    "Midnight Breakfast",
+    "Chocolate Week"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

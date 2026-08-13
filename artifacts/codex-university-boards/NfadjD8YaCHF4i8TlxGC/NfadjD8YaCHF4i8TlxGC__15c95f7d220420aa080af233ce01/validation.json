@@ -1,0 +1,71 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "The title’s “Claimed by 9am” phrase is editorial framing; no card asserts that these spaces fill by that time.",
+    "Coordinates and map URLs are null because room-level geodata was not verified from the cited official pages.",
+    "Library access and hours can vary by academic calendar, holiday, and BuzzCard status; consult current Library hours before visiting."
+  ],
+  "reachability": [
+    {
+      "url": "https://library.gatech.edu/study-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.gatech.edu/study-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.gatech.edu/innovation-ideation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.gatech.edu/innovation-ideation",
+      "error": ""
+    },
+    {
+      "url": "https://library.gatech.edu/grad-community",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.gatech.edu/grad-community",
+      "error": ""
+    },
+    {
+      "url": "https://library.gatech.edu/scifi-lounge",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.gatech.edu/scifi-lounge",
+      "error": ""
+    },
+    {
+      "url": "https://library.gatech.edu/spaces-technology/media-scholarship-commons",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.gatech.edu/spaces-technology/media-scholarship-commons",
+      "error": ""
+    },
+    {
+      "url": "https://library.gatech.edu/archives/archives-reading-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.gatech.edu/archives/archives-reading-room",
+      "error": ""
+    },
+    {
+      "url": "https://library.gatech.edu/spaces-technology/reserve/study-rooms",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.gatech.edu/spaces-technology/reserve/study-rooms",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

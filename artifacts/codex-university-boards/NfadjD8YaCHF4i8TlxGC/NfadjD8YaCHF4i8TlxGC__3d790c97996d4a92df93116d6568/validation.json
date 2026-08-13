@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.lewisu.edu/campuses/romeoville/maincampusmap.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lewisu.edu/campuses/romeoville/maincampusmap.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.weather.gov/lot/AboutNWSchicago",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.weather.gov/lot/AboutNWSchicago",
+      "error": ""
+    },
+    {
+      "url": "https://www.romeoville.org/856/About-Us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.romeoville.org/856/About-Us",
+      "error": ""
+    },
+    {
+      "url": "https://www.whiteoaklibrary.org/romeoville-branch",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.whiteoaklibrary.org/romeoville-branch",
+      "error": ""
+    },
+    {
+      "url": "https://romeovilleathleticcenter.com/DocumentCenter/View/8389/Parks-and-Trails-Map",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://romeovilleathleticcenter.com/DocumentCenter/View/8389/Parks-and-Trails-Map",
+      "error": ""
+    },
+    {
+      "url": "https://www.reconnectwithnature.org/Preserves-Trails/Preserves/Prairie-Bluff",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.reconnectwithnature.org/Preserves-Trails/Preserves/Prairie-Bluff",
+      "error": ""
+    },
+    {
+      "url": "https://www.prairiebluffgc.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.prairiebluffgc.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

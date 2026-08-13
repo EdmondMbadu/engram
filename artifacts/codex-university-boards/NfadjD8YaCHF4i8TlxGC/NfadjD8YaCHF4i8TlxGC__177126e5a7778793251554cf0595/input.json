@@ -1,0 +1,40 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "mDZ5CCMZryvwtWuLJkxz",
+    "schoolName": "Salisbury University",
+    "shortSchoolName": "Salisbury University",
+    "townName": "Salisbury",
+    "state": "MD",
+    "countryCode": "US",
+    "unitId": "163851",
+    "website": "https://www.salisbury.edu/",
+    "latitude": 38.34648,
+    "longitude": -75.604815,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/5/52/Seal_of_Salisbury_University_%28250x250%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=salisbury.edu&sz=256"
+  },
+  "template": {
+    "id": "college-campus-tour-skips",
+    "version": "1.0",
+    "titlePattern": "What the Campus Tour Skips: {count} Places Students Share With Each Other",
+    "editorialBrief": "Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.",
+    "researchQueries": [
+      "student favorite campus places",
+      "campus map student spaces",
+      "student newspaper campus places"
+    ],
+    "count": 10,
+    "icon": "style",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place",
+      "study_space"
+    ],
+    "freshnessDays": 365
+  },
+  "exact_title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+  "excluded_subjects": [],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

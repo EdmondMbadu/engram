@@ -1,0 +1,295 @@
+Reading additional input from stdin...
+2026-08-13T07:42:02.633551Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa11-58db-77a0-825f-61e02f6c217b.1786606868699821000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa12-2b2d-7700-b8cf-e99a6ddc8b86
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"LR3Q0wCT9NWe7gOFPdzA","schoolName":"Indiana University-Bloomington","shortSchoolName":"Indiana University-Bloomington","townName":"Bloomington","state":"IN","countryCode":"US","website":"https://bloomington.iu.edu/","latitude":39.16609,"longitude":-86.526559},"templates":[{"id":"college-zero-dollar-hangs","version":"1.0","titlePattern":"Zero Dollars: {count} Hangs That Cost Nothing","editorialBrief":"Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.","researchQueries":["free student activities campus","free campus spaces students","free public places near campus"],"count":10,"icon":"money_off","primarySubjectType":"activity","allowedSubjectTypes":["activity","place"],"freshnessDays":180,"exactTitle":"Zero Dollars: 10 Hangs That Cost Nothing"}]}
+2026-08-13T07:42:02.683980Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa11-5bfe-76b1-8b68-5d412449f0e7.1786606869503421000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:42:02.757477Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa11-5bca-74f0-85a2-f4a7b73e62a7.1786606869451149000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:42:02.979456Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa11-58db-7a22-88ec-ddfa53729753.1786606868699839000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:42:03.026304Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa11-58d2-7270-98eb-988e1652a953.1786606868690932000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:42:03.191023Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa11-5bcb-77b3-80a1-aa9b01a544d1.1786606869451778000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:42:03.251527Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa11-58d3-7bf2-94a7-f8a01ae532b0.1786606868691452000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:42:03.316193Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa11-5bcd-7df2-afaf-6ee7cd721b62.1786606869455037000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:42:03.329847Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:42:03.341458Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:42:03.438041Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa11-5bcf-7e50-868a-d3b5a5add29f.1786606869457019000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:42:03.522262Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa11-5bcb-7d03-b876-8ebd25eca4ed.1786606869452105000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:42:03.776945Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa11-58e4-7f82-93ad-156f37dd9a7e.1786606868709179000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:42:03.913864Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa11-58d9-7e13-87c2-b394f6e2181f.1786606868698493000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:42:03.995118Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa11-5bca-71a1-a2d4-06193f64c2a1.1786606869450461000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Indiana University-Bloomington",
+  "town_name": "Bloomington",
+  "boards": [{
+    "complete": false,
+    "school_name": "Indiana University-Bloomington",
+    "town_name": "Bloomington",
+    "template_id": "college-zero-dollar-hangs",
+    "title": "Zero Dollars: 10 Hangs That Cost Nothing",
+    "description": "",
+    "icon": "money_off",
+    "cards": [{
+      "subject_id": "",
+      "subject_type": "activity",
+      "entity_name": "Research in progress",
+      "title": "Verifying ten genuinely free activities",
+      "subtitle": "",
+      "notes": "I’m checking direct official pages for no-cost access, public or student eligibility, and precise location details.",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    }
+    ,
+    {
+      "subject_id": "",
+      "subject_type": "activity",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "",
+      "subject_type": "activity",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "",
+      "subject_type": "activity",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "",
+      "subject_type": "activity",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "",
+      "subject_type": "activity",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "",
+      "subject_type": "activity",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "",
+      "subject_type": "activity",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "",
+      "subject_type": "activity",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "",
+      "subject_type": "activity",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    }
+  ],
+  "warnings": ["Research update only; final JSON will replace this incomplete placeholder."]
+  }],
+  "warnings": ["Research is underway."]
+}
+web search: 
+web search: site:iu.edu Bloomington free admission museum gallery arboretum greenhouse ...
+web search: 
+web search: site:iu.edu Bloomington "Admission is free" museum gallery ...
+web search: 
+web search: site:libraries.indiana.edu Wylie House "free" tour ...
+web search: 
+web search: site:iu.edu Bloomington 2026 "free and open to the public" recurring ...
+codex
+{"complete":true,"school_name":"Indiana University-Bloomington","town_name":"Bloomington","boards":[{"complete":true,"school_name":"Indiana University-Bloomington","town_name":"Bloomington","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"Ten verified no-cost outings on or near IU Bloomington, from museum galleries and historic tours to a nature preserve and an outdoor cultural program.","icon":"money_off","cards":[{"subject_id":"revolution-reflection-washington-portrait","subject_type":"activity","entity_name":"Gilbert Stuart’s George Washington Portrait","title":"Meet Washington at the Eskenazi","subtitle":"A free Revolution & Reflection stop at the Eskenazi Museum of Art","notes":"Bring a friend to the European and American gallery, compare details in Stuart’s portrait, then discuss how leaders shaped public images.","short_summary":"Examine an early presidential portrait together inside the Eskenazi Museum’s public galleries.","evidence_claim":"IU identifies Gilbert Stuart’s George Washington portrait as a Revolution & Reflection destination and states that no admission fee or campus affiliation is required.","source_url":"https://bloomington.iu.edu/campus-life/events/america-250/self-guided-tour.html","source_title":"Revolution and Reflection Self-Guided Tour","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open to visitors without campus affiliation. Consult the page for current Eskenazi Museum gallery hours and campus-break changes.","cost_status":"free","under21_safe":true},{"subject_id":"revolution-reflection-benton-murals","subject_type":"activity","entity_name":"The Social History of Indiana Murals","title":"Read Indiana History Across the Walls","subtitle":"Thomas Hart Benton’s murals at IU Auditorium","notes":"Walk the mural sequence with classmates, choose one panel each, and trade observations about the people, industries, and conflicts depicted.","short_summary":"Use Benton’s monumental mural cycle as the centerpiece of a free group art-and-history discussion.","evidence_claim":"IU names Thomas Hart Benton’s The Social History of Indiana murals at IU Auditorium as a Revolution & Reflection stop requiring no admission fee or campus affiliation.","source_url":"https://bloomington.iu.edu/campus-life/events/america-250/self-guided-tour.html","source_title":"Revolution and Reflection Self-Guided Tour","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"No campus affiliation is required. Check the official page and IU Auditorium access information before visiting, as availability can change.","cost_status":"free","under21_safe":true},{"subject_id":"revolution-reflection-dunlap-broadside","subject_type":"activity","entity_name":"Dunlap Broadside of the Declaration of Independence","title":"See an Original Declaration Broadside","subtitle":"A free Lilly Library exhibition stop","notes":"Visit with a small group, inspect the displayed broadside and supporting documents, then compare what each person notices in the printing.","short_summary":"Gather around IU’s original Dunlap broadside for a close look at a foundational American document.","evidence_claim":"IU states that its original Dunlap broadside is exhibited at the Lilly Library through Revolution & Reflection, with no admission fee or campus affiliation required.","source_url":"https://bloomington.iu.edu/campus-life/events/america-250/self-guided-tour.html","source_title":"Revolution and Reflection Self-Guided Tour","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"No admission or campus affiliation is required. Confirm Lilly Library exhibition hours before arriving; holidays and breaks may affect access.","cost_status":"free","under21_safe":true},{"subject_id":"iumaa-gallery-visit","subject_type":"place","entity_name":"Indiana University Museum of Archaeology and Anthropology","title":"Trade Stories Across the IUMAA Galleries","subtitle":"Archaeology and world cultures at 416 N. Indiana Avenue","notes":"Choose an object that sparks a question, read its interpretation together, and let each person explain what changed their first impression.","short_summary":"Explore cultural heritage and archaeological collections through a no-cost gallery conversation.","evidence_claim":"The museum’s official site says the Indiana University Museum of Archaeology and Anthropology is free and open to all.","source_url":"https://iumaa.iu.edu/","source_title":"Museum of Archaeology and Anthropology: Indiana University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to all. Review the museum’s official site for current seasonal hours and closure notices before meeting there.","cost_status":"free","under21_safe":true},{"subject_id":"wylie-house-guided-tour","subject_type":"activity","entity_name":"Wylie House Museum Guided Tour","title":"Tour IU’s 1835 Presidential Home","subtitle":"A free docent-led visit at Wylie House Museum","notes":"Meet before the hour, join the guided tour, and compare the family artifacts and domestic spaces that reveal early IU and Bloomington life.","short_summary":"Step through a furnished 1835 home while a guide connects the Wylie family to IU’s early history.","evidence_claim":"IU Libraries states that free guided Wylie House Museum tours are offered to the public on Fridays and Saturdays with no reservation needed.","source_url":"https://libraries.indiana.edu/about-wylie-house","source_title":"About the Wylie House Museum | Indiana University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public tours run Friday and Saturday, 10 a.m.–4 p.m., on the hour; the last begins at 3 p.m. Closures apply during IU breaks and holidays.","cost_status":"free","under21_safe":true},{"subject_id":"grunwald-gallery-exhibitions","subject_type":"place","entity_name":"Grunwald Gallery of Art","title":"Compare Contemporary Art at Grunwald","subtitle":"Free exhibitions inside IU’s Fine Arts Building","notes":"Walk the current show in pairs, select two contrasting works, and regroup to compare how materials or presentation shaped your reactions.","short_summary":"Turn a contemporary-art exhibition into an easy, conversation-led afternoon with friends.","evidence_claim":"The Grunwald Gallery’s official page states that all exhibitions are free and open to the public.","source_url":"https://soaad.indiana.edu/exhibitions/grunwald-gallery/index.html","source_title":"Grunwald Gallery: Exhibitions: Eskenazi School of Art, Architecture + Design","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open to the public Tuesday–Saturday, noon–4 p.m.; closed Sunday and Monday. Check the exhibition calendar before visiting.","cost_status":"free","under21_safe":true},{"subject_id":"biology-greenhouse-plant-walk","subject_type":"place","entity_name":"Indiana University Bloomington Biology Greenhouse","title":"Take a Tropical Plant Break","subtitle":"A warm greenhouse walk on the Bloomington campus","notes":"Move slowly through the plant collections, pick one unfamiliar specimen per person, and compare visible adaptations before heading outside.","short_summary":"Share a quiet plant-observation session among the greenhouse’s living collections.","evidence_claim":"IU News identifies the IU Bloomington Biology Greenhouse and states that it is free and open to the public.","source_url":"https://news.iu.edu/live/news/26068-rare-flowers-from-jordan-hall-greenhouses-agave","source_title":"Rare flowers from Jordan Hall greenhouse’s Agave americana: IU News","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The supporting page confirms free public access but contains older hours and an older building name; verify the current entrance and hours before going.","cost_status":"free","under21_safe":true},{"subject_id":"griffy-lake-nature-walk","subject_type":"activity","entity_name":"Griffy Lake Nature Preserve","title":"Walk and Talk Around Griffy Lake","subtitle":"A free nature-preserve outing north of campus","notes":"Choose a marked trail suited to the group, bring water, stay together, and pause at lake or woodland viewpoints for conversation and photos.","short_summary":"Trade campus scenery for a social walk through protected woods, wetlands, and lakeside habitat.","evidence_claim":"The City of Bloomington states that admission to Griffy Lake Nature Preserve is free.","source_url":"https://bloomington.in.gov/news/2018/01/04/3057","source_title":"Deer Herd Reduction at Griffy Lake Nature Preserve Completed for Season","source_kind":"government","source_published_at":"2018-01-04","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Admission is free. Use the current City of Bloomington preserve information for trail conditions, operating hours, and temporary closures.","cost_status":"free","under21_safe":true},{"subject_id":"museum-miles-loop-two","subject_type":"activity","entity_name":"Museum Miles Loop 2","title":"Link Two Museums on a One-Mile Walk","subtitle":"An accessible route from IUMAA to Wylie House Museum","notes":"Start at IUMAA, follow Indiana Avenue toward South Henderson and Second Street, and use the walk between museums to swap exhibit highlights.","short_summary":"Combine conversation, light movement, and two cultural stops on an approximately one-mile route.","evidence_claim":"Healthy IU maps Museum Miles Loop 2 between the archaeology and world-cultures museum site and Wylie House, describes it as about one mile and ADA accessible, and says all museums on the routes are free and public.","source_url":"https://healthy.iu.edu/campus-programs-services/bloomington/physical-activity.html","source_title":"Physical Activity: IU Bloomington: Programs & Services: Healthy IU","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The outdoor route is free; museum entry is also free and public. Check each museum’s current hours before starting the loop.","cost_status":"free","under21_safe":true},{"subject_id":"granfalloon-switchyard-daytime","subject_type":"activity","entity_name":"Granfalloon Daytime Festivities at Switchyard Park","title":"Catch Granfalloon in the Park","subtitle":"Free all-ages daytime programming on August 29, 2026","notes":"Meet during the afternoon for live performances, interactive activities, and installations; enjoy the free program without buying from vendors.","short_summary":"Spend a festival afternoon together with art, activities, and performances in Switchyard Park.","evidence_claim":"IU News states that Granfalloon’s 2026 Switchyard Park concert weekends include free, family-friendly daytime festivities and identifies an August 29 date.","source_url":"https://news.iu.edu/live/news/50961-granfalloon-announces-lineup-for-outdoor-concert","source_title":"Granfalloon announces lineup for outdoor concert series at Switchyard Park: IU News","source_kind":"university_official","source_published_at":"2026-05-12","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The remaining listed date is August 29, 2026. Daytime festivities are free and all-ages; food trucks and artisan vendors are optional purchases.","cost_status":"free","under21_safe":true}],"warnings":["The Biology Greenhouse and Griffy Lake sources directly establish free access but are older publications; current hours and conditions should be reconfirmed before visiting.","The Granfalloon card is date-specific and applies to the free daytime festivities scheduled for August 29, 2026."]}],"warnings":["All ten cards have direct official evidence of free admission or participation; optional parking, food, or vendor purchases are not required."]}
+2026-08-13T07:44:20.521948Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa12-2b2d-7700-b8cf-e99a6ddc8b86.1786606922543202000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+51,973
+
+{"complete":true,"school_name":"Indiana University-Bloomington","town_name":"Bloomington","boards":[{"complete":true,"school_name":"Indiana University-Bloomington","town_name":"Bloomington","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"Ten verified no-cost outings on or near IU Bloomington, from museum galleries and historic tours to a nature preserve and an outdoor cultural program.","icon":"money_off","cards":[{"subject_id":"revolution-reflection-washington-portrait","subject_type":"activity","entity_name":"Gilbert Stuart’s George Washington Portrait","title":"Meet Washington at the Eskenazi","subtitle":"A free Revolution & Reflection stop at the Eskenazi Museum of Art","notes":"Bring a friend to the European and American gallery, compare details in Stuart’s portrait, then discuss how leaders shaped public images.","short_summary":"Examine an early presidential portrait together inside the Eskenazi Museum’s public galleries.","evidence_claim":"IU identifies Gilbert Stuart’s George Washington portrait as a Revolution & Reflection destination and states that no admission fee or campus affiliation is required.","source_url":"https://bloomington.iu.edu/campus-life/events/america-250/self-guided-tour.html","source_title":"Revolution and Reflection Self-Guided Tour","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open to visitors without campus affiliation. Consult the page for current Eskenazi Museum gallery hours and campus-break changes.","cost_status":"free","under21_safe":true},{"subject_id":"revolution-reflection-benton-murals","subject_type":"activity","entity_name":"The Social History of Indiana Murals","title":"Read Indiana History Across the Walls","subtitle":"Thomas Hart Benton’s murals at IU Auditorium","notes":"Walk the mural sequence with classmates, choose one panel each, and trade observations about the people, industries, and conflicts depicted.","short_summary":"Use Benton’s monumental mural cycle as the centerpiece of a free group art-and-history discussion.","evidence_claim":"IU names Thomas Hart Benton’s The Social History of Indiana murals at IU Auditorium as a Revolution & Reflection stop requiring no admission fee or campus affiliation.","source_url":"https://bloomington.iu.edu/campus-life/events/america-250/self-guided-tour.html","source_title":"Revolution and Reflection Self-Guided Tour","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"No campus affiliation is required. Check the official page and IU Auditorium access information before visiting, as availability can change.","cost_status":"free","under21_safe":true},{"subject_id":"revolution-reflection-dunlap-broadside","subject_type":"activity","entity_name":"Dunlap Broadside of the Declaration of Independence","title":"See an Original Declaration Broadside","subtitle":"A free Lilly Library exhibition stop","notes":"Visit with a small group, inspect the displayed broadside and supporting documents, then compare what each person notices in the printing.","short_summary":"Gather around IU’s original Dunlap broadside for a close look at a foundational American document.","evidence_claim":"IU states that its original Dunlap broadside is exhibited at the Lilly Library through Revolution & Reflection, with no admission fee or campus affiliation required.","source_url":"https://bloomington.iu.edu/campus-life/events/america-250/self-guided-tour.html","source_title":"Revolution and Reflection Self-Guided Tour","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"No admission or campus affiliation is required. Confirm Lilly Library exhibition hours before arriving; holidays and breaks may affect access.","cost_status":"free","under21_safe":true},{"subject_id":"iumaa-gallery-visit","subject_type":"place","entity_name":"Indiana University Museum of Archaeology and Anthropology","title":"Trade Stories Across the IUMAA Galleries","subtitle":"Archaeology and world cultures at 416 N. Indiana Avenue","notes":"Choose an object that sparks a question, read its interpretation together, and let each person explain what changed their first impression.","short_summary":"Explore cultural heritage and archaeological collections through a no-cost gallery conversation.","evidence_claim":"The museum’s official site says the Indiana University Museum of Archaeology and Anthropology is free and open to all.","source_url":"https://iumaa.iu.edu/","source_title":"Museum of Archaeology and Anthropology: Indiana University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to all. Review the museum’s official site for current seasonal hours and closure notices before meeting there.","cost_status":"free","under21_safe":true},{"subject_id":"wylie-house-guided-tour","subject_type":"activity","entity_name":"Wylie House Museum Guided Tour","title":"Tour IU’s 1835 Presidential Home","subtitle":"A free docent-led visit at Wylie House Museum","notes":"Meet before the hour, join the guided tour, and compare the family artifacts and domestic spaces that reveal early IU and Bloomington life.","short_summary":"Step through a furnished 1835 home while a guide connects the Wylie family to IU’s early history.","evidence_claim":"IU Libraries states that free guided Wylie House Museum tours are offered to the public on Fridays and Saturdays with no reservation needed.","source_url":"https://libraries.indiana.edu/about-wylie-house","source_title":"About the Wylie House Museum | Indiana University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public tours run Friday and Saturday, 10 a.m.–4 p.m., on the hour; the last begins at 3 p.m. Closures apply during IU breaks and holidays.","cost_status":"free","under21_safe":true},{"subject_id":"grunwald-gallery-exhibitions","subject_type":"place","entity_name":"Grunwald Gallery of Art","title":"Compare Contemporary Art at Grunwald","subtitle":"Free exhibitions inside IU’s Fine Arts Building","notes":"Walk the current show in pairs, select two contrasting works, and regroup to compare how materials or presentation shaped your reactions.","short_summary":"Turn a contemporary-art exhibition into an easy, conversation-led afternoon with friends.","evidence_claim":"The Grunwald Gallery’s official page states that all exhibitions are free and open to the public.","source_url":"https://soaad.indiana.edu/exhibitions/grunwald-gallery/index.html","source_title":"Grunwald Gallery: Exhibitions: Eskenazi School of Art, Architecture + Design","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open to the public Tuesday–Saturday, noon–4 p.m.; closed Sunday and Monday. Check the exhibition calendar before visiting.","cost_status":"free","under21_safe":true},{"subject_id":"biology-greenhouse-plant-walk","subject_type":"place","entity_name":"Indiana University Bloomington Biology Greenhouse","title":"Take a Tropical Plant Break","subtitle":"A warm greenhouse walk on the Bloomington campus","notes":"Move slowly through the plant collections, pick one unfamiliar specimen per person, and compare visible adaptations before heading outside.","short_summary":"Share a quiet plant-observation session among the greenhouse’s living collections.","evidence_claim":"IU News identifies the IU Bloomington Biology Greenhouse and states that it is free and open to the public.","source_url":"https://news.iu.edu/live/news/26068-rare-flowers-from-jordan-hall-greenhouses-agave","source_title":"Rare flowers from Jordan Hall greenhouse’s Agave americana: IU News","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The supporting page confirms free public access but contains older hours and an older building name; verify the current entrance and hours before going.","cost_status":"free","under21_safe":true},{"subject_id":"griffy-lake-nature-walk","subject_type":"activity","entity_name":"Griffy Lake Nature Preserve","title":"Walk and Talk Around Griffy Lake","subtitle":"A free nature-preserve outing north of campus","notes":"Choose a marked trail suited to the group, bring water, stay together, and pause at lake or woodland viewpoints for conversation and photos.","short_summary":"Trade campus scenery for a social walk through protected woods, wetlands, and lakeside habitat.","evidence_claim":"The City of Bloomington states that admission to Griffy Lake Nature Preserve is free.","source_url":"https://bloomington.in.gov/news/2018/01/04/3057","source_title":"Deer Herd Reduction at Griffy Lake Nature Preserve Completed for Season","source_kind":"government","source_published_at":"2018-01-04","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Admission is free. Use the current City of Bloomington preserve information for trail conditions, operating hours, and temporary closures.","cost_status":"free","under21_safe":true},{"subject_id":"museum-miles-loop-two","subject_type":"activity","entity_name":"Museum Miles Loop 2","title":"Link Two Museums on a One-Mile Walk","subtitle":"An accessible route from IUMAA to Wylie House Museum","notes":"Start at IUMAA, follow Indiana Avenue toward South Henderson and Second Street, and use the walk between museums to swap exhibit highlights.","short_summary":"Combine conversation, light movement, and two cultural stops on an approximately one-mile route.","evidence_claim":"Healthy IU maps Museum Miles Loop 2 between the archaeology and world-cultures museum site and Wylie House, describes it as about one mile and ADA accessible, and says all museums on the routes are free and public.","source_url":"https://healthy.iu.edu/campus-programs-services/bloomington/physical-activity.html","source_title":"Physical Activity: IU Bloomington: Programs & Services: Healthy IU","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The outdoor route is free; museum entry is also free and public. Check each museum’s current hours before starting the loop.","cost_status":"free","under21_safe":true},{"subject_id":"granfalloon-switchyard-daytime","subject_type":"activity","entity_name":"Granfalloon Daytime Festivities at Switchyard Park","title":"Catch Granfalloon in the Park","subtitle":"Free all-ages daytime programming on August 29, 2026","notes":"Meet during the afternoon for live performances, interactive activities, and installations; enjoy the free program without buying from vendors.","short_summary":"Spend a festival afternoon together with art, activities, and performances in Switchyard Park.","evidence_claim":"IU News states that Granfalloon’s 2026 Switchyard Park concert weekends include free, family-friendly daytime festivities and identifies an August 29 date.","source_url":"https://news.iu.edu/live/news/50961-granfalloon-announces-lineup-for-outdoor-concert","source_title":"Granfalloon announces lineup for outdoor concert series at Switchyard Park: IU News","source_kind":"university_official","source_published_at":"2026-05-12","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The remaining listed date is August 29, 2026. Daytime festivities are free and all-ages; food trucks and artisan vendors are optional purchases.","cost_status":"free","under21_safe":true}],"warnings":["The Biology Greenhouse and Griffy Lake sources directly establish free access but are older publications; current hours and conditions should be reconfirmed before visiting.","The Granfalloon card is date-specific and applies to the free daytime festivities scheduled for August 29, 2026."]}],"warnings":["All ten cards have direct official evidence of free admission or participation; optional parking, food, or vendor purchases are not required."]}

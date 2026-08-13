@@ -1,0 +1,85 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.depts.ttu.edu/hs/hrm/skyviews/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depts.ttu.edu/hs/hrm/skyviews/index.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.mylubbock.us/220/Buddy-Holly-Center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mylubbock.us/220/Buddy-Holly-Center",
+      "error": ""
+    },
+    {
+      "url": "https://www.castirongrilllubbock.com/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.castirongrilllubbock.com/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/restaurant-directory/texas/lubbock.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/restaurant-directory/texas/lubbock.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.thecafejlubbock.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.thecafejlubbock.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.schlotzskys.com/tx/lubbock/3715-19th-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.schlotzskys.com/tx/lubbock/3715-19th-street",
+      "error": ""
+    },
+    {
+      "url": "https://www.doubledaves.com/locations/tx/lubbock/lubbock19/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.doubledaves.com/locations/tx/lubbock/lubbock19/",
+      "error": ""
+    },
+    {
+      "url": "https://local.marketstreetunited.com/tx/lubbock/4425-19th-st.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://local.marketstreetunited.com/tx/lubbock/4425-19th-st.html",
+      "error": ""
+    },
+    {
+      "url": "https://bighamsbbq.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bighamsbbq.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

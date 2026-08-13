@@ -1,0 +1,61 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.library.jhu.edu/finding-a-study-space/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.library.jhu.edu/finding-a-study-space/",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.jhu.edu/library-services/room-reservations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.library.jhu.edu/library-services/room-reservations/",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.jhu.edu/library-hours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.library.jhu.edu/library-hours/",
+      "error": ""
+    },
+    {
+      "url": "https://welch.jhu.edu/get-help/where-do-i-find-study-spaces",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://welch.jhu.edu/get-help/where-do-i-find-study-spaces",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://welch.jhmi.edu/about/service-locations/welch-bayview",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://welch.jhmi.edu/about/service-locations/welch-bayview",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.jhu.edu/study-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.library.jhu.edu/study-spaces/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://wam.umn.edu/make-gift",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wam.umn.edu/make-gift",
+      "error": ""
+    },
+    {
+      "url": "https://www.bellmuseum.umn.edu/admissions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bellmuseum.umn.edu/admissions/",
+      "error": ""
+    },
+    {
+      "url": "https://arb.umn.edu/tickets/details",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arb.umn.edu/tickets/details",
+      "error": ""
+    },
+    {
+      "url": "https://www.walkerart.org/minneapolis-sculpture-garden/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.walkerart.org/minneapolis-sculpture-garden/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.umn.edu/about/exhibit-policy",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.umn.edu/about/exhibit-policy",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

@@ -1,0 +1,37 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.admissions.uc.edu/traditions.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.admissions.uc.edu/traditions.html",
+      "error": ""
+    },
+    {
+      "url": "https://prod.cahs.uc.edu/content/dam/refresh/alumni-62/get-involved/interest-and-affinity/student-alumni-council/2024/FY25%20SAC%20RBB-UCAA-FINAL%20spreads.pdf",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://prod.cahs.uc.edu/content/dam/refresh/alumni-62/get-involved/interest-and-affinity/student-alumni-council/2024/FY25%20SAC%20RBB-UCAA-FINAL%20spreads.pdf",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.alumni.uc.edu/content/dam/refresh/alumni-62/get-involved/interest-and-affinity/student-alumni-council/2023/RBB22_Digital_Handoff.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.alumni.uc.edu/content/dam/refresh/alumni-62/get-involved/interest-and-affinity/student-alumni-council/2023/RBB22_Digital_Handoff.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

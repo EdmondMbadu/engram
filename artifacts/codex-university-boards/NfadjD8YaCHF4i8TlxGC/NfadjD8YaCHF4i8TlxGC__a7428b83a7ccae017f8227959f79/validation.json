@@ -1,0 +1,21 @@
+{
+  "ok": false,
+  "problems": [
+    "Prohibited ranking, generic, adult-only, or unsafe language found."
+  ],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://socorronm.org/plan-your-trip/dining/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://socorronm.org/plan-your-trip/dining/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 1,
+  "generationScore": null,
+  "generationGrade": null
+}

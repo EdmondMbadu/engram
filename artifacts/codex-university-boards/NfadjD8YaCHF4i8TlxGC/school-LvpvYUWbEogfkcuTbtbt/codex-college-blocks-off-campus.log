@@ -1,0 +1,289 @@
+Reading additional input from stdin...
+2026-08-13T07:16:32.983769Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9fa-bded-7041-ac4e-0ff407de269e.1786605387245411000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:16:32.985998Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:16:32.988095Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9fa-d3e5-73e3-8a29-ffed69a1e114
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"LvpvYUWbEogfkcuTbtbt","schoolName":"George Mason University","shortSchoolName":"George Mason University","townName":"Fairfax","state":"VA","countryCode":"US","website":"https://www.gmu.edu/","latitude":38.83195,"longitude":-77.307063},"templates":[{"id":"college-blocks-off-campus","version":"1.0","titlePattern":"{count} Blocks Off Campus, One Reason Each","editorialBrief":"Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.","researchQueries":["off campus streets student district","campus adjacent commercial streets","neighborhood plan near university"],"count":10,"icon":"location_city","primarySubjectType":"street_or_district","allowedSubjectTypes":["street_or_district"],"freshnessDays":730,"exactTitle":"10 Blocks Off Campus, One Reason Each"}]}
+codex
+{
+  "complete": false,
+  "school_name": "George Mason University",
+  "town_name": "Fairfax",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "George Mason University",
+      "town_name": "Fairfax",
+      "template_id": "college-blocks-off-campus",
+      "title": "10 Blocks Off Campus, One Reason Each",
+      "description": "",
+      "icon": "location_city",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "I’m verifying ten named, map-listed destinations and tying each to its nearby corridor with direct supporting pages.",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+     
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:fairfaxva.gov George Mason University nearby Main Street Fairfax destinations ...
+web search: 
+web search: site:fairfaxva.gov/Fun-Facilities "Main Street" Fairfax Museum Ratcliffe Allison Old Town Hall ...
+web search: 
+web search: site:fairfaxva.gov/Fun-Facilities/Parks/Parks-Directory Fairfax "Location" "Road" ...
+web search: 
+web search: site:fairfaxva.gov/Fun-Facilities/Parks/Parks-Directory "Roberts Road" ...
+web search: 
+web search: 
+codex
+{"complete":true,"school_name":"George Mason University","town_name":"Fairfax","boards":[{"complete":true,"school_name":"George Mason University","town_name":"Fairfax","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named destinations on Fairfax corridors within George Mason University’s practical off-campus orbit, each paired with one directly sourced reason to go.","icon":"location_city","cards":[{"subject_id":"gmu-university-mall-fairfax","subject_type":"street_or_district","entity_name":"University Mall","title":"Catch a Film Across from Campus","subtitle":"Braddock Road corridor — University Mall","notes":"Cross Braddock Road for University Mall Theatres, then check the theater’s current schedule before choosing a screening.","short_summary":"A campus-adjacent shopping-center block anchored by a neighborhood movie theater.","evidence_claim":"University Mall’s official directory lists University Mall Theatres at 10659 Braddock Road and identifies multiple additional tenants at the center.","source_url":"https://www.universitymallfairfaxva.com/businessdirectorynew","source_title":"University Mall Business Directory","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Movie admission requires a ticket; confirm current showtimes and accessibility with the theater.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"gmu-old-town-hall","subject_type":"street_or_district","entity_name":"Old Town Hall","title":"Frame the Colonial Revival Façade","subtitle":"University Drive corridor — Old Town Hall","notes":"Pause outside to study the Tuscan columns and dormers; the city currently lists the building as closed for renovations.","short_summary":"A prominent historic façade marks the University Drive edge of Old Town Fairfax.","evidence_claim":"The City of Fairfax identifies Old Town Hall as a Colonial Revival building at 3999 University Drive and documents its historic architectural character.","source_url":"https://www.fairfaxva.gov/Fun-Facilities/Facilities/Facilities-Directory/Old-Town-Hall","source_title":"Old Town Hall","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":38.846122,"longitude":-77.3049347,"maps_url":null,"access_notes":"The city has announced a renovation closure; view the exterior from public areas and verify reopening before planning indoor access.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gmu-old-town-square","subject_type":"street_or_district","entity_name":"Old Town Square","title":"Reset Beside the Water Feature","subtitle":"North Street corridor — Old Town Square","notes":"Use the benches and garden as a downtown pause, and check the city calendar before relying on splash-pad or event access.","short_summary":"A civic square combines landscaped seating, water features, and a recurring event setting.","evidence_claim":"The City of Fairfax places Old Town Square at 10415 North Street and lists a cascade water feature, garden, event space, clock, and splash pad.","source_url":"https://www.fairfaxva.gov/Fun-Facilities/Parks/Parks-Directory/Old-Town-Square","source_title":"Old Town Square","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":38.8463963,"longitude":-77.3046879,"maps_url":null,"access_notes":"The park page lists daily dawn-to-dusk hours; splash-pad operation is seasonal and can change for events or maintenance.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gmu-city-of-fairfax-regional-library","subject_type":"street_or_district","entity_name":"City of Fairfax Regional Library","title":"Settle into a Quiet Study Room","subtitle":"North Street corridor — City of Fairfax Regional Library","notes":"Bring focused work for the quiet room, or ask staff about group-study rooms and the Virginia Room’s local-history holdings.","short_summary":"A public library block offers study spaces, research collections, computers, and wireless access.","evidence_claim":"Fairfax County Public Library lists a quiet study room, two group-study rooms, public computers, Wi-Fi, and the Virginia Room at 10360 North Street.","source_url":"https://www.fairfaxcounty.gov/library/branches/city-of-fairfax-regional","source_title":"City of Fairfax Regional Library","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open seven days with varying hours; the official page currently reports outages affecting two elevators, so check accessibility status before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gmu-fairfax-museum-visitor-center","subject_type":"street_or_district","entity_name":"Fairfax Museum and Visitor Center","title":"Read Fairfax Through One Schoolhouse","subtitle":"Main Street corridor — Fairfax Museum and Visitor Center","notes":"Start with The Fairfax Story exhibit, then inspect the original arched doorway of the building’s 1873 schoolhouse.","short_summary":"A former elementary school now interprets the city’s history and serves visitors.","evidence_claim":"The City of Fairfax says the museum occupies an 1873 former elementary school and presents The Fairfax Story exhibit at 10209 Main Street.","source_url":"https://www.fairfaxva.gov/Fun-Facilities/Cultural-Arts-and-History/Fairfax-Museum","source_title":"Fairfax Museum","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":38.8445169,"longitude":-77.3004823,"maps_url":null,"access_notes":"The official page lists Wednesday–Monday, 11 a.m.–4 p.m., with Tuesday and holiday closures; call ahead for other closures.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gmu-ratcliffe-allison-pozer-house","subject_type":"street_or_district","entity_name":"Ratcliffe-Allison-Pozer House","title":"Trace a House Built in Three Eras","subtitle":"Main Street corridor — Ratcliffe-Allison-Pozer House","notes":"Compare the house’s 1807, 1824, and 1927 sections, then follow the garden paths behind the residence.","short_summary":"Fairfax’s oldest residence reveals layered domestic and commercial history along Main Street.","evidence_claim":"The City of Fairfax identifies this as the city’s oldest residence, built in phases in 1807, 1824, and 1927, at 10386 Main Street.","source_url":"https://www.fairfaxva.gov/Fun-Facilities/Cultural-Arts-and-History/Ratcliffe-Allison-Pozer-House","source_title":"Ratcliffe-Allison-Pozer House","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":38.845976,"longitude":-77.304718,"maps_url":null,"access_notes":"For 2026, the house is listed as open noon–2 p.m. on the second and last Saturdays from May through October and during select events.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gmu-stacy-sherwood-community-center","subject_type":"street_or_district","entity_name":"Stacy C. Sherwood Community Center","title":"Check the Community Arts Calendar","subtitle":"Blenheim Boulevard corridor — Stacy C. Sherwood Community Center","notes":"Look for a scheduled exhibit, film, or performance before going; public programming determines what visitors can enter.","short_summary":"A city community center provides dedicated rooms for exhibitions, rehearsals, and performances.","evidence_claim":"The City of Fairfax lists an art room, rehearsal space, and performance space at the Stacy C. Sherwood Community Center, 3740 Blenheim Boulevard.","source_url":"https://www.fairfaxva.gov/Fun-Facilities/Facilities/Rent-a-Venue/Stacy-C-Sherwood-Community-Center-Event-Venue","source_title":"Stacy C. Sherwood Community Center - Event Venue","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":38.8512185,"longitude":-77.299275,"maps_url":null,"access_notes":"Regular hours are listed as Monday–Friday 8:30 a.m.–8 p.m. and Saturday 9 a.m.–4 p.m.; specific programs may set separate access rules.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gmu-historic-blenheim","subject_type":"street_or_district","entity_name":"Historic Blenheim","title":"Study a Civil War Diary on the Walls","subtitle":"Blenheim Boulevard corridor — Historic Blenheim","notes":"Begin in the interpretive center to examine the accessible attic replica, then follow the signs around the historic grounds.","short_summary":"Preserved soldier inscriptions make this historic house a tangible primary-source site.","evidence_claim":"The City of Fairfax documents Civil War-era soldier graffiti inside Historic Blenheim and an accessible full-size attic replica in its interpretive center.","source_url":"https://www.fairfaxva.gov/Fun-Facilities/Cultural-Arts-and-History/Historic-Blenheim-Tours-and-History","source_title":"Historic Blenheim - Tours & History","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":38.8558675,"longitude":-77.2933379,"maps_url":null,"access_notes":"The page lists the center Wednesday–Saturday, 10 a.m.–3 p.m.; grounds are dawn to dusk. Check the posted renovation notice before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gmu-van-dyck-park","subject_type":"street_or_district","entity_name":"Van Dyck Park","title":"Choose a Court or Paved Loop","subtitle":"Blenheim Boulevard corridor — Van Dyck Park","notes":"Pick one activity before arriving: walk the paved trail, use a court, or meet at a pavilion within posted park hours.","short_summary":"A 36-acre recreation stop supports both an easy walk and several court sports.","evidence_claim":"The City of Fairfax describes Van Dyck Park as 36 acres and lists a paved trail, basketball, pickleball, tennis, volleyball, pavilions, and a playground.","source_url":"https://www.fairfaxva.gov/Fun-Facilities/Parks/Parks-Directory/Van-Dyck-Park","source_title":"Van Dyck Park","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":38.8525992,"longitude":-77.2983025,"maps_url":null,"access_notes":"The park is listed as open daily from dawn to dusk; pavilion reservations and organized uses may carry separate requirements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gmu-daniels-run-park","subject_type":"street_or_district","entity_name":"Daniels Run Park","title":"Follow the Wooded Trail Network","subtitle":"Embassy Lane corridor — Daniels Run Park","notes":"Enter from Embassy Lane with daylight to spare, and choose the paved route or an unpaved segment based on conditions.","short_summary":"A wooded 48-acre park provides a trail-focused break east of Old Town.","evidence_claim":"The City of Fairfax identifies Daniels Run Park as a 48-acre park with paved and unpaved trails, benches, picnic tables, and a playground.","source_url":"https://www.fairfaxva.gov/Fun-Facilities/Parks/Parks-Directory/Daniels-Run-Park","source_title":"Daniels Run Park","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":38.8472718,"longitude":-77.2916209,"maps_url":null,"access_notes":"The park is listed as open daily from dawn to dusk; consult current trail notices and avoid entering after dark.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:18:56.638145Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9fa-d3e5-73e3-8a29-ffed69a1e114.1786605392870800000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+49,749
+
+{"complete":true,"school_name":"George Mason University","town_name":"Fairfax","boards":[{"complete":true,"school_name":"George Mason University","town_name":"Fairfax","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named destinations on Fairfax corridors within George Mason University’s practical off-campus orbit, each paired with one directly sourced reason to go.","icon":"location_city","cards":[{"subject_id":"gmu-university-mall-fairfax","subject_type":"street_or_district","entity_name":"University Mall","title":"Catch a Film Across from Campus","subtitle":"Braddock Road corridor — University Mall","notes":"Cross Braddock Road for University Mall Theatres, then check the theater’s current schedule before choosing a screening.","short_summary":"A campus-adjacent shopping-center block anchored by a neighborhood movie theater.","evidence_claim":"University Mall’s official directory lists University Mall Theatres at 10659 Braddock Road and identifies multiple additional tenants at the center.","source_url":"https://www.universitymallfairfaxva.com/businessdirectorynew","source_title":"University Mall Business Directory","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Movie admission requires a ticket; confirm current showtimes and accessibility with the theater.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"gmu-old-town-hall","subject_type":"street_or_district","entity_name":"Old Town Hall","title":"Frame the Colonial Revival Façade","subtitle":"University Drive corridor — Old Town Hall","notes":"Pause outside to study the Tuscan columns and dormers; the city currently lists the building as closed for renovations.","short_summary":"A prominent historic façade marks the University Drive edge of Old Town Fairfax.","evidence_claim":"The City of Fairfax identifies Old Town Hall as a Colonial Revival building at 3999 University Drive and documents its historic architectural character.","source_url":"https://www.fairfaxva.gov/Fun-Facilities/Facilities/Facilities-Directory/Old-Town-Hall","source_title":"Old Town Hall","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":38.846122,"longitude":-77.3049347,"maps_url":null,"access_notes":"The city has announced a renovation closure; view the exterior from public areas and verify reopening before planning indoor access.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gmu-old-town-square","subject_type":"street_or_district","entity_name":"Old Town Square","title":"Reset Beside the Water Feature","subtitle":"North Street corridor — Old Town Square","notes":"Use the benches and garden as a downtown pause, and check the city calendar before relying on splash-pad or event access.","short_summary":"A civic square combines landscaped seating, water features, and a recurring event setting.","evidence_claim":"The City of Fairfax places Old Town Square at 10415 North Street and lists a cascade water feature, garden, event space, clock, and splash pad.","source_url":"https://www.fairfaxva.gov/Fun-Facilities/Parks/Parks-Directory/Old-Town-Square","source_title":"Old Town Square","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":38.8463963,"longitude":-77.3046879,"maps_url":null,"access_notes":"The park page lists daily dawn-to-dusk hours; splash-pad operation is seasonal and can change for events or maintenance.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gmu-city-of-fairfax-regional-library","subject_type":"street_or_district","entity_name":"City of Fairfax Regional Library","title":"Settle into a Quiet Study Room","subtitle":"North Street corridor — City of Fairfax Regional Library","notes":"Bring focused work for the quiet room, or ask staff about group-study rooms and the Virginia Room’s local-history holdings.","short_summary":"A public library block offers study spaces, research collections, computers, and wireless access.","evidence_claim":"Fairfax County Public Library lists a quiet study room, two group-study rooms, public computers, Wi-Fi, and the Virginia Room at 10360 North Street.","source_url":"https://www.fairfaxcounty.gov/library/branches/city-of-fairfax-regional","source_title":"City of Fairfax Regional Library","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open seven days with varying hours; the official page currently reports outages affecting two elevators, so check accessibility status before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gmu-fairfax-museum-visitor-center","subject_type":"street_or_district","entity_name":"Fairfax Museum and Visitor Center","title":"Read Fairfax Through One Schoolhouse","subtitle":"Main Street corridor — Fairfax Museum and Visitor Center","notes":"Start with The Fairfax Story exhibit, then inspect the original arched doorway of the building’s 1873 schoolhouse.","short_summary":"A former elementary school now interprets the city’s history and serves visitors.","evidence_claim":"The City of Fairfax says the museum occupies an 1873 former elementary school and presents The Fairfax Story exhibit at 10209 Main Street.","source_url":"https://www.fairfaxva.gov/Fun-Facilities/Cultural-Arts-and-History/Fairfax-Museum","source_title":"Fairfax Museum","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":38.8445169,"longitude":-77.3004823,"maps_url":null,"access_notes":"The official page lists Wednesday–Monday, 11 a.m.–4 p.m., with Tuesday and holiday closures; call ahead for other closures.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gmu-ratcliffe-allison-pozer-house","subject_type":"street_or_district","entity_name":"Ratcliffe-Allison-Pozer House","title":"Trace a House Built in Three Eras","subtitle":"Main Street corridor — Ratcliffe-Allison-Pozer House","notes":"Compare the house’s 1807, 1824, and 1927 sections, then follow the garden paths behind the residence.","short_summary":"Fairfax’s oldest residence reveals layered domestic and commercial history along Main Street.","evidence_claim":"The City of Fairfax identifies this as the city’s oldest residence, built in phases in 1807, 1824, and 1927, at 10386 Main Street.","source_url":"https://www.fairfaxva.gov/Fun-Facilities/Cultural-Arts-and-History/Ratcliffe-Allison-Pozer-House","source_title":"Ratcliffe-Allison-Pozer House","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":38.845976,"longitude":-77.304718,"maps_url":null,"access_notes":"For 2026, the house is listed as open noon–2 p.m. on the second and last Saturdays from May through October and during select events.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gmu-stacy-sherwood-community-center","subject_type":"street_or_district","entity_name":"Stacy C. Sherwood Community Center","title":"Check the Community Arts Calendar","subtitle":"Blenheim Boulevard corridor — Stacy C. Sherwood Community Center","notes":"Look for a scheduled exhibit, film, or performance before going; public programming determines what visitors can enter.","short_summary":"A city community center provides dedicated rooms for exhibitions, rehearsals, and performances.","evidence_claim":"The City of Fairfax lists an art room, rehearsal space, and performance space at the Stacy C. Sherwood Community Center, 3740 Blenheim Boulevard.","source_url":"https://www.fairfaxva.gov/Fun-Facilities/Facilities/Rent-a-Venue/Stacy-C-Sherwood-Community-Center-Event-Venue","source_title":"Stacy C. Sherwood Community Center - Event Venue","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":38.8512185,"longitude":-77.299275,"maps_url":null,"access_notes":"Regular hours are listed as Monday–Friday 8:30 a.m.–8 p.m. and Saturday 9 a.m.–4 p.m.; specific programs may set separate access rules.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gmu-historic-blenheim","subject_type":"street_or_district","entity_name":"Historic Blenheim","title":"Study a Civil War Diary on the Walls","subtitle":"Blenheim Boulevard corridor — Historic Blenheim","notes":"Begin in the interpretive center to examine the accessible attic replica, then follow the signs around the historic grounds.","short_summary":"Preserved soldier inscriptions make this historic house a tangible primary-source site.","evidence_claim":"The City of Fairfax documents Civil War-era soldier graffiti inside Historic Blenheim and an accessible full-size attic replica in its interpretive center.","source_url":"https://www.fairfaxva.gov/Fun-Facilities/Cultural-Arts-and-History/Historic-Blenheim-Tours-and-History","source_title":"Historic Blenheim - Tours & History","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":38.8558675,"longitude":-77.2933379,"maps_url":null,"access_notes":"The page lists the center Wednesday–Saturday, 10 a.m.–3 p.m.; grounds are dawn to dusk. Check the posted renovation notice before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gmu-van-dyck-park","subject_type":"street_or_district","entity_name":"Van Dyck Park","title":"Choose a Court or Paved Loop","subtitle":"Blenheim Boulevard corridor — Van Dyck Park","notes":"Pick one activity before arriving: walk the paved trail, use a court, or meet at a pavilion within posted park hours.","short_summary":"A 36-acre recreation stop supports both an easy walk and several court sports.","evidence_claim":"The City of Fairfax describes Van Dyck Park as 36 acres and lists a paved trail, basketball, pickleball, tennis, volleyball, pavilions, and a playground.","source_url":"https://www.fairfaxva.gov/Fun-Facilities/Parks/Parks-Directory/Van-Dyck-Park","source_title":"Van Dyck Park","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":38.8525992,"longitude":-77.2983025,"maps_url":null,"access_notes":"The park is listed as open daily from dawn to dusk; pavilion reservations and organized uses may carry separate requirements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gmu-daniels-run-park","subject_type":"street_or_district","entity_name":"Daniels Run Park","title":"Follow the Wooded Trail Network","subtitle":"Embassy Lane corridor — Daniels Run Park","notes":"Enter from Embassy Lane with daylight to spare, and choose the paved route or an unpaved segment based on conditions.","short_summary":"A wooded 48-acre park provides a trail-focused break east of Old Town.","evidence_claim":"The City of Fairfax identifies Daniels Run Park as a 48-acre park with paved and unpaved trails, benches, picnic tables, and a playground.","source_url":"https://www.fairfaxva.gov/Fun-Facilities/Parks/Parks-Directory/Daniels-Run-Park","source_title":"Daniels Run Park","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":38.8472718,"longitude":-77.2916209,"maps_url":null,"access_notes":"The park is listed as open daily from dawn to dusk; consult current trail notices and avoid entering after dark.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

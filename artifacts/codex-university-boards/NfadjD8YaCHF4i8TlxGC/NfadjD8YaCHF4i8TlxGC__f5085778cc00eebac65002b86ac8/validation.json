@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://library.sfsu.edu/news/faculty-fall-2025",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.sfsu.edu/news/faculty-fall-2025",
+      "error": ""
+    },
+    {
+      "url": "https://at.sfsu.edu/digital-media-studio-and-makerspace",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://at.sfsu.edu/digital-media-studio-and-makerspace",
+      "error": ""
+    },
+    {
+      "url": "https://library.sfsu.edu/spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.sfsu.edu/spaces",
+      "error": ""
+    },
+    {
+      "url": "https://library.sfsu.edu/students",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.sfsu.edu/students",
+      "error": ""
+    },
+    {
+      "url": "https://library.sfsu.edu/floor-maps",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.sfsu.edu/floor-maps",
+      "error": ""
+    },
+    {
+      "url": "https://gallery.sfsu.edu/visit-the-garden",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gallery.sfsu.edu/visit-the-garden",
+      "error": ""
+    },
+    {
+      "url": "https://asi.sfsu.edu/art-gallery",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://asi.sfsu.edu/art-gallery",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

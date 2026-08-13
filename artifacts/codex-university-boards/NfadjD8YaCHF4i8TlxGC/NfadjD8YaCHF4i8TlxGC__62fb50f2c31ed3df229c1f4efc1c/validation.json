@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.pizzamyheart.com/location/pizza-my-heart-santa-cruz/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pizzamyheart.com/location/pizza-my-heart-santa-cruz/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fusionfarerestaurant.com/menu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fusionfarerestaurant.com/menu/",
+      "error": ""
+    },
+    {
+      "url": "https://pacificcookie.com/pages/visit-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pacificcookie.com/pages/visit-us",
+      "error": ""
+    },
+    {
+      "url": "https://downtownsantacruz.com/discover/late-night",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://downtownsantacruz.com/discover/late-night",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

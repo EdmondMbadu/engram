@@ -1,0 +1,96 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www2.cortland.edu/offices/campus-activities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.cortland.edu/offices/campus-activities/",
+      "error": ""
+    },
+    {
+      "url": "https://www2.cortland.edu/offices/campus-activities/cortland-nites.dot",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.cortland.edu/offices/campus-activities/cortland-nites.dot",
+      "error": ""
+    },
+    {
+      "url": "https://www2.cortland.edu/offices/facilities-management/neubig-hall",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.cortland.edu/offices/facilities-management/neubig-hall",
+      "error": ""
+    },
+    {
+      "url": "https://www2.cortland.edu/library/index.dot",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.cortland.edu/library/index.dot",
+      "error": ""
+    },
+    {
+      "url": "https://www2.cortland.edu/departments/art/dowd-gallery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.cortland.edu/departments/art/dowd-gallery/",
+      "error": ""
+    },
+    {
+      "url": "https://www2.cortland.edu/information/reasons/student-life-center.dot",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.cortland.edu/information/reasons/student-life-center.dot",
+      "error": ""
+    },
+    {
+      "url": "https://www2.cortland.edu/offices/recreational-sports/Outdoor-Pursuits/Climbing-Wall/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.cortland.edu/offices/recreational-sports/Outdoor-Pursuits/Climbing-Wall/",
+      "error": ""
+    },
+    {
+      "url": "https://www2.cortland.edu/offices/cem/sports-facilities/stadium/stadium-complex-highlights.dot",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.cortland.edu/offices/cem/sports-facilities/stadium/stadium-complex-highlights.dot",
+      "error": ""
+    },
+    {
+      "url": "https://www2.cortland.edu/offices/recreational-sports/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.cortland.edu/offices/recreational-sports/",
+      "error": ""
+    },
+    {
+      "url": "https://www.limehollow.org/trails",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.limehollow.org/trails",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Memorial Library",
+    "Dowd Gallery"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

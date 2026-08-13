@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://events.emmanuel.edu/event/class_of_2025_photo",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://events.emmanuel.edu/event/class_of_2025_photo",
+      "error": ""
+    },
+    {
+      "url": "https://www.emmanuel.edu/about/who-we-are/traditions-events/convocation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.emmanuel.edu/about/who-we-are/traditions-events/convocation",
+      "error": ""
+    },
+    {
+      "url": "https://www.emmanuel.edu/Pinning2026",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.emmanuel.edu/Pinning2026",
+      "error": ""
+    },
+    {
+      "url": "https://www.emmanuel.edu/about/who-we-are/traditions-events/class-traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.emmanuel.edu/about/who-we-are/traditions-events/class-traditions",
+      "error": ""
+    },
+    {
+      "url": "https://events.emmanuel.edu/event/moonlight-breakfast-6601",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://events.emmanuel.edu/event/moonlight-breakfast-6601",
+      "error": ""
+    },
+    {
+      "url": "https://www.emmanuel.edu/student-life/student-support/mission-ministry/mission-ministry/worship-and-rituals",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.emmanuel.edu/student-life/student-support/mission-ministry/mission-ministry/worship-and-rituals",
+      "error": ""
+    },
+    {
+      "url": "https://www.emmanuel.edu/about/who-we-are/traditions-events/founders-week",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.emmanuel.edu/about/who-we-are/traditions-events/founders-week",
+      "error": ""
+    },
+    {
+      "url": "https://www.emmanuel.edu/about/who-we-are/traditions-events/mass-holy-spirit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.emmanuel.edu/about/who-we-are/traditions-events/mass-holy-spirit",
+      "error": ""
+    },
+    {
+      "url": "https://www.emmanuel.edu/pulse/news/class-29-connects-community-through-new-student-day-service",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.emmanuel.edu/pulse/news/class-29-connects-community-through-new-student-day-service",
+      "error": ""
+    },
+    {
+      "url": "https://www.emmanuel.edu/about/who-we-are/traditions-events/baccalaureate",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.emmanuel.edu/about/who-we-are/traditions-events/baccalaureate",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 100,
+  "generationGrade": "A"
+}

@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://libraries.mit.edu/hayden/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.mit.edu/hayden/",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.mit.edu/barker/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.mit.edu/barker/",
+      "error": ""
+    },
+    {
+      "url": "https://studentlife.mit.edu/campus-communities/student-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentlife.mit.edu/campus-communities/student-center/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.mtholyoke.edu/student-experience/beyond-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mtholyoke.edu/student-experience/beyond-campus",
+      "error": ""
+    },
+    {
+      "url": "https://thevillagecommons.com/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thevillagecommons.com/about/",
+      "error": ""
+    },
+    {
+      "url": "https://www.arts-unlimited.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.arts-unlimited.com/",
+      "error": ""
+    },
+    {
+      "url": "https://thevillagecommons.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thevillagecommons.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.southhadley.org/315/Public-Library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.southhadley.org/315/Public-Library",
+      "error": ""
+    },
+    {
+      "url": "https://www.southhadley.org/facilities/facility/details/Town-Common-55",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.southhadley.org/facilities/facility/details/Town-Common-55",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

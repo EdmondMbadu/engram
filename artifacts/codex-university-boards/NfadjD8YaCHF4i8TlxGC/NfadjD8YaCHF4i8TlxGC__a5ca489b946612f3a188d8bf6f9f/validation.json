@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://thecarletonian.com/20081/arts-and-features/archive-schiller-a-community-tradition-turned-exclusive/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thecarletonian.com/20081/arts-and-features/archive-schiller-a-community-tradition-turned-exclusive/",
+      "error": ""
+    },
+    {
+      "url": "https://digitalcommons.carleton.edu/covid19archive_documents/125/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://digitalcommons.carleton.edu/covid19archive_documents/125/",
+      "error": ""
+    },
+    {
+      "url": "https://imagencloud.carleton.edu/record/76734",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://imagencloud.carleton.edu/record/76734",
+      "error": ""
+    },
+    {
+      "url": "https://thecarletonian.com/18102/arts-and-features/a-history-of-carleton-traditions-both-new-and-old/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thecarletonian.com/18102/arts-and-features/a-history-of-carleton-traditions-both-new-and-old/",
+      "error": ""
+    },
+    {
+      "url": "https://imagencloud.carleton.edu/record/78663",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://imagencloud.carleton.edu/record/78663",
+      "error": ""
+    },
+    {
+      "url": "https://thecarletonian.com/19175/news/hippo-campus-announced-as-sproncert-headliner/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thecarletonian.com/19175/news/hippo-campus-announced-as-sproncert-headliner/",
+      "error": ""
+    },
+    {
+      "url": "https://thecarletonian.com/16143/arts-and-features/from-auctions-to-a-capella-a-history-of-date-knight/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thecarletonian.com/16143/arts-and-features/from-auctions-to-a-capella-a-history-of-date-knight/",
+      "error": ""
+    },
+    {
+      "url": "https://thecarletonian.com/13153/arts-and-features/from-cave-to-stage-a-qa-with-the-battle-of-the-bands-winners/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thecarletonian.com/13153/arts-and-features/from-cave-to-stage-a-qa-with-the-battle-of-the-bands-winners/",
+      "error": ""
+    },
+    {
+      "url": "https://apps.carleton.edu/student/orgs/schiller/assets/FINALTOURBOOKLET2011_2012.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://apps.carleton.edu/student/orgs/schiller/assets/FINALTOURBOOKLET2011_2012.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 100,
+  "generationGrade": "A"
+}

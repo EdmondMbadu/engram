@@ -1,0 +1,52 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "oAvIKuYgMbVs04KFuvyB",
+    "schoolName": "Saint Francis University",
+    "shortSchoolName": "Saint Francis University",
+    "townName": "Loretto",
+    "state": "PA",
+    "countryCode": "US",
+    "unitId": "215743",
+    "website": "https://www.francis.edu/",
+    "latitude": 40.506734,
+    "longitude": -78.63904,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/b/bb/Saint_Francis_University_seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=francis.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at Saint Francis University, Shared as Cards",
+  "excluded_subjects": [
+    "Saint Francis University Mock National Convention",
+    "Mr. and Ms. Frankie Awards",
+    "Mass of the Holy Spirit",
+    "Founders Day",
+    "President’s Awards Convocation",
+    "March on the Mountain",
+    "STEAM Day",
+    "Rural Outreach Chemistry for Kids (R.O.C.K.)",
+    "Saint Francis University Red Mass",
+    "Lourdes Army Grotto Service Project and Twilight Mass"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

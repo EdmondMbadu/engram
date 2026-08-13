@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.arizona.edu/beardown",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.arizona.edu/beardown",
+      "error": ""
+    },
+    {
+      "url": "https://alumni.arizona.edu/history-traditions/bear-down-story",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://alumni.arizona.edu/history-traditions/bear-down-story",
+      "error": ""
+    },
+    {
+      "url": "https://arizonawildcats.com/sports/2010/8/30/207971038.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arizonawildcats.com/sports/2010/8/30/207971038",
+      "error": ""
+    },
+    {
+      "url": "https://news.arizona.edu/employee-news/desert-bound-celebrating-wildcat-pride-during-spirit-week-and-homecoming",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.arizona.edu/employee-news/desert-bound-celebrating-wildcat-pride-during-spirit-week-and-homecoming",
+      "error": ""
+    },
+    {
+      "url": "https://alumni.arizona.edu/celebrate-arizona/wildcat-spirit/history-traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://alumni.arizona.edu/celebrate-arizona/wildcat-spirit/history-traditions",
+      "error": ""
+    },
+    {
+      "url": "https://alumni.arizona.edu/history-traditions/wilbur-and-wilma",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://alumni.arizona.edu/history-traditions/wilbur-and-wilma",
+      "error": ""
+    },
+    {
+      "url": "https://arizonawildcats.com/sports/2013/4/18/ZonaZoo.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arizonawildcats.com/sports/2013/4/18/ZonaZoo",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

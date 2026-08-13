@@ -1,0 +1,290 @@
+WARNING: proceeding, even though we could not create PATH aliases: No such file or directory (os error 2)
+Reading additional input from stdin...
+2026-08-13T07:05:40.208324Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f0-c565-7363-93b1-5d6fc3c67184.1786604733798581000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:05:40.290234Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f0-c57a-7030-bdda-e2017edda759.1786604733818853000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9f0-ddfe-7202-b4cf-e2e00fa3ba15
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"bFqwDpAiZRpAN4RB9rvE","schoolName":"Florida Atlantic University","shortSchoolName":"Florida Atlantic University","townName":"Boca Raton","state":"FL","countryCode":"US","website":"https://www.fau.edu/","latitude":26.372421,"longitude":-80.102978},"templates":[{"id":"college-study-spots","version":"1.0","titlePattern":"Claimed by 9am: {count} Study Spots Worth Showing Up Early For","editorialBrief":"Choose ten distinct study environments. Verify access rules, room or reservation constraints, and the physical affordance that makes each useful. Treat “Claimed by 9am” as editorial framing; never assert crowding or student behavior without evidence.","researchQueries":["campus study spaces","library study rooms students","quiet study campus"],"count":10,"icon":"menu_book","primarySubjectType":"study_space","allowedSubjectTypes":["study_space","place"],"freshnessDays":180,"exactTitle":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For"}]}
+2026-08-13T07:05:40.492489Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f0-c560-78c1-8c23-e53015549c04.1786604733793139000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:05:40.598819Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f0-c57c-7200-8e1e-310fd6072e87.1786604733820557000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:05:40.634087Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:05:40.661811Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:05:40.783490Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f0-c556-7772-80c2-29372052c187.1786604733783127000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:05:40.878446Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f0-c56e-77a3-a7d0-a17dff507bbc.1786604733806741000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:05:41.049780Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f0-c57b-7211-ac27-d4f9680f6426.1786604733820203000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Florida Atlantic University",
+  "town_name": "Boca Raton",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Florida Atlantic University",
+      "town_name": "Boca Raton",
+      "template_id": "college-study-spots",
+      "title": "Claimed by 9am: 10 Study Spots Worth Showing Up Early For",
+      "description": "",
+      "icon": "menu_book",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "I’m verifying ten distinct FAU study environments, including access and reservation constraints, against direct current sources.",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:fau.edu/library study spaces group study rooms Boca Raton FAU ...
+web search: 
+web search: site:library.fau.edu/boca Wimberly "24-hour" study center ...
+codex
+{"complete":true,"school_name":"Florida Atlantic University","town_name":"Boca Raton","boards":[{"complete":true,"school_name":"Florida Atlantic University","town_name":"Boca Raton","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten distinct study environments in FAU’s S.E. Wimberly Library, selected for quiet work, collaboration, technology, accessibility, or extended access.","icon":"menu_book","cards":[{"subject_id":"fau-wimberly-first-floor-quiet-study","subject_type":"study_space","entity_name":"Wimberly Library First-Floor Quiet Study Area","title":"First-Floor Quiet Study Area","subtitle":"Quiet work near the main level of S.E. Wimberly Library","notes":"Choose this designated quiet area when you need a straightforward solo setup; confirm the day’s library hours before settling in.","short_summary":"A designated quiet zone on Wimberly Library’s first floor for focused individual work.","evidence_claim":"FAU Libraries identifies the first floor of S.E. Wimberly Library as a recommended quiet study area.","source_url":"https://library.fau.edu/policy/test-and-exam-proctoring-policy","source_title":"Test and Exam Proctoring Policy | FAU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located inside S.E. Wimberly Library; building entry and availability are governed by current library access rules and hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fau-wimberly-third-floor-quiet-study","subject_type":"study_space","entity_name":"Wimberly Library Third-Floor Quiet Study Area","title":"Third-Floor Quiet Study Area","subtitle":"A designated quiet floor with nearby reservable rooms","notes":"Set up here for quiet independent work, or reserve a nearby third-floor room separately when your session requires conversation.","short_summary":"A quiet-study destination that keeps reservable collaboration rooms within the same floor.","evidence_claim":"FAU Libraries designates Wimberly Library’s third floor as a quiet study area and separately lists reservable rooms on that floor.","source_url":"https://library.fau.edu/policy/test-and-exam-proctoring-policy","source_title":"Test and Exam Proctoring Policy | FAU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use the open quiet area during library hours; enclosed third-floor study rooms follow separate reservation and Owl Card rules.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fau-wimberly-fourth-floor-east-silent-study","subject_type":"study_space","entity_name":"Wimberly Library Fourth Floor East Silent Study Area","title":"Fourth Floor East Silent Study","subtitle":"Wimberly Library’s explicitly designated silent zone","notes":"Bring work that benefits from minimal conversation and use the carrels or seating while observing the area’s silent-study designation.","short_summary":"An explicitly designated silent area suited to reading, writing, and exam preparation.","evidence_claim":"FAU Libraries recommends Fourth Floor East in S.E. Wimberly Library as a silent study area.","source_url":"https://library.fau.edu/policy/test-and-exam-proctoring-policy","source_title":"Test and Exam Proctoring Policy | FAU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Available while the library is open; users should follow the space’s silent-study expectation.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fau-wimberly-fifth-floor-east-video-conference-rooms","subject_type":"study_space","entity_name":"Wimberly Library Fifth Floor East Video Conference Study Rooms","title":"Fifth Floor East Video Conference Rooms","subtitle":"Private rooms for recorded or remotely proctored work","notes":"Reserve ahead when privacy matters; otherwise ask at the Service Desk about first-come availability and the one-hour use period.","short_summary":"Reservable enclosed rooms designed for video-enabled study and assessment needs.","evidence_claim":"FAU Libraries lists Fifth Floor East video conference study rooms as reservable in advance or available through the Service Desk for one hour on a first-come basis.","source_url":"https://library.fau.edu/policy/test-and-exam-proctoring-policy","source_title":"Test and Exam Proctoring Policy | FAU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Reserve in advance or request a room from the Service Desk; stated use is one hour and first-come when not reserved.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fau-wimberly-graduate-study-lounge","subject_type":"study_space","entity_name":"Wimberly Library Graduate Study Lounge","title":"Graduate Study Lounge","subtitle":"Owl Card-controlled space on the second-floor west end","notes":"Use this lounge if you meet the eligibility rules; choose computer stations, partitioned cubicles, collaboration tables, or sofa seating.","short_summary":"A dedicated graduate and medical-student lounge with varied seating and computer options.","evidence_claim":"FAU documents a second-floor Graduate Study Lounge with computer stations, collaboration space, private cubicles, sofas, tables, outlets, and Owl Card-controlled access.","source_url":"https://library.fau.edu/graduate-study-lounge","source_title":"Graduate Study Lounge | FAU Libraries","source_kind":"university_official","source_published_at":"2018-02-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Restricted to eligible graduate and Charles E. Schmidt College of Medicine students; entry is controlled by Owl Card.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fau-wimberly-ada-group-study-room-ly251","subject_type":"study_space","entity_name":"ADA Group Study Room LY 251","title":"ADA Group Study Room LY 251","subtitle":"Accessible study room with adaptive equipment","notes":"Coordinate access through Student Accessibility Services, then bring a valid card and plan around the room’s two-hour checkout window.","short_summary":"A reservable accessible room equipped for students registered with accessibility services.","evidence_claim":"FAU Libraries states that LY 251 offers Fusion, Read&Write, a high-contrast keyboard, adaptable lighting, and an adjustable desk for registered SAS students.","source_url":"https://library.fau.edu/policy/circulation-policies-and-services","source_title":"Circulation: Policies and Services | FAU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Students must be registered with Student Accessibility Services and coordinate access through their SAS coordinator; checkout is two hours with a valid card.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fau-wimberly-rubin-cindy-gruber-sandbox","subject_type":"study_space","entity_name":"Rubin and Cindy Gruber Sandbox","title":"Rubin and Cindy Gruber Sandbox","subtitle":"First-floor technology workspace for AI projects","notes":"Bring an AI-related course or research project during posted open hours and use the high-performance computers or visualization equipment.","short_summary":"A technology-rich collaborative workspace open to students across academic disciplines.","evidence_claim":"FAU describes the first-floor Sandbox as a collaborative AI space with high-performance computers, VR headsets, and high-resolution monitors.","source_url":"https://library.fau.edu/external-relations/interested-ai-check-out-sandbox-open-hours","source_title":"Interested in AI? Check out Sandbox Open Hours | FAU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page lists open hours Monday through Friday, 1–5 p.m., for students, faculty, staff, and community members; verify before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fau-wimbish-first-floor-24-hour-study-center","subject_type":"study_space","entity_name":"Wimbish Wing First-Floor 24-Hour Student Study Center","title":"First-Floor 24-Hour Study Center","subtitle":"Extended-access workspace in Wimberly Library’s Wimbish Wing","notes":"Use this first-floor center when regular library spaces are unavailable, and keep your Owl Card ready for controlled building access.","short_summary":"One of two student study centers identified by FAU as providing around-the-clock access.","evidence_claim":"FAU Libraries identifies a 24-hour student study center on the first floor of Wimberly Library’s Wimbish Wing.","source_url":"https://library.fau.edu/administration/quickfacts","source_title":"Quickfacts | FAU Libraries","source_kind":"university_official","source_published_at":"2026-03-02","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"FAU identifies this as a 24-hour student study center; carry a valid Owl Card and check current access notices before an overnight visit.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fau-wimbish-second-floor-24-hour-study-center","subject_type":"study_space","entity_name":"Wimbish Wing Second-Floor 24-Hour Student Study Center","title":"Second-Floor 24-Hour Study Center","subtitle":"A separate extended-access floor in the Wimbish Wing","notes":"Head to the second-floor center for another extended-access option, carrying your Owl Card and checking campus closure notices first.","short_summary":"A distinct second-floor study center maintained for continuous student access.","evidence_claim":"FAU Libraries identifies a 24-hour student study center on the second floor of Wimberly Library’s Wimbish Wing.","source_url":"https://library.fau.edu/administration/quickfacts","source_title":"Quickfacts | FAU Libraries","source_kind":"university_official","source_published_at":"2026-03-02","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"FAU identifies this as a 24-hour student study center; Owl Card access and temporary campus or building closures may still apply.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fau-wimberly-study-room-326","subject_type":"study_space","entity_name":"Wimberly Library Study Room 326","title":"Study Room 326","subtitle":"Online-reservable collaboration room on the third floor","notes":"Reserve online before arriving, include the required participants, and allow time for the booking to activate before swiping in.","short_summary":"A specifically numbered third-floor room supporting reserved individual or collaborative sessions.","evidence_claim":"FAU Libraries lists Room 326 among the third-floor rooms available through its online study-room reservation system.","source_url":"https://library.fau.edu/boca/study-rooms","source_title":"Study Rooms | FAU Libraries","source_kind":"university_official","source_published_at":"2026-04-21","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Online reservations are limited to FAU students, faculty, and staff. Group entry requires two reserved users to swipe Owl Cards; individual requests are limited to one or two hours daily.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:07:22.366315Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9f0-ddfe-7202-b4cf-e2e00fa3ba15.1786604740095179000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+31,646
+
+{"complete":true,"school_name":"Florida Atlantic University","town_name":"Boca Raton","boards":[{"complete":true,"school_name":"Florida Atlantic University","town_name":"Boca Raton","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten distinct study environments in FAU’s S.E. Wimberly Library, selected for quiet work, collaboration, technology, accessibility, or extended access.","icon":"menu_book","cards":[{"subject_id":"fau-wimberly-first-floor-quiet-study","subject_type":"study_space","entity_name":"Wimberly Library First-Floor Quiet Study Area","title":"First-Floor Quiet Study Area","subtitle":"Quiet work near the main level of S.E. Wimberly Library","notes":"Choose this designated quiet area when you need a straightforward solo setup; confirm the day’s library hours before settling in.","short_summary":"A designated quiet zone on Wimberly Library’s first floor for focused individual work.","evidence_claim":"FAU Libraries identifies the first floor of S.E. Wimberly Library as a recommended quiet study area.","source_url":"https://library.fau.edu/policy/test-and-exam-proctoring-policy","source_title":"Test and Exam Proctoring Policy | FAU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located inside S.E. Wimberly Library; building entry and availability are governed by current library access rules and hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fau-wimberly-third-floor-quiet-study","subject_type":"study_space","entity_name":"Wimberly Library Third-Floor Quiet Study Area","title":"Third-Floor Quiet Study Area","subtitle":"A designated quiet floor with nearby reservable rooms","notes":"Set up here for quiet independent work, or reserve a nearby third-floor room separately when your session requires conversation.","short_summary":"A quiet-study destination that keeps reservable collaboration rooms within the same floor.","evidence_claim":"FAU Libraries designates Wimberly Library’s third floor as a quiet study area and separately lists reservable rooms on that floor.","source_url":"https://library.fau.edu/policy/test-and-exam-proctoring-policy","source_title":"Test and Exam Proctoring Policy | FAU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use the open quiet area during library hours; enclosed third-floor study rooms follow separate reservation and Owl Card rules.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fau-wimberly-fourth-floor-east-silent-study","subject_type":"study_space","entity_name":"Wimberly Library Fourth Floor East Silent Study Area","title":"Fourth Floor East Silent Study","subtitle":"Wimberly Library’s explicitly designated silent zone","notes":"Bring work that benefits from minimal conversation and use the carrels or seating while observing the area’s silent-study designation.","short_summary":"An explicitly designated silent area suited to reading, writing, and exam preparation.","evidence_claim":"FAU Libraries recommends Fourth Floor East in S.E. Wimberly Library as a silent study area.","source_url":"https://library.fau.edu/policy/test-and-exam-proctoring-policy","source_title":"Test and Exam Proctoring Policy | FAU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Available while the library is open; users should follow the space’s silent-study expectation.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fau-wimberly-fifth-floor-east-video-conference-rooms","subject_type":"study_space","entity_name":"Wimberly Library Fifth Floor East Video Conference Study Rooms","title":"Fifth Floor East Video Conference Rooms","subtitle":"Private rooms for recorded or remotely proctored work","notes":"Reserve ahead when privacy matters; otherwise ask at the Service Desk about first-come availability and the one-hour use period.","short_summary":"Reservable enclosed rooms designed for video-enabled study and assessment needs.","evidence_claim":"FAU Libraries lists Fifth Floor East video conference study rooms as reservable in advance or available through the Service Desk for one hour on a first-come basis.","source_url":"https://library.fau.edu/policy/test-and-exam-proctoring-policy","source_title":"Test and Exam Proctoring Policy | FAU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Reserve in advance or request a room from the Service Desk; stated use is one hour and first-come when not reserved.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fau-wimberly-graduate-study-lounge","subject_type":"study_space","entity_name":"Wimberly Library Graduate Study Lounge","title":"Graduate Study Lounge","subtitle":"Owl Card-controlled space on the second-floor west end","notes":"Use this lounge if you meet the eligibility rules; choose computer stations, partitioned cubicles, collaboration tables, or sofa seating.","short_summary":"A dedicated graduate and medical-student lounge with varied seating and computer options.","evidence_claim":"FAU documents a second-floor Graduate Study Lounge with computer stations, collaboration space, private cubicles, sofas, tables, outlets, and Owl Card-controlled access.","source_url":"https://library.fau.edu/graduate-study-lounge","source_title":"Graduate Study Lounge | FAU Libraries","source_kind":"university_official","source_published_at":"2018-02-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Restricted to eligible graduate and Charles E. Schmidt College of Medicine students; entry is controlled by Owl Card.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fau-wimberly-ada-group-study-room-ly251","subject_type":"study_space","entity_name":"ADA Group Study Room LY 251","title":"ADA Group Study Room LY 251","subtitle":"Accessible study room with adaptive equipment","notes":"Coordinate access through Student Accessibility Services, then bring a valid card and plan around the room’s two-hour checkout window.","short_summary":"A reservable accessible room equipped for students registered with accessibility services.","evidence_claim":"FAU Libraries states that LY 251 offers Fusion, Read&Write, a high-contrast keyboard, adaptable lighting, and an adjustable desk for registered SAS students.","source_url":"https://library.fau.edu/policy/circulation-policies-and-services","source_title":"Circulation: Policies and Services | FAU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Students must be registered with Student Accessibility Services and coordinate access through their SAS coordinator; checkout is two hours with a valid card.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fau-wimberly-rubin-cindy-gruber-sandbox","subject_type":"study_space","entity_name":"Rubin and Cindy Gruber Sandbox","title":"Rubin and Cindy Gruber Sandbox","subtitle":"First-floor technology workspace for AI projects","notes":"Bring an AI-related course or research project during posted open hours and use the high-performance computers or visualization equipment.","short_summary":"A technology-rich collaborative workspace open to students across academic disciplines.","evidence_claim":"FAU describes the first-floor Sandbox as a collaborative AI space with high-performance computers, VR headsets, and high-resolution monitors.","source_url":"https://library.fau.edu/external-relations/interested-ai-check-out-sandbox-open-hours","source_title":"Interested in AI? Check out Sandbox Open Hours | FAU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page lists open hours Monday through Friday, 1–5 p.m., for students, faculty, staff, and community members; verify before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fau-wimbish-first-floor-24-hour-study-center","subject_type":"study_space","entity_name":"Wimbish Wing First-Floor 24-Hour Student Study Center","title":"First-Floor 24-Hour Study Center","subtitle":"Extended-access workspace in Wimberly Library’s Wimbish Wing","notes":"Use this first-floor center when regular library spaces are unavailable, and keep your Owl Card ready for controlled building access.","short_summary":"One of two student study centers identified by FAU as providing around-the-clock access.","evidence_claim":"FAU Libraries identifies a 24-hour student study center on the first floor of Wimberly Library’s Wimbish Wing.","source_url":"https://library.fau.edu/administration/quickfacts","source_title":"Quickfacts | FAU Libraries","source_kind":"university_official","source_published_at":"2026-03-02","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"FAU identifies this as a 24-hour student study center; carry a valid Owl Card and check current access notices before an overnight visit.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fau-wimbish-second-floor-24-hour-study-center","subject_type":"study_space","entity_name":"Wimbish Wing Second-Floor 24-Hour Student Study Center","title":"Second-Floor 24-Hour Study Center","subtitle":"A separate extended-access floor in the Wimbish Wing","notes":"Head to the second-floor center for another extended-access option, carrying your Owl Card and checking campus closure notices first.","short_summary":"A distinct second-floor study center maintained for continuous student access.","evidence_claim":"FAU Libraries identifies a 24-hour student study center on the second floor of Wimberly Library’s Wimbish Wing.","source_url":"https://library.fau.edu/administration/quickfacts","source_title":"Quickfacts | FAU Libraries","source_kind":"university_official","source_published_at":"2026-03-02","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"FAU identifies this as a 24-hour student study center; Owl Card access and temporary campus or building closures may still apply.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fau-wimberly-study-room-326","subject_type":"study_space","entity_name":"Wimberly Library Study Room 326","title":"Study Room 326","subtitle":"Online-reservable collaboration room on the third floor","notes":"Reserve online before arriving, include the required participants, and allow time for the booking to activate before swiping in.","short_summary":"A specifically numbered third-floor room supporting reserved individual or collaborative sessions.","evidence_claim":"FAU Libraries lists Room 326 among the third-floor rooms available through its online study-room reservation system.","source_url":"https://library.fau.edu/boca/study-rooms","source_title":"Study Rooms | FAU Libraries","source_kind":"university_official","source_published_at":"2026-04-21","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Online reservations are limited to FAU students, faculty, and staff. Group entry requires two reserved users to swipe Owl Cards; individual requests are limited to one or two hours daily.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

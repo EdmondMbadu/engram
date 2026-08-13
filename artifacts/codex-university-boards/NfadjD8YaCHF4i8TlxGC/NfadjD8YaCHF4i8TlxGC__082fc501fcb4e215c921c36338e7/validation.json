@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.oasisfineartandcraft.org/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oasisfineartandcraft.org/about",
+      "error": ""
+    },
+    {
+      "url": "https://www.harrisonburgva.gov/things-to-do",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.harrisonburgva.gov/things-to-do",
+      "error": ""
+    },
+    {
+      "url": "https://klinesdairybar.com/downtown-harrisonburg/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://klinesdairybar.com/downtown-harrisonburg/",
+      "error": ""
+    },
+    {
+      "url": "https://friendlycity.coop/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://friendlycity.coop/",
+      "error": ""
+    },
+    {
+      "url": "https://visitharrisonburgva.com/places/parentheses-books/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visitharrisonburgva.com/places/parentheses-books/",
+      "error": ""
+    },
+    {
+      "url": "https://www.rocktownbicycles.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rocktownbicycles.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.harrisonburgfarmersmarket.com/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.harrisonburgfarmersmarket.com/contact",
+      "error": ""
+    },
+    {
+      "url": "https://www.harrisonburgva.gov/westover",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.harrisonburgva.gov/westover",
+      "error": ""
+    },
+    {
+      "url": "https://www.harrisonburgva.gov/sites/default/files/parks/images/Ralph%20Sampson%20Park%2011x17.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.harrisonburgva.gov/sites/default/files/parks/images/Ralph%20Sampson%20Park%2011x17.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.harrisonburgva.gov/simms-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.harrisonburgva.gov/simms-center",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

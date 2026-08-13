@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.mediterraneangrillsby.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mediterraneangrillsby.com/",
+      "error": ""
+    },
+    {
+      "url": "https://salisbury.md/guides/parks",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://salisbury.md/guides/parks",
+      "error": ""
+    },
+    {
+      "url": "https://www.downtownsby.com/visit/attractions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.downtownsby.com/visit/attractions",
+      "error": ""
+    },
+    {
+      "url": "https://salisbury.md/06/27/2025/game-set-match-city-park-tennis-courts-are-back",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://salisbury.md/06/27/2025/game-set-match-city-park-tennis-courts-are-back",
+      "error": ""
+    },
+    {
+      "url": "https://salisbury.md/welcome-guide-english",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://salisbury.md/welcome-guide-english",
+      "error": ""
+    },
+    {
+      "url": "https://www.downtownsby.com/visit/public-open-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.downtownsby.com/visit/public-open-spaces",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://lib.smumn.edu/libraries/winona-study-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.smumn.edu/libraries/winona-study-spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://lib.smumn.edu/libraries/reserving-winona-study-rooms/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.smumn.edu/libraries/reserving-winona-study-rooms/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 2,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

@@ -1,0 +1,88 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.umkc.edu/campus/student-union/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.umkc.edu/campus/student-union/",
+      "error": ""
+    },
+    {
+      "url": "https://library.umkc.edu/mnl/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.umkc.edu/mnl/",
+      "error": ""
+    },
+    {
+      "url": "https://www.umkc.edu/kc-streetcar/umkc-attractions.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.umkc.edu/kc-streetcar/umkc-attractions.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.umkc.edu/recreation/facilities-and-hours/swinney-center.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.umkc.edu/recreation/facilities-and-hours/swinney-center.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.kauffman.org/our-campus/memorial-garden/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.kauffman.org/our-campus/memorial-garden/",
+      "error": ""
+    },
+    {
+      "url": "https://nelson-atkins.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://nelson-atkins.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://kcparks.org/places/loose-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://kcparks.org/places/loose-park/",
+      "error": ""
+    },
+    {
+      "url": "https://kcstreetcar.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://kcstreetcar.org/",
+      "error": ""
+    },
+    {
+      "url": "https://kclibrary.org/locations/plaza",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://kclibrary.org/locations/plaza",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Ewing and Muriel Kauffman Memorial Garden",
+    "The Nelson-Atkins Museum of Art"
+  ],
+  "sourceCount": 9,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

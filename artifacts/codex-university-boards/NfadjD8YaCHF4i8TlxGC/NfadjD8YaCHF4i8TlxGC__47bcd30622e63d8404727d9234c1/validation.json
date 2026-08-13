@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.ndsu.edu/mu/whats_in_the_mu",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ndsu.edu/mu/whats_in_the_mu",
+      "error": ""
+    },
+    {
+      "url": "https://www.ndsu.edu/museum",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ndsu.edu/museum",
+      "error": ""
+    },
+    {
+      "url": "https://www.ndsu.edu/museum/ndsu-galleries",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ndsu.edu/museum/ndsu-galleries",
+      "error": ""
+    },
+    {
+      "url": "https://www.ndsu.edu/mu/thundars_game_room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ndsu.edu/mu/thundars_game_room",
+      "error": ""
+    },
+    {
+      "url": "https://www.ndsu.edu/news/view/detail/72663",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ndsu.edu/news/view/detail/72663",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

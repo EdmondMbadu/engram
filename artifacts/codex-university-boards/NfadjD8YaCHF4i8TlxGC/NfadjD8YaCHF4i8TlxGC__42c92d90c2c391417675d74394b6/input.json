@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "EoWW0aMfrpOuVIKc19iM",
+    "schoolName": "Robert Morris University",
+    "shortSchoolName": "Robert Morris University",
+    "townName": "Moon Township",
+    "state": "PA",
+    "countryCode": "US",
+    "unitId": "215655",
+    "website": "https://www.rmu.edu/",
+    "latitude": 40.520415,
+    "longitude": -80.210468,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=rmu.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=rmu.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Elaine Boyd Library",
+    "Library 24-7 Zone",
+    "Library Research Room",
+    "Elaine Boyd Library Study Rooms",
+    "Elaine Boyd Library Study Tables",
+    "Jefferson Center 24/7 Computer Lab",
+    "Center for Veterans and Military Families",
+    "Hamilton Hall Student Lounge",
+    "Marshall Hall Student Lounge",
+    "Yorktown Hall Student Lounge"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

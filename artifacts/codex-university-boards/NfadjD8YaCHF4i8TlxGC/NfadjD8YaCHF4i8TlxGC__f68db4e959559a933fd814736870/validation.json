@@ -1,0 +1,98 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "4 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.pratt.edu/resources/brooklyn-campus-maps/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pratt.edu/resources/brooklyn-campus-maps/",
+      "error": ""
+    },
+    {
+      "url": "https://www.pratt.edu/about/visit-pratt/sculpture-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pratt.edu/about/visit-pratt/sculpture-park/",
+      "error": ""
+    },
+    {
+      "url": "https://www.pratt.edu/administrative-departments/student-affairs/student-involvement/student-union/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pratt.edu/administrative-departments/student-affairs/student-involvement/student-union/",
+      "error": ""
+    },
+    {
+      "url": "https://www.pratt.edu/wp-content/uploads/2022/12/SelfGuidedTour_Accessible_F.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pratt.edu/wp-content/uploads/2022/12/SelfGuidedTour_Accessible_F.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.pratt.edu/art/fine-arts/facilities/the-fine-arts-galleries/the-dekalb-gallery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pratt.edu/art/fine-arts/facilities/the-fine-arts-galleries/the-dekalb-gallery/",
+      "error": ""
+    },
+    {
+      "url": "https://www.pratt.edu/art/fine-arts/facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pratt.edu/art/fine-arts/facilities/",
+      "error": ""
+    },
+    {
+      "url": "https://www.pratt.edu/pratt-shows/pratt-shows-2026/mondays-at-pratt/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pratt.edu/pratt-shows/pratt-shows-2026/mondays-at-pratt/",
+      "error": ""
+    },
+    {
+      "url": "https://www.bklynlibrary.org/locations/clinton-hill",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bklynlibrary.org/locations/clinton-hill",
+      "error": ""
+    },
+    {
+      "url": "https://www.nycgovparks.org/parks/fort-greene-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.nycgovparks.org/parks/fort-greene-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.brooklynmuseum.org/visit/faqs",
+      "ok": true,
+      "conclusive": true,
+      "status": 429,
+      "finalUrl": "https://www.brooklynmuseum.org/visit/faqs",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Pratt Institute Sculpture Park",
+    "Pratt Student Union",
+    "Steuben Gallery",
+    "Brooklyn Museum"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

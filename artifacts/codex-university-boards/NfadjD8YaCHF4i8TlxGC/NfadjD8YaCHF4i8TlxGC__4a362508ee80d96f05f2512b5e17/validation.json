@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.library.upenn.edu/spaces/rosengarten-quiet-study-area",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.upenn.edu/spaces/rosengarten-quiet-study-area",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.upenn.edu/spaces/brownlee-group-study-suite",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.upenn.edu/spaces/brownlee-group-study-suite",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.upenn.edu/spaces/stovall-dickey-group-study",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.upenn.edu/spaces/stovall-dickey-group-study",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.upenn.edu/spaces/weigle-group-study-suite",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.upenn.edu/spaces/weigle-group-study-suite",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.upenn.edu/spaces/wic-group-study-rooms-117-120",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.upenn.edu/spaces/wic-group-study-rooms-117-120",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.upenn.edu/spaces/study-booths-weigle",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.upenn.edu/spaces/study-booths-weigle",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.upenn.edu/spaces/education-commons-small-group",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.upenn.edu/spaces/education-commons-small-group",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.upenn.edu/spaces/education-commons-group-study",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.upenn.edu/spaces/education-commons-group-study",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.upenn.edu/spaces/holman-biotech-commons-6-seat",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.upenn.edu/spaces/holman-biotech-commons-6-seat",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.upenn.edu/spaces/study-alcoves",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.upenn.edu/spaces/study-alcoves",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

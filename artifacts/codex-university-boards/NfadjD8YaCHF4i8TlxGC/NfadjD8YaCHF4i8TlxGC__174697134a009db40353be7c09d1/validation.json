@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.gainesstreetpies.com/locations-and-hours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gainesstreetpies.com/locations-and-hours",
+      "error": ""
+    },
+    {
+      "url": "https://welcome.fsu.edu/things-to-do/food-dining",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://welcome.fsu.edu/things-to-do/food-dining",
+      "error": ""
+    },
+    {
+      "url": "https://facilities.fsu.edu/services/operations/master-craftsman-studio/featured-projects/declaration",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://facilities.fsu.edu/services/operations/master-craftsman-studio/featured-projects/declaration",
+      "error": ""
+    },
+    {
+      "url": "https://www.tuckerciviccenter.com/FanGuide",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.tuckerciviccenter.com/FanGuide",
+      "error": ""
+    },
+    {
+      "url": "https://cms.leoncountyfl.gov/Community/News-and-Events/Citizen-Engagement-Series",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cms.leoncountyfl.gov/Community/News-and-Events/Citizen-Engagement-Series",
+      "error": ""
+    },
+    {
+      "url": "https://www.challengertlh.com/contact-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.challengertlh.com/contact-us/",
+      "error": ""
+    },
+    {
+      "url": "https://www.flhistoriccapitol.gov/Pages/VisitUs/Index.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flhistoriccapitol.gov/Pages/VisitUs/Index.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.floridacapitol.myflorida.com/visitors/visiting_the_capitol",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.floridacapitol.myflorida.com/visitors/visiting_the_capitol",
+      "error": ""
+    },
+    {
+      "url": "https://621galleryinc.org/about-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://621galleryinc.org/about-us",
+      "error": ""
+    },
+    {
+      "url": "https://visittallahassee.com/partners/the-other-side-vintage/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visittallahassee.com/partners/the-other-side-vintage/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

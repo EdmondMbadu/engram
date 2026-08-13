@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/co/colorado-springs/765-west-baptist-road/32564.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/co/colorado-springs/765-west-baptist-road/32564.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/co/colorado-springs/1208-interquest-parkway.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/co/colorado-springs/1208-interquest-parkway.html",
+      "error": ""
+    },
+    {
+      "url": "https://shakeshack.com/location/interquest-co",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://shakeshack.com/location/interquest-co",
+      "error": ""
+    },
+    {
+      "url": "https://locations.whataburger.com/co/colorado-springs/1310-interquest-pkwy.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.whataburger.com/co/colorado-springs/1310-interquest-pkwy.html",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.ihop.com/en-us/co/colorado-springs/breakfast-3090-n.-chestnut-st-3574",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.ihop.com/en-us/co/colorado-springs/breakfast-3090-n.-chestnut-st-3574",
+      "error": ""
+    },
+    {
+      "url": "https://locations.carlsjr.com/co/colorado-springs/425-garden-of-the-gods",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.carlsjr.com/co/colorado-springs/425-garden-of-the-gods",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jackinthebox.com/us/co/colorado-springs/3690-new-center-point-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jackinthebox.com/us/co",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/co/colorado-springs/2515-montebello-drive-west",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/co/colorado-springs/2515-montebello-drive-west",
+      "error": ""
+    },
+    {
+      "url": "https://locations.whataburger.com/co/colorado-springs/2550-montebello.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.whataburger.com/co/colorado-springs/2550-montebello.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/co/colorado-springs/5850-stetson-hills-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/co/colorado-springs/5850-stetson-hills-blvd",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

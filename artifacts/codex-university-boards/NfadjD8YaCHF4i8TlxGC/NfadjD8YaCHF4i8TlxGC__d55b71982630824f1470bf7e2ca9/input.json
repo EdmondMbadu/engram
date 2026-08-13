@@ -1,0 +1,70 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "msQDje3th0B5B6RAU5RX",
+    "schoolName": "University of Cincinnati-Main Campus",
+    "shortSchoolName": "University of Cincinnati",
+    "townName": "Cincinnati",
+    "state": "OH",
+    "countryCode": "US",
+    "unitId": "201885",
+    "website": "https://www.uc.edu/",
+    "latitude": 39.131159,
+    "longitude": -84.51428,
+    "heroUrl": "https://www.uc.edu/content/dam/refresh/apex-stock/student-life/230731aMullins095.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=uc.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "University of Cincinnati Self-Guided Visit",
+    "Fighting Bearcat sculpture",
+    "GetInvolvedUC",
+    "Campus Recreation Center",
+    "Walter C. Langsam Library",
+    "Philip M. Meyers, Jr. Memorial Gallery",
+    "Nippert Stadium",
+    "Fifth Third Arena",
+    "Burnet Woods",
+    "Cincinnati Art Museum",
+    "Raising Cane's Chicken Fingers",
+    "Shake Shack Clifton",
+    "Toppers Pizza Cincinnati",
+    "Cinnabon Cincinnati",
+    "Auntie Anne's Cincinnati",
+    "Adriatico's UC",
+    "Chicago Gyros & Dogs",
+    "Sichuan Palace",
+    "Hummus Republic Cincinnati",
+    "The 86 Coffee Bar",
+    "Calhoun Street",
+    "Short Vine",
+    "McMillan Street",
+    "Ohio Avenue",
+    "Dennis Street",
+    "Scioto Street",
+    "Corbett Drive",
+    "Jefferson Avenue",
+    "Straight Street",
+    "West Clifton Avenue"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

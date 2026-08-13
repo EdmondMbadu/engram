@@ -1,0 +1,296 @@
+Reading additional input from stdin...
+2026-08-13T06:49:50.072037Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:49:50.108520Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:49:50.165906Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e2-54d9-7962-9825-10afeab55e64.1786603787481652000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9e2-5ed8-7af0-bcfe-503bf6ac434d
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"WjSQR4GxpjavFUAKkw4F","schoolName":"Calvin University","shortSchoolName":"Calvin University","townName":"Grand Rapids","state":"MI","countryCode":"US","website":"https://www.calvin.edu/","latitude":42.929916,"longitude":-85.587548},"templates":[{"id":"college-blocks-off-campus","version":"1.0","titlePattern":"{count} Blocks Off Campus, One Reason Each","editorialBrief":"Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.","researchQueries":["off campus streets student district","campus adjacent commercial streets","neighborhood plan near university"],"count":10,"icon":"location_city","primarySubjectType":"street_or_district","allowedSubjectTypes":["street_or_district"],"freshnessDays":730,"exactTitle":"10 Blocks Off Campus, One Reason Each"}]}
+codex
+{
+  "complete": false,
+  "school_name": "Calvin University",
+  "town_name": "Grand Rapids",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Calvin University",
+      "town_name": "Grand Rapids",
+      "template_id": "college-blocks-off-campus",
+      "title": "10 Blocks Off Campus, One Reason Each",
+      "description": "",
+      "icon": "location_city",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+     ,
+      {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+codex
+{"complete":false,"school_name":"Calvin University","town_name":"Grand Rapids","boards":[{"complete":false,"school_name":"Calvin University","town_name":"Grand Rapids","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Researching 10 distinct map-listed destinations on practical off-campus corridors, with direct supporting pages.","icon":"location_city","cards":[{"subject_id":"research-in-progress","subject_type":"street_or_district","entity_name":"Research in progress","title":"Research in progress","subtitle":"Verifying corridors and named destinations","notes":"Checking direct official, government, and institutional sources for each distinct destination.","short_summary":"Source verification underway.","evidence_claim":"Research is in progress.","source_url":"https://www.calvin.edu/","source_title":"Calvin University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"not_applicable","under21_safe":true} ,{"subject_id":"pending-2","subject_type":"street_or_district","entity_name":"Pending","title":"Pending","subtitle":"Pending","notes":"Pending verified research for the requested completed board and destination card.","short_summary":"Pending.","evidence_claim":"Pending.","source_url":"https://www.calvin.edu/","source_title":"Calvin University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"pending-3","subject_type":"street_or_district","entity_name":"Pending","title":"Pending","subtitle":"Pending","notes":"Pending verified research for the requested completed board and destination card.","short_summary":"Pending.","evidence_claim":"Pending.","source_url":"https://www.calvin.edu/","source_title":"Calvin University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"pending-4","subject_type":"street_or_district","entity_name":"Pending","title":"Pending","subtitle":"Pending","notes":"Pending verified research for the requested completed board and destination card.","short_summary":"Pending.","evidence_claim":"Pending.","source_url":"https://www.calvin.edu/","source_title":"Calvin University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"pending-5","subject_type":"street_or_district","entity_name":"Pending","title":"Pending","subtitle":"Pending","notes":"Pending verified research for the requested completed board and destination card.","short_summary":"Pending.","evidence_claim":"Pending.","source_url":"https://www.calvin.edu/","source_title":"Calvin University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"pending-6","subject_type":"street_or_district","entity_name":"Pending","title":"Pending","subtitle":"Pending","notes":"Pending verified research for the requested completed board and destination card.","short_summary":"Pending.","evidence_claim":"Pending.","source_url":"https://www.calvin.edu/","source_title":"Calvin University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"pending-7","subject_type":"street_or_district","entity_name":"Pending","title":"Pending","subtitle":"Pending","notes":"Pending verified research for the requested completed board and destination card.","short_summary":"Pending.","evidence_claim":"Pending.","source_url":"https://www.calvin.edu/","source_title":"Calvin University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"pending-8","subject_type":"street_or_district","entity_name":"Pending","title":"Pending","subtitle":"Pending","notes":"Pending verified research for the requested completed board and destination card.","short_summary":"Pending.","evidence_claim":"Pending.","source_url":"https://www.calvin.edu/","source_title":"Calvin University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"pending-9","subject_type":"street_or_district","entity_name":"Pending","title":"Pending","subtitle":"Pending","notes":"Pending verified research for the requested completed board and destination card.","short_summary":"Pending.","evidence_claim":"Pending.","source_url":"https://www.calvin.edu/","source_title":"Calvin University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"pending-10","subject_type":"street_or_district","entity_name":"Pending","title":"Pending","subtitle":"Pending","notes":"Pending verified research for the requested completed board and destination card.","short_summary":"Pending.","evidence_claim":"Pending.","source_url":"https://www.calvin.edu/","source_title":"Calvin University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+web search: 
+web search: Calvin University nearby East Beltline businesses official Grand Rapids ...
+web search: 
+web search: site:woodlandmall.com official Woodland Mall Grand Rapids address ...
+web search: 
+web search: official Schuler Books Grand Rapids 28th Street location ...
+web search: 
+web search: official Breton Village Grand Rapids shops address ...
+codex
+{"complete":true,"school_name":"Calvin University","town_name":"Grand Rapids","boards":[{"complete":true,"school_name":"Calvin University","town_name":"Grand Rapids","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named destinations along corridors in Calvin University’s practical off-campus orbit, each paired with one source-backed reason to stop.","icon":"location_city","cards":[{"subject_id":"fresh-thyme-market-burton-street","subject_type":"street_or_district","entity_name":"Fresh Thyme Market","title":"Fresh Thyme Market for Grocery Runs","subtitle":"Burton Street SE corridor","notes":"Follow Burton Street west from campus when you need produce, pantry goods, or another practical grocery stop near Calvin.","short_summary":"A nearby Burton Street grocery destination for everyday supplies.","evidence_claim":"Fresh Thyme Market operates a grocery store at 2470 Burton Street SE in Grand Rapids.","source_url":"https://ww2.freshthyme.com/store-location/grand-rapids-michigan-49546","source_title":"Grocery Store in Grand Rapids, MI | Fresh Thyme Market","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official location page lists daily hours of 7:00 a.m.–10:00 p.m.; verify before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"breton-village-breton-road","subject_type":"street_or_district","entity_name":"Breton Village","title":"Breton Village for a Walkable Shop Cluster","subtitle":"Breton Road SE corridor","notes":"Turn onto Breton Road for an open-air center where multiple shops sit together along a walkable streetscape.","short_summary":"An open-air retail cluster organized around a walkable layout.","evidence_claim":"Breton Village is a 200,000-square-foot open-air center at 1814 Breton Road SE with a walkable streetscape and multiple retailers.","source_url":"https://www.wsdevelopment.com/our-properties/breton-village/","source_title":"Breton Village | WS Development","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Individual tenant access and hours vary; consult the destination or tenant before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"dw-fresh-market-breton-road","subject_type":"street_or_district","entity_name":"D&W Fresh Market – Breton Village","title":"D&W Fresh Market for Deli and Produce","subtitle":"Breton Road SE corridor","notes":"Use the Breton Road stop for a single errand spanning produce, bakery, deli, meat, seafood, and household groceries.","short_summary":"A full-service market with several fresh-food departments.","evidence_claim":"The D&W Fresh Market at 1814 Breton Road SE lists bakery, deli, produce, meat, and seafood departments.","source_url":"https://www.shopdwfreshmarket.com/stores/dw-fresh-market-3","source_title":"D&W Fresh Market – Breton Village","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official store page lists daily hours of 6:00 a.m.–midnight; verify before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"schuler-books-28th-street","subject_type":"street_or_district","entity_name":"Schuler Books Grand Rapids","title":"Schuler Books for an Independent Bookstore Stop","subtitle":"28th Street SE corridor","notes":"Head west on 28th Street to browse an independent bookseller instead of treating the corridor only as an errand route.","short_summary":"An independent bookstore directly on the 28th Street corridor.","evidence_claim":"Michigan’s official tourism site identifies Schuler Books at 2660 28th Street SE as an independent bookseller.","source_url":"https://www.michigan.org/property/schuler-books-grand-rapids","source_title":"Schuler Books Grand Rapids | Michigan","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Consult the bookstore for current public hours and event access before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"woodland-mall-28th-street","subject_type":"street_or_district","entity_name":"Woodland Mall","title":"Woodland Mall for Many Shops in One Stop","subtitle":"28th Street SE corridor","notes":"Continue along 28th Street when several shopping errands are easier to combine inside one named retail destination.","short_summary":"A multi-store shopping destination on the 28th Street corridor.","evidence_claim":"Woodland Mall’s official directory identifies the property as a shopping destination with multiple stores and dining options.","source_url":"https://www.shopwoodlandmall.com/Directory","source_title":"Store Directory | Woodland Mall","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Mall and tenant hours can differ; check the official directory before traveling.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"trader-joes-28th-street","subject_type":"street_or_district","entity_name":"Trader Joe’s Grand Rapids–Kentwood","title":"Trader Joe’s for Pantry and Produce Shopping","subtitle":"28th Street SE corridor","notes":"Follow 28th Street east for groceries, fresh produce, bakery goods, flowers, and everyday pantry basics in one trip.","short_summary":"A grocery stop on 28th Street with produce and everyday basics.","evidence_claim":"Trader Joe’s operates its Grand Rapids–Kentwood store at 3684 28th Street SE and lists produce, bakery items, flowers, and grocery basics.","source_url":"https://locations.traderjoes.com/mi/kentwood/707/","source_title":"Grand Rapids–Kentwood (707) | Trader Joe’s","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official location page lists daily hours of 9:00 a.m.–9:00 p.m.; verify before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"east-grand-rapids-library-lakeside-drive","subject_type":"street_or_district","entity_name":"Kent District Library – East Grand Rapids Branch","title":"East Grand Rapids Branch for Study Facilities","subtitle":"Lakeside Drive SE corridor","notes":"Take Lakeside Drive to use public computers, private rooms, teen space, Wi-Fi, or the branch’s art-book collection.","short_summary":"A lakeside public library with study and technology facilities.","evidence_claim":"The East Grand Rapids Branch at 746 Lakeside Drive SE provides private rooms, public computers, teen space, Wi-Fi, and an art-book collection.","source_url":"https://kdl.org/locations/EGR/","source_title":"East Grand Rapids Branch | Kent District Library","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The branch page lists current hours and dated closures; check it immediately before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"john-collins-park-lakeside-drive","subject_type":"street_or_district","entity_name":"John Collins Park","title":"John Collins Park for a Lakeshore Pause","subtitle":"Lakeside Drive SE corridor","notes":"Stop along Lakeside Drive for the shore walk, overlook decks, benches, rain gardens, or a picnic beside Reeds Lake.","short_summary":"A lakefront park with overlooks, seating, and a shore walk.","evidence_claim":"John Collins Park on Lakeside Drive features a lakeshore walk, overlook decks, benches, rain gardens, picnic tables, and public restrooms.","source_url":"https://www.eastgrmi.gov/170/Parks-Trails-Reeds-Lake","source_title":"Parks, Trails & Reeds Lake | East Grand Rapids, MI","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public park rules apply; consult the city page and posted notices before using facilities.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"reeds-lake-trail-reeds-lake-boulevard","subject_type":"street_or_district","entity_name":"Reeds Lake Trail","title":"Reeds Lake Trail for a 4.2-Mile Loop","subtitle":"Reeds Lake Boulevard corridor","notes":"Use the signed trail near Reeds Lake Boulevard for a paved walking, running, or cycling route through parks and wetlands.","short_summary":"A signed 4.2-mile route linking parks and natural areas.","evidence_claim":"The city documents Reeds Lake Trail as a 4.2-mile route using sidewalks, paved paths, and boardwalks for walkers, runners, and cyclists.","source_url":"https://www.eastgrmi.gov/170/Parks-Trails-Reeds-Lake","source_title":"Parks, Trails & Reeds Lake | East Grand Rapids, MI","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Check city information, posted signs, weather, and trail conditions before starting the route.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"frederik-meijer-gardens-east-beltline","subject_type":"street_or_district","entity_name":"Frederik Meijer Gardens & Sculpture Park","title":"Meijer Gardens for Art and Horticulture","subtitle":"East Beltline Avenue NE corridor","notes":"Follow East Beltline north to combine outdoor sculpture and cultivated gardens at one clearly marked cultural destination.","short_summary":"A cultural stop combining sculpture displays with botanical gardens.","evidence_claim":"Michigan’s official tourism site places Frederik Meijer Gardens & Sculpture Park at 1000 East Beltline Avenue NE and describes its blend of art, culture, and nature.","source_url":"https://www.michigan.org/property/frederik-meijer-gardens-sculpture-park","source_title":"Frederik Meijer Gardens & Sculpture Park | Michigan","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Admission is generally ticketed; check the venue for current hours, pricing, and exhibition access.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T06:52:20.431979Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9e2-5ed8-7af0-bcfe-503bf6ac434d.1786603790042071000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+79,794
+
+{"complete":true,"school_name":"Calvin University","town_name":"Grand Rapids","boards":[{"complete":true,"school_name":"Calvin University","town_name":"Grand Rapids","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named destinations along corridors in Calvin University’s practical off-campus orbit, each paired with one source-backed reason to stop.","icon":"location_city","cards":[{"subject_id":"fresh-thyme-market-burton-street","subject_type":"street_or_district","entity_name":"Fresh Thyme Market","title":"Fresh Thyme Market for Grocery Runs","subtitle":"Burton Street SE corridor","notes":"Follow Burton Street west from campus when you need produce, pantry goods, or another practical grocery stop near Calvin.","short_summary":"A nearby Burton Street grocery destination for everyday supplies.","evidence_claim":"Fresh Thyme Market operates a grocery store at 2470 Burton Street SE in Grand Rapids.","source_url":"https://ww2.freshthyme.com/store-location/grand-rapids-michigan-49546","source_title":"Grocery Store in Grand Rapids, MI | Fresh Thyme Market","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official location page lists daily hours of 7:00 a.m.–10:00 p.m.; verify before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"breton-village-breton-road","subject_type":"street_or_district","entity_name":"Breton Village","title":"Breton Village for a Walkable Shop Cluster","subtitle":"Breton Road SE corridor","notes":"Turn onto Breton Road for an open-air center where multiple shops sit together along a walkable streetscape.","short_summary":"An open-air retail cluster organized around a walkable layout.","evidence_claim":"Breton Village is a 200,000-square-foot open-air center at 1814 Breton Road SE with a walkable streetscape and multiple retailers.","source_url":"https://www.wsdevelopment.com/our-properties/breton-village/","source_title":"Breton Village | WS Development","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Individual tenant access and hours vary; consult the destination or tenant before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"dw-fresh-market-breton-road","subject_type":"street_or_district","entity_name":"D&W Fresh Market – Breton Village","title":"D&W Fresh Market for Deli and Produce","subtitle":"Breton Road SE corridor","notes":"Use the Breton Road stop for a single errand spanning produce, bakery, deli, meat, seafood, and household groceries.","short_summary":"A full-service market with several fresh-food departments.","evidence_claim":"The D&W Fresh Market at 1814 Breton Road SE lists bakery, deli, produce, meat, and seafood departments.","source_url":"https://www.shopdwfreshmarket.com/stores/dw-fresh-market-3","source_title":"D&W Fresh Market – Breton Village","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official store page lists daily hours of 6:00 a.m.–midnight; verify before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"schuler-books-28th-street","subject_type":"street_or_district","entity_name":"Schuler Books Grand Rapids","title":"Schuler Books for an Independent Bookstore Stop","subtitle":"28th Street SE corridor","notes":"Head west on 28th Street to browse an independent bookseller instead of treating the corridor only as an errand route.","short_summary":"An independent bookstore directly on the 28th Street corridor.","evidence_claim":"Michigan’s official tourism site identifies Schuler Books at 2660 28th Street SE as an independent bookseller.","source_url":"https://www.michigan.org/property/schuler-books-grand-rapids","source_title":"Schuler Books Grand Rapids | Michigan","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Consult the bookstore for current public hours and event access before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"woodland-mall-28th-street","subject_type":"street_or_district","entity_name":"Woodland Mall","title":"Woodland Mall for Many Shops in One Stop","subtitle":"28th Street SE corridor","notes":"Continue along 28th Street when several shopping errands are easier to combine inside one named retail destination.","short_summary":"A multi-store shopping destination on the 28th Street corridor.","evidence_claim":"Woodland Mall’s official directory identifies the property as a shopping destination with multiple stores and dining options.","source_url":"https://www.shopwoodlandmall.com/Directory","source_title":"Store Directory | Woodland Mall","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Mall and tenant hours can differ; check the official directory before traveling.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"trader-joes-28th-street","subject_type":"street_or_district","entity_name":"Trader Joe’s Grand Rapids–Kentwood","title":"Trader Joe’s for Pantry and Produce Shopping","subtitle":"28th Street SE corridor","notes":"Follow 28th Street east for groceries, fresh produce, bakery goods, flowers, and everyday pantry basics in one trip.","short_summary":"A grocery stop on 28th Street with produce and everyday basics.","evidence_claim":"Trader Joe’s operates its Grand Rapids–Kentwood store at 3684 28th Street SE and lists produce, bakery items, flowers, and grocery basics.","source_url":"https://locations.traderjoes.com/mi/kentwood/707/","source_title":"Grand Rapids–Kentwood (707) | Trader Joe’s","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official location page lists daily hours of 9:00 a.m.–9:00 p.m.; verify before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"east-grand-rapids-library-lakeside-drive","subject_type":"street_or_district","entity_name":"Kent District Library – East Grand Rapids Branch","title":"East Grand Rapids Branch for Study Facilities","subtitle":"Lakeside Drive SE corridor","notes":"Take Lakeside Drive to use public computers, private rooms, teen space, Wi-Fi, or the branch’s art-book collection.","short_summary":"A lakeside public library with study and technology facilities.","evidence_claim":"The East Grand Rapids Branch at 746 Lakeside Drive SE provides private rooms, public computers, teen space, Wi-Fi, and an art-book collection.","source_url":"https://kdl.org/locations/EGR/","source_title":"East Grand Rapids Branch | Kent District Library","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The branch page lists current hours and dated closures; check it immediately before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"john-collins-park-lakeside-drive","subject_type":"street_or_district","entity_name":"John Collins Park","title":"John Collins Park for a Lakeshore Pause","subtitle":"Lakeside Drive SE corridor","notes":"Stop along Lakeside Drive for the shore walk, overlook decks, benches, rain gardens, or a picnic beside Reeds Lake.","short_summary":"A lakefront park with overlooks, seating, and a shore walk.","evidence_claim":"John Collins Park on Lakeside Drive features a lakeshore walk, overlook decks, benches, rain gardens, picnic tables, and public restrooms.","source_url":"https://www.eastgrmi.gov/170/Parks-Trails-Reeds-Lake","source_title":"Parks, Trails & Reeds Lake | East Grand Rapids, MI","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public park rules apply; consult the city page and posted notices before using facilities.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"reeds-lake-trail-reeds-lake-boulevard","subject_type":"street_or_district","entity_name":"Reeds Lake Trail","title":"Reeds Lake Trail for a 4.2-Mile Loop","subtitle":"Reeds Lake Boulevard corridor","notes":"Use the signed trail near Reeds Lake Boulevard for a paved walking, running, or cycling route through parks and wetlands.","short_summary":"A signed 4.2-mile route linking parks and natural areas.","evidence_claim":"The city documents Reeds Lake Trail as a 4.2-mile route using sidewalks, paved paths, and boardwalks for walkers, runners, and cyclists.","source_url":"https://www.eastgrmi.gov/170/Parks-Trails-Reeds-Lake","source_title":"Parks, Trails & Reeds Lake | East Grand Rapids, MI","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Check city information, posted signs, weather, and trail conditions before starting the route.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"frederik-meijer-gardens-east-beltline","subject_type":"street_or_district","entity_name":"Frederik Meijer Gardens & Sculpture Park","title":"Meijer Gardens for Art and Horticulture","subtitle":"East Beltline Avenue NE corridor","notes":"Follow East Beltline north to combine outdoor sculpture and cultivated gardens at one clearly marked cultural destination.","short_summary":"A cultural stop combining sculpture displays with botanical gardens.","evidence_claim":"Michigan’s official tourism site places Frederik Meijer Gardens & Sculpture Park at 1000 East Beltline Avenue NE and describes its blend of art, culture, and nature.","source_url":"https://www.michigan.org/property/frederik-meijer-gardens-sculpture-park","source_title":"Frederik Meijer Gardens & Sculpture Park | Michigan","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Admission is generally ticketed; check the venue for current hours, pricing, and exhibition access.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}

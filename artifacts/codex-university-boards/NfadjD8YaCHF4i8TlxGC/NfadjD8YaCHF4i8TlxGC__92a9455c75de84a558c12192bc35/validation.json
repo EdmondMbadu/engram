@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://dennys.com/location/-529936",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://dennys.com/location/-529936",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ct/new-london/404-colman-st.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ct/new-london/404-colman-st.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/ct/new-london/370-colman-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/ct/new-london/370-colman-street",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/CT/NEW-LONDON/406-COLMAN-ST/5397.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/CT/NEW-LONDON/406-COLMAN-ST/5397.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.chilis.com/locations/us/connecticut/new-london/new-london",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.chilis.com/locations/us/connecticut/new-london/new-london",
+      "error": ""
+    },
+    {
+      "url": "https://pizzaramanewlondon.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizzaramanewlondon.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.tonydsnl.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.tonydsnl.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.jasminethainl.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jasminethainl.com/",
+      "error": ""
+    },
+    {
+      "url": "https://empirepizzanewlondon.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://empirepizzanewlondon.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.sneekerscafe.com/restaurant",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sneekerscafe.com/restaurant",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.simmons.edu/student-experience/our-campus/student-spaces-resources",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.simmons.edu/student-experience/our-campus/student-spaces-resources",
+      "error": ""
+    },
+    {
+      "url": "https://www.simmons.edu/student-experience/our-campus/student-support-contacts/commutergraduate-support-services",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.simmons.edu/student-experience/our-campus/student-support-contacts/commutergraduate-support-services",
+      "error": ""
+    },
+    {
+      "url": "https://www.simmons.edu/library/research-study/rooms-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.simmons.edu/library/research-study/rooms-spaces",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

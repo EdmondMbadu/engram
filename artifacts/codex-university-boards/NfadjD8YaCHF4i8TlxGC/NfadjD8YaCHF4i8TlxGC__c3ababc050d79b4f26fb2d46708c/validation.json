@@ -1,0 +1,79 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.rit.edu/artdesign/bevier-gallery",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rit.edu/artdesign/bevier-gallery",
+      "error": ""
+    },
+    {
+      "url": "https://www.rit.edu/cityartspace/about-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rit.edu/cityartspace/about-us",
+      "error": ""
+    },
+    {
+      "url": "https://www.rit.edu/recreationwellness/facilities/nature-trails-and-jogging-routes",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rit.edu/recreationwellness/facilities/nature-trails-and-jogging-routes",
+      "error": ""
+    },
+    {
+      "url": "https://www.rit.edu/news/online-archive-proves-theres-plenty-name",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rit.edu/news/online-archive-proves-theres-plenty-name",
+      "error": ""
+    },
+    {
+      "url": "https://www.rit.edu/artdesign/film-foto-fest",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rit.edu/artdesign/film-foto-fest",
+      "error": ""
+    },
+    {
+      "url": "https://www.cityofrochester.gov/departments/department-recreation-and-human-services-drhs/maplewood-nature-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cityofrochester.gov/departments/department-recreation-and-human-services-drhs/maplewood-nature-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.cityofrochester.gov/locations/city-halls-link-gallery",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cityofrochester.gov/locations/city-halls-link-gallery",
+      "error": ""
+    },
+    {
+      "url": "https://www.cityofrochester.gov/departments/department-recreation-and-human-services-drhs/tennis-and-pickleball-courts",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cityofrochester.gov/departments/department-recreation-and-human-services-drhs/tennis-and-pickleball-courts",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Bevier Gallery"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

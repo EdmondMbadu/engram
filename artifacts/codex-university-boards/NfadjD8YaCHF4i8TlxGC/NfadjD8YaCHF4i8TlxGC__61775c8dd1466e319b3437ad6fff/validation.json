@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://library.uni.edu/spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.uni.edu/spaces",
+      "error": ""
+    },
+    {
+      "url": "https://library.uni.edu/about-us/our-building/floor-maps/floor-map-descriptions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.uni.edu/about-us/our-building/floor-maps/floor-map-descriptions",
+      "error": ""
+    },
+    {
+      "url": "https://ourtomorrow.uni.edu/campanile",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ourtomorrow.uni.edu/campanile",
+      "error": ""
+    },
+    {
+      "url": "https://union.uni.edu/event-services/view-space-maucker-union",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://union.uni.edu/event-services/view-space-maucker-union",
+      "error": ""
+    },
+    {
+      "url": "https://union.uni.edu/event-services/view-space-campus-grounds",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://union.uni.edu/event-services/view-space-campus-grounds",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

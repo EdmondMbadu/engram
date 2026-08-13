@@ -1,0 +1,298 @@
+Reading additional input from stdin...
+2026-08-13T06:42:22.231856Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9db-7035-7521-b677-ee9d8957e667.1786603335733472000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9db-8909-7383-91b6-9e20f6b442a4
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"W19bBm2hYTm2Y4pHTH1i","schoolName":"California State University-East Bay","shortSchoolName":"California State University-East Bay","townName":"Hayward","state":"CA","countryCode":"US","website":"https://www.csueastbay.edu/","latitude":37.657694,"longitude":-122.054135},"templates":[{"id":"college-study-spots","version":"1.0","titlePattern":"Claimed by 9am: {count} Study Spots Worth Showing Up Early For","editorialBrief":"Choose ten distinct study environments. Verify access rules, room or reservation constraints, and the physical affordance that makes each useful. Treat “Claimed by 9am” as editorial framing; never assert crowding or student behavior without evidence.","researchQueries":["campus study spaces","library study rooms students","quiet study campus"],"count":10,"icon":"menu_book","primarySubjectType":"study_space","allowedSubjectTypes":["study_space","place"],"freshnessDays":180,"exactTitle":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For"}]}
+2026-08-13T06:42:22.359242Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9db-7039-7132-be72-9313a81df073.1786603335737805000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:42:22.421202Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9db-702f-7ef3-bb9e-3c7a414197ec.1786603335727942000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:42:22.482414Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9db-7064-7982-abf4-597f7ca80d55.1786603335780946000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:42:22.493575Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:42:22.503085Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:42:22.618411Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9db-7036-7150-a3e8-4cce4d39d58b.1786603335735034000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:42:22.731264Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9db-702e-71c3-99d6-56272a625e8e.1786603335727193000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "California State University-East Bay",
+  "town_name": "Hayward",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "California State University-East Bay",
+      "town_name": "Hayward",
+      "template_id": "college-study-spots",
+      "title": "Claimed by 9am: 10 Study Spots Worth Showing Up Early For",
+      "description": "",
+      "icon": "menu_book",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "I’m verifying ten distinct, named study environments plus current access or reservation details from direct CSU East Bay pages.",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "study_space",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:csueastbay.edu library study spaces CORE group study rooms Hayward ...
+web search: 
+web search: CSU East Bay library reserve room CORE rooms presentation practice ...
+web search: 
+web search: site:csueastbay.edu "The Cave" "24-hour study room" ...
+codex
+{"complete":true,"school_name":"California State University-East Bay","town_name":"Hayward","boards":[{"complete":true,"school_name":"California State University-East Bay","town_name":"Hayward","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten documented Hayward-campus settings for silent work, computer-based assignments, tutoring, collaborative sessions, and discipline-focused study.","icon":"menu_book","cards":[{"subject_id":"csueb-core-family-friendly-study-room-1-1","subject_type":"study_space","entity_name":"CORE Family Friendly Study Room 1-1","title":"Bring the Whole Study Setup","subtitle":"A family-friendly individual study option on CORE’s first floor","notes":"Try Room 1-1 when caregiving and coursework overlap; it is available for individual study on a space-available basis.","short_summary":"A first-floor room explicitly designated for family-friendly study.","evidence_claim":"CSU East Bay’s current international student handbook identifies Family Friendly Study Room 1-1 on CORE’s first floor as individual study space available on a space-available basis.","source_url":"https://www.csueastbay.edu/cie/files/docs/pdfs/f-1-handbook.pdf","source_title":"International Student Handbook","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on CORE Floor 1; drop-in individual use is subject to space availability.","cost_status":"unknown","under21_safe":true},{"subject_id":"csueb-core-silent-study-room-326","subject_type":"study_space","entity_name":"CORE Silent Study Room 326","title":"Settle Into the Silent Room","subtitle":"A designated silent workspace on CORE’s third floor","notes":"Choose Room 326 for work that benefits from a silent setting, and arrive with a backup because use depends on availability.","short_summary":"The library’s specifically designated room for silent individual work.","evidence_claim":"CSU East Bay’s current international student handbook lists Silent Study Room 326 on CORE’s third floor among the individual study spaces available on a space-available basis.","source_url":"https://www.csueastbay.edu/cie/files/docs/pdfs/f-1-handbook.pdf","source_title":"International Student Handbook","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on CORE Floor 3; drop-in individual use is subject to space availability.","cost_status":"unknown","under21_safe":true},{"subject_id":"csueb-core-second-floor-quiet-study-area","subject_type":"study_space","entity_name":"CORE Second-Floor Quiet Study Area","title":"Plug In on the Quiet Floor","subtitle":"Quiet seating with personal outlets and storage in CORE","notes":"Head to CORE’s second floor for a quieter work session; look for the individual seats equipped with outlets and storage.","short_summary":"A quiet library floor suited to sustained laptop or reading sessions.","evidence_claim":"A CSU East Bay article states that CORE’s second floor is a quiet floor and describes individual seats with personal outlets and storage.","source_url":"https://www.csueastbay.edu/news-center/2023/10/the-core-building-shows-how-east-bay-leeds-the-way-in-campus-sustainability.html","source_title":"The CORE Building Shows How East Bay LEED’s the Way in Campus Sustainability","source_kind":"university_official","source_published_at":"2023-10-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use during current CORE Library building hours; this source does not specify reservations for the open seating.","cost_status":"unknown","under21_safe":true},{"subject_id":"csueb-core-learning-commons","subject_type":"study_space","entity_name":"CORE Learning Commons","title":"Build a Computer-Based Work Session","subtitle":"First-floor technology access inside the CORE building","notes":"Start at the first-floor Learning Commons when an assignment needs campus technology; bring your Bay Card for laptop checkout.","short_summary":"A technology-oriented library base for assignments requiring a computer.","evidence_claim":"CSU East Bay identifies the Learning Commons on CORE’s first floor as the laptop-checkout location, while its computer-lab inventory lists the Learning Commons with 131 Windows computers.","source_url":"https://www.csueastbay.edu/cls/computer-labs/discipline-specific.html","source_title":"Discipline Specific Computer Labs","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on CORE Floor 1; technology checkout requires a Bay Card and equipment is subject to availability.","cost_status":"unknown","under21_safe":true},{"subject_id":"csueb-scaa-quiet-room-341","subject_type":"study_space","entity_name":"Quiet SCAA, CORE Room 341","title":"Pair Quiet Work With Coaching","subtitle":"SCAA’s quieter tutoring and coaching room","notes":"Use Room 341 when a tutoring or coaching appointment calls for a quieter setting; arrange the academic support session first.","short_summary":"A dedicated SCAA room used for quieter tutoring and coaching appointments.","evidence_claim":"The university’s SCAA annual report identifies CORE Room 341 as “Quiet SCAA” and says it serves tutoring and coaching appointments as well as trainings, meetings, and workshops.","source_url":"https://www.csueastbay.edu/scaa/files/docs/scaa-annual-report-23-24ay.pdf","source_title":"SCAA Annual Report – 2023–2024 Academic Year","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use is tied to SCAA tutoring, coaching, training, meeting, or workshop activity; confirm through SCAA before visiting.","cost_status":"unknown","under21_safe":true},{"subject_id":"csueb-scaa-si-room-342","subject_type":"study_space","entity_name":"SCAA Supplemental Instruction Room 342","title":"Work Through a Course in SI","subtitle":"A CORE room dedicated primarily to Supplemental Instruction","notes":"Check your course’s SI schedule before heading to Room 342, then bring the specific notes and problems you want to review.","short_summary":"A structured group-learning room centered on Supplemental Instruction sessions.","evidence_claim":"The university’s SCAA annual report says CORE Room 342 is used primarily for Supplemental Instruction sessions.","source_url":"https://www.csueastbay.edu/scaa/files/docs/scaa-annual-report-23-24ay.pdf","source_title":"SCAA Annual Report – 2023–2024 Academic Year","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Access is associated with scheduled Supplemental Instruction sessions; consult SCAA’s current session schedule.","cost_status":"unknown","under21_safe":true},{"subject_id":"csueb-mesa-u-peer-lounge-north-science-337","subject_type":"study_space","entity_name":"MESA U Peer Lounge, North Science 337","title":"Study Alongside MESA Peers","subtitle":"Independent and peer study space for MESA U students","notes":"MESA U students can bring solo work or meet peers in North Science 337; confirm program access before planning a session.","short_summary":"A program-specific peer lounge supporting both solo and collaborative study.","evidence_claim":"The official MESA University page identifies its Peer Lounge in North Science 337 as a study space for MESA U students working independently or with peers.","source_url":"https://www.csueastbay.edu/mesauniversity/","source_title":"MESA University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Available to MESA U students; contact the MESA University Program for current access details.","cost_status":"unknown","under21_safe":true},{"subject_id":"csueb-mesa-program-office-north-science-335","subject_type":"study_space","entity_name":"MESA Program Office, North Science 335","title":"Use MESA’s Second Study Base","subtitle":"An additional independent-or-peer workspace for MESA U students","notes":"If the Peer Lounge does not fit the task, MESA U students can ask about studying in the adjacent program office, Room 335.","short_summary":"A second MESA-designated study setting beside the program’s peer lounge.","evidence_claim":"The official MESA University page states that the MESA office in North Science 335 is available for MESA U students to study independently or with peers.","source_url":"https://www.csueastbay.edu/mesauniversity/","source_title":"MESA University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Available to MESA U students; coordinate with program staff because this is also the MESA office.","cost_status":"unknown","under21_safe":true},{"subject_id":"csueb-music-resource-center-mb-1560","subject_type":"study_space","entity_name":"Music Resource Center, MB 1560","title":"Study With Scores and Recordings","subtitle":"A soundproofed Music Building room for solo or collaborative work","notes":"Bring a music-focused project to MB 1560; use the long table for group work or a quieter area for individual study.","short_summary":"A soundproofed resource room combining study space, scores, recordings, and listening stations.","evidence_claim":"CSU East Bay’s Spring 2026 Music newsletter places the Music Resource Center in MB 1560 and says its soundproofed room supports quiet individual study and collaborative work at a long table.","source_url":"https://www.csueastbay.edu/music/news-events/newsletter.html","source_title":"Spring 2026 Newsletter","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located in Music Building Room 1560; the source does not state public hours or eligibility, so confirm with the Music Department.","cost_status":"unknown","under21_safe":true},{"subject_id":"csueb-cbe-study-commons-vbt-127","subject_type":"study_space","entity_name":"CBE Study Commons, VBT 127","title":"Set Up in a CBE Computer Commons","subtitle":"A six-computer discipline-specific study commons in Valley Business and Technology","notes":"Choose VBT 127 when CBE coursework benefits from a desktop station; verify department access and room availability first.","short_summary":"A compact, discipline-specific computer commons for CBE study.","evidence_claim":"CSU East Bay’s discipline-specific computer-lab inventory lists VBT 127 on the Hayward campus as a CBE Study Commons with six Windows computers.","source_url":"https://www.csueastbay.edu/cls/computer-labs/discipline-specific.html","source_title":"Discipline Specific Computer Labs","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Discipline-specific labs are primarily for field-specific study and reservations are handled through the associated department.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T06:44:21.461136Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9db-8909-7383-91b6-9e20f6b442a4.1786603342089881000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+60,030
+
+{"complete":true,"school_name":"California State University-East Bay","town_name":"Hayward","boards":[{"complete":true,"school_name":"California State University-East Bay","town_name":"Hayward","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten documented Hayward-campus settings for silent work, computer-based assignments, tutoring, collaborative sessions, and discipline-focused study.","icon":"menu_book","cards":[{"subject_id":"csueb-core-family-friendly-study-room-1-1","subject_type":"study_space","entity_name":"CORE Family Friendly Study Room 1-1","title":"Bring the Whole Study Setup","subtitle":"A family-friendly individual study option on CORE’s first floor","notes":"Try Room 1-1 when caregiving and coursework overlap; it is available for individual study on a space-available basis.","short_summary":"A first-floor room explicitly designated for family-friendly study.","evidence_claim":"CSU East Bay’s current international student handbook identifies Family Friendly Study Room 1-1 on CORE’s first floor as individual study space available on a space-available basis.","source_url":"https://www.csueastbay.edu/cie/files/docs/pdfs/f-1-handbook.pdf","source_title":"International Student Handbook","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on CORE Floor 1; drop-in individual use is subject to space availability.","cost_status":"unknown","under21_safe":true},{"subject_id":"csueb-core-silent-study-room-326","subject_type":"study_space","entity_name":"CORE Silent Study Room 326","title":"Settle Into the Silent Room","subtitle":"A designated silent workspace on CORE’s third floor","notes":"Choose Room 326 for work that benefits from a silent setting, and arrive with a backup because use depends on availability.","short_summary":"The library’s specifically designated room for silent individual work.","evidence_claim":"CSU East Bay’s current international student handbook lists Silent Study Room 326 on CORE’s third floor among the individual study spaces available on a space-available basis.","source_url":"https://www.csueastbay.edu/cie/files/docs/pdfs/f-1-handbook.pdf","source_title":"International Student Handbook","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on CORE Floor 3; drop-in individual use is subject to space availability.","cost_status":"unknown","under21_safe":true},{"subject_id":"csueb-core-second-floor-quiet-study-area","subject_type":"study_space","entity_name":"CORE Second-Floor Quiet Study Area","title":"Plug In on the Quiet Floor","subtitle":"Quiet seating with personal outlets and storage in CORE","notes":"Head to CORE’s second floor for a quieter work session; look for the individual seats equipped with outlets and storage.","short_summary":"A quiet library floor suited to sustained laptop or reading sessions.","evidence_claim":"A CSU East Bay article states that CORE’s second floor is a quiet floor and describes individual seats with personal outlets and storage.","source_url":"https://www.csueastbay.edu/news-center/2023/10/the-core-building-shows-how-east-bay-leeds-the-way-in-campus-sustainability.html","source_title":"The CORE Building Shows How East Bay LEED’s the Way in Campus Sustainability","source_kind":"university_official","source_published_at":"2023-10-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use during current CORE Library building hours; this source does not specify reservations for the open seating.","cost_status":"unknown","under21_safe":true},{"subject_id":"csueb-core-learning-commons","subject_type":"study_space","entity_name":"CORE Learning Commons","title":"Build a Computer-Based Work Session","subtitle":"First-floor technology access inside the CORE building","notes":"Start at the first-floor Learning Commons when an assignment needs campus technology; bring your Bay Card for laptop checkout.","short_summary":"A technology-oriented library base for assignments requiring a computer.","evidence_claim":"CSU East Bay identifies the Learning Commons on CORE’s first floor as the laptop-checkout location, while its computer-lab inventory lists the Learning Commons with 131 Windows computers.","source_url":"https://www.csueastbay.edu/cls/computer-labs/discipline-specific.html","source_title":"Discipline Specific Computer Labs","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on CORE Floor 1; technology checkout requires a Bay Card and equipment is subject to availability.","cost_status":"unknown","under21_safe":true},{"subject_id":"csueb-scaa-quiet-room-341","subject_type":"study_space","entity_name":"Quiet SCAA, CORE Room 341","title":"Pair Quiet Work With Coaching","subtitle":"SCAA’s quieter tutoring and coaching room","notes":"Use Room 341 when a tutoring or coaching appointment calls for a quieter setting; arrange the academic support session first.","short_summary":"A dedicated SCAA room used for quieter tutoring and coaching appointments.","evidence_claim":"The university’s SCAA annual report identifies CORE Room 341 as “Quiet SCAA” and says it serves tutoring and coaching appointments as well as trainings, meetings, and workshops.","source_url":"https://www.csueastbay.edu/scaa/files/docs/scaa-annual-report-23-24ay.pdf","source_title":"SCAA Annual Report – 2023–2024 Academic Year","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use is tied to SCAA tutoring, coaching, training, meeting, or workshop activity; confirm through SCAA before visiting.","cost_status":"unknown","under21_safe":true},{"subject_id":"csueb-scaa-si-room-342","subject_type":"study_space","entity_name":"SCAA Supplemental Instruction Room 342","title":"Work Through a Course in SI","subtitle":"A CORE room dedicated primarily to Supplemental Instruction","notes":"Check your course’s SI schedule before heading to Room 342, then bring the specific notes and problems you want to review.","short_summary":"A structured group-learning room centered on Supplemental Instruction sessions.","evidence_claim":"The university’s SCAA annual report says CORE Room 342 is used primarily for Supplemental Instruction sessions.","source_url":"https://www.csueastbay.edu/scaa/files/docs/scaa-annual-report-23-24ay.pdf","source_title":"SCAA Annual Report – 2023–2024 Academic Year","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Access is associated with scheduled Supplemental Instruction sessions; consult SCAA’s current session schedule.","cost_status":"unknown","under21_safe":true},{"subject_id":"csueb-mesa-u-peer-lounge-north-science-337","subject_type":"study_space","entity_name":"MESA U Peer Lounge, North Science 337","title":"Study Alongside MESA Peers","subtitle":"Independent and peer study space for MESA U students","notes":"MESA U students can bring solo work or meet peers in North Science 337; confirm program access before planning a session.","short_summary":"A program-specific peer lounge supporting both solo and collaborative study.","evidence_claim":"The official MESA University page identifies its Peer Lounge in North Science 337 as a study space for MESA U students working independently or with peers.","source_url":"https://www.csueastbay.edu/mesauniversity/","source_title":"MESA University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Available to MESA U students; contact the MESA University Program for current access details.","cost_status":"unknown","under21_safe":true},{"subject_id":"csueb-mesa-program-office-north-science-335","subject_type":"study_space","entity_name":"MESA Program Office, North Science 335","title":"Use MESA’s Second Study Base","subtitle":"An additional independent-or-peer workspace for MESA U students","notes":"If the Peer Lounge does not fit the task, MESA U students can ask about studying in the adjacent program office, Room 335.","short_summary":"A second MESA-designated study setting beside the program’s peer lounge.","evidence_claim":"The official MESA University page states that the MESA office in North Science 335 is available for MESA U students to study independently or with peers.","source_url":"https://www.csueastbay.edu/mesauniversity/","source_title":"MESA University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Available to MESA U students; coordinate with program staff because this is also the MESA office.","cost_status":"unknown","under21_safe":true},{"subject_id":"csueb-music-resource-center-mb-1560","subject_type":"study_space","entity_name":"Music Resource Center, MB 1560","title":"Study With Scores and Recordings","subtitle":"A soundproofed Music Building room for solo or collaborative work","notes":"Bring a music-focused project to MB 1560; use the long table for group work or a quieter area for individual study.","short_summary":"A soundproofed resource room combining study space, scores, recordings, and listening stations.","evidence_claim":"CSU East Bay’s Spring 2026 Music newsletter places the Music Resource Center in MB 1560 and says its soundproofed room supports quiet individual study and collaborative work at a long table.","source_url":"https://www.csueastbay.edu/music/news-events/newsletter.html","source_title":"Spring 2026 Newsletter","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located in Music Building Room 1560; the source does not state public hours or eligibility, so confirm with the Music Department.","cost_status":"unknown","under21_safe":true},{"subject_id":"csueb-cbe-study-commons-vbt-127","subject_type":"study_space","entity_name":"CBE Study Commons, VBT 127","title":"Set Up in a CBE Computer Commons","subtitle":"A six-computer discipline-specific study commons in Valley Business and Technology","notes":"Choose VBT 127 when CBE coursework benefits from a desktop station; verify department access and room availability first.","short_summary":"A compact, discipline-specific computer commons for CBE study.","evidence_claim":"CSU East Bay’s discipline-specific computer-lab inventory lists VBT 127 on the Hayward campus as a CBE Study Commons with six Windows computers.","source_url":"https://www.csueastbay.edu/cls/computer-labs/discipline-specific.html","source_title":"Discipline Specific Computer Labs","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Discipline-specific labs are primarily for field-specific study and reservations are handled through the associated department.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}

@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.uah.edu/library/services/community-and-guest-access",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uah.edu/library/services/community-and-guest-access",
+      "error": ""
+    },
+    {
+      "url": "https://www.uah.edu/first-generation-students/first-gen-profiles/18967-transportation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uah.edu/first-generation-students/first-gen-profiles/18967-transportation",
+      "error": ""
+    },
+    {
+      "url": "https://www.artshuntsville.org/public-art-tours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.artshuntsville.org/public-art-tours/",
+      "error": ""
+    },
+    {
+      "url": "https://cityblog.huntsvilleal.gov/5-free-huntsville-resources-for-a-stronger-healthier-you/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cityblog.huntsvilleal.gov/5-free-huntsville-resources-for-a-stronger-healthier-you/",
+      "error": ""
+    },
+    {
+      "url": "https://www.huntsvilleal.gov/environment/parks-recreation/recreation/aquatics/dr-richard-showers-sr-splash-pad/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.huntsvilleal.gov/environment/parks-recreation/recreation/aquatics/dr-richard-showers-sr-splash-pad/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

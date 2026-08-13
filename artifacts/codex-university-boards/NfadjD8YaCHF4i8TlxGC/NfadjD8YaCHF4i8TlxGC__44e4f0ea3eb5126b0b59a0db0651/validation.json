@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://library.truman.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.truman.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://library.truman.edu/study-room/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.truman.edu/study-room/",
+      "error": ""
+    },
+    {
+      "url": "https://library.truman.edu/villhard-innovation-lab/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.truman.edu/villhard-innovation-lab/",
+      "error": ""
+    },
+    {
+      "url": "https://library.truman.edu/special-collections-archives/reading-room-procedures-2/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.truman.edu/special-collections-archives/reading-room-procedures-2/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

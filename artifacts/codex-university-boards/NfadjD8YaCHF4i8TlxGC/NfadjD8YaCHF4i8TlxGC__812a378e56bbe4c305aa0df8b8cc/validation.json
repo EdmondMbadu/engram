@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.mainstreetwooster.org/newpage",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mainstreetwooster.org/newpage",
+      "error": ""
+    },
+    {
+      "url": "https://www.mainstreetwooster.org/civil-rights-self-guided-tour",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mainstreetwooster.org/civil-rights-self-guided-tour",
+      "error": ""
+    },
+    {
+      "url": "https://www.woosteroh.com/departments/recreation/parks/pavilions.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.woosteroh.com/departments/recreation/parks/pavilions.php",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

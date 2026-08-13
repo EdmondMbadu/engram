@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://lib.arizona.edu/study/spaces/silent-study-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.arizona.edu/study/spaces/silent-study-room",
+      "error": ""
+    },
+    {
+      "url": "https://lib.arizona.edu/study/spaces/scholars-corner",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.arizona.edu/study/spaces/scholars-corner",
+      "error": ""
+    },
+    {
+      "url": "https://lib.arizona.edu/study/spaces/quiet-study-areas",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.arizona.edu/study/spaces/quiet-study-areas",
+      "error": ""
+    },
+    {
+      "url": "https://lib.arizona.edu/locations/science",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.arizona.edu/locations/science",
+      "error": ""
+    },
+    {
+      "url": "https://lib.arizona.edu/study/spaces/group-study-rooms",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.arizona.edu/study/spaces/group-study-rooms",
+      "error": ""
+    },
+    {
+      "url": "https://lib.arizona.edu/catalyst/spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.arizona.edu/catalyst/spaces",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

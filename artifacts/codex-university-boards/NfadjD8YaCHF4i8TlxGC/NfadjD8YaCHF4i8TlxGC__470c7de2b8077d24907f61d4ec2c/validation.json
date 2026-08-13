@@ -1,0 +1,69 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "The Writing and Communication Center’s current homepage lists in-person tutoring in Library Room 201 while its contact block lists Room 314; use its appointment system or contact the center to confirm the meeting location."
+  ],
+  "reachability": [
+    {
+      "url": "https://libcal.mst.edu/space/18427",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libcal.mst.edu/space/18427",
+      "error": ""
+    },
+    {
+      "url": "https://innovationlab.mst.edu/venues/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://innovationlab.mst.edu/venues/",
+      "error": ""
+    },
+    {
+      "url": "https://innovationlab.mst.edu/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://innovationlab.mst.edu/about/",
+      "error": ""
+    },
+    {
+      "url": "https://care.mst.edu/research/facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://care.mst.edu/research/facilities/",
+      "error": ""
+    },
+    {
+      "url": "https://havener.mst.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://havener.mst.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://ssc.mst.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ssc.mst.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://writingcenter.mst.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://writingcenter.mst.edu/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

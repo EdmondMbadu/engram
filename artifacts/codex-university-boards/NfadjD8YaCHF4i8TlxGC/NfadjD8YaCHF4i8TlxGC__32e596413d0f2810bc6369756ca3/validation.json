@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.wendys.com/united-states/wa/spokane/830-north-division",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/wa/spokane/830-north-division",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/washington/spokane/1320-north-hamilton-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/washington/spokane/1320-north-hamilton-street",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jimmyjohns.com/wa/spokane/sandwiches-1418.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jimmyjohns.com/wa/spokane/sandwiches-1418.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/wa/spokane/1818-n-monroe/11295.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/wa/spokane/1818-n-monroe/11295.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/wa/spokane/3416-n-market-st/4525.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/wa/spokane/3416-n-market-st/4525.html",
+      "error": ""
+    },
+    {
+      "url": "https://dennys.com/location/denny-s-9273-1466887",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://dennys.com/location/denny-s-9273-1466887",
+      "error": ""
+    },
+    {
+      "url": "https://satellitediner.com/?destination=website_homepage&promotion=custom_promotion&source=header&spot_id=138470",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://satellitediner.com/?destination=website_homepage&promotion=custom_promotion&source=header&spot_id=138470",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/wa/spokane/6614-n-division-st/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/wa/spokane/6614-n-division-st/restaurant.html",
+      "error": ""
+    },
+    {
+      "url": "https://ospreyspokane.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ospreyspokane.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.tomatostreet.com/locations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.tomatostreet.com/locations/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

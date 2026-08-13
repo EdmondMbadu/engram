@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.butler.edu/student-life/off-campus-and-commuter-students/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.butler.edu/student-life/off-campus-and-commuter-students/",
+      "error": ""
+    },
+    {
+      "url": "https://www.butler.edu/student-life/student-involvement/about-atherton/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.butler.edu/student-life/student-involvement/about-atherton/",
+      "error": ""
+    },
+    {
+      "url": "https://www.butler.edu/student-life/orientation/orientation-schedule/full-schedule/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.butler.edu/student-life/orientation/orientation-schedule/full-schedule/",
+      "error": ""
+    },
+    {
+      "url": "https://www.butler.edu/library/spaces/irwin/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.butler.edu/library/spaces/irwin/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

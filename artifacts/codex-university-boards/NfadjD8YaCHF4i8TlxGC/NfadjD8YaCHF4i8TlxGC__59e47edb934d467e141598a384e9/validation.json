@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://mu.oregonstate.edu/home",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mu.oregonstate.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://events.oregonstate.edu/event/connect-info-desk",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.oregonstate.edu/event/connect-info-desk",
+      "error": ""
+    },
+    {
+      "url": "https://events.oregonstate.edu/valley_library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.oregonstate.edu/valley_library",
+      "error": ""
+    },
+    {
+      "url": "https://events.oregonstate.edu/fairbanks_hall",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.oregonstate.edu/fairbanks_hall",
+      "error": ""
+    },
+    {
+      "url": "https://events.oregonstate.edu/reser_stadium",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.oregonstate.edu/reser_stadium",
+      "error": ""
+    },
+    {
+      "url": "https://recsports.oregonstate.edu/dixon-recreation-center-facility-maps",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recsports.oregonstate.edu/dixon-recreation-center-facility-maps",
+      "error": ""
+    },
+    {
+      "url": "https://recsports.oregonstate.edu/facility-rentals/rec-sports-venues",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recsports.oregonstate.edu/facility-rentals/rec-sports-venues",
+      "error": ""
+    },
+    {
+      "url": "https://cf.forestry.oregonstate.edu/our-forests/mcdonald-and-dunn-forests",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cf.forestry.oregonstate.edu/our-forests/mcdonald-and-dunn-forests",
+      "error": ""
+    },
+    {
+      "url": "https://mu.oregonstate.edu/lanesgames",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mu.oregonstate.edu/lanesgames",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.flsouthern.edu/library/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flsouthern.edu/library/about",
+      "error": ""
+    },
+    {
+      "url": "https://www.flsouthern.edu/campus-offices/offices-directory/office-of-technology-services/lab-equipment-and-software",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flsouthern.edu/campus-offices/offices-directory/office-of-technology-services/lab-equipment-and-software",
+      "error": ""
+    },
+    {
+      "url": "https://www.flsouthern.edu/library/services",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flsouthern.edu/library/services",
+      "error": ""
+    },
+    {
+      "url": "https://www.flsouthern.edu/library/archives/fsc-history/fsc-building-history/thaddeus-g-buckner-building",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flsouthern.edu/library/archives/fsc-history/fsc-building-history/thaddeus-g-buckner-building",
+      "error": ""
+    },
+    {
+      "url": "https://www.flsouthern.edu/campus-offices/offices-directory/office-of-wellness/wellness-facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flsouthern.edu/campus-offices/offices-directory/office-of-wellness/wellness-facilities",
+      "error": ""
+    },
+    {
+      "url": "https://www.flsouthern.edu/campus-offices/offices-directory/office-of-wellness/aquatics",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flsouthern.edu/campus-offices/offices-directory/office-of-wellness/aquatics",
+      "error": ""
+    },
+    {
+      "url": "https://www.flsouthern.edu/campus-offices/offices-directory/office-of-wellness/waterfront",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flsouthern.edu/campus-offices/offices-directory/office-of-wellness/waterfront",
+      "error": ""
+    },
+    {
+      "url": "https://www.flsouthern.edu/campus-life/wellness-and-recreation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flsouthern.edu/campus-life/wellness-and-recreation",
+      "error": ""
+    },
+    {
+      "url": "https://www.flsouthern.edu/getattachment/9fefded4-9f6c-48c8-87cb-60a6f7ece7ec/October-2025-Parents-Newsletter.pdf?ext=.pdf&lang=en-US",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flsouthern.edu/getattachment/9fefded4-9f6c-48c8-87cb-60a6f7ece7ec/October-2025-Parents-Newsletter.pdf?ext=.pdf&lang=en-US",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

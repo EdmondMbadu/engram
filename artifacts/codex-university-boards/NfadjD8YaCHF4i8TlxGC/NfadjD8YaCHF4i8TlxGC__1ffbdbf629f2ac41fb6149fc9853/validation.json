@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.halalmunchiesus.com/lexington-ky",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.halalmunchiesus.com/lexington-ky",
+      "error": ""
+    },
+    {
+      "url": "https://eatsushiblue.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://eatsushiblue.com/",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.ihop.com/en-us/ky/lexington/breakfast-2380-norman-ln-3596/late-night-food",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.ihop.com/en-us/ky/lexington/breakfast-2380-norman-ln-3596/late-night-food",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ky/lexington/1970-harrodsburg-road/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ky/lexington/1970-harrodsburg-road/restaurant.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ky/lexington/2323-versailles-rd/dinner.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ky/lexington/2323-versailles-rd/dinner.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ky/lexington/320-new-circle-rd--n-w-/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ky/lexington/320-new-circle-rd--n-w-/restaurant.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ky/lexington/2275-nicholasville-rd/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ky/lexington/2275-nicholasville-rd/restaurant.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wafflehouse.com/ky/lexington/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wafflehouse.com/ky/lexington/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

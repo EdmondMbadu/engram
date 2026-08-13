@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://my.snc.edu/library/home/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://my.snc.edu/library/home/",
+      "error": ""
+    },
+    {
+      "url": "https://www.snc.edu/admission/visit-us/virtual-tour.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://snc.edu/visit",
+      "error": ""
+    },
+    {
+      "url": "https://snc.edu/helpful-info/visitors/where-to-eat",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://snc.edu/helpful-info/visitors/where-to-eat",
+      "error": ""
+    },
+    {
+      "url": "https://my.snc.edu/dining/home/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://my.snc.edu/dining/home/",
+      "error": ""
+    },
+    {
+      "url": "https://my.snc.edu/campuscenter/news/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://my.snc.edu/campuscenter/news/",
+      "error": ""
+    },
+    {
+      "url": "https://snc.edu/news/pressrelease/dedication-ceremony-new-gehl-mulva-science-center-st-norbert-college",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://snc.edu/news/pressrelease/dedication-ceremony-new-gehl-mulva-science-center-st-norbert-college",
+      "error": ""
+    },
+    {
+      "url": "https://internal.snc.edu/cvc",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://internal.snc.edu/cvc/",
+      "error": ""
+    },
+    {
+      "url": "https://internal.snc.edu/about/visitorinformation/CampusMap-2025-Update.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://internal.snc.edu/about/visitorinformation/CampusMap-2025-Update.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

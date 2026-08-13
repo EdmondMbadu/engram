@@ -1,0 +1,49 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.csulb.edu/sites/default/files/document/campus_vista_selfie_map_accessible.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/sites/default/files/document/campus_vista_selfie_map_accessible.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.csulb.edu/earl-burns-miller-japanese-garden",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/earl-burns-miller-japanese-garden",
+      "error": ""
+    },
+    {
+      "url": "https://www.csulb.edu/navigating-grad-studies-at-the-beach/campus-life",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/navigating-grad-studies-at-the-beach/campus-life",
+      "error": ""
+    },
+    {
+      "url": "https://www.csulb.edu/community/visitors",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/community/visitors",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Earl Burns Miller Japanese Garden",
+    "Carolyn Campagna Kleefeld Contemporary Art Museum",
+    "University Library"
+  ],
+  "sourceCount": 4,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

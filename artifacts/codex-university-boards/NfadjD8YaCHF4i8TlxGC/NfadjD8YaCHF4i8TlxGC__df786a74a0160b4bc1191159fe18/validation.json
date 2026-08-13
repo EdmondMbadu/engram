@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.lclark.edu/live/news/57950-cbs-news-sunday-morning-features-lcs-moss-week",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lclark.edu/live/news/57950-cbs-news-sunday-morning-features-lcs-moss-week",
+      "error": ""
+    },
+    {
+      "url": "https://www.lclark.edu/live/news/newsroom-story-a-tradition-of-connection-lampcs-internationa",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lclark.edu/live/news/newsroom-story-a-tradition-of-connection-lampcs-internationa",
+      "error": ""
+    },
+    {
+      "url": "https://www.lclark.edu/live/news/53874-welcome-new-undergraduates",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lclark.edu/live/news/53874-welcome-new-undergraduates",
+      "error": ""
+    },
+    {
+      "url": "https://college.lclark.edu/giving/senior-gift/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://college.lclark.edu/giving/senior-gift/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lclark.edu/live/news/newsroom-story-this-antivalentines-concert-is-sure-to-mend-a",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lclark.edu/live/news/newsroom-story-this-antivalentines-concert-is-sure-to-mend-a",
+      "error": ""
+    },
+    {
+      "url": "https://college.lclark.edu/festival-of-scholars/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://college.lclark.edu/festival-of-scholars/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lclark.edu/live/news/50069-dance-x-showcases-student-artistry",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lclark.edu/live/news/50069-dance-x-showcases-student-artistry",
+      "error": ""
+    },
+    {
+      "url": "https://www.lclark.edu/live/news/8511-once-upon-a-weekend",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lclark.edu/live/news/8511-once-upon-a-weekend",
+      "error": ""
+    },
+    {
+      "url": "https://college.lclark.edu/academics/symposia/our-symposia/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://college.lclark.edu/academics/symposia/our-symposia/",
+      "error": ""
+    },
+    {
+      "url": "https://college.lclark.edu/programs/ethnic_studies/symposium/race-monologues/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://college.lclark.edu/programs/ethnic_studies/symposium/race-monologues/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 100,
+  "generationGrade": "A"
+}

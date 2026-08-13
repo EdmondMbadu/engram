@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.geneseo.edu/arboretum/map-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.geneseo.edu/arboretum/map-room",
+      "error": ""
+    },
+    {
+      "url": "https://www.geneseo.edu/arboretum/history",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.geneseo.edu/arboretum/history",
+      "error": ""
+    },
+    {
+      "url": "https://www.geneseo.edu/sites/default/files/documents/GREAT%20Day%20Program%202025%20Final.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.geneseo.edu/wp-content/uploads/2025/09/GREAT-Day-Program-2025-Final.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

@@ -1,0 +1,60 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "xnuUqjsG3i0mu8NaIiIA",
+    "schoolName": "Hobart William Smith Colleges",
+    "shortSchoolName": "Hobart William Smith Colleges",
+    "townName": "Geneva",
+    "state": "NY",
+    "countryCode": "US",
+    "unitId": "191630",
+    "website": "https://www.hws.edu/",
+    "latitude": 42.858131,
+    "longitude": -76.985516,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/a/af/Hobart_%26_William_Smith_Colleges_seals.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=hws.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "Warren Hunting Smith Library",
+    "Provenzano Student Art Gallery",
+    "Scandling Campus Center",
+    "Bartlett Theatre",
+    "Classes of 1972 Outdoor Classroom",
+    "Stine Multipurpose Room",
+    "Davis Gallery",
+    "Coopers’ Woods",
+    "Houghton House Library",
+    "Bristol Field House",
+    "Orientation Presidential Handshake",
+    "Illumination",
+    "John Henry Hobart Day",
+    "Benjamin Hale Dinner",
+    "Hobart Launch",
+    "Hobart Alma Mater",
+    "William Smith Founder’s Day",
+    "Moving Up Day",
+    "William Smith Good Luck Tree",
+    "William Smith Class Tree Planting"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

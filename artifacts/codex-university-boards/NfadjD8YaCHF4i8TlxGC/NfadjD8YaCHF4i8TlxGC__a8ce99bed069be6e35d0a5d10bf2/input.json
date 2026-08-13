@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "zMzUfEA7IJ23ViW2TbGC",
+    "schoolName": "Swarthmore College",
+    "shortSchoolName": "Swarthmore College",
+    "townName": "Swarthmore",
+    "state": "PA",
+    "countryCode": "US",
+    "unitId": "216287",
+    "website": "https://www.swarthmore.edu/",
+    "latitude": 39.905159,
+    "longitude": -75.354278,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/8/8e/Formal_Seal_of_Swarthmore_College%2C_Swarthmore%2C_PA%2C_USA.svg/250px-Formal_Seal_of_Swarthmore_College%2C_Swarthmore%2C_PA%2C_USA.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=swarthmore.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Swarthmore Public Library",
+    "Central Park and Amphitheater",
+    "Swarthmore Farmers Market",
+    "Hobbs Coffee",
+    "Luna's Mexican Grill",
+    "Renato Pizza",
+    "Pastry Pants Bakery",
+    "Celia Bookshop",
+    "Swarthmore Co-op",
+    "Park Avenue Community Center"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

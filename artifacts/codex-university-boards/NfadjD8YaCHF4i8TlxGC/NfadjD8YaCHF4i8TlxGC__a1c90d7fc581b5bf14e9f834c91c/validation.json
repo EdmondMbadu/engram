@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.csusb.edu/join-the-pack/future-students/explore-csusb/csusb-traditions-and-landmarks",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusb.edu/join-the-pack/future-students/explore-csusb/csusb-traditions-and-landmarks",
+      "error": ""
+    },
+    {
+      "url": "https://www.csusb.edu/inside/tags/25881",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusb.edu/inside/tags/25881",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 2,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

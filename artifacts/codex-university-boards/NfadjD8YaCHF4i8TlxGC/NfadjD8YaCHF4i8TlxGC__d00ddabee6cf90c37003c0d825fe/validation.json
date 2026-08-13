@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://library.du.edu/sites/default/files/2021-12/aac-map.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.du.edu/sites/default/files/2021-12/aac-map.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://library.du.edu/visit-study/rooms-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.du.edu/visit-study/rooms-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://library.du.edu/visit-study/rooms-spaces/aac-room-booking",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.du.edu/visit-study/rooms-spaces/aac-room-booking",
+      "error": ""
+    },
+    {
+      "url": "https://library.du.edu/visit-study/rooms-spaces/research-carrels-and-lockers",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.du.edu/visit-study/rooms-spaces/research-carrels-and-lockers",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

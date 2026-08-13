@@ -1,0 +1,285 @@
+Reading additional input from stdin...
+2026-08-13T07:47:02.766827Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:47:02.859154Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa16-aedf-78a3-9aeb-fbc68cca77b4.1786607218400031000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:47:02.861551Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa16-bfd1-7080-b10c-97a0f321605d
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"XsuMMcG2sDZnoYqUjuej","schoolName":"Johns Hopkins University","shortSchoolName":"Johns Hopkins University","townName":"Baltimore","state":"MD","countryCode":"US","website":"https://www.jhu.edu/","latitude":39.328977,"longitude":-76.621595},"templates":[{"id":"college-first-weekend","version":"1.0","titlePattern":"Your First Weekend at {school}, Shared as Cards","editorialBrief":"Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.","researchQueries":["new student orientation campus guide","first year student campus activities","weekend near campus students"],"count":10,"icon":"schedule","primarySubjectType":"sequence_stop","allowedSubjectTypes":["sequence_stop","place","activity"],"freshnessDays":180,"exactTitle":"Your First Weekend at Johns Hopkins University, Shared as Cards"}]}
+codex
+{
+  "complete": false,
+  "school_name": "Johns Hopkins University",
+  "town_name": "Baltimore",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Johns Hopkins University",
+      "town_name": "Baltimore",
+      "template_id": "college-first-weekend",
+      "title": "Your First Weekend at Johns Hopkins University, Shared as Cards",
+      "description": "",
+      "icon": "schedule",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:jhu.edu Homewood campus visitor attractions Gilman Hall Decker Quad Brody Learning Commons official ...
+web search: 
+web search: site:studentaffairs.jhu.edu recreation center hours Homewood 2026 official Johns Hopkins ...
+web search: 
+web search: site:studentaffairs.jhu.edu Ralph O'Connor Recreation Center hours official 2026 ...
+codex
+{"complete":true,"school_name":"Johns Hopkins University","town_name":"Baltimore","boards":[{"complete":true,"school_name":"Johns Hopkins University","town_name":"Baltimore","template_id":"college-first-weekend","title":"Your First Weekend at Johns Hopkins University, Shared as Cards","description":"A Friday-to-Sunday introduction to Homewood, combining recognizable campus gathering places with nearby Baltimore museums, gardens, parkland, and a year-round market.","icon":"schedule","cards":[{"subject_id":"jhu-first-weekend-the-beach","subject_type":"sequence_stop","entity_name":"The Beach","title":"Friday: Start on The Beach","subtitle":"Homewood’s named lawn near the main entrance","notes":"Spread out on the lawn, orient yourself to the main entrance, and use the clock tower and surrounding paths as early landmarks.","short_summary":"Begin the weekend on Homewood’s officially named, sand-free gathering lawn.","evidence_claim":"Johns Hopkins identifies The Beach as a grassy Homewood area where students spread out blankets to read, socialize, or people-watch.","source_url":"https://www.jhu.edu/life/campuses/homewood/","source_title":"Homewood Campus | Johns Hopkins University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor campus lawn; access may be affected by university events, construction, or weather.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jhu-first-weekend-gilman-hall","subject_type":"sequence_stop","entity_name":"Gilman Hall","title":"Friday: Find Gilman’s Clock Tower","subtitle":"A humanities landmark on the Homewood campus","notes":"Walk around Gilman’s exterior, photograph the clock tower from a public campus path, and note the building for your first week.","short_summary":"Use one of Homewood’s oldest buildings and its clock tower as a campus anchor.","evidence_claim":"Johns Hopkins describes Gilman Hall as one of Homewood’s oldest buildings, home to the humanities, an archaeological museum, and a notable clock tower.","source_url":"https://apply.jhu.edu/life-at-hopkins/our-network-of-campuses/","source_title":"Our Network of Campuses | Johns Hopkins University Admissions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Exterior viewing is the dependable option; interior and museum access may follow university schedules.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jhu-first-weekend-bloomberg-student-center","subject_type":"sequence_stop","entity_name":"Bloomberg Student Center","title":"Friday: Step Into the Student Center","subtitle":"A campus hub between The Beach and Brody","notes":"Enter from the heart of campus, scan the shared spaces, and identify a meeting point you can reuse for clubs and weekend plans.","short_summary":"Get acquainted with Homewood’s central hub for gathering, activities, and dining.","evidence_claim":"JHU says the Bloomberg Student Center is between The Beach and Brody Learning Commons and contains spaces for connection, expression, discovery, and campus activities.","source_url":"https://students.jhu.edu/events-spaces/bloomberg-student-center/visit/","source_title":"Visit the Bloomberg Student Center | JHU Student Affairs","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Check posted building access and event notices before entering; some spaces may be reserved.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jhu-first-weekend-levering-hall","subject_type":"sequence_stop","entity_name":"Levering Hall","title":"Friday: Pause at Levering Hall","subtitle":"A familiar campus stop for food and student events","notes":"Locate the lounge and dining areas now, then check the live campus schedule before returning for a movie, craft activity, or meal.","short_summary":"Learn the layout of a longstanding campus gathering and dining building.","evidence_claim":"Johns Hopkins Admissions identifies Levering Hall as a place for meals, coffee breaks, fireplace study sessions, movie nights, and DIY crafting classes.","source_url":"https://apply.jhu.edu/life-at-hopkins/our-network-of-campuses/","source_title":"Our Network of Campuses | Johns Hopkins University Admissions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Building, dining, and event access vary by date; verify current notices before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jhu-first-weekend-32nd-street-farmers-market","subject_type":"sequence_stop","entity_name":"32nd Street Farmers Market","title":"Saturday Morning: Browse the Market","subtitle":"A year-round market at 32nd and Barclay Streets","notes":"Arrive before noon, walk the full market once, and browse without assuming a purchase; bring payment only if you plan to buy.","short_summary":"Start Saturday at a recurring neighborhood market close to Homewood.","evidence_claim":"The market’s official site states that it operates every Saturday from 7 a.m. to noon, year-round, at 32nd and Barclay Streets.","source_url":"https://www.32ndfm.org/about","source_title":"About the Market | 32nd Street Farmers Market","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Saturdays, 7 a.m.–noon, year-round, rain or shine; individual vendors may vary.","cost_status":"free","under21_safe":true},{"subject_id":"jhu-first-weekend-baltimore-museum-of-art","subject_type":"sequence_stop","entity_name":"Baltimore Museum of Art","title":"Saturday: Choose a BMA Gallery","subtitle":"Free general admission beside the Homewood campus","notes":"Reserve a free general-admission ticket, pick one gallery as your focus, and ask the Welcome Desk about any separately ticketed exhibitions.","short_summary":"Spend a focused hour with art at Homewood’s museum neighbor.","evidence_claim":"The BMA states that general admission is always free with a reservation and lists its address as 10 Art Museum Drive in Charles Village.","source_url":"https://artbma.org/plan-your-visit/","source_title":"Plan Your Visit | Baltimore Museum of Art","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Wednesday–Sunday, 10 a.m.–5 p.m.; reserve free general admission. Special exhibitions may require tickets.","cost_status":"free","under21_safe":true},{"subject_id":"jhu-first-weekend-bma-sculpture-gardens","subject_type":"sequence_stop","entity_name":"BMA Sculpture Gardens","title":"Saturday: Walk the Sculpture Gardens","subtitle":"An outdoor art stop at 10 Art Museum Drive","notes":"Follow the garden paths after the galleries, photograph works only within posted rules, and keep a weather backup for closures.","short_summary":"Shift from indoor galleries to an outdoor art walk next to campus.","evidence_claim":"The BMA lists its Sculpture Gardens as part of the visitor experience and says they are open Wednesday through Sunday, weather permitting.","source_url":"https://artbma.org/plan-your-visit/","source_title":"Plan Your Visit | Baltimore Museum of Art","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Wednesday–Sunday, 10 a.m.–5 p.m., weather permitting; severe weather or temperature extremes can close the gardens.","cost_status":"free","under21_safe":true},{"subject_id":"jhu-first-weekend-wyman-park-dell","subject_type":"sequence_stop","entity_name":"Wyman Park Dell","title":"Saturday: Reset in Wyman Park Dell","subtitle":"City parkland adjoining the campus area","notes":"Use established paths for a short daylight walk, stay within maintained public areas, and turn back if weather or conditions change.","short_summary":"Add a brief daylight park walk between structured weekend stops.","evidence_claim":"Baltimore City’s official master plan identifies Wyman Park Dell as a defined park landscape and documents its physical and environmental features.","source_url":"https://bcrp.baltimorecity.gov/sites/default/files/WymanParkDell.pdf","source_title":"Wyman Park Dell Master Plan","source_kind":"government","source_published_at":"2026-04-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Visit during daylight and use maintained public paths; weather, maintenance, and city notices may affect access.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jhu-first-weekend-homewood-museum","subject_type":"sequence_stop","entity_name":"Homewood Museum","title":"Sunday: Tour Homewood Museum","subtitle":"A Federal-era house museum on campus","notes":"Choose the 30-minute audio option or reserve a docent tour, then allow time to examine the rooms and objects described in the visit guide.","short_summary":"Connect the modern campus with the documented history of its namesake house.","evidence_claim":"JHU Museums says Homewood Museum tours cover 12 rooms of the Federal-era mansion and objects including furniture, ceramics, paintings, and silver.","source_url":"https://museums.jhu.edu/homewood-museum/visitor-info/","source_title":"Visitor Information – Johns Hopkins University Museums","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Tuesday–Sunday, 11 a.m.–4 p.m.; guided tours require advance reservation and tour admission is charged.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jhu-first-weekend-brody-learning-commons","subject_type":"sequence_stop","entity_name":"Brody Learning Commons","title":"Sunday: Settle Into Brody","subtitle":"A library study hub connected to Eisenhower Library","notes":"Finish by testing a seating style, locating printers and the café, and noting which areas fit solo work versus future group sessions.","short_summary":"Close the weekend by establishing a practical study base for Monday.","evidence_claim":"Sheridan Libraries says Brody Learning Commons connects to Eisenhower Library and includes a quiet reading room, 16 group-study rooms, and a café.","source_url":"https://www.library.jhu.edu/library-hours/brody-learning-commons/","source_title":"Brody Learning Commons | Sheridan Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Library access rules apply; check the live hours page and visitor-access requirements before entering.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:48:47.404938Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa16-bfd1-7080-b10c-97a0f321605d.1786607222737702000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+41,278
+
+{"complete":true,"school_name":"Johns Hopkins University","town_name":"Baltimore","boards":[{"complete":true,"school_name":"Johns Hopkins University","town_name":"Baltimore","template_id":"college-first-weekend","title":"Your First Weekend at Johns Hopkins University, Shared as Cards","description":"A Friday-to-Sunday introduction to Homewood, combining recognizable campus gathering places with nearby Baltimore museums, gardens, parkland, and a year-round market.","icon":"schedule","cards":[{"subject_id":"jhu-first-weekend-the-beach","subject_type":"sequence_stop","entity_name":"The Beach","title":"Friday: Start on The Beach","subtitle":"Homewood’s named lawn near the main entrance","notes":"Spread out on the lawn, orient yourself to the main entrance, and use the clock tower and surrounding paths as early landmarks.","short_summary":"Begin the weekend on Homewood’s officially named, sand-free gathering lawn.","evidence_claim":"Johns Hopkins identifies The Beach as a grassy Homewood area where students spread out blankets to read, socialize, or people-watch.","source_url":"https://www.jhu.edu/life/campuses/homewood/","source_title":"Homewood Campus | Johns Hopkins University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor campus lawn; access may be affected by university events, construction, or weather.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jhu-first-weekend-gilman-hall","subject_type":"sequence_stop","entity_name":"Gilman Hall","title":"Friday: Find Gilman’s Clock Tower","subtitle":"A humanities landmark on the Homewood campus","notes":"Walk around Gilman’s exterior, photograph the clock tower from a public campus path, and note the building for your first week.","short_summary":"Use one of Homewood’s oldest buildings and its clock tower as a campus anchor.","evidence_claim":"Johns Hopkins describes Gilman Hall as one of Homewood’s oldest buildings, home to the humanities, an archaeological museum, and a notable clock tower.","source_url":"https://apply.jhu.edu/life-at-hopkins/our-network-of-campuses/","source_title":"Our Network of Campuses | Johns Hopkins University Admissions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Exterior viewing is the dependable option; interior and museum access may follow university schedules.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jhu-first-weekend-bloomberg-student-center","subject_type":"sequence_stop","entity_name":"Bloomberg Student Center","title":"Friday: Step Into the Student Center","subtitle":"A campus hub between The Beach and Brody","notes":"Enter from the heart of campus, scan the shared spaces, and identify a meeting point you can reuse for clubs and weekend plans.","short_summary":"Get acquainted with Homewood’s central hub for gathering, activities, and dining.","evidence_claim":"JHU says the Bloomberg Student Center is between The Beach and Brody Learning Commons and contains spaces for connection, expression, discovery, and campus activities.","source_url":"https://students.jhu.edu/events-spaces/bloomberg-student-center/visit/","source_title":"Visit the Bloomberg Student Center | JHU Student Affairs","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Check posted building access and event notices before entering; some spaces may be reserved.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jhu-first-weekend-levering-hall","subject_type":"sequence_stop","entity_name":"Levering Hall","title":"Friday: Pause at Levering Hall","subtitle":"A familiar campus stop for food and student events","notes":"Locate the lounge and dining areas now, then check the live campus schedule before returning for a movie, craft activity, or meal.","short_summary":"Learn the layout of a longstanding campus gathering and dining building.","evidence_claim":"Johns Hopkins Admissions identifies Levering Hall as a place for meals, coffee breaks, fireplace study sessions, movie nights, and DIY crafting classes.","source_url":"https://apply.jhu.edu/life-at-hopkins/our-network-of-campuses/","source_title":"Our Network of Campuses | Johns Hopkins University Admissions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Building, dining, and event access vary by date; verify current notices before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jhu-first-weekend-32nd-street-farmers-market","subject_type":"sequence_stop","entity_name":"32nd Street Farmers Market","title":"Saturday Morning: Browse the Market","subtitle":"A year-round market at 32nd and Barclay Streets","notes":"Arrive before noon, walk the full market once, and browse without assuming a purchase; bring payment only if you plan to buy.","short_summary":"Start Saturday at a recurring neighborhood market close to Homewood.","evidence_claim":"The market’s official site states that it operates every Saturday from 7 a.m. to noon, year-round, at 32nd and Barclay Streets.","source_url":"https://www.32ndfm.org/about","source_title":"About the Market | 32nd Street Farmers Market","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Saturdays, 7 a.m.–noon, year-round, rain or shine; individual vendors may vary.","cost_status":"free","under21_safe":true},{"subject_id":"jhu-first-weekend-baltimore-museum-of-art","subject_type":"sequence_stop","entity_name":"Baltimore Museum of Art","title":"Saturday: Choose a BMA Gallery","subtitle":"Free general admission beside the Homewood campus","notes":"Reserve a free general-admission ticket, pick one gallery as your focus, and ask the Welcome Desk about any separately ticketed exhibitions.","short_summary":"Spend a focused hour with art at Homewood’s museum neighbor.","evidence_claim":"The BMA states that general admission is always free with a reservation and lists its address as 10 Art Museum Drive in Charles Village.","source_url":"https://artbma.org/plan-your-visit/","source_title":"Plan Your Visit | Baltimore Museum of Art","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Wednesday–Sunday, 10 a.m.–5 p.m.; reserve free general admission. Special exhibitions may require tickets.","cost_status":"free","under21_safe":true},{"subject_id":"jhu-first-weekend-bma-sculpture-gardens","subject_type":"sequence_stop","entity_name":"BMA Sculpture Gardens","title":"Saturday: Walk the Sculpture Gardens","subtitle":"An outdoor art stop at 10 Art Museum Drive","notes":"Follow the garden paths after the galleries, photograph works only within posted rules, and keep a weather backup for closures.","short_summary":"Shift from indoor galleries to an outdoor art walk next to campus.","evidence_claim":"The BMA lists its Sculpture Gardens as part of the visitor experience and says they are open Wednesday through Sunday, weather permitting.","source_url":"https://artbma.org/plan-your-visit/","source_title":"Plan Your Visit | Baltimore Museum of Art","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Wednesday–Sunday, 10 a.m.–5 p.m., weather permitting; severe weather or temperature extremes can close the gardens.","cost_status":"free","under21_safe":true},{"subject_id":"jhu-first-weekend-wyman-park-dell","subject_type":"sequence_stop","entity_name":"Wyman Park Dell","title":"Saturday: Reset in Wyman Park Dell","subtitle":"City parkland adjoining the campus area","notes":"Use established paths for a short daylight walk, stay within maintained public areas, and turn back if weather or conditions change.","short_summary":"Add a brief daylight park walk between structured weekend stops.","evidence_claim":"Baltimore City’s official master plan identifies Wyman Park Dell as a defined park landscape and documents its physical and environmental features.","source_url":"https://bcrp.baltimorecity.gov/sites/default/files/WymanParkDell.pdf","source_title":"Wyman Park Dell Master Plan","source_kind":"government","source_published_at":"2026-04-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Visit during daylight and use maintained public paths; weather, maintenance, and city notices may affect access.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jhu-first-weekend-homewood-museum","subject_type":"sequence_stop","entity_name":"Homewood Museum","title":"Sunday: Tour Homewood Museum","subtitle":"A Federal-era house museum on campus","notes":"Choose the 30-minute audio option or reserve a docent tour, then allow time to examine the rooms and objects described in the visit guide.","short_summary":"Connect the modern campus with the documented history of its namesake house.","evidence_claim":"JHU Museums says Homewood Museum tours cover 12 rooms of the Federal-era mansion and objects including furniture, ceramics, paintings, and silver.","source_url":"https://museums.jhu.edu/homewood-museum/visitor-info/","source_title":"Visitor Information – Johns Hopkins University Museums","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Tuesday–Sunday, 11 a.m.–4 p.m.; guided tours require advance reservation and tour admission is charged.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jhu-first-weekend-brody-learning-commons","subject_type":"sequence_stop","entity_name":"Brody Learning Commons","title":"Sunday: Settle Into Brody","subtitle":"A library study hub connected to Eisenhower Library","notes":"Finish by testing a seating style, locating printers and the café, and noting which areas fit solo work versus future group sessions.","short_summary":"Close the weekend by establishing a practical study base for Monday.","evidence_claim":"Sheridan Libraries says Brody Learning Commons connects to Eisenhower Library and includes a quiet reading room, 16 group-study rooms, and a café.","source_url":"https://www.library.jhu.edu/library-hours/brody-learning-commons/","source_title":"Brody Learning Commons | Sheridan Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Library access rules apply; check the live hours page and visitor-access requirements before entering.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

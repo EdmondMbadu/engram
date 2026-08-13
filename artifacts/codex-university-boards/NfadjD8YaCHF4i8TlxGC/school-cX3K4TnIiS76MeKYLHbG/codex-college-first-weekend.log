@@ -1,0 +1,310 @@
+Reading additional input from stdin...
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa23-1eed-7071-ab07-1eaed32ccc67
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"cX3K4TnIiS76MeKYLHbG","schoolName":"Linfield University","shortSchoolName":"Linfield University","townName":"McMinnville","state":"OR","countryCode":"US","website":"https://www.linfield.edu/","latitude":45.201173,"longitude":-123.199642},"templates":[{"id":"college-first-weekend","version":"1.0","titlePattern":"Your First Weekend at {school}, Shared as Cards","editorialBrief":"Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.","researchQueries":["new student orientation campus guide","first year student campus activities","weekend near campus students"],"count":10,"icon":"schedule","primarySubjectType":"sequence_stop","allowedSubjectTypes":["sequence_stop","place","activity"],"freshnessDays":180,"exactTitle":"Your First Weekend at Linfield University, Shared as Cards"}]}
+2026-08-13T08:00:33.796034Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa22-3fc0-7c83-9086-55e9e66a0ee6.1786607976385319000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:00:33.830962Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T08:00:34.040091Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa22-3fd4-7461-a1bc-1b40241db390.1786607976404748000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:00:34.046790Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T08:00:34.255618Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa22-3fd9-7d81-9383-8f0bbdd309fe.1786607976410277000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:00:34.388294Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa22-3fcc-7a83-8719-cdf0192b56db.1786607976396635000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:00:34.519315Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa22-3fd3-7183-b1a2-e1eba38223b6.1786607976404452000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Linfield University",
+  "town_name": "McMinnville",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Linfield University",
+      "town_name": "McMinnville",
+      "template_id": "college-first-weekend",
+      "title": "Your First Weekend at Linfield University, Shared as Cards",
+      "description": "",
+      "icon": "schedule",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     
+        ,
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": ["Research could not be completed because the tool time window was unavailable."]
+}
+codex
+{"complete":false,"school_name":"Linfield University","town_name":"McMinnville","boards":[{"complete":false,"school_name":"Linfield University","town_name":"McMinnville","template_id":"college-first-weekend","title":"Your First Weekend at Linfield University, Shared as Cards","description":"I’m verifying ten distinct, named first-weekend stops against direct university, city, cultural-institution, and business pages.","icon":"schedule","cards":
+
+
+
+
+
+
+
+
+
+
+[{"subject_id":"research-in-progress-01","subject_type":"sequence_stop","entity_name":"Research in progress","title":"Research in progress","subtitle":"Source verification underway","notes":"Checking direct pages for named destinations, current access details, and a practical weekend sequence.","short_summary":"Research is underway.","evidence_claim":"Pending verification.","source_url":"https://www.linfield.edu/","source_title":"Linfield University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true},{"subject_id":"research-in-progress-02","subject_type":"sequence_stop","entity_name":"Research in progress 2","title":"Research in progress","subtitle":"Source verification underway","notes":"Checking direct pages for named destinations, current access details, and a practical weekend sequence.","short_summary":"Research is underway.","evidence_claim":"Pending verification.","source_url":"https://www.linfield.edu/","source_title":"Linfield University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true},{"subject_id":"research-in-progress-03","subject_type":"sequence_stop","entity_name":"Research in progress 3","title":"Research in progress","subtitle":"Source verification underway","notes":"Checking direct pages for named destinations, current access details, and a practical weekend sequence.","short_summary":"Research is underway.","evidence_claim":"Pending verification.","source_url":"https://www.linfield.edu/","source_title":"Linfield University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true},{"subject_id":"research-in-progress-04","subject_type":"sequence_stop","entity_name":"Research in progress 4","title":"Research in progress","subtitle":"Source verification underway","notes":"Checking direct pages for named destinations, current access details, and a practical weekend sequence.","short_summary":"Research is underway.","evidence_claim":"Pending verification.","source_url":"https://www.linfield.edu/","source_title":"Linfield University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true},{"subject_id":"research-in-progress-05","subject_type":"sequence_stop","entity_name":"Research in progress 5","title":"Research in progress","subtitle":"Source verification underway","notes":"Checking direct pages for named destinations, current access details, and a practical weekend sequence.","short_summary":"Research is underway.","evidence_claim":"Pending verification.","source_url":"https://www.linfield.edu/","source_title":"Linfield University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true},{"subject_id":"research-in-progress-06","subject_type":"sequence_stop","entity_name":"Research in progress 6","title":"Research in progress","subtitle":"Source verification underway","notes":"Checking direct pages for named destinations, current access details, and a practical weekend sequence.","short_summary":"Research is underway.","evidence_claim":"Pending verification.","source_url":"https://www.linfield.edu/","source_title":"Linfield University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true},{"subject_id":"research-in-progress-07","subject_type":"sequence_stop","entity_name":"Research in progress 7","title":"Research in progress","subtitle":"Source verification underway","notes":"Checking direct pages for named destinations, current access details, and a practical weekend sequence.","short_summary":"Research is underway.","evidence_claim":"Pending verification.","source_url":"https://www.linfield.edu/","source_title":"Linfield University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true},{"subject_id":"research-in-progress-08","subject_type":"sequence_stop","entity_name":"Research in progress 8","title":"Research in progress","subtitle":"Source verification underway","notes":"Checking direct pages for named destinations, current access details, and a practical weekend sequence.","short_summary":"Research is underway.","evidence_claim":"Pending verification.","source_url":"https://www.linfield.edu/","source_title":"Linfield University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true},{"subject_id":"research-in-progress-09","subject_type":"sequence_stop","entity_name":"Research in progress 9","title":"Research in progress","subtitle":"Source verification underway","notes":"Checking direct pages for named destinations, current access details, and a practical weekend sequence.","short_summary":"Research is underway.","evidence_claim":"Pending verification.","source_url":"https://www.linfield.edu/","source_title":"Linfield University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true},{"subject_id":"research-in-progress-10","subject_type":"sequence_stop","entity_name":"Research in progress 10","title":"Research in progress","subtitle":"Source verification underway","notes":"Checking direct pages for named destinations, current access details, and a practical weekend sequence.","short_summary":"Research is underway.","evidence_claim":"Pending verification.","source_url":"https://www.linfield.edu/","source_title":"Linfield University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}],"warnings":["Interim research status; final board will replace these placeholders."]}],"warnings":["Web verification in progress."]}
+web search: 
+web search: site:linfield.edu McMinnville campus student activities library museum dining campus map ...
+web search: 
+web search: site:linfield.edu Nicholson Library Linfield official hours ...
+web search: 
+web search: site:mcminnvilleoregon.gov/library McMinnville Public Library hours official ...
+codex
+{"complete":true,"school_name":"Linfield University","town_name":"McMinnville","boards":[{"complete":true,"school_name":"Linfield University","town_name":"McMinnville","template_id":"college-first-weekend","title":"Your First Weekend at Linfield University, Shared as Cards","description":"A practical arrival-to-Sunday sequence mixing orientation landmarks, campus resources, free exhibits, downtown public spaces and one ticketed McMinnville excursion.","icon":"schedule","cards":[{"subject_id":"linfield-founders-way-arrival","subject_type":"sequence_stop","entity_name":"Founders Way","title":"Start at Founders Way","subtitle":"Arrival stop · Thursday morning","notes":"Follow your assigned arrival time, complete check-in and move-in, then save the route so you can retrace it without luggage.","short_summary":"Use Linfield’s designated new-student arrival point to begin the weekend in the right place.","evidence_claim":"Linfield’s Fall 2026 arrival schedule assigns new and transfer students to check in along Founders Way on August 27 from 9 a.m. to noon.","source_url":"https://www.linfield.edu/orientation/mcminnville/fall-arrival-schedule.html","source_title":"Fall 2026 Arrival Schedule","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Follow the specific check-in time Linfield sends; the published arrival schedule says details remain subject to change.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"linfield-riley-campus-center","subject_type":"sequence_stop","entity_name":"Riley Campus Center","title":"Learn the Riley Campus Center","subtitle":"Campus-services stop · Thursday afternoon","notes":"Locate Student Activities, the bookstore and Campus Information Center now; knowing this building reduces first-week navigation friction.","short_summary":"Orient yourself around a central building that gathers student organizations and everyday campus services.","evidence_claim":"Linfield’s campus map places ASLU, the bookstore, Student Activities, Wildcat Events Board, a game room and other services in Riley Campus Center.","source_url":"https://www.linfield.edu/assets/files/admission/mcminnville-campus-map.pdf","source_title":"Linfield University Campus Map","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Building and service access can vary during orientation; consult the current orientation schedule and posted signs.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"linfield-dillin-hall","subject_type":"sequence_stop","entity_name":"Dillin Hall","title":"Find Your Dining Base","subtitle":"Meal stop · Friday","notes":"Walk the route from your residence hall, review the serving stations and ask staff directly about dietary or meal-plan questions.","short_summary":"Make the central dining facility familiar before the regular class-week routine begins.","evidence_claim":"Linfield identifies Dillin Hall as the central dining facility where students living on campus eat most meals.","source_url":"https://www.linfield.edu/parents/parent-resources/faq.html","source_title":"Frequently Asked Questions | Linfield University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Meal access depends on the current dining schedule and the student’s meal plan; verify both before going.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"linfield-anthropology-museum","subject_type":"sequence_stop","entity_name":"Linfield Anthropology Museum","title":"Read a Student-Curated Exhibit","subtitle":"Culture stop · Friday afternoon","notes":"Enter Walker Hall before closing and examine one case closely; use its labels to see how Linfield students interpret objects.","short_summary":"See rotating exhibits prepared by students inside Walker Hall during a self-guided visit.","evidence_claim":"The Linfield Anthropology Museum displays changing student-curated cases on Walker Hall’s first floor and offers free, self-guided admission Monday through Friday, 8 a.m.–5 p.m.","source_url":"https://www.linfield.edu/soan/linfield-anthropology-museum.html","source_title":"Linfield Anthropology Museum","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Published visiting hours are Monday–Friday, 8 a.m.–5 p.m.; the exhibits are self-guided.","cost_status":"free","under21_safe":true},{"subject_id":"linfield-oak-grove","subject_type":"sequence_stop","entity_name":"The Oak Grove","title":"Pause in the Oak Grove","subtitle":"Outdoor reset · Friday evening","notes":"Use the space for a quiet reset after scheduled sessions, and note its position between Riley Campus Center and the President’s House.","short_summary":"Anchor your mental campus map with the named green used for major university gatherings.","evidence_claim":"Linfield identifies the Commencement Green in the Oak Grove as lying between Riley Campus Center and the President’s House.","source_url":"https://www.linfield.edu/commencement/guest-information/know-before-you-go.html","source_title":"Know Before You Go | Linfield University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This is an outdoor campus space; scheduled university events may temporarily affect access.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"linfield-art-gallery","subject_type":"sequence_stop","entity_name":"The Linfield Art Gallery","title":"Open Saturday with Art","subtitle":"Gallery stop · Saturday noon","notes":"Arrive after the posted noon opening, view the current exhibition and leave time to walk the surrounding Arts Quad.","short_summary":"Begin Saturday with a free public exhibition in the Miller Fine Arts Center.","evidence_claim":"The Linfield Art Gallery presents solo, group and student exhibitions, is free and open to the public, and lists Saturday hours of noon–5 p.m.","source_url":"https://linfield.edu/art/gallery.html","source_title":"The Linfield Art Gallery","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Published Saturday hours are noon–5 p.m.; check the page for the current exhibition before visiting.","cost_status":"free","under21_safe":true},{"subject_id":"linfield-nicholson-library","subject_type":"sequence_stop","entity_name":"Jereld R. Nicholson Library","title":"Set Up Your Library Routine","subtitle":"Academic stop · Saturday afternoon","notes":"Find the service desk and one workable study area, then record the academic-term hours before your first full week begins.","short_summary":"Turn a brief weekend visit into a useful rehearsal for future study sessions.","evidence_claim":"Linfield lists Jereld R. Nicholson Library on the McMinnville campus with academic-term Saturday hours of 10 a.m.–4 p.m. for students, faculty and staff.","source_url":"https://www.linfield.edu/linfield-libraries/","source_title":"Linfield Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Student academic-term hours list Saturday 10 a.m.–4 p.m.; hours are subject to change and break hours differ.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"mcminnville-public-library","subject_type":"sequence_stop","entity_name":"McMinnville Public Library","title":"Meet the Town Library","subtitle":"Community stop · Saturday afternoon","notes":"Walk through both public levels, note the service desks and ask what identification is needed before applying for a library card.","short_summary":"Add a downtown public study and community resource to your new-student map.","evidence_claim":"The City of McMinnville lists the McMinnville Public Library at 225 NW Adams Street and publishes Saturday hours of 10 a.m.–5 p.m.","source_url":"https://www.mcminnvilleoregon.gov/library/page/about-library-0","source_title":"About the Library | McMinnville Oregon","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Published Saturday hours are 10 a.m.–5 p.m.; borrowing privileges may require registration or a qualifying library card.","cost_status":"free","under21_safe":true},{"subject_id":"mcminnville-city-park","subject_type":"sequence_stop","entity_name":"City Park","title":"Take a City Park Break","subtitle":"Downtown outdoor stop · Saturday evening","notes":"Follow the public paths, look for the Soper Fountain and use the lawns for a low-key pause before returning to campus.","short_summary":"Connect the downtown library area with a longstanding civic green space beside Cozine Creek.","evidence_claim":"McMinnville’s official City Park page describes shady lawns, play areas, swimming and quiet reading spots, and documents the park’s Soper Fountain.","source_url":"https://www.mcminnvilleoregon.gov/cd/page/city-park","source_title":"City Park | McMinnville Oregon","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use designated public paths and observe posted park or facility rules; Aquatic Center admission is separate.","cost_status":"free","under21_safe":true},{"subject_id":"evergreen-aviation-space-museum","subject_type":"sequence_stop","entity_name":"Evergreen Aviation & Space Museum","title":"Finish Beneath the Spruce Goose","subtitle":"Ticketed excursion · Sunday","notes":"Arrange transportation before leaving campus, budget for admission and prioritize the aircraft or spacecraft you most want to examine.","short_summary":"Close the weekend with McMinnville’s large aviation-and-space collection southeast of town.","evidence_claim":"Evergreen Aviation & Space Museum displays more than 150 aircraft, spacecraft and exhibits, including the Spruce Goose, and is open daily from 9 a.m.–5 p.m.","source_url":"https://www.evergreenmuseum.org/visit/","source_title":"Visit Evergreen – Admissions Hours","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The museum lists daily hours of 9 a.m.–5 p.m., specified holiday closures and a location 3.5 miles southeast of McMinnville.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T08:03:06.403728Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa23-1eed-7071-ab07-1eaed32ccc67.1786608033518111000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+36,056
+
+{"complete":true,"school_name":"Linfield University","town_name":"McMinnville","boards":[{"complete":true,"school_name":"Linfield University","town_name":"McMinnville","template_id":"college-first-weekend","title":"Your First Weekend at Linfield University, Shared as Cards","description":"A practical arrival-to-Sunday sequence mixing orientation landmarks, campus resources, free exhibits, downtown public spaces and one ticketed McMinnville excursion.","icon":"schedule","cards":[{"subject_id":"linfield-founders-way-arrival","subject_type":"sequence_stop","entity_name":"Founders Way","title":"Start at Founders Way","subtitle":"Arrival stop · Thursday morning","notes":"Follow your assigned arrival time, complete check-in and move-in, then save the route so you can retrace it without luggage.","short_summary":"Use Linfield’s designated new-student arrival point to begin the weekend in the right place.","evidence_claim":"Linfield’s Fall 2026 arrival schedule assigns new and transfer students to check in along Founders Way on August 27 from 9 a.m. to noon.","source_url":"https://www.linfield.edu/orientation/mcminnville/fall-arrival-schedule.html","source_title":"Fall 2026 Arrival Schedule","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Follow the specific check-in time Linfield sends; the published arrival schedule says details remain subject to change.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"linfield-riley-campus-center","subject_type":"sequence_stop","entity_name":"Riley Campus Center","title":"Learn the Riley Campus Center","subtitle":"Campus-services stop · Thursday afternoon","notes":"Locate Student Activities, the bookstore and Campus Information Center now; knowing this building reduces first-week navigation friction.","short_summary":"Orient yourself around a central building that gathers student organizations and everyday campus services.","evidence_claim":"Linfield’s campus map places ASLU, the bookstore, Student Activities, Wildcat Events Board, a game room and other services in Riley Campus Center.","source_url":"https://www.linfield.edu/assets/files/admission/mcminnville-campus-map.pdf","source_title":"Linfield University Campus Map","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Building and service access can vary during orientation; consult the current orientation schedule and posted signs.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"linfield-dillin-hall","subject_type":"sequence_stop","entity_name":"Dillin Hall","title":"Find Your Dining Base","subtitle":"Meal stop · Friday","notes":"Walk the route from your residence hall, review the serving stations and ask staff directly about dietary or meal-plan questions.","short_summary":"Make the central dining facility familiar before the regular class-week routine begins.","evidence_claim":"Linfield identifies Dillin Hall as the central dining facility where students living on campus eat most meals.","source_url":"https://www.linfield.edu/parents/parent-resources/faq.html","source_title":"Frequently Asked Questions | Linfield University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Meal access depends on the current dining schedule and the student’s meal plan; verify both before going.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"linfield-anthropology-museum","subject_type":"sequence_stop","entity_name":"Linfield Anthropology Museum","title":"Read a Student-Curated Exhibit","subtitle":"Culture stop · Friday afternoon","notes":"Enter Walker Hall before closing and examine one case closely; use its labels to see how Linfield students interpret objects.","short_summary":"See rotating exhibits prepared by students inside Walker Hall during a self-guided visit.","evidence_claim":"The Linfield Anthropology Museum displays changing student-curated cases on Walker Hall’s first floor and offers free, self-guided admission Monday through Friday, 8 a.m.–5 p.m.","source_url":"https://www.linfield.edu/soan/linfield-anthropology-museum.html","source_title":"Linfield Anthropology Museum","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Published visiting hours are Monday–Friday, 8 a.m.–5 p.m.; the exhibits are self-guided.","cost_status":"free","under21_safe":true},{"subject_id":"linfield-oak-grove","subject_type":"sequence_stop","entity_name":"The Oak Grove","title":"Pause in the Oak Grove","subtitle":"Outdoor reset · Friday evening","notes":"Use the space for a quiet reset after scheduled sessions, and note its position between Riley Campus Center and the President’s House.","short_summary":"Anchor your mental campus map with the named green used for major university gatherings.","evidence_claim":"Linfield identifies the Commencement Green in the Oak Grove as lying between Riley Campus Center and the President’s House.","source_url":"https://www.linfield.edu/commencement/guest-information/know-before-you-go.html","source_title":"Know Before You Go | Linfield University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This is an outdoor campus space; scheduled university events may temporarily affect access.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"linfield-art-gallery","subject_type":"sequence_stop","entity_name":"The Linfield Art Gallery","title":"Open Saturday with Art","subtitle":"Gallery stop · Saturday noon","notes":"Arrive after the posted noon opening, view the current exhibition and leave time to walk the surrounding Arts Quad.","short_summary":"Begin Saturday with a free public exhibition in the Miller Fine Arts Center.","evidence_claim":"The Linfield Art Gallery presents solo, group and student exhibitions, is free and open to the public, and lists Saturday hours of noon–5 p.m.","source_url":"https://linfield.edu/art/gallery.html","source_title":"The Linfield Art Gallery","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Published Saturday hours are noon–5 p.m.; check the page for the current exhibition before visiting.","cost_status":"free","under21_safe":true},{"subject_id":"linfield-nicholson-library","subject_type":"sequence_stop","entity_name":"Jereld R. Nicholson Library","title":"Set Up Your Library Routine","subtitle":"Academic stop · Saturday afternoon","notes":"Find the service desk and one workable study area, then record the academic-term hours before your first full week begins.","short_summary":"Turn a brief weekend visit into a useful rehearsal for future study sessions.","evidence_claim":"Linfield lists Jereld R. Nicholson Library on the McMinnville campus with academic-term Saturday hours of 10 a.m.–4 p.m. for students, faculty and staff.","source_url":"https://www.linfield.edu/linfield-libraries/","source_title":"Linfield Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Student academic-term hours list Saturday 10 a.m.–4 p.m.; hours are subject to change and break hours differ.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"mcminnville-public-library","subject_type":"sequence_stop","entity_name":"McMinnville Public Library","title":"Meet the Town Library","subtitle":"Community stop · Saturday afternoon","notes":"Walk through both public levels, note the service desks and ask what identification is needed before applying for a library card.","short_summary":"Add a downtown public study and community resource to your new-student map.","evidence_claim":"The City of McMinnville lists the McMinnville Public Library at 225 NW Adams Street and publishes Saturday hours of 10 a.m.–5 p.m.","source_url":"https://www.mcminnvilleoregon.gov/library/page/about-library-0","source_title":"About the Library | McMinnville Oregon","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Published Saturday hours are 10 a.m.–5 p.m.; borrowing privileges may require registration or a qualifying library card.","cost_status":"free","under21_safe":true},{"subject_id":"mcminnville-city-park","subject_type":"sequence_stop","entity_name":"City Park","title":"Take a City Park Break","subtitle":"Downtown outdoor stop · Saturday evening","notes":"Follow the public paths, look for the Soper Fountain and use the lawns for a low-key pause before returning to campus.","short_summary":"Connect the downtown library area with a longstanding civic green space beside Cozine Creek.","evidence_claim":"McMinnville’s official City Park page describes shady lawns, play areas, swimming and quiet reading spots, and documents the park’s Soper Fountain.","source_url":"https://www.mcminnvilleoregon.gov/cd/page/city-park","source_title":"City Park | McMinnville Oregon","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use designated public paths and observe posted park or facility rules; Aquatic Center admission is separate.","cost_status":"free","under21_safe":true},{"subject_id":"evergreen-aviation-space-museum","subject_type":"sequence_stop","entity_name":"Evergreen Aviation & Space Museum","title":"Finish Beneath the Spruce Goose","subtitle":"Ticketed excursion · Sunday","notes":"Arrange transportation before leaving campus, budget for admission and prioritize the aircraft or spacecraft you most want to examine.","short_summary":"Close the weekend with McMinnville’s large aviation-and-space collection southeast of town.","evidence_claim":"Evergreen Aviation & Space Museum displays more than 150 aircraft, spacecraft and exhibits, including the Spruce Goose, and is open daily from 9 a.m.–5 p.m.","source_url":"https://www.evergreenmuseum.org/visit/","source_title":"Visit Evergreen – Admissions Hours","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The museum lists daily hours of 9 a.m.–5 p.m., specified holiday closures and a location 3.5 miles southeast of McMinnville.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}

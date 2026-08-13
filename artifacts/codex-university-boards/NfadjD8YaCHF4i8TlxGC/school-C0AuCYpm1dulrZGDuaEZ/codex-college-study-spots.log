@@ -1,0 +1,180 @@
+Reading additional input from stdin...
+2026-08-13T09:30:03.844879Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa74-c8d0-7600-ac3f-51a776e2ae1f.1786613385425197000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:30:03.847217Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T09:30:03.849512Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-terra
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa75-104b-7a70-a321-05d79caf18ba
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"C0AuCYpm1dulrZGDuaEZ","schoolName":"University of Georgia","shortSchoolName":"University of Georgia","townName":"Athens","state":"GA","countryCode":"US","website":"https://www.uga.edu/","latitude":33.956262,"longitude":-83.374039},"templates":[{"id":"college-study-spots","version":"1.0","titlePattern":"Claimed by 9am: {count} Study Spots Worth Showing Up Early For","editorialBrief":"Choose ten distinct study environments. Verify access rules, room or reservation constraints, and the physical affordance that makes each useful. Treat “Claimed by 9am” as editorial framing; never assert crowding or student behavior without evidence.","researchQueries":["campus study spaces","library study rooms students","quiet study campus"],"count":10,"icon":"menu_book","primarySubjectType":"study_space","allowedSubjectTypes":["study_space","place"],"freshnessDays":180,"exactTitle":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For"}]}
+codex
+{"complete":false,"school_name":"University of Georgia","town_name":"Athens","boards":[{"complete":false,"school_name":"University of Georgia","town_name":"Athens","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"I’m verifying ten distinct UGA study environments and their current access details from first-party campus sources.","icon":"menu_book","cards":  [  
+{"subject_id":"researching","subject_type":"study_space","entity_name":"UGA study spaces","title":"Research in progress","subtitle":"University of Georgia, Athens","notes":"Checking official UGA library and campus pages for distinct, documentable study settings and any access constraints.","short_summary":"This temporary card will be replaced with verified locations.","evidence_claim":"Research underway.","source_url":"https://www.uga.edu/","source_title":"University of Georgia","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Verification in progress.","cost_status":"unknown","under21_safe":true}  
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+  
+    ,{"subject_id":"researching-2","subject_type":"study_space","entity_name":"UGA study spaces","title":"Research in progress","subtitle":"University of Georgia, Athens","notes":"Checking official UGA library and campus pages for distinct, documentable study settings and any access constraints.","short_summary":"This temporary card will be replaced with verified locations.","evidence_claim":"Research underway.","source_url":"https://www.uga.edu/","source_title":"University of Georgia","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Verification in progress.","cost_status":"unknown","under21_safe":true}  
+  ,{"subject_id":"researching-3","subject_type":"study_space","entity_name":"UGA study spaces","title":"Research in progress","subtitle":"University of Georgia","notes":"Checking official UGA library and campus pages for distinct, documentable study settings and any access constraints.","short_summary":"This temporary card will be replaced with verified locations.","evidence_claim":"Research underway.","source_url":"https://www.uga.edu/","source_title":"University of Georgia","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Verification in progress.","cost_status":"unknown","under21_safe":true}  
+  ,{"subject_id":"researching-4","subject_type":"study_space","entity_name":"UGA study spaces","title":"Research in progress","subtitle":"University of Georgia","notes":"Checking official UGA library and campus pages for distinct, documentable study settings and any access constraints.","short_summary":"This temporary card will be replaced with verified locations.","evidence_claim":"Research underway.","source_url":"https://www.uga.edu/","source_title":"University of Georgia","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Verification in progress.","cost_status":"unknown","under21_safe":true}  
+  ,{"subject_id":"researching-5","subject_type":"study_space","entity_name":"UGA study spaces","title":"Research in progress","subtitle":"University of Georgia","notes":"Checking official UGA library and campus pages for distinct, documentable study settings and any access constraints.","short_summary":"This temporary card will be replaced with verified locations.","evidence_claim":"Research underway.","source_url":"https://www.uga.edu/","source_title":"University of Georgia","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Verification in progress.","cost_status":"unknown","under21_safe":true}  
+  ,{"subject_id":"researching-6","subject_type":"study_space","entity_name":"UGA study spaces","title":"Research in progress","subtitle":"University of Georgia","notes":"Checking official UGA library and campus pages for distinct, documentable study settings and any access constraints.","short_summary":"This temporary card will be replaced with verified locations.","evidence_claim":"Research underway.","source_url":"https://www.uga.edu/","source_title":"University of Georgia","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Verification in progress.","cost_status":"unknown","under21_safe":true}  
+  ,{"subject_id":"researching-7","subject_type":"study_space","entity_name":"UGA study spaces","title":"Research in progress","subtitle":"University of Georgia","notes":"Checking official UGA library and campus pages for distinct, documentable study settings and any access constraints.","short_summary":"This temporary card will be replaced with verified locations.","evidence_claim":"Research underway.","source_url":"https://www.uga.edu/","source_title":"University of Georgia","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Verification in progress.","cost_status":"unknown","under21_safe":true}  
+  ,{"subject_id":"researching-8","subject_type":"study_space","entity_name":"UGA study spaces","title":"Research in progress","subtitle":"University of Georgia","notes":"Checking official UGA library and campus pages for distinct, documentable study settings and any access constraints.","short_summary":"This temporary card will be replaced with verified locations.","evidence_claim":"Research underway.","source_url":"https://www.uga.edu/","source_title":"University of Georgia","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Verification in progress.","cost_status":"unknown","under21_safe":true}  
+  ,{"subject_id":"researching-9","subject_type":"study_space","entity_name":"UGA study spaces","title":"Research in progress","subtitle":"University of Georgia","notes":"Checking official UGA library and campus pages for distinct, documentable study settings and any access constraints.","short_summary":"This temporary card will be replaced with verified locations.","evidence_claim":"Research underway.","source_url":"https://www.uga.edu/","source_title":"University of Georgia","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Verification in progress.","cost_status":"unknown","under21_safe":true}  
+  ,{"subject_id":"researching-10","subject_type":"study_space","entity_name":"UGA study spaces","title":"Research in progress","subtitle":"University of Georgia","notes":"Checking official UGA library and campus pages for distinct, documentable study settings and any access constraints.","short_summary":"This temporary card will be replaced with verified locations.","evidence_claim":"Research underway.","source_url":"https://www.uga.edu/","source_title":"University of Georgia","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Verification in progress.","cost_status":"unknown","under21_safe":true}  
+  ]  ,"warnings":["Research in progress"]}],"warnings":["Research in progress"]}
+web search: 
+web search: site:libs.uga.edu "study spaces" University of Georgia ...
+web search: 
+web search: site:libs.uga.edu "study spaces" University of Georgia ...
+codex
+{"complete":true,"school_name":"University of Georgia","town_name":"Athens","boards":[{"complete":true,"school_name":"University of Georgia","town_name":"Athens","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten distinct, officially documented UGA Libraries study environments across the Main Library, Miller Learning Center, and McBay Science Library.","icon":"menu_book","cards":[{"subject_id":"uga-main-library-graduate-reading-room","subject_type":"study_space","entity_name":"Graduate Reading Room","title":"Graduate Reading Room","subtitle":"Main Library, third floor","notes":"Set up at a table overlooking the quad, and keep this silent-study designation in mind when choosing solo reading or focused writing.","short_summary":"A silent third-floor room with a view of the Main Library quad.","evidence_claim":"UGA Libraries designates the third-floor Graduate Reading Room as a silent study area; it is open to all and overlooks the quad.","source_url":"https://libraries.uga.edu/study-spaces","source_title":"Study Spaces | UGA Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Main Library study spaces are limited after 6 p.m. to the UGA community and students with valid college ID.","cost_status":"unknown","under21_safe":true},{"subject_id":"uga-main-library-collaborative-study-space","subject_type":"study_space","entity_name":"Collaborative Study Space","title":"Collaborative Study Space","subtitle":"Main Library, fourth floor","notes":"Bring a discussion outline and use the whiteboard walls or chalkboard columns to map ideas; a WEPA print kiosk is also in the space.","short_summary":"A fourth-floor group workspace built around writable surfaces.","evidence_claim":"UGA Libraries says the Main Library's fourth-floor Collaborative Study Space has seating for groups, whiteboard walls, chalkboard columns, and a WEPA print kiosk.","source_url":"https://libraries.uga.edu/study-spaces","source_title":"Study Spaces | UGA Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Main Library study spaces are limited after 6 p.m. to the UGA community and students with valid college ID.","cost_status":"unknown","under21_safe":true},{"subject_id":"uga-main-library-window-nooks","subject_type":"study_space","entity_name":"Window Nooks","title":"Window Nooks","subtitle":"Main Library, rear of floors 2–7","notes":"Choose a small or large rear-window table for a solo task or a compact work session, with a campus-facing view beside your materials.","short_summary":"Rear-window tables spread across the Main Library's upper floors.","evidence_claim":"UGA Libraries identifies Window Nooks at the rear of Main Library floors 2–7, with small and large tables and views of campus.","source_url":"https://libraries.uga.edu/study-spaces","source_title":"Study Spaces | UGA Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Main Library study spaces are limited after 6 p.m. to the UGA community and students with valid college ID.","cost_status":"unknown","under21_safe":true},{"subject_id":"uga-main-library-study-carrels","subject_type":"study_space","entity_name":"Study Carrels","title":"Study Carrels","subtitle":"Main Library, floors 3–6","notes":"Use an available carrel for private, individual work; only a small number are first-come, first-served, while some are long-term reserved.","short_summary":"Enclosed individual study stations on Main Library floors three through six.","evidence_claim":"UGA Libraries lists individual Main Library study carrels on floors 3–6; a small number are first-come, first-served, while eligible faculty and graduate students may reserve long-term carrels.","source_url":"https://libraries.uga.edu/study-spaces","source_title":"Study Spaces | UGA Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"For UGA affiliates; access to Main Library study spaces is limited after 6 p.m. to the UGA community and students with valid college ID.","cost_status":"unknown","under21_safe":true},{"subject_id":"uga-magil-open-study-spaces","subject_type":"study_space","entity_name":"MAGIL Open Study Spaces","title":"MAGIL Open Study Spaces","subtitle":"Map & Government Information Library, Main Library sub-basement","notes":"Head to the sub-basement for a quieter table or individual space, particularly when working with map and government information library materials.","short_summary":"Quiet tables and individual spaces in the Main Library's map collection.","evidence_claim":"UGA Libraries states that the Map & Government Information Library in the Main Library sub-basement provides tables and individual spaces for quiet study or using library materials.","source_url":"https://libraries.uga.edu/study-spaces","source_title":"Study Spaces | UGA Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Main Library study spaces are limited after 6 p.m. to the UGA community and students with valid college ID.","cost_status":"unknown","under21_safe":true},{"subject_id":"uga-mlc-sidney-samuel-thomas-reading-room","subject_type":"study_space","entity_name":"Sidney Samuel Thomas Reading Room","title":"Sidney Samuel Thomas Reading Room","subtitle":"Miller Learning Center, third floor","notes":"Use this quiet room for concentrated reading, and plan around its posted maximum capacity of 100; the small book collection does not circulate.","short_summary":"A quiet MLC reading room with seating capped at 100.","evidence_claim":"UGA Libraries describes the Sidney Samuel Thomas Reading Room on MLC's third floor as a quiet study space with a maximum capacity of 100 and a small non-circulating collection.","source_url":"https://libraries.uga.edu/study-spaces","source_title":"Study Spaces | UGA Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"MLC study spaces are limited after 9 p.m. to the UGA community and students with valid college ID.","cost_status":"unknown","under21_safe":true},{"subject_id":"uga-mlc-group-study-rooms","subject_type":"study_space","entity_name":"MLC Group Study Rooms","title":"MLC Group Study Rooms","subtitle":"Miller Learning Center, floors 2–4","notes":"Bring at least one collaborator, then use the room locator or floor displays to find an opening; rooms have whiteboards and are first-come, first-served.","short_summary":"First-come group rooms with whiteboards throughout the MLC.","evidence_claim":"UGA Libraries says 95 group study rooms on MLC floors 2–4 are first-come, first-served, and the rooms have whiteboards; the UGA App can show availability.","source_url":"https://libraries.uga.edu/study-spaces","source_title":"Study Spaces | UGA Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"MLC study spaces are limited after 9 p.m. to the UGA community and students with valid college ID. Group rooms prioritize groups.","cost_status":"unknown","under21_safe":true},{"subject_id":"uga-mlc-study-spaces-with-workstations","subject_type":"study_space","entity_name":"MLC Study Spaces with Workstations","title":"Study Spaces with Workstations","subtitle":"Miller Learning Center, floors 3 Central, 3 East, and 4 East","notes":"Choose one of the individual workstation seats when you need a campus computer, locating the designated areas on MLC's third and fourth floors.","short_summary":"More than 200 individual MLC seats equipped with computer workstations.","evidence_claim":"UGA Libraries reports that the MLC has over 200 individual study spaces with computer workstations on floors 3 Central, 3 East, and 4 East.","source_url":"https://libraries.uga.edu/study-spaces","source_title":"Study Spaces | UGA Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"MLC study spaces are limited after 9 p.m. to the UGA community and students with valid college ID.","cost_status":"unknown","under21_safe":true},{"subject_id":"uga-mcbay-study-booths","subject_type":"study_space","entity_name":"Study Booths","title":"Study Booths","subtitle":"McBay Science Library, second floor","notes":"Use the booth seating for a paired discussion or a reading session, choosing this second-floor wing when you want a more contained setup.","short_summary":"Booth seating in a dedicated McBay Science Library wing.","evidence_claim":"UGA Libraries identifies a wing of study booths on McBay Science Library's second floor, with seating for study and discussion.","source_url":"https://libraries.uga.edu/study-spaces","source_title":"Study Spaces | UGA Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"McBay Science Library study spaces are limited after 6 p.m. to the UGA community and students with valid college ID.","cost_status":"unknown","under21_safe":true},{"subject_id":"uga-mcbay-group-study-rooms-fourth-floor","subject_type":"study_space","entity_name":"McBay Fourth-Floor Group Study Rooms","title":"McBay Fourth-Floor Group Study Rooms","subtitle":"McBay Science Library, fourth floor","notes":"Check availability in the UGA App before meeting up, then use one of the 25 small group rooms for shared problem-solving or planning.","short_summary":"Twenty-five small group rooms on McBay's renovated fourth floor.","evidence_claim":"UGA Libraries states that McBay Science Library's fourth floor has 25 small group study rooms, with availability available through the UGA App.","source_url":"https://libraries.uga.edu/study-spaces","source_title":"Study Spaces | UGA Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"McBay Science Library study spaces are limited after 6 p.m. to the UGA community and students with valid college ID.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T09:31:41.169019Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa75-104b-7a70-a321-05d79caf18ba.1786613403724493000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+20,921
+
+{"complete":true,"school_name":"University of Georgia","town_name":"Athens","boards":[{"complete":true,"school_name":"University of Georgia","town_name":"Athens","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten distinct, officially documented UGA Libraries study environments across the Main Library, Miller Learning Center, and McBay Science Library.","icon":"menu_book","cards":[{"subject_id":"uga-main-library-graduate-reading-room","subject_type":"study_space","entity_name":"Graduate Reading Room","title":"Graduate Reading Room","subtitle":"Main Library, third floor","notes":"Set up at a table overlooking the quad, and keep this silent-study designation in mind when choosing solo reading or focused writing.","short_summary":"A silent third-floor room with a view of the Main Library quad.","evidence_claim":"UGA Libraries designates the third-floor Graduate Reading Room as a silent study area; it is open to all and overlooks the quad.","source_url":"https://libraries.uga.edu/study-spaces","source_title":"Study Spaces | UGA Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Main Library study spaces are limited after 6 p.m. to the UGA community and students with valid college ID.","cost_status":"unknown","under21_safe":true},{"subject_id":"uga-main-library-collaborative-study-space","subject_type":"study_space","entity_name":"Collaborative Study Space","title":"Collaborative Study Space","subtitle":"Main Library, fourth floor","notes":"Bring a discussion outline and use the whiteboard walls or chalkboard columns to map ideas; a WEPA print kiosk is also in the space.","short_summary":"A fourth-floor group workspace built around writable surfaces.","evidence_claim":"UGA Libraries says the Main Library's fourth-floor Collaborative Study Space has seating for groups, whiteboard walls, chalkboard columns, and a WEPA print kiosk.","source_url":"https://libraries.uga.edu/study-spaces","source_title":"Study Spaces | UGA Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Main Library study spaces are limited after 6 p.m. to the UGA community and students with valid college ID.","cost_status":"unknown","under21_safe":true},{"subject_id":"uga-main-library-window-nooks","subject_type":"study_space","entity_name":"Window Nooks","title":"Window Nooks","subtitle":"Main Library, rear of floors 2–7","notes":"Choose a small or large rear-window table for a solo task or a compact work session, with a campus-facing view beside your materials.","short_summary":"Rear-window tables spread across the Main Library's upper floors.","evidence_claim":"UGA Libraries identifies Window Nooks at the rear of Main Library floors 2–7, with small and large tables and views of campus.","source_url":"https://libraries.uga.edu/study-spaces","source_title":"Study Spaces | UGA Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Main Library study spaces are limited after 6 p.m. to the UGA community and students with valid college ID.","cost_status":"unknown","under21_safe":true},{"subject_id":"uga-main-library-study-carrels","subject_type":"study_space","entity_name":"Study Carrels","title":"Study Carrels","subtitle":"Main Library, floors 3–6","notes":"Use an available carrel for private, individual work; only a small number are first-come, first-served, while some are long-term reserved.","short_summary":"Enclosed individual study stations on Main Library floors three through six.","evidence_claim":"UGA Libraries lists individual Main Library study carrels on floors 3–6; a small number are first-come, first-served, while eligible faculty and graduate students may reserve long-term carrels.","source_url":"https://libraries.uga.edu/study-spaces","source_title":"Study Spaces | UGA Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"For UGA affiliates; access to Main Library study spaces is limited after 6 p.m. to the UGA community and students with valid college ID.","cost_status":"unknown","under21_safe":true},{"subject_id":"uga-magil-open-study-spaces","subject_type":"study_space","entity_name":"MAGIL Open Study Spaces","title":"MAGIL Open Study Spaces","subtitle":"Map & Government Information Library, Main Library sub-basement","notes":"Head to the sub-basement for a quieter table or individual space, particularly when working with map and government information library materials.","short_summary":"Quiet tables and individual spaces in the Main Library's map collection.","evidence_claim":"UGA Libraries states that the Map & Government Information Library in the Main Library sub-basement provides tables and individual spaces for quiet study or using library materials.","source_url":"https://libraries.uga.edu/study-spaces","source_title":"Study Spaces | UGA Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Main Library study spaces are limited after 6 p.m. to the UGA community and students with valid college ID.","cost_status":"unknown","under21_safe":true},{"subject_id":"uga-mlc-sidney-samuel-thomas-reading-room","subject_type":"study_space","entity_name":"Sidney Samuel Thomas Reading Room","title":"Sidney Samuel Thomas Reading Room","subtitle":"Miller Learning Center, third floor","notes":"Use this quiet room for concentrated reading, and plan around its posted maximum capacity of 100; the small book collection does not circulate.","short_summary":"A quiet MLC reading room with seating capped at 100.","evidence_claim":"UGA Libraries describes the Sidney Samuel Thomas Reading Room on MLC's third floor as a quiet study space with a maximum capacity of 100 and a small non-circulating collection.","source_url":"https://libraries.uga.edu/study-spaces","source_title":"Study Spaces | UGA Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"MLC study spaces are limited after 9 p.m. to the UGA community and students with valid college ID.","cost_status":"unknown","under21_safe":true},{"subject_id":"uga-mlc-group-study-rooms","subject_type":"study_space","entity_name":"MLC Group Study Rooms","title":"MLC Group Study Rooms","subtitle":"Miller Learning Center, floors 2–4","notes":"Bring at least one collaborator, then use the room locator or floor displays to find an opening; rooms have whiteboards and are first-come, first-served.","short_summary":"First-come group rooms with whiteboards throughout the MLC.","evidence_claim":"UGA Libraries says 95 group study rooms on MLC floors 2–4 are first-come, first-served, and the rooms have whiteboards; the UGA App can show availability.","source_url":"https://libraries.uga.edu/study-spaces","source_title":"Study Spaces | UGA Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"MLC study spaces are limited after 9 p.m. to the UGA community and students with valid college ID. Group rooms prioritize groups.","cost_status":"unknown","under21_safe":true},{"subject_id":"uga-mlc-study-spaces-with-workstations","subject_type":"study_space","entity_name":"MLC Study Spaces with Workstations","title":"Study Spaces with Workstations","subtitle":"Miller Learning Center, floors 3 Central, 3 East, and 4 East","notes":"Choose one of the individual workstation seats when you need a campus computer, locating the designated areas on MLC's third and fourth floors.","short_summary":"More than 200 individual MLC seats equipped with computer workstations.","evidence_claim":"UGA Libraries reports that the MLC has over 200 individual study spaces with computer workstations on floors 3 Central, 3 East, and 4 East.","source_url":"https://libraries.uga.edu/study-spaces","source_title":"Study Spaces | UGA Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"MLC study spaces are limited after 9 p.m. to the UGA community and students with valid college ID.","cost_status":"unknown","under21_safe":true},{"subject_id":"uga-mcbay-study-booths","subject_type":"study_space","entity_name":"Study Booths","title":"Study Booths","subtitle":"McBay Science Library, second floor","notes":"Use the booth seating for a paired discussion or a reading session, choosing this second-floor wing when you want a more contained setup.","short_summary":"Booth seating in a dedicated McBay Science Library wing.","evidence_claim":"UGA Libraries identifies a wing of study booths on McBay Science Library's second floor, with seating for study and discussion.","source_url":"https://libraries.uga.edu/study-spaces","source_title":"Study Spaces | UGA Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"McBay Science Library study spaces are limited after 6 p.m. to the UGA community and students with valid college ID.","cost_status":"unknown","under21_safe":true},{"subject_id":"uga-mcbay-group-study-rooms-fourth-floor","subject_type":"study_space","entity_name":"McBay Fourth-Floor Group Study Rooms","title":"McBay Fourth-Floor Group Study Rooms","subtitle":"McBay Science Library, fourth floor","notes":"Check availability in the UGA App before meeting up, then use one of the 25 small group rooms for shared problem-solving or planning.","short_summary":"Twenty-five small group rooms on McBay's renovated fourth floor.","evidence_claim":"UGA Libraries states that McBay Science Library's fourth floor has 25 small group study rooms, with availability available through the UGA App.","source_url":"https://libraries.uga.edu/study-spaces","source_title":"Study Spaces | UGA Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"McBay Science Library study spaces are limited after 6 p.m. to the UGA community and students with valid college ID.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}

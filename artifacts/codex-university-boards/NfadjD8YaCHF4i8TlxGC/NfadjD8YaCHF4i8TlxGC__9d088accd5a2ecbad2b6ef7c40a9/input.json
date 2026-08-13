@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "C5iY4jhcry71uWsN26Mq",
+    "schoolName": "University of Notre Dame",
+    "shortSchoolName": "University of Notre Dame",
+    "townName": "Notre Dame",
+    "state": "IN",
+    "countryCode": "US",
+    "unitId": "152080",
+    "website": "https://www.nd.edu/",
+    "latitude": 41.703058,
+    "longitude": -86.238959,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/University_of_Notre_Dame_seal_%282%29.svg/250px-University_of_Notre_Dame_seal_%282%29.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=nd.edu&sz=256"
+  },
+  "template": {
+    "id": "college-campus-tour-skips",
+    "version": "1.0",
+    "titlePattern": "What the Campus Tour Skips: {count} Places Students Share With Each Other",
+    "editorialBrief": "Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.",
+    "researchQueries": [
+      "student favorite campus places",
+      "campus map student spaces",
+      "student newspaper campus places"
+    ],
+    "count": 10,
+    "icon": "style",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place",
+      "study_space"
+    ],
+    "freshnessDays": 365
+  },
+  "exact_title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+  "excluded_subjects": [
+    "Main Building Steps Tradition",
+    "God Quad Grass Superstition",
+    "Golden Dome Gold Leaf Reuse",
+    "South Quad First Snowfall Snowball Fight",
+    "The Last Visit",
+    "Trumpets Under the Dome",
+    "Notre Dame Football Player Walk",
+    "Bengal Bouts",
+    "Pop Farley Week",
+    "Ryan Hall Wheelchair Basketball Tournament"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

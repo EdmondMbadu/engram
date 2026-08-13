@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.hendrix.edu/windgate/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hendrix.edu/windgate/",
+      "error": ""
+    },
+    {
+      "url": "https://via.hendrix.edu/about/about-conway/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://via.hendrix.edu/about/about-conway/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hendrix.edu/Bestselling-Author-Matthew-Dicks-visiting-Hendrix-College-to-deliver-lecture-and-lead-GiIll-Preaching-Workshop/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hendrix.edu/Bestselling-Author-Matthew-Dicks-visiting-Hendrix-College-to-deliver-lecture-and-lead-GiIll-Preaching-Workshop/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hendrix.edu/theatrearts/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hendrix.edu/theatrearts/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hendrix.edu/career/events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hendrix.edu/career/events/",
+      "error": ""
+    },
+    {
+      "url": "https://fcl.org/conway/events/page/102/conway-study-lounge",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fcl.org/conway/events/page/102/conway-study-lounge",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

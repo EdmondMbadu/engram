@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://ctvisit.com/listings/hygienic-art-galleries-art-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ctvisit.com/listings/hygienic-art-galleries-art-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/places/new-london-customhouse.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/places/new-london-customhouse.htm",
+      "error": ""
+    },
+    {
+      "url": "https://gardearts.org/classes/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gardearts.org/classes/",
+      "error": ""
+    },
+    {
+      "url": "https://visitnewlondon.org/nl-250/historic-figures/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visitnewlondon.org/nl-250/historic-figures/",
+      "error": ""
+    },
+    {
+      "url": "https://visitnewlondon.org/black-heritage-trail/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visitnewlondon.org/black-heritage-trail/",
+      "error": ""
+    },
+    {
+      "url": "https://visitnewlondon.org/new-london-tales/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visitnewlondon.org/new-london-tales/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

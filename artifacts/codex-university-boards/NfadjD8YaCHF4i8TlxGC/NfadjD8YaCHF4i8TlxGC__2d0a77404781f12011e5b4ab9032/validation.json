@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.admissions.uc.edu/visit/self-guided-visit.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.admissions.uc.edu/visit/self-guided-visit.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.uc.edu/news/articles/2026/04/local-media-cover-reinstallation-of-bearcat-statue.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uc.edu/news/articles/2026/04/local-media-cover-reinstallation-of-bearcat-statue.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.uc.edu/campus-life/csi/student-organizations.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uc.edu/campus-life/csi/student-organizations.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.uc.edu/campus-life/new-student-services/campus-recreation.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uc.edu/campus-life/new-student-services/campus-recreation.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.libraries.uc.edu/libraries/langsam.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.libraries.uc.edu/libraries/langsam.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.daap.uc.edu/exhibitions-collections/galleries.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.daap.uc.edu/exhibitions-collections/galleries.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.uc.edu/big-12.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uc.edu/big-12.html",
+      "error": ""
+    },
+    {
+      "url": "https://ucdirectory.uc.edu/CampusBuildings.asp?bldgcode=FIFTH+THIRD",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ucdirectory.uc.edu/CampusBuildings.asp?bldgcode=FIFTH+THIRD",
+      "error": ""
+    },
+    {
+      "url": "https://www.cincinnati-oh.gov/cincyparks/visit-a-park/find-a-parkfacility/burnet-woods-trailside-nature-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cincinnati-oh.gov/cincyparks/visit-a-park/find-a-parkfacility/burnet-woods-trailside-nature-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.cincinnatiartmuseum.org/visit/tickets-admission/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cincinnatiartmuseum.org/visit/tickets-admission/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

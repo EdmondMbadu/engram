@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://library.jefferson.edu/about/about.cfm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.jefferson.edu/about/about.cfm",
+      "error": ""
+    },
+    {
+      "url": "https://library.jefferson.edu/tech/reserve_collaboration.cfm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.jefferson.edu/tech/reserve_collaboration.cfm",
+      "error": ""
+    },
+    {
+      "url": "https://www.jefferson.edu/academics/campus-libraries/library-news/2024/fourth-floor-reopens.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jefferson.edu/academics/campus-libraries/library-news/2024/fourth-floor-reopens.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.jefferson.edu/academics/campus-libraries.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jefferson.edu/academics/campus-libraries.html",
+      "error": ""
+    },
+    {
+      "url": "https://library.jefferson.edu/gutman/tech/space.cfm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.jefferson.edu/gutman/tech/space.cfm",
+      "error": ""
+    },
+    {
+      "url": "https://www.jefferson.edu/east-falls/student-engagement/kanbar-campus-center.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jefferson.edu/east-falls/student-engagement/kanbar-campus-center.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.jefferson.edu/registrar/space-management-room-reservations/study-space.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jefferson.edu/registrar/space-management-room-reservations/study-space.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

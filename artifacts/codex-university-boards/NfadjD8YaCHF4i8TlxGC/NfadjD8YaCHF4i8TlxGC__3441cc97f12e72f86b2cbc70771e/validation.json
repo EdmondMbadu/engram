@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.mit.edu/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mit.edu/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://listart.mit.edu/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://listart.mit.edu/visit",
+      "error": ""
+    },
+    {
+      "url": "https://listart.mit.edu/art-artists/aesops-fables-ii-2005",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://listart.mit.edu/art-artists/aesops-fables-ii-2005",
+      "error": ""
+    },
+    {
+      "url": "https://listart.mit.edu/art-artists/ray-maria-stata-center-2004",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://listart.mit.edu/art-artists/ray-maria-stata-center-2004",
+      "error": ""
+    },
+    {
+      "url": "https://listart.mit.edu/art-artists/sean-collier-memorial-2015",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://listart.mit.edu/art-artists/sean-collier-memorial-2015",
+      "error": ""
+    },
+    {
+      "url": "https://listart.mit.edu/art-artists/kresge-auditorium-1955",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://listart.mit.edu/art-artists/kresge-auditorium-1955",
+      "error": ""
+    },
+    {
+      "url": "https://listart.mit.edu/art-artists/mit-chapel-1954",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://listart.mit.edu/art-artists/mit-chapel-1954",
+      "error": ""
+    },
+    {
+      "url": "https://listart.mit.edu/art-artists/stratton-student-center-1963",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://listart.mit.edu/art-artists/stratton-student-center-1963",
+      "error": ""
+    },
+    {
+      "url": "https://listart.mit.edu/art-artists/baker-house-1949",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://listart.mit.edu/art-artists/baker-house-1949",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

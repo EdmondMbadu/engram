@@ -1,0 +1,60 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "aC7OIaPnBUgSApvEAd6p",
+    "schoolName": "United States Air Force Academy",
+    "shortSchoolName": "United States Air Force Academy",
+    "townName": "USAF Academy",
+    "state": "CO",
+    "countryCode": "US",
+    "unitId": "128328",
+    "website": "https://www.usafa.edu/",
+    "latitude": 39.010957,
+    "longitude": -104.891358,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/US-AirForceAcademy-Shield.svg/960px-US-AirForceAcademy-Shield.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=usafa.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "Garden of the Gods Visitor & Nature Center",
+    "Gateway Rock",
+    "Balanced Rock",
+    "Siamese Twins",
+    "Three Graces",
+    "Cathedral Spires",
+    "Kissing Camels",
+    "High Point Overlook",
+    "Perkins Central Garden Trail",
+    "Spring Canyon Trailhead",
+    "McDonald's, 765 West Baptist Road",
+    "Taco Bell, 1208 Interquest Parkway",
+    "Shake Shack Interquest",
+    "Whataburger, 1310 Interquest Parkway",
+    "IHOP, 3090 N. Chestnut Street",
+    "Carl's Jr., 425 Garden of the Gods",
+    "Jack in the Box, 3690 New Center Point Boulevard",
+    "Wendy's, 2515 Montebello Drive West",
+    "Whataburger, 2550 Montebello",
+    "Wendy's, 5850 Stetson Hills Boulevard"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

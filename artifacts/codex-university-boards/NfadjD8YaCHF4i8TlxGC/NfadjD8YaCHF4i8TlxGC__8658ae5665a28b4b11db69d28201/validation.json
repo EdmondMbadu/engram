@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Two annual-style campus events cited here occurred earlier in 2026; their access notes direct visitors to verify a future date before travel."
+  ],
+  "reachability": [
+    {
+      "url": "https://events.purdue.edu/event/first-nighter-2026",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.purdue.edu/event/first-nighter-2026",
+      "error": ""
+    },
+    {
+      "url": "https://events.purdue.edu/event/mucca-pazza-2714",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.purdue.edu/event/mucca-pazza-2714",
+      "error": ""
+    },
+    {
+      "url": "https://events.purdue.edu/event/purduette-premiere-2735",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.purdue.edu/event/purduette-premiere-2735",
+      "error": ""
+    },
+    {
+      "url": "https://events.purdue.edu/event/tippecanoe-latino-festival",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.purdue.edu/event/tippecanoe-latino-festival",
+      "error": ""
+    },
+    {
+      "url": "https://events.purdue.edu/event/31st-annual-west-lafayette-global-fest",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.purdue.edu/event/31st-annual-west-lafayette-global-fest",
+      "error": ""
+    },
+    {
+      "url": "https://events.purdue.edu/event/archaeology-month-celebration",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.purdue.edu/event/archaeology-month-celebration",
+      "error": ""
+    },
+    {
+      "url": "https://events.purdue.edu/event/star-city-nights",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.purdue.edu/event/star-city-nights",
+      "error": ""
+    },
+    {
+      "url": "https://events.purdue.edu/event/art-on-the-wabash-2026",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.purdue.edu/event/art-on-the-wabash-2026",
+      "error": ""
+    },
+    {
+      "url": "https://events.purdue.edu/event/purdue-football-spring-showcase",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.purdue.edu/event/purdue-football-spring-showcase",
+      "error": ""
+    },
+    {
+      "url": "https://events.purdue.edu/event/purdue-bands-orchestras-presents-jazz-on-the-hill",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.purdue.edu/event/purdue-bands-orchestras-presents-jazz-on-the-hill",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

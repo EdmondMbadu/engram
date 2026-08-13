@@ -1,0 +1,52 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "pSHOUfrdZWio0w4xbk0z",
+    "schoolName": "Saint Mary's College",
+    "shortSchoolName": "Saint Mary's College",
+    "townName": "Notre Dame",
+    "state": "IN",
+    "countryCode": "US",
+    "unitId": "152390",
+    "website": "https://www.saintmarys.edu/",
+    "latitude": 41.707274,
+    "longitude": -86.256947,
+    "heroUrl": "https://www.saintmarys.edu/files/smc-og-image.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=saintmarys.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at Saint Mary's College, Shared as Cards",
+  "excluded_subjects": [
+    "Closing the Circle",
+    "Opening the Circle",
+    "First Walk Down The Avenue",
+    "Last Walk Down The Avenue",
+    "The Saint Mary's Ring",
+    "Bell Tower Tours",
+    "Senior Week",
+    "Handprints in the Tunnels",
+    "Christmas Madrigal Dinner",
+    "Founders' Day"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

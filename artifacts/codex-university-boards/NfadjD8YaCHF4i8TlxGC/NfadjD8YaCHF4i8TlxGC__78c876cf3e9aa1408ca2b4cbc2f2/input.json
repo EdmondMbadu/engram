@@ -1,0 +1,61 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "IrFE94UzmzC7hbUyCcFY",
+    "schoolName": "University of Michigan-Ann Arbor",
+    "shortSchoolName": "University of Michigan-Ann Arbor",
+    "townName": "Ann Arbor",
+    "state": "MI",
+    "countryCode": "US",
+    "unitId": "170976",
+    "website": "https://umich.edu/",
+    "latitude": 42.278374,
+    "longitude": -83.73481,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Seal_of_the_University_of_Michigan.svg/250px-Seal_of_the_University_of_Michigan.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=umich.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at University of Michigan-Ann Arbor, Shared as Cards",
+  "excluded_subjects": [
+    "University of Michigan Museum of Art",
+    "Kelsey Museum of Archaeology",
+    "University of Michigan Museum of Natural History",
+    "Judy and Stanley Frankel Detroit Observatory",
+    "Matthaei Botanical Gardens",
+    "Nichols Arboretum",
+    "Hatcher Gallery",
+    "Institute for the Humanities Gallery",
+    "Lane Hall Exhibit Space",
+    "Art & Environment Gallery",
+    "Central Campus Diag",
+    "Eda U. Gerstacker Grove",
+    "Endover (The Cube)",
+    "Wave Field",
+    "Shapiro Undergraduate Library",
+    "Michigan Union",
+    "William Monroe Trotter Multicultural Center",
+    "Michigan League Underground",
+    "Pierpont Commons"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

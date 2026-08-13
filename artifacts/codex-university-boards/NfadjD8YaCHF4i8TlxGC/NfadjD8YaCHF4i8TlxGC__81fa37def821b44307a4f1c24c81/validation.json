@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.jeffspizzashop.com/copy-of-order-online",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jeffspizzashop.com/copy-of-order-online",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ia/ames/421-s-duff-avenue.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ia/ames/421-s-duff-avenue.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/ia/ames/620-lincoln-way",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/ia/ames/620-lincoln-way",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/ia/ames/528-s-duff-avenue",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/ia/ames/528-s-duff-avenue",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/ia/ames/129-south-duff/28560.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/ia/ames/129-south-duff/28560.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.maverik.com/ia/ames/203-welch-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.maverik.com/ia/ames/203-welch-ave",
+      "error": ""
+    },
+    {
+      "url": "https://www.caseys.com/general-store/ia-ames/428-lincoln-way/2298",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.caseys.com/general-store/ia-ames/428-lincoln-way/2298",
+      "error": ""
+    },
+    {
+      "url": "https://pancheros.com/locations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pancheros.com/locations/",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/iowa/ames/302-lincoln-way",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/iowa/ames/302-lincoln-way",
+      "error": ""
+    },
+    {
+      "url": "https://studentengagement.iastate.edu/cybowl",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentengagement.iastate.edu/cybowl",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

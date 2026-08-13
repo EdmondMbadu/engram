@@ -1,0 +1,45 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Several official township listings are date-specific 2026 events; confirm dates before making plans. Optional food vendors are not included in the free-cost claim."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.moontwp.us/372/Events",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.moontwp.us/372/Events",
+      "error": ""
+    },
+    {
+      "url": "https://www.moontwp.us/Calendar.aspx?EID=858",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.moontwp.us/Calendar.aspx?EID=858",
+      "error": ""
+    },
+    {
+      "url": "https://www.moontwp.us/Calendar.aspx?EID=856",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.moontwp.us/Calendar.aspx?EID=856",
+      "error": ""
+    },
+    {
+      "url": "https://www.moontwp.us/Calendar.aspx?EID=845",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.moontwp.us/Calendar.aspx?EID=845",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

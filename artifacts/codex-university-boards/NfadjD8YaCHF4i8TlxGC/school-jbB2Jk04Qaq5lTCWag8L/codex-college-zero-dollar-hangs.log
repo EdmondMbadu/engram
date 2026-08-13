@@ -1,0 +1,294 @@
+Reading additional input from stdin...
+2026-08-13T06:42:33.287537Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9db-8908-7e53-97a8-0065fefe8149.1786603342088710000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9db-b458-74e3-8fd0-fa3e4a266e83
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"jbB2Jk04Qaq5lTCWag8L","schoolName":"California State University-Fresno","shortSchoolName":"California State University-Fresno","townName":"Fresno","state":"CA","countryCode":"US","website":"https://www.fresnostate.edu/","latitude":36.811154,"longitude":-119.744569},"templates":[{"id":"college-zero-dollar-hangs","version":"1.0","titlePattern":"Zero Dollars: {count} Hangs That Cost Nothing","editorialBrief":"Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.","researchQueries":["free student activities campus","free campus spaces students","free public places near campus"],"count":10,"icon":"money_off","primarySubjectType":"activity","allowedSubjectTypes":["activity","place"],"freshnessDays":180,"exactTitle":"Zero Dollars: 10 Hangs That Cost Nothing"}]}
+2026-08-13T06:42:33.441762Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9db-8903-7dd1-b470-9bb897a7039b.1786603342084207000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:42:33.483466Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:42:33.489683Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:42:33.532231Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9db-8902-7591-af5c-1df402dbeec1.1786603342083225000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:42:33.580556Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9db-8909-7383-91b6-9e20f6b442a4.1786603342089881000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:42:33.631343Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9db-8910-7c03-8192-f72dfc8977d6.1786603342096876000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:42:33.738122Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9db-890c-7393-9bf9-0f153d38b842.1786603342093223000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "California State University-Fresno",
+  "town_name": "Fresno",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "California State University-Fresno",
+      "town_name": "Fresno",
+      "template_id": "college-zero-dollar-hangs",
+      "title": "Zero Dollars: 10 Hangs That Cost Nothing",
+      "description": "",
+      "icon": "money_off",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "activity",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "activity",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "activity",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "activity",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "activity",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "activity",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "activity",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "activity",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "activity",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      }
+      ],
+      "warnings": [
+        "Research is required before completing this board."
+      ]
+    }
+  ],
+  "warnings": [
+    "I’m verifying ten distinct no-purchase activities against direct official sources."
+  ]
+}
+web search: 
+web search: site:fresnostate.edu free admission museum garden library Fresno State public free ...
+web search: 
+web search: site:fresno.gov parks "Vinland Park" amenities ...
+web search: 
+web search: site:fresnostate.edu 2026 "free and open to the public" Fresno State ...
+codex
+{"complete":true,"school_name":"California State University-Fresno","town_name":"Fresno","boards":[{"complete":true,"school_name":"California State University-Fresno","town_name":"Fresno","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"Ten no-admission, no-purchase activities at Fresno State and Fresno neighborhood parks, with parking or registration caveats noted where applicable.","icon":"money_off","cards":[{"subject_id":"fresno-state-phebe-conley-gallery","subject_type":"place","entity_name":"Phebe Conley Art Gallery","title":"Browse the Phebe Conley Art Gallery","subtitle":"See a rotating campus exhibition without paying admission.","notes":"Walk, bike or use transit to avoid the guest-parking charge, then meet inside during posted weekday gallery hours.","short_summary":"A free public gallery hang centered on Fresno State exhibitions.","evidence_claim":"The gallery’s official page states that the Phebe Conley Art Gallery is free and open to the public and lists its regular hours.","source_url":"https://cah.fresnostate.edu/artanddesign/exhibitions/conley.html","source_title":"Phebe Conley Art Gallery","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Admission is free and the gallery is open to the public. Regular hours are Monday-Friday, 10 a.m.-4 p.m.; it is closed weekends, holidays and during announced seasonal closures. Guest parking costs $5, so arrive without a car to keep the hang at zero dollars.","cost_status":"free","under21_safe":true},{"subject_id":"fresno-state-campus-tour","subject_type":"activity","entity_name":"Fresno State Campus Tour","title":"Take a Fresno State Campus Tour","subtitle":"Explore campus with a student ambassador on a free weekday tour.","notes":"Reserve an available weekday slot, gather your group at the designated meeting point and arrive 30 minutes early.","short_summary":"A scheduled, ambassador-led introduction to Fresno State’s campus.","evidence_claim":"Fresno State Outreach and Special Programs says its campus tours are free of charge and offers both virtual and in-person reservations.","source_url":"https://studentaffairs.fresnostate.edu/outreach/services/","source_title":"Outreach Services - Recruitment","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The tour itself is free, but advance booking and weekday availability apply. Campus parking may require payment; use a no-cost arrival method to preserve the zero-dollar plan.","cost_status":"free","under21_safe":true},{"subject_id":"cary-park-free-hang","subject_type":"place","entity_name":"Cary Park","title":"Meet Up at Cary Park","subtitle":"Use a named Fresno neighborhood park for an outdoor group break.","notes":"Bring water and a blanket, choose an open shared area and keep the meetup informal so no facility reservation is needed.","short_summary":"An easy outdoor meetup in a city neighborhood park.","evidence_claim":"The City of Fresno identifies Cary Park as a neighborhood park, and its official parks fee table states that neighborhood parks have no entrance fee.","source_url":"https://www.fresno.gov/parks/parks-trails-facilities/","source_title":"Parks, Trails & Facilities","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"City neighborhood parks have no entrance fee. Use ordinary shared park space; reservations or organized facility use can carry separate requirements or charges.","cost_status":"free","under21_safe":true},{"subject_id":"rotary-east-park-free-hang","subject_type":"place","entity_name":"Rotary East Park","title":"Catch Up at Rotary East Park","subtitle":"Gather outdoors at a no-fee Fresno neighborhood park.","notes":"Pick a daylight meetup time, bring your own water and use an unreserved common area for conversation or a casual walk.","short_summary":"A purchase-free setting for a daylight conversation outdoors.","evidence_claim":"The City of Fresno lists Rotary East Park within its park system, whose official fee table assigns no entrance fee to neighborhood parks.","source_url":"https://www.fresno.gov/parks/parks-trails-facilities/","source_title":"Parks, Trails & Facilities","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"No neighborhood-park entrance fee is required. Avoid reservable facilities or paid organized uses if the outing must remain free.","cost_status":"free","under21_safe":true},{"subject_id":"melody-park-free-hang","subject_type":"place","entity_name":"Melody Park","title":"Take a Break at Melody Park","subtitle":"Meet on the grounds of a named city neighborhood park.","notes":"Bring a reusable water bottle, find an available common area and leave scheduled program spaces open for participants.","short_summary":"A simple neighborhood-park reset that requires no purchase.","evidence_claim":"The City of Fresno names Melody Park among its facilities, and the city’s parks fee table states that neighborhood parks charge no entrance fee.","source_url":"https://www.fresno.gov/parks/parks-trails-facilities/","source_title":"Parks, Trails & Facilities","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"General neighborhood-park entry has no fee. Separate classes, reservations or limited programs may have their own registration rules.","cost_status":"free","under21_safe":true},{"subject_id":"todd-beamer-park-free-hang","subject_type":"place","entity_name":"Todd Beamer Park","title":"Walk and Talk at Todd Beamer Park","subtitle":"Turn a city neighborhood park visit into a free social walk.","notes":"Set a visible meeting point, walk together through open public areas and bring sun protection during warm weather.","short_summary":"A no-purchase walk-and-talk destination in north Fresno.","evidence_claim":"Todd Beamer Park is identified by the City of Fresno, whose official parks page states that neighborhood parks have no entrance fee.","source_url":"https://www.fresno.gov/parks/parks-trails-facilities/","source_title":"Parks, Trails & Facilities","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"General entry to city neighborhood parks is free. Keep to open public areas and confirm any posted temporary restrictions upon arrival.","cost_status":"free","under21_safe":true},{"subject_id":"orchid-park-free-hang","subject_type":"place","entity_name":"Orchid Park","title":"Share a Picnic at Orchid Park","subtitle":"Bring food from home to a no-entrance-fee neighborhood park.","notes":"Use an open table or lawn without claiming exclusive space; bring everything from home and pack out the group’s waste.","short_summary":"A bring-your-own picnic option with no required transaction.","evidence_claim":"The City of Fresno identifies Orchid Park as a neighborhood park, and the city’s parks fee table says neighborhood parks have no entrance fee.","source_url":"https://www.fresno.gov/parks/parks-trails-facilities/","source_title":"Parks, Trails & Facilities","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Park entry is free, but exclusive use of the Orchid Picnic Pavilion requires a reservation. Use unreserved common space for a zero-dollar visit.","cost_status":"free","under21_safe":true},{"subject_id":"tollhouse-park-free-hang","subject_type":"place","entity_name":"Tollhouse Park","title":"Unplug at Tollhouse Park","subtitle":"Use a city neighborhood park for a screen-free group pause.","notes":"Put phones away for a short catch-up, stay in shared public areas and bring water rather than planning a purchase stop.","short_summary":"A free outdoor pause designed around conversation, not spending.","evidence_claim":"The City of Fresno identifies Tollhouse Park within its neighborhood park system, for which the official fee table lists no entrance fee.","source_url":"https://www.fresno.gov/parks/parks-trails-facilities/","source_title":"Parks, Trails & Facilities","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Neighborhood-park admission is free. Posted closures, construction notices and rules still apply, so check conditions before gathering.","cost_status":"free","under21_safe":true},{"subject_id":"el-dorado-park-free-hang","subject_type":"place","entity_name":"El Dorado Park","title":"Gather at El Dorado Park","subtitle":"Meet near campus in a city neighborhood park with no entrance fee.","notes":"Choose a well-used open area during park hours, bring water and keep the meetup small enough to avoid a reservation.","short_summary":"A close-to-campus public green-space meetup with no admission charge.","evidence_claim":"The City of Fresno lists El Dorado among its neighborhood centers and states in its official parks fee table that neighborhood parks have no entrance fee.","source_url":"https://www.fresno.gov/parks/parks-trails-facilities/","source_title":"Parks, Trails & Facilities","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"General neighborhood-park entry is free. Center programs, reserved facilities or organized activities may have separate access conditions.","cost_status":"free","under21_safe":true},{"subject_id":"einstein-park-free-hang","subject_type":"place","entity_name":"Einstein Park","title":"Plan a Group Reset at Einstein Park","subtitle":"Use a named Fresno neighborhood park for a free daytime meetup.","notes":"Agree on a short daylight window, meet in an open common area and bring any games, snacks or water from home.","short_summary":"A flexible, no-admission place for friends to decompress outdoors.","evidence_claim":"The City of Fresno identifies Einstein Park and its neighborhood center, while the official parks fee table specifies no entrance fee for neighborhood parks.","source_url":"https://www.fresno.gov/parks/parks-trails-facilities/","source_title":"Parks, Trails & Facilities","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Entrance to city neighborhood parks is free. Use ordinary public space rather than reservable facilities, and follow all posted hours and rules.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T06:44:28.716039Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9db-b458-74e3-8fd0-fa3e4a266e83.1786603353177084000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+60,256
+
+{"complete":true,"school_name":"California State University-Fresno","town_name":"Fresno","boards":[{"complete":true,"school_name":"California State University-Fresno","town_name":"Fresno","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"Ten no-admission, no-purchase activities at Fresno State and Fresno neighborhood parks, with parking or registration caveats noted where applicable.","icon":"money_off","cards":[{"subject_id":"fresno-state-phebe-conley-gallery","subject_type":"place","entity_name":"Phebe Conley Art Gallery","title":"Browse the Phebe Conley Art Gallery","subtitle":"See a rotating campus exhibition without paying admission.","notes":"Walk, bike or use transit to avoid the guest-parking charge, then meet inside during posted weekday gallery hours.","short_summary":"A free public gallery hang centered on Fresno State exhibitions.","evidence_claim":"The gallery’s official page states that the Phebe Conley Art Gallery is free and open to the public and lists its regular hours.","source_url":"https://cah.fresnostate.edu/artanddesign/exhibitions/conley.html","source_title":"Phebe Conley Art Gallery","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Admission is free and the gallery is open to the public. Regular hours are Monday-Friday, 10 a.m.-4 p.m.; it is closed weekends, holidays and during announced seasonal closures. Guest parking costs $5, so arrive without a car to keep the hang at zero dollars.","cost_status":"free","under21_safe":true},{"subject_id":"fresno-state-campus-tour","subject_type":"activity","entity_name":"Fresno State Campus Tour","title":"Take a Fresno State Campus Tour","subtitle":"Explore campus with a student ambassador on a free weekday tour.","notes":"Reserve an available weekday slot, gather your group at the designated meeting point and arrive 30 minutes early.","short_summary":"A scheduled, ambassador-led introduction to Fresno State’s campus.","evidence_claim":"Fresno State Outreach and Special Programs says its campus tours are free of charge and offers both virtual and in-person reservations.","source_url":"https://studentaffairs.fresnostate.edu/outreach/services/","source_title":"Outreach Services - Recruitment","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The tour itself is free, but advance booking and weekday availability apply. Campus parking may require payment; use a no-cost arrival method to preserve the zero-dollar plan.","cost_status":"free","under21_safe":true},{"subject_id":"cary-park-free-hang","subject_type":"place","entity_name":"Cary Park","title":"Meet Up at Cary Park","subtitle":"Use a named Fresno neighborhood park for an outdoor group break.","notes":"Bring water and a blanket, choose an open shared area and keep the meetup informal so no facility reservation is needed.","short_summary":"An easy outdoor meetup in a city neighborhood park.","evidence_claim":"The City of Fresno identifies Cary Park as a neighborhood park, and its official parks fee table states that neighborhood parks have no entrance fee.","source_url":"https://www.fresno.gov/parks/parks-trails-facilities/","source_title":"Parks, Trails & Facilities","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"City neighborhood parks have no entrance fee. Use ordinary shared park space; reservations or organized facility use can carry separate requirements or charges.","cost_status":"free","under21_safe":true},{"subject_id":"rotary-east-park-free-hang","subject_type":"place","entity_name":"Rotary East Park","title":"Catch Up at Rotary East Park","subtitle":"Gather outdoors at a no-fee Fresno neighborhood park.","notes":"Pick a daylight meetup time, bring your own water and use an unreserved common area for conversation or a casual walk.","short_summary":"A purchase-free setting for a daylight conversation outdoors.","evidence_claim":"The City of Fresno lists Rotary East Park within its park system, whose official fee table assigns no entrance fee to neighborhood parks.","source_url":"https://www.fresno.gov/parks/parks-trails-facilities/","source_title":"Parks, Trails & Facilities","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"No neighborhood-park entrance fee is required. Avoid reservable facilities or paid organized uses if the outing must remain free.","cost_status":"free","under21_safe":true},{"subject_id":"melody-park-free-hang","subject_type":"place","entity_name":"Melody Park","title":"Take a Break at Melody Park","subtitle":"Meet on the grounds of a named city neighborhood park.","notes":"Bring a reusable water bottle, find an available common area and leave scheduled program spaces open for participants.","short_summary":"A simple neighborhood-park reset that requires no purchase.","evidence_claim":"The City of Fresno names Melody Park among its facilities, and the city’s parks fee table states that neighborhood parks charge no entrance fee.","source_url":"https://www.fresno.gov/parks/parks-trails-facilities/","source_title":"Parks, Trails & Facilities","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"General neighborhood-park entry has no fee. Separate classes, reservations or limited programs may have their own registration rules.","cost_status":"free","under21_safe":true},{"subject_id":"todd-beamer-park-free-hang","subject_type":"place","entity_name":"Todd Beamer Park","title":"Walk and Talk at Todd Beamer Park","subtitle":"Turn a city neighborhood park visit into a free social walk.","notes":"Set a visible meeting point, walk together through open public areas and bring sun protection during warm weather.","short_summary":"A no-purchase walk-and-talk destination in north Fresno.","evidence_claim":"Todd Beamer Park is identified by the City of Fresno, whose official parks page states that neighborhood parks have no entrance fee.","source_url":"https://www.fresno.gov/parks/parks-trails-facilities/","source_title":"Parks, Trails & Facilities","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"General entry to city neighborhood parks is free. Keep to open public areas and confirm any posted temporary restrictions upon arrival.","cost_status":"free","under21_safe":true},{"subject_id":"orchid-park-free-hang","subject_type":"place","entity_name":"Orchid Park","title":"Share a Picnic at Orchid Park","subtitle":"Bring food from home to a no-entrance-fee neighborhood park.","notes":"Use an open table or lawn without claiming exclusive space; bring everything from home and pack out the group’s waste.","short_summary":"A bring-your-own picnic option with no required transaction.","evidence_claim":"The City of Fresno identifies Orchid Park as a neighborhood park, and the city’s parks fee table says neighborhood parks have no entrance fee.","source_url":"https://www.fresno.gov/parks/parks-trails-facilities/","source_title":"Parks, Trails & Facilities","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Park entry is free, but exclusive use of the Orchid Picnic Pavilion requires a reservation. Use unreserved common space for a zero-dollar visit.","cost_status":"free","under21_safe":true},{"subject_id":"tollhouse-park-free-hang","subject_type":"place","entity_name":"Tollhouse Park","title":"Unplug at Tollhouse Park","subtitle":"Use a city neighborhood park for a screen-free group pause.","notes":"Put phones away for a short catch-up, stay in shared public areas and bring water rather than planning a purchase stop.","short_summary":"A free outdoor pause designed around conversation, not spending.","evidence_claim":"The City of Fresno identifies Tollhouse Park within its neighborhood park system, for which the official fee table lists no entrance fee.","source_url":"https://www.fresno.gov/parks/parks-trails-facilities/","source_title":"Parks, Trails & Facilities","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Neighborhood-park admission is free. Posted closures, construction notices and rules still apply, so check conditions before gathering.","cost_status":"free","under21_safe":true},{"subject_id":"el-dorado-park-free-hang","subject_type":"place","entity_name":"El Dorado Park","title":"Gather at El Dorado Park","subtitle":"Meet near campus in a city neighborhood park with no entrance fee.","notes":"Choose a well-used open area during park hours, bring water and keep the meetup small enough to avoid a reservation.","short_summary":"A close-to-campus public green-space meetup with no admission charge.","evidence_claim":"The City of Fresno lists El Dorado among its neighborhood centers and states in its official parks fee table that neighborhood parks have no entrance fee.","source_url":"https://www.fresno.gov/parks/parks-trails-facilities/","source_title":"Parks, Trails & Facilities","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"General neighborhood-park entry is free. Center programs, reserved facilities or organized activities may have separate access conditions.","cost_status":"free","under21_safe":true},{"subject_id":"einstein-park-free-hang","subject_type":"place","entity_name":"Einstein Park","title":"Plan a Group Reset at Einstein Park","subtitle":"Use a named Fresno neighborhood park for a free daytime meetup.","notes":"Agree on a short daylight window, meet in an open common area and bring any games, snacks or water from home.","short_summary":"A flexible, no-admission place for friends to decompress outdoors.","evidence_claim":"The City of Fresno identifies Einstein Park and its neighborhood center, while the official parks fee table specifies no entrance fee for neighborhood parks.","source_url":"https://www.fresno.gov/parks/parks-trails-facilities/","source_title":"Parks, Trails & Facilities","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Entrance to city neighborhood parks is free. Use ordinary public space rather than reservable facilities, and follow all posted hours and rules.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}

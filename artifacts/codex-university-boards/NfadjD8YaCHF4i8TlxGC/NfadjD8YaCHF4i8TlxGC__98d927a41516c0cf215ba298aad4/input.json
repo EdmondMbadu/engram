@@ -1,0 +1,71 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "ZrI94Wm4kIi9ZwoSOgH6",
+    "schoolName": "Providence College",
+    "shortSchoolName": "Providence College",
+    "townName": "Providence",
+    "state": "RI",
+    "countryCode": "US",
+    "unitId": "217402",
+    "website": "https://www.providence.edu/",
+    "latitude": 41.842742,
+    "longitude": -71.437446,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/9/96/ProvidenceCollegeSeal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=providence.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Providence College Alma Mater",
+    "Done With Civ Celebration",
+    "Providence College Homecoming Weekend",
+    "Friar 5K",
+    "Late Night Madness",
+    "Intramural Championship T-Shirt",
+    "Last-Chance Mass",
+    "Friar Dom and Huxley",
+    "Senior Ring Weekend",
+    "Black and White Tassel Presentation",
+    "Harkins Hall",
+    "Ruane Café",
+    "Phillips Memorial Library",
+    "Reilly Gallery",
+    "Ryan Concert Hall",
+    "Board of Programmers",
+    "Schneider Arena",
+    "Peterson Recreation Center",
+    "St. Dominic Chapel",
+    "Friar Nite Ride",
+    "Antonio's Pizza — Thayer Street",
+    "Baja's Tex Mex Grill",
+    "Baja's Taqueria — Thayer Street",
+    "Caliente Mexican Grill — Thayer Street",
+    "Chinatown on Thayer",
+    "CILANTER",
+    "Haven Brothers Diner",
+    "Insomnia Cookies — Providence",
+    "Sicilia's Pizza",
+    "Vasilios Pizza"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

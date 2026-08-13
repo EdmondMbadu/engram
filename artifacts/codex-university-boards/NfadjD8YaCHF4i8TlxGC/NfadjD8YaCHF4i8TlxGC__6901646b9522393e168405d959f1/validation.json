@@ -1,0 +1,22 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "The official traditions page provides no publication date, so source_published_at is null for every card.",
+    "Event dates, prices and most venue details are absent from the source; access_notes preserve those limitations rather than inferring them."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.duq.edu/life-at-duquesne/traditions.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.duq.edu/life-at-duquesne/traditions.php",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 1,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

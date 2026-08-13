@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://events.francis.edu/event/student-support-services-get-to-the-sfu-library-737",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.francis.edu/event/student-support-services-get-to-the-sfu-library-737",
+      "error": ""
+    },
+    {
+      "url": "https://sfuprojects.francis.edu/apps/sfu_policies/policy_detail.asp?handbook_category=STFBK&policiy_id=538&type=handbook&user_id=",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sfuprojects.francis.edu/apps/sfu_policies/policy_detail.asp?handbook_category=STFBK&policiy_id=538&type=handbook&user_id=",
+      "error": ""
+    },
+    {
+      "url": "https://www.francis.edu/sites/default/files/uploadedfiles/Content/Campus_Life/Major_Events/Summer_Orientation_and_Academic_Registration/SOAR%20Student%20Guide%202025.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.francis.edu/sites/default/files/uploadedfiles/Content/Campus_Life/Major_Events/Summer_Orientation_and_Academic_Registration/SOAR%20Student%20Guide%202025.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.francis.edu/campus-life/explore-campus/jfk-student-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.francis.edu/campus-life/explore-campus/jfk-student-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.francis.edu/campus-life/student-success-services/commuter-life",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.francis.edu/campus-life/student-success-services/commuter-life",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

@@ -1,0 +1,88 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://union.msu.edu/node/17",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://union.msu.edu/node/17",
+      "error": ""
+    },
+    {
+      "url": "https://broadmuseum.msu.edu/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://broadmuseum.msu.edu/about/",
+      "error": ""
+    },
+    {
+      "url": "https://tour.msu.edu/locations/beaumont",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://tour.msu.edu/locations/beaumont",
+      "error": ""
+    },
+    {
+      "url": "https://museum.msu.edu/visit/visitor-information/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://museum.msu.edu/visit/visitor-information/",
+      "error": ""
+    },
+    {
+      "url": "https://lib.msu.edu/policies/public-access",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.msu.edu/policies/public-access",
+      "error": ""
+    },
+    {
+      "url": "https://bealbotanicalgarden.msu.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bealbotanicalgarden.msu.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://tour.msu.edu/locations/dairystore",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://tour.msu.edu/locations/dairystore",
+      "error": ""
+    },
+    {
+      "url": "https://recsports.msu.edu/facilities/im-east",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recsports.msu.edu/facilities/im-east",
+      "error": ""
+    },
+    {
+      "url": "https://www.cityofeastlansing.com/213/Farmers-Market",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cityofeastlansing.com/213/Farmers-Market",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "MSU Museum",
+    "W. J. Beal Botanical Garden"
+  ],
+  "sourceCount": 9,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

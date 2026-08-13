@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://news.linfield.edu/2023-opening-convocation/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.linfield.edu/2023-opening-convocation/",
+      "error": ""
+    },
+    {
+      "url": "https://www.linfield.edu/glossary/linfield-lingo.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.linfield.edu/glossary/linfield-lingo.html",
+      "error": ""
+    },
+    {
+      "url": "https://inside.linfield.edu/orientation/mcminnville/fall.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://inside.linfield.edu/orientation/mcminnville/fall.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.linfield.edu/commencement/graduate-information/senior-bench-artist.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.linfield.edu/commencement/graduate-information/senior-bench-artist.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.linfield.edu/voices/2024/spring/creating-a-memorable-student-experience.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.linfield.edu/voices/2024/spring/creating-a-memorable-student-experience.html",
+      "error": ""
+    },
+    {
+      "url": "https://news.linfield.edu/tag/luau/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.linfield.edu/tag/luau/",
+      "error": ""
+    },
+    {
+      "url": "https://www.linfield.edu/commencement/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.linfield.edu/commencement/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.linfield.edu/about/symbols.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.linfield.edu/about/symbols.html",
+      "error": ""
+    },
+    {
+      "url": "https://magazine.linfield.edu/2024/11/celebrating-a-wildcat-century/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://magazine.linfield.edu/2024/11/celebrating-a-wildcat-century/",
+      "error": ""
+    },
+    {
+      "url": "https://news.linfield.edu/linfield-homecoming-2025/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.linfield.edu/linfield-homecoming-2025/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 100,
+  "generationGrade": "A"
+}

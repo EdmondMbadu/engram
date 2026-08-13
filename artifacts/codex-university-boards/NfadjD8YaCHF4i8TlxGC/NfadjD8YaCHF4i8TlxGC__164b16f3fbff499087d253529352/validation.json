@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "The School of Music states that programs are subject to change; confirm dates, times, and venues before attending.",
+    "The 2026 Jazz Festival has concluded as of the fetch date; consult the official calendar for the next annual edition.",
+    "Coordinates were left null because exact point coordinates were not established by the cited direct sources."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.iwu.edu/art/galleries/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iwu.edu/art/galleries/",
+      "error": ""
+    },
+    {
+      "url": "https://www.iwu.edu/music/events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iwu.edu/music/events/",
+      "error": ""
+    },
+    {
+      "url": "https://www.iwu.edu/music/events/jazz-festival-program.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iwu.edu/music/events/jazz-festival-program.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.bloomingtonlibrary.org/how-do-i",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bloomingtonlibrary.org/how-do-i",
+      "error": ""
+    },
+    {
+      "url": "https://www.normalil.gov/1292/Bike-Repair",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.normalil.gov/1292/Bike-Repair",
+      "error": ""
+    },
+    {
+      "url": "https://www.normalil.gov/1820/Enjoy-Our-Amenities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.normalil.gov/1820/Enjoy-Our-Amenities",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

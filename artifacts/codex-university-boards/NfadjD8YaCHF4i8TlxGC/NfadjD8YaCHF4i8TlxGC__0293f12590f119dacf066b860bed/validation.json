@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://utsa.mydininghub.com/en/location/the-den-at-student-union",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://utsa.mydininghub.com/en/location/the-den-at-student-union",
+      "error": ""
+    },
+    {
+      "url": "https://fuegotortillagrill.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fuegotortillagrill.com/",
+      "error": ""
+    },
+    {
+      "url": "https://chickennpickle.com/location/san-antonio/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://chickennpickle.com/location/san-antonio/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.whataburger.com/tx/san-antonio/6803-n-loop-1604-w.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.whataburger.com/tx/san-antonio/6803-n-loop-1604-w.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.whataburger.com/tx/san-antonio/12808-w-interstate-10.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.whataburger.com/tx/san-antonio/12808-w-interstate-10.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/tx/san-antonio/4242-dezavala-road.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/tx/san-antonio/4242-dezavala-road.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/tx/san-antonio/7323-n-loop-1604-w.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/tx/san-antonio/7323-n-loop-1604-w.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jackinthebox.com/us/tx/san-antonio/2465-babcock-rd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jackinthebox.com/us/tx/san-antonio/2465-babcock-rd",
+      "error": ""
+    },
+    {
+      "url": "https://www.velvettaco.com/location/the-rim/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.velvettaco.com/location/the-rim/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.whataburger.com/tx/san-antonio/18303-w-interstate-10.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.whataburger.com/tx/san-antonio/18303-w-interstate-10.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

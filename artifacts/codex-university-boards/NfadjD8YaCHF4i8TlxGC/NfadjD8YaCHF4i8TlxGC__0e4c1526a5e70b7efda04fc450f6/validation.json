@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://southeastmuseumofphotography.org/faq",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://southeastmuseumofphotography.org/faq",
+      "error": ""
+    },
+    {
+      "url": "https://www.volusia.org/services/community-services/parks-recreation-and-culture/parks-and-trails/park-facilities-and-locations/historical-parks/dunlawton-sugar-mill-gardens.stml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.volusia.org/services/community-services/parks-recreation-and-culture/parks-and-trails/park-facilities-and-locations/historical-parks/dunlawton-sugar-mill-gardens.stml",
+      "error": ""
+    },
+    {
+      "url": "https://www.daytonabeach.com/blog/post/fun-free-things-to-do-in-daytona-beach/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.daytonabeach.com/blog/post/fun-free-things-to-do-in-daytona-beach/",
+      "error": ""
+    },
+    {
+      "url": "https://www.daytonabeach.com/events/festivals-and-music/bandshell-concerts/friday-night-concerts/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.daytonabeach.com/events/festivals-and-music/bandshell-concerts/friday-night-concerts/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.tacobell.com/ca/fresno/5145-n-cedar-ave.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ca/fresno/5145-n-cedar-ave.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dennys.com/ca/fresno/248721",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dennys.com/ca/fresno/248721",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/ca/fresno/1695-e-shaw-ave/7370.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/ca/fresno/1695-e-shaw-ave/7370.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jackinthebox.com/us/ca/fresno/3025-e-shaw-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jackinthebox.com/us/ca/fresno/3025-e-shaw-ave",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wingstop.com/ca/fresno/wingstop-510-fresno-ca-93710",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wingstop.com/ca/fresno/wingstop-510-fresno-ca-93710",
+      "error": ""
+    },
+    {
+      "url": "https://locations.in-n-out.com/83-Fresno",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.in-n-out.com/83-Fresno",
+      "error": ""
+    },
+    {
+      "url": "https://locations.raisingcanes.com/ca/fresno/4981-east-kings-canyon-road",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.raisingcanes.com/ca/fresno/4981-east-kings-canyon-road",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.ihop.com/en-us/ca/fresno/breakfast-3020-tulare-st-654",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.ihop.com/en-us/ca/fresno/breakfast-3020-tulare-st-654",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ca/fresno.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ca/fresno.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

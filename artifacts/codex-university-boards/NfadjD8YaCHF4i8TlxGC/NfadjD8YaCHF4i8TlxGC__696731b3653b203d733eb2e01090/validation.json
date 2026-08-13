@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.onu.edu/heterick-memorial-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/heterick-memorial-library",
+      "error": ""
+    },
+    {
+      "url": "https://www.onu.edu/news/onu-celebrates-opening-mifsud-center-student-success",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/news/onu-celebrates-opening-mifsud-center-student-success",
+      "error": ""
+    },
+    {
+      "url": "https://www.onu.edu/student-life/health-and-wellness-resources/accessibility-services",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/student-life/health-and-wellness-resources/accessibility-services",
+      "error": ""
+    },
+    {
+      "url": "https://www.onu.edu/tutoring",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/tutoring",
+      "error": ""
+    },
+    {
+      "url": "https://law.onu.edu/taggart-law-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://law.onu.edu/taggart-law-library",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

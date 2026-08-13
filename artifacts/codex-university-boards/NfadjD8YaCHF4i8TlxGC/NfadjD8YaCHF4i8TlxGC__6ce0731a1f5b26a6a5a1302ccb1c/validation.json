@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://federalhillprov.com/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://federalhillprov.com/about/",
+      "error": ""
+    },
+    {
+      "url": "https://www.goprovidence.com/listing/depasquale-square/24191/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.goprovidence.com/listing/depasquale-square/24191/",
+      "error": ""
+    },
+    {
+      "url": "https://pastichefinedesserts.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pastichefinedesserts.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.scialobakery1916.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scialobakery1916.com/",
+      "error": ""
+    },
+    {
+      "url": "https://chefhos.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://chefhos.com/",
+      "error": ""
+    },
+    {
+      "url": "https://vendaraviolistore.com/pages/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://vendaraviolistore.com/pages/contact",
+      "error": ""
+    },
+    {
+      "url": "https://www.gathercafe.com/location",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gathercafe.com/location",
+      "error": ""
+    },
+    {
+      "url": "https://waterfire.org/about-the-waterfire-arts-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://waterfire.org/about-the-waterfire-arts-center/",
+      "error": ""
+    },
+    {
+      "url": "https://thewilburygroup.org/about.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thewilburygroup.org/about.html",
+      "error": ""
+    },
+    {
+      "url": "https://thesteelyard.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.thesteelyard.org/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

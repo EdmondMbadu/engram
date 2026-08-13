@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.wendys.com/united-states/il/chicago/8302-s-ashland",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/il/chicago/8302-s-ashland",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/il/chicago/7906-s--western-avenue.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/il/chicago/7906-s--western-avenue.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/il/oak-lawn/9540-s-cicero-avenue.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/il/oak-lawn/9540-s-cicero-avenue.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/il/palos-hills/7601-w-111th-st/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/il/palos-hills/7601-w-111th-st/restaurant.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/il/alsip/11750-south-palaski-road.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/il/alsip/11750-south-palaski-road.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/il/chicago/758-west-117th-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/il/chicago/758-west-117th-street",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/il/alsip/11110-s-cicero-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/il/alsip/11110-s-cicero-ave",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/il/chicago/3516-e-118th-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/il/chicago/3516-e-118th-street",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/il/chicago/7031-south-western-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/il/chicago/7031-south-western-ave",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/il/chicago/145-s-western-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/il/chicago/145-s-western-ave",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

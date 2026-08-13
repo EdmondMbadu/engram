@@ -1,0 +1,91 @@
+{
+  "ok": false,
+  "problems": [
+    "Cross-board overlap exceeds four subjects: Fenwick Library, George W. Johnson Center, The Hub, Aquatic and Fitness Center, Skyline Fitness Center."
+  ],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://library.gmu.edu/locations/fenwick",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.gmu.edu/locations/fenwick",
+      "error": ""
+    },
+    {
+      "url": "https://library.gmu.edu/locations/fenwick/tour/lobby",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.gmu.edu/locations/fenwick/tour/lobby",
+      "error": ""
+    },
+    {
+      "url": "https://learningenvironments.gmu.edu/signature-learning-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://learningenvironments.gmu.edu/signature-learning-spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://studentcenters.gmu.edu/the-johnson-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentcenters.gmu.edu/the-johnson-center/",
+      "error": ""
+    },
+    {
+      "url": "https://studentcenters.gmu.edu/hub/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentcenters.gmu.edu/hub/",
+      "error": ""
+    },
+    {
+      "url": "https://studentcenters.gmu.edu/corner-pocket/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentcenters.gmu.edu/corner-pocket/",
+      "error": ""
+    },
+    {
+      "url": "https://studentcenters.gmu.edu/corner-pocket/event-rentals/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentcenters.gmu.edu/corner-pocket/event-rentals/",
+      "error": ""
+    },
+    {
+      "url": "https://recreation.gmu.edu/facilities/aquatic-and-fitness-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recreation.gmu.edu/facilities/aquatic-and-fitness-center/",
+      "error": ""
+    },
+    {
+      "url": "https://recreation.gmu.edu/facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recreation.gmu.edu/facilities/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Fenwick Library",
+    "George W. Johnson Center",
+    "The Hub",
+    "Aquatic and Fitness Center",
+    "Skyline Fitness Center"
+  ],
+  "sourceCount": 9,
+  "generationScore": null,
+  "generationGrade": null
+}

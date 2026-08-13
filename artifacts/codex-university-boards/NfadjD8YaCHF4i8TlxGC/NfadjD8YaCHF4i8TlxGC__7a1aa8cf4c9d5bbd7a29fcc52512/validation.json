@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://lib.msu.edu/spaces/main-library/1st-floor-east-wing/first-floor-east-wing",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.msu.edu/spaces/main-library/1st-floor-east-wing/first-floor-east-wing",
+      "error": ""
+    },
+    {
+      "url": "https://lib.msu.edu/spaces/main-library/1st-floor-west-wing/first-floor-west-wing",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.msu.edu/spaces/main-library/1st-floor-west-wing/first-floor-west-wing",
+      "error": ""
+    },
+    {
+      "url": "https://lib.msu.edu/spaces/main-library/main-floor-center/south-lobby-first-floor",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.msu.edu/spaces/main-library/main-floor-center/south-lobby-first-floor",
+      "error": ""
+    },
+    {
+      "url": "https://lib.msu.edu/spaces/main-library/1st-floor-east-wing/first-floor-meeting-room-e102",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.msu.edu/spaces/main-library/1st-floor-east-wing/first-floor-meeting-room-e102",
+      "error": ""
+    },
+    {
+      "url": "https://lib.msu.edu/spaces/main-library/2nd-floor-west-wing/second-floor-west-study-rooms-w208-w213-w218-w219",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.msu.edu/spaces/main-library/2nd-floor-west-wing/second-floor-west-study-rooms-w208-w213-w218-w219",
+      "error": ""
+    },
+    {
+      "url": "https://lib.msu.edu/spaces/main-library/3rd-floor-west-wing/third-floor-west-study-rooms-w309-w313-w317-w320",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.msu.edu/spaces/main-library/3rd-floor-west-wing/third-floor-west-study-rooms-w309-w313-w317-w320",
+      "error": ""
+    },
+    {
+      "url": "https://lib.msu.edu/accessibility/building-accessibility",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.msu.edu/accessibility/building-accessibility",
+      "error": ""
+    },
+    {
+      "url": "https://lib.msu.edu/bus/rooms",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.msu.edu/bus/rooms",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

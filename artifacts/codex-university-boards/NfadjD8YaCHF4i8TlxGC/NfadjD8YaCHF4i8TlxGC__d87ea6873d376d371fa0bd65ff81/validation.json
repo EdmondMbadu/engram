@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://palmermuseum.psu.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://palmermuseum.psu.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://museum.ems.psu.edu/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://museum.ems.psu.edu/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.outreach.psu.edu/about/programs/arboretum/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.outreach.psu.edu/about/programs/arboretum/",
+      "error": ""
+    },
+    {
+      "url": "https://www.psu.edu/news/student-affairs/story/hub-robeson-galleries-present-feral-botanica-artist-hidenori-ishii",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.psu.edu/news/student-affairs/story/hub-robeson-galleries-present-feral-botanica-artist-hidenori-ishii",
+      "error": ""
+    },
+    {
+      "url": "https://www.psu.edu/news/university-libraries/story/special-collections-library-launches-new-collaborative-exhibition",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.psu.edu/news/university-libraries/story/special-collections-library-launches-new-collaborative-exhibition",
+      "error": ""
+    },
+    {
+      "url": "https://sustainability.psu.edu/campus-efforts/by-the-numbers/rankings-ratings/sdg-11/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sustainability.psu.edu/campus-efforts/by-the-numbers/rankings-ratings/sdg-11/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

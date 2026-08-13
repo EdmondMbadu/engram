@@ -1,0 +1,70 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "dr8k6GdHEgWS5HN6cppq",
+    "schoolName": "University of North Carolina School of the Arts",
+    "shortSchoolName": "University of North Carolina School of the Arts",
+    "townName": "Winston Salem",
+    "state": "NC",
+    "countryCode": "US",
+    "unitId": "199184",
+    "website": "https://www.uncsa.edu/",
+    "latitude": 36.076183,
+    "longitude": -80.235672,
+    "heroUrl": "https://www.uncsa.edu/img/social/uncsa-default-social.png",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=uncsa.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "UNCSA The Nutcracker",
+    "Nutcracker Campus Night",
+    "Nutcracker Party Scene",
+    "UNCSA Nutcracker Orchestra",
+    "Nutcracker Snow Sweep",
+    "UNCSA Homecoming Parade",
+    "Beaux Arts",
+    "UNCSA Cantata Singers Holiday Concert",
+    "Mozart Birthday Concert",
+    "UNCSA Associates Cookie-baking",
+    "Hanes Student Commons",
+    "Eisenberg Social Hall",
+    "The Well and TV Lounge",
+    "Hanes Student Commons Computer Lab",
+    "Library and Learning Commons",
+    "Fitness Center",
+    "Artist Village",
+    "Connector Building",
+    "Daniels Plaza",
+    "Crawford Hall",
+    "Wendy's — 2735 Reynolda Rd",
+    "Wendy's — 2218 Cloverdale Avenue",
+    "Wendy's — 600 Jonestown Road",
+    "Wendy's — 3007 Waughtown St",
+    "Wendy's — 3182 Peters Creek Parkway",
+    "Wendy's — 538 Akron Dr",
+    "Domino's Pizza — 450 Knollwood St",
+    "Domino's Pizza — 630 W. Fourth St",
+    "Domino's Pizza — 4890 Country Club Rd",
+    "IHOP — 1295 Silas Creek Pkwy"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://news.sfsu.edu/news/gatorfest-2024",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.sfsu.edu/news/gatorfest-2024",
+      "error": ""
+    },
+    {
+      "url": "https://news.sfsu.edu/news/gatorfest-kicks-new-academic-year-dozens-campus-events",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.sfsu.edu/news/gatorfest-kicks-new-academic-year-dozens-campus-events",
+      "error": ""
+    },
+    {
+      "url": "https://campusrec.sfsu.edu/SPevents",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusrec.sfsu.edu/SPevents",
+      "error": ""
+    },
+    {
+      "url": "https://news.sfsu.edu/news/sfsu-climate-hq-earth-week-2025",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.sfsu.edu/news/sfsu-climate-hq-earth-week-2025",
+      "error": ""
+    },
+    {
+      "url": "https://campusmemo.sfsu.edu/may-8-2023",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusmemo.sfsu.edu/may-8-2023",
+      "error": ""
+    },
+    {
+      "url": "https://chss.sfsu.edu/tags/tags/students",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://chss.sfsu.edu/tags/tags/students",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.hayward-ca.gov/index.php/public-library/using-library/about-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hayward-ca.gov/public-library/using-library/about-library",
+      "error": ""
+    },
+    {
+      "url": "https://hayward-ca.gov/residents/arts-leisure/heritage-plaza-public-art",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://hayward-ca.gov/residents/arts-leisure/heritage-plaza-public-art",
+      "error": ""
+    },
+    {
+      "url": "https://www.hayward-ca.gov/your-government/organizational-chart-visiting-city-hall",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hayward-ca.gov/your-government/organizational-chart-visiting-city-hall",
+      "error": ""
+    },
+    {
+      "url": "https://sungallery.org/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sungallery.org/about/",
+      "error": ""
+    },
+    {
+      "url": "https://haywardrec.org/facilities/facility/details/japanese-gardens-100",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://haywardrec.org/facilities/facility/details/japanese-gardens-100",
+      "error": ""
+    },
+    {
+      "url": "https://www.haywardareahistory.org/hahs-museum-of-history-culture",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.haywardareahistory.org/hahs-museum-of-history-culture",
+      "error": ""
+    },
+    {
+      "url": "https://www.haywardrec.org/1991/Nature-Centers",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.haywardrec.org/1991/Nature-Centers",
+      "error": ""
+    },
+    {
+      "url": "https://haywardrec.org/355/Theater-Arts",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://haywardrec.org/355/Theater-Arts",
+      "error": ""
+    },
+    {
+      "url": "https://haywardrec.org/Facilities/Facility/Details/Meek-Park-69",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://haywardrec.org/Facilities/Facility/Details/Meek-Park-69",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

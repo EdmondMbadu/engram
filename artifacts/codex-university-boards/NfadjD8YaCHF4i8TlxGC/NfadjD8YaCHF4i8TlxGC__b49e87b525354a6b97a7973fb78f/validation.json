@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://studentaffairs.lmu.edu/activities/campusactivitiesandentertainment/venuesandhangouts/lionsdencoffeeshop/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentaffairs.lmu.edu/activities/campusactivitiesandentertainment/venuesandhangouts/lionsdencoffeeshop/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/ca/los-angeles/7360-la-tijera-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/ca/los-angeles/7360-la-tijera-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://locations.in-n-out.com/117",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.in-n-out.com/117",
+      "error": ""
+    },
+    {
+      "url": "https://locations.in-n-out.com/140",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.in-n-out.com/140",
+      "error": ""
+    },
+    {
+      "url": "https://locations.in-n-out.com/166",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.in-n-out.com/166",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jackinthebox.com/us/ca/los-angeles/12403-washington-pl",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jackinthebox.com/us/ca/los-angeles/12403-washington-pl",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jackinthebox.com/us/ca/culver-city/5400-sepulveda-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jackinthebox.com/us/ca/culver-city/5400-sepulveda-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jackinthebox.com/us/ca/los-angeles/10701-venice-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jackinthebox.com/us/ca/los-angeles/10701-venice-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jackinthebox.com/us/ca/santa-monica/2025-lincoln-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jackinthebox.com/us/ca/santa-monica/2025-lincoln-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jackinthebox.com/us/ca/los-angeles/8605-w-pico-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jackinthebox.com/us/ca/los-angeles/8605-w-pico-blvd",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

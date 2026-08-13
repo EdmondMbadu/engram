@@ -1,0 +1,288 @@
+Reading additional input from stdin...
+2026-08-13T07:10:21.815462Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f4-ed8e-7910-9d09-397d0dce174e.1786605006222589000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:10:21.818645Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:10:21.823696Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9f5-2a1f-7422-a0df-f82edc054a6f
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"VHBVCMMU6pZ4D1Znbjgl","schoolName":"Fordham University","shortSchoolName":"Fordham University","townName":"Bronx","state":"NY","countryCode":"US","website":"https://www.fordham.edu/","latitude":40.859354,"longitude":-73.882705},"templates":[{"id":"college-first-weekend","version":"1.0","titlePattern":"Your First Weekend at {school}, Shared as Cards","editorialBrief":"Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.","researchQueries":["new student orientation campus guide","first year student campus activities","weekend near campus students"],"count":10,"icon":"schedule","primarySubjectType":"sequence_stop","allowedSubjectTypes":["sequence_stop","place","activity"],"freshnessDays":180,"exactTitle":"Your First Weekend at Fordham University, Shared as Cards"}]}
+2026-08-13T07:10:21.874400Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f4-ed8a-7fb0-bf9c-5caa8638669f.1786605006218399000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Fordham University",
+  "town_name": "Bronx",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Fordham University",
+      "town_name": "Bronx",
+      "template_id": "college-first-weekend",
+      "title": "Your First Weekend at Fordham University, Shared as Cards",
+      "description": "",
+      "icon": "schedule",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "Researching current official sources",
+          "subtitle": "",
+          "notes": "I’m verifying a coherent ten-stop weekend with direct evidence for access, activities, and named destinations.",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "https://www.fordham.edu/",
+          "source_title": "Fordham University",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     
+      ,
+      {
+        "subject_id": "pending-02",
+        "subject_type": "sequence_stop",
+        "entity_name": "Pending research",
+        "title": "Pending research",
+        "subtitle": "",
+        "notes": "Current official sources are being checked before this card is finalized.",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "https://www.fordham.edu/",
+        "source_title": "Fordham University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "pending-03",
+        "subject_type": "sequence_stop",
+        "entity_name": "Pending research",
+        "title": "Pending research",
+        "subtitle": "",
+        "notes": "Current official sources are being checked before this card is finalized.",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "https://www.fordham.edu/",
+        "source_title": "Fordham University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "pending-04",
+        "subject_type": "sequence_stop",
+        "entity_name": "Pending research",
+        "title": "Pending research",
+        "subtitle": "",
+        "notes": "Current official sources are being checked before this card is finalized.",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "https://www.fordham.edu/",
+        "source_title": "Fordham University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "pending-05",
+        "subject_type": "sequence_stop",
+        "entity_name": "Pending research",
+        "title": "Pending research",
+        "subtitle": "",
+        "notes": "Current official sources are being checked before this card is finalized.",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "https://www.fordham.edu/",
+        "source_title": "Fordham University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "pending-06",
+        "subject_type": "sequence_stop",
+        "entity_name": "Pending research",
+        "title": "Pending research",
+        "subtitle": "",
+        "notes": "Current official sources are being checked before this card is finalized.",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "https://www.fordham.edu/",
+        "source_title": "Fordham University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "pending-07",
+        "subject_type": "sequence_stop",
+        "entity_name": "Pending research",
+        "title": "Pending research",
+        "subtitle": "",
+        "notes": "Current official sources are being checked before this card is finalized.",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "https://www.fordham.edu/",
+        "source_title": "Fordham University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "pending-08",
+        "subject_type": "sequence_stop",
+        "entity_name": "Pending research",
+        "title": "Pending research",
+        "subtitle": "",
+        "notes": "Current official sources are being checked before this card is finalized.",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "https://www.fordham.edu/",
+        "source_title": "Fordham University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "pending-09",
+        "subject_type": "sequence_stop",
+        "entity_name": "Pending research",
+        "title": "Pending research",
+        "subtitle": "",
+        "notes": "Current official sources are being checked before this card is finalized.",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "https://www.fordham.edu/",
+        "source_title": "Fordham University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "pending-10",
+        "subject_type": "sequence_stop",
+        "entity_name": "Pending research",
+        "title": "Pending research",
+        "subtitle": "",
+        "notes": "Current official sources are being checked before this card is finalized.",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "https://www.fordham.edu/",
+        "source_title": "Fordham University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:fordham.edu Rose Hill campus student life McShane Campus Center official ...
+web search: 
+web search: site:fordham.edu Rose Hill Keating Hall official campus tour ...
+web search: 
+web search: Arthur Avenue Retail Market official hours Bronx ...
+web search: 
+web search: Edgar Allan Poe Cottage official Bronx County Historical Society visit hours ...
+codex
+{"complete":true,"school_name":"Fordham University","town_name":"Bronx","boards":[{"complete":true,"school_name":"Fordham University","town_name":"Bronx","template_id":"college-first-weekend","title":"Your First Weekend at Fordham University, Shared as Cards","description":"A Friday-to-Sunday Rose Hill sequence mixing useful campus orientation, low-pressure recreation, nearby Bronx culture, and a Sunday reset.","icon":"schedule","cards":[{"subject_id":"fordham-mcshane-information-desk","subject_type":"sequence_stop","entity_name":"McShane Campus Center Information Desk","title":"Start at the Information Desk","subtitle":"Friday afternoon · McShane Campus Center","notes":"Stop at room 270 first, ask what is happening that weekend, and note the desk as your future source for campus directions and activities.","short_summary":"Begin with a staffed campus reference point instead of navigating the first evening from memory.","evidence_claim":"Fordham states that the McShane Campus Center information desk is staffed seven days a week from 9 a.m. to 11 p.m. and provides information about campus activities and events.","source_url":"https://www.fordham.edu/student-life/student-involvement/office-for-student-involvement-at-rose-hill/the-mcshane-campus-center/services/","source_title":"Services in the McShane Campus Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The information desk is in McShane Campus Center room 270 and is normally open daily from 9 a.m. to 11 p.m.; holiday hours may vary.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fordham-pickett-recreation-area","subject_type":"sequence_stop","entity_name":"Pickett Recreation Area","title":"Break the Ice over Pool","subtitle":"Friday evening · McShane first floor","notes":"Invite a roommate or hallmate to the first-floor recreation area for a short pool session that leaves room for conversation and later plans.","short_summary":"Use an easy, contained activity to turn introductions into an actual shared first-night plan.","evidence_claim":"Fordham identifies the Pickett Recreation Area as a named first-floor McShane Campus Center space and documents students playing pool there.","source_url":"https://www.fordham.edu/about/campuses/rose-hill-campus/mcshane-campus-center/featured-spaces/relax-and-recharge/","source_title":"Relax and Recharge","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on the first floor of McShane Campus Center; confirm building access locally if visiting during a holiday or academic break.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fordham-walsh-library","subject_type":"sequence_stop","entity_name":"William D. Walsh Family Library","title":"Learn Your Late Study Anchor","subtitle":"Friday night · Walsh Library","notes":"Walk through before closing, locate a comfortable study area, and save the library-hours page so the building is familiar before coursework accelerates.","short_summary":"A brief first-weekend visit makes the main Rose Hill library easier to use when assignments arrive.","evidence_claim":"Fordham identifies Walsh Library as its Rose Hill library and lists regular-session Friday hours of 8:30 a.m. to 9 p.m.","source_url":"https://www.fordham.edu/resources/libraries/about-us/locations-and-hours/","source_title":"Locations and Hours","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Regular-session Friday hours are 8:30 a.m.–9 p.m. Hours differ in summer and intersession and may change, so check the linked page before leaving.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fordham-edgar-allan-poe-cottage","subject_type":"sequence_stop","entity_name":"Edgar Allan Poe Cottage","title":"Step into Fordham’s Literary Past","subtitle":"Saturday morning · Poe Park","notes":"Book ahead when possible, arrive near opening, and look for the exhibit connecting Poe’s final Bronx home with the former Village of Fordham.","short_summary":"Start Saturday with a compact historic-house visit tied directly to the surrounding Fordham neighborhood.","evidence_claim":"The Bronx County Historical Society identifies Poe Cottage as the writer’s final home, lists Saturday hours of 10 a.m. to 4 p.m., and documents an exhibit about Poe at Fordham.","source_url":"https://bronxhistoricalsociety.org/poe-cottage","source_title":"Edgar Allan Poe Cottage","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Saturday 10 a.m.–4 p.m. and Sunday 1–5 p.m. Advance booking is encouraged, while walk-up admission is also offered.","cost_status":"free","under21_safe":true},{"subject_id":"fordham-arthur-avenue-retail-market","subject_type":"sequence_stop","entity_name":"Arthur Avenue Retail Market","title":"Browse the Arthur Avenue Market","subtitle":"Saturday midday · Belmont","notes":"Walk the indoor market, compare the independent vendor counters, and decide on food only after checking each stall’s posted menu and operating hours.","short_summary":"The neighborhood market offers a flexible midday introduction to Belmont without requiring a fixed restaurant plan.","evidence_claim":"The Belmont Business Improvement District identifies Arthur Avenue Retail Market at 2344 Arthur Avenue and notes that its vendors maintain their own operating hours.","source_url":"https://bronxlittleitaly.com/merchants/institutions/arthur-avenue-retail-market/","source_title":"Arthur Avenue Retail Market","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The market page lists daily building hours of 8 a.m.–8 p.m., but individual vendor schedules vary; verify the desired counter before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"fordham-new-york-botanical-garden","subject_type":"sequence_stop","entity_name":"New York Botanical Garden","title":"Spend the Afternoon among Living Collections","subtitle":"Saturday afternoon · Southern Boulevard","notes":"Reserve the appropriate ticket, use the official map to choose a few collections, and leave buffer time because the grounds cover 250 acres.","short_summary":"A neighboring botanical institution gives the weekend an outdoor, visually rich change of pace.","evidence_claim":"NYBG states that the Garden is open from 10 a.m. to 6 p.m. Tuesday through Sunday and that visitors need a ticket for entry.","source_url":"https://www.nybg.org/visit/admission","source_title":"Tickets & Hours","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Tuesday–Sunday, 10 a.m.–6 p.m., plus select Monday holidays. Tickets are required, and special events can cause early area closures.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"fordham-rose-hill-marketplace","subject_type":"sequence_stop","entity_name":"Rose Hill Marketplace","title":"Regroup over Dinner on Campus","subtitle":"Saturday evening · McShane Campus Center","notes":"Meet back at the Marketplace, scan the stations before choosing, and use the shared seating to compare weekend discoveries and make Sunday plans.","short_summary":"Return to a central campus dining room so the group can reconnect without coordinating another trip.","evidence_claim":"Fordham describes the Rose Hill Marketplace in McShane Campus Center as an all-you-care-to-eat facility with multiple stations, including vegan and allergen-friendly options.","source_url":"https://www.fordham.edu/about/campuses/rose-hill-campus/mcshane-campus-center/spotlight-on-dining/","source_title":"Spotlight on Dining","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located inside McShane Campus Center. Consult Fordham Campus Dining for the current service schedule before planning dinner.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"fordham-university-church","subject_type":"sequence_stop","entity_name":"University Church","title":"Choose a Quiet Sunday-Morning Reset","subtitle":"Sunday morning · Rose Hill campus","notes":"Attend the publicized service if it fits your practice, or simply identify the church and nearby sacred spaces for future reflection and community events.","short_summary":"The campus church supplies a calm, optional pause before the weekend’s final outing.","evidence_claim":"Fordham’s current summer schedule lists Sunday Mass at 10 a.m. in University Church and identifies the church as a Rose Hill sacred space.","source_url":"https://www.fordham.edu/about/living-the-mission/campus-ministry/calendar--events/catholic-mass-schedule/","source_title":"Catholic Mass Schedule","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The currently posted summer schedule lists Sunday Mass at 10 a.m. Check the page for the academic-year schedule or seasonal changes.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fordham-bronx-zoo","subject_type":"sequence_stop","entity_name":"Bronx Zoo","title":"Use Your Fordham ID at the Zoo","subtitle":"Sunday midday · Southern Boulevard","notes":"Bring your valid Fordham ID, request the undergraduate Limited Admission benefit at the entrance, and choose a few exhibits rather than rushing the grounds.","short_summary":"Fordham students can turn Sunday into a nearby wildlife outing using the zoo’s documented college benefit.","evidence_claim":"The Bronx Zoo offers complimentary Limited Admission on a walk-up basis to undergraduates attending a New York City college with valid college identification.","source_url":"https://bronxzoo.com/plan-your-visit/faqs","source_title":"FAQs - Bronx Zoo","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open at 10 a.m.; seasonal closing times vary. Fordham undergraduates should bring valid college ID and redeem complimentary Limited Admission at the entrance.","cost_status":"free","under21_safe":true},{"subject_id":"fordham-ram-fit-center","subject_type":"sequence_stop","entity_name":"Ram Fit Center","title":"Close with a Light Campus Workout","subtitle":"Sunday evening · McShane Campus Center","notes":"Finish with an easy workout, inspect the studio and equipment layout, and check the posted class schedule before committing to a future routine.","short_summary":"End the sequence back on campus with a practical introduction to Fordham’s student fitness facility.","evidence_claim":"Fordham identifies the Ram Fit Center inside McShane Campus Center as a Rose Hill fitness facility offering wellness programming and group classes.","source_url":"https://www.fordham.edu/student-life/safety-health-and-wellness/fitness-and-recreation/","source_title":"Fitness and Recreation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The facility serves Fordham students, staff, faculty, and alumni. Check the linked schedule for current Sunday access and group-class times.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:13:03.716521Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9f5-2a1f-7422-a0df-f82edc054a6f.1786605021728169000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+43,788
+
+{"complete":true,"school_name":"Fordham University","town_name":"Bronx","boards":[{"complete":true,"school_name":"Fordham University","town_name":"Bronx","template_id":"college-first-weekend","title":"Your First Weekend at Fordham University, Shared as Cards","description":"A Friday-to-Sunday Rose Hill sequence mixing useful campus orientation, low-pressure recreation, nearby Bronx culture, and a Sunday reset.","icon":"schedule","cards":[{"subject_id":"fordham-mcshane-information-desk","subject_type":"sequence_stop","entity_name":"McShane Campus Center Information Desk","title":"Start at the Information Desk","subtitle":"Friday afternoon · McShane Campus Center","notes":"Stop at room 270 first, ask what is happening that weekend, and note the desk as your future source for campus directions and activities.","short_summary":"Begin with a staffed campus reference point instead of navigating the first evening from memory.","evidence_claim":"Fordham states that the McShane Campus Center information desk is staffed seven days a week from 9 a.m. to 11 p.m. and provides information about campus activities and events.","source_url":"https://www.fordham.edu/student-life/student-involvement/office-for-student-involvement-at-rose-hill/the-mcshane-campus-center/services/","source_title":"Services in the McShane Campus Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The information desk is in McShane Campus Center room 270 and is normally open daily from 9 a.m. to 11 p.m.; holiday hours may vary.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fordham-pickett-recreation-area","subject_type":"sequence_stop","entity_name":"Pickett Recreation Area","title":"Break the Ice over Pool","subtitle":"Friday evening · McShane first floor","notes":"Invite a roommate or hallmate to the first-floor recreation area for a short pool session that leaves room for conversation and later plans.","short_summary":"Use an easy, contained activity to turn introductions into an actual shared first-night plan.","evidence_claim":"Fordham identifies the Pickett Recreation Area as a named first-floor McShane Campus Center space and documents students playing pool there.","source_url":"https://www.fordham.edu/about/campuses/rose-hill-campus/mcshane-campus-center/featured-spaces/relax-and-recharge/","source_title":"Relax and Recharge","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on the first floor of McShane Campus Center; confirm building access locally if visiting during a holiday or academic break.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fordham-walsh-library","subject_type":"sequence_stop","entity_name":"William D. Walsh Family Library","title":"Learn Your Late Study Anchor","subtitle":"Friday night · Walsh Library","notes":"Walk through before closing, locate a comfortable study area, and save the library-hours page so the building is familiar before coursework accelerates.","short_summary":"A brief first-weekend visit makes the main Rose Hill library easier to use when assignments arrive.","evidence_claim":"Fordham identifies Walsh Library as its Rose Hill library and lists regular-session Friday hours of 8:30 a.m. to 9 p.m.","source_url":"https://www.fordham.edu/resources/libraries/about-us/locations-and-hours/","source_title":"Locations and Hours","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Regular-session Friday hours are 8:30 a.m.–9 p.m. Hours differ in summer and intersession and may change, so check the linked page before leaving.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fordham-edgar-allan-poe-cottage","subject_type":"sequence_stop","entity_name":"Edgar Allan Poe Cottage","title":"Step into Fordham’s Literary Past","subtitle":"Saturday morning · Poe Park","notes":"Book ahead when possible, arrive near opening, and look for the exhibit connecting Poe’s final Bronx home with the former Village of Fordham.","short_summary":"Start Saturday with a compact historic-house visit tied directly to the surrounding Fordham neighborhood.","evidence_claim":"The Bronx County Historical Society identifies Poe Cottage as the writer’s final home, lists Saturday hours of 10 a.m. to 4 p.m., and documents an exhibit about Poe at Fordham.","source_url":"https://bronxhistoricalsociety.org/poe-cottage","source_title":"Edgar Allan Poe Cottage","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Saturday 10 a.m.–4 p.m. and Sunday 1–5 p.m. Advance booking is encouraged, while walk-up admission is also offered.","cost_status":"free","under21_safe":true},{"subject_id":"fordham-arthur-avenue-retail-market","subject_type":"sequence_stop","entity_name":"Arthur Avenue Retail Market","title":"Browse the Arthur Avenue Market","subtitle":"Saturday midday · Belmont","notes":"Walk the indoor market, compare the independent vendor counters, and decide on food only after checking each stall’s posted menu and operating hours.","short_summary":"The neighborhood market offers a flexible midday introduction to Belmont without requiring a fixed restaurant plan.","evidence_claim":"The Belmont Business Improvement District identifies Arthur Avenue Retail Market at 2344 Arthur Avenue and notes that its vendors maintain their own operating hours.","source_url":"https://bronxlittleitaly.com/merchants/institutions/arthur-avenue-retail-market/","source_title":"Arthur Avenue Retail Market","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The market page lists daily building hours of 8 a.m.–8 p.m., but individual vendor schedules vary; verify the desired counter before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"fordham-new-york-botanical-garden","subject_type":"sequence_stop","entity_name":"New York Botanical Garden","title":"Spend the Afternoon among Living Collections","subtitle":"Saturday afternoon · Southern Boulevard","notes":"Reserve the appropriate ticket, use the official map to choose a few collections, and leave buffer time because the grounds cover 250 acres.","short_summary":"A neighboring botanical institution gives the weekend an outdoor, visually rich change of pace.","evidence_claim":"NYBG states that the Garden is open from 10 a.m. to 6 p.m. Tuesday through Sunday and that visitors need a ticket for entry.","source_url":"https://www.nybg.org/visit/admission","source_title":"Tickets & Hours","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Tuesday–Sunday, 10 a.m.–6 p.m., plus select Monday holidays. Tickets are required, and special events can cause early area closures.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"fordham-rose-hill-marketplace","subject_type":"sequence_stop","entity_name":"Rose Hill Marketplace","title":"Regroup over Dinner on Campus","subtitle":"Saturday evening · McShane Campus Center","notes":"Meet back at the Marketplace, scan the stations before choosing, and use the shared seating to compare weekend discoveries and make Sunday plans.","short_summary":"Return to a central campus dining room so the group can reconnect without coordinating another trip.","evidence_claim":"Fordham describes the Rose Hill Marketplace in McShane Campus Center as an all-you-care-to-eat facility with multiple stations, including vegan and allergen-friendly options.","source_url":"https://www.fordham.edu/about/campuses/rose-hill-campus/mcshane-campus-center/spotlight-on-dining/","source_title":"Spotlight on Dining","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located inside McShane Campus Center. Consult Fordham Campus Dining for the current service schedule before planning dinner.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"fordham-university-church","subject_type":"sequence_stop","entity_name":"University Church","title":"Choose a Quiet Sunday-Morning Reset","subtitle":"Sunday morning · Rose Hill campus","notes":"Attend the publicized service if it fits your practice, or simply identify the church and nearby sacred spaces for future reflection and community events.","short_summary":"The campus church supplies a calm, optional pause before the weekend’s final outing.","evidence_claim":"Fordham’s current summer schedule lists Sunday Mass at 10 a.m. in University Church and identifies the church as a Rose Hill sacred space.","source_url":"https://www.fordham.edu/about/living-the-mission/campus-ministry/calendar--events/catholic-mass-schedule/","source_title":"Catholic Mass Schedule","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The currently posted summer schedule lists Sunday Mass at 10 a.m. Check the page for the academic-year schedule or seasonal changes.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fordham-bronx-zoo","subject_type":"sequence_stop","entity_name":"Bronx Zoo","title":"Use Your Fordham ID at the Zoo","subtitle":"Sunday midday · Southern Boulevard","notes":"Bring your valid Fordham ID, request the undergraduate Limited Admission benefit at the entrance, and choose a few exhibits rather than rushing the grounds.","short_summary":"Fordham students can turn Sunday into a nearby wildlife outing using the zoo’s documented college benefit.","evidence_claim":"The Bronx Zoo offers complimentary Limited Admission on a walk-up basis to undergraduates attending a New York City college with valid college identification.","source_url":"https://bronxzoo.com/plan-your-visit/faqs","source_title":"FAQs - Bronx Zoo","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open at 10 a.m.; seasonal closing times vary. Fordham undergraduates should bring valid college ID and redeem complimentary Limited Admission at the entrance.","cost_status":"free","under21_safe":true},{"subject_id":"fordham-ram-fit-center","subject_type":"sequence_stop","entity_name":"Ram Fit Center","title":"Close with a Light Campus Workout","subtitle":"Sunday evening · McShane Campus Center","notes":"Finish with an easy workout, inspect the studio and equipment layout, and check the posted class schedule before committing to a future routine.","short_summary":"End the sequence back on campus with a practical introduction to Fordham’s student fitness facility.","evidence_claim":"Fordham identifies the Ram Fit Center inside McShane Campus Center as a Rose Hill fitness facility offering wellness programming and group classes.","source_url":"https://www.fordham.edu/student-life/safety-health-and-wellness/fitness-and-recreation/","source_title":"Fitness and Recreation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The facility serves Fordham students, staff, faculty, and alumni. Check the linked schedule for current Sunday access and group-class times.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

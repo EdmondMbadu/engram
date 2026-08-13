@@ -1,0 +1,152 @@
+{
+  "target": "PT1qkKGtyOUAKLQulK07",
+  "schoolName": "Georgetown University",
+  "generatedAt": "2026-08-13T07:24:21.616Z",
+  "mode": "free-related-campus-distinct",
+  "images": [
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FPT1qkKGtyOUAKLQulK07%2F01-5ebcd11055d39174.jpg?alt=media&token=e7392153-50b8-4eb3-85ee-6c47e5f45599",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Bertis_Downs_2010.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY 2.0",
+      "imageLicense": "CC BY 2.0",
+      "imageTitle": "Bertis Downs 2010.jpg",
+      "imageFingerprint": "5ebcd11055d3917470d7187ce18c5625a039d7adcf16c492be67aa714a6b4fd2",
+      "imageWidth": 896,
+      "imageHeight": 1024,
+      "imageResolvedAt": "2026-08-13T07:24:21.249Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FPT1qkKGtyOUAKLQulK07%2F02-f7c45ceb3fac23b7.jpg?alt=media&token=8f2b4838-9757-4b1d-ba4d-8d32943fe341",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Georgetown_University_tree.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY 2.0",
+      "imageLicense": "CC BY 2.0",
+      "imageTitle": "Georgetown University tree.jpg",
+      "imageFingerprint": "f7c45ceb3fac23b723a4fa659d313b907867ceb2541d7dbf2cb6218428d26c6d",
+      "imageWidth": 1920,
+      "imageHeight": 1920,
+      "imageResolvedAt": "2026-08-13T07:24:21.329Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FPT1qkKGtyOUAKLQulK07%2F03-0434f712e246a44a.jpg?alt=media&token=5075db10-48ed-4555-a62c-15a34c78e49e",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Healy_Hall_Entrance.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 3.0",
+      "imageLicense": "CC BY-SA 3.0",
+      "imageTitle": "Healy Hall Entrance.jpg",
+      "imageFingerprint": "0434f712e246a44a25e4c3a5a40226c87c7e91e2285d374bac8076f3b42d6601",
+      "imageWidth": 1024,
+      "imageHeight": 714,
+      "imageResolvedAt": "2026-08-13T07:24:21.334Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FPT1qkKGtyOUAKLQulK07%2F04-8f1c71707a50ff42.jpg?alt=media&token=01c36601-02ad-4972-a2a6-59b8c23cf85b",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Healy_Hall_Loggia.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 3.0",
+      "imageLicense": "CC BY-SA 3.0",
+      "imageTitle": "Healy Hall Loggia.jpg",
+      "imageFingerprint": "8f1c71707a50ff42c9f995c2ad5d6ef48569f6b5dbebe523c7f231ca0a81cdf6",
+      "imageWidth": 668,
+      "imageHeight": 1024,
+      "imageResolvedAt": "2026-08-13T07:24:21.264Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FPT1qkKGtyOUAKLQulK07%2F05-939225f27b7f12b6.jpg?alt=media&token=3cf36d06-4d71-4cb4-ba38-6397cd62a856",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Healy_Hall_-_Georgetown_University.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 3.0",
+      "imageLicense": "CC BY-SA 3.0",
+      "imageTitle": "Healy Hall - Georgetown University.jpg",
+      "imageFingerprint": "939225f27b7f12b64d7182d3efaf6f5ec92d85b5541652b6087ee47135c1bb0c",
+      "imageWidth": 1024,
+      "imageHeight": 638,
+      "imageResolvedAt": "2026-08-13T07:24:21.272Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FPT1qkKGtyOUAKLQulK07%2F06-4f2bfdc92453be38.jpg?alt=media&token=4549481c-5739-498e-b5cc-97f5ef20128c",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Georgetown_University_School_of_Medicine_%26_School_of_Dentistry_(53820913143).jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY 2.0",
+      "imageLicense": "CC BY 2.0",
+      "imageTitle": "Georgetown University School of Medicine & School of Dentistry (53820913143).jpg",
+      "imageFingerprint": "4f2bfdc92453be38520acb63c42bd1385354eacc2c144ad83e2d26893bbf5ecd",
+      "imageWidth": 1920,
+      "imageHeight": 1440,
+      "imageResolvedAt": "2026-08-13T07:24:21.309Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FPT1qkKGtyOUAKLQulK07%2F07-3db1f34811373e61.jpg?alt=media&token=039dddf9-7253-4c60-a289-81643be62cd4",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:GULC_south_quad.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 3.0",
+      "imageLicense": "CC BY-SA 3.0",
+      "imageTitle": "GULC south quad.jpg",
+      "imageFingerprint": "3db1f34811373e614d710187a3d492e77f3f57b188a1dc22821f1183495adc7c",
+      "imageWidth": 700,
+      "imageHeight": 525,
+      "imageResolvedAt": "2026-08-13T07:24:21.388Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FPT1qkKGtyOUAKLQulK07%2F08-de9b27460edf9720.jpg?alt=media&token=eb7f5e13-f89d-4a61-8ffb-fd5934cdf957",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:GULC_sign.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 3.0",
+      "imageLicense": "CC BY-SA 3.0",
+      "imageTitle": "GULC sign.jpg",
+      "imageFingerprint": "de9b27460edf97202626c599e945c2e98baa7fb359225c9fc59769c9dd1a02e1",
+      "imageWidth": 700,
+      "imageHeight": 497,
+      "imageResolvedAt": "2026-08-13T07:24:21.417Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FPT1qkKGtyOUAKLQulK07%2F09-3cd0047217e03b0a.jpg?alt=media&token=35449a83-dd2c-4a57-8f72-048cb6ba438a",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Costumed_Jack_the_Bulldog.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY 3.0",
+      "imageLicense": "CC BY 3.0",
+      "imageTitle": "Costumed Jack the Bulldog.jpg",
+      "imageFingerprint": "3cd0047217e03b0a4a6747856e9aca6e7ee711598efc662ea101c16c2b4b9391",
+      "imageWidth": 1716,
+      "imageHeight": 2724,
+      "imageResolvedAt": "2026-08-13T07:24:21.616Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FPT1qkKGtyOUAKLQulK07%2F10-9fe9246c2a1199b0.jpg?alt=media&token=5578a2cc-e7e0-4ed3-91f1-99464f9aaf57",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Georgetown_University,_Washington,_D.C.4a11813v.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · Public domain",
+      "imageLicense": "Public domain",
+      "imageTitle": "Georgetown University, Washington, D.C.4a11813v.jpg",
+      "imageFingerprint": "9fe9246c2a1199b0ce05b3c46bda83711de2021b49ba776b5edc27746e7dd58f",
+      "imageWidth": 893,
+      "imageHeight": 693,
+      "imageResolvedAt": "2026-08-13T07:24:21.495Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FPT1qkKGtyOUAKLQulK07%2F11-c53ceb37d5c854b9.jpg?alt=media&token=b33abc62-6f6e-4639-804d-1a33f2f36189",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Georgetown_Law_1910s.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · Public domain",
+      "imageLicense": "Public domain",
+      "imageTitle": "Georgetown Law 1910s.jpg",
+      "imageFingerprint": "c53ceb37d5c854b9df662b7a0e3a9f95d1cc82d0f59b8a0b3c0e396e27ee0fbe",
+      "imageWidth": 1920,
+      "imageHeight": 1412,
+      "imageResolvedAt": "2026-08-13T07:24:21.611Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FPT1qkKGtyOUAKLQulK07%2F12-68d3273a8940f0b7.jpg?alt=media&token=9ccc23a4-72d2-4865-a668-f28770c36e9e",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Georgetown_University_LCCN2016841806.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · Public domain",
+      "imageLicense": "Public domain",
+      "imageTitle": "Georgetown University LCCN2016841806.jpg",
+      "imageFingerprint": "68d3273a8940f0b7d94eda68a02b7e6273eba8c87d9c259796b5b61a250189e1",
+      "imageWidth": 1920,
+      "imageHeight": 1509,
+      "imageResolvedAt": "2026-08-13T07:24:21.536Z"
+    }
+  ]
+}

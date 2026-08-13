@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.tacobell.com/oh/toledo/3302-west-central.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/oh/toledo/3302-west-central.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/oh/toledo/3149-dorr-street.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/oh/toledo/3149-dorr-street.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/oh/toledo/1317-north-reynolds-road.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/oh/toledo/1317-north-reynolds-road.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/oh/toledo/3460-airport-hwy.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/oh/toledo/3460-airport-hwy.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/oh/toledo/1422-broadway.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/oh/toledo/1422-broadway.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/oh/toledo/2234-w-alexis-rd.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/oh/toledo/2234-w-alexis-rd.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/oh/toledo/1859-laskey-road",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/oh/toledo/1859-laskey-road",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/oh/toledo/4277-monroe-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/oh/toledo/4277-monroe-street",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/oh/toledo/3124-monroe-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/oh/toledo/3124-monroe-street",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/oh/toledo/1410-east-alexis",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/oh/toledo/1410-east-alexis",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

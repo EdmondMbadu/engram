@@ -1,0 +1,52 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "O9XDewUocj9z4KCITOAw",
+    "schoolName": "Union College",
+    "shortSchoolName": "Union College",
+    "townName": "Schenectady",
+    "state": "NY",
+    "countryCode": "US",
+    "unitId": "196866",
+    "website": "https://www.union.edu/",
+    "latitude": 42.818097,
+    "longitude": -73.928788,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/UnionCollegeSeal.svg/500px-UnionCollegeSeal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=union.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at Union College, Shared as Cards",
+  "excluded_subjects": [
+    "Reamer Campus Center",
+    "Schaffer Library Learning Commons",
+    "Nott Memorial",
+    "Jackson's Garden",
+    "Old Chapel",
+    "Feigenbaum Center for Visual Arts",
+    "Crowell and West Galleries",
+    "Henle Dance Pavilion",
+    "Wold Student Gallery",
+    "Kenney Community Center"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

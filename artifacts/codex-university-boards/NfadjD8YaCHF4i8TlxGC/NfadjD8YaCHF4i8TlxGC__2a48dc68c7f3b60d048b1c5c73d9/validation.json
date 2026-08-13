@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://cdn.carleton.edu/uploads/sites/839/2024/01/2023_24_Carleton_Academic_Catalog.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cdn.carleton.edu/uploads/sites/839/2024/01/2023_24_Carleton_Academic_Catalog.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://gouldguides.carleton.edu/c.php?g=147169&p=965873",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gouldguides.carleton.edu/c.php?g=147169&p=965873",
+      "error": ""
+    },
+    {
+      "url": "https://cdn.carleton.edu/uploads/sites/563/2020/12/PresidentialProspectus.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cdn.carleton.edu/uploads/sites/563/2020/12/PresidentialProspectus.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://cdn.carleton.edu/uploads/sites/782/2024/09/Map_11x14_2024-v5.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cdn.carleton.edu/uploads/sites/782/2024/09/Map_11x14_2024-v5.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://contentdm.carleton.edu/digital/api/collection/Archives/id/2150/download",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://contentdm.carleton.edu/digital/api/collection/Archives/id/2150/download",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

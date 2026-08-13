@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.depauw.edu/studentaffairs/campusliving/diningoptions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depauw.edu/studentaffairs/campusliving/diningoptions/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/in/greencastle/1152-indianapolis-rd/lunch.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/in/greencastle/1152-indianapolis-rd/lunch.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/in/greencastle/1018-indianapolis-rd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/in/greencastle/1018-indianapolis-rd",
+      "error": ""
+    },
+    {
+      "url": "https://marvinsgreencastle.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://marvinsgreencastle.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.caseys.com/general-store/in-greencastle/1215-s-bloomington-st/3007",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.caseys.com/general-store/in-greencastle/1215-s-bloomington-st/3007",
+      "error": ""
+    },
+    {
+      "url": "https://donjuliogreencastle.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://donjuliogreencastle.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.monicals.com/locations/monicals-pizza-of-greencastle/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.monicals.com/locations/monicals-pizza-of-greencastle/",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.subway.com/united-states/in/greencastle",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.subway.com/united-states/in/greencastle",
+      "error": ""
+    },
+    {
+      "url": "https://www.toasttab.com/local/order/dairy-castle",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.toasttab.com/local/order/dairy-castle",
+      "error": ""
+    },
+    {
+      "url": "https://www.putnaminn.com/about-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.putnaminn.com/about-us",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Hoover Hall"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

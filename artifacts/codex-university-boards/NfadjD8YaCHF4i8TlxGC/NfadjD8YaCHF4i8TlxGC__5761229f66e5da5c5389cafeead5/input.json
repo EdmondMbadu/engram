@@ -1,0 +1,41 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "Q3kFBK59BgWainvRKEEC",
+    "schoolName": "Saint Anselm College",
+    "shortSchoolName": "Saint Anselm College",
+    "townName": "Manchester",
+    "state": "NH",
+    "countryCode": "US",
+    "unitId": "183239",
+    "website": "https://www.anselm.edu/",
+    "latitude": 42.986889,
+    "longitude": -71.503622,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/f/f7/St_anselm_college_seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=anselm.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at Saint Anselm College, Shared as Cards",
+  "excluded_subjects": [],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

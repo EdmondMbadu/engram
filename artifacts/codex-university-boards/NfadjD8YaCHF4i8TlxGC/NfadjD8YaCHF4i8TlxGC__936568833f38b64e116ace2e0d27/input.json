@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "6gbgP1emRVg5PHqiotQF",
+    "schoolName": "University of North Dakota",
+    "shortSchoolName": "University of North Dakota",
+    "townName": "Grand Forks",
+    "state": "ND",
+    "countryCode": "US",
+    "unitId": "200280",
+    "website": "https://und.edu/",
+    "latitude": 47.921654,
+    "longitude": -97.071738,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/0/08/UNDseal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=und.edu&sz=256"
+  },
+  "template": {
+    "id": "college-study-spots",
+    "version": "1.0",
+    "titlePattern": "Claimed by 9am: {count} Study Spots Worth Showing Up Early For",
+    "editorialBrief": "Choose ten distinct study environments. Verify access rules, room or reservation constraints, and the physical affordance that makes each useful. Treat “Claimed by 9am” as editorial framing; never assert crowding or student behavior without evidence.",
+    "researchQueries": [
+      "campus study spaces",
+      "library study rooms students",
+      "quiet study campus"
+    ],
+    "count": 10,
+    "icon": "menu_book",
+    "primarySubjectType": "study_space",
+    "allowedSubjectTypes": [
+      "study_space",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Claimed by 9am: 10 Study Spots Worth Showing Up Early For",
+  "excluded_subjects": [
+    "Memorial Union Social Stairs",
+    "Chester Fritz Library",
+    "Memorial Union Gallery",
+    "Wellness Center Rock Wall",
+    "NEXUS Esport Gaming Lounge",
+    "Wellness Center Table Tennis",
+    "North Dakota Museum of Art",
+    "The Greenway",
+    "University Park",
+    "Chester Fritz Performing Arts Center"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

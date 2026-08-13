@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.dpdough.com/menus/normal.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.dpdough.com/menus/normal.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://firehouserestaurants.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://firehouserestaurants.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jimmyjohns.com/il/normal/delivery-414.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jimmyjohns.com/il/normal/delivery-0414.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/il/normal/1600-e-college-avenue",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/il/normal/1600-e-college-avenue",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/il/normal/1527-e-college-ave.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/il/normal/1527-e-college-ave.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/il/normal/804-s-main-st/88.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/il/normal/804-s-main-st/88.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dennys.com/il/normal/248790",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dennys.com/il/normal/248790",
+      "error": ""
+    },
+    {
+      "url": "https://locations.portillos.com/normal",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.portillos.com/normal",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.ihop.com/en-us/il/bloomington/breakfast-2109-e.-empire-st-5429",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.ihop.com/en-us/il/",
+      "error": ""
+    },
+    {
+      "url": "https://www.walmart.com/store/1125-normal-il",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.walmart.com/blocked?url=L3N0b3JlLzExMjUtbm9ybWFsLWls&uuid=f2a8dcc9-96ea-11f1-9d02-a12e18959745&vid=&g=b",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

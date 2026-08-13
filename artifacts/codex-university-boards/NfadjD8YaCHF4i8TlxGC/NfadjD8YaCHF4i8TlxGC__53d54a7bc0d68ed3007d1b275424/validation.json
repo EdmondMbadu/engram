@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.montclair.edu/library/about-the-library/library-tour/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://inside.montclair.edu/colleges-schools-research/university-libraries/library-tours-maps",
+      "error": ""
+    },
+    {
+      "url": "https://www.montclair.edu/library/services-and-spaces/study-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://inside.montclair.edu/colleges-schools-research/university-libraries/study-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://www.montclair.edu/student-center/inside-the-student-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://inside.montclair.edu/campus-life-and-recreation/student-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.montclair.edu/admissions/student-life/athletics-and-recreation/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.montclair.edu/campus-life/recreation-sports",
+      "error": ""
+    },
+    {
+      "url": "https://www.montclair.edu/campus-recreation/aquatics/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://inside.montclair.edu/campus-life-and-recreation/campus-recreation/aquatics",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

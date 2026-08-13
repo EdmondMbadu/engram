@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://northamptonma.gov/facilities/facility/details/Pulaski-Park-15",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://northamptonma.gov/facilities/facility/details/Pulaski-Park-15",
+      "error": ""
+    },
+    {
+      "url": "https://aomtheatre.com/map-and-directions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://aomtheatre.com/map-and-directions/",
+      "error": ""
+    },
+    {
+      "url": "https://www.thornesmarketplace.com/plan-your-visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.thornesmarketplace.com/plan-your-visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.rmichelson.com/contact-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rmichelson.com/contact-us/",
+      "error": ""
+    },
+    {
+      "url": "https://forbeslibrary.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://forbeslibrary.org/",
+      "error": ""
+    },
+    {
+      "url": "https://www.historicnorthampton.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.historicnorthampton.org/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nohoarts.org/33hawley",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nohoarts.org/33hawley",
+      "error": ""
+    },
+    {
+      "url": "https://www.ncmc.net/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ncmc.net/about",
+      "error": ""
+    },
+    {
+      "url": "https://www.greatamericanstations.com/stations/northampton-ma-nht/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.greatamericanstations.com/stations/northampton-ma-nht/",
+      "error": ""
+    },
+    {
+      "url": "https://lookparkma.myrec.com/info/facilities/default.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lookparkma.myrec.com/info/facilities/default.aspx",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

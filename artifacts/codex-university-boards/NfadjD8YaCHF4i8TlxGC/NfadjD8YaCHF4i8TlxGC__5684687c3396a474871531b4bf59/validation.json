@@ -1,0 +1,96 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "4 source URL check(s) were inconclusive and need editorial confirmation.",
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://thirdstreetbooks.com/contact-us-please-note-we-only-sell-new-books-online-not-used-we-do-not-sell-through-any-third",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thirdstreetbooks.com/contact-us-please-note-we-only-sell-new-books-online-not-used-we-do-not-sell-through-any-third",
+      "error": ""
+    },
+    {
+      "url": "https://currentsgallery.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://currentsgallery.com/",
+      "error": ""
+    },
+    {
+      "url": "https://visitmcminnville.com/about/articles/wine-country-antiques/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visitmcminnville.com/about/articles/wine-country-antiques/",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcminnvilleoregon.gov/library/page/proctor-services",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.mcminnvilleoregon.gov/library/page/proctor-services",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.mcminnvilleoregon.gov/parksrec/page/city-park",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.mcminnvilleoregon.gov/parksrec/page/city-park",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.mcminnvilleoregon.gov/aquatic",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.mcminnvilleoregon.gov/aquatic",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.gallerytheater.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gallerytheater.org/",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcminnvilleoregon.gov/contact",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.mcminnvilleoregon.gov/contact",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://downtownmcminnville.com/wp-content/uploads/2026/02/2026-Farmers-Market-Handbook-FINAL.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://downtownmcminnville.com/wp-content/uploads/2026/02/2026-Farmers-Market-Handbook-FINAL.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.flagandwire.com/pages/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flagandwire.com/pages/contact",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "McMinnville Public Library"
+  ],
+  "sourceCount": 10,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

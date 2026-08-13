@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.flavorssdsu.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flavorssdsu.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.traderjoes.com/ca/san-diego/224/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.traderjoes.com/ca/san-diego/224/",
+      "error": ""
+    },
+    {
+      "url": "https://eurekarestaurantgroup.com/locations/san-diego-sdsu",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://eurekarestaurantgroup.com/locations/san-diego-sdsu",
+      "error": ""
+    },
+    {
+      "url": "https://www.7-eleven.com/locations/ca/san-diego/5141-college-ave-13633",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.7-eleven.com/locations/ca/san-diego/5141-college-ave-13633",
+      "error": ""
+    },
+    {
+      "url": "https://ultreyacoffee.com/pages/sandiegocoffeeshop",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ultreyacoffee.com/pages/sandiegocoffeeshop",
+      "error": ""
+    },
+    {
+      "url": "https://livingroomcafe.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://livingroomcafe.org/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.sandiego.gov/public-library/locations/college-rolando-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sandiego.gov/public-library/locations/college-rolando-library",
+      "error": ""
+    },
+    {
+      "url": "https://collegeareasd.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://collegeareasd.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.walmart.com/store/2479-san-diego-ca/book-store",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.walmart.com/blocked?url=L3N0b3JlLzI0Nzktc2FuLWRpZWdvLWNhL2Jvb2stc3RvcmU=&uuid=fc96b883-96f5-11f1-8817-1b33de1910c8&vid=&g=b",
+      "error": ""
+    },
+    {
+      "url": "https://www.sdmts.com/transit-services/trolley",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sdmts.com/transit-services/trolley",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

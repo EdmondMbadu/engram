@@ -1,0 +1,75 @@
+{
+  "target": {
+    "atlasId": "VHBVCMMU6pZ4D1Znbjgl",
+    "schoolName": "Fordham University",
+    "shortSchoolName": "Fordham University",
+    "townName": "Bronx",
+    "state": "NY",
+    "countryCode": "US",
+    "website": "https://www.fordham.edu/",
+    "latitude": 40.859354,
+    "longitude": -73.882705
+  },
+  "templates": [
+    {
+      "id": "college-campus-tour-skips",
+      "version": "1.0",
+      "titlePattern": "What the Campus Tour Skips: {count} Places Students Share With Each Other",
+      "editorialBrief": "Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.",
+      "researchQueries": [
+        "student favorite campus places",
+        "campus map student spaces",
+        "student newspaper campus places"
+      ],
+      "count": 10,
+      "icon": "style",
+      "primarySubjectType": "place",
+      "allowedSubjectTypes": [
+        "place",
+        "study_space"
+      ],
+      "freshnessDays": 365,
+      "exactTitle": "What the Campus Tour Skips: 10 Places Students Share With Each Other"
+    },
+    {
+      "id": "college-only-happens-here",
+      "version": "1.0",
+      "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+      "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+      "researchQueries": [
+        "university traditions alumni",
+        "campus traditions student newspaper",
+        "school rituals history"
+      ],
+      "count": 10,
+      "icon": "fingerprint",
+      "primarySubjectType": "tradition",
+      "allowedSubjectTypes": [
+        "tradition"
+      ],
+      "freshnessDays": 1095,
+      "exactTitle": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else"
+    },
+    {
+      "id": "college-first-weekend",
+      "version": "1.0",
+      "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+      "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+      "researchQueries": [
+        "new student orientation campus guide",
+        "first year student campus activities",
+        "weekend near campus students"
+      ],
+      "count": 10,
+      "icon": "schedule",
+      "primarySubjectType": "sequence_stop",
+      "allowedSubjectTypes": [
+        "sequence_stop",
+        "place",
+        "activity"
+      ],
+      "freshnessDays": 180,
+      "exactTitle": "Your First Weekend at Fordham University, Shared as Cards"
+    }
+  ]
+}

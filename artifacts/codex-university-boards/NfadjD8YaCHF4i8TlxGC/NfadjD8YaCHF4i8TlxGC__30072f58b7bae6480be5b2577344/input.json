@@ -1,0 +1,60 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "sZaX3TwZ73UFzE8kg49V",
+    "schoolName": "Louisiana Tech University",
+    "shortSchoolName": "Louisiana Tech University",
+    "townName": "Ruston",
+    "state": "LA",
+    "countryCode": "US",
+    "unitId": "159647",
+    "website": "https://www.latech.edu/",
+    "latitude": 32.528297,
+    "longitude": -92.649963,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=latech.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=latech.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "School of Design Galleries",
+    "Browse Federal Depository documents at Prescott Memorial Library",
+    "Explore Louisiana state documents at Prescott Memorial Library",
+    "Use Prescott Memorial Library guest computers",
+    "Use Prescott Memorial Library scanners",
+    "Louisiana Tech Science Seminars",
+    "R. L. Cook Park",
+    "Duncan Park",
+    "Huckleberry Trails Park",
+    "Memorial Park",
+    "Prescott Memorial Library Sensory Space",
+    "Prescott Memorial Library Main-Floor Research Computers",
+    "Prescott Memorial Library Group Study Room 610",
+    "Prescott Memorial Library Group Study Room 710",
+    "Prescott Memorial Library Group Study Room 810",
+    "Prescott Memorial Library Third-Floor Periodicals Area",
+    "Special Collections Reading Room",
+    "College of Business Study Niches",
+    "Integrated Engineering and Science Building Dynamic Learning Areas",
+    "Robinson B Residential Suites Study Rooms"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

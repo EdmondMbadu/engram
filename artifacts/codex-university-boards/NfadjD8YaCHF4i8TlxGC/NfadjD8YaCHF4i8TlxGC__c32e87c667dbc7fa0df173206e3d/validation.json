@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://msutoday.msu.edu/news/2025/03/campus-tradition-painting-the-rock",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://msutoday.msu.edu/news/2025/03/campus-tradition-painting-the-rock",
+      "error": ""
+    },
+    {
+      "url": "https://msutoday.msu.edu/news/2026/03/history-of-izzone",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://msutoday.msu.edu/news/2026/03/history-of-izzone",
+      "error": ""
+    },
+    {
+      "url": "https://spartan.msu.edu/spartan-story-hub/news/2023/02/msu-traditions-a-field-of-green-and-white-tents",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://spartan.msu.edu/spartan-story-hub/news/2023/02/msu-traditions-a-field-of-green-and-white-tents",
+      "error": ""
+    },
+    {
+      "url": "https://theatre.msu.edu/news/from-the-shadows-of-beaumont-tower-hands-on-curatorial-experience-brings-spartan-traditions-to-life/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://theatre.msu.edu/news/from-the-shadows-of-beaumont-tower-hands-on-curatorial-experience-brings-spartan-traditions-to-life/",
+      "error": ""
+    },
+    {
+      "url": "https://msutoday.msu.edu/news/2025/05/student-view-how-msu-traditions-and-culture-shaped-my-spartan-experience",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://msutoday.msu.edu/news/2025/05/student-view-how-msu-traditions-and-culture-shaped-my-spartan-experience",
+      "error": ""
+    },
+    {
+      "url": "https://oiss.isp.msu.edu/files/8015/3677/0428/Join_the_Global_Spartan_Network_English.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://oiss.isp.msu.edu/files/8015/3677/0428/Join_the_Global_Spartan_Network_English.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://spartan.msu.edu/spartan-story-hub/news/2021/02/msu-traditions-the-spartan-marching-band",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://spartan.msu.edu/spartan-story-hub/news/2021/02/msu-traditions-the-spartan-marching-band",
+      "error": ""
+    },
+    {
+      "url": "https://msutoday.msu.edu/news/2022/06/beaumont-dedication-anniversary-gallery-2022",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://msutoday.msu.edu/news/2022/06/beaumont-dedication-anniversary-gallery-2022",
+      "error": ""
+    },
+    {
+      "url": "https://virtualtour.msu.edu/tour/campus-highlights-tour/beaumont-tower/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://virtualtour.msu.edu/tour/campus-highlights-tour/beaumont-tower/",
+      "error": ""
+    },
+    {
+      "url": "https://spartanexperiences.msu.edu/rso-s/Sparticipation/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://spartanexperiences.msu.edu/rso-s/Sparticipation/index.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 100,
+  "generationGrade": "A"
+}

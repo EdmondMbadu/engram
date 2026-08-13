@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.misericordia.edu/life-at-mu/campus-life/engagement-activities-events/welcome-week",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.misericordia.edu/life-at-mu/campus-life/engagement-activities-events/welcome-week",
+      "error": ""
+    },
+    {
+      "url": "https://www.misericordia.edu/alumni/events",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.misericordia.edu/alumni/events",
+      "error": ""
+    },
+    {
+      "url": "https://www.misericordia.edu/life-at-mu/new-student-and-family-programs/homecoming",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.misericordia.edu/life-at-mu/new-student-and-family-programs/homecoming",
+      "error": ""
+    },
+    {
+      "url": "https://www.misericordia.edu/life-at-mu/new-student-and-family-programs/family-weekend",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.misericordia.edu/life-at-mu/new-student-and-family-programs/family-weekend",
+      "error": ""
+    },
+    {
+      "url": "https://www.misericordia.edu/life-at-mu/campus-life/engagement-activities-events/spectacular-student-engagement-events",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.misericordia.edu/life-at-mu/campus-life/engagement-activities-events/spectacular-student-engagement-events",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

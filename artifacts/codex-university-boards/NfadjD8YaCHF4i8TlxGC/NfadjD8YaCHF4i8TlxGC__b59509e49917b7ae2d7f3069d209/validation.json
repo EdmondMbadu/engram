@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.cityofsweetwater.fl.gov/243/Carlow-Park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cityofsweetwater.fl.gov/243/Carlow-Park",
+      "error": ""
+    },
+    {
+      "url": "https://www.cityofsweetwater.fl.gov/244/James-M-Beasley-Linear-Park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cityofsweetwater.fl.gov/244/James-M-Beasley-Linear-Park",
+      "error": ""
+    },
+    {
+      "url": "https://www.cityofsweetwater.fl.gov/facilities/facility/details/Jose-Lolo-Villalobos-Dominoes-Park-4",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cityofsweetwater.fl.gov/facilities/facility/details/Jose-Lolo-Villalobos-Dominoes-Park-4",
+      "error": ""
+    },
+    {
+      "url": "https://www.cityofsweetwater.fl.gov/Facilities/Facility/Details/Ronselli-Park-1",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cityofsweetwater.fl.gov/Facilities/Facility/Details/Ronselli-Park-1",
+      "error": ""
+    },
+    {
+      "url": "https://www.cityofsweetwater.fl.gov/259/City-of-Sweetwater-Community-Center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cityofsweetwater.fl.gov/259/City-of-Sweetwater-Community-Center",
+      "error": ""
+    },
+    {
+      "url": "https://www.cityofsweetwater.fl.gov/142/Contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cityofsweetwater.fl.gov/142/Contact",
+      "error": ""
+    },
+    {
+      "url": "https://www.cityofsweetwater.fl.gov/DocumentCenter/View/324/2024-Annual-Report-?bidId=",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cityofsweetwater.fl.gov/DocumentCenter/View/324/2024-Annual-Report-?bidId=",
+      "error": ""
+    },
+    {
+      "url": "https://facilities.fiu.edu/Planning/Documents/BT904UniversityCityProsperityProject/DBandRFP/TrafficStudies/FIU-UniversityCity-Traffic-Study.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://facilities.fiu.edu/Planning/Documents/BT904UniversityCityProsperityProject/DBandRFP/TrafficStudies/FIU-UniversityCity-Traffic-Study.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://campusmaps.fiu.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusmaps.fiu.edu/index.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

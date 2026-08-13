@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "oAvIKuYgMbVs04KFuvyB",
+    "schoolName": "Saint Francis University",
+    "shortSchoolName": "Saint Francis University",
+    "townName": "Loretto",
+    "state": "PA",
+    "countryCode": "US",
+    "unitId": "215743",
+    "website": "https://www.francis.edu/",
+    "latitude": 40.506734,
+    "longitude": -78.63904,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/b/bb/Saint_Francis_University_seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=francis.edu&sz=256"
+  },
+  "template": {
+    "id": "college-campus-tour-skips",
+    "version": "1.0",
+    "titlePattern": "What the Campus Tour Skips: {count} Places Students Share With Each Other",
+    "editorialBrief": "Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.",
+    "researchQueries": [
+      "student favorite campus places",
+      "campus map student spaces",
+      "student newspaper campus places"
+    ],
+    "count": 10,
+    "icon": "style",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place",
+      "study_space"
+    ],
+    "freshnessDays": 365
+  },
+  "exact_title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+  "excluded_subjects": [
+    "Saint Francis University Mock National Convention",
+    "Mr. and Ms. Frankie Awards",
+    "Mass of the Holy Spirit",
+    "Founders Day",
+    "President’s Awards Convocation",
+    "March on the Mountain",
+    "STEAM Day",
+    "Rural Outreach Chemistry for Kids (R.O.C.K.)",
+    "Saint Francis University Red Mass",
+    "Lourdes Army Grotto Service Project and Twilight Mass"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

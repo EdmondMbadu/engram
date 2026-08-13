@@ -1,0 +1,72 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "zrt4DttZYe6m2yPl3l6V",
+    "schoolName": "New York Institute of Technology",
+    "shortSchoolName": "New York Institute of Technology",
+    "townName": "Old Westbury",
+    "state": "NY",
+    "countryCode": "US",
+    "unitId": "194091",
+    "website": "https://www.nyit.edu/",
+    "latitude": 40.812447,
+    "longitude": -73.6078,
+    "heroUrl": "https://www.nyit.edu/wp-content/uploads/home-hero.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=nyit.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at New York Institute of Technology, Shared as Cards",
+  "excluded_subjects": [
+    "Hicksville LIRR – Long Island Campus Shuttle",
+    "Grizzly Cupboard",
+    "Tech Threads",
+    "LinkedIn Learning",
+    "Our Money Matters Financial Wellness Tool",
+    "New York Tech Libraries Interlibrary Loan",
+    "The Chronicle of Higher Education Premium Access",
+    "Connections Are Everything",
+    "Bloomberg Market Concepts",
+    "Bloomberg ESG Training",
+    "Salten Hall Library",
+    "Salten Hall Reading Room",
+    "Salten Commons",
+    "Anna Rubin Hall Reservable Study Rooms",
+    "Orso Lounge",
+    "Midge Karr Parklet",
+    "Riland Pond Parklet",
+    "Academic Quad",
+    "Medical School Quad",
+    "NYIT de Seversky Mansion Annex Study Spaces",
+    "Old Westbury Diner",
+    "Chick and Tender Westbury",
+    "La Chalateca Restaurant",
+    "Golden Wok Express",
+    "Cafe Baci",
+    "Steve's Piccola Bussola",
+    "Tesoro's",
+    "Nan Xiang Xiao Long Bao — Country Road at Westbury",
+    "Giulio Cesare Ristorante",
+    "Salisbury Tavern Sports Bar & Grill"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

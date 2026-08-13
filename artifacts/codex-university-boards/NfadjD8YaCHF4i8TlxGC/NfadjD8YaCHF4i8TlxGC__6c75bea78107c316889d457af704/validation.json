@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://mountaintop.lehigh.edu/resources/food",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mountaintop.lehigh.edu/resources/food",
+      "error": ""
+    },
+    {
+      "url": "https://wms-drupal.lehigh.edu/content-sections/embed-video",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wms-drupal.lehigh.edu/content-sections/embed-video",
+      "error": ""
+    },
+    {
+      "url": "https://www.eljefestaqueria.com/bethlehem-order",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.eljefestaqueria.com/bethlehem-order",
+      "error": ""
+    },
+    {
+      "url": "https://sizzlingbites.com/bethlehem",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://sizzlingbites.com/bethlehem",
+      "error": ""
+    },
+    {
+      "url": "https://ljmunchies.cloudwaitress.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ljmunchies.cloudwaitress.com/",
+      "error": ""
+    },
+    {
+      "url": "https://lehighpizza.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lehighpizza.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.sorellaspizzaandpastatogo.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sorellaspizzaandpastatogo.com/",
+      "error": ""
+    },
+    {
+      "url": "https://annasbrickovenbethlehem.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://annasbrickovenbethlehem.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.toasttab.com/local/order/the-barbecue-boys/item-yoohoo-bottle_ef6e9730-6960-44b9-ba90-b1cb09c11c8e",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.toasttab.com/local/order/the-barbecue-boys/item-yoohoo-bottle_ef6e9730-6960-44b9-ba90-b1cb09c11c8e",
+      "error": ""
+    },
+    {
+      "url": "https://maps.apple.com/place?place-id=IBA1AFF89125E841F",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://maps.apple.com/place?place-id=IBA1AFF89125E841F",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.halalmunchiesus.com/farmingdale-ny",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.halalmunchiesus.com/farmingdale-ny",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ny/farmingdale/1981-broadhollow-rd.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ny/farmingdale/1981-broadhollow-rd.html",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.applebees.com/en-us/ny/farmingdale/200-airport-plaza-94037",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.applebees.com/en-us/ny/farmingdale/200-airport-plaza-94037",
+      "error": ""
+    },
+    {
+      "url": "https://www.dominicanrestaurant4ny.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.dominicanrestaurant4ny.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.houlihans.com/location/houlihans-farmingdale/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.houlihans.com/location/houlihans-farmingdale/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ginosfarmingdale.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ginosfarmingdale.com/",
+      "error": ""
+    },
+    {
+      "url": "https://lychee-swan-rk2r.squarespace.com/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lychee-swan-rk2r.squarespace.com/contact",
+      "error": ""
+    },
+    {
+      "url": "https://www.zuzufarmingdale.com/location/zuzu-pizza/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.zuzufarmingdale.com/location/zuzu-pizza/",
+      "error": ""
+    },
+    {
+      "url": "https://farmingdalediner.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://farmingdalediner.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.pizzacucinafarmingdale.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pizzacucinafarmingdale.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

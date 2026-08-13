@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.tacobell.com/il/chicago.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/il/chicago.html",
+      "error": ""
+    },
+    {
+      "url": "https://ricobenespizza.com/?cat=14",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ricobenespizza.com/?cat=14",
+      "error": ""
+    },
+    {
+      "url": "https://www.lawrencesfishandshrimp.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lawrencesfishandshrimp.com/",
+      "error": ""
+    },
+    {
+      "url": "https://steaknegger.com/locations/steak-n-egger-chicago/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://steaknegger.com/locations/steak-n-egger-chicago/",
+      "error": ""
+    },
+    {
+      "url": "https://www.whitepalacegrill.com/faq",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.whitepalacegrill.com/faq",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/il/chicago/242-west-garfield-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/il/chicago/242-west-garfield-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://www.southloopmarket.com/locations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.southloopmarket.com/locations/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dunkindonuts.com/en/il/chicago/1231-s-wabash-ave/310285",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dunkindonuts.com/en/il/chicago/1231-s-wabash-ave/310285",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/il/chicago/3020-s-halsted-st/17974.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/il/chicago/3020-s-halsted-st/17974.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.portillos.com/chicago-canal-taylor",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.portillos.com/chicago-canal-taylor",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

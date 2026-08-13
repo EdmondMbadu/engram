@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "qlVB5SFEqc6KU2AgATAg",
+    "schoolName": "The College of New Jersey",
+    "shortSchoolName": "The College of New Jersey",
+    "townName": "Ewing",
+    "state": "NJ",
+    "countryCode": "US",
+    "unitId": "187134",
+    "website": "https://www.tcnj.edu/",
+    "latitude": 40.268651,
+    "longitude": -74.778791,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/7/71/College_of_newjersey_seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=tcnj.edu&sz=256"
+  },
+  "template": {
+    "id": "college-study-spots",
+    "version": "1.0",
+    "titlePattern": "Claimed by 9am: {count} Study Spots Worth Showing Up Early For",
+    "editorialBrief": "Choose ten distinct study environments. Verify access rules, room or reservation constraints, and the physical affordance that makes each useful. Treat “Claimed by 9am” as editorial framing; never assert crowding or student behavior without evidence.",
+    "researchQueries": [
+      "campus study spaces",
+      "library study rooms students",
+      "quiet study campus"
+    ],
+    "count": 10,
+    "icon": "menu_book",
+    "primarySubjectType": "study_space",
+    "allowedSubjectTypes": [
+      "study_space",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Claimed by 9am: 10 Study Spots Worth Showing Up Early For",
+  "excluded_subjects": [
+    "Brower Student Center",
+    "Gitenstein Library Study Rooms",
+    "Biology Building Science Commons",
+    "Social Sciences Building Atrium",
+    "STEM Building Open Commons L1",
+    "Chemistry Building Student Commons",
+    "Art & IMM Student Lounge 112",
+    "Education Building Student Lounge 309",
+    "Music Building Student Lounge 02",
+    "Kendall Hall Backstage Lobby"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

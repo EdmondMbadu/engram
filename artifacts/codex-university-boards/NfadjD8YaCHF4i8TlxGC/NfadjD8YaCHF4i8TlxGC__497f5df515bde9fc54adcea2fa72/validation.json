@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.chinatownonthayer.com/hours.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.chinatownonthayer.com/hours.html",
+      "error": ""
+    },
+    {
+      "url": "https://mexicangrillcaliente.com/location/thayer-st-providence/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mexicangrillcaliente.com/location/thayer-st-providence/",
+      "error": ""
+    },
+    {
+      "url": "https://providence.fellinipizzeria.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://providence.fellinipizzeria.com/",
+      "error": ""
+    },
+    {
+      "url": "https://antoniospizza.com/locations/providence-thayer/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://antoniospizza.com/locations/providence-thayer/",
+      "error": ""
+    },
+    {
+      "url": "https://www.eastsidepocket.com/hours.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.eastsidepocket.com/hours.html",
+      "error": ""
+    },
+    {
+      "url": "https://bajasrestaurants.com/rhode-island-wakefield-ri-cranston-ri-baja-s-locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bajasrestaurants.com/rhode-island-wakefield-ri-cranston-ri-baja-s-locations",
+      "error": ""
+    },
+    {
+      "url": "https://havenbrosdiner.com/full-menu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://havenbrosdiner.com/full-menu/",
+      "error": ""
+    },
+    {
+      "url": "https://yumibar.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://yumibar.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.siciliaspizzaprovidence.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.siciliaspizzaprovidence.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.pizzaqueenonline.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://pizzaqueenri.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

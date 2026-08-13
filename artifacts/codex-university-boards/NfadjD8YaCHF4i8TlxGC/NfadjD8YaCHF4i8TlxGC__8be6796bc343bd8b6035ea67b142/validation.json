@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.rowan.edu/arts/museum/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rowan.edu/arts/museum/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://cpa.rowan.edu/boxoffice/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rowan.edu/arts/boxoffice/",
+      "error": ""
+    },
+    {
+      "url": "https://sites.rowan.edu/universityevents/What%20we%20do.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sites.rowan.edu/universityevents/What%20we%20do.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcls.org/glassboro-branch/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcls.org/glassboro-branch/",
+      "error": ""
+    },
+    {
+      "url": "https://today.rowan.edu/events/2024/04/rowan-bioblitz.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://today.rowan.edu/events/2024/04/rowan-bioblitz.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

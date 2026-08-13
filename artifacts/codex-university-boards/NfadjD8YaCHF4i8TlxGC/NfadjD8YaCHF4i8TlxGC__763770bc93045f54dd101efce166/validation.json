@@ -1,0 +1,64 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.loyola.edu/department/thrive-center/about/community-spaces/commuter-student-spaces.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loyola.edu/department/thrive-center/about/community-spaces/commuter-student-spaces.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.loyola.edu/department/first-generation-student-success/faqs.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loyola.edu/department/first-generation-student-success/faqs.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.loyola.edu/explore/photo-gallery/?cat=campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loyola.edu/explore/photo-gallery/?cat=campus",
+      "error": ""
+    },
+    {
+      "url": "https://www.loyola.edu/explore/photo-gallery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loyola.edu/explore/photo-gallery/",
+      "error": ""
+    },
+    {
+      "url": "https://www.loyola.edu/_media/explore/magazine/documents/loyola-magazine-fall24.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loyola.edu/_media/explore/magazine/documents/loyola-magazine-fall24.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.loyola.edu/department/center-humanities/grants-funded-opportunities/student/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loyola.edu/department/center-humanities/grants-funded-opportunities/student/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "The Study",
+    "Loyola/Notre Dame Library"
+  ],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

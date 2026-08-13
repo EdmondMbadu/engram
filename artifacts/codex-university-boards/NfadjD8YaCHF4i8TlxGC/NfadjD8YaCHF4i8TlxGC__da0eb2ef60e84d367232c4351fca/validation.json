@@ -1,0 +1,81 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://tour.nd.edu/on-campus-tours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://tour.nd.edu/on-campus-tours/",
+      "error": ""
+    },
+    {
+      "url": "https://basilica.nd.edu/about/visit-and-tours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://basilica.nd.edu/about/visit-and-tours/",
+      "error": ""
+    },
+    {
+      "url": "https://faith.nd.edu/grotto-prayer-request/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://faith.nd.edu/grotto-prayer-request/",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.nd.edu/hesburgh/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.nd.edu/hesburgh",
+      "error": ""
+    },
+    {
+      "url": "https://studentaffairs.nd.edu/student-development/student-activities-office/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentaffairs.nd.edu/student-development/student-activities-office/",
+      "error": ""
+    },
+    {
+      "url": "https://recsports.nd.edu/facilities/rockne-memorial/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recsports.nd.edu/facilities/rockne-memorial/",
+      "error": ""
+    },
+    {
+      "url": "https://map.nd.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://map.nd.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://performingarts.nd.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://performingarts.nd.edu/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Basilica of the Sacred Heart",
+    "LaFortune Student Center",
+    "Rockne Memorial"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

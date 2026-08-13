@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.falbosiowa.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.falbosiowa.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.gumbyspizza.com/iowa-city-ia",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gumbyspizza.com/iowa-city-ia",
+      "error": ""
+    },
+    {
+      "url": "https://pancheros.com/location/iowa-city-downtown/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pancheros.com/location/iowa-city-downtown/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.papajohns.com/united-states/ia/52240/iowa-city/307-s-gilbert-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.papajohns.com/united-states/ia/52240/iowa-city/307-s-gilbert-st",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/ia/iowa-city/805-south-1st-avenue",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/ia/iowa-city/805-south-1st-avenue",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ia/iowa-city/901-highway-6-e.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ia/iowa-city/901-highway-6-e.html",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/iowa/iowa-city/1534-s-gilbert-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/iowa/iowa-city/1534-s-gilbert-st",
+      "error": ""
+    },
+    {
+      "url": "https://lunastacosfamilykitchen.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lunastacosfamilykitchen.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.unclesuniowa.com/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.unclesuniowa.com/contact",
+      "error": ""
+    },
+    {
+      "url": "https://downtowniowacity.com/listings/marcos-grilled-cheese/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://downtowniowacity.com/listings/marcos-grilled-cheese/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

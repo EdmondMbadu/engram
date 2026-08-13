@@ -1,0 +1,61 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "RApJwElZAD5rDcmMYTvp",
+    "schoolName": "The University of Alabama",
+    "shortSchoolName": "The University of Alabama",
+    "townName": "Tuscaloosa",
+    "state": "AL",
+    "countryCode": "US",
+    "unitId": "100751",
+    "website": "https://www.ua.edu/",
+    "latitude": 33.211875,
+    "longitude": -87.545978,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/9/9a/University_of_Alabama_Seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=ua.edu&sz=256"
+  },
+  "template": {
+    "id": "college-campus-tour-skips",
+    "version": "1.0",
+    "titlePattern": "What the Campus Tour Skips: {count} Places Students Share With Each Other",
+    "editorialBrief": "Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.",
+    "researchQueries": [
+      "student favorite campus places",
+      "campus map student spaces",
+      "student newspaper campus places"
+    ],
+    "count": 10,
+    "icon": "style",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place",
+      "study_space"
+    ],
+    "freshnessDays": 365
+  },
+  "exact_title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+  "excluded_subjects": [
+    "Strange Brew Coffeehouse",
+    "The Standard",
+    "Thai Basil Sushi",
+    "Ajian Sushi",
+    "Moe’s Original BBQ",
+    "Taco Mama",
+    "Comfort Grounds Coffee Shop",
+    "DePalma’s Italian Cafe",
+    "Cravings Specialty Grocery",
+    "Quick Grill",
+    "Taco Bell — 236 15th Street",
+    "Taco Bell — 2610 Stillman Boulevard",
+    "Taco Bell — 815 Skyland Boulevard",
+    "Taco Bell — 9050 Highway 69 South",
+    "Taco Bell — 1211 University Boulevard",
+    "Taco Bell — 4900 Doris Pate Drive",
+    "Whataburger #1140 — McFarland & 13th",
+    "McDonald's — 2502 12th Street",
+    "Subway — Pilot Travel Center #76",
+    "SEC Market"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

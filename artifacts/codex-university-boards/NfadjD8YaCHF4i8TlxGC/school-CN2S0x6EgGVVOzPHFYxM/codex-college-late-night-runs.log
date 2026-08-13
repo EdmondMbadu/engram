@@ -1,0 +1,296 @@
+Reading additional input from stdin...
+2026-08-13T06:55:17.519589Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e7-3891-7ab2-bf91-8bdb990357e5.1786604107921799000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:55:17.522757Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:55:17.526364Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:55:17.574015Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e7-3892-7573-897e-870271822c5f.1786604107923183000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9e7-5d94-7ce2-b745-e849ce4d14f8
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"CN2S0x6EgGVVOzPHFYxM","schoolName":"Duquesne University","shortSchoolName":"Duquesne University","townName":"Pittsburgh","state":"PA","countryCode":"US","website":"https://www.duq.edu/","latitude":40.43589,"longitude":-79.993123},"templates":[{"id":"college-late-night-runs","version":"1.0","titlePattern":"{count} Late-Night Runs That Explain {school}","editorialBrief":"Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.","researchQueries":["late night dining students","campus dining late hours","restaurants open late near campus"],"count":10,"icon":"nightlife","primarySubjectType":"place","allowedSubjectTypes":["place"],"freshnessDays":120,"exactTitle":"10 Late-Night Runs That Explain Duquesne University"}]}
+codex
+{
+  "complete": false,
+  "school_name": "Duquesne University",
+  "town_name": "Pittsburgh",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Duquesne University",
+      "town_name": "Pittsburgh",
+      "template_id": "college-late-night-runs",
+      "title": "10 Late-Night Runs That Explain Duquesne University",
+      "description": "",
+      "icon": "nightlife",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     
+        ,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ],
+      "warnings": [
+        "Unable to complete web research because the web search tool was not available in this execution context; direct current late-hours evidence could not be verified."
+      ]
+    }
+  ],
+  "warnings": [
+    "The requested complete board cannot be responsibly produced without current direct-source web verification."
+  ]
+}
+codex
+{"complete":false,"school_name":"Duquesne University","town_name":"Pittsburgh","boards":[{"complete":false,"school_name":"Duquesne University","town_name":"Pittsburgh","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Duquesne University","description":"Researching 10 distinct under-21-safe destinations and checking each direct source for current late hours.","icon":"nightlife","cards": [{"subject_id":"research-in-progress","subject_type":"place","entity_name":"Research in progress","title":"Verifying current hours","subtitle":"Duquesne University and nearby Pittsburgh destinations","notes":"Checking direct university and business pages so every late-night claim is tied to current, destination-specific evidence.","short_summary":"Current direct-source verification is underway.","evidence_claim":"Pending verification.","source_url":"https://www.duq.edu/","source_title":"Duquesne University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":40.43589,"longitude":-79.993123,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true} 	,{"subject_id":"","subject_type":"place","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true},{"subject_id":"","subject_type":"place","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true},{"subject_id":"","subject_type":"place","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true},{"subject_id":"","subject_type":"place","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true},{"subject_id":"","subject_type":"place","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true},{"subject_id":"","subject_type":"place","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true},{"subject_id":"","subject_type":"place","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true},{"subject_id":"","subject_type":"place","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true},{"subject_id":"","subject_type":"place","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}
+web search: 
+web search: site:duq.edu dining hours Duquesne University late night ...
+web search: 
+web search: Insomnia Cookies Pittsburgh Forbes Avenue store hours official ...
+web search: 
+web search: site:locations.sheetz.com Pittsburgh PA 24/7 store downtown ...
+web search: 
+web search: site:pizza.dominos.com/pennsylvania/pittsburgh/625-stanwix-st Domino's ...
+web search: 
+web search: https://pizza.dominos.com/pennsylvania/pittsburgh/625-stanwix-st
+codex
+{"complete":true,"school_name":"Duquesne University","town_name":"Pittsburgh","boards":[{"complete":true,"school_name":"Duquesne University","town_name":"Pittsburgh","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Duquesne University","description":"Ten under-21-safe food stops with directly verified evening, overnight, or 24-hour availability on campus and around Pittsburgh.","icon":"nightlife","cards":[{"subject_id":"duq-business-leader-bistro","subject_type":"place","entity_name":"The Business Leader Bistro","title":"The 24/7 Rockwell Hall Stop","subtitle":"Sixth floor of Rockwell Hall","notes":"Check building access first, then head upstairs for packaged food, snacks, drinks, or locally roasted coffee at any hour.","short_summary":"A round-the-clock campus option tied to Rockwell Hall access.","evidence_claim":"Duquesne lists The Business Leader Bistro on Rockwell Hall's sixth floor and gives it 24/7 academic-calendar hours with building access.","source_url":"https://www.duq.edu/life-at-duquesne/housing-and-dining/dining/index.php","source_title":"Duquesne University Dining Services","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Listed as open 24/7 during the academic calendar, but entry depends on access to Rockwell Hall; hours may change.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"duq-campus-market","subject_type":"place","entity_name":"Campus Market","title":"The 2 A.M. Towers Market","subtitle":"Entrance to Towers Residence Hall","notes":"Use this campus stop for grab-and-go sandwiches, salads, and snacks; mobile ordering and several campus payment methods are accepted.","short_summary":"The campus market with a documented 2 a.m. closing time every day.","evidence_claim":"Duquesne identifies Campus Market at the Towers Residence Hall entrance and lists daily academic-calendar service until 2 a.m.","source_url":"https://www.duq.edu/life-at-duquesne/housing-and-dining/dining/index.php","source_title":"Duquesne University Dining Services","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Academic-calendar hours are 7 a.m.–2 a.m. weekdays and 8 a.m.–2 a.m. weekends; university notes that hours may change.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"duq-fisher-market-express","subject_type":"place","entity_name":"Fisher Market Express","title":"The All-Hours Fisher Grab-and-Go","subtitle":"Inside Fisher Hall","notes":"Confirm Fisher Hall access before setting out, then choose from prepared salads, sandwiches, wraps, snacks, and beverages.","short_summary":"A 24/7 express market for people who can enter Fisher Hall.","evidence_claim":"Duquesne lists Fisher Market Express inside Fisher Hall, describes its prepared grab-and-go selection, and posts 24/7 hours with building access.","source_url":"https://www.duq.edu/life-at-duquesne/housing-and-dining/dining/index.php","source_title":"Duquesne University Dining Services","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Listed as open 24/7 during the academic calendar, subject to access to Fisher Hall; hours may change.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"duq-connections","subject_type":"place","entity_name":"Connections","title":"The 10 P.M. Union Pickup","subtitle":"Second floor of the Gormley Student Union","notes":"Go behind the Union welcome desk for the rotating grab-and-go selection, but reserve this run for Sunday through Thursday evenings.","short_summary":"A weekday-focused Union stop featuring food from Pittsburgh businesses.","evidence_claim":"Duquesne places Connections behind the Union welcome desk and lists Sunday–Thursday service until 10 p.m., with earlier Friday–Saturday closing.","source_url":"https://www.duq.edu/life-at-duquesne/housing-and-dining/dining/index.php","source_title":"Duquesne University Dining Services","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Sunday–Thursday from 7 a.m.–10 p.m.; Friday and Saturday service ends at 5 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"duq-the-incline","subject_type":"place","entity_name":"The Incline","title":"The 9 P.M. Union Food Court","subtitle":"First floor of the Gormley Student Union","notes":"Choose the grill, a customizable salad, or an in-person Duq Station sub before the food court reaches its nightly closing time.","short_summary":"A customizable campus meal stop open through 9 p.m. all week.","evidence_claim":"Duquesne locates The Incline on the Student Union's first floor and lists academic-calendar hours through 9 p.m. every day.","source_url":"https://www.duq.edu/life-at-duquesne/housing-and-dining/dining/index.php","source_title":"Duquesne University Dining Services","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open 7 a.m.–9 p.m. Monday–Friday and 10:30 a.m.–9 p.m. Saturday–Sunday; hours may change.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"duq-union-starbucks","subject_type":"place","entity_name":"Starbucks at Gormley Student Union","title":"The 9 P.M. Union Coffee Stop","subtitle":"Second floor of the Gormley Student Union","notes":"Use this for a Monday–Thursday or Sunday evening drink run; Friday and Saturday service finishes substantially earlier.","short_summary":"The campus coffee counter with selected 9 p.m. closing times.","evidence_claim":"Duquesne locates Starbucks on the Union's second floor and lists closing at 9 p.m. Monday–Thursday and Sunday.","source_url":"https://www.duq.edu/life-at-duquesne/housing-and-dining/dining/index.php","source_title":"Duquesne University Dining Services","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until 9 p.m. Monday–Thursday and Sunday; Friday and Saturday closing is 5 p.m. Hours may change.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"moonlit-burgers-uptown","subject_type":"place","entity_name":"Moonlit Burgers Uptown","title":"The Forbes Avenue Burger Run","subtitle":"1023 Forbes Avenue beside Duquesne","notes":"Head to the Uptown counter before 9 p.m. for burgers, chicken, fries, salads, or a plant-based burger; the restaurant also has kids' meals.","short_summary":"A public Forbes Avenue restaurant that accepts Duquesne Flex and PLUS.","evidence_claim":"Moonlit Burgers' official site lists its Uptown location at 1023 Forbes Avenue as open Monday–Saturday until 9 p.m.; Duquesne says the public location accepts Flex and PLUS.","source_url":"https://moonlitburgers.com/","source_title":"Moonlit Burgers","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Uptown is open Monday–Saturday from 11 a.m.–9 p.m.; the official page does not list Sunday service.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dominos-east-carson-1001","subject_type":"place","entity_name":"Domino's Pizza — 1001 East Carson Street","title":"The South Side Pizza Run","subtitle":"1001 East Carson Street","notes":"Check the live store page before leaving, then choose delivery or carryout; the location sells pizza, sandwiches, pasta, salads, and desserts.","short_summary":"A South Side branch with verified service well after midnight.","evidence_claim":"Domino's official location page identifies the 1001 East Carson Street restaurant and displayed service until 3:30 a.m. when fetched.","source_url":"https://pizza.dominos.com/pennsylvania/pittsburgh/1001-e-carson-street","source_title":"Domino's Pizza at 1001 E Carson Street","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official live listing displayed “Today Until 3:30 AM” when fetched; store hours vary, so recheck before ordering.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dominos-stanwix-625","subject_type":"place","entity_name":"Domino's Pizza — 625 Stanwix Street","title":"The Downtown Pizza Run","subtitle":"625 Stanwix Street","notes":"Use the official listing to confirm the night's closing time and ordering options before making the trip from the Bluff into Downtown.","short_summary":"A Downtown pizza branch whose official listing extends past midnight.","evidence_claim":"Domino's official Pittsburgh listings identify the 625 Stanwix Street restaurant and displayed service until 2 a.m. when researched.","source_url":"https://pizza.dominos.com/pennsylvania/pittsburgh/625-stanwix-st","source_title":"Domino's Pizza at 625 Stanwix St","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official listing displayed service until 2 a.m. when researched; hours vary by day and should be rechecked before departure.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-costco-drive-121","subject_type":"place","entity_name":"Taco Bell — 121 Costco Drive","title":"The 2 A.M. West Pittsburgh Taco Run","subtitle":"121 Costco Drive","notes":"Treat this as a drive or delivery run, and verify the live listing first; the official page currently shows both drive-through and dine-in service.","short_summary":"A farther Pittsburgh option with documented 2 a.m. service every day.","evidence_claim":"Taco Bell's official location page identifies the 121 Costco Drive restaurant and lists drive-through hours from 9 a.m. to 2 a.m. daily.","source_url":"https://locations.tacobell.com/pa/pittsburgh/121-costco-drive.html","source_title":"Taco Bell in Pittsburgh, PA — 121 Costco Drive","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official drive-through hours are 9 a.m.–2 a.m. daily; the page also displayed dine-in service until 2 a.m. when fetched.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T06:57:55.660987Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9e7-5d94-7ce2-b745-e849ce4d14f8.1786604117398073000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+62,070
+
+{"complete":true,"school_name":"Duquesne University","town_name":"Pittsburgh","boards":[{"complete":true,"school_name":"Duquesne University","town_name":"Pittsburgh","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Duquesne University","description":"Ten under-21-safe food stops with directly verified evening, overnight, or 24-hour availability on campus and around Pittsburgh.","icon":"nightlife","cards":[{"subject_id":"duq-business-leader-bistro","subject_type":"place","entity_name":"The Business Leader Bistro","title":"The 24/7 Rockwell Hall Stop","subtitle":"Sixth floor of Rockwell Hall","notes":"Check building access first, then head upstairs for packaged food, snacks, drinks, or locally roasted coffee at any hour.","short_summary":"A round-the-clock campus option tied to Rockwell Hall access.","evidence_claim":"Duquesne lists The Business Leader Bistro on Rockwell Hall's sixth floor and gives it 24/7 academic-calendar hours with building access.","source_url":"https://www.duq.edu/life-at-duquesne/housing-and-dining/dining/index.php","source_title":"Duquesne University Dining Services","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Listed as open 24/7 during the academic calendar, but entry depends on access to Rockwell Hall; hours may change.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"duq-campus-market","subject_type":"place","entity_name":"Campus Market","title":"The 2 A.M. Towers Market","subtitle":"Entrance to Towers Residence Hall","notes":"Use this campus stop for grab-and-go sandwiches, salads, and snacks; mobile ordering and several campus payment methods are accepted.","short_summary":"The campus market with a documented 2 a.m. closing time every day.","evidence_claim":"Duquesne identifies Campus Market at the Towers Residence Hall entrance and lists daily academic-calendar service until 2 a.m.","source_url":"https://www.duq.edu/life-at-duquesne/housing-and-dining/dining/index.php","source_title":"Duquesne University Dining Services","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Academic-calendar hours are 7 a.m.–2 a.m. weekdays and 8 a.m.–2 a.m. weekends; university notes that hours may change.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"duq-fisher-market-express","subject_type":"place","entity_name":"Fisher Market Express","title":"The All-Hours Fisher Grab-and-Go","subtitle":"Inside Fisher Hall","notes":"Confirm Fisher Hall access before setting out, then choose from prepared salads, sandwiches, wraps, snacks, and beverages.","short_summary":"A 24/7 express market for people who can enter Fisher Hall.","evidence_claim":"Duquesne lists Fisher Market Express inside Fisher Hall, describes its prepared grab-and-go selection, and posts 24/7 hours with building access.","source_url":"https://www.duq.edu/life-at-duquesne/housing-and-dining/dining/index.php","source_title":"Duquesne University Dining Services","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Listed as open 24/7 during the academic calendar, subject to access to Fisher Hall; hours may change.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"duq-connections","subject_type":"place","entity_name":"Connections","title":"The 10 P.M. Union Pickup","subtitle":"Second floor of the Gormley Student Union","notes":"Go behind the Union welcome desk for the rotating grab-and-go selection, but reserve this run for Sunday through Thursday evenings.","short_summary":"A weekday-focused Union stop featuring food from Pittsburgh businesses.","evidence_claim":"Duquesne places Connections behind the Union welcome desk and lists Sunday–Thursday service until 10 p.m., with earlier Friday–Saturday closing.","source_url":"https://www.duq.edu/life-at-duquesne/housing-and-dining/dining/index.php","source_title":"Duquesne University Dining Services","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Sunday–Thursday from 7 a.m.–10 p.m.; Friday and Saturday service ends at 5 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"duq-the-incline","subject_type":"place","entity_name":"The Incline","title":"The 9 P.M. Union Food Court","subtitle":"First floor of the Gormley Student Union","notes":"Choose the grill, a customizable salad, or an in-person Duq Station sub before the food court reaches its nightly closing time.","short_summary":"A customizable campus meal stop open through 9 p.m. all week.","evidence_claim":"Duquesne locates The Incline on the Student Union's first floor and lists academic-calendar hours through 9 p.m. every day.","source_url":"https://www.duq.edu/life-at-duquesne/housing-and-dining/dining/index.php","source_title":"Duquesne University Dining Services","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open 7 a.m.–9 p.m. Monday–Friday and 10:30 a.m.–9 p.m. Saturday–Sunday; hours may change.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"duq-union-starbucks","subject_type":"place","entity_name":"Starbucks at Gormley Student Union","title":"The 9 P.M. Union Coffee Stop","subtitle":"Second floor of the Gormley Student Union","notes":"Use this for a Monday–Thursday or Sunday evening drink run; Friday and Saturday service finishes substantially earlier.","short_summary":"The campus coffee counter with selected 9 p.m. closing times.","evidence_claim":"Duquesne locates Starbucks on the Union's second floor and lists closing at 9 p.m. Monday–Thursday and Sunday.","source_url":"https://www.duq.edu/life-at-duquesne/housing-and-dining/dining/index.php","source_title":"Duquesne University Dining Services","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until 9 p.m. Monday–Thursday and Sunday; Friday and Saturday closing is 5 p.m. Hours may change.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"moonlit-burgers-uptown","subject_type":"place","entity_name":"Moonlit Burgers Uptown","title":"The Forbes Avenue Burger Run","subtitle":"1023 Forbes Avenue beside Duquesne","notes":"Head to the Uptown counter before 9 p.m. for burgers, chicken, fries, salads, or a plant-based burger; the restaurant also has kids' meals.","short_summary":"A public Forbes Avenue restaurant that accepts Duquesne Flex and PLUS.","evidence_claim":"Moonlit Burgers' official site lists its Uptown location at 1023 Forbes Avenue as open Monday–Saturday until 9 p.m.; Duquesne says the public location accepts Flex and PLUS.","source_url":"https://moonlitburgers.com/","source_title":"Moonlit Burgers","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Uptown is open Monday–Saturday from 11 a.m.–9 p.m.; the official page does not list Sunday service.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dominos-east-carson-1001","subject_type":"place","entity_name":"Domino's Pizza — 1001 East Carson Street","title":"The South Side Pizza Run","subtitle":"1001 East Carson Street","notes":"Check the live store page before leaving, then choose delivery or carryout; the location sells pizza, sandwiches, pasta, salads, and desserts.","short_summary":"A South Side branch with verified service well after midnight.","evidence_claim":"Domino's official location page identifies the 1001 East Carson Street restaurant and displayed service until 3:30 a.m. when fetched.","source_url":"https://pizza.dominos.com/pennsylvania/pittsburgh/1001-e-carson-street","source_title":"Domino's Pizza at 1001 E Carson Street","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official live listing displayed “Today Until 3:30 AM” when fetched; store hours vary, so recheck before ordering.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dominos-stanwix-625","subject_type":"place","entity_name":"Domino's Pizza — 625 Stanwix Street","title":"The Downtown Pizza Run","subtitle":"625 Stanwix Street","notes":"Use the official listing to confirm the night's closing time and ordering options before making the trip from the Bluff into Downtown.","short_summary":"A Downtown pizza branch whose official listing extends past midnight.","evidence_claim":"Domino's official Pittsburgh listings identify the 625 Stanwix Street restaurant and displayed service until 2 a.m. when researched.","source_url":"https://pizza.dominos.com/pennsylvania/pittsburgh/625-stanwix-st","source_title":"Domino's Pizza at 625 Stanwix St","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official listing displayed service until 2 a.m. when researched; hours vary by day and should be rechecked before departure.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-costco-drive-121","subject_type":"place","entity_name":"Taco Bell — 121 Costco Drive","title":"The 2 A.M. West Pittsburgh Taco Run","subtitle":"121 Costco Drive","notes":"Treat this as a drive or delivery run, and verify the live listing first; the official page currently shows both drive-through and dine-in service.","short_summary":"A farther Pittsburgh option with documented 2 a.m. service every day.","evidence_claim":"Taco Bell's official location page identifies the 121 Costco Drive restaurant and lists drive-through hours from 9 a.m. to 2 a.m. daily.","source_url":"https://locations.tacobell.com/pa/pittsburgh/121-costco-drive.html","source_title":"Taco Bell in Pittsburgh, PA — 121 Costco Drive","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official drive-through hours are 9 a.m.–2 a.m. daily; the page also displayed dine-in service until 2 a.m. when fetched.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}

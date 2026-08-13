@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://ucfhealth.com/tour/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ucfhealth.com/tour/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.chipotle.com/fl/orlando/11680-university-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.chipotle.com/fl/orlando/11680-university-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://ucfknights.com/visitingfans",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ucfknights.com/visitingfans",
+      "error": ""
+    },
+    {
+      "url": "https://www.jewishucf.com/directions.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jewishucf.com/directions.html",
+      "error": ""
+    },
+    {
+      "url": "https://boardwalkapts.net/contacts/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://boardwalkapts.net/contacts/",
+      "error": ""
+    },
+    {
+      "url": "https://www.thepointeatcentral.com/neighborhood",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.thepointeatcentral.com/neighborhood",
+      "error": ""
+    },
+    {
+      "url": "https://sreal.ucf.edu/sreal/lab-location/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sreal.ucf.edu/sreal/lab-location/",
+      "error": ""
+    },
+    {
+      "url": "https://healthprofessions.ucf.edu/clinicbeta/wp-content/uploads/sites/24/2018/11/aac-child-packet-2018.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://healthprofessions.ucf.edu/clinicbeta/wp-content/uploads/sites/24/2018/11/aac-child-packet-2018.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.ocfl.net/CultureParks/Parks.aspx?d=8&m=dtlvw",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ocfl.net/CultureParks/Parks.aspx?d=8&m=dtlvw",
+      "error": ""
+    },
+    {
+      "url": "https://www.tciicapital.com/properties/alafaya-commons/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.tciicapital.com/properties/alafaya-commons/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

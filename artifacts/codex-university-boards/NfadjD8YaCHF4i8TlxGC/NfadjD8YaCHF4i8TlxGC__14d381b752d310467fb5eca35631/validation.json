@@ -1,0 +1,96 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation.",
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://frankandandrea.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://frankandandrea.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.raisingcanes.com/mn/minneapolis/302-15th-ave-se",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.raisingcanes.com/mn/minneapolis/302-15th-ave-se",
+      "error": ""
+    },
+    {
+      "url": "https://www.mesapizzamn.com/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.mesapizzamn.com/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://locations.chipotle.com/mn/minneapolis/1421-4th-street-se",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.chipotle.com/mn/minneapolis/1421-4th-street-se",
+      "error": ""
+    },
+    {
+      "url": "https://pizzaluce.com/locations/seward",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizzaluce.com/locations/seward",
+      "error": ""
+    },
+    {
+      "url": "https://pizzaluce.com/locations/uptown",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizzaluce.com/locations/uptown",
+      "error": ""
+    },
+    {
+      "url": "https://www.leaningtowerpizza.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.leaningtowerpizza.com/",
+      "error": ""
+    },
+    {
+      "url": "https://thenicolletdiner.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://thenicolletdiner.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.minneapolis.org/things-to-do/music-nightlife/food-entertainment/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.minneapolis.org/things-to-do/music-nightlife/food-entertainment/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nightingalempls.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nightingalempls.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Hard Times Cafe"
+  ],
+  "sourceCount": 10,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

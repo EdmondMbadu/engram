@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.chipotle.com/ny/syracuse/129-marshall-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.chipotle.com/ny/syracuse/129-marshall-st",
+      "error": ""
+    },
+    {
+      "url": "https://experience.syracuse.edu/intercultural-collective/belonging-and-student-success/resources/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://experience.syracuse.edu/intercultural-collective/belonging-and-student-success/resources/",
+      "error": ""
+    },
+    {
+      "url": "https://www.tasteofasiacny.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.tasteofasiacny.com/",
+      "error": ""
+    },
+    {
+      "url": "https://varsitysyracuse.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://varsitypizzasyracuse.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

@@ -1,0 +1,56 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.library.miami.edu/spaces/study-zones.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.miami.edu/spaces/study-zones.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.miami.edu/spaces/stack-tower-guide.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.miami.edu/spaces/stack-tower-guide.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.miami.edu/spaces/graduate-study",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.miami.edu/spaces/graduate-study",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.miami.edu/architecture/room-equipment-reservations.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.miami.edu/architecture/room-equipment-reservations.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.miami.edu/musiclib/welcome.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.miami.edu/musiclib/welcome.html",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Architecture Research Center",
+    "Marta and Austin Weeks Music Library"
+  ],
+  "sourceCount": 5,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

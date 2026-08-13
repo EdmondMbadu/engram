@@ -1,0 +1,96 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.brynmawr.edu/inside/offices-services/dining-services/dining-locations/lusty-cup",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.brynmawr.edu/inside/offices-services/dining-services/dining-locations/lusty-cup",
+      "error": ""
+    },
+    {
+      "url": "https://www.brynmawr.edu/inside/offices-services/dining-services/dining-locations/uncommon-grounds",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.brynmawr.edu/inside/offices-services/dining-services/dining-locations/uncommon-grounds",
+      "error": ""
+    },
+    {
+      "url": "https://insomniacookies.com/store/brynmawr",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://insomniacookies.com/store/brynmawr",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/pennsylvania/bryn-mawr/1215-lancaster-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/pennsylvania/bryn-mawr/1215-lancaster-ave",
+      "error": ""
+    },
+    {
+      "url": "https://www.snapcustompizza.com/location/bryn-mawr/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.snapcustompizza.com/location/bryn-mawr/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ottobypolpo.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ottobypolpo.com/",
+      "error": ""
+    },
+    {
+      "url": "https://maps.apple.com/place?place-id=I9C11E5D62D1CDC0B",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://maps.apple.com/place?place-id=I9C11E5D62D1CDC0B",
+      "error": ""
+    },
+    {
+      "url": "https://www.cvs.com/store-locator/cvs-pharmacy-locations/Pennsylvania/Bryn-Mawr",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cvs.com/store-locator/cvs-pharmacy-locations/Pennsylvania/Bryn-Mawr",
+      "error": ""
+    },
+    {
+      "url": "https://www.johnnyspizzabrynmawr.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.johnnyspizzabrynmawr.com/",
+      "error": ""
+    },
+    {
+      "url": "https://zestopizza.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://zestopizza.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "The Lusty Cup",
+    "UnCommon Grounds"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

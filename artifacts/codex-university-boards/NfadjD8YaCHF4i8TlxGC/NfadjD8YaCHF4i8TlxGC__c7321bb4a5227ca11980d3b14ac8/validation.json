@@ -1,0 +1,96 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://calendar.uab.edu/campus_green_456",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calendar.uab.edu/campus_green_456",
+      "error": ""
+    },
+    {
+      "url": "https://www.uab.edu/students/studentcenter/reserving-space/spaces/performance-lounge",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uab.edu/students/studentcenter/reserving-space/spaces/performance-lounge",
+      "error": ""
+    },
+    {
+      "url": "https://www.uab.edu/students/studentcenter/game-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uab.edu/students/studentcenter/game-room",
+      "error": ""
+    },
+    {
+      "url": "https://www.uab.edu/studentaffairs/off-campus-and-family/student-lounge",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uab.edu/studentaffairs/off-campus-and-family/student-lounge",
+      "error": ""
+    },
+    {
+      "url": "https://catalog.uab.edu/undergraduate/libraries/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.uab.edu/undergraduate/libraries/",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.uab.edu/reserve-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.uab.edu/reserve-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://www.uab.edu/reporter/campus/take-note/item/10367-study-smarter-not-harder-strategies-for-a-smooth-exam-week",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uab.edu/reporter/in-the-know/study-smarter-not-harder-strategies-for-a-smooth-exam-week",
+      "error": ""
+    },
+    {
+      "url": "https://www.uab.edu/students/universityrecreation/facility/campus-recreation-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uab.edu/students/universityrecreation/facility/campus-recreation-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.uab.edu/students/home/reserve-event-space",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uab.edu/students/home/reserve-event-space",
+      "error": ""
+    },
+    {
+      "url": "https://www.uab.edu/news/arts-events/uab-students-get-10-tickets-to-shows-at-the-alys-stephens-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uab.edu/news/arts-events/uab-students-get-10-tickets-to-shows-at-the-alys-stephens-center",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "UAB Campus Green",
+    "Mervyn H. Sterne Library"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

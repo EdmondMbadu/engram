@@ -1,0 +1,81 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "GW’s published campus dining hours are semester-specific; each campus card’s access notes instructs visitors to confirm the current schedule.",
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.carvingsdc.com/hours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.carvingsdc.com/hours",
+      "error": ""
+    },
+    {
+      "url": "https://www.dcpizzaonline.com/find-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.dcpizzaonline.com/find-us/",
+      "error": ""
+    },
+    {
+      "url": "https://dining.gwu.edu/sites/g/files/zaxdzs6186/files/2025-08/Final%20Fall%202025%20Hours%20of%20Operations%201pager.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dining.gwu.edu/sites/g/files/zaxdzs6186/files/2025-08/Final%20Fall%202025%20Hours%20of%20Operations%201pager.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://dining.gwu.edu/district-house",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dining.gwu.edu/district-house",
+      "error": ""
+    },
+    {
+      "url": "https://dining.gwu.edu/shenkman-hall",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dining.gwu.edu/shenkman-hall",
+      "error": ""
+    },
+    {
+      "url": "https://www.eatandyspizza.com/location/foggy-bottom/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.eatandyspizza.com/location/foggy-bottom/",
+      "error": ""
+    },
+    {
+      "url": "https://www.westernmarketdc.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.westernmarketdc.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.bodegataqueria.com/location/foggybottom/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bodegataqueria.com/location/foggybottom/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "University Student Center",
+    "District House"
+  ],
+  "sourceCount": 8,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

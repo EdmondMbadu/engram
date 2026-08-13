@@ -1,0 +1,66 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "AEZokngwyCckmcLVD1al",
+    "schoolName": "New Orleans Baptist Theological Seminary",
+    "shortSchoolName": "New Orleans Baptist Theological Seminary",
+    "townName": "New Orleans",
+    "state": "LA",
+    "countryCode": "US",
+    "unitId": "159948",
+    "website": "https://www.nobts.edu/",
+    "latitude": 30.004336,
+    "longitude": -90.043439,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=nobts.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=nobts.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "Reference Room",
+    "Martin Music Library",
+    "Curriculum Lab",
+    "Course Reserves",
+    "Periodicals",
+    "Microforms & Microform Reader",
+    "Book Stacks A–BT",
+    "Book Stacks BT–Z",
+    "Information Technology Center (ITC)",
+    "Writing Center",
+    "Leavell Chapel",
+    "John T. Christian Library",
+    "Luter Student Center",
+    "Cafe New Orleans",
+    "Landrum Leavell Dining Hall",
+    "Martin Chapel",
+    "Bunyan Building",
+    "REC Center",
+    "Doris Kelley Showers of Blessings Building",
+    "Legacy Plaza",
+    "New Orleans Baptist Theological Seminary Campus Map",
+    "Café New Orleans",
+    "Bible Museum",
+    "Caskey Center for Church Excellence",
+    "River City Café",
+    "Leeke Magee Christian Counseling Center"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

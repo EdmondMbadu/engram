@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "6xWP86Ui1AzlSNu1Anx2",
+    "schoolName": "Stevenson University",
+    "shortSchoolName": "Stevenson University",
+    "townName": "Owings Mills",
+    "state": "MD",
+    "countryCode": "US",
+    "unitId": "164173",
+    "website": "https://www.stevenson.edu/",
+    "latitude": 39.426413,
+    "longitude": -76.775809,
+    "heroUrl": "https://www.stevenson.edu/wp-content/uploads/zhanna_alyssa_change_v1.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=stevenson.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "AMC Theatres at Mill Station",
+    "Costco at Mill Station",
+    "Giant Food at Mill Station",
+    "Cinnaholic at Mill Station",
+    "Crumbl Cookies at Mill Station",
+    "Honeygrow at Mill Station",
+    "PetSmart at Mill Station",
+    "Five Below at Mill Station",
+    "Marshalls at Mill Station",
+    "Sephora at Mill Station"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

@@ -1,0 +1,72 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.mu.iastate.edu/building-hours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mu.iastate.edu/building-hours",
+      "error": ""
+    },
+    {
+      "url": "https://museums.iastate.edu/files/documents/2025-10/Art_on_Campus_map_2019.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://museums.iastate.edu/files/documents/2025-10/Art_on_Campus_map_2019.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://catalog.iastate.edu/studentactivities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.iastate.edu/studentactivities/",
+      "error": ""
+    },
+    {
+      "url": "https://museums.iastate.edu/event/art-walk-poetry-walk-monday-monologues",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://museums.iastate.edu/event/art-walk-poetry-walk-monday-monologues",
+      "error": ""
+    },
+    {
+      "url": "https://museums.iastate.edu/news/ghost-trees",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://museums.iastate.edu/news/ghost-trees",
+      "error": ""
+    },
+    {
+      "url": "https://reimangardens.theme.iastate.edu/admission-and-hours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://reimangardens.theme.iastate.edu/admission-and-hours",
+      "error": ""
+    },
+    {
+      "url": "https://www.mu.iastate.edu/amenities-and-lounge-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mu.iastate.edu/amenities-and-lounge-spaces",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Reiman Gardens",
+    "The Center"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

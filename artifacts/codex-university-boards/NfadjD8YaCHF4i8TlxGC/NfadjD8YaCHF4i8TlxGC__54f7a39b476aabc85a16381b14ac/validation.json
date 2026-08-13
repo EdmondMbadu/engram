@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.lib.fsu.edu/visit-and-study/bradley-reading-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.fsu.edu/visit-and-study/bradley-reading-room",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.fsu.edu/special-collections/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.fsu.edu/special-collections/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.fsu.edu/visit-and-study/individual-study-2041-2060",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.fsu.edu/visit-and-study/individual-study-2041-2060",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.fsu.edu/visit-and-study/rooms-and-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.fsu.edu/visit-and-study/rooms-and-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.fsu.edu/visit-and-study/group-study-rooms-303-305",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.fsu.edu/visit-and-study/group-study-rooms-303-305",
+      "error": ""
+    },
+    {
+      "url": "https://studentaffairs.fsu.edu/finals",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentaffairs.fsu.edu/finals",
+      "error": ""
+    },
+    {
+      "url": "https://www.innovation.fsu.edu/reservations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.innovation.fsu.edu/reservations",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

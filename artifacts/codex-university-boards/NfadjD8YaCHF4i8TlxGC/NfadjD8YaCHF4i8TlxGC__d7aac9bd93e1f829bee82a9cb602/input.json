@@ -1,0 +1,60 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "bQstrhOraoFYKqUmsZrB",
+    "schoolName": "University of Alabama at Birmingham",
+    "shortSchoolName": "University of Alabama at Birmingham",
+    "townName": "Birmingham",
+    "state": "AL",
+    "countryCode": "US",
+    "unitId": "100663",
+    "website": "https://www.uab.edu/",
+    "latitude": 33.505697,
+    "longitude": -86.799345,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=uab.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=uab.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain University of Alabama at Birmingham",
+  "excluded_subjects": [
+    "Mervyn H. Sterne Library First-Floor Collaborative Study Space",
+    "Mervyn H. Sterne Library Third-Floor Quiet Zone",
+    "Mervyn H. Sterne Library Single Study Rooms",
+    "Mervyn H. Sterne Library Group Study Rooms",
+    "Mervyn H. Sterne Library Study Carrels",
+    "Sterne Library SL 174",
+    "Sterne Library Sensory Room 385",
+    "Lister Hill Library First-Floor Study Rooms",
+    "Lister Hill Library Second-Floor Quiet Area",
+    "Lister Hill Library Second-Floor Conference Room",
+    "UAB Campus Green",
+    "Hill Student Center",
+    "Magic City Eats",
+    "UAB Campus Recreation Center",
+    "Climbing Wall & Bouldering Wall",
+    "Mervyn H. Sterne Library",
+    "Railroad Park",
+    "Rotary Trail",
+    "Sloss Furnaces National Historic Landmark",
+    "Birmingham Museum of Art"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

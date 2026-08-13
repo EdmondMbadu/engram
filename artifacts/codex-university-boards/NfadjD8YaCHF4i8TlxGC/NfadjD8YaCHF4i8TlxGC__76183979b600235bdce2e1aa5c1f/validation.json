@@ -1,0 +1,79 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://library.gwu.edu/gelman-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://library.gwu.edu/gelman-library",
+      "error": ""
+    },
+    {
+      "url": "https://blogs.gwu.edu/himmelfarb/2022/11/30/studying-at-himmelfarb-know-our-zones/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://blogs.gwu.edu/himmelfarb/2022/11/30/studying-at-himmelfarb-know-our-zones/",
+      "error": ""
+    },
+    {
+      "url": "https://students.gwu.edu/university-student-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://students.gwu.edu/university-student-center",
+      "error": ""
+    },
+    {
+      "url": "https://events-venues.gwu.edu/gw-campus-venues",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events-venues.gwu.edu/gw-campus-venues",
+      "error": ""
+    },
+    {
+      "url": "https://gwtoday.gwu.edu/look-inside-science-and-engineering-hall",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gwtoday.gwu.edu/look-inside-science-and-engineering-hall",
+      "error": ""
+    },
+    {
+      "url": "https://corcoran.gwu.edu/our-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://corcoran.gwu.edu/our-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://virginia.gwu.edu/buildings",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://virginia.gwu.edu/buildings",
+      "error": ""
+    },
+    {
+      "url": "https://virginia.gwu.edu/student-study-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://virginia.gwu.edu/student-study-spaces",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "University Yard"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

@@ -1,0 +1,80 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://hanselngriddle.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://hanselngriddle.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.pizzacitynewbrunswick.com/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pizzacitynewbrunswick.com/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://elranchonewbrunswick.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://elranchonewbrunswick.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ccpizzaandrestaurant.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ccpizzaandrestaurant.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.toasttab.com/local/order/pizza-city-297-somerset-st/item-medium-hawaiian-pizza_4d84bd26-93f4-4487-b511-fc20ec857242",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.toasttab.com/local/order/pizza-city-297-somerset-st/item-medium-hawaiian-pizza_4d84bd26-93f4-4487-b511-fc20ec857242",
+      "error": ""
+    },
+    {
+      "url": "https://www.douglasspizzanewbrunswick.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://expireddomains.com/domain/douglasspizzanewbrunswick.com?utm_source=redi",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/nj/new-brunswick/1120-somerset-street.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/nj/new-brunswick/1120-somerset-street.html",
+      "error": ""
+    },
+    {
+      "url": "https://food.rutgers.edu/places-eat",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://food.rutgers.edu/places-eat",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Hansel 'n Griddle",
+    "The Atrium"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

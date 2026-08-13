@@ -1,0 +1,152 @@
+{
+  "target": "Pq06UKCcm17ENei9rxqe",
+  "schoolName": "East Carolina University",
+  "generatedAt": "2026-08-13T07:02:34.403Z",
+  "mode": "free-related-campus-distinct",
+  "images": [
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FPq06UKCcm17ENei9rxqe%2F01-12976efe170df32d.jpg?alt=media&token=d0b09b7b-e5a3-4989-afd8-f90d04dd68bd",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:ECU_College_Hill_Dorm.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 3.0",
+      "imageLicense": "CC BY-SA 3.0",
+      "imageTitle": "ECU College Hill Dorm.jpg",
+      "imageFingerprint": "12976efe170df32d6fe07d97431d0be0d81b8369f3365fff8e0e9d8011074533",
+      "imageWidth": 640,
+      "imageHeight": 439,
+      "imageResolvedAt": "2026-08-13T07:02:33.993Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FPq06UKCcm17ENei9rxqe%2F02-15d13bf09c8fe1f6.jpg?alt=media&token=36decbcb-1e40-474b-9c0c-a1d5c9470a56",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Charles_Barkley_at_East_Carolina_University.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 2.0",
+      "imageLicense": "CC BY-SA 2.0",
+      "imageTitle": "Charles Barkley at East Carolina University.jpg",
+      "imageFingerprint": "15d13bf09c8fe1f6b2c8ad25d6bc34855d1a2a1b5834b414e487972da248349d",
+      "imageWidth": 1920,
+      "imageHeight": 1280,
+      "imageResolvedAt": "2026-08-13T07:02:34.059Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FPq06UKCcm17ENei9rxqe%2F03-c396aed654fe2653.jpg?alt=media&token=bc1a3270-bd9d-4754-a5a5-c8cda9b20a09",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Coast_watch_(1979)_(20472072490).jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · No restrictions",
+      "imageLicense": "No restrictions",
+      "imageTitle": "Coast watch (1979) (20472072490).jpg",
+      "imageFingerprint": "c396aed654fe265328996889d3cdb627df891ea2b09994e9c03a190e2a2510de",
+      "imageWidth": 1440,
+      "imageHeight": 2240,
+      "imageResolvedAt": "2026-08-13T07:02:34.114Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FPq06UKCcm17ENei9rxqe%2F04-b7ba5f3d60ff27ce.jpg?alt=media&token=a7043281-04f7-4b1b-8264-e0946f3c2e03",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:College_Affordability_forum_with_Chelsea_Clinton_in_Greenville!.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · Public domain",
+      "imageLicense": "Public domain",
+      "imageTitle": "College Affordability forum with Chelsea Clinton in Greenville!.jpg",
+      "imageFingerprint": "b7ba5f3d60ff27ce7cda348088082a939b5a0a934dbe3b178491ebaf468cb444",
+      "imageWidth": 567,
+      "imageHeight": 565,
+      "imageResolvedAt": "2026-08-13T07:02:34.004Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FPq06UKCcm17ENei9rxqe%2F05-e1007bd734843a19.jpg?alt=media&token=e1aa224e-79c9-4675-ba1c-2bc5aab8481c",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:ECU_Pirate_(3695012534).jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY 2.0",
+      "imageLicense": "CC BY 2.0",
+      "imageTitle": "ECU Pirate (3695012534).jpg",
+      "imageFingerprint": "e1007bd734843a1947e2ff53d066fa72be73b62faae02878da673b2ac9c75cf8",
+      "imageWidth": 1920,
+      "imageHeight": 2880,
+      "imageResolvedAt": "2026-08-13T07:02:34.253Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FPq06UKCcm17ENei9rxqe%2F06-b106a9870f079164.jpg?alt=media&token=ef34888b-a404-4624-812d-44077b76a0ed",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:East_Carolina_University_(3694207491).jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY 2.0",
+      "imageLicense": "CC BY 2.0",
+      "imageTitle": "East Carolina University (3694207491).jpg",
+      "imageFingerprint": "b106a9870f079164c0e3161b307cc7df17ec3947f2b38609dbbd93c38e289a7c",
+      "imageWidth": 1920,
+      "imageHeight": 1280,
+      "imageResolvedAt": "2026-08-13T07:02:34.083Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FPq06UKCcm17ENei9rxqe%2F07-280d004b32f79750.jpg?alt=media&token=225cf5bf-35cf-4085-af84-326853bf3cb0",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:East_Carolina_University_(3694202087).jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY 2.0",
+      "imageLicense": "CC BY 2.0",
+      "imageTitle": "East Carolina University (3694202087).jpg",
+      "imageFingerprint": "280d004b32f79750c0d367b379d99ccbe8745df5fcbecbd7bacf58dcae47cd44",
+      "imageWidth": 1920,
+      "imageHeight": 1280,
+      "imageResolvedAt": "2026-08-13T07:02:34.243Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FPq06UKCcm17ENei9rxqe%2F08-cee14ecbe9ce630f.jpg?alt=media&token=5bad18ec-ce28-49ec-80b9-17d88baa0ad6",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:East_Carolina_University_(3695006122).jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY 2.0",
+      "imageLicense": "CC BY 2.0",
+      "imageTitle": "East Carolina University (3695006122).jpg",
+      "imageFingerprint": "cee14ecbe9ce630feeee5b578bc0cfc1798ba9901ad5255911bbec07b74a3756",
+      "imageWidth": 1920,
+      "imageHeight": 1280,
+      "imageResolvedAt": "2026-08-13T07:02:34.252Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FPq06UKCcm17ENei9rxqe%2F09-ba0ecad006469b5b.jpg?alt=media&token=f1018233-c4cc-4f42-8b3b-40c453b9ba3d",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:ECU_-_Lawn_(3695018050).jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY 2.0",
+      "imageLicense": "CC BY 2.0",
+      "imageTitle": "ECU - Lawn (3695018050).jpg",
+      "imageFingerprint": "ba0ecad006469b5be6b6b679f1415cc9830c25b5c5ab096ff3026260268d4f8a",
+      "imageWidth": 1920,
+      "imageHeight": 1280,
+      "imageResolvedAt": "2026-08-13T07:02:34.368Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FPq06UKCcm17ENei9rxqe%2F10-e9d3beafb8b9ecf1.jpg?alt=media&token=0f39b732-52b0-4cc3-bfe8-88831cab236a",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:ECU_-_Lawn_(3695021456).jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY 2.0",
+      "imageLicense": "CC BY 2.0",
+      "imageTitle": "ECU - Lawn (3695021456).jpg",
+      "imageFingerprint": "e9d3beafb8b9ecf12eb8a8959ae35791e2b82c156062dea8c492148745006f8e",
+      "imageWidth": 1920,
+      "imageHeight": 1280,
+      "imageResolvedAt": "2026-08-13T07:02:34.367Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FPq06UKCcm17ENei9rxqe%2F11-b5bbbbdbc293f844.jpg?alt=media&token=9f2b87c0-b5b4-442a-819b-2262b8e61635",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:ECU_(3695027664).jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY 2.0",
+      "imageLicense": "CC BY 2.0",
+      "imageTitle": "ECU (3695027664).jpg",
+      "imageFingerprint": "b5bbbbdbc293f84469a8f5224a07030ad087fba5b552924452c13f8e4d673905",
+      "imageWidth": 1920,
+      "imageHeight": 2880,
+      "imageResolvedAt": "2026-08-13T07:02:34.402Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FPq06UKCcm17ENei9rxqe%2F12-d4a793079413bb48.jpg?alt=media&token=7cbf574f-9687-4068-8075-cea38775aed8",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:ECU_Joyner_Library_(3695029056).jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY 2.0",
+      "imageLicense": "CC BY 2.0",
+      "imageTitle": "ECU Joyner Library (3695029056).jpg",
+      "imageFingerprint": "d4a793079413bb489b28c07b0c0c256e12045f3d46c74ea4f0b2dd91c256997c",
+      "imageWidth": 1920,
+      "imageHeight": 1280,
+      "imageResolvedAt": "2026-08-13T07:02:34.403Z"
+    }
+  ]
+}

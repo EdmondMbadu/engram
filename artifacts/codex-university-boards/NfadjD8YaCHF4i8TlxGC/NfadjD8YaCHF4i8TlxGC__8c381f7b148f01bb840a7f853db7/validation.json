@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.stevenson.edu/about/campus-services/hours-operation/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stevenson.edu/about/campus-services/hours-operation/",
+      "error": ""
+    },
+    {
+      "url": "https://www.stevenson.edu/stories/rockland-dining-hall-tour/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stevenson.edu/stories/rockland-dining-hall-tour/",
+      "error": ""
+    },
+    {
+      "url": "https://www.stevenson.edu/student-life/student-broadcasting/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stevenson.edu/student-life/student-broadcasting/",
+      "error": ""
+    },
+    {
+      "url": "https://www.stevenson.edu/student-life/living-on-campus/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stevenson.edu/student-life/living-on-campus/",
+      "error": ""
+    },
+    {
+      "url": "https://www.stevenson.edu/wp-content/uploads/PDF-VERSION-10-23-25-Stevenson-Undergraduate-Catalog-25-26-saved-on-11-4-2025.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stevenson.edu/wp-content/uploads/PDF-VERSION-10-23-25-Stevenson-Undergraduate-Catalog-25-26-saved-on-11-4-2025.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.stevenson.edu/about/arts-cultural-programs/art-exhibitions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stevenson.edu/about/arts-cultural-programs/art-exhibitions/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

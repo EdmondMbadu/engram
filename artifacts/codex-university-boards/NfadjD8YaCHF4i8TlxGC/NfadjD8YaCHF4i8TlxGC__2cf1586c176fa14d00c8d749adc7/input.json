@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "YUS9BhwOFjH0oTWedCra",
+    "schoolName": "Holy Family University",
+    "shortSchoolName": "Holy Family University",
+    "townName": "Philadelphia",
+    "state": "PA",
+    "countryCode": "US",
+    "unitId": "212984",
+    "website": "https://www.holyfamily.edu/",
+    "latitude": 40.060581,
+    "longitude": -74.986451,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=holyfamily.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=holyfamily.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain Holy Family University",
+  "excluded_subjects": [
+    "Campus Center",
+    "Holy Family University Library",
+    "Holy Family University Art Gallery",
+    "Tiger Café",
+    "Holy Family University Esports Center",
+    "Albert & Carolyn Smith Cardio Room and Weight Room",
+    "Athletic Field & Metz Family Fieldhouse",
+    "Glen Foerd Grounds",
+    "Blessed Mary of Jesus the Good Shepherd Chapel",
+    "Holy Family University Labyrinth"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

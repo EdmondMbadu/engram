@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.jmu.edu/arboretum/visit/index.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jmu.edu/arboretum/visit/index.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.jmu.edu/planetarium/saturday-show-schedule.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jmu.edu/planetarium/saturday-show-schedule.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.jmu.edu/mineralmuseum/planning-visit.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jmu.edu/mineralmuseum/planning-visit.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.jmu.edu/dukehallgallery/visit.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jmu.edu/dukehallgallery/visit.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.jmu.edu/madisonart/faq.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jmu.edu/madisonart/faq.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.jmu.edu/furiousflower/broadside-gallery/bring-your-class-to-visit.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jmu.edu/furiousflower/broadside-gallery/bring-your-class-to-visit.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.jmu.edu/visitors/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.jmu.edu/visitors/",
+      "error": ""
+    },
+    {
+      "url": "https://www.jmu.edu/news/counselingctr/2023/04-august_17_fall_semester_wellness_resources.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jmu.edu/counselingctr/self-help/self-care/campus_wellness_resources.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.jmu.edu/recreation/visit/guide.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jmu.edu/recreation/visit/guide.shtml",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 100,
+  "generationGrade": "A"
+}

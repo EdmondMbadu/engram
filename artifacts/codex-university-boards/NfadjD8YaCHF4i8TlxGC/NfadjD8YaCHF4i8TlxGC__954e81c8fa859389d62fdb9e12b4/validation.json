@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://businessaffairs.arizona.edu/historic-preservation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://businessaffairs.arizona.edu/historic-preservation",
+      "error": ""
+    },
+    {
+      "url": "https://arboretum.arizona.edu/joseph-wood-krutch-garden",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arboretum.arizona.edu/joseph-wood-krutch-garden",
+      "error": ""
+    },
+    {
+      "url": "https://arboretum.arizona.edu/tree_tours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arboretum.arizona.edu/tree_tours",
+      "error": ""
+    },
+    {
+      "url": "https://union.arizona.edu/about-us/student-unions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://union.arizona.edu/about-us/student-unions",
+      "error": ""
+    },
+    {
+      "url": "https://lib.arizona.edu/locations/main",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.arizona.edu/locations/main",
+      "error": ""
+    },
+    {
+      "url": "https://flandrau.org/visit/hours-and-admission",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://flandrau.org/visit/hours-and-admission",
+      "error": ""
+    },
+    {
+      "url": "https://rec.arizona.edu/outdoor/faqs-and-policies",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://rec.arizona.edu/outdoor/faqs-and-policies",
+      "error": ""
+    },
+    {
+      "url": "https://www.arizona.edu/student-life/spirit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.arizona.edu/campus-life/spirit-traditions",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

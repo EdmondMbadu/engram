@@ -1,0 +1,85 @@
+{
+  "ok": false,
+  "problems": [
+    "Card titles are not unique.",
+    "Card entities are not unique."
+  ],
+  "warnings": [
+    "4 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://thecommons.umbc.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thecommons.umbc.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://umbc.edu/about/visit/on-campus-destinations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://umbc.edu/about/visit/on-campus-destinations/",
+      "error": ""
+    },
+    {
+      "url": "https://welcomeguide.umbc.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://welcomeguide.umbc.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://library.umbc.edu/studyspaces.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.umbc.edu/studyspaces.php",
+      "error": ""
+    },
+    {
+      "url": "https://library.umbc.edu/media/dml.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.umbc.edu/media/dml.php",
+      "error": ""
+    },
+    {
+      "url": "https://cadvc.umbc.edu/visit-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cadvc.umbc.edu/visit-us/",
+      "error": ""
+    },
+    {
+      "url": "https://welcomeguide.umbc.edu/athletics",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://welcomeguide.umbc.edu/athletics",
+      "error": ""
+    },
+    {
+      "url": "https://ges.umbc.edu/visit-cera/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ges.umbc.edu/visit-cera/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "The Commons",
+    "Digital Media Lab",
+    "Center for Art, Design and Visual Culture",
+    "Retriever Activities Center"
+  ],
+  "sourceCount": 8,
+  "generationScore": null,
+  "generationGrade": null
+}

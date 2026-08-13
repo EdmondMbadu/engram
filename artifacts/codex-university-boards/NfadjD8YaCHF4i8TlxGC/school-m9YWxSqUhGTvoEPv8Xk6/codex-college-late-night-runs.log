@@ -1,0 +1,247 @@
+Reading additional input from stdin...
+2026-08-13T07:50:29.582067Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:50:29.642238Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:50:29.696941Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa19-da0f-7303-8657-8a7ab973ea80.1786607426063411000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa19-e7a3-7d51-a556-9c00057464e8
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"m9YWxSqUhGTvoEPv8Xk6","schoolName":"Kenyon College","shortSchoolName":"Kenyon College","townName":"Gambier","state":"OH","countryCode":"US","website":"https://www.kenyon.edu/","latitude":40.374408,"longitude":-82.397977},"templates":[{"id":"college-late-night-runs","version":"1.0","titlePattern":"{count} Late-Night Runs That Explain {school}","editorialBrief":"Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.","researchQueries":["late night dining students","campus dining late hours","restaurants open late near campus"],"count":10,"icon":"nightlife","primarySubjectType":"place","allowedSubjectTypes":["place"],"freshnessDays":120,"exactTitle":"10 Late-Night Runs That Explain Kenyon College"}]}
+codex
+{ "complete": false, "school_name": "Kenyon College", "town_name": "Gambier", "boards": [ { "complete": false, "school_name": "Kenyon College", "town_name": "Gambier", "template_id": "college-late-night-runs", "title": "10 Late-Night Runs That Explain Kenyon College", "description": "Researching 10 distinct, under-21-safe destinations with direct current late-hours evidence.", "icon": "nightlife", "cards": [ { "subject_id": "research-in-progress", "subject_type": "place", "entity_name": "Research in progress", "title": "Research in progress", "subtitle": "Verifying current late hours", "notes": "Checking official campus and business pages for current evening access and direct supporting URLs.", "short_summary": "Current-hours verification underway.", "evidence_claim": "Research is in progress.", "source_url": "https://www.kenyon.edu/", "source_title": "Kenyon College", "source_kind": "university_official", "source_published_at": null, "source_fetched_at": "2026-08-13", "latitude": null, "longitude": null, "maps_url": null, "access_notes": "Pending verification.", "cost_status": "unknown", "under21_safe": true } 
+     
+     ,
+    {
+      "subject_id": "research-placeholder-2",
+      "subject_type": "place",
+      "entity_name": "Research placeholder",
+      "title": "Research placeholder",
+      "subtitle": "Verification underway",
+      "notes": "Additional destinations are being checked against direct official sources for current late hours.",
+      "short_summary": "Direct-source research underway.",
+      "evidence_claim": "Research is in progress.",
+      "source_url": "https://www.kenyon.edu/",
+      "source_title": "Kenyon College",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending verification.",
+      "cost_status": "unknown",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "research-placeholder-3",
+      "subject_type": "place",
+      "entity_name": "Research placeholder",
+      "title": "Research placeholder",
+      "subtitle": "Verification underway",
+      "notes": "Additional destinations are being checked against direct official sources for current late hours.",
+      "short_summary": "Direct-source research underway.",
+      "evidence_claim": "Research is in progress.",
+      "source_url": "https://www.kenyon.edu/",
+      "source_title": "Kenyon College",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending verification.",
+      "cost_status": "unknown",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "research-placeholder-4",
+      "subject_type": "place",
+      "entity_name": "Research placeholder",
+      "title": "Research placeholder",
+      "subtitle": "Verification underway",
+      "notes": "Additional destinations are being checked against direct official sources for current late hours.",
+      "short_summary": "Direct-source research underway.",
+      "evidence_claim": "Research is in progress.",
+      "source_url": "https://www.kenyon.edu/",
+      "source_title": "Kenyon College",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending verification.",
+      "cost_status": "unknown",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "research-placeholder-5",
+      "subject_type": "place",
+      "entity_name": "Research placeholder",
+      "title": "Research placeholder",
+      "subtitle": "Verification underway",
+      "notes": "Additional destinations are being checked against direct official sources for current late hours.",
+      "short_summary": "Direct-source research underway.",
+      "evidence_claim": "Research is in progress.",
+      "source_url": "https://www.kenyon.edu/",
+      "source_title": "Kenyon College",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending verification.",
+      "cost_status": "unknown",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "research-placeholder-6",
+      "subject_type": "place",
+      "entity_name": "Research placeholder",
+      "title": "Research placeholder",
+      "subtitle": "Verification underway",
+      "notes": "Additional destinations are being checked against direct official sources for current late hours.",
+      "short_summary": "Direct-source research underway.",
+      "evidence_claim": "Research is in progress.",
+      "source_url": "https://www.kenyon.edu/",
+      "source_title": "Kenyon College",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending verification.",
+      "cost_status": "unknown",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "research-placeholder-7",
+      "subject_type": "place",
+      "entity_name": "Research placeholder",
+      "title": "Research placeholder",
+      "subtitle": "Verification underway",
+      "notes": "Additional destinations are being checked against direct official sources for current late hours.",
+      "short_summary": "Direct-source research underway.",
+      "evidence_claim": "Research is in progress.",
+      "source_url": "https://www.kenyon.edu/",
+      "source_title": "Kenyon College",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending verification.",
+      "cost_status": "unknown",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "research-placeholder-8",
+      "subject_type": "place",
+      "entity_name": "Research placeholder",
+      "title": "Research placeholder",
+      "subtitle": "Verification underway",
+      "notes": "Additional destinations are being checked against direct official sources for current late hours.",
+      "short_summary": "Direct-source research underway.",
+      "evidence_claim": "Research is in progress.",
+      "source_url": "https://www.kenyon.edu/",
+      "source_title": "Kenyon College",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending verification.",
+      "cost_status": "unknown",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "research-placeholder-9",
+      "subject_type": "place",
+      "entity_name": "Research placeholder",
+      "title": "Research placeholder",
+      "subtitle": "Verification underway",
+      "notes": "Additional destinations are being checked against direct official sources for current late hours.",
+      "short_summary": "Direct-source research underway.",
+      "evidence_claim": "Research is in progress.",
+      "source_url": "https://www.kenyon.edu/",
+      "source_title": "Kenyon College",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending verification.",
+      "cost_status": "unknown",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "research-placeholder-10",
+      "subject_type": "place",
+      "entity_name": "Research placeholder",
+      "title": "Research placeholder",
+      "subtitle": "Verification underway",
+      "notes": "Additional destinations are being checked against direct official sources for current late hours.",
+      "short_summary": "Direct-source research underway.",
+      "evidence_claim": "Research is in progress.",
+      "source_url": "https://www.kenyon.edu/",
+      "source_title": "Kenyon College",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending verification.",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }
+  ],
+  "warnings": ["Interim research status; final board will contain exactly 10 verified distinct cards."] } ], "warnings": ["Web verification in progress."] }
+web search: 
+web search: site:kenyon.edu dining hours Gambier late night ...
+web search: 
+web search: site:mcdonalds.com/us/en-us/location/oh/mount-vernon hours ...
+web search: 
+web search: site:dominos.com/en/pages/store Mount Vernon Ohio 43050 hours ...
+codex
+{"complete":true,"school_name":"Kenyon College","town_name":"Gambier","boards":[{"complete":true,"school_name":"Kenyon College","town_name":"Gambier","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Kenyon College","description":"A conservative, under-21-safe guide to Kenyon’s verified late dining option and evening food runs in Gambier and nearby Mount Vernon. Recheck hours before leaving, especially during breaks and holidays.","icon":"nightlife","cards":[{"subject_id":"peirce-dining-hall-late-night","subject_type":"place","entity_name":"Peirce Dining Hall","title":"Late Night at Peirce","subtitle":"The on-campus option after regular dinner","notes":"Enter Peirce between 9 and 10:30 p.m. Monday through Thursday; confirm the academic calendar before relying on service.","short_summary":"Kenyon’s dining provider lists a dedicated weekday late-night service inside Peirce Hall.","evidence_claim":"AVI Fresh lists Peirce Dining Hall Late Night from 9:00 to 10:30 p.m. Monday through Thursday.","source_url":"https://aviserves.com/kenyon/dining.html","source_title":"AVI Fresh for Kenyon | Dining","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Late Night is listed Monday–Thursday, 9:00–10:30 p.m.; campus dining schedules may change during breaks.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"village-inn-gambier","subject_type":"place","entity_name":"The Village Inn","title":"A Nine-O’Clock Gambier Table","subtitle":"Dinner beside campus in Gambier village","notes":"Arrive before the 9 p.m. close and check the restaurant’s posted schedule first; evening service is unavailable Sunday and Monday.","short_summary":"This walkable village restaurant provides Gambier’s documented evening sit-down window.","evidence_claim":"The Village Inn lists dinner until 9:00 p.m. Tuesday through Friday and continuous service until 9:00 p.m. Saturday.","source_url":"https://www.villageinngambier.com/location","source_title":"Hours — The Village Inn","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Tuesday–Friday 11 a.m.–2 p.m. and 5–9 p.m.; Saturday 11 a.m.–9 p.m.; closed Sunday and Monday.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dominos-406-coshocton","subject_type":"place","entity_name":"Domino’s Pizza — 406 Coshocton Avenue","title":"The 1 A.M. Pizza Run","subtitle":"Late carryout or delivery from Mount Vernon","notes":"Check the live store page, select carryout or delivery, and confirm that your Gambier address falls inside the current delivery area.","short_summary":"The Mount Vernon Domino’s publishes service extending into the early morning.","evidence_claim":"Domino’s official location page identifies the 406 Coshocton Avenue store and states that it is open until 1:00 a.m.","source_url":"https://pizza.dominos.com/ohio/mount-vernon/406-coshocton-ave","source_title":"Domino's Pizza at 406 Coshocton Ave. | Domino's in Mount Vernon","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official store page reports service until 1:00 a.m.; delivery range and daily hours should be confirmed when ordering.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"pizza-hut-700-s-main","subject_type":"place","entity_name":"Pizza Hut — 700 South Main Street","title":"Friday Pizza After Ten","subtitle":"Weekend carryout or delivery in Mount Vernon","notes":"Use the location page to choose carryout or delivery, noting that dine-in closes earlier than the Friday and Saturday order window.","short_summary":"This South Main Street shop keeps its documented delivery and carryout window later on weekends.","evidence_claim":"Pizza Hut lists delivery and carryout until 11:00 p.m. Friday and Saturday at 700 South Main Street.","source_url":"https://locations.pizzahut.com/oh/mount-vernon/700-s-main","source_title":"Pizza Hut: Pizza & Wings - Delivery & Take Out From 700 S Main","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Delivery and carryout run until 11 p.m. Friday–Saturday and 10 p.m. other nights; dine-in closes earlier.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wendys-522-s-main","subject_type":"place","entity_name":"Wendy’s — 522 South Main Street","title":"South Main Until One","subtitle":"An all-week Mount Vernon drive-thru option","notes":"Plan this as a vehicle run from Gambier and verify the location page before departure; both restaurant and drive-thru list the same close.","short_summary":"The South Main Wendy’s maintains a documented 1 a.m. closing every day.","evidence_claim":"Wendy’s lists restaurant and drive-thru hours from 6:00 a.m. to 1:00 a.m. daily at 522 South Main Street.","source_url":"https://locations.wendys.com/united-states/oh/mount-vernon/522-south-main-street","source_title":"Wendy's 522 South Main Street in Mount Vernon, OH","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Restaurant and drive-thru are listed until 1:00 a.m. seven days a week.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wendys-994-coshocton","subject_type":"place","entity_name":"Wendy’s — 994 Coshocton Avenue","title":"Coshocton Avenue Until Two","subtitle":"The latest verified Wendy’s window nearby","notes":"Use the Coshocton Avenue address when navigating; Mount Vernon has another Wendy’s with a different, earlier closing time.","short_summary":"This specific Wendy’s location documents food service through 2 a.m. every night.","evidence_claim":"Wendy’s lists restaurant and drive-thru hours from 6:00 a.m. to 2:00 a.m. daily at 994 Coshocton Avenue.","source_url":"https://locations.wendys.com/united-states/oh/mount-vernon/994-coshocton-avenue","source_title":"Wendy's 994 Coshocton Avenue in Mount Vernon, OH","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Restaurant and drive-thru are listed until 2:00 a.m. seven days a week.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-120-newark","subject_type":"place","entity_name":"Taco Bell — 120 Newark Road","title":"Newark Road After Midnight","subtitle":"A late drive-thru south of downtown Mount Vernon","notes":"Expect drive-thru service late at night and verify the day’s dine-in listing separately; the published access windows are not identical.","short_summary":"The Newark Road Taco Bell documents drive-thru service beyond midnight all week.","evidence_claim":"Taco Bell lists the drive-thru until 1:00 a.m. Sunday through Wednesday and 2:00 a.m. Thursday through Saturday.","source_url":"https://locations.tacobell.com/oh/mount-vernon/120-newark-road.html","source_title":"Taco Bell in Mount Vernon, OH — 120 Newark Road","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-thru closes at 1 a.m. Sunday–Wednesday and 2 a.m. Thursday–Saturday; late dine-in availability is more limited.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-1015-coshocton","subject_type":"place","entity_name":"Taco Bell — 1015 Coshocton Avenue","title":"The Other Two-A.M. Taco Bell","subtitle":"Late drive-thru on Mount Vernon’s east side","notes":"Navigate to 1015 Coshocton Avenue, not Newark Road, and treat late service as drive-thru unless the official page confirms dine-in.","short_summary":"Mount Vernon’s Coshocton Avenue Taco Bell also carries a verified post-midnight schedule.","evidence_claim":"Taco Bell lists the drive-thru until 1:00 a.m. Sunday through Wednesday and 2:00 a.m. Thursday through Saturday.","source_url":"https://locations.tacobell.com/oh/mount-vernon/1015-coshocton-ave-/restaurant.html","source_title":"Taco Bell Restaurant Near Me in Mount Vernon, OH","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-thru closes at 1 a.m. Sunday–Wednesday and 2 a.m. Thursday–Saturday; the listed dine-in window ends earlier.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"mcdonalds-1059-coshocton","subject_type":"place","entity_name":"McDonald’s — 1059 Coshocton Avenue","title":"Midnight on Coshocton Avenue","subtitle":"Drive-thru service every night in Mount Vernon","notes":"Choose drive-thru for the latest window; the lobby closes at 10 p.m., so confirm the address and order channel before leaving Gambier.","short_summary":"This McDonald’s pairs a 10 p.m. lobby close with later drive-thru access.","evidence_claim":"McDonald’s lists drive-thru service until midnight Sunday through Thursday and 1:00 a.m. Friday and Saturday.","source_url":"https://www.mcdonalds.com/us/en-us/location/oh/mount-vernon/1059-coshocton-ave/10020.html","source_title":"Fast Food in Mount Vernon, OH at 1059 Coshocton Ave | McDonald's","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Lobby closes at 10 p.m.; drive-thru closes at midnight Sunday–Thursday and 1 a.m. Friday–Saturday.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"mcdonalds-674-sandusky","subject_type":"place","entity_name":"McDonald’s — 674 Sandusky Street","title":"Weekend Midnight on Sandusky Street","subtitle":"A Friday-and-Saturday Mount Vernon drive-thru","notes":"Reserve this run for the verified late-week window and check the official schedule first; other days close earlier or vary sharply.","short_summary":"The Sandusky Street McDonald’s extends its drive-thru to midnight on Friday and Saturday.","evidence_claim":"McDonald’s lists drive-thru service until midnight Friday and Saturday at 674 Sandusky Street.","source_url":"https://www.mcdonalds.com/us/en-us/location/oh/mount-vernon/674-sandusky-street/29280.html","source_title":"Fast Food in Mount Vernon, OH at 674 Sandusky Street | McDonald's","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-thru closes at midnight Friday–Saturday; other days have earlier or irregular posted closing times.","cost_status":"purchase_required","under21_safe":true}],"warnings":["Eight cards require travel from Gambier to Mount Vernon; confirm safe transportation before departure.","Published hours can change for holidays, academic breaks, weather, staffing, or individual order channels; recheck the linked direct source.","Coordinates and maps URLs are null because they were not independently verified from authoritative direct pages."]}],"warnings":[]}
+2026-08-13T07:52:36.076990Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa19-e7a3-7d51-a556-9c00057464e8.1786607429539986000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+34,159
+
+{"complete":true,"school_name":"Kenyon College","town_name":"Gambier","boards":[{"complete":true,"school_name":"Kenyon College","town_name":"Gambier","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Kenyon College","description":"A conservative, under-21-safe guide to Kenyon’s verified late dining option and evening food runs in Gambier and nearby Mount Vernon. Recheck hours before leaving, especially during breaks and holidays.","icon":"nightlife","cards":[{"subject_id":"peirce-dining-hall-late-night","subject_type":"place","entity_name":"Peirce Dining Hall","title":"Late Night at Peirce","subtitle":"The on-campus option after regular dinner","notes":"Enter Peirce between 9 and 10:30 p.m. Monday through Thursday; confirm the academic calendar before relying on service.","short_summary":"Kenyon’s dining provider lists a dedicated weekday late-night service inside Peirce Hall.","evidence_claim":"AVI Fresh lists Peirce Dining Hall Late Night from 9:00 to 10:30 p.m. Monday through Thursday.","source_url":"https://aviserves.com/kenyon/dining.html","source_title":"AVI Fresh for Kenyon | Dining","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Late Night is listed Monday–Thursday, 9:00–10:30 p.m.; campus dining schedules may change during breaks.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"village-inn-gambier","subject_type":"place","entity_name":"The Village Inn","title":"A Nine-O’Clock Gambier Table","subtitle":"Dinner beside campus in Gambier village","notes":"Arrive before the 9 p.m. close and check the restaurant’s posted schedule first; evening service is unavailable Sunday and Monday.","short_summary":"This walkable village restaurant provides Gambier’s documented evening sit-down window.","evidence_claim":"The Village Inn lists dinner until 9:00 p.m. Tuesday through Friday and continuous service until 9:00 p.m. Saturday.","source_url":"https://www.villageinngambier.com/location","source_title":"Hours — The Village Inn","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Tuesday–Friday 11 a.m.–2 p.m. and 5–9 p.m.; Saturday 11 a.m.–9 p.m.; closed Sunday and Monday.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dominos-406-coshocton","subject_type":"place","entity_name":"Domino’s Pizza — 406 Coshocton Avenue","title":"The 1 A.M. Pizza Run","subtitle":"Late carryout or delivery from Mount Vernon","notes":"Check the live store page, select carryout or delivery, and confirm that your Gambier address falls inside the current delivery area.","short_summary":"The Mount Vernon Domino’s publishes service extending into the early morning.","evidence_claim":"Domino’s official location page identifies the 406 Coshocton Avenue store and states that it is open until 1:00 a.m.","source_url":"https://pizza.dominos.com/ohio/mount-vernon/406-coshocton-ave","source_title":"Domino's Pizza at 406 Coshocton Ave. | Domino's in Mount Vernon","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official store page reports service until 1:00 a.m.; delivery range and daily hours should be confirmed when ordering.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"pizza-hut-700-s-main","subject_type":"place","entity_name":"Pizza Hut — 700 South Main Street","title":"Friday Pizza After Ten","subtitle":"Weekend carryout or delivery in Mount Vernon","notes":"Use the location page to choose carryout or delivery, noting that dine-in closes earlier than the Friday and Saturday order window.","short_summary":"This South Main Street shop keeps its documented delivery and carryout window later on weekends.","evidence_claim":"Pizza Hut lists delivery and carryout until 11:00 p.m. Friday and Saturday at 700 South Main Street.","source_url":"https://locations.pizzahut.com/oh/mount-vernon/700-s-main","source_title":"Pizza Hut: Pizza & Wings - Delivery & Take Out From 700 S Main","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Delivery and carryout run until 11 p.m. Friday–Saturday and 10 p.m. other nights; dine-in closes earlier.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wendys-522-s-main","subject_type":"place","entity_name":"Wendy’s — 522 South Main Street","title":"South Main Until One","subtitle":"An all-week Mount Vernon drive-thru option","notes":"Plan this as a vehicle run from Gambier and verify the location page before departure; both restaurant and drive-thru list the same close.","short_summary":"The South Main Wendy’s maintains a documented 1 a.m. closing every day.","evidence_claim":"Wendy’s lists restaurant and drive-thru hours from 6:00 a.m. to 1:00 a.m. daily at 522 South Main Street.","source_url":"https://locations.wendys.com/united-states/oh/mount-vernon/522-south-main-street","source_title":"Wendy's 522 South Main Street in Mount Vernon, OH","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Restaurant and drive-thru are listed until 1:00 a.m. seven days a week.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wendys-994-coshocton","subject_type":"place","entity_name":"Wendy’s — 994 Coshocton Avenue","title":"Coshocton Avenue Until Two","subtitle":"The latest verified Wendy’s window nearby","notes":"Use the Coshocton Avenue address when navigating; Mount Vernon has another Wendy’s with a different, earlier closing time.","short_summary":"This specific Wendy’s location documents food service through 2 a.m. every night.","evidence_claim":"Wendy’s lists restaurant and drive-thru hours from 6:00 a.m. to 2:00 a.m. daily at 994 Coshocton Avenue.","source_url":"https://locations.wendys.com/united-states/oh/mount-vernon/994-coshocton-avenue","source_title":"Wendy's 994 Coshocton Avenue in Mount Vernon, OH","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Restaurant and drive-thru are listed until 2:00 a.m. seven days a week.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-120-newark","subject_type":"place","entity_name":"Taco Bell — 120 Newark Road","title":"Newark Road After Midnight","subtitle":"A late drive-thru south of downtown Mount Vernon","notes":"Expect drive-thru service late at night and verify the day’s dine-in listing separately; the published access windows are not identical.","short_summary":"The Newark Road Taco Bell documents drive-thru service beyond midnight all week.","evidence_claim":"Taco Bell lists the drive-thru until 1:00 a.m. Sunday through Wednesday and 2:00 a.m. Thursday through Saturday.","source_url":"https://locations.tacobell.com/oh/mount-vernon/120-newark-road.html","source_title":"Taco Bell in Mount Vernon, OH — 120 Newark Road","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-thru closes at 1 a.m. Sunday–Wednesday and 2 a.m. Thursday–Saturday; late dine-in availability is more limited.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-1015-coshocton","subject_type":"place","entity_name":"Taco Bell — 1015 Coshocton Avenue","title":"The Other Two-A.M. Taco Bell","subtitle":"Late drive-thru on Mount Vernon’s east side","notes":"Navigate to 1015 Coshocton Avenue, not Newark Road, and treat late service as drive-thru unless the official page confirms dine-in.","short_summary":"Mount Vernon’s Coshocton Avenue Taco Bell also carries a verified post-midnight schedule.","evidence_claim":"Taco Bell lists the drive-thru until 1:00 a.m. Sunday through Wednesday and 2:00 a.m. Thursday through Saturday.","source_url":"https://locations.tacobell.com/oh/mount-vernon/1015-coshocton-ave-/restaurant.html","source_title":"Taco Bell Restaurant Near Me in Mount Vernon, OH","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-thru closes at 1 a.m. Sunday–Wednesday and 2 a.m. Thursday–Saturday; the listed dine-in window ends earlier.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"mcdonalds-1059-coshocton","subject_type":"place","entity_name":"McDonald’s — 1059 Coshocton Avenue","title":"Midnight on Coshocton Avenue","subtitle":"Drive-thru service every night in Mount Vernon","notes":"Choose drive-thru for the latest window; the lobby closes at 10 p.m., so confirm the address and order channel before leaving Gambier.","short_summary":"This McDonald’s pairs a 10 p.m. lobby close with later drive-thru access.","evidence_claim":"McDonald’s lists drive-thru service until midnight Sunday through Thursday and 1:00 a.m. Friday and Saturday.","source_url":"https://www.mcdonalds.com/us/en-us/location/oh/mount-vernon/1059-coshocton-ave/10020.html","source_title":"Fast Food in Mount Vernon, OH at 1059 Coshocton Ave | McDonald's","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Lobby closes at 10 p.m.; drive-thru closes at midnight Sunday–Thursday and 1 a.m. Friday–Saturday.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"mcdonalds-674-sandusky","subject_type":"place","entity_name":"McDonald’s — 674 Sandusky Street","title":"Weekend Midnight on Sandusky Street","subtitle":"A Friday-and-Saturday Mount Vernon drive-thru","notes":"Reserve this run for the verified late-week window and check the official schedule first; other days close earlier or vary sharply.","short_summary":"The Sandusky Street McDonald’s extends its drive-thru to midnight on Friday and Saturday.","evidence_claim":"McDonald’s lists drive-thru service until midnight Friday and Saturday at 674 Sandusky Street.","source_url":"https://www.mcdonalds.com/us/en-us/location/oh/mount-vernon/674-sandusky-street/29280.html","source_title":"Fast Food in Mount Vernon, OH at 674 Sandusky Street | McDonald's","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-thru closes at midnight Friday–Saturday; other days have earlier or irregular posted closing times.","cost_status":"purchase_required","under21_safe":true}],"warnings":["Eight cards require travel from Gambier to Mount Vernon; confirm safe transportation before departure.","Published hours can change for holidays, academic breaks, weather, staffing, or individual order channels; recheck the linked direct source.","Coordinates and maps URLs are null because they were not independently verified from authoritative direct pages."]}],"warnings":[]}

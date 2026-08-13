@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.simmons.edu/undergraduate/why-simmons/traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.simmons.edu/student-experience/undergraduate-student-experience/traditions",
+      "error": ""
+    },
+    {
+      "url": "https://www.simmons.edu/news/simmons-2023-may-day-ushers-in-spring-spirit-of-inclusivity",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.simmons.edu/news/simmons-2023-may-day-ushers-in-spring-spirit-of-inclusivity",
+      "error": ""
+    },
+    {
+      "url": "https://www.simmons.edu/sites/default/files/2019-08/Fall%20Orientation%20Program%20%281%29.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.simmons.edu/sites/default/files/2019-08/Fall%20Orientation%20Program%20%281%29.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

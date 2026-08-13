@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "RzMmU1nibZhPY8j3PqeN",
+    "schoolName": "University of California-Santa Cruz",
+    "shortSchoolName": "University of California-Santa Cruz",
+    "townName": "Santa Cruz",
+    "state": "CA",
+    "countryCode": "US",
+    "unitId": "110714",
+    "website": "https://www.ucsc.edu/",
+    "latitude": 36.995584,
+    "longitude": -122.058801,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/The_University_of_California_1868_UCSC.svg/960px-The_University_of_California_1868_UCSC.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=ucsc.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Banana Slug Mascot",
+    "Fiat Slug",
+    "“Slime ’em!” Cheer",
+    "Kresge Presents PRIDE",
+    "Chicane Latiné Year-End Celebration",
+    "UC Santa Cruz Powwow",
+    "UC Santa Cruz Family Weekend",
+    "Return to the Redwoods",
+    "Morton Marcus Poetry Reading",
+    "Annual Dizikes Concert"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

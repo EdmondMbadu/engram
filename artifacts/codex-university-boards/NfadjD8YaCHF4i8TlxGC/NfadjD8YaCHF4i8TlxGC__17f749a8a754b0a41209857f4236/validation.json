@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://insideuni.uni.edu/tradition-traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://insideuni.uni.edu/tradition-traditions",
+      "error": ""
+    },
+    {
+      "url": "https://scua.library.uni.edu/uni-history/historical-essays/homecoming/homecoming/uni-homecoming-history",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://scua.library.uni.edu/uni-history/historical-essays/homecoming/homecoming/uni-homecoming-history",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 2,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

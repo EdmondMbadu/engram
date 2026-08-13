@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.endicott.edu/news-events/news/news-articles/2025/08/rising-together",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.endicott.edu/news-events/news/news-articles/2025/08/rising-together",
+      "error": ""
+    },
+    {
+      "url": "https://www.endicott.edu/news-events",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.endicott.edu/news-events",
+      "error": ""
+    },
+    {
+      "url": "https://www.endicott.edu/news-events/commencement/endicott-traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.endicott.edu/news-events/commencement/endicott-traditions",
+      "error": ""
+    },
+    {
+      "url": "https://www.endicott.edu/news-events/commencement/ceremonies",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.endicott.edu/news-events/commencement/ceremonies",
+      "error": ""
+    },
+    {
+      "url": "https://www.endicott.edu/news-events/news/news-articles/2025/05/a-great-day-to-be-a-gull",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.endicott.edu/news-events/news/news-articles/2025/05/a-great-day-to-be-a-gull",
+      "error": ""
+    },
+    {
+      "url": "https://www.endicott.edu/news-events/news/news-articles/2025/10/past-present-and-forever-gulls",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.endicott.edu/news-events/news/news-articles/2025/10/past-present-and-forever-gulls",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

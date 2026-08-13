@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.furman.edu/campus-life/trone-student-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.furman.edu/campus-life/trone-student-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.furman.edu/news/magazine-200-things-we-love-about-furman/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.furman.edu/news/magazine-200-things-we-love-about-furman/",
+      "error": ""
+    },
+    {
+      "url": "https://www.furman.edu/admissions-aid/housing-dining/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.furman.edu/admissions-aid/housing-dining/",
+      "error": ""
+    },
+    {
+      "url": "https://www.furman.edu/news/furman-campus-listed-among-most-beautiful/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.furman.edu/news/furman-campus-listed-among-most-beautiful/",
+      "error": ""
+    },
+    {
+      "url": "https://www.furman.edu/wp-content/uploads/2026/02/Furman-University-Campus-Map-2025-26.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.furman.edu/wp-content/uploads/2026/02/Furman-University-Campus-Map-2025-26.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.furman.edu/campus-recreation/facilities-hours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.furman.edu/campus-recreation/facilities-hours/",
+      "error": ""
+    },
+    {
+      "url": "https://www.furman.edu/place-peace/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.furman.edu/place-peace/",
+      "error": ""
+    },
+    {
+      "url": "https://www.furman.edu/about/location/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.furman.edu/about/location/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

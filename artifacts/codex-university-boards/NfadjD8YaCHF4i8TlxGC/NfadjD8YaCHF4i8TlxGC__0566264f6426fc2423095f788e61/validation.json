@@ -1,0 +1,31 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.rhodes.edu/sites/default/files/2025-04/Rhodes_Campus_Map_4.3.25.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rhodes.edu/sites/default/files/2025-04/Rhodes_Campus_Map_4.3.25.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://catalog.rhodes.edu/matters-record/campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.rhodes.edu/matters-record/campus",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Middle Ground"
+  ],
+  "sourceCount": 2,
+  "generationScore": 90,
+  "generationGrade": "A"
+}

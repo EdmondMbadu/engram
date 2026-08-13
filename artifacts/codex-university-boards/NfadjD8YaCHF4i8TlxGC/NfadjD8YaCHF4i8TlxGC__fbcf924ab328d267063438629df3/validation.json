@@ -1,0 +1,73 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.georgefox.edu/library/spaces/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.georgefox.edu/library/spaces/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.georgefox.edu/recreation/student-center/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.georgefox.edu/recreation/student-center/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.georgefox.edu/college-admissions/campus-tour/canyon-commons.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.georgefox.edu/college-admissions/campus-tour/canyon-commons.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.georgefox.edu/college-admissions/campus-tour/chapel.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.georgefox.edu/college-admissions/campus-tour/chapel.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.georgefox.edu/college-admissions/campus-tour/bauman-auditorium.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.georgefox.edu/college-admissions/campus-tour/bauman-auditorium.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.georgefox.edu/college-admissions/campus-tour/maker-hub.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.georgefox.edu/college-admissions/campus-tour/maker-hub.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.georgefox.edu/college-admissions/campus-tour/canyon.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.georgefox.edu/college-admissions/campus-tour/canyon.html",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Hadlock Student Center",
+    "Canyon Commons",
+    "Bauman Auditorium"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

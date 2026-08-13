@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.pratt.edu/press/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pratt.edu/press/",
+      "error": ""
+    },
+    {
+      "url": "https://www.pratt.edu/prattfolio/stories/ways-of-seeing-pratt-traditions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pratt.edu/prattfolio/stories/ways-of-seeing-pratt-traditions/",
+      "error": ""
+    },
+    {
+      "url": "https://www.pratt.edu/prattfolio/stories/all-inky-hands-on-deck/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pratt.edu/prattfolio/stories/all-inky-hands-on-deck/",
+      "error": ""
+    },
+    {
+      "url": "https://www.pratt.edu/prattfolio/stories/pratt-reef-on-campus-oasis/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pratt.edu/prattfolio/stories/pratt-reef-on-campus-oasis/",
+      "error": ""
+    },
+    {
+      "url": "https://www.pratt.edu/news/show-stopping-looks-pratt-fashion-from-runway-to-exhibition/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pratt.edu/news/show-stopping-looks-pratt-fashion-from-runway-to-exhibition/",
+      "error": ""
+    },
+    {
+      "url": "https://www.pratt.edu/events/pratt-shows-infoshow26/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pratt.edu/events/pratt-shows-infoshow26/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://libraries.towson.edu/featured/find-our-quiet-study-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.towson.edu/featured/find-our-quiet-study-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.towson.edu/using-the-libraries/building-directory/study-lounge",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.towson.edu/using-the-libraries/building-directory/study-lounge",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.towson.edu/using-the-libraries/book-study-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.towson.edu/using-the-libraries/book-study-room",
+      "error": ""
+    },
+    {
+      "url": "https://catalog.towson.edu/undergraduate/student-support-services/albert-s-cook-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.towson.edu/undergraduate/student-support-services/albert-s-cook-library/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

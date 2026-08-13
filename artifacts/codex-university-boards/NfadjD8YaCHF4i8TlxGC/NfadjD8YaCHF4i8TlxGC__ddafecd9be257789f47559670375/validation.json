@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://gssw.touro.edu/about-us/our-campuses/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gssw.touro.edu/about-us/our-campuses/",
+      "error": ""
+    },
+    {
+      "url": "https://www.timessquarenyc.org/explore/accessibility-resources-for-times-square",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.timessquarenyc.org/explore/accessibility-resources-for-times-square",
+      "error": ""
+    },
+    {
+      "url": "https://bryantpark.org/blog/nature-talks",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bryantpark.org/blog/nature-talks",
+      "error": ""
+    },
+    {
+      "url": "https://www.nypl.org/events/tours/schwarzman",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.nypl.org/events/tours/schwarzman",
+      "error": ""
+    },
+    {
+      "url": "https://www.nypl.org/locations/snfl/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.nypl.org/locations/snfl/",
+      "error": ""
+    },
+    {
+      "url": "https://www.moma.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.moma.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.rockefellercenter.com/contact/private-events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.rockefellercenter.com/contact/private-events/",
+      "error": ""
+    },
+    {
+      "url": "https://grandcentralterminal.com/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://grandcentralterminal.com/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hudsonyardsnewyork.com/discover/public-square-and-gardens",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hudsonyardsnewyork.com/discover/public-square-and-gardens",
+      "error": ""
+    },
+    {
+      "url": "https://www.centralparknyc.org/plan-a-visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.centralparknyc.org/plan-a-visit",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

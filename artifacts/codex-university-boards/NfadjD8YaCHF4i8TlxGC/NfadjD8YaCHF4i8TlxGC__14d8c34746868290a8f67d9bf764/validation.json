@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://shs.touro.edu/programs/doctor-of-physical-therapy/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://shs.touro.edu/programs/doctor-of-physical-therapy/",
+      "error": ""
+    },
+    {
+      "url": "https://lcw.touro.edu/academics/support-services/library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lcw.touro.edu/academics/support-services/library/",
+      "error": ""
+    },
+    {
+      "url": "https://lcw.touro.edu/student-life/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lcw.touro.edu/student-life/",
+      "error": ""
+    },
+    {
+      "url": "https://las.touro.edu/media/schools-and-colleges/lander-college-for-arts-and-sciences/documents/Lander_College_Catalog.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://las.touro.edu/media/schools-and-colleges/lander-college-for-arts-and-sciences/documents/Lander_College_Catalog.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://nyscas.touro.edu/student-support/academic-support/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://nyscas.touro.edu/student-support/academic-support/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

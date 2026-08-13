@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.spurlock.illinois.edu/visit/facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.spurlock.illinois.edu/visit/facilities/",
+      "error": ""
+    },
+    {
+      "url": "https://kam.illinois.edu/visit/plan-visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://kam.illinois.edu/visit/plan-visit",
+      "error": ""
+    },
+    {
+      "url": "https://campusrec.illinois.edu/facilities/arc",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusrec.illinois.edu/facilities/arc",
+      "error": ""
+    },
+    {
+      "url": "https://campusrec.illinois.edu/sites/default/files/2023-05/CREC-FacilityMap.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusrec.illinois.edu/sites/default/files/2023-05/CREC-FacilityMap.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.campusrec.illinois.edu/facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.campusrec.illinois.edu/facilities",
+      "error": ""
+    },
+    {
+      "url": "https://www.campusrec.illinois.edu/fitness/ice-skating",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.campusrec.illinois.edu/fitness/ice-skating",
+      "error": ""
+    },
+    {
+      "url": "https://japanhouse.illinois.edu/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://japanhouse.illinois.edu/visit",
+      "error": ""
+    },
+    {
+      "url": "https://fightingillini.com/facilities/memorial-stadium/64",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fightingillini.com/facilities/memorial-stadium/64",
+      "error": ""
+    },
+    {
+      "url": "https://www.statefarmcenter.com/connect-with-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.statefarmcenter.com/connect-with-us",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

@@ -1,0 +1,80 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.hws.edu/first-year-experience/mentors.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hws.edu/first-year-experience/mentors.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.hws.edu/offices/student-engagement/default.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hws.edu/offices/student-engagement/default.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www2.hws.edu/life-at-hws/dining-at-hws.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.hws.edu/life-at-hws/dining-at-hws.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://people.hws.edu/halfman/NEES-2010/hws_campusmapNEES.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://people.hws.edu/halfman/NEES-2010/hws_campusmapNEES.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.hws.edu/offices/facilities/hours.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hws.edu/offices/facilities/hours.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.hws.edu/news/2021/November/meet-the-newest-gsa-scholars.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hws.edu/news/2021/November/meet-the-newest-gsa-scholars.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://cityofgenevany.gov/Facilities/Facility/Details/Lakefront-Park-3",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cityofgenevany.gov/Facilities/Facility/Details/Lakefront-Park-3",
+      "error": ""
+    },
+    {
+      "url": "https://thesmith.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thesmith.org/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Warren Hunting Smith Library",
+    "Smith Opera House"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

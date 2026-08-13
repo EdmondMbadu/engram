@@ -1,0 +1,98 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Business, facility, exhibition, and academic-calendar hours can change; consult the linked direct pages and posted notices before visiting.",
+    "Coordinates and map URLs are null because they were not independently verified from direct authoritative pages during this pass.",
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.iwu.edu/student-involvement/hansen/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iwu.edu/student-involvement/hansen/",
+      "error": ""
+    },
+    {
+      "url": "https://www.iwu.edu/about/printable-campus-map.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iwu.edu/about/printable-campus-map.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.iwu.edu/library/information/fac-staff.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iwu.edu/library/information/fac-staff.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.iwu.edu/art/galleries/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iwu.edu/art/galleries/",
+      "error": ""
+    },
+    {
+      "url": "https://coffeehound.cafe/locations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://coffeehound.cafe/locations/",
+      "error": ""
+    },
+    {
+      "url": "https://mchistory.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mchistory.org/",
+      "error": ""
+    },
+    {
+      "url": "https://www.iwu.edu/action/iwu-peace-garden.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iwu.edu/action/iwu-peace-garden.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.iwu.edu/news/2025/iwus-shirk-center-celebrating-30-years-of-athletics-community.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iwu.edu/news/2025/iwus-shirk-center-celebrating-30-years-of-athletics-community.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.normalil.gov/1121/Constitution-Trail",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.normalil.gov/1121/Constitution-Trail",
+      "error": ""
+    },
+    {
+      "url": "https://www.iwu.edu/multifaith/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iwu.edu/multifaith/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Hansen Student Center",
+    "IWU Peace Garden"
+  ],
+  "sourceCount": 10,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

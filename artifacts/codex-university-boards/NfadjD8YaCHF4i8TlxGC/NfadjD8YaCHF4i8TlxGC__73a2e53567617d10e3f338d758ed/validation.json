@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://cantonfreelibrary.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cantonfreelibrary.org/",
+      "error": ""
+    },
+    {
+      "url": "https://slcha.org/silas-wright-house-museum/plan-your-visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://slcha.org/silas-wright-house-museum/plan-your-visit/",
+      "error": ""
+    },
+    {
+      "url": "https://tauny.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://tauny.org/",
+      "error": ""
+    },
+    {
+      "url": "https://grasseriveroutfitters.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://grasseriveroutfitters.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.natures-storehouse.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.natures-storehouse.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.canton.edu/about/hotels.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.canton.edu/about/hotels.html",
+      "error": ""
+    },
+    {
+      "url": "https://parkbros.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://parkbros.com/",
+      "error": ""
+    },
+    {
+      "url": "https://agriculture.ny.gov/counties-s-y-fmnp-market-schedules",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://agriculture.ny.gov/system/files/documents/2026/08/fmnpmarketschedulescountiess-y.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://cantonny.gov/Documents/Goverment/Community%20Vision%20And%20Plans/Brownfield%20Opportunity%20Area/Canton-BOA-Designation-Package.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cms3.revize.com/revize/canton/Documents/Goverment/Community%20Vision%20And%20Plans/Brownfield%20Opportunity%20Area/Canton-BOA-Designation-Package.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

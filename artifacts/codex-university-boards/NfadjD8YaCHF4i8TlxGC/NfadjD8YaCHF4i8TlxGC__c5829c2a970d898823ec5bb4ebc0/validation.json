@@ -1,0 +1,55 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.jmu.edu/student-life/spirit-traditions.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jmu.edu/student-life/spirit-traditions.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://jmusports.com/sports/2020/7/8/jmu-fight-song",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://jmusports.com/sports/2020/7/8/jmu-fight-song",
+      "error": ""
+    },
+    {
+      "url": "https://www.jmu.edu/centennialcelebration/campaign.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jmu.edu/centennialcelebration/campaign.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.jmu.edu/news/family/2026/may.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jmu.edu/news/family/2026/may.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.jmu.edu/family/events/first-day.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jmu.edu/family/events/first-day.shtml",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Spirit Rock"
+  ],
+  "sourceCount": 5,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.homewoodparks.com/central-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.homewoodparks.com/parks",
+      "error": ""
+    },
+    {
+      "url": "https://homewoodpubliclibrary.org/contact-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://homewoodpubliclibrary.org/contact-us",
+      "error": ""
+    },
+    {
+      "url": "https://www.cityofhomewood.com/sims-garden",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cityofhomewood.com/sims-garden",
+      "error": ""
+    },
+    {
+      "url": "https://www.cityofhomewood.com/environmental-commission",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cityofhomewood.com/environmental-commission",
+      "error": ""
+    },
+    {
+      "url": "https://www.bigspooncreamery.com/locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bigspooncreamery.com/locations",
+      "error": ""
+    },
+    {
+      "url": "https://www.ohenryscoffee.com/locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ohenryscoffee.com/locations",
+      "error": ""
+    },
+    {
+      "url": "https://www.edgarsbakery.com/hours-and-location/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.edgarsbakery.com/hours-and-location/",
+      "error": ""
+    },
+    {
+      "url": "https://www.johnnyshomewood.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.johnnyshomewood.com/",
+      "error": ""
+    },
+    {
+      "url": "https://homewoodgourmet.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://homewoodgourmet.com/",
+      "error": ""
+    },
+    {
+      "url": "https://book.toasttab.com/r/little-donkey-homewood",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://toast.app/r/little-donkey-homewood",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

@@ -1,0 +1,267 @@
+Reading additional input from stdin...
+2026-08-13T07:50:06.185073Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:50:06.196413Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa19-8c53-7a93-920e-be9678ca1473
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"6yEuUDXBYwapTALuS8Av","schoolName":"Juniata College","shortSchoolName":"Juniata College","townName":"Huntingdon","state":"PA","countryCode":"US","website":"https://www.juniata.edu/","latitude":40.500523,"longitude":-78.017292},"templates":[{"id":"college-blocks-off-campus","version":"1.0","titlePattern":"{count} Blocks Off Campus, One Reason Each","editorialBrief":"Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.","researchQueries":["off campus streets student district","campus adjacent commercial streets","neighborhood plan near university"],"count":10,"icon":"location_city","primarySubjectType":"street_or_district","allowedSubjectTypes":["street_or_district"],"freshnessDays":730,"exactTitle":"10 Blocks Off Campus, One Reason Each"}]}
+codex
+{
+  "complete": false,
+  "school_name": "Juniata College",
+  "town_name": "Huntingdon",
+  "boards": [{
+    "complete": false,
+    "school_name": "Juniata College",
+    "town_name": "Huntingdon",
+    "template_id": "college-blocks-off-campus",
+    "title": "10 Blocks Off Campus, One Reason Each",
+    "description": "",
+    "icon": "location_city",
+    "cards": [{
+      "subject_id": "",
+      "subject_type": "street_or_district",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "other_reliable",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "street_or_district",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "other_reliable",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "street_or_district",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "other_reliable",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "street_or_district",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "other_reliable",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "street_or_district",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "other_reliable",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "street_or_district",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "other_reliable",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "street_or_district",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "other_reliable",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "street_or_district",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "other_reliable",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "street_or_district",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "other_reliable",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "street_or_district",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "other_reliable",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    }],
+    "warnings": ["Research pending."]
+  }],
+  "warnings": ["I’m verifying ten named destinations and their corridors against direct sources."]
+}
+web search: 
+web search: site:huntingdonboro.com Huntingdon PA parks library museum downtown directory ...
+web search: 
+web search: site:standingstonecoffeecompany.com Huntingdon address ...
+codex
+{"complete":true,"school_name":"Juniata College","town_name":"Huntingdon","boards":[{"complete":true,"school_name":"Juniata College","town_name":"Huntingdon","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named destinations that give specific purpose to streets and blocks in Juniata College’s practical off-campus orbit.","icon":"location_city","cards":[{"subject_id":"huntingdon-county-library","subject_type":"street_or_district","entity_name":"Huntingdon County Library","title":"Borrow Beyond Campus","subtitle":"Penn Street at Third Street","notes":"Walk the Penn Street block for public-library collections, programs, and librarian help; check the posted schedule before leaving campus.","short_summary":"A downtown public-library stop with weekday and Saturday service.","evidence_claim":"The library’s official site identifies Huntingdon County Library and publishes current hours, programs, catalog access, and librarian services.","source_url":"https://www.huntingdonlibrary.org/","source_title":"Huntingdon County Library – Connect. Discover. Imagine.","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Huntingdon%20County%20Library%20330%20Penn%20Street%20Huntingdon%20PA","access_notes":"Officially posted hours are Monday–Thursday 10 a.m.–7 p.m. and Friday–Saturday 10 a.m.–5 p.m.; closed Sunday.","cost_status":"unknown","under21_safe":true},{"subject_id":"mcmurtrie-house-museum","subject_type":"street_or_district","entity_name":"McMurtrie House Museum","title":"See an 1887-Era Interior","subtitle":"Fourth Street near Penn Street","notes":"Use the Fourth Street block to examine period rooms, historic toys, kitchen equipment, and lighting devices; arrange access before visiting.","short_summary":"A preserved house interior interprets everyday material culture.","evidence_claim":"The Historical Society says the McMurtrie House Museum at 106 Fourth Street contains rooms furnished for the 1887 county centennial plus historic toys and household equipment.","source_url":"https://huntingdonhistory.org/about/facilities/","source_title":"Facilities – Huntingdon County Historical Society","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=McMurtrie%20House%20Museum%20106%204th%20Street%20Huntingdon%20PA","access_notes":"Rooms open at announced times; the Society recommends calling to arrange guided visits for groups.","cost_status":"unknown","under21_safe":true},{"subject_id":"huntingdon-county-historical-society-exhibit-gallery","subject_type":"street_or_district","entity_name":"Huntingdon County Historical Society Exhibit Gallery","title":"Find a Local-History Exhibit","subtitle":"Fourth Street near Penn Street","notes":"Pair the Fourth Street block with the Society’s announced exhibit schedule, confirming the gallery opening before making the trip downtown.","short_summary":"A dedicated gallery provides a visual entry point to county history.","evidence_claim":"The Historical Society’s official site lists its Exhibit Gallery at 100 Fourth Street in Huntingdon.","source_url":"https://huntingdonhistory.org/","source_title":"Huntingdon County Historical Society","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Huntingdon%20County%20Historical%20Society%20Exhibit%20Gallery%20100%204th%20Street%20Huntingdon%20PA","access_notes":"The official page does not publish regular gallery hours; confirm access with the Society before visiting.","cost_status":"unknown","under21_safe":true},{"subject_id":"huntingdon-amtrak-station","subject_type":"street_or_district","entity_name":"Huntingdon Amtrak Station","title":"Catch the Pennsylvanian","subtitle":"Fourth and Allegheny Streets","notes":"Follow Fourth Street toward the river for the passenger platform; verify the train schedule and platform information directly with Amtrak first.","short_summary":"The riverfront block connects Huntingdon to Amtrak’s Pennsylvanian route.","evidence_claim":"Amtrak’s Great American Stations project places the Huntingdon passenger platform where Fourth Street crosses the Juniata River and identifies the Pennsylvanian as its route.","source_url":"https://www.greatamericanstations.com/stations/huntingdon-pa-hgd/","source_title":"Huntingdon, PA (HGD) – Great American Stations","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Huntingdon%20Amtrak%20Station%204th%20and%20Allegheny%20Streets%20Huntingdon%20PA","access_notes":"Consult Amtrak for current fares, schedules, boarding details, and any station-access changes.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"downtown-joe","subject_type":"street_or_district","entity_name":"Downtown Joe","title":"Make a Coffee Stop","subtitle":"Penn Street at Fifth Street","notes":"Take the Penn Street block for a café break and confirm current service before walking over; Juniata has used this destination in student programming.","short_summary":"A named Penn Street coffee shop has featured in a Juniata student activity.","evidence_claim":"A Juniata College orientation schedule directs new students to walk to Downtown Joe in Huntingdon for a special drink.","source_url":"https://www.juniata.edu/orientation/24%20August.%20Food%20Drink.pdf","source_title":"Food & Drink – Juniata College Orientation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Downtown%20Joe%20500%20Penn%20Street%20Huntingdon%20PA","access_notes":"Current public hours were not verified from the cited college schedule; check the business before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wildflower-cafe","subject_type":"street_or_district","entity_name":"Wildflower Cafe","title":"Stop for Breakfast or Lunch","subtitle":"Washington Street at Fifth Street","notes":"Use the Washington Street block for a daytime meal, checking current opening details first because the college page does not publish a schedule.","short_summary":"A downtown café gives the Fifth Street block a daytime food stop.","evidence_claim":"Juniata College’s local restaurant guide lists Wildflower Cafe at 516 Washington Street and describes it as serving breakfast and lunch.","source_url":"https://www.juniata.edu/about/visit/restaurants.php","source_title":"Restaurants – Juniata College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Wildflower%20Cafe%20516%20Washington%20Street%20Huntingdon%20PA","access_notes":"The cited college guide does not provide current hours; verify that the café is open before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"all-american-pizza-and-subs","subject_type":"street_or_district","entity_name":"All American Pizza and Subs","title":"Pick Up Pizza or Subs","subtitle":"Washington Street at Sixth Street","notes":"Head to the Sixth Street stretch of Washington for casual Italian food, confirming the menu and operating hours directly before ordering.","short_summary":"Pizza and subs provide one clear reason to use this Washington Street block.","evidence_claim":"Juniata College’s restaurant guide lists All American Pizza and Subs at 612 Washington Street and categorizes it as casual Italian dining.","source_url":"https://www.juniata.edu/about/visit/restaurants.php","source_title":"Restaurants – Juniata College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=All%20American%20Pizza%20and%20Subs%20612%20Washington%20Street%20Huntingdon%20PA","access_notes":"Current hours are not stated in the college guide; contact the restaurant before making a dedicated trip.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"original-italian-pizza-downtown","subject_type":"street_or_district","entity_name":"Original Italian Pizza","title":"Order Casual Italian Food","subtitle":"Washington Street at Seventh Street","notes":"Continue along Washington to the Seventh Street block for casual Italian food; verify the downtown location’s current hours before setting out.","short_summary":"The Seventh Street corner adds another clearly identified downtown meal option.","evidence_claim":"Juniata College’s restaurant guide places Original Italian Pizza at Seventh and Washington Streets and describes it as casual Italian dining.","source_url":"https://www.juniata.edu/about/visit/restaurants.php","source_title":"Restaurants – Juniata College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Original%20Italian%20Pizza%207th%20and%20Washington%20Streets%20Huntingdon%20PA","access_notes":"The college guide supplies no current schedule; verify hours and ordering options with the restaurant.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"juniata-college-downtown-space","subject_type":"street_or_district","entity_name":"Juniata College Downtown Space","title":"Watch for College-Town Programs","subtitle":"Washington Street at Sixth Street","notes":"Check college announcements before visiting the 608 Washington storefront; its stated purpose is programming that connects campus and town.","short_summary":"A college-owned storefront creates a formal downtown point of connection.","evidence_claim":"Juniata reports that the former AAA property at 608 Washington Street was donated for activities and programs benefiting Huntingdon residents and the campus community.","source_url":"https://www.juniata.edu/about/news/archive.php?action=SHOWARTICLE&id=7242","source_title":"AAA Central Penn Donates Downtown Property to Juniata College","source_kind":"university_official","source_published_at":"2025-12-16","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=608%20Washington%20Street%20Huntingdon%20PA","access_notes":"The college announcement does not establish public drop-in hours; attend only through a published program or invitation.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"sill-business-center","subject_type":"street_or_district","entity_name":"Sill Business Center","title":"Connect with Entrepreneurship","subtitle":"Moore Street at Fourteenth Street","notes":"Use the Moore and Fourteenth Street corner when a published Sill program fits your plans; confirm eligibility and building access in advance.","short_summary":"Juniata’s off-campus business center anchors an entrepreneurship-focused corner.","evidence_claim":"Juniata College identifies the Sill Business Center at Moore and Fourteenth Streets as an off-campus location supporting entrepreneurship and small-business growth.","source_url":"https://www.juniata.edu/about/news/archive.php?action=SHOWARTICLE&id=7242","source_title":"AAA Central Penn Donates Downtown Property to Juniata College","source_kind":"university_official","source_published_at":"2025-12-16","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Sill%20Business%20Center%20Moore%20and%2014th%20Streets%20Huntingdon%20PA","access_notes":"No general public hours are stated in the cited announcement; confirm program access with Juniata College.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:51:51.209318Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa19-8c53-7a93-920e-be9678ca1473.1786607406164137000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+24,184
+
+{"complete":true,"school_name":"Juniata College","town_name":"Huntingdon","boards":[{"complete":true,"school_name":"Juniata College","town_name":"Huntingdon","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named destinations that give specific purpose to streets and blocks in Juniata College’s practical off-campus orbit.","icon":"location_city","cards":[{"subject_id":"huntingdon-county-library","subject_type":"street_or_district","entity_name":"Huntingdon County Library","title":"Borrow Beyond Campus","subtitle":"Penn Street at Third Street","notes":"Walk the Penn Street block for public-library collections, programs, and librarian help; check the posted schedule before leaving campus.","short_summary":"A downtown public-library stop with weekday and Saturday service.","evidence_claim":"The library’s official site identifies Huntingdon County Library and publishes current hours, programs, catalog access, and librarian services.","source_url":"https://www.huntingdonlibrary.org/","source_title":"Huntingdon County Library – Connect. Discover. Imagine.","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Huntingdon%20County%20Library%20330%20Penn%20Street%20Huntingdon%20PA","access_notes":"Officially posted hours are Monday–Thursday 10 a.m.–7 p.m. and Friday–Saturday 10 a.m.–5 p.m.; closed Sunday.","cost_status":"unknown","under21_safe":true},{"subject_id":"mcmurtrie-house-museum","subject_type":"street_or_district","entity_name":"McMurtrie House Museum","title":"See an 1887-Era Interior","subtitle":"Fourth Street near Penn Street","notes":"Use the Fourth Street block to examine period rooms, historic toys, kitchen equipment, and lighting devices; arrange access before visiting.","short_summary":"A preserved house interior interprets everyday material culture.","evidence_claim":"The Historical Society says the McMurtrie House Museum at 106 Fourth Street contains rooms furnished for the 1887 county centennial plus historic toys and household equipment.","source_url":"https://huntingdonhistory.org/about/facilities/","source_title":"Facilities – Huntingdon County Historical Society","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=McMurtrie%20House%20Museum%20106%204th%20Street%20Huntingdon%20PA","access_notes":"Rooms open at announced times; the Society recommends calling to arrange guided visits for groups.","cost_status":"unknown","under21_safe":true},{"subject_id":"huntingdon-county-historical-society-exhibit-gallery","subject_type":"street_or_district","entity_name":"Huntingdon County Historical Society Exhibit Gallery","title":"Find a Local-History Exhibit","subtitle":"Fourth Street near Penn Street","notes":"Pair the Fourth Street block with the Society’s announced exhibit schedule, confirming the gallery opening before making the trip downtown.","short_summary":"A dedicated gallery provides a visual entry point to county history.","evidence_claim":"The Historical Society’s official site lists its Exhibit Gallery at 100 Fourth Street in Huntingdon.","source_url":"https://huntingdonhistory.org/","source_title":"Huntingdon County Historical Society","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Huntingdon%20County%20Historical%20Society%20Exhibit%20Gallery%20100%204th%20Street%20Huntingdon%20PA","access_notes":"The official page does not publish regular gallery hours; confirm access with the Society before visiting.","cost_status":"unknown","under21_safe":true},{"subject_id":"huntingdon-amtrak-station","subject_type":"street_or_district","entity_name":"Huntingdon Amtrak Station","title":"Catch the Pennsylvanian","subtitle":"Fourth and Allegheny Streets","notes":"Follow Fourth Street toward the river for the passenger platform; verify the train schedule and platform information directly with Amtrak first.","short_summary":"The riverfront block connects Huntingdon to Amtrak’s Pennsylvanian route.","evidence_claim":"Amtrak’s Great American Stations project places the Huntingdon passenger platform where Fourth Street crosses the Juniata River and identifies the Pennsylvanian as its route.","source_url":"https://www.greatamericanstations.com/stations/huntingdon-pa-hgd/","source_title":"Huntingdon, PA (HGD) – Great American Stations","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Huntingdon%20Amtrak%20Station%204th%20and%20Allegheny%20Streets%20Huntingdon%20PA","access_notes":"Consult Amtrak for current fares, schedules, boarding details, and any station-access changes.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"downtown-joe","subject_type":"street_or_district","entity_name":"Downtown Joe","title":"Make a Coffee Stop","subtitle":"Penn Street at Fifth Street","notes":"Take the Penn Street block for a café break and confirm current service before walking over; Juniata has used this destination in student programming.","short_summary":"A named Penn Street coffee shop has featured in a Juniata student activity.","evidence_claim":"A Juniata College orientation schedule directs new students to walk to Downtown Joe in Huntingdon for a special drink.","source_url":"https://www.juniata.edu/orientation/24%20August.%20Food%20Drink.pdf","source_title":"Food & Drink – Juniata College Orientation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Downtown%20Joe%20500%20Penn%20Street%20Huntingdon%20PA","access_notes":"Current public hours were not verified from the cited college schedule; check the business before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wildflower-cafe","subject_type":"street_or_district","entity_name":"Wildflower Cafe","title":"Stop for Breakfast or Lunch","subtitle":"Washington Street at Fifth Street","notes":"Use the Washington Street block for a daytime meal, checking current opening details first because the college page does not publish a schedule.","short_summary":"A downtown café gives the Fifth Street block a daytime food stop.","evidence_claim":"Juniata College’s local restaurant guide lists Wildflower Cafe at 516 Washington Street and describes it as serving breakfast and lunch.","source_url":"https://www.juniata.edu/about/visit/restaurants.php","source_title":"Restaurants – Juniata College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Wildflower%20Cafe%20516%20Washington%20Street%20Huntingdon%20PA","access_notes":"The cited college guide does not provide current hours; verify that the café is open before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"all-american-pizza-and-subs","subject_type":"street_or_district","entity_name":"All American Pizza and Subs","title":"Pick Up Pizza or Subs","subtitle":"Washington Street at Sixth Street","notes":"Head to the Sixth Street stretch of Washington for casual Italian food, confirming the menu and operating hours directly before ordering.","short_summary":"Pizza and subs provide one clear reason to use this Washington Street block.","evidence_claim":"Juniata College’s restaurant guide lists All American Pizza and Subs at 612 Washington Street and categorizes it as casual Italian dining.","source_url":"https://www.juniata.edu/about/visit/restaurants.php","source_title":"Restaurants – Juniata College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=All%20American%20Pizza%20and%20Subs%20612%20Washington%20Street%20Huntingdon%20PA","access_notes":"Current hours are not stated in the college guide; contact the restaurant before making a dedicated trip.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"original-italian-pizza-downtown","subject_type":"street_or_district","entity_name":"Original Italian Pizza","title":"Order Casual Italian Food","subtitle":"Washington Street at Seventh Street","notes":"Continue along Washington to the Seventh Street block for casual Italian food; verify the downtown location’s current hours before setting out.","short_summary":"The Seventh Street corner adds another clearly identified downtown meal option.","evidence_claim":"Juniata College’s restaurant guide places Original Italian Pizza at Seventh and Washington Streets and describes it as casual Italian dining.","source_url":"https://www.juniata.edu/about/visit/restaurants.php","source_title":"Restaurants – Juniata College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Original%20Italian%20Pizza%207th%20and%20Washington%20Streets%20Huntingdon%20PA","access_notes":"The college guide supplies no current schedule; verify hours and ordering options with the restaurant.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"juniata-college-downtown-space","subject_type":"street_or_district","entity_name":"Juniata College Downtown Space","title":"Watch for College-Town Programs","subtitle":"Washington Street at Sixth Street","notes":"Check college announcements before visiting the 608 Washington storefront; its stated purpose is programming that connects campus and town.","short_summary":"A college-owned storefront creates a formal downtown point of connection.","evidence_claim":"Juniata reports that the former AAA property at 608 Washington Street was donated for activities and programs benefiting Huntingdon residents and the campus community.","source_url":"https://www.juniata.edu/about/news/archive.php?action=SHOWARTICLE&id=7242","source_title":"AAA Central Penn Donates Downtown Property to Juniata College","source_kind":"university_official","source_published_at":"2025-12-16","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=608%20Washington%20Street%20Huntingdon%20PA","access_notes":"The college announcement does not establish public drop-in hours; attend only through a published program or invitation.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"sill-business-center","subject_type":"street_or_district","entity_name":"Sill Business Center","title":"Connect with Entrepreneurship","subtitle":"Moore Street at Fourteenth Street","notes":"Use the Moore and Fourteenth Street corner when a published Sill program fits your plans; confirm eligibility and building access in advance.","short_summary":"Juniata’s off-campus business center anchors an entrepreneurship-focused corner.","evidence_claim":"Juniata College identifies the Sill Business Center at Moore and Fourteenth Streets as an off-campus location supporting entrepreneurship and small-business growth.","source_url":"https://www.juniata.edu/about/news/archive.php?action=SHOWARTICLE&id=7242","source_title":"AAA Central Penn Donates Downtown Property to Juniata College","source_kind":"university_official","source_published_at":"2025-12-16","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Sill%20Business%20Center%20Moore%20and%2014th%20Streets%20Huntingdon%20PA","access_notes":"No general public hours are stated in the cited announcement; confirm program access with Juniata College.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

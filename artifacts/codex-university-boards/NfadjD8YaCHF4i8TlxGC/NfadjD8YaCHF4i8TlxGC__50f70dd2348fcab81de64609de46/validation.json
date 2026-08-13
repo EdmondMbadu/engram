@@ -1,0 +1,66 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Several city programs are designated free specifically for City of Bethlehem residents; confirm residency eligibility before registering.",
+    "Historic Bethlehem's Free Sunday family craft reservations are limited to families attending with children.",
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.bethlehem-pa.gov/events/recreation-events/fitness-in-the-garden/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bethlehem-pa.gov/events/recreation-events/fitness-in-the-garden/",
+      "error": ""
+    },
+    {
+      "url": "https://www.bethlehem-pa.gov/events/recreation-events/trail-tuesdays/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bethlehem-pa.gov/events/recreation-events/trail-tuesdays/",
+      "error": ""
+    },
+    {
+      "url": "https://www.bethlehem-pa.gov/recreation/recreation-activities/skate-plaza/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bethlehem-pa.gov/recreation/recreation-activities/skate-plaza/",
+      "error": ""
+    },
+    {
+      "url": "https://www.bapl.org/studio11/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bapl.org/studio11/",
+      "error": ""
+    },
+    {
+      "url": "https://www.bapl.org/coolidge/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bapl.org/coolidge/",
+      "error": ""
+    },
+    {
+      "url": "https://www.historicbethlehem.org/visit-us/experience/free-sundays-at-the-museums/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.historicbethlehem.org/visit-us/experience/free-sundays-at-the-museums/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Moravian Museum of Bethlehem",
+    "Kemerer Museum of Decorative Arts"
+  ],
+  "sourceCount": 6,
+  "generationScore": 90,
+  "generationGrade": "A"
+}

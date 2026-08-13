@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.transy.edu/morlan/the-gallery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.transy.edu/morlan/the-gallery/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lexpublib.org/locations/central-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lexpublib.org/locations/central-library",
+      "error": ""
+    },
+    {
+      "url": "https://families.uky.edu/spring-family-reunion-events",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://families.uky.edu/spring-family-reunion-events",
+      "error": ""
+    },
+    {
+      "url": "https://21cmuseumhotels.com/wp-content/uploads/sites/42/2025/04/21c_ExhibitionBrochure_Lexington_Still-Life_Brochure_Digital_AW.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://21cmuseumhotels.com/wp-content/uploads/sites/42/2025/04/21c_ExhibitionBrochure_Lexington_Still-Life_Brochure_Digital_AW.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://thesquarelexington.com/destination/artists-attic/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thesquarelexington.com/destination/artists-attic/",
+      "error": ""
+    },
+    {
+      "url": "https://nursery-crop-extension.mgcafe.uky.edu/content/plant-study-sites",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://nursery-crop-extension.mgcafe.uky.edu/content/plant-study-sites",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitlex.com/listing/institute-193/7184/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitlex.com/listing/institute-193/7184/",
+      "error": ""
+    },
+    {
+      "url": "https://www.galleryhoplex.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://galleryhoplex.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lexingtonky.gov/playing/parks-natural-areas/natural-areas/mcconnell-springs-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lexingtonky.gov/playing/parks-natural-areas/natural-areas/mcconnell-springs-park",
+      "error": ""
+    },
+    {
+      "url": "https://lexcem.org/rules-guidelines/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lexcem.org/rules-guidelines/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

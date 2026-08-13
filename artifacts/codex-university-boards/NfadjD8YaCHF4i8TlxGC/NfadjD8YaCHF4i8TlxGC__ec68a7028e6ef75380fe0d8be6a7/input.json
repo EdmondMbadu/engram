@@ -1,0 +1,39 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "zI5TKvxzX9r8mSyHCcz9",
+    "schoolName": "University of Missouri-Columbia",
+    "shortSchoolName": "University of Missouri-Columbia",
+    "townName": "Columbia",
+    "state": "MO",
+    "countryCode": "US",
+    "unitId": "178396",
+    "website": "https://missouri.edu/",
+    "latitude": 38.94531,
+    "longitude": -92.328843,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/b/b8/University_of_Missouri_seal.svg/250px-University_of_Missouri_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=missouri.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain University of Missouri-Columbia",
+  "excluded_subjects": [],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

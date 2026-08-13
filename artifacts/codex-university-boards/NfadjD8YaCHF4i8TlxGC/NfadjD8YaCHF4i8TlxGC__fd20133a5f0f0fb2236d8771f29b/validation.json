@@ -1,0 +1,97 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 source URL check(s) were inconclusive and need editorial confirmation.",
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://anthropology.sas.upenn.edu/about/directions-department",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://anthropology.sas.upenn.edu/about/directions-department",
+      "error": ""
+    },
+    {
+      "url": "https://worldcafelive.org/about/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://worldcafelive.org/about/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://icaphila.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://icaphila.org/",
+      "error": ""
+    },
+    {
+      "url": "https://www.therotunda.org/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.therotunda.org/contact",
+      "error": ""
+    },
+    {
+      "url": "https://www.woodlandsphila.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.woodlandsphila.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://files.brandywinerealty.com/files/001347.pdf",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://files.brandywinerealty.com/files/001347.pdf",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.phila.gov/media/20230215122932/RSI-%E2%80%93-Clark-Park-Engagement-Assistant.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.phila.gov/media/20230215122932/RSI-%E2%80%93-Clark-Park-Engagement-Assistant.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.universitycity.org/portal/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.universitycity.org/portal/",
+      "error": ""
+    },
+    {
+      "url": "https://ucitysquare.com/property/the-lawn/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ucitysquare.com/property/the-lawn/",
+      "error": ""
+    },
+    {
+      "url": "https://drexel.edu/news/archive/2019/june/drexel-square-opening",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://drexel.edu/news/archive/2019/june/drexel-square-opening",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Penn Museum",
+    "Institute of Contemporary Art"
+  ],
+  "sourceCount": 10,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

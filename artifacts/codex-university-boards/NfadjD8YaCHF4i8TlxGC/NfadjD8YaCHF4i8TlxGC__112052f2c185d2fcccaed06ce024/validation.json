@@ -1,0 +1,37 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://facts.mit.edu/wp-content/uploads/2020/11/MIT-Facts-2020-Accessible-with-Cover-and-Map.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://facts.mit.edu/wp-content/uploads/2020/11/MIT-Facts-2020-Accessible-with-Cover-and-Map.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://brassrat.mit.edu/2026/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://brassrat.mit.edu/2026/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://studentlife.mit.edu/campus-communities/events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentlife.mit.edu/campus-communities/events/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

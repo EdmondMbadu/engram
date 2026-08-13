@@ -1,0 +1,71 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "PT1qkKGtyOUAKLQulK07",
+    "schoolName": "Georgetown University",
+    "shortSchoolName": "Georgetown University",
+    "townName": "Washington",
+    "state": "DC",
+    "countryCode": "US",
+    "unitId": "131496",
+    "website": "https://www.georgetown.edu/",
+    "latitude": 38.908809,
+    "longitude": -77.073463,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Georgetown_University_seal.svg/330px-Georgetown_University_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=georgetown.edu&sz=256"
+  },
+  "template": {
+    "id": "college-study-spots",
+    "version": "1.0",
+    "titlePattern": "Claimed by 9am: {count} Study Spots Worth Showing Up Early For",
+    "editorialBrief": "Choose ten distinct study environments. Verify access rules, room or reservation constraints, and the physical affordance that makes each useful. Treat “Claimed by 9am” as editorial framing; never assert crowding or student behavior without evidence.",
+    "researchQueries": [
+      "campus study spaces",
+      "library study rooms students",
+      "quiet study campus"
+    ],
+    "count": 10,
+    "icon": "menu_book",
+    "primarySubjectType": "study_space",
+    "allowedSubjectTypes": [
+      "study_space",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Claimed by 9am: 10 Study Spots Worth Showing Up Early For",
+  "excluded_subjects": [
+    "Healy Hall",
+    "Dahlgren Chapel of the Sacred Heart",
+    "Old North",
+    "Healey Family Student Center",
+    "Copley Lawn",
+    "Georgetown Neighborhood Library",
+    "Old Stone House",
+    "Georgetown Visitor Center, C&O Canal",
+    "Georgetown Waterfront Park",
+    "Joseph Mark Lauinger Memorial Library",
+    "John Carroll Statue Lap Photo",
+    "Georgetown Day",
+    "Midnight Breakfast",
+    "Georgetown Rangila",
+    "Traditions Day",
+    "Haunted Healy",
+    "The Exorcist Screening on Copley Lawn",
+    "Healy Howl",
+    "Georgetown Embassy Trick-or-Treating",
+    "Hoya Saxa Chant",
+    "Healey Family Student Center Great Room",
+    "Healey Family Student Center Terrace",
+    "Sellinger Lounge",
+    "Leavey Center Esplanade",
+    "Pierce Reading Room",
+    "Maker Hub",
+    "Gelardin New Media Center",
+    "Millennium Room",
+    "Blommer Science Library",
+    "Red Square"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

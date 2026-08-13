@@ -1,0 +1,62 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "aC7OIaPnBUgSApvEAd6p",
+    "schoolName": "United States Air Force Academy",
+    "shortSchoolName": "United States Air Force Academy",
+    "townName": "USAF Academy",
+    "state": "CO",
+    "countryCode": "US",
+    "unitId": "128328",
+    "website": "https://www.usafa.edu/",
+    "latitude": 39.010957,
+    "longitude": -104.891358,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/US-AirForceAcademy-Shield.svg/960px-US-AirForceAcademy-Shield.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=usafa.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at United States Air Force Academy, Shared as Cards",
+  "excluded_subjects": [
+    "Garden of the Gods Visitor & Nature Center",
+    "Gateway Rock",
+    "Balanced Rock",
+    "Siamese Twins",
+    "Three Graces",
+    "Cathedral Spires",
+    "Kissing Camels",
+    "High Point Overlook",
+    "Perkins Central Garden Trail",
+    "Spring Canyon Trailhead",
+    "McDonald's, 765 West Baptist Road",
+    "Taco Bell, 1208 Interquest Parkway",
+    "Shake Shack Interquest",
+    "Whataburger, 1310 Interquest Parkway",
+    "IHOP, 3090 N. Chestnut Street",
+    "Carl's Jr., 425 Garden of the Gods",
+    "Jack in the Box, 3690 New Center Point Boulevard",
+    "Wendy's, 2515 Montebello Drive West",
+    "Whataburger, 2550 Montebello",
+    "Wendy's, 5850 Stetson Hills Boulevard"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

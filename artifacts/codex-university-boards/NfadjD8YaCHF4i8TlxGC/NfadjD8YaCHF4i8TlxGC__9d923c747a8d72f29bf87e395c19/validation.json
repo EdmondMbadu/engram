@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.salisbury.edu/discover-su/campus-map/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.salisbury.edu/discover-su/campus-map/",
+      "error": ""
+    },
+    {
+      "url": "https://www.salisbury.edu/arboretum",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.salisbury.edu/experience-campus/arboretum/",
+      "error": ""
+    },
+    {
+      "url": "https://www.salisbury.edu/administration/academic-affairs/university-galleries/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.salisbury.edu/administration/academic-affairs/university-galleries/",
+      "error": ""
+    },
+    {
+      "url": "https://www.salisbury.edu/libraries/nabb/events.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.salisbury.edu/libraries/nabb/events.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.salisbury.edu/discover-su/campus-map/building-info.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.salisbury.edu/discover-su/campus-map/building-info.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.salisbury.edu/experience-campus/athletics/campus-recreation/facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.salisbury.edu/experience-campus/athletics/campus-recreation/facilities/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

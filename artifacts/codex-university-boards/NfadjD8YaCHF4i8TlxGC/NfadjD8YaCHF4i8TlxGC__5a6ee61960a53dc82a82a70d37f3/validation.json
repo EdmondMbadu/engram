@@ -1,0 +1,87 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Campus dining, library, technology-center, museum, waterfront, and garden schedules vary by academic term, summer season, holidays, or special events; verify the linked pages before setting out.",
+    "The Waterfront is limited to eligible FSC community members and requires an FSC ID, waiver, and compliance with safety rules.",
+    "The Water Dome is for viewing only unless Florida Southern expressly authorizes entry during an official event."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.flsouthern.edu/campus-life/campus-traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flsouthern.edu/campus-life/campus-traditions",
+      "error": ""
+    },
+    {
+      "url": "https://www.flsouthern.edu/campus-life/dining-experience",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flsouthern.edu/campus-life/dining-experience",
+      "error": ""
+    },
+    {
+      "url": "https://www.flsouthern.edu/campus-offices/offices-directory/office-of-technology-services",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flsouthern.edu/campus-offices/offices-directory/office-of-technology-services",
+      "error": ""
+    },
+    {
+      "url": "https://www.flsouthern.edu/campus-offices/offices-directory/office-of-wellness/waterfront",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flsouthern.edu/campus-offices/offices-directory/office-of-wellness/waterfront",
+      "error": ""
+    },
+    {
+      "url": "https://www.flsouthern.edu/library/archives/fsc-history/fsc-building-history/j-edgar-wall-waterdome",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flsouthern.edu/library/archives/fsc-history/fsc-building-history/j-edgar-wall-waterdome",
+      "error": ""
+    },
+    {
+      "url": "https://www.flsouthern.edu/frank-lloyd-wright-home",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flsouthern.edu/frank-lloyd-wright-home",
+      "error": ""
+    },
+    {
+      "url": "https://agbmuseum.org/faq",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://agbmuseum.org/faq",
+      "error": ""
+    },
+    {
+      "url": "https://www.lakelandgov.net/hollisgarden",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakelandgov.net/hollisgarden",
+      "error": ""
+    },
+    {
+      "url": "https://www.flsouthern.edu/library/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flsouthern.edu/library/about",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

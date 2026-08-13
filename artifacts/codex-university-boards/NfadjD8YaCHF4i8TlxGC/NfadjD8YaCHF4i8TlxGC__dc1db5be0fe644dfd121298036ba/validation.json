@@ -1,0 +1,46 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "DJ DeSmet has no published schedule, and the official Kennel Campout page currently lists its schedule as TBD.",
+    "Recurring event dates, eligibility, admission, and residence-hall access should be reconfirmed through current Gonzaga announcements."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.gonzaga.edu/news-events/stories/our-favorite-gu-traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.gonzaga.edu/news-events/stories/our-favorite-gu-traditions",
+      "error": ""
+    },
+    {
+      "url": "https://www.gonzaga.edu/student-life/student-affairs/our-departments-and-programs/center-for-student-involvement/clubs-and-student-organizations/kennel-club/kennel-campout",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.gonzaga.edu/student-life/student-affairs/our-departments-and-programs/center-for-student-involvement/clubs-and-student-organizations/kennel-club/kennel-campout",
+      "error": ""
+    },
+    {
+      "url": "https://www.gonzaga.edu/news-events/stories/my-favorite-gonzaga-tradition",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.gonzaga.edu/news-events/stories/my-favorite-gonzaga-tradition",
+      "error": ""
+    },
+    {
+      "url": "https://www.gonzaga.edu/news-events/stories/2025/12/9/lighting-the-season-in-song",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.gonzaga.edu/news-events/stories/2025/12/9/lighting-the-season-in-song",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

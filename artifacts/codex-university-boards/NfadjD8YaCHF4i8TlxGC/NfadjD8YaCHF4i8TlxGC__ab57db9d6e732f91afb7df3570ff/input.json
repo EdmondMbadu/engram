@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "FhMXnNH4Xd6BDgY67kfJ",
+    "schoolName": "St. John's University-New York",
+    "shortSchoolName": "St. John's University-New York",
+    "townName": "Queens",
+    "state": "NY",
+    "countryCode": "US",
+    "unitId": "195809",
+    "website": "https://www.stjohns.edu/",
+    "latitude": 40.722523,
+    "longitude": -73.796104,
+    "heroUrl": "https://www.stjohns.edu/sites/default/files/2022-12/20220928_sju_fall-425.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=stjohns.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Red Storm Welcome",
+    "Fall Fest",
+    "Winter Carnival",
+    "Ice Skating in New York",
+    "Central Park Christmas",
+    "Winter Carnival Dessert Party",
+    "Spring Month",
+    "Senior Week",
+    "Stormin’ Loud",
+    "Relay For Life"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

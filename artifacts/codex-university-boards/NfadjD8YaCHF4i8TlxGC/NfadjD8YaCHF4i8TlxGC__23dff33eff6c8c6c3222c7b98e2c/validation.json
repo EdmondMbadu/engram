@@ -1,0 +1,87 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.hillsdale.edu/about/facilities/grewcock-student-union/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsdale.edu/about/facilities/grewcock-student-union/",
+      "error": ""
+    },
+    {
+      "url": "https://catalog.hillsdale.edu/sites/default/files/pdf/academic_page/cafeteria.pdf?1685714737=",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.hillsdale.edu/sites/default/files/pdf/academic_page/cafeteria.pdf?1685714737=",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/mi/hillsdale/3011-w-carleton-road.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mi/hillsdale/3011-w-carleton-road.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/mi/hillsdale/419-w-carleton",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/mi/hillsdale/419-w-carleton",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/mi/hillsdale/508-w-carleton-rd/delivery",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/mi/hillsdale/508-w-carleton-rd/delivery",
+      "error": ""
+    },
+    {
+      "url": "https://locations.cottageinn.com/cottage-inn-pizza-7b37ebab61b3",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.cottageinn.com/cottage-inn-pizza-7b37ebab61b3",
+      "error": ""
+    },
+    {
+      "url": "https://www.meijer.com/shopping/store-locator/333.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.meijer.com/shopping/store-locator/333.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.kroger.com/stores/grocery/mi/hillsdale/hillsdale/018/00681",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.kroger.com/stores/grocery/mi/hillsdale/hillsdale/018/00681",
+      "error": ""
+    },
+    {
+      "url": "https://www.walgreens.com/storelocator/pharmacy/hillsdale-mi",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.walgreens.com/storelocator/pharmacy/hillsdale-mi",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "A.J.’s Café 1844"
+  ],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

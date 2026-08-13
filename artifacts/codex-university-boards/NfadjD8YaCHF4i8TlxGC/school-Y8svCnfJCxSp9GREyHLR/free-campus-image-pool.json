@@ -1,0 +1,128 @@
+{
+  "target": "Y8svCnfJCxSp9GREyHLR",
+  "schoolName": "Emerson College",
+  "generatedAt": "2026-08-13T08:18:44.931Z",
+  "mode": "free-related-campus-distinct",
+  "images": [
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FY8svCnfJCxSp9GREyHLR%2F01-86a39cc18cb6f802.jpg?alt=media&token=8b545e43-29c9-4403-9bd0-d507271e0e59",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Comedy_Mask_at_the_Majestic_Theatre_(Boston,_MA).jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY 2.0",
+      "imageLicense": "CC BY 2.0",
+      "imageTitle": "Comedy Mask at the Majestic Theatre (Boston, MA).jpg",
+      "imageFingerprint": "86a39cc18cb6f802d0a50d696a7f8705bf1ccce77a7479b10d893558a891f5cf",
+      "imageWidth": 1920,
+      "imageHeight": 1546,
+      "imageResolvedAt": "2026-08-13T08:18:44.449Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FY8svCnfJCxSp9GREyHLR%2F02-207ca20f85d3759f.jpg?alt=media&token=92e6c9e0-c280-4374-81ca-c532fa31443c",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Emerson_College,_Boston_MA.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY 3.0",
+      "imageLicense": "CC BY 3.0",
+      "imageTitle": "Emerson College, Boston MA.jpg",
+      "imageFingerprint": "207ca20f85d3759ffbd3503e099cbda9bb5fe437979948ecb4b09ef64dbfd107",
+      "imageWidth": 1920,
+      "imageHeight": 1440,
+      "imageResolvedAt": "2026-08-13T08:18:44.931Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FY8svCnfJCxSp9GREyHLR%2F03-56785d0bb163f30f.png?alt=media&token=0c32b408-93f1-4ed0-85fd-c523f615929e",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:1891_Emerson_College_BromfieldSt_Boston_USA.png",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · Public domain",
+      "imageLicense": "Public domain",
+      "imageTitle": "1891 Emerson College BromfieldSt Boston USA.png",
+      "imageFingerprint": "56785d0bb163f30f3f38c9a15fc2cd871891fbf62737103b06079b99f96d5563",
+      "imageWidth": 523,
+      "imageHeight": 412,
+      "imageResolvedAt": "2026-08-13T08:18:44.353Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FY8svCnfJCxSp9GREyHLR%2F04-292a39e02bf0293f.jpg?alt=media&token=39026274-13a5-41b8-b844-53cd1c622dc3",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:2012_ColonialBuilding_BoylstonSt_Boston_Massachusetts_4694.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC0",
+      "imageLicense": "CC0",
+      "imageTitle": "2012 ColonialBuilding BoylstonSt Boston Massachusetts 4694.jpg",
+      "imageFingerprint": "292a39e02bf0293ff6ceddb9e9b54c6c5a8eedc620c95598be844f7c22e29644",
+      "imageWidth": 1920,
+      "imageHeight": 2560,
+      "imageResolvedAt": "2026-08-13T08:18:44.563Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FY8svCnfJCxSp9GREyHLR%2F05-9bd3e007d63b397f.jpg?alt=media&token=300ea39f-2615-4a04-aae7-e728325a760d",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:2012_ColonialBuilding_BoylstonSt_Boston_Massachusetts_4695.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC0",
+      "imageLicense": "CC0",
+      "imageTitle": "2012 ColonialBuilding BoylstonSt Boston Massachusetts 4695.jpg",
+      "imageFingerprint": "9bd3e007d63b397f0fb8f00b5399607e3c9c02558f933f2e5d371af8b34a4549",
+      "imageWidth": 1920,
+      "imageHeight": 1440,
+      "imageResolvedAt": "2026-08-13T08:18:44.499Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FY8svCnfJCxSp9GREyHLR%2F06-043a4c81b27bab9b.jpg?alt=media&token=efc3364f-e212-4bc9-b684-efe448992c26",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Alexander_Freeman_B%26W.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 4.0",
+      "imageLicense": "CC BY-SA 4.0",
+      "imageTitle": "Alexander Freeman B&W.jpg",
+      "imageFingerprint": "043a4c81b27bab9b57c58efcff6675859f8a8de940aefb9daf443efcb950d9b7",
+      "imageWidth": 973,
+      "imageHeight": 973,
+      "imageResolvedAt": "2026-08-13T08:18:44.378Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FY8svCnfJCxSp9GREyHLR%2F07-936b741c235c4c86.jpg?alt=media&token=260ab96e-275f-489f-9960-cc95a5c16078",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Henry_Lawrence_Southwick_1918.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · Public domain",
+      "imageLicense": "Public domain",
+      "imageTitle": "Henry Lawrence Southwick 1918.jpg",
+      "imageFingerprint": "936b741c235c4c866a7186df4d80ea6d22640476806eee37af928f189bc1da5e",
+      "imageWidth": 731,
+      "imageHeight": 996,
+      "imageResolvedAt": "2026-08-13T08:18:44.557Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FY8svCnfJCxSp9GREyHLR%2F08-c02590efd8a6834a.jpg?alt=media&token=e5567328-c646-4201-856d-66874c21c3e1",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Emerson_(7945279282).jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY 2.0",
+      "imageLicense": "CC BY 2.0",
+      "imageTitle": "Emerson (7945279282).jpg",
+      "imageFingerprint": "c02590efd8a6834a60852c2666d7b82e210b561db1466e5aefe1d08f18aca607",
+      "imageWidth": 1024,
+      "imageHeight": 768,
+      "imageResolvedAt": "2026-08-13T08:18:44.593Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FY8svCnfJCxSp9GREyHLR%2F09-05ea65d575cc05be.png?alt=media&token=243c47f3-6b9e-4ff4-b09f-3c6d02c5378c",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Emerson_College_Los_Angeles.png",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY 3.0",
+      "imageLicense": "CC BY 3.0",
+      "imageTitle": "Emerson College Los Angeles.png",
+      "imageFingerprint": "05ea65d575cc05be1357d64b8222084bde4848f7552c1fc7614f095026c87ae8",
+      "imageWidth": 1348,
+      "imageHeight": 1078,
+      "imageResolvedAt": "2026-08-13T08:18:44.843Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2FY8svCnfJCxSp9GREyHLR%2F10-ec78ce063de2352a.jpg?alt=media&token=c7ee62d0-dc9c-4a8b-904e-ce4edd16304b",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:2009_Emerson_Majestic_Theatre_Boston_3599607642.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY 2.0",
+      "imageLicense": "CC BY 2.0",
+      "imageTitle": "2009 Emerson Majestic Theatre Boston 3599607642.jpg",
+      "imageFingerprint": "ec78ce063de2352af2d088ddb6995ea63b2b38b878af4bd36902e7d8417c0a0e",
+      "imageWidth": 1920,
+      "imageHeight": 2563,
+      "imageResolvedAt": "2026-08-13T08:18:44.842Z"
+    }
+  ]
+}

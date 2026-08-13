@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://sustainability.msu.edu/campus/gardens-and-natural-areas/msu-gardens",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sustainability.msu.edu/campus/gardens-and-natural-areas/msu-gardens",
+      "error": ""
+    },
+    {
+      "url": "https://museum.msu.edu/visit/visitor-information/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://museum.msu.edu/visit/visitor-information/",
+      "error": ""
+    },
+    {
+      "url": "https://art.msu.edu/galleries/msu-union-art-gallery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://art.msu.edu/galleries/msu-union-art-gallery/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

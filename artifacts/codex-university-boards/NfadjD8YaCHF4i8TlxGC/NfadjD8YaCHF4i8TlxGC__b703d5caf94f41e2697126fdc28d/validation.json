@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.gcc.edu/Home/Experience-the-Grove/Facilities/Breen-Student-Union",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Home/Experience-the-Grove/Facilities/Breen-Student-Union",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcc.edu/Info/Visit/Dining",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Info/Visit/Dining",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcc.edu/Celebrate-150/Campus-History-Tour/Rainbow-Bridge",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Celebrate-150/Campus-History-Tour/Rainbow-Bridge",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcc.edu/Home/Experience-the-Grove/Facilities/Buhl-Library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Home/Experience-the-Grove/Facilities/Buhl-Library",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcc.edu/Home/Experience-the-Grove/Facilities/Physical-Learning-Center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Home/Experience-the-Grove/Facilities/Physical-Learning-Center",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcc.edu/Home/Experience-the-Grove/Facilities/Pew-Fine-Arts-Center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Home/Experience-the-Grove/Facilities/Pew-Fine-Arts-Center",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcc.edu/Home/Faith-Purpose/Christian-Formation/Ministry-Opportunities/Ministry-Facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Home/Faith-Purpose/Christian-Formation/Ministry-Opportunities/Ministry-Facilities",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcc.edu/Home/Experience-the-Grove/Organizations-Clubs/Club-Sports-Athletic-Organizations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Home/Experience-the-Grove/Organizations-Clubs/Club-Sports-Athletic-Organizations",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

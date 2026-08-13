@@ -1,0 +1,88 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://ninerengage.charlotte.edu/organization/week-of-welcome",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ninerengage.charlotte.edu/organization/week-of-welcome",
+      "error": ""
+    },
+    {
+      "url": "https://studentunion.charlotte.edu/about-popp-martin-student-union",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentunion.charlotte.edu/about-popp-martin-student-union",
+      "error": ""
+    },
+    {
+      "url": "https://library.charlotte.edu/visit-study/directions-parking",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.charlotte.edu/visit-study/directions-parking",
+      "error": ""
+    },
+    {
+      "url": "https://gardens.charlotte.edu/visiting-the-gardens/admission-and-hours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gardens.charlotte.edu/visiting-the-gardens/admission-and-hours/",
+      "error": ""
+    },
+    {
+      "url": "https://gardens.charlotte.edu/faqs/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gardens.charlotte.edu/faqs/",
+      "error": ""
+    },
+    {
+      "url": "https://maps.charlotte.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://maps.charlotte.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://urec.charlotte.edu/facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://urec.charlotte.edu/facilities",
+      "error": ""
+    },
+    {
+      "url": "https://urec.charlotte.edu/open-recreation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://urec.charlotte.edu/open-recreation",
+      "error": ""
+    },
+    {
+      "url": "https://pats.charlotte.edu/transportation/cats-pass/light-rail/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pats.charlotte.edu/transportation/cats-pass/light-rail/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Gold Rush",
+    "Susie Harwood Garden"
+  ],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

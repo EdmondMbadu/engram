@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.wendys.com/united-states/fl/daytona-beach/1444-international-speedway-bl",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/fl/daytona-beach/1444-international-speedway-bl",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/fl/daytona-beach/2140-w-international-speedway-blvd.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/fl/daytona-beach/2140-w-international-speedway-blvd.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/fl/daytona-beach/740-north-nova-road.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/fl/daytona-beach/740-north-nova-road.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/fl/daytona-beach/1408-beville-rd.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/fl/daytona-beach/1408-beville-rd.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/fl/daytona-beach/2077-lpga-blvd.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/fl/daytona-beach/2077-lpga-blvd.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/fl/daytona-beach/2709-lpga-blvd/39670.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/fl/daytona-beach/2709-lpga-blvd/39670.html",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.ihop.com/en-us/fl/daytona-beach/breakfast-2204-south-atlantic-avenue-360035/late-night-food",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.ihop.com/en-us/fl/daytona-beach/breakfast-2204-south-atlantic-avenue-360035/late-night-food",
+      "error": ""
+    },
+    {
+      "url": "https://buc-ees.com/about/frequently-asked-questions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://buc-ees.com/about/frequently-asked-questions/",
+      "error": ""
+    },
+    {
+      "url": "https://www.steaknshake.com/locations/fl-daytona-beach-w-international-speedway-boulevard/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.steaknshake.com/locations/fl-daytona-beach-w-international-speedway-boulevard/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dennys.com/fl/ormond-beach/247450",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dennys.com/fl/ormond-beach/247450",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

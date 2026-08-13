@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://ewingdiner.com/contacts/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ewingdiner.com/contacts/",
+      "error": ""
+    },
+    {
+      "url": "https://www.twobrotherspizzatrenton.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.twobrotherspizzatrenton.com/",
+      "error": ""
+    },
+    {
+      "url": "https://ewingnj.org/databases-food-dining-retail?start=72",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ewingnj.org/databases-food-dining-retail?start=72",
+      "error": ""
+    },
+    {
+      "url": "https://www.ewingnj.org/database/2077-sing-lee-chinese-restaurant",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ewingnj.org/database/2077-sing-lee-chinese-restaurant",
+      "error": ""
+    },
+    {
+      "url": "https://ewingnj.org/databases-food-drink?start=24",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ewingnj.org/databases-food-drink?start=24",
+      "error": ""
+    },
+    {
+      "url": "https://ewingnj.org/databases-food-dining-retail",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ewingnj.org/databases-food-dining-retail",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

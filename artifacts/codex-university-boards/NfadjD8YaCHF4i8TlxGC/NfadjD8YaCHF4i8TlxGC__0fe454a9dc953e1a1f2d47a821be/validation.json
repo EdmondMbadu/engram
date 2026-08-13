@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://wp.stolaf.edu/buntrock/infodesk/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wp.stolaf.edu/buntrock/infodesk/",
+      "error": ""
+    },
+    {
+      "url": "https://wp.stolaf.edu/buntrock/spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wp.stolaf.edu/buntrock/spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://wp.stolaf.edu/library/rolvaag-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wp.stolaf.edu/library/rolvaag-library/",
+      "error": ""
+    },
+    {
+      "url": "https://wp.stolaf.edu/flaten/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wp.stolaf.edu/flaten/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://wp.stolaf.edu/music/music-performance-studies/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wp.stolaf.edu/music/music-performance-studies/",
+      "error": ""
+    },
+    {
+      "url": "https://wp.stolaf.edu/archives/?p=516",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wp.stolaf.edu/archives/tidbits-discovering-st-olaf-the-st-olaf-rock/",
+      "error": ""
+    },
+    {
+      "url": "https://wp.stolaf.edu/naturallands/habitats-of-the-natural-lands/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wp.stolaf.edu/naturallands/habitats-of-the-natural-lands/",
+      "error": ""
+    },
+    {
+      "url": "https://wp.stolaf.edu/naturallands/wellness-walks/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wp.stolaf.edu/naturallands/wellness-walks/",
+      "error": ""
+    },
+    {
+      "url": "https://wp.stolaf.edu/cwta/presenters-2024/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wp.stolaf.edu/cwta/presenters-2024/",
+      "error": ""
+    },
+    {
+      "url": "https://wp.stolaf.edu/naturallands/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wp.stolaf.edu/naturallands/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

@@ -1,0 +1,64 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.salisbury.edu/libraries/spaces-tech/maps.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.salisbury.edu/libraries/spaces-tech/maps.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.salisbury.edu/libraries/spaces-tech/reserve-space.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.salisbury.edu/libraries/spaces-tech/reserve-space.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.salisbury.edu/libraries/spaces-tech/index.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.salisbury.edu/libraries/spaces-tech/index.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.salisbury.edu/libraries/services/policies/classrooms.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.salisbury.edu/libraries/about/policies.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.salisbury.edu/libraries/crc/about.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.salisbury.edu/libraries/crc/",
+      "error": ""
+    },
+    {
+      "url": "https://www.salisbury.edu/discover-su/campus-map/about-salisbury-facilities.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.salisbury.edu/discover-su/campus-map/about-salisbury-facilities.aspx",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Guerrieri Academic Commons Study Carrels",
+    "Guerrieri Academic Commons Group Study Rooms"
+  ],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "903vg39PGvgsfcB38gJ6",
+    "schoolName": "Kettering College",
+    "shortSchoolName": "Kettering College",
+    "townName": "Kettering",
+    "state": "OH",
+    "countryCode": "US",
+    "unitId": "203544",
+    "website": "https://kc.edu/",
+    "latitude": 39.695052,
+    "longitude": -84.192006,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=kc.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=kc.edu&sz=256"
+  },
+  "template": {
+    "id": "college-study-spots",
+    "version": "1.0",
+    "titlePattern": "Claimed by 9am: {count} Study Spots Worth Showing Up Early For",
+    "editorialBrief": "Choose ten distinct study environments. Verify access rules, room or reservation constraints, and the physical affordance that makes each useful. Treat “Claimed by 9am” as editorial framing; never assert crowding or student behavior without evidence.",
+    "researchQueries": [
+      "campus study spaces",
+      "library study rooms students",
+      "quiet study campus"
+    ],
+    "count": 10,
+    "icon": "menu_book",
+    "primarySubjectType": "study_space",
+    "allowedSubjectTypes": [
+      "study_space",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Claimed by 9am: 10 Study Spots Worth Showing Up Early For",
+  "excluded_subjects": [
+    "McDonald's — 2901 Wilmington Pike",
+    "Taco Bell — 2101 East Dorothy Lane",
+    "Wendy's — 4003 Wilmington Pike",
+    "Domino's — 5293 Cornerstone North Boulevard",
+    "Raising Cane's — 4384 Indian Ripple Road",
+    "Raising Cane's — 2755 Fairfield Commons",
+    "Steak 'n Shake — 6380 Wilmington Pike",
+    "IHOP — 6930 Miller Lane",
+    "Waffle House #394 — 7800 Brandt Pike",
+    "McDonald's — 8240 Springboro Pike"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.marquette.edu/new-student-orientation/convocation.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marquette.edu/new-student-orientation/convocation.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.marquette.edu/campus-ministry/worship/mass-of-the-holy-spirit.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marquette.edu/campus-ministry/worship/mass-of-the-holy-spirit.php",
+      "error": ""
+    },
+    {
+      "url": "https://today.marquette.edu/2026/05/maddie-janecek-sacraments-commencement-2026/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://today.marquette.edu/2026/05/maddie-janecek-sacraments-commencement-2026/",
+      "error": ""
+    },
+    {
+      "url": "https://www.marquette.edu/campus-ministry/get-involved.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marquette.edu/campus-ministry/get-involved.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.marquette.edu/campus-ministry/midnight-run/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marquette.edu/campus-ministry/midnight-run/index.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.marquette.edu/hcu/index.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marquette.edu/service/community-day-of-service.php",
+      "error": ""
+    },
+    {
+      "url": "https://today.marquette.edu/2025/12/marquette-community-gathers-for-annual-christmas-tree-lighting/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://today.marquette.edu/2025/12/marquette-community-gathers-for-annual-christmas-tree-lighting/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://reynolda.org/visit/frequently-asked-questions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://reynolda.org/visit/frequently-asked-questions/",
+      "error": ""
+    },
+    {
+      "url": "https://reynolda.org/gardens/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://reynolda.org/gardens/",
+      "error": ""
+    },
+    {
+      "url": "https://www.cityofws.org/1893/Historic-Bethabara-Park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cityofws.org/1893/Historic-Bethabara-Park",
+      "error": ""
+    },
+    {
+      "url": "https://wshome.cityofws.org/Facilities/Facility/Details/Historic-Bethabara-Park-80",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wshome.cityofws.org/Facilities/Facility/Details/Historic-Bethabara-Park-80",
+      "error": ""
+    },
+    {
+      "url": "https://forsyth.cc/Library/Central/assets/Documents/ContactsforEntrepreneurs.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://forsyth.cc/Library/Central/assets/Documents/ContactsforEntrepreneurs.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.uncsa.edu/high-school/high-school-life.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncsa.edu/high-school/high-school-life.aspx",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

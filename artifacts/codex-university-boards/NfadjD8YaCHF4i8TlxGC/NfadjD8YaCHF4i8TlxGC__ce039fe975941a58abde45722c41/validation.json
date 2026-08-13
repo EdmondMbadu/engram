@@ -1,0 +1,73 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.scu.edu/library/about-the-library/library-building/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scu.edu/404?targetURL=https%3A%2F%2Fwww.scu.edu%2Flibrary%2Fabout-the-library%2Flibrary-building%2F",
+      "error": ""
+    },
+    {
+      "url": "https://www.scu.edu/map/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scu.edu/map/",
+      "error": ""
+    },
+    {
+      "url": "https://www.scu.edu/missionchurch/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scu.edu/missionchurch/",
+      "error": ""
+    },
+    {
+      "url": "https://www.scu.edu/studentlife/about-us/contact-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scu.edu/404?targetURL=https%3A%2F%2Fwww.scu.edu%2Fstudentlife%2Fabout-us%2Fcontact-us%2F",
+      "error": ""
+    },
+    {
+      "url": "https://www.scu.edu/recreation/facilities/malley-fitness-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scu.edu/404?targetURL=https%3A%2F%2Fwww.scu.edu%2Frecreation%2Ffacilities%2Fmalley-fitness-center%2F",
+      "error": ""
+    },
+    {
+      "url": "https://www.scu.edu/provost/academic-affairs/sobrato-campus-for-discovery-and-innovation/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scu.edu/404?targetURL=https%3A%2F%2Fwww.scu.edu%2Fprovost%2Facademic-affairs%2Fsobrato-campus-for-discovery-and-innovation%2F",
+      "error": ""
+    },
+    {
+      "url": "https://www.scu.edu/desaisset/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scu.edu/desaisset/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Mission Santa Clara de Asís",
+    "Mission Gardens",
+    "de Saisset Museum"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

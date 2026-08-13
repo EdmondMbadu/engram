@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.depauw.edu/about/history-traditions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depauw.edu/about/history-traditions/",
+      "error": ""
+    },
+    {
+      "url": "https://www.depauw.edu/studentaffairs/new-students/fall-orientation/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depauw.edu/studentaffairs/new-students/fall-orientation/",
+      "error": ""
+    },
+    {
+      "url": "https://library.depauw.edu/library/archives/ehistory/chapter3/3index08.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.depauw.edu/library/archives/ehistory/chapter3/3index08.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.depauw.edu/stories/details/outstanding-seniors-honored-with-walker-cup-and-murad-medal/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depauw.edu/stories/details/outstanding-seniors-honored-with-walker-cup-and-murad-medal/",
+      "error": ""
+    },
+    {
+      "url": "https://library.depauw.edu/library/archives/ehistory/chapter2/symbols.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.depauw.edu/library/archives/ehistory/chapter2/symbols.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.depauw.edu/academics/academic-resources/advising/registrar/commencement/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depauw.edu/academics/academic-resources/advising/registrar/commencement/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

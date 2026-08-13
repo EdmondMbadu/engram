@@ -1,0 +1,60 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "D8jZKSIMIEFdRrUCNFir",
+    "schoolName": "The University of Tennessee-Knoxville",
+    "shortSchoolName": "The University of Tennessee-Knoxville",
+    "townName": "Knoxville",
+    "state": "TN",
+    "countryCode": "US",
+    "unitId": "221759",
+    "website": "https://www.utk.edu/",
+    "latitude": 35.952082,
+    "longitude": -83.925852,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/5/55/Seal_of_the_University_of_Tennessee.svg/330px-Seal_of_the_University_of_Tennessee.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=utk.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "Raising Cane's Cumberland Ave",
+    "Gus's Good Times Deli",
+    "Cook Out",
+    "Insomnia Cookies",
+    "Subway",
+    "Mellow Mushroom Knoxville",
+    "Moe's Southwest Grill University of Tennessee",
+    "Rocky Top Dining Hall",
+    "Cumberland Food Hall",
+    "Student Union",
+    "Quiet Study Carrels",
+    "Quiet Study Tables",
+    "Group Study Carrels",
+    "Morgan Commons North",
+    "Graduate Commons Study Rooms - Small",
+    "Graduate Commons Study Room - Large",
+    "Pendergrass Study Rooms",
+    "Vol Study Center",
+    "Study Tables at DeVine Music Library",
+    "Study Lounge - Sixth Floor"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

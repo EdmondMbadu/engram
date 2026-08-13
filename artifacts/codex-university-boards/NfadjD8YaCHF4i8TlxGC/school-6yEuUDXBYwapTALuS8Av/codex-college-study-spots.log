@@ -1,0 +1,244 @@
+Reading additional input from stdin...
+2026-08-13T07:50:06.185532Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:50:06.196204Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:50:06.304188Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa18-62a1-78d2-af23-c41c0d6507e4.1786607329954182000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa19-8c52-7eb3-a8dc-1e604cef46ed
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"6yEuUDXBYwapTALuS8Av","schoolName":"Juniata College","shortSchoolName":"Juniata College","townName":"Huntingdon","state":"PA","countryCode":"US","website":"https://www.juniata.edu/","latitude":40.500523,"longitude":-78.017292},"templates":[{"id":"college-study-spots","version":"1.0","titlePattern":"Claimed by 9am: {count} Study Spots Worth Showing Up Early For","editorialBrief":"Choose ten distinct study environments. Verify access rules, room or reservation constraints, and the physical affordance that makes each useful. Treat “Claimed by 9am” as editorial framing; never assert crowding or student behavior without evidence.","researchQueries":["campus study spaces","library study rooms students","quiet study campus"],"count":10,"icon":"menu_book","primarySubjectType":"study_space","allowedSubjectTypes":["study_space","place"],"freshnessDays":180,"exactTitle":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For"}]}
+codex
+{ "complete": false, "school_name": "Juniata College", "town_name": "Huntingdon", "boards": [ { "complete": false, "school_name": "Juniata College", "town_name": "Huntingdon", "template_id": "college-study-spots", "title": "Claimed by 9am: 10 Study Spots Worth Showing Up Early For", "description": "Researching ten distinct, verifiable study environments and their current access constraints.", "icon": "menu_book", "cards": [ { "subject_id": "research-in-progress", "subject_type": "study_space", "entity_name": "Juniata College", "title": "Research in progress", "subtitle": "Verifying official sources", "notes": "Checking campus pages and current access details before completing the board.", "short_summary": "Official-source verification is underway.", "evidence_claim": "Juniata College is the supplied university.", "source_url": "https://www.juniata.edu/", "source_title": "Juniata College", "source_kind": "university_official", "source_published_at": null, "source_fetched_at": "2026-08-13", "latitude": 40.500523, "longitude": -78.017292, "maps_url": null, "access_notes": "Pending verification.", "cost_status": "not_applicable", "under21_safe": true }
+     ,     {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      }
+    ], "warnings": [] } ], "warnings": [] }
+web search: 
+web search: site:juniata.edu campus map buildings library study Juniata ...
+web search: 
+web search: site:juniata.edu "Statton Learning Commons" study rooms ...
+web search: 
+web search: site:juniata.edu/academics/learning-commons room reservation study room Statton ...
+codex
+{"complete":true,"school_name":"Juniata College","town_name":"Huntingdon","boards":[{"complete":true,"school_name":"Juniata College","town_name":"Huntingdon","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten documented Juniata study environments, from technology-rich collaboration areas to quiet rooms and academic-building lounges.","icon":"menu_book","cards":[{"subject_id":"juniata-statton-living-room","subject_type":"study_space","entity_name":"Statton Learning Commons Living Room","title":"Settle In by the Café","subtitle":"Living-room seating for flexible study sessions","notes":"Bring reading or laptop work to the main-level living room, with printing and the café close enough for an easy change of pace.","short_summary":"A central, informal workspace beside practical student services.","evidence_claim":"Juniata's 2025–2026 catalog identifies a main-level living room with a café, information desk, printing, and nearby individual and group study areas.","source_url":"https://connect.juniata.edu/catalog/media/Juniata%20College%20Catalog%202025-2026%20-%20updated%2010.31.25.pdf","source_title":"Juniata College Catalog 2025–2026","source_kind":"university_official","source_published_at":"2025-10-31","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Statton is open Monday–Thursday 8 a.m.–midnight, Friday 8 a.m.–8 p.m., Saturday 10 a.m.–5 p.m., and Sunday 10 a.m.–midnight; special schedules may supersede these hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-statton-quiet-study-area","subject_type":"study_space","entity_name":"Statton Learning Commons Quiet Study Area","title":"Switch Off the Group Chat","subtitle":"A designated area for quiet individual work","notes":"Choose this designated quiet zone when the assignment calls for sustained reading, drafting, or review without a group-work setup.","short_summary":"A purpose-designated setting for concentrated solo study.","evidence_claim":"The current Juniata catalog states that Statton Learning Commons includes a designated quiet study area.","source_url":"https://connect.juniata.edu/catalog/media/Juniata%20College%20Catalog%202025-2026%20-%20updated%2010.31.25.pdf","source_title":"Juniata College Catalog 2025–2026","source_kind":"university_official","source_published_at":"2025-10-31","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use during Statton building hours: Monday–Thursday 8 a.m.–midnight, Friday 8 a.m.–8 p.m., Saturday 10 a.m.–5 p.m., and Sunday 10 a.m.–midnight.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-statton-group-study-areas","subject_type":"study_space","entity_name":"Statton Learning Commons Group Study Areas","title":"Put the Shared Screen to Work","subtitle":"Technology-rich spaces for collaborative assignments","notes":"Bring the project team here when you need a shared workspace; select an open group area and confirm any posted reservation requirement.","short_summary":"Technology-equipped spaces designed around collaborative work.","evidence_claim":"Juniata's current catalog documents technology-rich group study areas on Statton's main level, while the college's project page describes small-group rooms with built-in technology.","source_url":"https://connect.juniata.edu/catalog/media/Juniata%20College%20Catalog%202025-2026%20-%20updated%2010.31.25.pdf","source_title":"Juniata College Catalog 2025–2026","source_kind":"university_official","source_published_at":"2025-10-31","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited catalog does not specify whether each group area requires a reservation; check room signage or the information desk before settling in.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-statton-meditation-room","subject_type":"study_space","entity_name":"Statton Learning Commons Meditation Room","title":"Read beside the Water Fountain","subtitle":"Second-floor room for contemplative work","notes":"Use the meditation books, sound machine, and kinetic fountain as a low-stimulation backdrop for reflective reading or a planning reset.","short_summary":"A second-floor retreat furnished for quiet reflection.","evidence_claim":"Juniata identifies a second-floor Statton meditation room containing a kinetic water fountain, sound machine, affirmation cards, and meditation books.","source_url":"https://www.juniata.edu/comfort-zones/","source_title":"Comfort Zones","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The room follows Statton Learning Commons hours; the official building schedule lists Monday–Thursday 8 a.m.–midnight, Friday 8 a.m.–8 p.m., Saturday 10 a.m.–5 p.m., and Sunday 10 a.m.–midnight.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-academic-resources-center","subject_type":"study_space","entity_name":"Academic Resources Center","title":"Pair the Desk with Academic Help","subtitle":"Main-level workspace near coaching and tutoring","notes":"Work nearby when an assignment may benefit from academic support; drop-ins are accepted, though scheduling an appointment is preferred.","short_summary":"A study-support base with access to coaching and peer resources.","evidence_claim":"Juniata places the Academic Resources Center on Statton's main level and says drop-ins are welcome while appointments are preferred.","source_url":"https://www.juniata.edu/academics/learning-services/","source_title":"Academic Resources","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Academic Resources lists office hours of 8:30 a.m.–4 p.m. Monday–Friday. Drop-ins are welcome, but appointments are preferred.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-von-liebig-study-lounges","subject_type":"study_space","entity_name":"von Liebig Center for Science Study Lounges","title":"Spread Out between Science Classes","subtitle":"Study lounges inside the science center","notes":"Use a lounge for problem sets or lab-note review, keeping seminar rooms and specialized laboratories clear unless your course authorizes them.","short_summary":"Science-building lounges suited to between-class academic work.","evidence_claim":"Juniata's facility page states that the von Liebig Center for Science contains study lounges as well as a microcomputer laboratory and seminar rooms.","source_url":"https://www.juniata.edu/offices/conferences-events/facilities/campus-facilities/vlb.php","source_title":"von Liebig Center for Science","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"VLB is open Monday–Thursday 6 a.m.–1 a.m., Friday 6 a.m.–11 p.m., Saturday 9 a.m.–11 p.m., and Sunday 9 a.m.–1 a.m.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-good-hall-study-lounges","subject_type":"study_space","entity_name":"Good Hall Study Lounges","title":"Choose a Lounge on Any Level","subtitle":"Group-study spaces distributed through Good Hall","notes":"Meet collaborators in one of the building's lounge spaces, then move to individual work without occupying a scheduled classroom.","short_summary":"Multiple renovated lounges support gathering and group study.","evidence_claim":"Juniata's 2023 institutional self-study says Good Hall renovations created lounge spaces for gathering and group study on every level.","source_url":"https://www.juniata.edu/academics/provost/middle-states-accreditation/media/2023SelfStudyReport-Final-Public.pdf","source_title":"2023 Self-Study Report","source_kind":"university_official","source_published_at":"2023-01-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Good Hall is open Monday–Thursday 6 a.m.–1 a.m., Friday 6 a.m.–11 p.m., Saturday 9 a.m.–11 p.m., and Sunday 9 a.m.–1 a.m.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-bac-entrance-study-space","subject_type":"study_space","entity_name":"Brumbaugh Academic Center Entrance Study Space","title":"Gather at the BAC Entrance","subtitle":"A documented group-study area near the entrance","notes":"Use the entrance study area for collaborative prep, especially when teammates need an easy-to-identify meeting point inside BAC.","short_summary":"An accessible rendezvous for group work in the academic center.","evidence_claim":"Juniata's institutional self-study documents a group-gathering and study space incorporated into the renovated Brumbaugh Academic Center entrance.","source_url":"https://www.juniata.edu/academics/provost/middle-states-accreditation/media/2023SelfStudyReport-Final-Public.pdf","source_title":"2023 Self-Study Report","source_kind":"university_official","source_published_at":"2023-01-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"BAC is open Monday–Thursday 6 a.m.–1 a.m., Friday 6 a.m.–11 p.m., Saturday 9 a.m.–11 p.m., and Sunday 9 a.m.–1 a.m.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-aspire-center","subject_type":"study_space","entity_name":"Aspire Center","title":"Take a Table between Classes","subtitle":"A private lounge for transfer and commuter students","notes":"If you are a transfer or commuter student, use the study tables, comfortable seating, nearby printing, and 24/7 access between classes.","short_summary":"A round-the-clock study lounge serving eligible commuter and transfer students.","evidence_claim":"Juniata says the Aspire Center provides transfer and commuter students with study tables, comfortable seating, a private quiet space, nearby printing, and 24/7 access.","source_url":"https://www.juniata.edu/campus-life/aspire-center.php","source_title":"Aspire Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Access is specifically for transfer and commuter students and is available 24/7. The center is at the back of the lower-level 24/7 Lounge in Ellis Hall.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-jcma-communal-tables","subject_type":"study_space","entity_name":"Juniata College Museum of Art Communal Tables","title":"Work with Art in View","subtitle":"Communal tables and floor seating inside the museum","notes":"Bring visual notes, sketching, or light reading during gallery hours; use the communal tables while respecting exhibitions and programs.","short_summary":"A museum setting with tables, floor seating, and creative materials.","evidence_claim":"Juniata states that its Museum of Art provides communal tables, floor seating areas, art kits, and creative stress-relief activities.","source_url":"https://www.juniata.edu/comfort-zones/","source_title":"Comfort Zones","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page lists hours Monday–Thursday 1–8 p.m. and Saturday noon–4 p.m.; it lists no Friday or Sunday hours.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:51:52.606694Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa19-8c52-7eb3-a8dc-1e604cef46ed.1786607406162856000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+33,968
+
+{"complete":true,"school_name":"Juniata College","town_name":"Huntingdon","boards":[{"complete":true,"school_name":"Juniata College","town_name":"Huntingdon","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten documented Juniata study environments, from technology-rich collaboration areas to quiet rooms and academic-building lounges.","icon":"menu_book","cards":[{"subject_id":"juniata-statton-living-room","subject_type":"study_space","entity_name":"Statton Learning Commons Living Room","title":"Settle In by the Café","subtitle":"Living-room seating for flexible study sessions","notes":"Bring reading or laptop work to the main-level living room, with printing and the café close enough for an easy change of pace.","short_summary":"A central, informal workspace beside practical student services.","evidence_claim":"Juniata's 2025–2026 catalog identifies a main-level living room with a café, information desk, printing, and nearby individual and group study areas.","source_url":"https://connect.juniata.edu/catalog/media/Juniata%20College%20Catalog%202025-2026%20-%20updated%2010.31.25.pdf","source_title":"Juniata College Catalog 2025–2026","source_kind":"university_official","source_published_at":"2025-10-31","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Statton is open Monday–Thursday 8 a.m.–midnight, Friday 8 a.m.–8 p.m., Saturday 10 a.m.–5 p.m., and Sunday 10 a.m.–midnight; special schedules may supersede these hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-statton-quiet-study-area","subject_type":"study_space","entity_name":"Statton Learning Commons Quiet Study Area","title":"Switch Off the Group Chat","subtitle":"A designated area for quiet individual work","notes":"Choose this designated quiet zone when the assignment calls for sustained reading, drafting, or review without a group-work setup.","short_summary":"A purpose-designated setting for concentrated solo study.","evidence_claim":"The current Juniata catalog states that Statton Learning Commons includes a designated quiet study area.","source_url":"https://connect.juniata.edu/catalog/media/Juniata%20College%20Catalog%202025-2026%20-%20updated%2010.31.25.pdf","source_title":"Juniata College Catalog 2025–2026","source_kind":"university_official","source_published_at":"2025-10-31","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use during Statton building hours: Monday–Thursday 8 a.m.–midnight, Friday 8 a.m.–8 p.m., Saturday 10 a.m.–5 p.m., and Sunday 10 a.m.–midnight.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-statton-group-study-areas","subject_type":"study_space","entity_name":"Statton Learning Commons Group Study Areas","title":"Put the Shared Screen to Work","subtitle":"Technology-rich spaces for collaborative assignments","notes":"Bring the project team here when you need a shared workspace; select an open group area and confirm any posted reservation requirement.","short_summary":"Technology-equipped spaces designed around collaborative work.","evidence_claim":"Juniata's current catalog documents technology-rich group study areas on Statton's main level, while the college's project page describes small-group rooms with built-in technology.","source_url":"https://connect.juniata.edu/catalog/media/Juniata%20College%20Catalog%202025-2026%20-%20updated%2010.31.25.pdf","source_title":"Juniata College Catalog 2025–2026","source_kind":"university_official","source_published_at":"2025-10-31","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited catalog does not specify whether each group area requires a reservation; check room signage or the information desk before settling in.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-statton-meditation-room","subject_type":"study_space","entity_name":"Statton Learning Commons Meditation Room","title":"Read beside the Water Fountain","subtitle":"Second-floor room for contemplative work","notes":"Use the meditation books, sound machine, and kinetic fountain as a low-stimulation backdrop for reflective reading or a planning reset.","short_summary":"A second-floor retreat furnished for quiet reflection.","evidence_claim":"Juniata identifies a second-floor Statton meditation room containing a kinetic water fountain, sound machine, affirmation cards, and meditation books.","source_url":"https://www.juniata.edu/comfort-zones/","source_title":"Comfort Zones","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The room follows Statton Learning Commons hours; the official building schedule lists Monday–Thursday 8 a.m.–midnight, Friday 8 a.m.–8 p.m., Saturday 10 a.m.–5 p.m., and Sunday 10 a.m.–midnight.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-academic-resources-center","subject_type":"study_space","entity_name":"Academic Resources Center","title":"Pair the Desk with Academic Help","subtitle":"Main-level workspace near coaching and tutoring","notes":"Work nearby when an assignment may benefit from academic support; drop-ins are accepted, though scheduling an appointment is preferred.","short_summary":"A study-support base with access to coaching and peer resources.","evidence_claim":"Juniata places the Academic Resources Center on Statton's main level and says drop-ins are welcome while appointments are preferred.","source_url":"https://www.juniata.edu/academics/learning-services/","source_title":"Academic Resources","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Academic Resources lists office hours of 8:30 a.m.–4 p.m. Monday–Friday. Drop-ins are welcome, but appointments are preferred.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-von-liebig-study-lounges","subject_type":"study_space","entity_name":"von Liebig Center for Science Study Lounges","title":"Spread Out between Science Classes","subtitle":"Study lounges inside the science center","notes":"Use a lounge for problem sets or lab-note review, keeping seminar rooms and specialized laboratories clear unless your course authorizes them.","short_summary":"Science-building lounges suited to between-class academic work.","evidence_claim":"Juniata's facility page states that the von Liebig Center for Science contains study lounges as well as a microcomputer laboratory and seminar rooms.","source_url":"https://www.juniata.edu/offices/conferences-events/facilities/campus-facilities/vlb.php","source_title":"von Liebig Center for Science","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"VLB is open Monday–Thursday 6 a.m.–1 a.m., Friday 6 a.m.–11 p.m., Saturday 9 a.m.–11 p.m., and Sunday 9 a.m.–1 a.m.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-good-hall-study-lounges","subject_type":"study_space","entity_name":"Good Hall Study Lounges","title":"Choose a Lounge on Any Level","subtitle":"Group-study spaces distributed through Good Hall","notes":"Meet collaborators in one of the building's lounge spaces, then move to individual work without occupying a scheduled classroom.","short_summary":"Multiple renovated lounges support gathering and group study.","evidence_claim":"Juniata's 2023 institutional self-study says Good Hall renovations created lounge spaces for gathering and group study on every level.","source_url":"https://www.juniata.edu/academics/provost/middle-states-accreditation/media/2023SelfStudyReport-Final-Public.pdf","source_title":"2023 Self-Study Report","source_kind":"university_official","source_published_at":"2023-01-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Good Hall is open Monday–Thursday 6 a.m.–1 a.m., Friday 6 a.m.–11 p.m., Saturday 9 a.m.–11 p.m., and Sunday 9 a.m.–1 a.m.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-bac-entrance-study-space","subject_type":"study_space","entity_name":"Brumbaugh Academic Center Entrance Study Space","title":"Gather at the BAC Entrance","subtitle":"A documented group-study area near the entrance","notes":"Use the entrance study area for collaborative prep, especially when teammates need an easy-to-identify meeting point inside BAC.","short_summary":"An accessible rendezvous for group work in the academic center.","evidence_claim":"Juniata's institutional self-study documents a group-gathering and study space incorporated into the renovated Brumbaugh Academic Center entrance.","source_url":"https://www.juniata.edu/academics/provost/middle-states-accreditation/media/2023SelfStudyReport-Final-Public.pdf","source_title":"2023 Self-Study Report","source_kind":"university_official","source_published_at":"2023-01-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"BAC is open Monday–Thursday 6 a.m.–1 a.m., Friday 6 a.m.–11 p.m., Saturday 9 a.m.–11 p.m., and Sunday 9 a.m.–1 a.m.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-aspire-center","subject_type":"study_space","entity_name":"Aspire Center","title":"Take a Table between Classes","subtitle":"A private lounge for transfer and commuter students","notes":"If you are a transfer or commuter student, use the study tables, comfortable seating, nearby printing, and 24/7 access between classes.","short_summary":"A round-the-clock study lounge serving eligible commuter and transfer students.","evidence_claim":"Juniata says the Aspire Center provides transfer and commuter students with study tables, comfortable seating, a private quiet space, nearby printing, and 24/7 access.","source_url":"https://www.juniata.edu/campus-life/aspire-center.php","source_title":"Aspire Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Access is specifically for transfer and commuter students and is available 24/7. The center is at the back of the lower-level 24/7 Lounge in Ellis Hall.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"juniata-jcma-communal-tables","subject_type":"study_space","entity_name":"Juniata College Museum of Art Communal Tables","title":"Work with Art in View","subtitle":"Communal tables and floor seating inside the museum","notes":"Bring visual notes, sketching, or light reading during gallery hours; use the communal tables while respecting exhibitions and programs.","short_summary":"A museum setting with tables, floor seating, and creative materials.","evidence_claim":"Juniata states that its Museum of Art provides communal tables, floor seating areas, art kits, and creative stress-relief activities.","source_url":"https://www.juniata.edu/comfort-zones/","source_title":"Comfort Zones","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page lists hours Monday–Thursday 1–8 p.m. and Saturday noon–4 p.m.; it lists no Friday or Sunday hours.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://comozooconservatory.org/visitors/visitor-map-hours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://comozooconservatory.org/visitors/visitor-map-hours/",
+      "error": ""
+    },
+    {
+      "url": "https://comozooconservatory.org/visitors/policies-faq/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://comozooconservatory.org/visitors/policies-faq/",
+      "error": ""
+    },
+    {
+      "url": "https://new.artsmia.org/visit?directory=0.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 429,
+      "finalUrl": "https://new.artsmia.org/visit?directory=0.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.mnhs.org/capitol/visit/hours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mnhs.org/capitol/visit/hours",
+      "error": ""
+    },
+    {
+      "url": "https://www.walkerart.org/minneapolis-sculpture-garden/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.walkerart.org/minneapolis-sculpture-garden/",
+      "error": ""
+    },
+    {
+      "url": "https://www.stpaul.gov/departments/parks-and-recreation/aquatics/phalen-regional-park-beach",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stpaul.gov/departments/parks-and-recreation/aquatics/phalen-regional-park-beach",
+      "error": ""
+    },
+    {
+      "url": "https://www.stpaul.gov/departments/parks-and-recreation/aquatics/frequently-asked-questions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stpaul.gov/departments/parks-and-recreation/aquatics/frequently-asked-questions",
+      "error": ""
+    },
+    {
+      "url": "https://www.stkate.edu/life/student-assistance/student-affairs/parents-and-families/resources",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stkate.edu/life/student-assistance/student-affairs/parents-and-families/resources",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

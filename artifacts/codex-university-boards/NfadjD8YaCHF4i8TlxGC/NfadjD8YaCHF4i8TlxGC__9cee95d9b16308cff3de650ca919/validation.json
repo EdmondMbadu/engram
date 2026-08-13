@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.uab.edu/admissions/student-life/traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uab.edu/admissions/student-life/traditions",
+      "error": ""
+    },
+    {
+      "url": "https://www.uab.edu/studentaffairs/home/traditions/blazer-to-do",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uab.edu/studentaffairs/home/traditions/blazer-to-do",
+      "error": ""
+    },
+    {
+      "url": "https://www.uab.edu/studentaffairs/home/traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uab.edu/studentaffairs/home/traditions",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

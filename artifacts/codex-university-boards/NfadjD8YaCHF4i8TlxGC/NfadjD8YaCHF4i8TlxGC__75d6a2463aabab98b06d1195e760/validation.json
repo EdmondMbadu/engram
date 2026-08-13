@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.pitzer.edu/documents/printable-campus-map-2026",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pitzer.edu/documents/printable-campus-map-2026",
+      "error": ""
+    },
+    {
+      "url": "https://www.pitzer.edu/documents/pitzer-walking-tour",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pitzer.edu/admission-aid/digital-publications",
+      "error": ""
+    },
+    {
+      "url": "https://www.pitzer.edu/student-life/living-pitzer/dining",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pitzer.edu/student-life/living-pitzer/dining",
+      "error": ""
+    },
+    {
+      "url": "https://www.pitzer.edu/student-life/living-pitzer/housing",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pitzer.edu/student-life/living-pitzer/housing",
+      "error": ""
+    },
+    {
+      "url": "https://www.pitzer.edu/student-life/arts-culture",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pitzer.edu/student-life/arts-culture",
+      "error": ""
+    },
+    {
+      "url": "https://www.pitzer.edu/outback-preserve",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pitzer.edu/outback-preserve",
+      "error": ""
+    },
+    {
+      "url": "https://www.pitzer.edu/student-life/athletics-and-recreation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pitzer.edu/student-life/athletics-and-recreation",
+      "error": ""
+    },
+    {
+      "url": "https://www.pitzer.edu/visit-galleries",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pitzer.edu/visit-galleries",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

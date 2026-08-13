@@ -1,0 +1,54 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Emory's posted campus schedule states that hours may change during academic breaks and holidays; verify same-day hours before traveling.",
+    "The Sankranti hours evidence is on the business's official development-host location page because its current production page did not expose the hours in searchable text."
+  ],
+  "reachability": [
+    {
+      "url": "https://dining.emory.edu/locations/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dining.emory.edu/locations/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://dining.emory.edu/_includes/documents/sections/hours-locations/posted-hours-of-operation.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dining.emory.edu/_includes/documents/sections/hours-locations/posted-hours-of-operation.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://dev.sankranti.com/location/emory-village/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dev.sankranti.com/location/emory-village/",
+      "error": ""
+    },
+    {
+      "url": "https://www.sweetgreen.com/locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sweetgreen.com/locations",
+      "error": ""
+    },
+    {
+      "url": "https://www.doublezeroatl.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.doublezeroatl.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

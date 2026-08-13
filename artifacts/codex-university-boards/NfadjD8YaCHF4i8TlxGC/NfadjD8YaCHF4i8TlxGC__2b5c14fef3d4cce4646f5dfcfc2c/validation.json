@@ -1,0 +1,87 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://und.edu/student-life/union/mu-building-art.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://und.edu/student-life/union/mu-building-art.html",
+      "error": ""
+    },
+    {
+      "url": "https://und.edu/student-life/union/amenities-services.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://und.edu/student-life/union/amenities-services.html",
+      "error": ""
+    },
+    {
+      "url": "https://und.edu/student-life/union/mu-art-gallery.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://und.edu/student-life/union/mu-art-gallery.html",
+      "error": ""
+    },
+    {
+      "url": "https://und.edu/student-life/community-belonging/pride/about-us.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://und.edu/student-life/community-belonging/pride/about-us.html",
+      "error": ""
+    },
+    {
+      "url": "https://und.edu/student-life/community-belonging/multicultural/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://und.edu/student-life/community-belonging/multicultural/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://und.edu/academics/international-center/international-student-scholar-services/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://und.edu/academics/international-center/international-student-scholar-services/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://und.edu/student-life/community-belonging/multicultural/interfaith.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://und.edu/student-life/community-belonging/multicultural/interfaith.html",
+      "error": ""
+    },
+    {
+      "url": "https://und.edu/student-life/wellness-center/facility/features.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://und.edu/student-life/wellness-center/facility/features.html",
+      "error": ""
+    },
+    {
+      "url": "https://library.und.edu/about/room-policy.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.und.edu/about/room-policy.html",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Memorial Union Gallery"
+  ],
+  "sourceCount": 9,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

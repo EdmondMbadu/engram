@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.tacobell.com/nd/fargo/2121-university-dr-s.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/nd/fargo/2121-university-dr-s.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/nd/fargo/1599-19th-avenue-north.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/nd/fargo/1599-19th-avenue-north.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/nd/fargo/4135-13th-ave-south/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/nd/fargo/4135-13th-ave-south/restaurant.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dennys.com/nd/fargo/246533",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dennys.com/nd/fargo/246533",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.ihop.com/en-us/nd/fargo/breakfast-1701-45th-st-sw-1841",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.ihop.com/en-us/nd/fargo/breakfast-1701-45th-st-sw-1841",
+      "error": ""
+    },
+    {
+      "url": "https://locations.papajohns.com/united-states/nd/58103/fargo/2730-32nd-ave-s/food-near-me",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.papajohns.com/united-states/nd/58103/fargo/2730-32nd-ave-s/food-near-me",
+      "error": ""
+    },
+    {
+      "url": "https://locations.papajohns.com/united-states/nd/58104/fargo/5675-26th-avenue-s",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.papajohns.com/united-states/nd/58104/fargo/5675-26th-avenue-s",
+      "error": ""
+    },
+    {
+      "url": "https://locations.papajohns.com/united-states/nd/58102/fargo/1100-19th-avenue-north/pizza-near-me",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.papajohns.com/united-states/nd/58102/fargo/1100-19th-avenue-north/pizza-near-me",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/nd/fargo/1001-38th-st-s/3120.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/nd/fargo/1001-38th-st-s/3120.html",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/north-dakota/fargo/1109-19th--avenue-north",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/north-dakota/fargo/1109-19th--avenue-north",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

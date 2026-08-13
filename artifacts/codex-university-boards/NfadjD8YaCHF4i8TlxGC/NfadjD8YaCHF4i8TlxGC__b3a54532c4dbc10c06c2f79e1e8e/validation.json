@@ -1,0 +1,79 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.moravian.edu/about/campus-map",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.moravian.edu/about/campus-map",
+      "error": ""
+    },
+    {
+      "url": "https://www.moravian.edu/handbook/directory",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.moravian.edu/handbook/directory",
+      "error": ""
+    },
+    {
+      "url": "https://www.moravian.edu/new-student-guide/student-life",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.moravian.edu/new-student-guide/student-life",
+      "error": ""
+    },
+    {
+      "url": "https://www.moravian.edu/eventmanagement/hub/meeting-rooms-services",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.moravian.edu/eventmanagement/hub/meeting-rooms-services",
+      "error": ""
+    },
+    {
+      "url": "https://www.moravian.edu/eventmanagement/event-resources-policies",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.moravian.edu/eventmanagement/event-resources-policies",
+      "error": ""
+    },
+    {
+      "url": "https://www.moravian.edu/eventmanagement/facilities-and-services/lecture-performance-halls",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.moravian.edu/eventmanagement/facilities-and-services/lecture-performance-halls",
+      "error": ""
+    },
+    {
+      "url": "https://www.visithistoricbethlehem.com/visit/merchant/moravian-book-shop/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visithistoricbethlehem.com/visit/merchant/moravian-book-shop/",
+      "error": ""
+    },
+    {
+      "url": "https://www.historicbethlehem.org/visit-us/museums-sites/colonial-industrial-quarter/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.historicbethlehem.org/visit-us/museums-sites/colonial-industrial-quarter/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Colonial Industrial Quarter"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

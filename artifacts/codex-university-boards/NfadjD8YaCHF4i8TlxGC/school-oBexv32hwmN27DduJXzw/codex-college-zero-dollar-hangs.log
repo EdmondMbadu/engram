@@ -1,0 +1,412 @@
+Reading additional input from stdin...
+2026-08-13T09:36:59.754323Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa7a-f4a3-79c1-8ecc-a2d9c240b76e.1786613789861116000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-terra
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa7b-68fa-7610-85f7-6f2ef89bce37
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"oBexv32hwmN27DduJXzw","schoolName":"University of Nebraska-Lincoln","shortSchoolName":"University of Nebraska-Lincoln","townName":"Lincoln","state":"NE","countryCode":"US","website":"https://www.unl.edu/","latitude":40.817598,"longitude":-96.700508},"templates":[{"id":"college-zero-dollar-hangs","version":"1.0","titlePattern":"Zero Dollars: {count} Hangs That Cost Nothing","editorialBrief":"Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.","researchQueries":["free student activities campus","free campus spaces students","free public places near campus"],"count":10,"icon":"money_off","primarySubjectType":"activity","allowedSubjectTypes":["activity","place"],"freshnessDays":180,"exactTitle":"Zero Dollars: 10 Hangs That Cost Nothing"}]}
+2026-08-13T09:36:59.842528Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa7a-f4c2-79d3-ba55-09e5d602edb6.1786613789891148000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:36:59.949087Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa7a-f4c2-7c82-af60-0832fcb45db8.1786613789891124000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:37:00.034656Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa7a-f915-7330-9def-18b9ffb6ee05.1786613790998275000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:37:00.071769Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa7a-f7ad-7031-a9c0-909623239b5b.1786613790638000000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:37:00.117553Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa7a-f7a9-7a90-9905-f17765ac8a9e.1786613790634395000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:37:00.121982Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T09:37:00.130152Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T09:37:00.204133Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa7a-f49e-72d1-b1e9-5e8cdf474003.1786613789854993000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:37:00.258623Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa7a-f4ba-7c11-a149-0a9e35a22c17.1786613789883578000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:37:00.304412Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa7a-f4b9-7943-a8a1-e9be5e9e9d56.1786613789881930000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:37:00.405867Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa7a-f7d7-7f10-8b8f-722f10239ff7.1786613790679467000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:37:00.619133Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa7a-f8b2-7952-96bc-9df440d7aea1.1786613790899392000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:37:00.803117Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa7a-f79e-7661-833a-747f3d2bedd4.1786613790623504000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:37:00.972278Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa7a-f498-7553-8003-0c4fc26c53f0.1786613789849271000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:37:01.090217Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa7a-f8b2-7f52-8069-5df26bc81512.1786613790899106000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{"complete":false,"school_name":"University of Nebraska-Lincoln","town_name":"Lincoln","boards":[{"complete":false,"school_name":"University of Nebraska-Lincoln","town_name":"Lincoln","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"I’ll verify ten free, named UNL/Lincoln hang options against direct public sources and return the completed board JSON.","icon":"money_off","cards":	[{"subject_id":"research-pending","subject_type":"activity","entity_name":"Research in progress","title":"Verifying official access","subtitle":"University of Nebraska–Lincoln, Lincoln","notes":"Checking direct university and civic sources for activities that require no admission or purchase.","short_summary":"Building a source-backed set of free hangs.","evidence_claim":"Research is in progress.","source_url":"https://www.unl.edu/","source_title":"University of Nebraska–Lincoln","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}		       	    	    	    	    	    	     
+              
+      
+    
+              
+     
+    
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+    
+  
+        
+       
+     
+      
+  
+      
+ 		
+        
+     
+   
+      
+    
+     
+     
+  
+   
+     
+     
+    
+   
+   
+  
+ 			
+			
+ 			
+   				
+ 			
+ 		
+ 			
+			
+ 			
+ 			
+			
+ 			
+ 		
+ 			
+ 			
+ 			
+ 			
+ 		
+ 			
+ 		
+ 			
+			
+ 			
+ 			
+			
+ 			
+ 			
+ 			
+ 			
+ 			
+			
+ 			
+ 			
+ 			
+ 			
+ 			
+ 			
+ 			
+			
+ 			
+   
+             
+            
+ 			
+			
+ 			
+  
+ 			
+ 			
+ 			
+ 			
+ 			
+ 			
+ 			
+ 			
+ 			
+			
+ 			
+ 			
+ 			
+ 			
+			
+ 			
+			
+ 			
+ 			
+ 			
+ 				
+ 			
+ 			
+ 			
+ 			
+ 			
+ 			
+			
+ 	
+ 			
+			
+ 			
+			
+ 			
+ 			
+ 			
+			
+ 			
+ 			
+ 			
+ 			
+ 			
+ 			
+ 			
+ 				
+ 			
+			
+ 			
+ 			
+ 			
+			
+ 			
+ 			
+             
+            
+ 			
+ 		
+ 			
+			
+ 			
+ 			
+ 			
+			
+ 			
+ 
+            
+ 			
+             
+            
+ 			
+			
+    
+ 			
+			
+ 			
+ 			
+			
+ 			
+    
+ 			
+			
+ 			
+   
+ 			
+ 			
+ 			
+   
+  
+ 			
+ 		
+ 			
+ 			
+ 			
+			
+ 			
+ 			
+			
+ 			
+ 				
+ 			
+			
+ 			
+ 				
+ 			
+			
+ 			
+  
+ 			
+			
+ 			
+ 			
+			
+ 			
+ 			
+ 			
+			
+ 			
+ 			                            
+ 			
+			
+ 			
+             
+            
+ 			
+			
+   
+ 			
+             
+             
+            
+             
+             
+ 			
+ 			
+ 			
+ 			
+			
+             
+ 			
+ 			
+ 			
+             
+ 			
+ 			              
+ 		    
+ 			
+ 			
+ 			
+			
+ 		
+ 			
+ 		
+ 			
+ 			            
+            
+ 			
+ 			
+ 			
+			
+ 			
+             
+ 			
+ 			
+ 			
+ 			
+			
+ 			
+ 			            
+ 			
+ 			
+            
+ 		    
+ 			
+ 			
+ 			
+			
+ 			
+             
+ 			
+ 			                          
+ 			
+ 			
+     
+ 			
+			
+ 			
+ 			
+ 			             
+ 			
+ 			
+  
+ 			             
+    
+ 			
+ 			
+ 			
+ 			
+ 			             
+ 			
+ 			
+ 			
+ 			
+ 			
+ 			
+ 			             
+ 			
+ 			
+ 			
+ 		
+ 			
+ 	   
+ 			
+ 			
+ 			
+ 			
+			
+ 			
+ 			
+ 			                  
+ 			
+ 			
+ 			
+ 			
+             
+ 			
+ 			
+ 			
+            
+ 			
+ 			
+             
+            
+ 			
+ 			
+ 			
+
+        
+    
+       
+    
+  
+    
+    
+   
+ 
+   
+  ,{"subject_id":"research-pending-2","subject_type":"place","entity_name":"Research in progress","title":"Finding free named spaces","subtitle":"University of Nebraska–Lincoln, Lincoln","notes":"Checking direct university and civic sources for activities that require no admission or purchase.","short_summary":"Building a source-backed set of free hangs.","evidence_claim":"Research is in progress.","source_url":"https://www.unl.edu/","source_title":"University of Nebraska–Lincoln","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  ,{"subject_id":"research-pending-3","subject_type":"place","entity_name":"Research in progress","title":"Finding free named spaces","subtitle":"University of Nebraska–Lincoln, Lincoln","notes":"Checking direct university and civic sources for activities that require no admission or purchase.","short_summary":"Building a source-backed set of free hangs.","evidence_claim":"Research is in progress.","source_url":"https://www.unl.edu/","source_title":"University of Nebraska–Lincoln","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  ,{"subject_id":"research-pending-4","subject_type":"place","entity_name":"Research in progress","title":"Finding free named spaces","subtitle":"University of Nebraska–Lincoln, Lincoln","notes":"Checking direct university and civic sources for activities that require no admission or purchase.","short_summary":"Building a source-backed set of free hangs.","evidence_claim":"Research is in progress.","source_url":"https://www.unl.edu/","source_title":"University of Nebraska–Lincoln","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  ,{"subject_id":"research-pending-5","subject_type":"place","entity_name":"Research in progress","title":"Finding free named spaces","subtitle":"University of Nebraska–Lincoln, Lincoln","notes":"Checking direct university and civic sources for activities that require no admission or purchase.","short_summary":"Building a source-backed set of free hangs.","evidence_claim":"Research is in progress.","source_url":"https://www.unl.edu/","source_title":"University of Nebraska–Lincoln","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  ,{"subject_id":"research-pending-6","subject_type":"place","entity_name":"Research in progress","title":"Finding free named spaces","subtitle":"University of Nebraska–Lincoln, Lincoln","notes":"Checking direct university and civic sources for activities that require no admission or purchase.","short_summary":"Building a source-backed set of free hangs.","evidence_claim":"Research is in progress.","source_url":"https://www.unl.edu/","source_title":"University of Nebraska–Lincoln","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  ,{"subject_id":"research-pending-7","subject_type":"place","entity_name":"Research in progress","title":"Finding free named spaces","subtitle":"University of Nebraska–Lincoln, Lincoln","notes":"Checking direct university and civic sources for activities that require no admission or purchase.","short_summary":"Building a source-backed set of free hangs.","evidence_claim":"Research is in progress.","source_url":"https://www.unl.edu/","source_title":"University of Nebraska–Lincoln","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  ,{"subject_id":"research-pending-8","subject_type":"place","entity_name":"Research in progress","title":"Finding free named spaces","subtitle":"University of Nebraska–Lincoln, Lincoln","notes":"Checking direct university and civic sources for activities that require no admission or purchase.","short_summary":"Building a source-backed set of free hangs.","evidence_claim":"Research is in progress.","source_url":"https://www.unl.edu/","source_title":"University of Nebraska–Lincoln","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  ,{"subject_id":"research-pending-9","subject_type":"place","entity_name":"Research in progress","title":"Finding free named spaces","subtitle":"University of Nebraska–Lincoln, Lincoln","notes":"Checking direct university and civic sources for activities that require no admission or purchase.","short_summary":"Building a source-backed set of free hangs.","evidence_claim":"Research is in progress.","source_url":"https://www.unl.edu/","source_title":"University of Nebraska–Lincoln","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  ,{"subject_id":"research-pending-10","subject_type":"place","entity_name":"Research in progress","title":"Finding free named spaces","subtitle":"University of Nebraska–Lincoln, Lincoln","notes":"Checking direct university and civic sources for activities that require no admission or purchase.","short_summary":"Building a source-backed set of free hangs.","evidence_claim":"Research is in progress.","source_url":"https://www.unl.edu/","source_title":"University of Nebraska–Lincoln","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}
+web search: 
+web search: site:unl.edu Lincoln free admission UNL students museum ...
+web search: 
+web search: site:unl.edu Lincoln free admission UNL students museum ...
+web search: 
+web search: site:sheldonartmuseum.org admission free Sheldon Museum Art Lincoln ...
+web search: 
+web search: site:luxcenter.org "Admission is free" ...
+web search: 
+web search: International Quilt Museum visit UNL ID free official ...
+codex
+{"complete":true,"school_name":"University of Nebraska-Lincoln","town_name":"Lincoln","boards":[{"complete":true,"school_name":"University of Nebraska-Lincoln","town_name":"Lincoln","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"Ten source-backed places where UNL students can spend time together without paying admission or making a purchase.","icon":"money_off","cards":[{"subject_id":"sheldon-museum-of-art","subject_type":"place","entity_name":"Sheldon Museum of Art","title":"Browse Sheldon’s galleries","subtitle":"451 N. 12th St., Lincoln","notes":"Meet in the galleries, compare one artwork each, then continue outside to the museum’s outdoor sculptures at your own pace.","short_summary":"A free art-and-conversation stop on City Campus.","evidence_claim":"Sheldon Museum of Art lists admission as free and offers free tours of its museum and outdoor sculptures.","source_url":"https://sheldonartmuseum.org/visit/","source_title":"Visit | Sheldon Museum of Art","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Tuesday–Sunday; closed Mondays and listed holidays. Check the official page before going.","cost_status":"free","under21_safe":true},{"subject_id":"great-plains-art-museum","subject_type":"place","entity_name":"Great Plains Art Museum","title":"Take a self-guided gallery lap","subtitle":"1155 Q St., Hewit Place, City Campus","notes":"Use the free self-guided format to walk the galleries together, pause at a shared favorite, and trade observations.","short_summary":"Free exhibitions focused on the people, cultures, and environments of the Great Plains.","evidence_claim":"The Great Plains Art Museum states that admission is free and that self-guided tours are available to all visitors.","source_url":"https://plains.unl.edu/great-plains-art-museum/plan-your-visit/","source_title":"Plan Your Visit | Great Plains Art Museum","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Tuesday–Saturday, 10 a.m.–5 p.m.; closed on major holidays, university breaks, and home-football Saturdays.","cost_status":"free","under21_safe":true},{"subject_id":"international-quilt-museum","subject_type":"place","entity_name":"International Quilt Museum","title":"See quilts with your NCard","subtitle":"1523 N. 33rd St., UNL East Campus","notes":"Bring your NCard, choose a gallery section to explore together, and use the exhibit labels to spark a low-key conversation.","short_summary":"UNL students receive free museum admission with an NCard.","evidence_claim":"The International Quilt Museum lists free admission for a UNL student with an NCard.","source_url":"https://www.internationalquiltmuseum.org/visit/admission-tours","source_title":"Admission & Tours | International Quilt Museum","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Bring a UNL NCard. Open Tuesday–Saturday, 10 a.m.–4 p.m.; closed Sunday, Monday, and university holidays.","cost_status":"free","under21_safe":true},{"subject_id":"morrill-hall","subject_type":"place","entity_name":"Morrill Hall","title":"Explore natural-history exhibits","subtitle":"645 N. 14th St., City Campus","notes":"Bring your NCard, pick an exhibit floor, and give each person time to find one object worth regrouping to discuss.","short_summary":"A natural-history museum visit that is free for UNL NCard holders.","evidence_claim":"Morrill Hall lists museum admission as free for UNL NCard holders.","source_url":"https://museum.unl.edu/morrill/morrill-hall/visit/","source_title":"Visit Us | Morrill Hall | Nebraska State Museum","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Bring a UNL NCard. Exhibit hours are Tuesday–Saturday, 9 a.m.–5 p.m., and Sunday, noon–5 p.m.; closed Monday.","cost_status":"free","under21_safe":true},{"subject_id":"love-library","subject_type":"place","entity_name":"Love Library","title":"Read and recharge in Love Library","subtitle":"City Campus","notes":"Choose a table, pull a book or magazine for in-house reading, and leave phones aside for a focused hour together.","short_summary":"A campus library hang with public in-house collection access.","evidence_claim":"University Libraries states that its collections are open to the public for in-house use, and identifies Love Library as a library location.","source_url":"https://libraries.unl.edu/librarycards/","source_title":"Library Cards | University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use materials in-house; an NCard is required only to check out materials. Confirm building hours before visiting.","cost_status":"free","under21_safe":true},{"subject_id":"bennett-martin-public-library","subject_type":"place","entity_name":"Bennett Martin Public Library","title":"Use the library’s free Wi-Fi","subtitle":"136 S. 14th St., downtown Lincoln","notes":"Claim a table, connect to the free Wi-Fi, and make it a shared work sprint or a quiet catch-up between classes.","short_summary":"A downtown public-library stop with free Wi-Fi and public services.","evidence_claim":"Lincoln City Libraries lists free Wi-Fi access among its services and identifies Bennett Martin Public Library as a location.","source_url":"https://www.lincolnlibraries.org/visit/discover-your-community-here-hidden-from-navigation/","source_title":"Discover Your Community Here | Lincoln City Libraries","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Bennett Martin’s listed hours are Monday–Thursday 10 a.m.–8 p.m., Friday–Saturday 10 a.m.–6 p.m., and Sunday noon–6 p.m.","cost_status":"free","under21_safe":true},{"subject_id":"sunken-gardens","subject_type":"place","entity_name":"Sunken Gardens","title":"Walk the seasonal garden paths","subtitle":"Antelope Park, Lincoln","notes":"Take a slow loop through the beds, look for the current floral theme, and use the benches for a screen-free conversation.","short_summary":"A public garden with a changing annual floral design.","evidence_claim":"The City of Lincoln states that Sunken Gardens admission is free and all are welcome.","source_url":"https://www.lincoln.ne.gov/City/Departments/Parks-and-Recreation/Parks-Facilities/Public-Gardens/Sunken-Gardens","source_title":"Sunken Gardens | City of Lincoln","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Admission is free; donations are accepted. Restrooms are listed as open April–October, 9 a.m.–8 p.m.","cost_status":"free","under21_safe":true},{"subject_id":"pioneers-park-nature-center","subject_type":"place","entity_name":"Pioneers Park Nature Center","title":"Observe the prairie at Pioneers Park","subtitle":"3201 S. Coddington Ave., Lincoln","notes":"Follow the marked paths, watch quietly for wildlife, and keep the outing simple by choosing one habitat to explore together.","short_summary":"A city nature center for an outdoor, no-admission outing.","evidence_claim":"The City of Lincoln states that admission to Pioneers Park Nature Center is free.","source_url":"https://www.lincoln.ne.gov/City/Departments/Parks-and-Recreation/Programs/Nature-Center-Programming","source_title":"Nature Center Programming | City of Lincoln","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Admission is free and donations are welcome. Stay on permitted routes; the city prohibits collecting natural materials and crossing fences or locked gates.","cost_status":"free","under21_safe":true},{"subject_id":"rotary-strolling-garden","subject_type":"place","entity_name":"Rotary Strolling Garden","title":"Stroll the demonstration garden","subtitle":"Antelope Park, Lincoln","notes":"Walk the plantings side by side, point out combinations you would try at home, and pause for photos without blocking paths.","short_summary":"A free public garden focused on hardy shrubs, perennials, and grasses.","evidence_claim":"The City of Lincoln states that Rotary Strolling Garden admission is free and lists daily garden hours.","source_url":"https://www.lincoln.ne.gov/City/Departments/Parks-and-Recreation/Parks-Facilities/Public-Gardens/Rotary-Strolling-Garden","source_title":"Rotary Strolling Garden | City of Lincoln","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Garden hours are listed as 6 a.m.–11 p.m. daily. Admission is free; donations are accepted.","cost_status":"free","under21_safe":true},{"subject_id":"veterans-memorial-garden","subject_type":"place","entity_name":"Lincoln Veterans Memorial Garden","title":"Take the memorial walking tour","subtitle":"3200 Veterans Memorial Drive, Antelope Park","notes":"Walk the monuments and inscribed bricks at a respectful pace, then pause to read a few names and reflect together.","short_summary":"A free memorial garden with military monuments and a self-guided walking tour.","evidence_claim":"The City of Lincoln’s Veterans Memorial Garden brochure states that admission is free and describes a walking tour of its monuments and inscribed bricks.","source_url":"https://www.lincoln.ne.gov/files/sharedassets/public/v/1/parks-amp-rec/parks-amp-facilities/facilities/gardens/vets-memorial/veterans-memorial-garden-brochure2020.pdf","source_title":"Lincoln’s Veterans Memorial Garden brochure | City of Lincoln","source_kind":"government","source_published_at":"2020-01-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The brochure lists garden hours as 6 a.m.–11 p.m. daily and notes that restrooms are available April–October.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T09:39:34.822555Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa7b-68fa-7610-85f7-6f2ef89bce37.1786613819643513000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+48,553
+
+{"complete":true,"school_name":"University of Nebraska-Lincoln","town_name":"Lincoln","boards":[{"complete":true,"school_name":"University of Nebraska-Lincoln","town_name":"Lincoln","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"Ten source-backed places where UNL students can spend time together without paying admission or making a purchase.","icon":"money_off","cards":[{"subject_id":"sheldon-museum-of-art","subject_type":"place","entity_name":"Sheldon Museum of Art","title":"Browse Sheldon’s galleries","subtitle":"451 N. 12th St., Lincoln","notes":"Meet in the galleries, compare one artwork each, then continue outside to the museum’s outdoor sculptures at your own pace.","short_summary":"A free art-and-conversation stop on City Campus.","evidence_claim":"Sheldon Museum of Art lists admission as free and offers free tours of its museum and outdoor sculptures.","source_url":"https://sheldonartmuseum.org/visit/","source_title":"Visit | Sheldon Museum of Art","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Tuesday–Sunday; closed Mondays and listed holidays. Check the official page before going.","cost_status":"free","under21_safe":true},{"subject_id":"great-plains-art-museum","subject_type":"place","entity_name":"Great Plains Art Museum","title":"Take a self-guided gallery lap","subtitle":"1155 Q St., Hewit Place, City Campus","notes":"Use the free self-guided format to walk the galleries together, pause at a shared favorite, and trade observations.","short_summary":"Free exhibitions focused on the people, cultures, and environments of the Great Plains.","evidence_claim":"The Great Plains Art Museum states that admission is free and that self-guided tours are available to all visitors.","source_url":"https://plains.unl.edu/great-plains-art-museum/plan-your-visit/","source_title":"Plan Your Visit | Great Plains Art Museum","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Tuesday–Saturday, 10 a.m.–5 p.m.; closed on major holidays, university breaks, and home-football Saturdays.","cost_status":"free","under21_safe":true},{"subject_id":"international-quilt-museum","subject_type":"place","entity_name":"International Quilt Museum","title":"See quilts with your NCard","subtitle":"1523 N. 33rd St., UNL East Campus","notes":"Bring your NCard, choose a gallery section to explore together, and use the exhibit labels to spark a low-key conversation.","short_summary":"UNL students receive free museum admission with an NCard.","evidence_claim":"The International Quilt Museum lists free admission for a UNL student with an NCard.","source_url":"https://www.internationalquiltmuseum.org/visit/admission-tours","source_title":"Admission & Tours | International Quilt Museum","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Bring a UNL NCard. Open Tuesday–Saturday, 10 a.m.–4 p.m.; closed Sunday, Monday, and university holidays.","cost_status":"free","under21_safe":true},{"subject_id":"morrill-hall","subject_type":"place","entity_name":"Morrill Hall","title":"Explore natural-history exhibits","subtitle":"645 N. 14th St., City Campus","notes":"Bring your NCard, pick an exhibit floor, and give each person time to find one object worth regrouping to discuss.","short_summary":"A natural-history museum visit that is free for UNL NCard holders.","evidence_claim":"Morrill Hall lists museum admission as free for UNL NCard holders.","source_url":"https://museum.unl.edu/morrill/morrill-hall/visit/","source_title":"Visit Us | Morrill Hall | Nebraska State Museum","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Bring a UNL NCard. Exhibit hours are Tuesday–Saturday, 9 a.m.–5 p.m., and Sunday, noon–5 p.m.; closed Monday.","cost_status":"free","under21_safe":true},{"subject_id":"love-library","subject_type":"place","entity_name":"Love Library","title":"Read and recharge in Love Library","subtitle":"City Campus","notes":"Choose a table, pull a book or magazine for in-house reading, and leave phones aside for a focused hour together.","short_summary":"A campus library hang with public in-house collection access.","evidence_claim":"University Libraries states that its collections are open to the public for in-house use, and identifies Love Library as a library location.","source_url":"https://libraries.unl.edu/librarycards/","source_title":"Library Cards | University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use materials in-house; an NCard is required only to check out materials. Confirm building hours before visiting.","cost_status":"free","under21_safe":true},{"subject_id":"bennett-martin-public-library","subject_type":"place","entity_name":"Bennett Martin Public Library","title":"Use the library’s free Wi-Fi","subtitle":"136 S. 14th St., downtown Lincoln","notes":"Claim a table, connect to the free Wi-Fi, and make it a shared work sprint or a quiet catch-up between classes.","short_summary":"A downtown public-library stop with free Wi-Fi and public services.","evidence_claim":"Lincoln City Libraries lists free Wi-Fi access among its services and identifies Bennett Martin Public Library as a location.","source_url":"https://www.lincolnlibraries.org/visit/discover-your-community-here-hidden-from-navigation/","source_title":"Discover Your Community Here | Lincoln City Libraries","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Bennett Martin’s listed hours are Monday–Thursday 10 a.m.–8 p.m., Friday–Saturday 10 a.m.–6 p.m., and Sunday noon–6 p.m.","cost_status":"free","under21_safe":true},{"subject_id":"sunken-gardens","subject_type":"place","entity_name":"Sunken Gardens","title":"Walk the seasonal garden paths","subtitle":"Antelope Park, Lincoln","notes":"Take a slow loop through the beds, look for the current floral theme, and use the benches for a screen-free conversation.","short_summary":"A public garden with a changing annual floral design.","evidence_claim":"The City of Lincoln states that Sunken Gardens admission is free and all are welcome.","source_url":"https://www.lincoln.ne.gov/City/Departments/Parks-and-Recreation/Parks-Facilities/Public-Gardens/Sunken-Gardens","source_title":"Sunken Gardens | City of Lincoln","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Admission is free; donations are accepted. Restrooms are listed as open April–October, 9 a.m.–8 p.m.","cost_status":"free","under21_safe":true},{"subject_id":"pioneers-park-nature-center","subject_type":"place","entity_name":"Pioneers Park Nature Center","title":"Observe the prairie at Pioneers Park","subtitle":"3201 S. Coddington Ave., Lincoln","notes":"Follow the marked paths, watch quietly for wildlife, and keep the outing simple by choosing one habitat to explore together.","short_summary":"A city nature center for an outdoor, no-admission outing.","evidence_claim":"The City of Lincoln states that admission to Pioneers Park Nature Center is free.","source_url":"https://www.lincoln.ne.gov/City/Departments/Parks-and-Recreation/Programs/Nature-Center-Programming","source_title":"Nature Center Programming | City of Lincoln","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Admission is free and donations are welcome. Stay on permitted routes; the city prohibits collecting natural materials and crossing fences or locked gates.","cost_status":"free","under21_safe":true},{"subject_id":"rotary-strolling-garden","subject_type":"place","entity_name":"Rotary Strolling Garden","title":"Stroll the demonstration garden","subtitle":"Antelope Park, Lincoln","notes":"Walk the plantings side by side, point out combinations you would try at home, and pause for photos without blocking paths.","short_summary":"A free public garden focused on hardy shrubs, perennials, and grasses.","evidence_claim":"The City of Lincoln states that Rotary Strolling Garden admission is free and lists daily garden hours.","source_url":"https://www.lincoln.ne.gov/City/Departments/Parks-and-Recreation/Parks-Facilities/Public-Gardens/Rotary-Strolling-Garden","source_title":"Rotary Strolling Garden | City of Lincoln","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Garden hours are listed as 6 a.m.–11 p.m. daily. Admission is free; donations are accepted.","cost_status":"free","under21_safe":true},{"subject_id":"veterans-memorial-garden","subject_type":"place","entity_name":"Lincoln Veterans Memorial Garden","title":"Take the memorial walking tour","subtitle":"3200 Veterans Memorial Drive, Antelope Park","notes":"Walk the monuments and inscribed bricks at a respectful pace, then pause to read a few names and reflect together.","short_summary":"A free memorial garden with military monuments and a self-guided walking tour.","evidence_claim":"The City of Lincoln’s Veterans Memorial Garden brochure states that admission is free and describes a walking tour of its monuments and inscribed bricks.","source_url":"https://www.lincoln.ne.gov/files/sharedassets/public/v/1/parks-amp-rec/parks-amp-facilities/facilities/gardens/vets-memorial/veterans-memorial-garden-brochure2020.pdf","source_title":"Lincoln’s Veterans Memorial Garden brochure | City of Lincoln","source_kind":"government","source_published_at":"2020-01-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The brochure lists garden hours as 6 a.m.–11 p.m. daily and notes that restrooms are available April–October.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}

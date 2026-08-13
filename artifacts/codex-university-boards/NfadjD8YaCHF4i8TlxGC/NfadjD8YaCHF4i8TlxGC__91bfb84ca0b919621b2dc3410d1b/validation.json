@@ -1,0 +1,72 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.immaculata.edu/advancement/support/charter-day-of-giving/campus-impact-map/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.immaculata.edu/advancement/support/charter-day-of-giving/campus-impact-map/",
+      "error": ""
+    },
+    {
+      "url": "https://www.immaculata.edu/academics/library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.immaculata.edu/academics/library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.immaculata.edu/academics/library/archives/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.immaculata.edu/academics/library/archives/",
+      "error": ""
+    },
+    {
+      "url": "https://www.immaculata.edu/academics/advising-support/learning-support-services/writing-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.immaculata.edu/academics/advising-support/learning-support-services/writing-center/",
+      "error": ""
+    },
+    {
+      "url": "https://magazine.immaculata.edu/winter-2023/learning-support-services-at-immaculata-university/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://magazine.immaculata.edu/winter-2023/learning-support-services-at-immaculata-university/",
+      "error": ""
+    },
+    {
+      "url": "https://www.immaculata.edu/campus-life/living-on-campus/residential-communities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.immaculata.edu/campus-life/living-on-campus/residential-communities/",
+      "error": ""
+    },
+    {
+      "url": "https://www.immaculata.edu/campus-life/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.immaculata.edu/campus-life/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Gillet Hall Study Room",
+    "Back Campus"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

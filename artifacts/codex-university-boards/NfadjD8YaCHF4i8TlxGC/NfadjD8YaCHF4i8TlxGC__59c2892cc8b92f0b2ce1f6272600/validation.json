@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Late closing does not guarantee that every menu item, dining room, delivery service, or kitchen remains available until the posted business close; verify before travel.",
+    "The Lobster Shanty is seasonal, and Sam & Joe’s publishes a winter schedule.",
+    "Coordinates and maps URLs are null because they were not independently verified from authoritative map records during this pass."
+  ],
+  "reachability": [
+    {
+      "url": "https://locations.tacobell.com/ma/salem/267-highland-ave.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ma/salem/267-highland-ave.html",
+      "error": ""
+    },
+    {
+      "url": "https://lobstershantysalem.com/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lobstershantysalem.com/contact",
+      "error": ""
+    },
+    {
+      "url": "https://villagetavernsalem.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://villagetavernsalem.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.mercysalem.com/pub/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mercysalem.com/pub/",
+      "error": ""
+    },
+    {
+      "url": "https://www.thebabesalem.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.thebabesalem.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ipazzirestaurant.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ipazzirestaurant.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.cabotstreetpizza.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cabotstreetpizza.com/",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.subway.com/united-states/ma/salem/119-125-canal-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.subway.com/united-states/ma/salem/119-125-canal-st",
+      "error": ""
+    },
+    {
+      "url": "https://www.samandjoesrestaurant.com/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.samandjoesrestaurant.com/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.littleitalybeverly.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.littleitalybeverly.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

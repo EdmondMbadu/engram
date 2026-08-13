@@ -1,0 +1,285 @@
+Reading additional input from stdin...
+2026-08-13T07:59:00.609496Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:59:00.618086Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa21-b3db-7e33-8201-a2b086cbe9b2
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"qHq2MZxQLvUrCRkUDvUO","schoolName":"Lewis & Clark College","shortSchoolName":"Lewis & Clark College","townName":"Portland","state":"OR","countryCode":"US","website":"https://www.lclark.edu/","latitude":45.450882,"longitude":-122.669137},"templates":[{"id":"college-study-spots","version":"1.0","titlePattern":"Claimed by 9am: {count} Study Spots Worth Showing Up Early For","editorialBrief":"Choose ten distinct study environments. Verify access rules, room or reservation constraints, and the physical affordance that makes each useful. Treat “Claimed by 9am” as editorial framing; never assert crowding or student behavior without evidence.","researchQueries":["campus study spaces","library study rooms students","quiet study campus"],"count":10,"icon":"menu_book","primarySubjectType":"study_space","allowedSubjectTypes":["study_space","place"],"freshnessDays":180,"exactTitle":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For"}]}
+codex
+{
+  "complete": false,
+  "school_name": "Lewis & Clark College",
+  "town_name": "Portland",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Lewis & Clark College",
+      "town_name": "Portland",
+      "template_id": "college-study-spots",
+      "title": "Claimed by 9am: 10 Study Spots Worth Showing Up Early For",
+      "description": "",
+      "icon": "menu_book",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "I’m verifying ten named study environments, their access constraints, and direct supporting pages before completing the board.",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+     		 	,
+     		{
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:lclark.edu Lewis & Clark study spaces Watzek library rooms ...
+web search: 
+web search: site:lclark.libcal.com spaces Watzek 356 357 358 302 ...
+web search: 
+web search: 
+web search: 
+web search: 
+codex
+{"complete":true,"school_name":"Lewis & Clark College","town_name":"Portland","boards":[{"complete":true,"school_name":"Lewis & Clark College","town_name":"Portland","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten documented study settings across Lewis & Clark’s undergraduate and law campuses, from reservable group rooms to quiet library and lounge seating.","icon":"menu_book","cards":[{"subject_id":"watzek-library","subject_type":"study_space","entity_name":"Aubrey R. Watzek Library","title":"Settle Into Watzek’s Quiet Spaces","subtitle":"Undergraduate campus library with study areas and extended academic-year access","notes":"Check the live library schedule before heading over, then choose a quiet area; published hours can change between terms and breaks.","short_summary":"A central library option for quiet work, research materials, technology loans, and finals-week access.","evidence_claim":"Lewis & Clark identifies Watzek Library as a study space with quiet areas; its published 2025–26 schedule lists midnight closing Sunday through Thursday and 24-hour access during reading days and finals week.","source_url":"https://college.lclark.edu/live/news/55626-watzek-library-hours-for-the-2025-26-academic-year","source_title":"Watzek Library hours for the 2025-26 academic year","source_kind":"university_official","source_published_at":"2025-09-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Consult current Watzek hours before visiting. The cited 2025–26 schedule is term-specific; 24-hour access was limited to reading days and finals week.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"beth-miller-lounge","subject_type":"study_space","entity_name":"Beth Miller Lounge","title":"Spread Out in Beth Miller Lounge","subtitle":"Named Fowler Student Center lounge available for student study","notes":"Bring your Lewis & Clark ID for after-hours entry, and shift to headphones or quieter work if a reception or campus event is underway.","short_summary":"A named student-center lounge that provides an alternative workspace when the library is closed.","evidence_claim":"Lewis & Clark states that students may use Miller Lounge to study and that Fowler Student Center is accessible 24/7 with a Lewis & Clark ID.","source_url":"https://college.lclark.edu/live/news/55626-watzek-library-hours-for-the-2025-26-academic-year","source_title":"Watzek Library hours for the 2025-26 academic year","source_kind":"university_official","source_published_at":"2025-09-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Fowler Student Center requires a Lewis & Clark ID for overnight access; scheduled events may affect lounge availability.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hu-media-lounge","subject_type":"study_space","entity_name":"Hu Media Lounge","title":"Use the Flexible Seating at Hu Media Lounge","subtitle":"Fowler Student Center lounge documented as an alternative study space","notes":"Use this lounge for laptop work or reading, but keep a backup location in mind because its flexible student-center role can bring other activities.","short_summary":"A flexible lounge setting for students who want to work beyond Watzek’s regular building hours.","evidence_claim":"Lewis & Clark explicitly lists Hu Media Lounge among the Fowler Student Center spaces students may use to study when Watzek Library is closed.","source_url":"https://college.lclark.edu/live/news/55626-watzek-library-hours-for-the-2025-26-academic-year","source_title":"Watzek Library hours for the 2025-26 academic year","source_kind":"university_official","source_published_at":"2025-09-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Fowler is accessible 24/7 with a Lewis & Clark ID. Lounge access can be affected by student-center programming.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"trail-room","subject_type":"study_space","entity_name":"Trail Room","title":"Turn a Trail Room Table Into a Workstation","subtitle":"Fowler café-and-lounge space approved for student study","notes":"Aim for a table between scheduled activities, and plan work that tolerates conversation because the room also functions as a café and event venue.","short_summary":"A multipurpose student-center room suited to coursework that does not require library-level quiet.","evidence_claim":"Lewis & Clark identifies the Trail Room as a Fowler Student Center space students may use to study; the college also describes it as a café and lounge by day and an event venue by night.","source_url":"https://college.lclark.edu/live/news/55626-watzek-library-hours-for-the-2025-26-academic-year","source_title":"Watzek Library hours for the 2025-26 academic year","source_kind":"university_official","source_published_at":"2025-09-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"A Lewis & Clark ID is required for overnight Fowler access. Dining operations or scheduled events may affect seating and noise.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"spiritual-life-lounge","subject_type":"study_space","entity_name":"Spiritual Life Lounge","title":"Choose Quiet Work in the Spiritual Life Lounge","subtitle":"Lower Flanagan lounge documented for quiet study","notes":"Use the lounge respectfully for quiet reading or reflection, and yield space to Spiritual Life programs or community needs when requested.","short_summary":"A reflective campus lounge explicitly identified as a place for quiet study.","evidence_claim":"The current undergraduate catalog says students gather in the Spiritual Life Lounge to enjoy quiet study or a cup of tea.","source_url":"https://docs.lclark.edu/undergraduate/academicservices/student/","source_title":"Student Services, Resources, and Programs","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located in lower Flanagan. Respect the reflective purpose of the area and check for Spiritual Life programming before settling in.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"boley-library-quiet-area","subject_type":"study_space","entity_name":"Boley Law Library Quiet Study Area","title":"Read Beside the Forest at Boley","subtitle":"Law library quiet area with floor-to-ceiling forest views","notes":"Choose this area for silent reading or focused drafting, and confirm current law-library entry rules and hours before crossing campuses.","short_summary":"A visually distinctive quiet area where library seating faces the wooded edge of the law campus.","evidence_claim":"Lewis & Clark Law’s admissions page identifies a quiet study area in Boley Law Library overlooking the forest and describes it as a place for focused study.","source_url":"https://law.lclark.edu/offices/admissions/visit_us/","source_title":"Visit Lewis & Clark Law","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Check Boley Law Library’s current hours and access rules; law-school spaces may prioritize law students and authorized users.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"wood-hall-first-floor-study-area","subject_type":"study_space","entity_name":"Wood Hall First-Floor Study Area","title":"Take an Individual Seat in Wood Hall","subtitle":"Open first-floor law-campus study area near student computing","notes":"Use the open study area for individual work, and expect temporary construction noise near Wood Hall during the published summer 2026 project.","short_summary":"An open law-campus work area paired with nearby student computer facilities.","evidence_claim":"Lewis & Clark Law labels Wood Hall’s first-floor study area in its campus tour and states that Wood Hall contains vast study space for individual students.","source_url":"https://law.lclark.edu/offices/admissions/visit_us/","source_title":"Visit Lewis & Clark Law","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Confirm law-campus building access. Lewis & Clark reported intermittent construction noise near Wood Hall during summer 2026.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"wood-hall-private-study-rooms","subject_type":"study_space","entity_name":"Wood Hall Private Study Rooms","title":"Book Group Work in Wood Hall","subtitle":"Nine private rooms intended for group study","notes":"Reserve through the Boley Library system before meeting, and use the open first-floor study area if no private room is available.","short_summary":"A set of enclosed law-campus rooms designed for collaborative study sessions.","evidence_claim":"Lewis & Clark Law states that Wood Hall houses nine private study rooms for group study; student organizations are directed to use Boley Library’s online reservation system.","source_url":"https://law.lclark.edu/offices/admissions/visit_us/","source_title":"Visit Lewis & Clark Law","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Reservation and eligibility rules apply through Boley Library. Confirm availability and authorized-user requirements before planning a group session.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"legal-research-center-student-lounge","subject_type":"study_space","entity_name":"Legal Research Center Student Lounge","title":"Finish Assigned Reading in the LRC Lounge","subtitle":"Lower-level law-campus lounge with large forest-facing windows","notes":"Use the lounge for reading that can handle conversation, and check the law calendar because lunchtime programs and major events also use the room.","short_summary":"A spacious, social study setting in the Legal Research Center with broad windows toward the forest.","evidence_claim":"Lewis & Clark Law describes the lower-level Legal Research Center Student Lounge as a place where students finish assigned readings and notes its large floor-to-ceiling windows.","source_url":"https://law.lclark.edu/offices/admissions/visit_us/","source_title":"Visit Lewis & Clark Law","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The lounge also hosts student groups, lunchtime programs, and large events. Confirm law-campus access and scheduled use.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gantenbein-lounge","subject_type":"study_space","entity_name":"Gantenbein Lounge","title":"Work From a Couch by the Fireplace","subtitle":"Law-campus common space with comfortable seating","notes":"Choose a couch for informal reading or review, and treat the room as shared space because Admissions and Career Services also occupy the building.","short_summary":"A relaxed common room offering couches and a fireplace for less formal coursework.","evidence_claim":"Lewis & Clark Law describes Gantenbein’s common space as a student lounge with a fireplace and comfortable couches.","source_url":"https://law.lclark.edu/about/facilities/","source_title":"Our Campus","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Confirm current law-campus access. The lounge is shared common space rather than a reservable quiet room.","cost_status":"not_applicable","under21_safe":true}],"warnings":["The title’s “Claimed by 9am” language is editorial framing; no claim of morning crowding or student behavior is intended.","Published Watzek hours are for the 2025–26 academic year and should be rechecked for later terms, holidays, and breaks.","Law-campus spaces may prioritize law students or require authorized building access; users should verify current eligibility before visiting."]}],"warnings":[]}
+2026-08-13T08:01:00.356780Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa21-b3db-7e33-8201-a2b086cbe9b2.1786607940572100000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+42,146
+
+{"complete":true,"school_name":"Lewis & Clark College","town_name":"Portland","boards":[{"complete":true,"school_name":"Lewis & Clark College","town_name":"Portland","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten documented study settings across Lewis & Clark’s undergraduate and law campuses, from reservable group rooms to quiet library and lounge seating.","icon":"menu_book","cards":[{"subject_id":"watzek-library","subject_type":"study_space","entity_name":"Aubrey R. Watzek Library","title":"Settle Into Watzek’s Quiet Spaces","subtitle":"Undergraduate campus library with study areas and extended academic-year access","notes":"Check the live library schedule before heading over, then choose a quiet area; published hours can change between terms and breaks.","short_summary":"A central library option for quiet work, research materials, technology loans, and finals-week access.","evidence_claim":"Lewis & Clark identifies Watzek Library as a study space with quiet areas; its published 2025–26 schedule lists midnight closing Sunday through Thursday and 24-hour access during reading days and finals week.","source_url":"https://college.lclark.edu/live/news/55626-watzek-library-hours-for-the-2025-26-academic-year","source_title":"Watzek Library hours for the 2025-26 academic year","source_kind":"university_official","source_published_at":"2025-09-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Consult current Watzek hours before visiting. The cited 2025–26 schedule is term-specific; 24-hour access was limited to reading days and finals week.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"beth-miller-lounge","subject_type":"study_space","entity_name":"Beth Miller Lounge","title":"Spread Out in Beth Miller Lounge","subtitle":"Named Fowler Student Center lounge available for student study","notes":"Bring your Lewis & Clark ID for after-hours entry, and shift to headphones or quieter work if a reception or campus event is underway.","short_summary":"A named student-center lounge that provides an alternative workspace when the library is closed.","evidence_claim":"Lewis & Clark states that students may use Miller Lounge to study and that Fowler Student Center is accessible 24/7 with a Lewis & Clark ID.","source_url":"https://college.lclark.edu/live/news/55626-watzek-library-hours-for-the-2025-26-academic-year","source_title":"Watzek Library hours for the 2025-26 academic year","source_kind":"university_official","source_published_at":"2025-09-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Fowler Student Center requires a Lewis & Clark ID for overnight access; scheduled events may affect lounge availability.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hu-media-lounge","subject_type":"study_space","entity_name":"Hu Media Lounge","title":"Use the Flexible Seating at Hu Media Lounge","subtitle":"Fowler Student Center lounge documented as an alternative study space","notes":"Use this lounge for laptop work or reading, but keep a backup location in mind because its flexible student-center role can bring other activities.","short_summary":"A flexible lounge setting for students who want to work beyond Watzek’s regular building hours.","evidence_claim":"Lewis & Clark explicitly lists Hu Media Lounge among the Fowler Student Center spaces students may use to study when Watzek Library is closed.","source_url":"https://college.lclark.edu/live/news/55626-watzek-library-hours-for-the-2025-26-academic-year","source_title":"Watzek Library hours for the 2025-26 academic year","source_kind":"university_official","source_published_at":"2025-09-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Fowler is accessible 24/7 with a Lewis & Clark ID. Lounge access can be affected by student-center programming.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"trail-room","subject_type":"study_space","entity_name":"Trail Room","title":"Turn a Trail Room Table Into a Workstation","subtitle":"Fowler café-and-lounge space approved for student study","notes":"Aim for a table between scheduled activities, and plan work that tolerates conversation because the room also functions as a café and event venue.","short_summary":"A multipurpose student-center room suited to coursework that does not require library-level quiet.","evidence_claim":"Lewis & Clark identifies the Trail Room as a Fowler Student Center space students may use to study; the college also describes it as a café and lounge by day and an event venue by night.","source_url":"https://college.lclark.edu/live/news/55626-watzek-library-hours-for-the-2025-26-academic-year","source_title":"Watzek Library hours for the 2025-26 academic year","source_kind":"university_official","source_published_at":"2025-09-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"A Lewis & Clark ID is required for overnight Fowler access. Dining operations or scheduled events may affect seating and noise.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"spiritual-life-lounge","subject_type":"study_space","entity_name":"Spiritual Life Lounge","title":"Choose Quiet Work in the Spiritual Life Lounge","subtitle":"Lower Flanagan lounge documented for quiet study","notes":"Use the lounge respectfully for quiet reading or reflection, and yield space to Spiritual Life programs or community needs when requested.","short_summary":"A reflective campus lounge explicitly identified as a place for quiet study.","evidence_claim":"The current undergraduate catalog says students gather in the Spiritual Life Lounge to enjoy quiet study or a cup of tea.","source_url":"https://docs.lclark.edu/undergraduate/academicservices/student/","source_title":"Student Services, Resources, and Programs","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located in lower Flanagan. Respect the reflective purpose of the area and check for Spiritual Life programming before settling in.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"boley-library-quiet-area","subject_type":"study_space","entity_name":"Boley Law Library Quiet Study Area","title":"Read Beside the Forest at Boley","subtitle":"Law library quiet area with floor-to-ceiling forest views","notes":"Choose this area for silent reading or focused drafting, and confirm current law-library entry rules and hours before crossing campuses.","short_summary":"A visually distinctive quiet area where library seating faces the wooded edge of the law campus.","evidence_claim":"Lewis & Clark Law’s admissions page identifies a quiet study area in Boley Law Library overlooking the forest and describes it as a place for focused study.","source_url":"https://law.lclark.edu/offices/admissions/visit_us/","source_title":"Visit Lewis & Clark Law","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Check Boley Law Library’s current hours and access rules; law-school spaces may prioritize law students and authorized users.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"wood-hall-first-floor-study-area","subject_type":"study_space","entity_name":"Wood Hall First-Floor Study Area","title":"Take an Individual Seat in Wood Hall","subtitle":"Open first-floor law-campus study area near student computing","notes":"Use the open study area for individual work, and expect temporary construction noise near Wood Hall during the published summer 2026 project.","short_summary":"An open law-campus work area paired with nearby student computer facilities.","evidence_claim":"Lewis & Clark Law labels Wood Hall’s first-floor study area in its campus tour and states that Wood Hall contains vast study space for individual students.","source_url":"https://law.lclark.edu/offices/admissions/visit_us/","source_title":"Visit Lewis & Clark Law","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Confirm law-campus building access. Lewis & Clark reported intermittent construction noise near Wood Hall during summer 2026.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"wood-hall-private-study-rooms","subject_type":"study_space","entity_name":"Wood Hall Private Study Rooms","title":"Book Group Work in Wood Hall","subtitle":"Nine private rooms intended for group study","notes":"Reserve through the Boley Library system before meeting, and use the open first-floor study area if no private room is available.","short_summary":"A set of enclosed law-campus rooms designed for collaborative study sessions.","evidence_claim":"Lewis & Clark Law states that Wood Hall houses nine private study rooms for group study; student organizations are directed to use Boley Library’s online reservation system.","source_url":"https://law.lclark.edu/offices/admissions/visit_us/","source_title":"Visit Lewis & Clark Law","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Reservation and eligibility rules apply through Boley Library. Confirm availability and authorized-user requirements before planning a group session.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"legal-research-center-student-lounge","subject_type":"study_space","entity_name":"Legal Research Center Student Lounge","title":"Finish Assigned Reading in the LRC Lounge","subtitle":"Lower-level law-campus lounge with large forest-facing windows","notes":"Use the lounge for reading that can handle conversation, and check the law calendar because lunchtime programs and major events also use the room.","short_summary":"A spacious, social study setting in the Legal Research Center with broad windows toward the forest.","evidence_claim":"Lewis & Clark Law describes the lower-level Legal Research Center Student Lounge as a place where students finish assigned readings and notes its large floor-to-ceiling windows.","source_url":"https://law.lclark.edu/offices/admissions/visit_us/","source_title":"Visit Lewis & Clark Law","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The lounge also hosts student groups, lunchtime programs, and large events. Confirm law-campus access and scheduled use.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gantenbein-lounge","subject_type":"study_space","entity_name":"Gantenbein Lounge","title":"Work From a Couch by the Fireplace","subtitle":"Law-campus common space with comfortable seating","notes":"Choose a couch for informal reading or review, and treat the room as shared space because Admissions and Career Services also occupy the building.","short_summary":"A relaxed common room offering couches and a fireplace for less formal coursework.","evidence_claim":"Lewis & Clark Law describes Gantenbein’s common space as a student lounge with a fireplace and comfortable couches.","source_url":"https://law.lclark.edu/about/facilities/","source_title":"Our Campus","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Confirm current law-campus access. The lounge is shared common space rather than a reservable quiet room.","cost_status":"not_applicable","under21_safe":true}],"warnings":["The title’s “Claimed by 9am” language is editorial framing; no claim of morning crowding or student behavior is intended.","Published Watzek hours are for the 2025–26 academic year and should be rechecked for later terms, holidays, and breaks.","Law-campus spaces may prioritize law students or require authorized building access; users should verify current eligibility before visiting."]}],"warnings":[]}

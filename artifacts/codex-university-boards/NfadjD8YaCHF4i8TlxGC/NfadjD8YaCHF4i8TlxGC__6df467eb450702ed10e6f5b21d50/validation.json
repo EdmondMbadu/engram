@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.culvers.com/restaurants/south-bend-in-sr-933",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.culvers.com/restaurants/south-bend-in-sr-933",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/in/south-bend/52665-sr-933/2974.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/in/south-bend/52665-sr-933/2974.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.chipotle.com/in/south-bend/1251-n-eddy-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.chipotle.com/in/south-bend/1251-n-eddy-st",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/in/south-bend/221-w-lasalle-ave/lunch.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/in/south-bend/221-w-lasalle-ave/lunch.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/in/south-bend/6225-brick-rd.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/in/south-bend/6225-brick-rd.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/in/south-bend/5131-w--western-avenue/takeout.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/in/south-bend/5131-w--western-avenue/takeout.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.memosmexicangrille.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.memosmexicangrille.com/",
+      "error": ""
+    },
+    {
+      "url": "https://mannyssb.com/food-and-drink-menu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mannyssb.com/food-and-drink-menu/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hungryhowies.com/stores/in/south-bend/2035-e-ireland-rd",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.hungryhowies.com/stores/in/south-bend/2035-e-ireland-rd",
+      "error": ""
+    },
+    {
+      "url": "https://locations.chipotle.com/in/south-bend/52770-in-933",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.chipotle.com/in/south-bend/52770-in-933",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

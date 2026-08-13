@@ -1,0 +1,70 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "dLUERGkajlZHNUb7yr80",
+    "schoolName": "Santa Clara University",
+    "shortSchoolName": "Santa Clara University",
+    "townName": "Santa Clara",
+    "state": "CA",
+    "countryCode": "US",
+    "unitId": "122931",
+    "website": "https://www.scu.edu/",
+    "latitude": 37.348362,
+    "longitude": -121.93784,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/a/ad/Santa_Clara_U_Seal.svg/120px-Santa_Clara_U_Seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=scu.edu&sz=256"
+  },
+  "template": {
+    "id": "college-campus-tour-skips",
+    "version": "1.0",
+    "titlePattern": "What the Campus Tour Skips: {count} Places Students Share With Each Other",
+    "editorialBrief": "Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.",
+    "researchQueries": [
+      "student favorite campus places",
+      "campus map student spaces",
+      "student newspaper campus places"
+    ],
+    "count": 10,
+    "icon": "style",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place",
+      "study_space"
+    ],
+    "freshnessDays": 365
+  },
+  "exact_title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+  "excluded_subjects": [
+    "Mission Santa Clara de Asís",
+    "Mission Gardens",
+    "de Saisset Museum",
+    "Abby Sobrato Mall",
+    "Harrington Learning Commons, Sobrato Technology Center, and Orradre Library",
+    "Forge Garden",
+    "Pat Malley Fitness and Recreation Center",
+    "Sullivan Aquatic Center",
+    "Bellomy Field and Track",
+    "Paul L. Locatelli, S.J. Student Activity Center",
+    "University Library",
+    "The Bronco",
+    "Dae Bak Korean Fusion Eatery & Lounge",
+    "Giiwa",
+    "Taco Bell — 2555 The Alameda",
+    "Taco Bell — 1680 El Camino Real",
+    "Taco Bell — 2600 Homestead Road",
+    "Denny's — 1745 El Camino Real",
+    "Jack in the Box — 3465 Homestead Road",
+    "Lower Information Commons",
+    "Upper Information Commons",
+    "Learning Commons 203",
+    "Learning Commons 205",
+    "Learning Commons 206",
+    "Learning Commons 331",
+    "Learning Commons Group Study Rooms",
+    "Viewing and Production A",
+    "Lucas Hall",
+    "Howard S. and Alida S. Charney Hall of Law"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

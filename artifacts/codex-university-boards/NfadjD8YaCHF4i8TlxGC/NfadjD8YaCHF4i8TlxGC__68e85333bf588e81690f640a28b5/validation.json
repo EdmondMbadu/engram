@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Several destinations have limited late hours rather than all-night service; verify same-day hours, academic-break schedules, and access requirements."
+  ],
+  "reachability": [
+    {
+      "url": "https://northernreview.org/2026/03/14/c-store-set-to-open-march-16-following-closure-that-according-to-broge-was-tied-to-13-incidents-of-theft/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://northernreview.org/2026/03/14/c-store-set-to-open-march-16-following-closure-that-according-to-broge-was-tied-to-13-incidents-of-theft/",
+      "error": ""
+    },
+    {
+      "url": "https://onu.sodexomyway.com/en-us/meal-plan/faq",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://onu.sodexomyway.com/en-us/meal-plan/faq",
+      "error": ""
+    },
+    {
+      "url": "https://www.onu.edu/health-and-wellness-resources/polar-bear-food-cupboard",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/health-and-wellness-resources/polar-bear-food-cupboard",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.subway.com/united-states/oh/ada/424-s-main-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.subway.com/united-states/oh/ada/424-s-main-st",
+      "error": ""
+    },
+    {
+      "url": "https://www.cooperseateria.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cooperseateria.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.adapadrones.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.adapadrones.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.vivamariaada.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://order.menufy.com/?404Location",
+      "error": ""
+    },
+    {
+      "url": "https://www.onu.edu/student-life/health-and-wellness-resources/onu-healthwise",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/student-life/health-and-wellness-resources/onu-healthwise",
+      "error": ""
+    },
+    {
+      "url": "https://www.onu.edu/admissions-aid/accepted-students/summer-orientation-and-welcome-weekend",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/admissions-aid/accepted-students/summer-orientation-and-welcome-weekend",
+      "error": ""
+    },
+    {
+      "url": "https://www.toasttab.com/local/order/old-route-69-120-east-buckeye-avenue",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.toasttab.com/local/order/old-route-69-120-east-buckeye-avenue",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

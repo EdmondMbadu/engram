@@ -1,0 +1,288 @@
+Reading additional input from stdin...
+2026-08-13T07:55:06.525377Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1d-d838-7663-8be8-4487af39b445.1786607687736626000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:55:06.529111Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:55:06.531815Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:55:06.574779Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1d-d842-73f1-b38a-0109d6e2ec6a.1786607687747389000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa1e-211b-7701-96e9-2d9dc9d598de
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"9J7ynmDPPg81jeul036M","schoolName":"Lake Forest College","shortSchoolName":"Lake Forest College","townName":"Lake Forest","state":"IL","countryCode":"US","website":"https://www.lakeforest.edu/","latitude":42.249574,"longitude":-87.827454},"templates":[{"id":"college-first-weekend","version":"1.0","titlePattern":"Your First Weekend at {school}, Shared as Cards","editorialBrief":"Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.","researchQueries":["new student orientation campus guide","first year student campus activities","weekend near campus students"],"count":10,"icon":"schedule","primarySubjectType":"sequence_stop","allowedSubjectTypes":["sequence_stop","place","activity"],"freshnessDays":180,"exactTitle":"Your First Weekend at Lake Forest College, Shared as Cards"}]}
+2026-08-13T07:55:06.665883Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1d-d82f-7153-a262-79580a9cdcf6.1786607687727988000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:55:06.709471Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1d-d834-72d1-8c97-4820e478c051.1786607687733722000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:55:06.748255Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1d-d84b-7dc2-8563-475ab4925989.1786607687755748000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:55:06.787714Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1d-d845-7a81-9912-66c958f7ae0a.1786607687750414000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:55:06.830654Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1d-d82e-70b3-ad2d-9f1f239600ce.1786607687727807000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Lake Forest College",
+  "town_name": "Lake Forest",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Lake Forest College",
+      "town_name": "Lake Forest",
+      "template_id": "college-first-weekend",
+      "title": "Your First Weekend at Lake Forest College, Shared as Cards",
+      "description": "",
+      "icon": "schedule",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "I’m verifying a ten-stop sequence against direct campus, city, cultural-institution, and business pages, including current access details.",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:lakeforest.edu Lake Forest College campus student center library sports recreation new students ...
+web search: 
+web search: site:cityoflakeforest.com Lake Forest Beach Illinois official hours access ...
+codex
+{"complete":true,"school_name":"Lake Forest College","town_name":"Lake Forest","boards":[{"complete":true,"school_name":"Lake Forest College","town_name":"Lake Forest","template_id":"college-first-weekend","title":"Your First Weekend at Lake Forest College, Shared as Cards","description":"A Friday-to-Sunday sequence for learning campus anchors, finding study and recreation spaces, and making two nearby Lake Forest stops.","icon":"schedule","cards":[{"subject_id":"lfc-first-weekend-01-mohr-student-center","subject_type":"sequence_stop","entity_name":"Mohr Student Center","title":"Start at Mohr Student Center","subtitle":"Friday afternoon · Find the campus-life hub","notes":"Locate Mohr on the campus map, then identify Calvin Durand Hall and the Skybox so you have two familiar gathering points.","short_summary":"Begin with an easy-to-recognize center for student spaces and campus dining.","evidence_claim":"Lake Forest College’s campus map identifies Mohr Student Center, and its commuter guide names Calvin Durand Hall and the Skybox Lounge as usable student spaces there.","source_url":"https://www.lakeforest.edu/student-life/commuter-students","source_title":"Commuter Students | Lake Forest College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The college says the Skybox is available during the day and evening, although organizations may reserve it after 4 p.m.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lfc-first-weekend-02-hart-dining-hall","subject_type":"sequence_stop","entity_name":"Hart Dining Hall","title":"Learn the Main Dining Room","subtitle":"Friday evening · Make the first meal practical","notes":"Use dinner to learn Hart’s location inside Mohr and check the posted menu before choosing a station or planning another meal.","short_summary":"Turn the first campus meal into a quick orientation to the primary dining location.","evidence_claim":"Lake Forest College identifies Hart Dining Hall, located in Mohr Student Center, as the main dining location on campus.","source_url":"https://www.lakeforest.edu/student-resources/dining","source_title":"Dining | Lake Forest College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Dining access depends on the applicable meal plan or other accepted payment; confirm the current service period on the dining page.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"lfc-first-weekend-03-donnelley-lee-library","subject_type":"sequence_stop","entity_name":"Donnelley and Lee Library","title":"Map Out a Library Routine","subtitle":"Friday evening · Find study space before classes","notes":"Walk through the library before settling in; note the regular entrance and where your College ID provides after-hours access.","short_summary":"Establish a dependable study base while the weekend is still getting started.","evidence_claim":"The college lists Donnelley and Lee Library as open seven days a week from 8 a.m. to 11 p.m. and provides an ID-accessible 24-hour computer lab and study space for students, faculty, and staff.","source_url":"https://www.lakeforest.edu/on-campus-facilities-hours","source_title":"On-Campus Facilities Hours | Lake Forest College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Listed building hours are 8 a.m.–11 p.m. daily. The 24-hour area requires a College ID and is limited to students, faculty, and staff.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lfc-first-weekend-04-sports-recreation-center","subject_type":"sequence_stop","entity_name":"Sports and Recreation Center","title":"Take a Saturday Rec-Center Lap","subtitle":"Saturday morning · Survey recreation options","notes":"Walk the indoor facilities and identify the track, cardio suite, courts, pool, and field house before choosing a future workout.","short_summary":"Use a low-pressure walkthrough to understand the campus recreation layout.","evidence_claim":"Lake Forest College lists a gym, field house, weight room, cardio suite, track, handball courts, and pool at the Sports and Recreation Center, with weekend academic-year hours.","source_url":"https://www.lakeforest.edu/on-campus-facilities-hours","source_title":"On-Campus Facilities Hours | Lake Forest College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Academic-year building hours are Saturday 8 a.m.–10 p.m. and Sunday 8 a.m.–11 p.m.; pool hours are noon–4 p.m. on weekends.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lfc-first-weekend-05-sonnenschein-albright-galleries","subject_type":"sequence_stop","entity_name":"Sonnenschein and Albright Galleries","title":"Spend an Hour with Campus Art","subtitle":"Saturday afternoon · Visit Durand Art Institute","notes":"Climb to the galleries in Durand Art Institute, view the current exhibition, and note a piece you may want to revisit.","short_summary":"Add a quiet visual-arts stop that works naturally within a campus walk.","evidence_claim":"Lake Forest College says the Sonnenschein and Albright Galleries are in Durand Art Institute, welcome the public, offer weekend hours, and always have free admission.","source_url":"https://www.lakeforest.edu/academics/majors-and-minors/art-and-art-history/art-galleries","source_title":"Art Galleries | Lake Forest College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The college lists weekend gallery hours of 1–5 p.m.; check the exhibition page for closures or appointment information.","cost_status":"free","under21_safe":true},{"subject_id":"lfc-first-weekend-06-lake-forest-beach","subject_type":"sequence_stop","entity_name":"Lake Forest Beach","title":"See the College’s Lakefront Gathering Place","subtitle":"Saturday afternoon · Get oriented to Lake Michigan","notes":"Visit only through an authorized college activity or current city access arrangement, and keep the outing to daylight conditions.","short_summary":"Connect the campus weekend to the named lakefront site used in new-student programming.","evidence_claim":"Lake Forest College documents Lake Forest Beach as the site of its Beach Bash, featuring dinner, volleyball, paddleboarding, lawn games, music, and time by Lake Michigan.","source_url":"https://www.lakeforest.edu/student-life/gates-center-for-leadership-and-personal-growth/new-student-orientation","source_title":"New Student Orientation | Lake Forest College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This source verifies college use during Beach Bash but not general public entry. Confirm current city rules or attend an authorized college program.","cost_status":"unknown","under21_safe":true},{"subject_id":"lfc-first-weekend-07-market-square","subject_type":"sequence_stop","entity_name":"Market Square","title":"Walk Market Square’s Arcades","subtitle":"Saturday late afternoon · Learn the downtown landmark","notes":"Circle the three-sided green, shaded arcades, fountains, and towers; browse without assuming that the stop requires a purchase.","short_summary":"Use the historic downtown complex as a clear off-campus navigation landmark.","evidence_claim":"Market Square’s official site describes it as a downtown Lake Forest shopping and lifestyle destination with a three-sided green, shaded arcades, fountains, walkways, and two towers.","source_url":"https://www.shopmarketsquare.com/about.html","source_title":"About Market Square","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page describes an outdoor commercial complex but does not provide universal operating hours; individual businesses set their own hours.","cost_status":"unknown","under21_safe":true},{"subject_id":"lfc-first-weekend-08-lake-forest-library","subject_type":"sequence_stop","entity_name":"Lake Forest Library","title":"Add the Public Library to Your Map","subtitle":"Saturday afternoon · Find an off-campus workspace","notes":"Step inside before Saturday closing, locate seating and computers, and save the library’s address for a future downtown study session.","short_summary":"Identify a second library option with published weekend hours and public services.","evidence_claim":"Lake Forest Library lists its address as 360 E Deerpath Road and offers Wi-Fi, computers, scanning, faxing, printing, copying, and weekend operating hours.","source_url":"https://www.lakeforestlibrary.org/services-contact","source_title":"Services & Contact | Lake Forest Library","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Published hours are Saturday 9 a.m.–5 p.m. and Sunday 1–5 p.m.; confirm the day’s status on the library site before leaving campus.","cost_status":"unknown","under21_safe":true},{"subject_id":"lfc-first-weekend-09-brown-hall","subject_type":"sequence_stop","entity_name":"Brown Hall","title":"Test a Quieter Campus Base","subtitle":"Sunday morning · Compare study environments","notes":"Walk through Brown Hall and compare its quiet and collaborative spaces with the library before selecting a weekday fallback.","short_summary":"Broaden the weekend beyond the main library by locating another documented study setting.","evidence_claim":"Lake Forest College’s commuter guide says Brown Hall contains a variety of collaboration and quiet spaces, most available without a reservation.","source_url":"https://www.lakeforest.edu/student-life/commuter-students","source_title":"Commuter Students | Lake Forest College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Most spaces are described as available without reservations, but the source does not publish weekend building-access hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lfc-first-weekend-10-lily-reid-holt-memorial-chapel","subject_type":"sequence_stop","entity_name":"Lily Reid Holt Memorial Chapel","title":"Finish with a Campus-Map Check","subtitle":"Sunday afternoon · Confirm one final landmark","notes":"Find the chapel on Middle Campus, then use the official map to retrace how North, Middle, and South Campus connect.","short_summary":"Close the sequence by converting the weekend’s walks into a mental map of campus.","evidence_claim":"Lake Forest College’s official campus facilities map identifies Lily Reid Holt Memorial Chapel as a named building on Middle Campus.","source_url":"https://www.lakeforest.edu/Public/OCM/map/campus_map.pdf","source_title":"Campus Facilities Map | Lake Forest College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official map verifies the building and location but does not state public or weekend interior-access hours; treat this as an exterior waypoint.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:57:18.936878Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa1e-211b-7701-96e9-2d9dc9d598de.1786607706396305000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+24,654
+
+{"complete":true,"school_name":"Lake Forest College","town_name":"Lake Forest","boards":[{"complete":true,"school_name":"Lake Forest College","town_name":"Lake Forest","template_id":"college-first-weekend","title":"Your First Weekend at Lake Forest College, Shared as Cards","description":"A Friday-to-Sunday sequence for learning campus anchors, finding study and recreation spaces, and making two nearby Lake Forest stops.","icon":"schedule","cards":[{"subject_id":"lfc-first-weekend-01-mohr-student-center","subject_type":"sequence_stop","entity_name":"Mohr Student Center","title":"Start at Mohr Student Center","subtitle":"Friday afternoon · Find the campus-life hub","notes":"Locate Mohr on the campus map, then identify Calvin Durand Hall and the Skybox so you have two familiar gathering points.","short_summary":"Begin with an easy-to-recognize center for student spaces and campus dining.","evidence_claim":"Lake Forest College’s campus map identifies Mohr Student Center, and its commuter guide names Calvin Durand Hall and the Skybox Lounge as usable student spaces there.","source_url":"https://www.lakeforest.edu/student-life/commuter-students","source_title":"Commuter Students | Lake Forest College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The college says the Skybox is available during the day and evening, although organizations may reserve it after 4 p.m.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lfc-first-weekend-02-hart-dining-hall","subject_type":"sequence_stop","entity_name":"Hart Dining Hall","title":"Learn the Main Dining Room","subtitle":"Friday evening · Make the first meal practical","notes":"Use dinner to learn Hart’s location inside Mohr and check the posted menu before choosing a station or planning another meal.","short_summary":"Turn the first campus meal into a quick orientation to the primary dining location.","evidence_claim":"Lake Forest College identifies Hart Dining Hall, located in Mohr Student Center, as the main dining location on campus.","source_url":"https://www.lakeforest.edu/student-resources/dining","source_title":"Dining | Lake Forest College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Dining access depends on the applicable meal plan or other accepted payment; confirm the current service period on the dining page.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"lfc-first-weekend-03-donnelley-lee-library","subject_type":"sequence_stop","entity_name":"Donnelley and Lee Library","title":"Map Out a Library Routine","subtitle":"Friday evening · Find study space before classes","notes":"Walk through the library before settling in; note the regular entrance and where your College ID provides after-hours access.","short_summary":"Establish a dependable study base while the weekend is still getting started.","evidence_claim":"The college lists Donnelley and Lee Library as open seven days a week from 8 a.m. to 11 p.m. and provides an ID-accessible 24-hour computer lab and study space for students, faculty, and staff.","source_url":"https://www.lakeforest.edu/on-campus-facilities-hours","source_title":"On-Campus Facilities Hours | Lake Forest College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Listed building hours are 8 a.m.–11 p.m. daily. The 24-hour area requires a College ID and is limited to students, faculty, and staff.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lfc-first-weekend-04-sports-recreation-center","subject_type":"sequence_stop","entity_name":"Sports and Recreation Center","title":"Take a Saturday Rec-Center Lap","subtitle":"Saturday morning · Survey recreation options","notes":"Walk the indoor facilities and identify the track, cardio suite, courts, pool, and field house before choosing a future workout.","short_summary":"Use a low-pressure walkthrough to understand the campus recreation layout.","evidence_claim":"Lake Forest College lists a gym, field house, weight room, cardio suite, track, handball courts, and pool at the Sports and Recreation Center, with weekend academic-year hours.","source_url":"https://www.lakeforest.edu/on-campus-facilities-hours","source_title":"On-Campus Facilities Hours | Lake Forest College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Academic-year building hours are Saturday 8 a.m.–10 p.m. and Sunday 8 a.m.–11 p.m.; pool hours are noon–4 p.m. on weekends.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lfc-first-weekend-05-sonnenschein-albright-galleries","subject_type":"sequence_stop","entity_name":"Sonnenschein and Albright Galleries","title":"Spend an Hour with Campus Art","subtitle":"Saturday afternoon · Visit Durand Art Institute","notes":"Climb to the galleries in Durand Art Institute, view the current exhibition, and note a piece you may want to revisit.","short_summary":"Add a quiet visual-arts stop that works naturally within a campus walk.","evidence_claim":"Lake Forest College says the Sonnenschein and Albright Galleries are in Durand Art Institute, welcome the public, offer weekend hours, and always have free admission.","source_url":"https://www.lakeforest.edu/academics/majors-and-minors/art-and-art-history/art-galleries","source_title":"Art Galleries | Lake Forest College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The college lists weekend gallery hours of 1–5 p.m.; check the exhibition page for closures or appointment information.","cost_status":"free","under21_safe":true},{"subject_id":"lfc-first-weekend-06-lake-forest-beach","subject_type":"sequence_stop","entity_name":"Lake Forest Beach","title":"See the College’s Lakefront Gathering Place","subtitle":"Saturday afternoon · Get oriented to Lake Michigan","notes":"Visit only through an authorized college activity or current city access arrangement, and keep the outing to daylight conditions.","short_summary":"Connect the campus weekend to the named lakefront site used in new-student programming.","evidence_claim":"Lake Forest College documents Lake Forest Beach as the site of its Beach Bash, featuring dinner, volleyball, paddleboarding, lawn games, music, and time by Lake Michigan.","source_url":"https://www.lakeforest.edu/student-life/gates-center-for-leadership-and-personal-growth/new-student-orientation","source_title":"New Student Orientation | Lake Forest College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This source verifies college use during Beach Bash but not general public entry. Confirm current city rules or attend an authorized college program.","cost_status":"unknown","under21_safe":true},{"subject_id":"lfc-first-weekend-07-market-square","subject_type":"sequence_stop","entity_name":"Market Square","title":"Walk Market Square’s Arcades","subtitle":"Saturday late afternoon · Learn the downtown landmark","notes":"Circle the three-sided green, shaded arcades, fountains, and towers; browse without assuming that the stop requires a purchase.","short_summary":"Use the historic downtown complex as a clear off-campus navigation landmark.","evidence_claim":"Market Square’s official site describes it as a downtown Lake Forest shopping and lifestyle destination with a three-sided green, shaded arcades, fountains, walkways, and two towers.","source_url":"https://www.shopmarketsquare.com/about.html","source_title":"About Market Square","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page describes an outdoor commercial complex but does not provide universal operating hours; individual businesses set their own hours.","cost_status":"unknown","under21_safe":true},{"subject_id":"lfc-first-weekend-08-lake-forest-library","subject_type":"sequence_stop","entity_name":"Lake Forest Library","title":"Add the Public Library to Your Map","subtitle":"Saturday afternoon · Find an off-campus workspace","notes":"Step inside before Saturday closing, locate seating and computers, and save the library’s address for a future downtown study session.","short_summary":"Identify a second library option with published weekend hours and public services.","evidence_claim":"Lake Forest Library lists its address as 360 E Deerpath Road and offers Wi-Fi, computers, scanning, faxing, printing, copying, and weekend operating hours.","source_url":"https://www.lakeforestlibrary.org/services-contact","source_title":"Services & Contact | Lake Forest Library","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Published hours are Saturday 9 a.m.–5 p.m. and Sunday 1–5 p.m.; confirm the day’s status on the library site before leaving campus.","cost_status":"unknown","under21_safe":true},{"subject_id":"lfc-first-weekend-09-brown-hall","subject_type":"sequence_stop","entity_name":"Brown Hall","title":"Test a Quieter Campus Base","subtitle":"Sunday morning · Compare study environments","notes":"Walk through Brown Hall and compare its quiet and collaborative spaces with the library before selecting a weekday fallback.","short_summary":"Broaden the weekend beyond the main library by locating another documented study setting.","evidence_claim":"Lake Forest College’s commuter guide says Brown Hall contains a variety of collaboration and quiet spaces, most available without a reservation.","source_url":"https://www.lakeforest.edu/student-life/commuter-students","source_title":"Commuter Students | Lake Forest College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Most spaces are described as available without reservations, but the source does not publish weekend building-access hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lfc-first-weekend-10-lily-reid-holt-memorial-chapel","subject_type":"sequence_stop","entity_name":"Lily Reid Holt Memorial Chapel","title":"Finish with a Campus-Map Check","subtitle":"Sunday afternoon · Confirm one final landmark","notes":"Find the chapel on Middle Campus, then use the official map to retrace how North, Middle, and South Campus connect.","short_summary":"Close the sequence by converting the weekend’s walks into a mental map of campus.","evidence_claim":"Lake Forest College’s official campus facilities map identifies Lily Reid Holt Memorial Chapel as a named building on Middle Campus.","source_url":"https://www.lakeforest.edu/Public/OCM/map/campus_map.pdf","source_title":"Campus Facilities Map | Lake Forest College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official map verifies the building and location but does not state public or weekend interior-access hours; treat this as an exterior waypoint.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

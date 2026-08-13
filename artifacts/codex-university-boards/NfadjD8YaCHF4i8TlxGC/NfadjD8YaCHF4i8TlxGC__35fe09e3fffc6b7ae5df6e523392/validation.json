@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.ttu.edu/now/posts/2023/11/texas-tech-cuts-ribbon-on-military-veterans-tribute-walk-and-wall-of-honor.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ttu.edu/now/posts/2023/11/texas-tech-cuts-ribbon-on-military-veterans-tribute-walk-and-wall-of-honor.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.ttu.edu/traditions/rogers.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ttu.edu/traditions/rogers.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.depts.ttu.edu/sub/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depts.ttu.edu/sub/",
+      "error": ""
+    },
+    {
+      "url": "https://www.depts.ttu.edu/orientation/Transfer/info/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depts.ttu.edu/orientation/Transfer/info/",
+      "error": ""
+    },
+    {
+      "url": "https://www.depts.ttu.edu/recreation/spaces/urbanovsky.php?v=preview",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depts.ttu.edu/recreation/spaces/urbanovsky.php?v=preview",
+      "error": ""
+    },
+    {
+      "url": "https://www.depts.ttu.edu/urec/facilities/reccenter.php?v=current",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depts.ttu.edu/recreation/facilities/reccenter.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.depts.ttu.edu/museumttu/visit/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depts.ttu.edu/museumttu/visit/index.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.depts.ttu.edu/officialpublications/facultyhb/fac_serv_n-r.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depts.ttu.edu/officialpublications/facultyhb/fac_serv_n-r.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.depts.ttu.edu/museumttu/lll/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depts.ttu.edu/museumttu/lll/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

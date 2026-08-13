@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.libraries.uc.edu/libraries/langsam.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.libraries.uc.edu/libraries/langsam.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.libraries.uc.edu/libraries/ceas/about/library-spaces/study-rooms.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.libraries.uc.edu/libraries/ceas/about/library-spaces/study-rooms.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.libraries.uc.edu/libraries/daap/study-rooms.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.libraries.uc.edu/libraries/daap/study-rooms.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.libraries.uc.edu/libraries/ccm.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.libraries.uc.edu/libraries/ccm.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.libraries.uc.edu/libraries/cech/resources/reservable-spaces.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.libraries.uc.edu/libraries/cech/resources/our-spaces.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

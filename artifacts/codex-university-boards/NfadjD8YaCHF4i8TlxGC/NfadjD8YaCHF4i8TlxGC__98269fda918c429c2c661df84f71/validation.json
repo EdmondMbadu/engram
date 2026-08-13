@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.marist.edu/academics/library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marist.edu/academics/library",
+      "error": ""
+    },
+    {
+      "url": "https://www.marist.edu/student-life/campus/student-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marist.edu/student-life/campus/student-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.marist.edu/fern-tor",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marist.edu/fern-tor",
+      "error": ""
+    },
+    {
+      "url": "https://www.marist.edu/documents/d/guest/self-guided-walking-tour",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marist.edu/documents/d/guest/self-guided-walking-tour",
+      "error": ""
+    },
+    {
+      "url": "https://www.marist.edu/w/maker-lab-feature-2025",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marist.edu/w/maker-lab-feature-2025",
+      "error": ""
+    },
+    {
+      "url": "https://www.marist.edu/w/asap-exhibit-2025",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marist.edu/w/asap-exhibit-2025",
+      "error": ""
+    },
+    {
+      "url": "https://www.marist.edu/about/map",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marist.edu/about/map",
+      "error": ""
+    },
+    {
+      "url": "https://www.marist.edu/student-life/athletics/facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marist.edu/student-life/athletics/facilities",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

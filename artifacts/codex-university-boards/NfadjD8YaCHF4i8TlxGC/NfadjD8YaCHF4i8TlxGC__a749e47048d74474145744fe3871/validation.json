@@ -1,0 +1,69 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.hillsdale.edu/campus-life/around-campus/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsdale.edu/campus-life/around-campus/",
+      "error": ""
+    },
+    {
+      "url": "https://www.stjoeshillsdale.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stjoeshillsdale.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.cityofhillsdale.org/sites/default/files/fileattachments/economic_development/page/14452/business_guide_to_hillsdale_social_district.pdf",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.cityofhillsdale.org/sites/default/files/fileattachments/economic_development/page/14452/business_guide_to_hillsdale_social_district.pdf",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.hillsdalecounty.gov/index.php/tm-gov/m-clerk",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsdalecounty.gov/index.php/tm-gov/m-clerk",
+      "error": ""
+    },
+    {
+      "url": "https://www.co.hillsdale.mi.us/index.php/tm-courts/m-court-district",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://hillsdalecounty.gov/index.php/tm-courts/m-court-district",
+      "error": ""
+    },
+    {
+      "url": "https://www.cityofhillsdale.org/contact",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.cityofhillsdale.org/contact",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://co.hillsdale.mi.us/images/parks/Hillsdale-County-Recreation-Plan-2021.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://hillsdalecounty.gov/images/parks/Hillsdale-County-Recreation-Plan-2021.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

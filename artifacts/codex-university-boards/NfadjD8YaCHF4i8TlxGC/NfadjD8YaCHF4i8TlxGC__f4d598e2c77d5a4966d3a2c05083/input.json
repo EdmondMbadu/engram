@@ -1,0 +1,59 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "UZleLt6KwJZlcSQ1IOCe",
+    "schoolName": "Farmingdale State College",
+    "shortSchoolName": "Farmingdale State College",
+    "townName": "Farmingdale",
+    "state": "NY",
+    "countryCode": "US",
+    "unitId": "196042",
+    "website": "https://www.farmingdale.edu/",
+    "latitude": 40.754224,
+    "longitude": -73.42832,
+    "heroUrl": "https://fsc-main.b-cdn.net/images/fsc-social-link-share.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=farmingdale.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "Thomas D. Greenley Library",
+    "School of Business Lounge Areas",
+    "Ralph Bunche Plaza",
+    "Campus Center Open Lounges",
+    "Gleeson Hall Lounge Areas",
+    "Hale Hall Lounge Areas",
+    "Lupton Hall Lounge Areas",
+    "Roosevelt Hall Lobby",
+    "Sinclair Hall Pit Lounge",
+    "Whitman Hall First-Floor Lounge",
+    "Greenley Library",
+    "School of Business",
+    "Campus Center",
+    "Quintyne Hall Meditation and Prayer Space",
+    "Gleeson Hall",
+    "Hale Hall",
+    "Lupton Hall",
+    "Nold Athletic Complex",
+    "Giving Garden"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

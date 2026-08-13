@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://swatstories.com/2026/04/09/crumb-cafe-swarthmores-only-student-run-dining-spot/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://swatstories.com/2026/04/09/crumb-cafe-swarthmores-only-student-run-dining-spot/",
+      "error": ""
+    },
+    {
+      "url": "https://swarthmorepizza.com/contact-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://swarthmorepizza.com/contact-us/",
+      "error": ""
+    },
+    {
+      "url": "https://lunasmexicangrillswat.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lunasmexicangrillswat.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.niftyfiftys.com/location/ridley-township-pa/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.niftyfiftys.com/location/ridley-township-pa/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dunkindonuts.com/en/pa/swarthmore/1-s-chester-rd/343037",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dunkindonuts.com/en/pa/swarthmore/1-s-chester-rd/343037",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/pa/springfield/835-west-sproul-rd.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/pa/springfield/835-west-sproul-rd.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.broadtabletavern.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.broadtabletavern.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.aria610.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.aria610.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.bamboobistropa.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bamboobistropa.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/pa/media/5150-pennell-road",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/pa/media/5150-pennell-road",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Luna's Mexican Grill"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

@@ -1,0 +1,301 @@
+Reading additional input from stdin...
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa04-9c71-73d1-8b8d-34c733fabbd0
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"8Nynqq63IyJkbjFkC2cd","schoolName":"Hampden-Sydney College","shortSchoolName":"Hampden-Sydney College","townName":"Hampden-Sydney","state":"VA","countryCode":"US","website":"https://www.hsc.edu/","latitude":37.240615,"longitude":-78.464216},"templates":[{"id":"college-first-weekend","version":"1.0","titlePattern":"Your First Weekend at {school}, Shared as Cards","editorialBrief":"Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.","researchQueries":["new student orientation campus guide","first year student campus activities","weekend near campus students"],"count":10,"icon":"schedule","primarySubjectType":"sequence_stop","allowedSubjectTypes":["sequence_stop","place","activity"],"freshnessDays":180,"exactTitle":"Your First Weekend at Hampden-Sydney College, Shared as Cards"}]}
+2026-08-13T07:27:14.259715Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa03-a331-7681-af0e-854d7b245c0b.1786605970226576000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:27:14.306813Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:27:14.452375Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa03-a32e-7590-a1e6-7976df38227d.1786605970223314000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:27:14.505815Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:27:14.777892Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa03-a31e-7752-ab06-837331c8b75c.1786605970207348000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:27:14.906117Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa03-a321-7c31-bc92-588412e8f3c0.1786605970209988000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:27:14.973492Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa03-a349-7862-8a4a-d67885ba19fb.1786605970249731000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Hampden-Sydney College",
+  "town_name": "Hampden-Sydney",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Hampden-Sydney College",
+      "town_name": "Hampden-Sydney",
+      "template_id": "college-first-weekend",
+      "title": "Your First Weekend at Hampden-Sydney College, Shared as Cards",
+      "description": "",
+      "icon": "schedule",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     
+        ,
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ],
+      "warnings": [
+        "Research is beginning; final output will contain ten fully sourced cards."
+      ]
+    }
+  ],
+  "warnings": [
+    "Web verification in progress."
+  ]
+}
+web search: 
+web search: site:hsc.edu Hampden-Sydney campus student center library museum trails lake chapel athletics dining ...
+web search: 
+web search: site:hsc.edu "Bortz Library" Hampden-Sydney hours ...
+web search: 
+web search: Hampden-Sydney Bortz Library official hours site:hsc.edu OR site:hsc.libguides.com ...
+codex
+{"complete":true,"school_name":"Hampden-Sydney College","town_name":"Hampden-Sydney","boards":[{"complete":true,"school_name":"Hampden-Sydney College","town_name":"Hampden-Sydney","template_id":"college-first-weekend","title":"Your First Weekend at Hampden-Sydney College, Shared as Cards","description":"A Friday-to-Sunday sequence for learning Hampden-Sydney’s central gathering places, campus history, outdoor recreation, dining, and community spaces.","icon":"schedule","cards":[{"subject_id":"hsc-first-weekend-01-brown-student-center","subject_type":"sequence_stop","entity_name":"Brown Student Center","title":"Start at Brown Student Center","subtitle":"Friday afternoon · Establish your campus home base","notes":"Locate Student Affairs, the post office, club spaces, and the game areas; note where you can return between weekend plans.","short_summary":"Begin with the campus hub that connects practical services, recreation, and student organizations.","evidence_claim":"Hampden-Sydney identifies Brown Student Center as a campus-life hub containing the post office, Tiger Inn, Student Affairs, student-government offices, club spaces, and communal game areas.","source_url":"https://www.hsc.edu/brown-student-center","source_title":"Brown Student Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://map.hsc.edu/","access_notes":"Campus facilities are privately owned; students should follow posted building-access rules and current hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hsc-first-weekend-02-atkinson-museum","subject_type":"sequence_stop","entity_name":"Esther Thomas Atkinson Museum","title":"See Campus History at Atkinson Museum","subtitle":"Friday before 5 p.m. · Add context to the places around you","notes":"Go Friday while regular hours apply, then use one object or document in the exhibition as a prompt for a campus-history conversation.","short_summary":"A focused museum stop explains how the College’s history intersects with Virginia and the nation.","evidence_claim":"The College says the Esther Thomas Atkinson Museum interprets Hampden-Sydney’s history and lists regular hours Tuesday through Friday, 10 a.m.–noon and 1–5 p.m.","source_url":"https://www.hsc.edu/museum","source_title":"Atkinson Museum","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://map.hsc.edu/","access_notes":"Regular hours are Tuesday–Friday, 10 a.m.–noon and 1–5 p.m.; the museum notes extended hours on game days.","cost_status":"unknown","under21_safe":true},{"subject_id":"hsc-first-weekend-03-tiger-inn","subject_type":"sequence_stop","entity_name":"The Tiger Inn","title":"Make Tiger Inn Your Friday-Night Anchor","subtitle":"Friday evening · Eat and learn the late-night campus option","notes":"Check the menu, order only if it suits your plan, and remember the Brown Student Center location for future late weekend meals.","short_summary":"The campus café supplies a straightforward evening meal and stays open later than daytime gathering spaces.","evidence_claim":"Hampden-Sydney’s dining page places the Tiger Inn in Brown Student Center and lists Monday–Friday hours of 7 a.m.–10 p.m. and weekend hours of noon–1 a.m.","source_url":"https://www7.hsc.edu/about-h-sc/visit-h-sc/dining","source_title":"Dining","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://map.hsc.edu/","access_notes":"The current College page lists Friday service until 10 p.m. and Saturday–Sunday service from noon to 1 a.m.; confirm posted hours before going.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"hsc-first-weekend-04-chalgrove-lake","subject_type":"sequence_stop","entity_name":"Chalgrove Lake","title":"Reset Beside Chalgrove Lake","subtitle":"Saturday morning · Begin outdoors at a mapped campus landmark","notes":"Follow established pedestrian routes, pause for the water view, and use nearby landmarks to improve your mental map of campus.","short_summary":"A quiet outdoor interval introduces one of the named landscape features at the center of campus life.","evidence_claim":"The official campus map lists Chalgrove Lake as a sports-and-recreation location, and the College describes Brown Student Center as overlooking Chalgrove Pond.","source_url":"https://map.hsc.edu/","source_title":"Hampden-Sydney College Interactive Campus Map","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://map.hsc.edu/","access_notes":"Remain on established campus routes and observe posted waterfront or facility restrictions.","cost_status":"unknown","under21_safe":true},{"subject_id":"hsc-first-weekend-05-wilson-trail","subject_type":"sequence_stop","entity_name":"Wilson Trail","title":"Walk a Section of Wilson Trail","subtitle":"Saturday morning · Learn the campus woods at an easy pace","notes":"Open the official trail map first, choose a manageable section, carry water, and turn back early if weather or trail conditions shift.","short_summary":"The named three-mile trail provides a defined introduction to Hampden-Sydney’s surrounding forest.","evidence_claim":"Hampden-Sydney documents Wilson Trail as a three-mile trail system through College forests that provides hiking and biking paths.","source_url":"https://www.hsc.edu/student-life/what-to-do/outdoor-experience/wilson-trail","source_title":"Wilson Trail","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://map.hsc.edu/","access_notes":"Review the official interactive or printable trail map, use marked paths, and account for current weather and daylight.","cost_status":"unknown","under21_safe":true},{"subject_id":"hsc-first-weekend-06-tadpole-holes-disc-golf","subject_type":"sequence_stop","entity_name":"Tadpole Holes Disc Golf Course","title":"Try Tadpole Holes Disc Golf Course","subtitle":"Saturday afternoon · Add a low-key recreation stop","notes":"Bring or borrow suitable discs, photograph the course map before starting, and yield to other users on wooded fairways and paths.","short_summary":"A mapped wooded course turns the afternoon into a structured, social outdoor activity.","evidence_claim":"The College describes Tadpole Holes as an 18-hole technical disc-golf course weaving through woods near the High Adventure Course, practice fields, and Tadpole Hole lake.","source_url":"https://www.hsc.edu/student-life/what-to-do/outdoor-experience","source_title":"The Outdoor Experience","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://map.hsc.edu/","access_notes":"Use the mapped course and observe posted course conditions; equipment availability should be confirmed with Student Affairs.","cost_status":"unknown","under21_safe":true},{"subject_id":"hsc-first-weekend-07-high-adventure-course","subject_type":"sequence_stop","entity_name":"High Adventure Course","title":"Scout the High Adventure Course","subtitle":"Saturday afternoon · Identify a future supervised activity","notes":"View the course only from permitted areas, find the program contact information, and register for a scheduled session before participating.","short_summary":"This reconnaissance stop introduces the climbing wall, ropes obstacles, and zip line without assuming walk-up access.","evidence_claim":"Hampden-Sydney says its High Adventure Course sits behind Kirby Field House and includes a vertical climbing wall, suspended ropes obstacles, and a zip line over Tadpole Hole.","source_url":"https://www.hsc.edu/student-life/what-to-do/outdoor-experience","source_title":"The Outdoor Experience","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://map.hsc.edu/","access_notes":"Do not enter or use course elements without College authorization, scheduled programming, and required supervision.","cost_status":"unknown","under21_safe":true},{"subject_id":"hsc-first-weekend-08-bortz-library","subject_type":"sequence_stop","entity_name":"Walter M. Bortz III Library","title":"Locate Bortz Library Before Classes","subtitle":"Saturday · Learn where academic support is based","notes":"Find the entrance, bookmark the library’s current schedule, and note the adjacent academic-support and technology resources for Monday.","short_summary":"A brief orientation now reduces friction when coursework and academic appointments begin.","evidence_claim":"The official campus map identifies Bortz Library as an academic facility and student-service destination and associates it with the Office of Academic Success and Fuqua computing facilities.","source_url":"https://map.hsc.edu/","source_title":"Hampden-Sydney College Interactive Campus Map","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://map.hsc.edu/","access_notes":"Weekend interior access and service hours are not established by the cited map; verify the library’s live schedule before entering.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hsc-first-weekend-09-leggett-pool","subject_type":"sequence_stop","entity_name":"Leggett Pool","title":"Plan a Sunday Swim at Leggett Pool","subtitle":"Sunday · Use the live TigeRec schedule before leaving","notes":"Check the same-day schedule, pack appropriate swim gear, enter through the patio doors, and complete the required staff check-in.","short_summary":"A scheduled swim offers an active Sunday option with clearly documented eligibility and entry procedures.","evidence_claim":"TigeRec states that Leggett Pool is available for recreational use and lap swimming by the Hampden-Sydney community and provides current eligibility and check-in instructions.","source_url":"https://www.hsc.edu/tigerec","source_title":"TigerRecreation (TigeRec)","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://map.hsc.edu/","access_notes":"The current summer listing shows Sunday 10 a.m.–3 p.m.; hours may change. Enter through patio doors, check in with pool staff, and verify the live schedule.","cost_status":"unknown","under21_safe":true},{"subject_id":"hsc-first-weekend-10-college-presbyterian-church","subject_type":"sequence_stop","entity_name":"College Presbyterian Church","title":"Close the Weekend at College Church","subtitle":"Sunday at 11 a.m. · Join an optional community gathering","notes":"Attend only if the service fits your interests, arrive respectfully, and introduce yourself after worship if you want a local connection.","short_summary":"The on-campus congregation offers an explicitly open Sunday gathering for students and area residents.","evidence_claim":"Hampden-Sydney says College Presbyterian Church is on campus, welcomes people without a College affiliation, and holds Sunday worship at 11 a.m.","source_url":"https://www.hsc.edu/student-life/campus-culture/spiritual-life/college-church","source_title":"College Presbyterian Church","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://map.hsc.edu/","access_notes":"Sunday worship is listed at 11 a.m.; participation is optional, and the congregation welcomes attendees without a College affiliation.","cost_status":"free","under21_safe":true}],"warnings":["Hampden-Sydney states that its campus and facilities are privately owned; users should follow current access rules and posted notices.","Tiger Inn and Leggett Pool hours are current as fetched but may change; both cards direct users to confirm live or posted schedules.","The Atkinson Museum’s regular published hours do not include Saturday or Sunday, so it is deliberately placed on Friday."]}],"warnings":[]}
+2026-08-13T07:30:07.812093Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa04-9c71-73d1-8b8d-34c733fabbd0.1786606034034171000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+35,483
+
+{"complete":true,"school_name":"Hampden-Sydney College","town_name":"Hampden-Sydney","boards":[{"complete":true,"school_name":"Hampden-Sydney College","town_name":"Hampden-Sydney","template_id":"college-first-weekend","title":"Your First Weekend at Hampden-Sydney College, Shared as Cards","description":"A Friday-to-Sunday sequence for learning Hampden-Sydney’s central gathering places, campus history, outdoor recreation, dining, and community spaces.","icon":"schedule","cards":[{"subject_id":"hsc-first-weekend-01-brown-student-center","subject_type":"sequence_stop","entity_name":"Brown Student Center","title":"Start at Brown Student Center","subtitle":"Friday afternoon · Establish your campus home base","notes":"Locate Student Affairs, the post office, club spaces, and the game areas; note where you can return between weekend plans.","short_summary":"Begin with the campus hub that connects practical services, recreation, and student organizations.","evidence_claim":"Hampden-Sydney identifies Brown Student Center as a campus-life hub containing the post office, Tiger Inn, Student Affairs, student-government offices, club spaces, and communal game areas.","source_url":"https://www.hsc.edu/brown-student-center","source_title":"Brown Student Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://map.hsc.edu/","access_notes":"Campus facilities are privately owned; students should follow posted building-access rules and current hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hsc-first-weekend-02-atkinson-museum","subject_type":"sequence_stop","entity_name":"Esther Thomas Atkinson Museum","title":"See Campus History at Atkinson Museum","subtitle":"Friday before 5 p.m. · Add context to the places around you","notes":"Go Friday while regular hours apply, then use one object or document in the exhibition as a prompt for a campus-history conversation.","short_summary":"A focused museum stop explains how the College’s history intersects with Virginia and the nation.","evidence_claim":"The College says the Esther Thomas Atkinson Museum interprets Hampden-Sydney’s history and lists regular hours Tuesday through Friday, 10 a.m.–noon and 1–5 p.m.","source_url":"https://www.hsc.edu/museum","source_title":"Atkinson Museum","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://map.hsc.edu/","access_notes":"Regular hours are Tuesday–Friday, 10 a.m.–noon and 1–5 p.m.; the museum notes extended hours on game days.","cost_status":"unknown","under21_safe":true},{"subject_id":"hsc-first-weekend-03-tiger-inn","subject_type":"sequence_stop","entity_name":"The Tiger Inn","title":"Make Tiger Inn Your Friday-Night Anchor","subtitle":"Friday evening · Eat and learn the late-night campus option","notes":"Check the menu, order only if it suits your plan, and remember the Brown Student Center location for future late weekend meals.","short_summary":"The campus café supplies a straightforward evening meal and stays open later than daytime gathering spaces.","evidence_claim":"Hampden-Sydney’s dining page places the Tiger Inn in Brown Student Center and lists Monday–Friday hours of 7 a.m.–10 p.m. and weekend hours of noon–1 a.m.","source_url":"https://www7.hsc.edu/about-h-sc/visit-h-sc/dining","source_title":"Dining","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://map.hsc.edu/","access_notes":"The current College page lists Friday service until 10 p.m. and Saturday–Sunday service from noon to 1 a.m.; confirm posted hours before going.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"hsc-first-weekend-04-chalgrove-lake","subject_type":"sequence_stop","entity_name":"Chalgrove Lake","title":"Reset Beside Chalgrove Lake","subtitle":"Saturday morning · Begin outdoors at a mapped campus landmark","notes":"Follow established pedestrian routes, pause for the water view, and use nearby landmarks to improve your mental map of campus.","short_summary":"A quiet outdoor interval introduces one of the named landscape features at the center of campus life.","evidence_claim":"The official campus map lists Chalgrove Lake as a sports-and-recreation location, and the College describes Brown Student Center as overlooking Chalgrove Pond.","source_url":"https://map.hsc.edu/","source_title":"Hampden-Sydney College Interactive Campus Map","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://map.hsc.edu/","access_notes":"Remain on established campus routes and observe posted waterfront or facility restrictions.","cost_status":"unknown","under21_safe":true},{"subject_id":"hsc-first-weekend-05-wilson-trail","subject_type":"sequence_stop","entity_name":"Wilson Trail","title":"Walk a Section of Wilson Trail","subtitle":"Saturday morning · Learn the campus woods at an easy pace","notes":"Open the official trail map first, choose a manageable section, carry water, and turn back early if weather or trail conditions shift.","short_summary":"The named three-mile trail provides a defined introduction to Hampden-Sydney’s surrounding forest.","evidence_claim":"Hampden-Sydney documents Wilson Trail as a three-mile trail system through College forests that provides hiking and biking paths.","source_url":"https://www.hsc.edu/student-life/what-to-do/outdoor-experience/wilson-trail","source_title":"Wilson Trail","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://map.hsc.edu/","access_notes":"Review the official interactive or printable trail map, use marked paths, and account for current weather and daylight.","cost_status":"unknown","under21_safe":true},{"subject_id":"hsc-first-weekend-06-tadpole-holes-disc-golf","subject_type":"sequence_stop","entity_name":"Tadpole Holes Disc Golf Course","title":"Try Tadpole Holes Disc Golf Course","subtitle":"Saturday afternoon · Add a low-key recreation stop","notes":"Bring or borrow suitable discs, photograph the course map before starting, and yield to other users on wooded fairways and paths.","short_summary":"A mapped wooded course turns the afternoon into a structured, social outdoor activity.","evidence_claim":"The College describes Tadpole Holes as an 18-hole technical disc-golf course weaving through woods near the High Adventure Course, practice fields, and Tadpole Hole lake.","source_url":"https://www.hsc.edu/student-life/what-to-do/outdoor-experience","source_title":"The Outdoor Experience","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://map.hsc.edu/","access_notes":"Use the mapped course and observe posted course conditions; equipment availability should be confirmed with Student Affairs.","cost_status":"unknown","under21_safe":true},{"subject_id":"hsc-first-weekend-07-high-adventure-course","subject_type":"sequence_stop","entity_name":"High Adventure Course","title":"Scout the High Adventure Course","subtitle":"Saturday afternoon · Identify a future supervised activity","notes":"View the course only from permitted areas, find the program contact information, and register for a scheduled session before participating.","short_summary":"This reconnaissance stop introduces the climbing wall, ropes obstacles, and zip line without assuming walk-up access.","evidence_claim":"Hampden-Sydney says its High Adventure Course sits behind Kirby Field House and includes a vertical climbing wall, suspended ropes obstacles, and a zip line over Tadpole Hole.","source_url":"https://www.hsc.edu/student-life/what-to-do/outdoor-experience","source_title":"The Outdoor Experience","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://map.hsc.edu/","access_notes":"Do not enter or use course elements without College authorization, scheduled programming, and required supervision.","cost_status":"unknown","under21_safe":true},{"subject_id":"hsc-first-weekend-08-bortz-library","subject_type":"sequence_stop","entity_name":"Walter M. Bortz III Library","title":"Locate Bortz Library Before Classes","subtitle":"Saturday · Learn where academic support is based","notes":"Find the entrance, bookmark the library’s current schedule, and note the adjacent academic-support and technology resources for Monday.","short_summary":"A brief orientation now reduces friction when coursework and academic appointments begin.","evidence_claim":"The official campus map identifies Bortz Library as an academic facility and student-service destination and associates it with the Office of Academic Success and Fuqua computing facilities.","source_url":"https://map.hsc.edu/","source_title":"Hampden-Sydney College Interactive Campus Map","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://map.hsc.edu/","access_notes":"Weekend interior access and service hours are not established by the cited map; verify the library’s live schedule before entering.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hsc-first-weekend-09-leggett-pool","subject_type":"sequence_stop","entity_name":"Leggett Pool","title":"Plan a Sunday Swim at Leggett Pool","subtitle":"Sunday · Use the live TigeRec schedule before leaving","notes":"Check the same-day schedule, pack appropriate swim gear, enter through the patio doors, and complete the required staff check-in.","short_summary":"A scheduled swim offers an active Sunday option with clearly documented eligibility and entry procedures.","evidence_claim":"TigeRec states that Leggett Pool is available for recreational use and lap swimming by the Hampden-Sydney community and provides current eligibility and check-in instructions.","source_url":"https://www.hsc.edu/tigerec","source_title":"TigerRecreation (TigeRec)","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://map.hsc.edu/","access_notes":"The current summer listing shows Sunday 10 a.m.–3 p.m.; hours may change. Enter through patio doors, check in with pool staff, and verify the live schedule.","cost_status":"unknown","under21_safe":true},{"subject_id":"hsc-first-weekend-10-college-presbyterian-church","subject_type":"sequence_stop","entity_name":"College Presbyterian Church","title":"Close the Weekend at College Church","subtitle":"Sunday at 11 a.m. · Join an optional community gathering","notes":"Attend only if the service fits your interests, arrive respectfully, and introduce yourself after worship if you want a local connection.","short_summary":"The on-campus congregation offers an explicitly open Sunday gathering for students and area residents.","evidence_claim":"Hampden-Sydney says College Presbyterian Church is on campus, welcomes people without a College affiliation, and holds Sunday worship at 11 a.m.","source_url":"https://www.hsc.edu/student-life/campus-culture/spiritual-life/college-church","source_title":"College Presbyterian Church","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://map.hsc.edu/","access_notes":"Sunday worship is listed at 11 a.m.; participation is optional, and the congregation welcomes attendees without a College affiliation.","cost_status":"free","under21_safe":true}],"warnings":["Hampden-Sydney states that its campus and facilities are privately owned; users should follow current access rules and posted notices.","Tiger Inn and Leggett Pool hours are current as fetched but may change; both cards direct users to confirm live or posted schedules.","The Atkinson Museum’s regular published hours do not include Saturday or Sunday, so it is deliberately placed on Friday."]}],"warnings":[]}

@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://studentaffairs.jhu.edu/leed/events-traditions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://studentaffairs.jhu.edu/leed/events-traditions/",
+      "error": ""
+    },
+    {
+      "url": "https://apply.jhu.edu/hopkins-insider/why-i-love-hoptoberfest/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://apply.jhu.edu/hopkins-insider/why-i-love-hoptoberfest/",
+      "error": ""
+    },
+    {
+      "url": "https://alumni.jhu.edu/connect-current-students/class-banner-competition",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://alumni.jhu.edu/connect-current-students/class-banner-competition",
+      "error": ""
+    },
+    {
+      "url": "https://hub.jhu.edu/2024/05/21/johns-hopkins-commencement-rituals/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://hub.jhu.edu/2024/05/21/johns-hopkins-commencement-rituals/",
+      "error": ""
+    },
+    {
+      "url": "https://www.jhunewsletter.com/article/2026/05/the-hopkins-sesquicentennial-senior-bucket-list-150-things-to-do-before-graduating",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jhunewsletter.com/article/2026/05/the-hopkins-sesquicentennial-senior-bucket-list-150-things-to-do-before-graduating",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

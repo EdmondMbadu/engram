@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "x9J184J5hltrYVnsfoRv",
+    "schoolName": "SUNY College at Geneseo",
+    "shortSchoolName": "SUNY College at Geneseo",
+    "townName": "Geneseo",
+    "state": "NY",
+    "countryCode": "US",
+    "unitId": "196167",
+    "website": "https://www.geneseo.edu/",
+    "latitude": 42.796645,
+    "longitude": -77.821894,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/d/d1/SUNY_Geneseo_seal.svg/250px-SUNY_Geneseo_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=geneseo.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain SUNY College at Geneseo",
+  "excluded_subjects": [
+    "Roemer Arboretum Outer Loop Trail",
+    "Roemer Arboretum Inner Loop Trail",
+    "Roemer Arboretum Native Plant Gardens",
+    "Roemer Arboretum 9/11 Memorial",
+    "Roemer Arboretum Gazebo",
+    "Roemer Arboretum Picnic Tables",
+    "Roemer Arboretum Oak Trees",
+    "Roemer Arboretum Black Walnut Trees",
+    "Roemer Arboretum Entrance Kiosk",
+    "Roemer Arboretum Public Walk"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

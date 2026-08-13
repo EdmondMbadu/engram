@@ -1,0 +1,298 @@
+Reading additional input from stdin...
+2026-08-13T06:57:51.799672Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-7987-7f82-b97b-ea7a145e55b8.1786604255624481000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:57:51.802866Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:57:51.808924Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9e9-b862-7cf3-896c-85c4c70d06ed
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"72G426o8cjd6JGjaoxYw","schoolName":"Elmhurst University","shortSchoolName":"Elmhurst University","townName":"Elmhurst","state":"IL","countryCode":"US","website":"https://www.elmhurst.edu/","latitude":41.897164,"longitude":-87.945369},"templates":[{"id":"college-study-spots","version":"1.0","titlePattern":"Claimed by 9am: {count} Study Spots Worth Showing Up Early For","editorialBrief":"Choose ten distinct study environments. Verify access rules, room or reservation constraints, and the physical affordance that makes each useful. Treat “Claimed by 9am” as editorial framing; never assert crowding or student behavior without evidence.","researchQueries":["campus study spaces","library study rooms students","quiet study campus"],"count":10,"icon":"menu_book","primarySubjectType":"study_space","allowedSubjectTypes":["study_space","place"],"freshnessDays":180,"exactTitle":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For"}]}
+2026-08-13T06:57:51.857342Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-798a-7461-9edc-dd97abf41d2d.1786604255627254000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:57:51.962544Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-7987-7a71-a5c3-5b271b0e2efb.1786604255623815000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:57:52.006317Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-7985-7161-b763-db9b2ed589a7.1786604255621553000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:57:52.062281Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-7986-7f70-9ac0-01b5846d379e.1786604255622326000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:57:52.105226Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-799d-7e90-a88b-3f4e26e818e7.1786604255645974000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:57:52.140345Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-7985-7383-8b49-05bfee3caf34.1786604255621921000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Elmhurst University",
+  "town_name": "Elmhurst",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Elmhurst University",
+      "town_name": "Elmhurst",
+      "template_id": "college-study-spots",
+      "title": "Claimed by 9am: 10 Study Spots Worth Showing Up Early For",
+      "description": "",
+      "icon": "menu_book",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+        "subject_id": "placeholder",
+        "subject_type": "study_space",
+        "entity_name": "Research in progress",
+        "title": "Research in progress",
+        "subtitle": "Verifying ten distinct study environments",
+        "notes": "I’m checking official library, campus, and facility pages for access rules and physical study affordances.",
+        "short_summary": "Official-source verification is underway.",
+        "evidence_claim": "Research status only.",
+        "source_url": "https://www.elmhurst.edu/",
+        "source_title": "Elmhurst University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "Final response will contain exactly ten researched cards.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+     
+      }
+      ,
+      {
+        "subject_id": "placeholder-2",
+        "subject_type": "study_space",
+        "entity_name": "Research in progress 2",
+        "title": "Research in progress 2",
+        "subtitle": "Verifying ten distinct study environments",
+        "notes": "I’m checking official library, campus, and facility pages for access rules and physical study affordances.",
+        "short_summary": "Official-source verification is underway.",
+        "evidence_claim": "Research status only.",
+        "source_url": "https://www.elmhurst.edu/",
+        "source_title": "Elmhurst University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "Final response will contain exactly ten researched cards.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "placeholder-3",
+        "subject_type": "study_space",
+        "entity_name": "Research in progress 3",
+        "title": "Research in progress 3",
+        "subtitle": "Verifying ten distinct study environments",
+        "notes": "I’m checking official library, campus, and facility pages for access rules and physical study affordances.",
+        "short_summary": "Official-source verification is underway.",
+        "evidence_claim": "Research status only.",
+        "source_url": "https://www.elmhurst.edu/",
+        "source_title": "Elmhurst University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "Final response will contain exactly ten researched cards.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "placeholder-4",
+        "subject_type": "study_space",
+        "entity_name": "Research in progress 4",
+        "title": "Research in progress 4",
+        "subtitle": "Verifying ten distinct study environments",
+        "notes": "I’m checking official library, campus, and facility pages for access rules and physical study affordances.",
+        "short_summary": "Official-source verification is underway.",
+        "evidence_claim": "Research status only.",
+        "source_url": "https://www.elmhurst.edu/",
+        "source_title": "Elmhurst University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "Final response will contain exactly ten researched cards.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "placeholder-5",
+        "subject_type": "study_space",
+        "entity_name": "Research in progress 5",
+        "title": "Research in progress 5",
+        "subtitle": "Verifying ten distinct study environments",
+        "notes": "I’m checking official library, campus, and facility pages for access rules and physical study affordances.",
+        "short_summary": "Official-source verification is underway.",
+        "evidence_claim": "Research status only.",
+        "source_url": "https://www.elmhurst.edu/",
+        "source_title": "Elmhurst University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "Final response will contain exactly ten researched cards.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "placeholder-6",
+        "subject_type": "study_space",
+        "entity_name": "Research in progress 6",
+        "title": "Research in progress 6",
+        "subtitle": "Verifying ten distinct study environments",
+        "notes": "I’m checking official library, campus, and facility pages for access rules and physical study affordances.",
+        "short_summary": "Official-source verification is underway.",
+        "evidence_claim": "Research status only.",
+        "source_url": "https://www.elmhurst.edu/",
+        "source_title": "Elmhurst University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "Final response will contain exactly ten researched cards.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "placeholder-7",
+        "subject_type": "study_space",
+        "entity_name": "Research in progress 7",
+        "title": "Research in progress 7",
+        "subtitle": "Verifying ten distinct study environments",
+        "notes": "I’m checking official library, campus, and facility pages for access rules and physical study affordances.",
+        "short_summary": "Official-source verification is underway.",
+        "evidence_claim": "Research status only.",
+        "source_url": "https://www.elmhurst.edu/",
+        "source_title": "Elmhurst University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "Final response will contain exactly ten researched cards.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "placeholder-8",
+        "subject_type": "study_space",
+        "entity_name": "Research in progress 8",
+        "title": "Research in progress 8",
+        "subtitle": "Verifying ten distinct study environments",
+        "notes": "I’m checking official library, campus, and facility pages for access rules and physical study affordances.",
+        "short_summary": "Official-source verification is underway.",
+        "evidence_claim": "Research status only.",
+        "source_url": "https://www.elmhurst.edu/",
+        "source_title": "Elmhurst University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "Final response will contain exactly ten researched cards.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "placeholder-9",
+        "subject_type": "study_space",
+        "entity_name": "Research in progress 9",
+        "title": "Research in progress 9",
+        "subtitle": "Verifying ten distinct study environments",
+        "notes": "I’m checking official library, campus, and facility pages for access rules and physical study affordances.",
+        "short_summary": "Official-source verification is underway.",
+        "evidence_claim": "Research status only.",
+        "source_url": "https://www.elmhurst.edu/",
+        "source_title": "Elmhurst University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "Final response will contain exactly ten researched cards.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:elmhurst.edu library study rooms Elmhurst University study spaces ...
+web search: 
+web search: 
+codex
+{"complete":true,"school_name":"Elmhurst University","town_name":"Elmhurst","boards":[{"complete":true,"school_name":"Elmhurst University","town_name":"Elmhurst","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten documented Elmhurst University settings for solo work, group projects, tutoring and between-class study, with access limits and useful physical features noted.","icon":"menu_book","cards":[{"subject_id":"elmhurst-buehler-lower-level-general-study","subject_type":"study_space","entity_name":"A.C. Buehler Library Lower-Level General Study Area","title":"Spread Out on the Lower Level","subtitle":"Tables, chairs and nearby academic support in A.C. Buehler Library","notes":"Bring materials that need room to spread out; the lower level combines tables and chairs with nearby study rooms and career support.","short_summary":"A table-oriented library setting suited to sustained individual work.","evidence_claim":"Elmhurst University identifies the library's lower level as having study rooms and general study areas with chairs and tables, plus access to the Weigand Career Center.","source_url":"https://www.elmhurst.edu/admission/graduate-students/graduate-student-resources/","source_title":"Graduate Student Resources | Elmhurst University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on the lower level of A.C. Buehler Library; use is subject to current library building access and hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"elmhurst-buehler-first-level-study-area","subject_type":"study_space","entity_name":"A.C. Buehler Library First-Level Study Area","title":"Work Near Computers and Sofas","subtitle":"A flexible main-floor setup for digital work or a softer seat","notes":"Choose this level when you need a campus computer or want to switch between a table and sofa without leaving the library.","short_summary":"A mixed-seating floor with computers and convenient access to tutoring.","evidence_claim":"Elmhurst University states that the library's first level has computers, tables and sofas, with tutoring available in the Learning Center.","source_url":"https://www.elmhurst.edu/admission/graduate-students/graduate-student-resources/","source_title":"Graduate Student Resources | Elmhurst University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on the first level of A.C. Buehler Library; use is subject to current library building access and hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"elmhurst-buehler-second-level-open-study","subject_type":"study_space","entity_name":"A.C. Buehler Library Second-Level Open Study Area","title":"Settle In Upstairs","subtitle":"Open tables and chairs beside reservable study-room options","notes":"Use the open upstairs tables when you do not need an enclosed room; move to a reservable room if the assignment becomes collaborative.","short_summary":"An upstairs open-study option with individual and group rooms nearby.","evidence_claim":"Elmhurst University documents tables and chairs on the library's second level alongside group and individual study rooms.","source_url":"https://www.elmhurst.edu/admission/graduate-students/graduate-student-resources/","source_title":"Graduate Student Resources | Elmhurst University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on the second level of A.C. Buehler Library; use is subject to current library building access and hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"elmhurst-buehler-upper-level-group-study-rooms","subject_type":"study_space","entity_name":"A.C. Buehler Library Upper-Level Group Study Rooms","title":"Reserve a Room for Group Work","subtitle":"Enclosed upper-level rooms designed for collaborative study","notes":"Reserve ahead for a project meeting, and confirm equipment when booking if your group needs a display for presentation practice.","short_summary":"Reservable group rooms for discussion, collaboration and presentations.","evidence_claim":"Elmhurst University says group study rooms are on the library's upper level and can be reserved; an official library guide notes many have large-screen televisions that connect to laptops.","source_url":"https://www.elmhurst.edu/student-life/commuter-students/","source_title":"Commuter Students | Info and Resources | Elmhurst University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Reservation is required to claim a room; follow the linked library booking process and current library access rules.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"elmhurst-buehler-lower-level-single-study-rooms","subject_type":"study_space","entity_name":"A.C. Buehler Library Lower-Level Single Study Rooms","title":"Book a Room for Solo Focus","subtitle":"Reservable single-user rooms on the library's lower level","notes":"Book a single room for concentrated reading or independent work, then arrive within the reservation window shown by the library system.","short_summary":"An enclosed, reservable alternative to the library's open seating.","evidence_claim":"Elmhurst University's commuter FAQ identifies single study rooms on the lower level of A.C. Buehler Library, while its commuter resource page directs users to reserve study rooms.","source_url":"https://www.elmhurst.edu/student-life/commuter-students/faq/","source_title":"Commuter Student FAQ | Elmhurst University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"These lower-level rooms are reservable; consult the library booking system for current eligibility, availability and time limits.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"elmhurst-learning-center","subject_type":"study_space","entity_name":"The Learning Center","title":"Pair Study Time With Tutoring","subtitle":"Academic support and study groups on Buehler Library's main level","notes":"Check the tutoring schedule before visiting, bring the assignment and your questions, and book an appointment when the service requires one.","short_summary":"A study-support setting for tutoring, workshops and subject-based groups.","evidence_claim":"The Learning Center is on the main level of A.C. Buehler Library and offers in-person tutoring, study groups and academic workshops during fall and spring terms.","source_url":"https://www.elmhurst.edu/academics/academic-centers/the-learning-center/","source_title":"The Learning Center | Academic Tutoring | Elmhurst University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Academic services are for Elmhurst University students; fall and spring offerings vary, and appointments should be made through the posted schedule.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"elmhurst-founders-lounge","subject_type":"study_space","entity_name":"Founders Lounge","title":"Study by the Founders Lounge Fireplace","subtitle":"Second-floor Frick Center seating with tables and work amenities","notes":"Bring reading or laptop work here when you want lounge seating; public printers and scanners are available for document-heavy tasks.","short_summary":"A spacious Frick Center lounge with couches, tables and practical print tools.","evidence_claim":"Elmhurst University places Founders Lounge on the Frick Center's second floor and documents comfortable seating, work tables, a fireplace, public printers and scanners.","source_url":"https://www.elmhurst.edu/student-life/commuter-students/","source_title":"Commuter Students | Info and Resources | Elmhurst University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The lounge is inside the Frick Center and can host events or club meetings, so check campus scheduling and building access before relying on it.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"elmhurst-commuter-lounge","subject_type":"study_space","entity_name":"Commuter Lounge","title":"Use the Commuter Lounge Between Classes","subtitle":"Tables and comfortable seating beside Bluejays' Roost","notes":"Set up here between classes, and ask at the Frick Center Information Desk if you also need instructions for reserving a commuter locker.","short_summary":"A Frick Center study-and-reset space specifically highlighted for commuters.","evidence_claim":"Elmhurst University locates the Commuter Lounge next to Bluejays' Roost in the Frick Center and describes it as having numerous tables and seats for studying or relaxing.","source_url":"https://www.elmhurst.edu/student-life/commuter-students/","source_title":"Commuter Students | Info and Resources | Elmhurst University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Intended as a commuter-student amenity inside the Frick Center; use is subject to current student-center access.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"elmhurst-library-cafe-seating","subject_type":"study_space","entity_name":"Library Cafe Seating","title":"Combine Coursework With a Cafe Break","subtitle":"Main-floor library seating where schoolwork is explicitly welcomed","notes":"Use the seating without assuming a purchase is required; check dining hours separately if you plan to order coffee, snacks or other food.","short_summary":"A more social library setting for lighter work and informal collaboration.","evidence_claim":"Elmhurst University's commuter FAQ says the Library Cafe has seating where students can do schoolwork and identifies Starbucks plus additional food and drink options there.","source_url":"https://www.elmhurst.edu/student-life/commuter-students/faq/","source_title":"Commuter Student FAQ | Elmhurst University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on A.C. Buehler Library's main floor; cafe service follows dining hours, while seating access depends on current library rules.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"elmhurst-student-organization-center-workspace","subject_type":"study_space","entity_name":"Student Organization Center Workspace","title":"Bring Club Work to the SOC","subtitle":"A seating area and workspace inside Bluejays' Roost","notes":"Use the workspace for organization planning or individual tasks, and bring a charging cable because the University lists a charging station here.","short_summary":"A practical Frick Center workspace with seating and device charging nearby.","evidence_claim":"Elmhurst University's commuter FAQ says the Student Organization Center in Bluejays' Roost contains seating and a student workspace; it also lists a Frick Center charging station there.","source_url":"https://www.elmhurst.edu/student-life/commuter-students/faq/","source_title":"Commuter Student FAQ | Elmhurst University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located within Bluejays' Roost in the Frick Center; use is subject to current student-center and SOC access.","cost_status":"not_applicable","under21_safe":true}],"warnings":["The title's “Claimed by 9am” language is treated only as supplied editorial framing; no claim about crowding or student arrival behavior is made.","Exact coordinates and map URLs for these interior study environments were not verified, so those fields are null.","The official source confirms Library Cafe seating can be used for schoolwork but does not state that seating requires a purchase; purchase_required refers only to optional cafe food and beverages."]}],"warnings":[]}
+2026-08-13T06:59:43.624375Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-b862-7cf3-896c-85c4c70d06ed.1786604271714636000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+27,601
+
+{"complete":true,"school_name":"Elmhurst University","town_name":"Elmhurst","boards":[{"complete":true,"school_name":"Elmhurst University","town_name":"Elmhurst","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten documented Elmhurst University settings for solo work, group projects, tutoring and between-class study, with access limits and useful physical features noted.","icon":"menu_book","cards":[{"subject_id":"elmhurst-buehler-lower-level-general-study","subject_type":"study_space","entity_name":"A.C. Buehler Library Lower-Level General Study Area","title":"Spread Out on the Lower Level","subtitle":"Tables, chairs and nearby academic support in A.C. Buehler Library","notes":"Bring materials that need room to spread out; the lower level combines tables and chairs with nearby study rooms and career support.","short_summary":"A table-oriented library setting suited to sustained individual work.","evidence_claim":"Elmhurst University identifies the library's lower level as having study rooms and general study areas with chairs and tables, plus access to the Weigand Career Center.","source_url":"https://www.elmhurst.edu/admission/graduate-students/graduate-student-resources/","source_title":"Graduate Student Resources | Elmhurst University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on the lower level of A.C. Buehler Library; use is subject to current library building access and hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"elmhurst-buehler-first-level-study-area","subject_type":"study_space","entity_name":"A.C. Buehler Library First-Level Study Area","title":"Work Near Computers and Sofas","subtitle":"A flexible main-floor setup for digital work or a softer seat","notes":"Choose this level when you need a campus computer or want to switch between a table and sofa without leaving the library.","short_summary":"A mixed-seating floor with computers and convenient access to tutoring.","evidence_claim":"Elmhurst University states that the library's first level has computers, tables and sofas, with tutoring available in the Learning Center.","source_url":"https://www.elmhurst.edu/admission/graduate-students/graduate-student-resources/","source_title":"Graduate Student Resources | Elmhurst University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on the first level of A.C. Buehler Library; use is subject to current library building access and hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"elmhurst-buehler-second-level-open-study","subject_type":"study_space","entity_name":"A.C. Buehler Library Second-Level Open Study Area","title":"Settle In Upstairs","subtitle":"Open tables and chairs beside reservable study-room options","notes":"Use the open upstairs tables when you do not need an enclosed room; move to a reservable room if the assignment becomes collaborative.","short_summary":"An upstairs open-study option with individual and group rooms nearby.","evidence_claim":"Elmhurst University documents tables and chairs on the library's second level alongside group and individual study rooms.","source_url":"https://www.elmhurst.edu/admission/graduate-students/graduate-student-resources/","source_title":"Graduate Student Resources | Elmhurst University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on the second level of A.C. Buehler Library; use is subject to current library building access and hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"elmhurst-buehler-upper-level-group-study-rooms","subject_type":"study_space","entity_name":"A.C. Buehler Library Upper-Level Group Study Rooms","title":"Reserve a Room for Group Work","subtitle":"Enclosed upper-level rooms designed for collaborative study","notes":"Reserve ahead for a project meeting, and confirm equipment when booking if your group needs a display for presentation practice.","short_summary":"Reservable group rooms for discussion, collaboration and presentations.","evidence_claim":"Elmhurst University says group study rooms are on the library's upper level and can be reserved; an official library guide notes many have large-screen televisions that connect to laptops.","source_url":"https://www.elmhurst.edu/student-life/commuter-students/","source_title":"Commuter Students | Info and Resources | Elmhurst University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Reservation is required to claim a room; follow the linked library booking process and current library access rules.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"elmhurst-buehler-lower-level-single-study-rooms","subject_type":"study_space","entity_name":"A.C. Buehler Library Lower-Level Single Study Rooms","title":"Book a Room for Solo Focus","subtitle":"Reservable single-user rooms on the library's lower level","notes":"Book a single room for concentrated reading or independent work, then arrive within the reservation window shown by the library system.","short_summary":"An enclosed, reservable alternative to the library's open seating.","evidence_claim":"Elmhurst University's commuter FAQ identifies single study rooms on the lower level of A.C. Buehler Library, while its commuter resource page directs users to reserve study rooms.","source_url":"https://www.elmhurst.edu/student-life/commuter-students/faq/","source_title":"Commuter Student FAQ | Elmhurst University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"These lower-level rooms are reservable; consult the library booking system for current eligibility, availability and time limits.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"elmhurst-learning-center","subject_type":"study_space","entity_name":"The Learning Center","title":"Pair Study Time With Tutoring","subtitle":"Academic support and study groups on Buehler Library's main level","notes":"Check the tutoring schedule before visiting, bring the assignment and your questions, and book an appointment when the service requires one.","short_summary":"A study-support setting for tutoring, workshops and subject-based groups.","evidence_claim":"The Learning Center is on the main level of A.C. Buehler Library and offers in-person tutoring, study groups and academic workshops during fall and spring terms.","source_url":"https://www.elmhurst.edu/academics/academic-centers/the-learning-center/","source_title":"The Learning Center | Academic Tutoring | Elmhurst University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Academic services are for Elmhurst University students; fall and spring offerings vary, and appointments should be made through the posted schedule.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"elmhurst-founders-lounge","subject_type":"study_space","entity_name":"Founders Lounge","title":"Study by the Founders Lounge Fireplace","subtitle":"Second-floor Frick Center seating with tables and work amenities","notes":"Bring reading or laptop work here when you want lounge seating; public printers and scanners are available for document-heavy tasks.","short_summary":"A spacious Frick Center lounge with couches, tables and practical print tools.","evidence_claim":"Elmhurst University places Founders Lounge on the Frick Center's second floor and documents comfortable seating, work tables, a fireplace, public printers and scanners.","source_url":"https://www.elmhurst.edu/student-life/commuter-students/","source_title":"Commuter Students | Info and Resources | Elmhurst University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The lounge is inside the Frick Center and can host events or club meetings, so check campus scheduling and building access before relying on it.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"elmhurst-commuter-lounge","subject_type":"study_space","entity_name":"Commuter Lounge","title":"Use the Commuter Lounge Between Classes","subtitle":"Tables and comfortable seating beside Bluejays' Roost","notes":"Set up here between classes, and ask at the Frick Center Information Desk if you also need instructions for reserving a commuter locker.","short_summary":"A Frick Center study-and-reset space specifically highlighted for commuters.","evidence_claim":"Elmhurst University locates the Commuter Lounge next to Bluejays' Roost in the Frick Center and describes it as having numerous tables and seats for studying or relaxing.","source_url":"https://www.elmhurst.edu/student-life/commuter-students/","source_title":"Commuter Students | Info and Resources | Elmhurst University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Intended as a commuter-student amenity inside the Frick Center; use is subject to current student-center access.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"elmhurst-library-cafe-seating","subject_type":"study_space","entity_name":"Library Cafe Seating","title":"Combine Coursework With a Cafe Break","subtitle":"Main-floor library seating where schoolwork is explicitly welcomed","notes":"Use the seating without assuming a purchase is required; check dining hours separately if you plan to order coffee, snacks or other food.","short_summary":"A more social library setting for lighter work and informal collaboration.","evidence_claim":"Elmhurst University's commuter FAQ says the Library Cafe has seating where students can do schoolwork and identifies Starbucks plus additional food and drink options there.","source_url":"https://www.elmhurst.edu/student-life/commuter-students/faq/","source_title":"Commuter Student FAQ | Elmhurst University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on A.C. Buehler Library's main floor; cafe service follows dining hours, while seating access depends on current library rules.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"elmhurst-student-organization-center-workspace","subject_type":"study_space","entity_name":"Student Organization Center Workspace","title":"Bring Club Work to the SOC","subtitle":"A seating area and workspace inside Bluejays' Roost","notes":"Use the workspace for organization planning or individual tasks, and bring a charging cable because the University lists a charging station here.","short_summary":"A practical Frick Center workspace with seating and device charging nearby.","evidence_claim":"Elmhurst University's commuter FAQ says the Student Organization Center in Bluejays' Roost contains seating and a student workspace; it also lists a Frick Center charging station there.","source_url":"https://www.elmhurst.edu/student-life/commuter-students/faq/","source_title":"Commuter Student FAQ | Elmhurst University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located within Bluejays' Roost in the Frick Center; use is subject to current student-center and SOC access.","cost_status":"not_applicable","under21_safe":true}],"warnings":["The title's “Claimed by 9am” language is treated only as supplied editorial framing; no claim about crowding or student arrival behavior is made.","Exact coordinates and map URLs for these interior study environments were not verified, so those fields are null.","The official source confirms Library Cafe seating can be used for schoolwork but does not state that seating requires a purchase; purchase_required refers only to optional cafe food and beverages."]}],"warnings":[]}

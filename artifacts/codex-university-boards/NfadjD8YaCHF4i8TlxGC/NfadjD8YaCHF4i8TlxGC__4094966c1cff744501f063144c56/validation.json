@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://campusgroups.erau.edu/rock/home/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusgroups.erau.edu/rock/home/",
+      "error": ""
+    },
+    {
+      "url": "https://campusgroups.erau.edu/orientation/class-photo/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusgroups.erau.edu/orientation/class-photo/",
+      "error": ""
+    },
+    {
+      "url": "https://campusgroups.erau.edu/sesu/blue-gold/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusgroups.erau.edu/sesu/blue-gold/",
+      "error": ""
+    },
+    {
+      "url": "https://erau.edu/parents-and-family/current-eagle-parents",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://erau.edu/parents-and-family/current-eagle-parents",
+      "error": ""
+    },
+    {
+      "url": "https://crowdfunding.erau.edu/events/homecoming-and-family-weekend-2026",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://crowdfunding.erau.edu/events/homecoming-and-family-weekend-2026",
+      "error": ""
+    },
+    {
+      "url": "https://commons.erau.edu/exhibit/discovery-day/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://commons.erau.edu/exhibit/discovery-day/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

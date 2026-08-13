@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.portland.gov/parks/construction/north-portland-parks-improvement-projects",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.portland.gov/parks/construction/north-portland-parks-improvement-projects",
+      "error": ""
+    },
+    {
+      "url": "https://www.portland.gov/parks/columbia-park-and-annex",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.portland.gov/parks/columbia-park-and-annex",
+      "error": ""
+    },
+    {
+      "url": "https://www.portland.gov/parks/pier-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.portland.gov/parks/pier-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.portland.gov/parks/cathedral-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.portland.gov/parks/cathedral-park",
+      "error": ""
+    },
+    {
+      "url": "https://multcolib.org/hours-and-locations/st-johns-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://multcolib.org/hours-and-locations/st-johns-library",
+      "error": ""
+    },
+    {
+      "url": "https://stjohnscinema.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stjohnscinema.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.portland.gov/parks/portsmouth-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.portland.gov/parks/portsmouth-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.portland.gov/parks/st-johns-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.portland.gov/parks/st-johns-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.portland.gov/parks/peninsula-crossing-trail",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.portland.gov/parks/peninsula-crossing-trail",
+      "error": ""
+    },
+    {
+      "url": "https://www.portland.gov/parks/construction/george-park-project",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.portland.gov/parks/construction/george-park-project",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

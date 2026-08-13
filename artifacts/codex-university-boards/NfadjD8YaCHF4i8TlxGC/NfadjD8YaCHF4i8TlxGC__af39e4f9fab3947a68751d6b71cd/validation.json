@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://calendar.plu.edu/event/BlueZones-PLU-yoga",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calendar.plu.edu/event/BlueZones-PLU-yoga",
+      "error": ""
+    },
+    {
+      "url": "https://www.plu.edu/comm-media-designarts/university-gallery/season/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.plu.edu/comm-media-designarts/university-gallery/season/",
+      "error": ""
+    },
+    {
+      "url": "https://www.parkstacoma.gov/place/w-w-seymour-conservatory/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.parkstacoma.gov/place/w-w-seymour-conservatory/",
+      "error": ""
+    },
+    {
+      "url": "https://www.parkstacoma.gov/trail-info-tacoma-nature-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.parkstacoma.gov/trail-info-tacoma-nature-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.parkstacoma.gov/tacomas-real-life-dune/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.parkstacoma.gov/tacomas-real-life-dune/",
+      "error": ""
+    },
+    {
+      "url": "https://www.parkstacoma.gov/events/featured/page/2/?hide_subsequent_recurrences=1",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.parkstacoma.gov/events/featured/page/2/?hide_subsequent_recurrences=1",
+      "error": ""
+    },
+    {
+      "url": "https://www.parkstacoma.gov/event/park-spotlight-4/2026-08-22/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.parkstacoma.gov/event/park-spotlight-4/2026-08-22/",
+      "error": ""
+    },
+    {
+      "url": "https://www.parkstacoma.gov/event/summer-bash-star/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.parkstacoma.gov/event/summer-bash-star/",
+      "error": ""
+    },
+    {
+      "url": "https://www.parkstacoma.gov/venue/point-defiance-park-five-mile-drive-entrance/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.parkstacoma.gov/venue/point-defiance-park-five-mile-drive-entrance/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

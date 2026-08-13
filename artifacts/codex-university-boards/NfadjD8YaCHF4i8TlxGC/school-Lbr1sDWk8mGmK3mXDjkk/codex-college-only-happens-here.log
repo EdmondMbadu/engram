@@ -1,0 +1,298 @@
+Reading additional input from stdin...
+2026-08-13T07:16:35.896207Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9fa-d3f1-79d0-b8b4-c43a8b35730d.1786605392881787000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9fa-df3c-79b0-a078-3aa0eb91bf89
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"Lbr1sDWk8mGmK3mXDjkk","schoolName":"George Washington University","shortSchoolName":"George Washington University","townName":"Washington","state":"DC","countryCode":"US","website":"https://www.gwu.edu/","latitude":38.89923,"longitude":-77.048363},"templates":[{"id":"college-only-happens-here","version":"1.0","titlePattern":"Only Happens Here: {count} Traditions That Make No Sense Anywhere Else","editorialBrief":"Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.","researchQueries":["university traditions alumni","campus traditions student newspaper","school rituals history"],"count":10,"icon":"fingerprint","primarySubjectType":"tradition","allowedSubjectTypes":["tradition"],"freshnessDays":1095,"exactTitle":"Only Happens Here: 10 Traditions That Make No Sense Anywhere Else"}]}
+2026-08-13T07:16:36.278680Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9fa-d3ec-7c52-9873-84b60b152a45.1786605392877061000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:16:36.376499Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9fa-d3f1-70d0-abfb-fbe091646a79.1786605392881791000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:16:36.429290Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9fa-d3e6-7942-aba6-c717b0db117a.1786605392870806000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:16:36.546118Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9fa-d3e5-73e3-8a29-ffed69a1e114.1786605392870800000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:16:36.639471Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9fa-d3f0-78e0-9e95-4876c481d5a9.1786605392881172000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:16:36.693912Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:16:36.745943Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:16:36.828415Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9fa-d3ed-7613-b5e6-69b0756b2c02.1786605392878108000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "George Washington University",
+  "town_name": "Washington",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "George Washington University",
+      "town_name": "Washington",
+      "template_id": "college-only-happens-here",
+      "title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+      "description": "",
+      "icon": "fingerprint",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "I’m researching ten distinct GW-specific traditions and checking each claim against direct official, archival, or established student-media pages.",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+     ,
+      {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ]
+      ,
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:gwu.edu George Washington University traditions Colonial Inauguration Buff and Blue Spirit Week ...
+web search: 
+web search: 
+web search: 
+web search: 
+codex
+{"complete":true,"school_name":"George Washington University","town_name":"Washington","boards":[{"complete":true,"school_name":"George Washington University","town_name":"Washington","template_id":"college-only-happens-here","title":"Only Happens Here: 10 Traditions That Make No Sense Anywhere Else","description":"Ten documented GW rituals spanning arrival, service, seasonal celebrations, academic milestones, school spirit and graduation in Washington, D.C.","icon":"fingerprint","cards":[{"subject_id":"gw-first-night","subject_type":"tradition","entity_name":"First Night","title":"Start the Year at First Night","subtitle":"GW’s post-move-in welcome on University Yard","notes":"Head to University Yard after move-in for GW’s opening celebration; expect organized activities, food and a movie alongside new and returning students.","short_summary":"The academic year opens with a large outdoor welcome gathering after students move in.","evidence_claim":"GW’s official traditions page says First Night welcomes new and returning students after move-in with activities, food and a movie on University Yard.","source_url":"https://www.gwu.edu/traditions","source_title":"Traditions | The George Washington University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Scheduled around the start of the academic year; consult GW’s events calendar for the current date and participation details.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gw-convocation-day-of-service","subject_type":"tradition","entity_name":"GW Convocation and Day of Service","title":"Enter GW Through Service","subtitle":"A class welcome paired with work across Washington","notes":"Watch for class-year instructions, then join the assigned service project; GW cites activities such as planting gardens and repainting schools.","short_summary":"GW formally welcomes a new class and sends students into Washington for organized community service.","evidence_claim":"GW’s official traditions page documents Convocation and Day of Service as an official welcome in which the entire class gives back across Washington, D.C.","source_url":"https://www.gwu.edu/traditions","source_title":"Traditions | The George Washington University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Participation logistics and project assignments are issued by GW; follow current university instructions before attending.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gw-vern-harvest","subject_type":"tradition","entity_name":"Vern Harvest","title":"Carve Into Fall at the Vern","subtitle":"Mount Vernon Campus Quad’s annual autumn gathering","notes":"Travel to the Mount Vernon Campus Quad for the annual gathering and choose among pumpkin carving, crafts, yard games, contests and music.","short_summary":"GW’s Mount Vernon community marks fall with a family-friendly quad celebration.","evidence_claim":"GW identifies Vern Harvest as an annual fall event on the Mount Vernon Campus Quad featuring pumpkin carving, crafts, yard games, friendly contests and music.","source_url":"https://www.gwu.edu/traditions","source_title":"Traditions | The George Washington University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Held in the fall on the Mount Vernon Campus Quad; verify the annual event date and transportation information with GW.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gw-veterans-day-wreath-laying","subject_type":"tradition","entity_name":"Veterans Day Wreath Laying","title":"Observe GW’s Veterans Day Wreath Laying","subtitle":"A university remembrance led with GW Veterans","notes":"Attend respectfully and follow the ceremony’s current guidance while GW Veterans and university leaders recognize past, present and future veterans.","short_summary":"GW marks Veterans Day with a formal wreath-laying ceremony involving veterans and university leadership.","evidence_claim":"GW’s official traditions page documents a Veterans Day Wreath Laying led by GW Veterans and members of the university administration.","source_url":"https://www.gwu.edu/traditions","source_title":"Traditions | The George Washington University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"A commemorative event associated with Veterans Day; consult GW’s calendar for the current ceremony location and protocol.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gw-midnight-breakfast","subject_type":"tradition","entity_name":"Midnight Breakfast","title":"Pause Finals for Midnight Breakfast","subtitle":"GW’s annual late-semester study break","notes":"Check the finals-period announcement, then step away from studying for food and activities served or hosted by GW faculty and staff volunteers.","short_summary":"Students interrupt finals preparation for a late-night meal and activities with university employees.","evidence_claim":"GW describes Midnight Breakfast as an annual finals study-break tradition with food, activities and faculty and staff volunteers.","source_url":"https://www.gwu.edu/traditions","source_title":"Traditions | The George Washington University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Held during the final-exam period; verify the current date, venue, eligibility and entry requirements in GW announcements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gw-national-mall-commencement","subject_type":"tradition","entity_name":"GW Commencement on the National Mall","title":"Graduate on the National Mall","subtitle":"GW’s university-wide ceremony among Washington landmarks","notes":"Use the current commencement site map and entry guidance, then celebrate with the Washington Monument and other national landmarks as the backdrop.","short_summary":"GW’s graduating class assembles on the National Mall for the university-wide commencement ceremony.","evidence_claim":"GW’s traditions page documents University Commencement on the National Mall, where graduates celebrate against Washington’s landmarks and monuments.","source_url":"https://www.gwu.edu/traditions","source_title":"Traditions | The George Washington University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"For graduates and their guests during Commencement Week; current credentials, entrances and accessibility guidance may apply.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gw-fight-song-ceremony-finale","subject_type":"tradition","entity_name":"GW Fight Song Ceremony Finale","title":"End the Ceremony With the Fight Song","subtitle":"The traditional close to GW academic ceremonies","notes":"Stand if able when the ceremony closes, then join students, faculty, staff, alumni, families and guests in singing the GW Fight Song and Alma Mater.","short_summary":"Academic ceremonies conclude communally with GW’s two institutional songs.","evidence_claim":"GW’s commencement traditions page says academic ceremonies traditionally end with the Fight Song and Alma Mater and invites attendees to stand if able and sing along.","source_url":"https://commencement.gwu.edu/spirit-and-traditions","source_title":"Spirit and Traditions | GW Commencement","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Occurs at GW academic ceremonies; standing is expressly framed as optional for those who are able.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gw-chalk-in","subject_type":"tradition","entity_name":"Chalk-In","title":"Make Your Mark at Chalk-In","subtitle":"A long-running creative tradition in Potomac Square","notes":"Bring your creativity to Potomac Square for music, crafts and a finals-season reset; check the Buff & Bloom schedule for rain-location details.","short_summary":"GW students gather for a long-running, hands-on creative break before finals.","evidence_claim":"GW’s 2026 Buff & Bloom coverage identifies Chalk-In as a long-standing GW tradition and specifies that the 2026 edition was the 45th annual event.","source_url":"https://gwtoday.gwu.edu/gw-expands-buff-bloom-week-philanthropic-focus","source_title":"GW Expands Buff & Bloom Week with Philanthropic Focus","source_kind":"university_official","source_published_at":"2026-03-24","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"An annual spring event associated with Buff & Bloom Week; consult the current schedule because timing and rain location can change.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gw-halfway-to-graduation","subject_type":"tradition","entity_name":"Halfway to Graduation","title":"Celebrate the Academic Midpoint","subtitle":"GW’s class-year marker halfway to a degree","notes":"Look for your class-year invitation when you reach the midpoint of college, then join classmates for GW’s dedicated milestone celebration.","short_summary":"Sophomores receive a GW celebration devoted to reaching the midpoint of their undergraduate journey.","evidence_claim":"GW’s Division for Student Affairs calls Halfway to Graduation a GW tradition marking the midpoint of the college experience.","source_url":"https://students.gwu.edu/buff-and-bloom-week","source_title":"Buff and Bloom Week | Division for Student Affairs","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"A class-year program; eligibility, date and venue vary by cohort and should be confirmed through current GW communications.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gw-buff-and-bloom-week","subject_type":"tradition","entity_name":"Buff & Bloom Week","title":"Welcome Spring With Buff & Bloom","subtitle":"GW traditions timed to Washington’s blossom season","notes":"Review the annual schedule and choose student-driven events that fit your interests; programming changes while retaining the spring celebration.","short_summary":"Cherry-blossom season becomes a week of student-organized GW activities and community programming.","evidence_claim":"GW describes Buff & Bloom Week as its annual spring celebration, featuring student-driven events, giveaways and traditions inspired by cherry-blossom season.","source_url":"https://students.gwu.edu/buff-and-bloom-week","source_title":"Buff and Bloom Week | Division for Student Affairs","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Annual spring programming changes by year; consult the Division for Student Affairs schedule for event-specific access or ticket requirements.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+tokens used
+35,199
+
+{"complete":true,"school_name":"George Washington University","town_name":"Washington","boards":[{"complete":true,"school_name":"George Washington University","town_name":"Washington","template_id":"college-only-happens-here","title":"Only Happens Here: 10 Traditions That Make No Sense Anywhere Else","description":"Ten documented GW rituals spanning arrival, service, seasonal celebrations, academic milestones, school spirit and graduation in Washington, D.C.","icon":"fingerprint","cards":[{"subject_id":"gw-first-night","subject_type":"tradition","entity_name":"First Night","title":"Start the Year at First Night","subtitle":"GW’s post-move-in welcome on University Yard","notes":"Head to University Yard after move-in for GW’s opening celebration; expect organized activities, food and a movie alongside new and returning students.","short_summary":"The academic year opens with a large outdoor welcome gathering after students move in.","evidence_claim":"GW’s official traditions page says First Night welcomes new and returning students after move-in with activities, food and a movie on University Yard.","source_url":"https://www.gwu.edu/traditions","source_title":"Traditions | The George Washington University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Scheduled around the start of the academic year; consult GW’s events calendar for the current date and participation details.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gw-convocation-day-of-service","subject_type":"tradition","entity_name":"GW Convocation and Day of Service","title":"Enter GW Through Service","subtitle":"A class welcome paired with work across Washington","notes":"Watch for class-year instructions, then join the assigned service project; GW cites activities such as planting gardens and repainting schools.","short_summary":"GW formally welcomes a new class and sends students into Washington for organized community service.","evidence_claim":"GW’s official traditions page documents Convocation and Day of Service as an official welcome in which the entire class gives back across Washington, D.C.","source_url":"https://www.gwu.edu/traditions","source_title":"Traditions | The George Washington University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Participation logistics and project assignments are issued by GW; follow current university instructions before attending.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gw-vern-harvest","subject_type":"tradition","entity_name":"Vern Harvest","title":"Carve Into Fall at the Vern","subtitle":"Mount Vernon Campus Quad’s annual autumn gathering","notes":"Travel to the Mount Vernon Campus Quad for the annual gathering and choose among pumpkin carving, crafts, yard games, contests and music.","short_summary":"GW’s Mount Vernon community marks fall with a family-friendly quad celebration.","evidence_claim":"GW identifies Vern Harvest as an annual fall event on the Mount Vernon Campus Quad featuring pumpkin carving, crafts, yard games, friendly contests and music.","source_url":"https://www.gwu.edu/traditions","source_title":"Traditions | The George Washington University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Held in the fall on the Mount Vernon Campus Quad; verify the annual event date and transportation information with GW.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gw-veterans-day-wreath-laying","subject_type":"tradition","entity_name":"Veterans Day Wreath Laying","title":"Observe GW’s Veterans Day Wreath Laying","subtitle":"A university remembrance led with GW Veterans","notes":"Attend respectfully and follow the ceremony’s current guidance while GW Veterans and university leaders recognize past, present and future veterans.","short_summary":"GW marks Veterans Day with a formal wreath-laying ceremony involving veterans and university leadership.","evidence_claim":"GW’s official traditions page documents a Veterans Day Wreath Laying led by GW Veterans and members of the university administration.","source_url":"https://www.gwu.edu/traditions","source_title":"Traditions | The George Washington University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"A commemorative event associated with Veterans Day; consult GW’s calendar for the current ceremony location and protocol.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gw-midnight-breakfast","subject_type":"tradition","entity_name":"Midnight Breakfast","title":"Pause Finals for Midnight Breakfast","subtitle":"GW’s annual late-semester study break","notes":"Check the finals-period announcement, then step away from studying for food and activities served or hosted by GW faculty and staff volunteers.","short_summary":"Students interrupt finals preparation for a late-night meal and activities with university employees.","evidence_claim":"GW describes Midnight Breakfast as an annual finals study-break tradition with food, activities and faculty and staff volunteers.","source_url":"https://www.gwu.edu/traditions","source_title":"Traditions | The George Washington University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Held during the final-exam period; verify the current date, venue, eligibility and entry requirements in GW announcements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gw-national-mall-commencement","subject_type":"tradition","entity_name":"GW Commencement on the National Mall","title":"Graduate on the National Mall","subtitle":"GW’s university-wide ceremony among Washington landmarks","notes":"Use the current commencement site map and entry guidance, then celebrate with the Washington Monument and other national landmarks as the backdrop.","short_summary":"GW’s graduating class assembles on the National Mall for the university-wide commencement ceremony.","evidence_claim":"GW’s traditions page documents University Commencement on the National Mall, where graduates celebrate against Washington’s landmarks and monuments.","source_url":"https://www.gwu.edu/traditions","source_title":"Traditions | The George Washington University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"For graduates and their guests during Commencement Week; current credentials, entrances and accessibility guidance may apply.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gw-fight-song-ceremony-finale","subject_type":"tradition","entity_name":"GW Fight Song Ceremony Finale","title":"End the Ceremony With the Fight Song","subtitle":"The traditional close to GW academic ceremonies","notes":"Stand if able when the ceremony closes, then join students, faculty, staff, alumni, families and guests in singing the GW Fight Song and Alma Mater.","short_summary":"Academic ceremonies conclude communally with GW’s two institutional songs.","evidence_claim":"GW’s commencement traditions page says academic ceremonies traditionally end with the Fight Song and Alma Mater and invites attendees to stand if able and sing along.","source_url":"https://commencement.gwu.edu/spirit-and-traditions","source_title":"Spirit and Traditions | GW Commencement","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Occurs at GW academic ceremonies; standing is expressly framed as optional for those who are able.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gw-chalk-in","subject_type":"tradition","entity_name":"Chalk-In","title":"Make Your Mark at Chalk-In","subtitle":"A long-running creative tradition in Potomac Square","notes":"Bring your creativity to Potomac Square for music, crafts and a finals-season reset; check the Buff & Bloom schedule for rain-location details.","short_summary":"GW students gather for a long-running, hands-on creative break before finals.","evidence_claim":"GW’s 2026 Buff & Bloom coverage identifies Chalk-In as a long-standing GW tradition and specifies that the 2026 edition was the 45th annual event.","source_url":"https://gwtoday.gwu.edu/gw-expands-buff-bloom-week-philanthropic-focus","source_title":"GW Expands Buff & Bloom Week with Philanthropic Focus","source_kind":"university_official","source_published_at":"2026-03-24","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"An annual spring event associated with Buff & Bloom Week; consult the current schedule because timing and rain location can change.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gw-halfway-to-graduation","subject_type":"tradition","entity_name":"Halfway to Graduation","title":"Celebrate the Academic Midpoint","subtitle":"GW’s class-year marker halfway to a degree","notes":"Look for your class-year invitation when you reach the midpoint of college, then join classmates for GW’s dedicated milestone celebration.","short_summary":"Sophomores receive a GW celebration devoted to reaching the midpoint of their undergraduate journey.","evidence_claim":"GW’s Division for Student Affairs calls Halfway to Graduation a GW tradition marking the midpoint of the college experience.","source_url":"https://students.gwu.edu/buff-and-bloom-week","source_title":"Buff and Bloom Week | Division for Student Affairs","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"A class-year program; eligibility, date and venue vary by cohort and should be confirmed through current GW communications.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gw-buff-and-bloom-week","subject_type":"tradition","entity_name":"Buff & Bloom Week","title":"Welcome Spring With Buff & Bloom","subtitle":"GW traditions timed to Washington’s blossom season","notes":"Review the annual schedule and choose student-driven events that fit your interests; programming changes while retaining the spring celebration.","short_summary":"Cherry-blossom season becomes a week of student-organized GW activities and community programming.","evidence_claim":"GW describes Buff & Bloom Week as its annual spring celebration, featuring student-driven events, giveaways and traditions inspired by cherry-blossom season.","source_url":"https://students.gwu.edu/buff-and-bloom-week","source_title":"Buff and Bloom Week | Division for Student Affairs","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Annual spring programming changes by year; consult the Division for Student Affairs schedule for event-specific access or ticket requirements.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

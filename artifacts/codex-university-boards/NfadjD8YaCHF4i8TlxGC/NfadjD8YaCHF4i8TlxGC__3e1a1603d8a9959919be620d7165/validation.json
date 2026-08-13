@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.frenchmeadowcafe.com/location/french-meadow-cafe-saint-paul-minnesota/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.frenchmeadowcafe.com/location/french-meadow-cafe-saint-paul-minnesota/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitsaintpaul.com/things-to-do/neighborhoods/grand-summit-avenue/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitsaintpaul.com/things-to-do/neighborhoods/grand-summit-avenue/",
+      "error": ""
+    },
+    {
+      "url": "https://www.catzencoffee.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.catzencoffee.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitsaintpaul.com/directory/dunn-bros/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitsaintpaul.com/directory/dunn-bros/",
+      "error": ""
+    },
+    {
+      "url": "https://www.breadsmith.com/order-mn/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.breadsmith.com/order-mn/",
+      "error": ""
+    },
+    {
+      "url": "https://www.wholefoodsmarket.com/stores/stpaul",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.wholefoodsmarket.com/stores/stpaul",
+      "error": ""
+    },
+    {
+      "url": "https://locations.brueggers.com/us/mn/saint-paul/800-grand-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.brueggers.com/us/mn/saint-paul/800-grand-ave",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

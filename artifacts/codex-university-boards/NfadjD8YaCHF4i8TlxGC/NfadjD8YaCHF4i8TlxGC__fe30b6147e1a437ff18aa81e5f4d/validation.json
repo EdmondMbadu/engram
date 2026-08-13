@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://chapel.franciscan.edu/pray/the-portiuncula/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://chapel.franciscan.edu/pray/the-portiuncula/",
+      "error": ""
+    },
+    {
+      "url": "https://chapel.franciscan.edu/pray/christ-the-king-chapel/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://chapel.franciscan.edu/pray/christ-the-king-chapel/",
+      "error": ""
+    },
+    {
+      "url": "https://chapel.franciscan.edu/pray/the-marian-grotto/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://chapel.franciscan.edu/pray/the-marian-grotto/",
+      "error": ""
+    },
+    {
+      "url": "https://chapel.franciscan.edu/pray/the-stations-of-the-cross/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://chapel.franciscan.edu/pray/the-stations-of-the-cross/",
+      "error": ""
+    },
+    {
+      "url": "https://chapel.franciscan.edu/pray/tomb-of-the-unborn-child/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://chapel.franciscan.edu/pray/tomb-of-the-unborn-child/",
+      "error": ""
+    },
+    {
+      "url": "https://chapel.franciscan.edu/pray/the-christmas-creche/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://chapel.franciscan.edu/pray/the-christmas-creche/",
+      "error": ""
+    },
+    {
+      "url": "https://chapel.franciscan.edu/pray/kellys-garden/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://chapel.franciscan.edu/pray/kellys-garden/",
+      "error": ""
+    },
+    {
+      "url": "https://chapel.franciscan.edu/pray/the-steel-cross/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://chapel.franciscan.edu/pray/the-steel-cross/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitsteubenville.com/what-to-do/steubenville-murals/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitsteubenville.com/what-to-do/steubenville-murals/",
+      "error": ""
+    },
+    {
+      "url": "https://chapel.franciscan.edu/campus-evangelization/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://chapel.franciscan.edu/campus-evangelization/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

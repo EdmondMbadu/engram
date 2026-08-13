@@ -1,0 +1,88 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://artmuseum.arizona.edu/visit/hours-admission-directions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://artmuseum.arizona.edu/visit/hours-admission-directions",
+      "error": ""
+    },
+    {
+      "url": "https://arts.arizona.edu/a-century-of-looking-at-animals-and-ourselves/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arts.arizona.edu/a-century-of-looking-at-animals-and-ourselves/",
+      "error": ""
+    },
+    {
+      "url": "https://www.aamsaz.org/sign-up-for-tours-and-visits/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.aamsaz.org/sign-up-for-tours-and-visits/",
+      "error": ""
+    },
+    {
+      "url": "https://poetry.arizona.edu/about/faq",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://poetry.arizona.edu/about/faq",
+      "error": ""
+    },
+    {
+      "url": "https://www.arizona.edu/libraries",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.arizona.edu/campus-life/visit/libraries",
+      "error": ""
+    },
+    {
+      "url": "https://lib.arizona.edu/about/events/wildcats-memory-lab-grand-opening-and-open-house",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.arizona.edu/about/events/wildcats-memory-lab-grand-opening-and-open-house",
+      "error": ""
+    },
+    {
+      "url": "https://arboretum.arizona.edu/old-main-tour",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arboretum.arizona.edu/old-main-tour",
+      "error": ""
+    },
+    {
+      "url": "https://arboretum.arizona.edu/sites/default/files/A%20Walk%20Around%20the%20Main%20Library.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arboretum.arizona.edu/sites/default/files/A%20Walk%20Around%20the%20Main%20Library.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.tucsonaz.gov/Departments/Parks-and-Recreation/Pools-and-Splash-Pads",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.tucsonaz.gov/Departments/Parks-and-Recreation/Pools-and-Splash-Pads",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Old Main",
+    "Main Library"
+  ],
+  "sourceCount": 9,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Late hours can change without notice; users should recheck each linked official location page before departure.",
+    "La Colonia serves alcohol but publicly presents itself as a family-welcoming restaurant rather than a 21+-only venue; this card refers only to restaurant dining.",
+    "Several options are in neighboring Bolingbrook, Plainfield, or Joliet and require a longer drive from Lewis University."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/il/romeoville/645-n-independence-blvd/37659.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/il/romeoville/645-n-independence-blvd/37659.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/il/romeoville/58-s-weber-rd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/il/romeoville/58-s-weber-rd",
+      "error": ""
+    },
+    {
+      "url": "https://www.rosatispizza.com/location/romeoville-il",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rosatispizza.com/location/romeoville-il",
+      "error": ""
+    },
+    {
+      "url": "https://www.lacoloniagrill.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lacoloniagrill.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.whitecastle.com/locations/79",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.whitecastle.com/locations/79",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.ihop.com/en-us/il/bolingbrook/breakfast-730-janes-ave-3479",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.ihop.com/en-us/il/bolingbrook/breakfast-730-janes-ave-3479",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dennys.com/il/bolingbrook/248817",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dennys.com/il/bolingbrook/248817",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dennys.com/il/joliet/248095",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dennys.com/il/joliet/248095",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/il/plainfield/13407-s-rt-59",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/il/plainfield/13407-s-rt-59",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/il/joliet/2900-plainfield-road",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/il/joliet/2900-plainfield-road",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

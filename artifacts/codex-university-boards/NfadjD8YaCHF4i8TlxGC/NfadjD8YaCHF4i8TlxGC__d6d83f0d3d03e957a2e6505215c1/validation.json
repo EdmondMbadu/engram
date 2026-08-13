@@ -1,0 +1,79 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Hours can change for holidays, academic breaks, staffing, or service mode; verify each linked official page immediately before departure.",
+    "Several after-midnight options are drive-through-only once their lobbies close and therefore require vehicle access.",
+    "Coordinates and map URLs are null because exact geospatial values were not independently verified from authoritative direct sources."
+  ],
+  "reachability": [
+    {
+      "url": "https://locations.dennys.com/ca/claremont/247811",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dennys.com/ca/claremont/247811",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/ca/claremont/860-s-indian-hill-blvd/19076.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/ca/claremont/860-s-indian-hill-blvd/19076.html",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/california/claremont/366-w-foothill-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/california/claremont/366-w-foothill-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://locations.in-n-out.com/33-Pomona",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.in-n-out.com/33-Pomona",
+      "error": ""
+    },
+    {
+      "url": "https://locations.deltaco.com/us/ca/pomona/1495-n-garey-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.deltaco.com/us/ca/pomona/1495-n-garey-ave",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jackinthebox.com/us/ca/pomona/101-w-foothill-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jackinthebox.com/us/ca/pomona/101-w-foothill-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://locations.carlsjr.com/ca/pomona/1755-indian-hill-blvd-",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.carlsjr.com/ca/pomona/1755-indian-hill-blvd-",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.ihop.com/en-us/ca/pomona/breakfast-50-rio-rancho-rd-3468",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.ihop.com/en-us/ca/pomona/breakfast-50-rio-rancho-rd-3468",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

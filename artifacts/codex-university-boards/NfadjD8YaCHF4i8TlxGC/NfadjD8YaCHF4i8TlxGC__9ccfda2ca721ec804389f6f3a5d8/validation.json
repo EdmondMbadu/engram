@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.maryville.edu/library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.maryville.edu/library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.maryville.edu/about/wp-content/uploads/sites/2/2025/06/Maryville-University-Campus-Map.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.maryville.edu/about/wp-content/uploads/sites/2/2025/06/Maryville-University-Campus-Map.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 2,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

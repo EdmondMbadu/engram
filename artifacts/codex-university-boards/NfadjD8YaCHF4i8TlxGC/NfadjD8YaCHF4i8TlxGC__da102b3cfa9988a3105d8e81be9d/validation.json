@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.stmarys-ca.edu/offices-services/joseph-l-alioto-recreation-center/services-membership",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stmarys-ca.edu/offices-services/joseph-l-alioto-recreation-center/services-membership",
+      "error": ""
+    },
+    {
+      "url": "https://www.moraga.ca.us/249/Moraga-Commons-Park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.moraga.ca.us/249/Moraga-Commons-Park",
+      "error": ""
+    },
+    {
+      "url": "https://www.moraga.ca.us/DocumentCenter/View/6673/Council-03-09-22-Proclamation--Moraga-Garden-Club-PDF",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.moraga.ca.us/DocumentCenter/View/6673/Council-03-09-22-Proclamation--Moraga-Garden-Club-PDF",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

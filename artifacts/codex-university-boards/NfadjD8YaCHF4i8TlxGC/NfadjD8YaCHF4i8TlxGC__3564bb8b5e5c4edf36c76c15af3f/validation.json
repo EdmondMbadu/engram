@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.callutheran.edu/parents-families/glossary.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.callutheran.edu/parents-families/glossary.html",
+      "error": ""
+    },
+    {
+      "url": "https://console.callutheran.edu/elists/notifications/7ceb66e7-3094-425f-8cd6-fe7d8457cd9e/view",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://console.callutheran.edu/elists/notifications/7ceb66e7-3094-425f-8cd6-fe7d8457cd9e/view",
+      "error": ""
+    },
+    {
+      "url": "https://www.callutheran.edu/students/asclug/events.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.callutheran.edu/students/asclug/events.html",
+      "error": ""
+    },
+    {
+      "url": "https://catalog.callutheran.edu/undergraduate/student-life",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.callutheran.edu/undergraduate/student-life",
+      "error": ""
+    },
+    {
+      "url": "https://apply.callutheran.edu/student-life/calendar/category/diversity-equity-inclusion/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://apply.callutheran.edu/student-life/calendar/category/diversity-equity-inclusion/",
+      "error": ""
+    },
+    {
+      "url": "https://www.callutheran.edu/student-life/calendar/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.callutheran.edu/student-life/calendar/",
+      "error": ""
+    },
+    {
+      "url": "https://www.callutheran.edu/about/history.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.callutheran.edu/about/history.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.lakeforest.edu/news-and-events/celebrate-fall-like-a-forester",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakeforest.edu/news-and-events/celebrate-fall-like-a-forester",
+      "error": ""
+    },
+    {
+      "url": "https://www.lakeforest.edu/news/matriculation-is-today",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakeforest.edu/news/matriculation-is-today",
+      "error": ""
+    },
+    {
+      "url": "https://www.lakeforest.edu/student-resources/intercultural-relations/signature-events",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakeforest.edu/about-us/administration/campus-life/office-for-community-advocacy-resources-and-empowerment/signature-events",
+      "error": ""
+    },
+    {
+      "url": "https://www.lakeforest.edu/news-and-events/golden-foresters-luncheon-celebrates-lifelong-connections-across-generations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakeforest.edu/news-and-events/golden-foresters-luncheon-celebrates-lifelong-connections-across-generations",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

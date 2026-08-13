@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "pwBLNuFjKdQn7c6E6k2b",
+    "schoolName": "United States Coast Guard Academy",
+    "shortSchoolName": "United States Coast Guard Academy",
+    "townName": "New London",
+    "state": "CT",
+    "countryCode": "US",
+    "unitId": "130624",
+    "website": "https://www.uscga.edu/",
+    "latitude": 41.375823,
+    "longitude": -72.101583,
+    "heroUrl": "https://uscga.edu/wp-content/uploads/2026/06/washington-parade-field.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=uscga.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain United States Coast Guard Academy",
+  "excluded_subjects": [
+    "Library Large Tables",
+    "Library Collaboration Workstations",
+    "Library Study Rooms",
+    "Library Small Group Tables",
+    "Library Individual Carrels",
+    "Hewitt Writing and Reading Center",
+    "Library Research Assistance",
+    "Library Quiet Study Space",
+    "Library Comfortable Chairs",
+    "Library Coffee and Tea Seating"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

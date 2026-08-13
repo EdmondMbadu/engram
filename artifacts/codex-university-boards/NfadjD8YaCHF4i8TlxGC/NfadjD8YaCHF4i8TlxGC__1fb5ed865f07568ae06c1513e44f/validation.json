@@ -1,0 +1,37 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Fitness-center no-charge evidence is from Stevenson’s publicly posted undergraduate catalog; confirm current recreation policies when reserving."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.stevenson.edu/about/arts-cultural-programs/art-exhibitions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stevenson.edu/about/arts-cultural-programs/art-exhibitions/",
+      "error": ""
+    },
+    {
+      "url": "https://www.stevenson.edu/student-life/student-activities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stevenson.edu/student-life/student-activities/",
+      "error": ""
+    },
+    {
+      "url": "https://www.stevenson.edu/wp-content/uploads/undergraduate-catalog-2012.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stevenson.edu/wp-content/uploads/undergraduate-catalog-2012.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

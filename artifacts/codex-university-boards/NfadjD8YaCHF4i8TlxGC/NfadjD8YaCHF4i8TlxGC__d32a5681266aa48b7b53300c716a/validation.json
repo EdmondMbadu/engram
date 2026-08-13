@@ -1,0 +1,81 @@
+{
+  "ok": false,
+  "problems": [
+    "1 source URL(s) returned a conclusive broken response."
+  ],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://calendar.und.edu/event/the-welly-cup",
+      "ok": false,
+      "conclusive": true,
+      "status": 502,
+      "finalUrl": "https://calendar.und.edu/event/the-welly-cup",
+      "error": ""
+    },
+    {
+      "url": "https://calendar.und.edu/event/cosmic-climbing-5196",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calendar.und.edu/event/cosmic-climbing-5196",
+      "error": ""
+    },
+    {
+      "url": "https://calendar.und.edu/event/super-smash-bros-league-6374",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calendar.und.edu/event/super-smash-bros-league-6374",
+      "error": ""
+    },
+    {
+      "url": "https://calendar.und.edu/event/und-homecoming-pep-rally-in-town-square-3922",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calendar.und.edu/event/und-homecoming-pep-rally-in-town-square-3922",
+      "error": ""
+    },
+    {
+      "url": "https://calendar.und.edu/event/cruz-in-forks-downtown-car-show-8295",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calendar.und.edu/event/cruz-in-forks-downtown-car-show-8295",
+      "error": ""
+    },
+    {
+      "url": "https://calendar.und.edu/event/monday-movie",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calendar.und.edu/event/monday-movie",
+      "error": ""
+    },
+    {
+      "url": "https://calendar.und.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calendar.und.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ndtourism.com/grand-forks/nature-outdoor-activities/biking-mountain-biking/greenway",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.ndtourism.com/grand-forks/nature-outdoor-activities/biking-mountain-biking/greenway",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "The Greenway"
+  ],
+  "sourceCount": 8,
+  "generationScore": null,
+  "generationGrade": null
+}

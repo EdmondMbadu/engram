@@ -1,0 +1,73 @@
+{
+  "target": {
+    "atlasId": "AYp67eVSt8ZLYOwmNIRA",
+    "schoolName": "Furman University",
+    "shortSchoolName": "Furman University",
+    "townName": "Greenville",
+    "state": "SC",
+    "countryCode": "US",
+    "website": "https://www.furman.edu/",
+    "latitude": 34.924676,
+    "longitude": -82.440458
+  },
+  "templates": [
+    {
+      "id": "college-late-night-runs",
+      "version": "1.0",
+      "titlePattern": "{count} Late-Night Runs That Explain {school}",
+      "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+      "researchQueries": [
+        "late night dining students",
+        "campus dining late hours",
+        "restaurants open late near campus"
+      ],
+      "count": 10,
+      "icon": "nightlife",
+      "primarySubjectType": "place",
+      "allowedSubjectTypes": [
+        "place"
+      ],
+      "freshnessDays": 120,
+      "exactTitle": "10 Late-Night Runs That Explain Furman University"
+    },
+    {
+      "id": "college-zero-dollar-hangs",
+      "version": "1.0",
+      "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+      "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+      "researchQueries": [
+        "free student activities campus",
+        "free campus spaces students",
+        "free public places near campus"
+      ],
+      "count": 10,
+      "icon": "money_off",
+      "primarySubjectType": "activity",
+      "allowedSubjectTypes": [
+        "activity",
+        "place"
+      ],
+      "freshnessDays": 180,
+      "exactTitle": "Zero Dollars: 10 Hangs That Cost Nothing"
+    },
+    {
+      "id": "college-only-happens-here",
+      "version": "1.0",
+      "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+      "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+      "researchQueries": [
+        "university traditions alumni",
+        "campus traditions student newspaper",
+        "school rituals history"
+      ],
+      "count": 10,
+      "icon": "fingerprint",
+      "primarySubjectType": "tradition",
+      "allowedSubjectTypes": [
+        "tradition"
+      ],
+      "freshnessDays": 1095,
+      "exactTitle": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else"
+    }
+  ]
+}

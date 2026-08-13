@@ -1,0 +1,60 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "1onrKej104FrnuyClAts",
+    "schoolName": "Nazareth University",
+    "shortSchoolName": "Nazareth University",
+    "townName": "Rochester",
+    "state": "NY",
+    "countryCode": "US",
+    "unitId": "193584",
+    "website": "https://www2.naz.edu/",
+    "latitude": 43.101576,
+    "longitude": -77.518579,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=www2.naz.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=www2.naz.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain Nazareth University",
+  "excluded_subjects": [
+    "Pool Overlook",
+    "Commuter & Transfer Lounge",
+    "Reading Lounge",
+    "1924 Room",
+    "Porthole Lounge",
+    "Lorette Wilmot Library Reading Room",
+    "Lorette Wilmot Library Makerspace",
+    "The Zen Den",
+    "Meditation Room",
+    "School of Education Student Lounge",
+    "Lorette Wilmot Library Main Level and Mezzanine Window Carrels",
+    "Library Information Desk Study Area",
+    "Reading Room",
+    "Rare Book Room",
+    "Merton Room",
+    "Lower-Level Group Study Rooms",
+    "Library Group Study Room 239",
+    "Library Group Study Room 301",
+    "Millie's Cafe",
+    "Smyth Hall 24-Hour Study Lounge"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

@@ -1,0 +1,96 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://trexler.muhlenberg.edu/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.muhlenberg.edu/academics/trexler-library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.muhlenberg.edu/about-us/our-team/college-offices/seegers-union/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.muhlenberg.edu/about-us/our-team/college-offices/seegers-union/",
+      "error": ""
+    },
+    {
+      "url": "https://boundless.muhlenberg.edu/priorities/fahy-commons/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://boundless.muhlenberg.edu/priorities/fahy-commons/",
+      "error": ""
+    },
+    {
+      "url": "https://salii.muhlenberg.edu/gallery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 401,
+      "finalUrl": "https://salii.muhlenberg.edu/gallery/",
+      "error": ""
+    },
+    {
+      "url": "https://www.muhlenberg.edu/muhlenberg-experience/arts-at-muhlenberg/martin-art-gallery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.muhlenberg.edu/muhlenberg-experience/arts-at-muhlenberg/martin-art-gallery/",
+      "error": ""
+    },
+    {
+      "url": "https://www.muhlenberg.edu/academics/learning-environments/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.muhlenberg.edu/academics/learning-environments/",
+      "error": ""
+    },
+    {
+      "url": "https://www.muhlenberg.edu/muhlenberg-experience/arts-at-muhlenberg/music-performances/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.muhlenberg.edu/muhlenberg-experience/arts-at-muhlenberg/music-performances/",
+      "error": ""
+    },
+    {
+      "url": "https://www.muhlenberg.edu/program/theatre/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.muhlenberg.edu/program/theatre/",
+      "error": ""
+    },
+    {
+      "url": "https://www.muhlenberg.edu/program/dance/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.muhlenberg.edu/program/dance/",
+      "error": ""
+    },
+    {
+      "url": "https://www.muhlenberg.edu/academics/centers-and-institutes/acopian-center-for-ornithology/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.muhlenberg.edu/academics/centers-and-institutes/acopian-center-for-ornithology/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Trexler Library",
+    "Martin Art Gallery"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

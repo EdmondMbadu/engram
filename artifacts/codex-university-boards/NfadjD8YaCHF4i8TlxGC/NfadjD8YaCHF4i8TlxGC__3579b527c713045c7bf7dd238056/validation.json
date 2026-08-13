@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://bookshopsantacruz.com/contact-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bookshopsantacruz.com/contact-us",
+      "error": ""
+    },
+    {
+      "url": "https://www.santacruzca.gov/Government/City-Departments/Fire-Department/About/History",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.santacruzca.gov/Government/City-Departments/Fire-Department/About/History",
+      "error": ""
+    },
+    {
+      "url": "https://www.santacruzpl.org/services/detail/7/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.santacruzpl.org/services/detail/7/",
+      "error": ""
+    },
+    {
+      "url": "https://www.santacruzmah.org/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.santacruzmah.org/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.abbottsquaremarket.com/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.abbottsquaremarket.com/contact",
+      "error": ""
+    },
+    {
+      "url": "https://montereybay.noaa.gov/vc/sec/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://montereybay.noaa.gov/vc/sec/",
+      "error": ""
+    },
+    {
+      "url": "https://www.santacruz.org/listings/santa-cruz-wharf/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.santacruz.org/listings/santa-cruz-wharf/",
+      "error": ""
+    },
+    {
+      "url": "https://www.parks.ca.gov/ListedResources/Detail/983",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.parks.ca.gov/ListedResources/Detail/983",
+      "error": ""
+    },
+    {
+      "url": "https://www.tanneryartscenter.org/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.tanneryartscenter.org/about",
+      "error": ""
+    },
+    {
+      "url": "https://www.colligantheater.org/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.colligantheater.org/contact",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

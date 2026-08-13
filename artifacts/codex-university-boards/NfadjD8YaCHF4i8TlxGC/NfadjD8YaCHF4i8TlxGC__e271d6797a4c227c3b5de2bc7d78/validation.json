@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.furman.edu/news/magazine-200-things-we-love-about-furman/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.furman.edu/news/magazine-200-things-we-love-about-furman/",
+      "error": ""
+    },
+    {
+      "url": "https://alumni.furman.edu/homecoming/spirited-traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://alumni.furman.edu/homecoming/spirited-traditions",
+      "error": ""
+    },
+    {
+      "url": "https://www.furman.edu/news/moonlight-breakfast-yes-please/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.furman.edu/news/moonlight-breakfast-yes-please/",
+      "error": ""
+    },
+    {
+      "url": "https://www.furman.edu/admissions-aid/admission-blog/connecting-on-campus-furman-traditions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.furman.edu/admissions-aid/admission-blog/connecting-on-campus-furman-traditions/",
+      "error": ""
+    },
+    {
+      "url": "https://www.furman.edu/news/magazine-fact-or-folklore-furmans-urban-legends/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.furman.edu/news/magazine-fact-or-folklore-furmans-urban-legends/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

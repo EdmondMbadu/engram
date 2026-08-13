@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.hsc.edu/student-life/what-to-do/outdoor-experience",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hsc.edu/student-life/what-to-do/outdoor-experience",
+      "error": ""
+    },
+    {
+      "url": "https://www.hsc.edu/academics/fine-arts/music/music-series",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hsc.edu/academics/fine-arts/music/music-series",
+      "error": ""
+    },
+    {
+      "url": "https://www.hsc.edu/academics/fine-arts/theatre",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hsc.edu/academics/fine-arts/theatre",
+      "error": ""
+    },
+    {
+      "url": "https://www.hsc.edu/academics/fine-arts",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hsc.edu/academics/fine-arts",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

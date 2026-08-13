@@ -1,0 +1,85 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Several Penn Dining locations provide a late-night designation or “early to late” description rather than a fixed daily closing time; check the linked weekly schedule before going."
+  ],
+  "reachability": [
+    {
+      "url": "https://dining.business-services.upenn.edu/locations-hours-menus/locations/starbucks",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dining.business-services.upenn.edu/locations-hours-menus/locations/starbucks",
+      "error": ""
+    },
+    {
+      "url": "https://dining.business-services.upenn.edu/locations-hours-menus/locations/gourmet-grocer",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dining.business-services.upenn.edu/locations-hours-menus/locations/gourmet-grocer",
+      "error": ""
+    },
+    {
+      "url": "https://dining.business-services.upenn.edu/locations-hours-menus/locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dining.business-services.upenn.edu/locations-hours-menus/locations",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/pennsylvania/philadelphia/4438-chestnut-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/pennsylvania/philadelphia/4438-chestnut-street",
+      "error": ""
+    },
+    {
+      "url": "https://greeklady.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://greeklady.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.renatas-kitchen.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.renatas-kitchen.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.landmarkamericana.com/uccontact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.landmarkamericana.com/uccontact",
+      "error": ""
+    },
+    {
+      "url": "https://api.insomniacookies.com/news/philadelphia-flyers-and-wells-fargo-center-announce-philly-born-insomnia-cookies-as-the-official-cookie-of-the-philadelphia-flyers",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://api.insomniacookies.com/news/philadelphia-flyers-and-wells-fargo-center-announce-philly-born-insomnia-cookies-as-the-official-cookie-of-the-philadelphia-flyers",
+      "error": ""
+    },
+    {
+      "url": "https://www.coopphilly.com/hours-and-location/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.coopphilly.com/hours-and-location/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

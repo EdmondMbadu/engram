@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://lead.emory.edu/programs-and-events/traditions.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lead.emory.edu/programs-and-events/traditions.html",
+      "error": ""
+    },
+    {
+      "url": "https://news.emory.edu/features/2025/03/magic-midweek-evolution-wonderful-wednesday",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.emory.edu/features/2025/03/magic-midweek-evolution-wonderful-wednesday",
+      "error": ""
+    },
+    {
+      "url": "https://news.emory.edu/stories/2024/09/songfest-celebrates-40th-anniversary-beloved-emory-tradition",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.emory.edu/stories/2024/09/songfest-celebrates-40th-anniversary-beloved-emory-tradition",
+      "error": ""
+    },
+    {
+      "url": "https://news.emory.edu/stories/2024/08/er_things_to_know_for_fall_14-08-2024/story.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.emory.edu/stories/2024/08/10-things-know-fall-semester-emory",
+      "error": ""
+    },
+    {
+      "url": "https://news.emory.edu/features/2026/05/speeches-latin-social-media-posts-guide-emorys-evolving-commencement-traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.emory.edu/features/2026/05/speeches-latin-social-media-posts-guide-emorys-evolving-commencement-traditions",
+      "error": ""
+    },
+    {
+      "url": "https://www.emory.edu/life/campus-culture",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.emory.edu/life/campus-culture",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

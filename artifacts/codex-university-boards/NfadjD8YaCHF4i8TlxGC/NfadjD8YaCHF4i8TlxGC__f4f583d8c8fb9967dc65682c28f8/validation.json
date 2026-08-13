@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.macalester.edu/residential-life/dining/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.macalester.edu/residential-life/dining/",
+      "error": ""
+    },
+    {
+      "url": "https://pizzaluce.com/locations/st-paul/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizzaluce.com/locations/st-paul/",
+      "error": ""
+    },
+    {
+      "url": "https://www.mickeysdinerbywilly.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mickeysdinerbywilly.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/mn/saint-paul/565-no-snelling/fast-food.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mn/saint-paul/565-no-snelling/fast-food.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/mn/saint-paul.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mn/saint-paul.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/mn/saint-paul/1630-robert-st-s/fast-food.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mn/saint-paul/1630-robert-st-s/fast-food.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/mn/saint-paul/1940-suburban-avenue/fast-food.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mn/saint-paul/1940-suburban-avenue/fast-food.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/mn/saint-paul/1770-university-ave-w",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/mn/saint-paul/1770-university-ave-w",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/mn/saint-paul/612-w-university-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/mn/saint-paul/612-w-university-ave",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/mn/saint-paul/255-e-maryland-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/mn/saint-paul/255-e-maryland-ave",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

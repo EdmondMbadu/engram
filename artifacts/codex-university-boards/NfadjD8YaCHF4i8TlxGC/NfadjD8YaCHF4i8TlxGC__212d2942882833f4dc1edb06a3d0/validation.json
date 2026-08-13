@@ -1,0 +1,87 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Phillips Museum of Art is seasonally closed until September 8, 2026.",
+    "Demuth Museum of Art on Lime closes between exhibitions; visitors should confirm the exhibition calendar.",
+    "Demuth Teen Art Council is eligibility-limited and application-based."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.fandm.edu/centers-institutes-and-initiatives/phillips-museum-of-art/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fandm.edu/centers-institutes-and-initiatives/phillips-museum-of-art/",
+      "error": ""
+    },
+    {
+      "url": "https://pcad.edu/gallery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pcad.edu/gallery/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lancasterhistory.org/visit/faqs/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lancasterhistory.org/visit/faqs/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lancasterhistory.org/about-wheatland/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lancasterhistory.org/about-wheatland/",
+      "error": ""
+    },
+    {
+      "url": "https://lancasterpubliclibrary.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lancasterpubliclibrary.org/",
+      "error": ""
+    },
+    {
+      "url": "https://lancasterpubliclibrary.org/seed-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lancasterpubliclibrary.org/seed-library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.cityoflancasterpa.gov/services/parks/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cityoflancasterpa.gov/services/parks/",
+      "error": ""
+    },
+    {
+      "url": "https://www.demuth.org/hours-locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.demuth.org/hours-locations",
+      "error": ""
+    },
+    {
+      "url": "https://www.demuth.org/opportunities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.demuth.org/opportunities",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

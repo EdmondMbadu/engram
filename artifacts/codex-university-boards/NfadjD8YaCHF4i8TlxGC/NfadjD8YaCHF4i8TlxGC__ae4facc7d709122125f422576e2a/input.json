@@ -1,0 +1,60 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "QPRuc2sZMgYDWsgWH6YW",
+    "schoolName": "Simmons University",
+    "shortSchoolName": "Simmons University",
+    "townName": "Boston",
+    "state": "MA",
+    "countryCode": "US",
+    "unitId": "167783",
+    "website": "https://www.simmons.edu/",
+    "latitude": 42.3393,
+    "longitude": -71.099967,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/7/75/Simmons_univ_seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=simmons.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain Simmons University",
+  "excluded_subjects": [
+    "Museum of Fine Arts, Boston",
+    "Isabella Stewart Gardner Museum",
+    "MassArt Art Museum",
+    "Boston Public Library Central Library",
+    "Harvard Art Museums",
+    "MIT List Visual Arts Center",
+    "Harvard Museum of the Ancient Near East",
+    "Arnold Arboretum of Harvard University",
+    "Shattuck Visitor Center",
+    "Emerald Necklace Public Walking Tours",
+    "May Day",
+    "Maypole Dance",
+    "May Day Strawberry Breakfast",
+    "Winter Wonderland",
+    "Shark Week",
+    "Founder's Day",
+    "Friends and Family Weekend",
+    "Candle Lighting Ceremony",
+    "Simmons Soiree",
+    "Convocation Class-Color Procession"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

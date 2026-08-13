@@ -1,0 +1,52 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "RApJwElZAD5rDcmMYTvp",
+    "schoolName": "The University of Alabama",
+    "shortSchoolName": "The University of Alabama",
+    "townName": "Tuscaloosa",
+    "state": "AL",
+    "countryCode": "US",
+    "unitId": "100751",
+    "website": "https://www.ua.edu/",
+    "latitude": 33.211875,
+    "longitude": -87.545978,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/9/9a/University_of_Alabama_Seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=ua.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at The University of Alabama, Shared as Cards",
+  "excluded_subjects": [
+    "Strange Brew Coffeehouse",
+    "The Standard",
+    "Thai Basil Sushi",
+    "Ajian Sushi",
+    "Moe’s Original BBQ",
+    "Taco Mama",
+    "Comfort Grounds Coffee Shop",
+    "DePalma’s Italian Cafe",
+    "Cravings Specialty Grocery",
+    "Quick Grill"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

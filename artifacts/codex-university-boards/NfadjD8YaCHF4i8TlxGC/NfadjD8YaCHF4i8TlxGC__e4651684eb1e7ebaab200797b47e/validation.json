@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.pabstmansion.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pabstmansion.com/",
+      "error": ""
+    },
+    {
+      "url": "https://ambassadorhotelmke.com/contact-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://ambassadorhotelmke.com/contact-us",
+      "error": ""
+    },
+    {
+      "url": "https://www.mpl.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mpl.org/",
+      "error": ""
+    },
+    {
+      "url": "https://city.milwaukee.gov/cityclerk/hpc/Research",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://city.milwaukee.gov/cityclerk/hpc/Research",
+      "error": ""
+    },
+    {
+      "url": "https://county.milwaukee.gov/EN/Register-of-Deeds/Real-Estate-Records",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://county.milwaukee.gov/EN/Register-of-Deeds/Real-Estate-Records",
+      "error": ""
+    },
+    {
+      "url": "https://city.milwaukee.gov/cityclerk/hpc/HistoricPropertiesDistricts",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://city.milwaukee.gov/cityclerk/hpc/HistoricPropertiesDistricts",
+      "error": ""
+    },
+    {
+      "url": "https://www.bairdcenter.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bairdcenter.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fiservforum.com/plan-your-visit/directions-parking",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fiservforum.com/plan-your-visit/directions-parking",
+      "error": ""
+    },
+    {
+      "url": "https://today.marquette.edu/2026/07/support-on-campus-retail-tenants-as-traffic-slows-3/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://today.marquette.edu/2026/07/support-on-campus-retail-tenants-as-traffic-slows-3/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

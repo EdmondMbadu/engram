@@ -1,0 +1,305 @@
+Reading additional input from stdin...
+2026-08-13T08:05:04.301891Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa26-9646-7660-8055-6b8f0cd4ec7d.1786608260678947000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:05:04.360462Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa26-9646-7a50-8a2f-593b68699b96.1786608260679412000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa27-4054-7d43-81f0-5fe9243a5e03
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"t78rP1AKSA5rZ50h5CIJ","schoolName":"Loyola Marymount University","shortSchoolName":"Loyola Marymount University","townName":"Los Angeles","state":"CA","countryCode":"US","website":"https://www.lmu.edu/","latitude":33.97085,"longitude":-118.415744},"templates":[{"id":"college-blocks-off-campus","version":"1.0","titlePattern":"{count} Blocks Off Campus, One Reason Each","editorialBrief":"Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.","researchQueries":["off campus streets student district","campus adjacent commercial streets","neighborhood plan near university"],"count":10,"icon":"location_city","primarySubjectType":"street_or_district","allowedSubjectTypes":["street_or_district"],"freshnessDays":730,"exactTitle":"10 Blocks Off Campus, One Reason Each"}]}
+2026-08-13T08:05:04.572656Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa26-9661-7381-8e7e-38a2ee52763a.1786608260705891000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:05:04.577018Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T08:05:04.620180Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa26-966e-75e3-a7db-2d5b73d9154d.1786608260719104000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:05:04.623220Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T08:05:04.657106Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa26-966a-7de1-aadd-42ef3f7a4728.1786608260715929000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:05:04.720688Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa26-9661-7b40-850f-a1969254b47a.1786608260705833000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:05:04.762294Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa26-9674-7771-8ce2-448e23f4a5e9.1786608260724713000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Loyola Marymount University",
+  "town_name": "Los Angeles",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Loyola Marymount University",
+      "town_name": "Los Angeles",
+      "template_id": "college-blocks-off-campus",
+      "title": "10 Blocks Off Campus, One Reason Each",
+      "description": "",
+      "icon": "location_city",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "I’m verifying ten named, map-listed destinations along practical corridors around LMU, with direct pages and exact coordinates.",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      
+    ,
+      {
+        "subject_id": "status",
+        "subject_type": "street_or_district",
+        "entity_name": "Research in progress",
+        "title": "Research in progress",
+        "subtitle": "LMU-area corridors",
+        "notes": "I’ll distinguish each stop by corridor and one sourced reason, while avoiding unsupported safety, popularity, price, and access claims.",
+        "short_summary": "Direct-source verification is underway.",
+        "evidence_claim": "Status update only.",
+        "source_url": "https://www.lmu.edu/",
+        "source_title": "Loyola Marymount University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "status-2",
+        "subject_type": "street_or_district",
+        "entity_name": "Source validation",
+        "title": "Source validation",
+        "subtitle": "Direct HTTPS pages",
+        "notes": "Each final evidence claim will point to a direct university, government, institution, or business page rather than a search result.",
+        "short_summary": "Primary and direct sources are being checked.",
+        "evidence_claim": "Status update only.",
+        "source_url": "https://www.lmu.edu/",
+        "source_title": "Loyola Marymount University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "status-3",
+        "subject_type": "street_or_district",
+        "entity_name": "Geographic validation",
+        "title": "Geographic validation",
+        "subtitle": "Campus practical orbit",
+        "notes": "Stops will remain on or beside named corridors around the Westchester and Playa Vista edges of LMU’s practical orbit.",
+        "short_summary": "The geographic scope is being kept campus-specific.",
+        "evidence_claim": "Status update only.",
+        "source_url": "https://www.lmu.edu/",
+        "source_title": "Loyola Marymount University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "status-4",
+        "subject_type": "street_or_district",
+        "entity_name": "Editorial validation",
+        "title": "Editorial validation",
+        "subtitle": "One reason per destination",
+        "notes": "Final cards will use concrete, action-oriented reasons tied to visible amenities or programming documented by each source.",
+        "short_summary": "Copy is being constrained to supported details.",
+        "evidence_claim": "Status update only.",
+        "source_url": "https://www.lmu.edu/",
+        "source_title": "Loyola Marymount University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "status-5",
+        "subject_type": "street_or_district",
+        "entity_name": "Age-safety validation",
+        "title": "Age-safety validation",
+        "subtitle": "Under-21-safe destinations",
+        "notes": "Bars, alcohol-centered venues, restricted nightlife, trespass, and unsafe activities are excluded from the final selection.",
+        "short_summary": "All selections are being screened for under-21 suitability.",
+        "evidence_claim": "Status update only.",
+        "source_url": "https://www.lmu.edu/",
+        "source_title": "Loyola Marymount University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "status-6",
+        "subject_type": "street_or_district",
+        "entity_name": "Photo validation",
+        "title": "Photo validation",
+        "subtitle": "Named visible destinations",
+        "notes": "The final set will favor specific storefronts, parks, libraries, and cultural destinations that can be visually documented.",
+        "short_summary": "Named, photographable subjects are being prioritized.",
+        "evidence_claim": "Status update only.",
+        "source_url": "https://www.lmu.edu/",
+        "source_title": "Loyola Marymount University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "status-7",
+        "subject_type": "street_or_district",
+        "entity_name": "Metadata validation",
+        "title": "Metadata validation",
+        "subtitle": "Coordinates and maps links",
+        "notes": "Coordinates and direct map links will be included only where the destination’s location can be verified without guessing.",
+        "short_summary": "Location metadata is being checked conservatively.",
+        "evidence_claim": "Status update only.",
+        "source_url": "https://www.lmu.edu/",
+        "source_title": "Loyola Marymount University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "status-8",
+        "subject_type": "street_or_district",
+        "entity_name": "Freshness validation",
+        "title": "Freshness validation",
+        "subtitle": "Current public facts",
+        "notes": "Current destination pages are being favored, and publication dates will remain null whenever a page provides no verifiable date.",
+        "short_summary": "Freshness and dates are being handled explicitly.",
+        "evidence_claim": "Status update only.",
+        "source_url": "https://www.lmu.edu/",
+        "source_title": "Loyola Marymount University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "status-9",
+        "subject_type": "street_or_district",
+        "entity_name": "Final assembly",
+        "title": "Final assembly",
+        "subtitle": "Exactly ten distinct cards",
+        "notes": "The completed board will contain ten unique destinations, the supplied title and icon, and no duplicate subject within the board.",
+        "short_summary": "The exact output constraints are being enforced.",
+        "evidence_claim": "Status update only.",
+        "source_url": "https://www.lmu.edu/",
+        "source_title": "Loyola Marymount University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ],
+      "warnings": [
+        "Research in progress; placeholder status cards are not final output."
+      ]
+    }
+  ],
+  "warnings": [
+    "Research in progress."
+  ]
+}
+web search: 
+web search: site:playavista.com directory restaurants shops Playa Vista official ...
+web search: 
+web search: site:thebookjewel.com address Westchester Los Angeles ...
+web search: 
+web search: site:locations.in-n-out.com Westchester Sepulveda official ...
+web search: 
+web search: Whole Foods Market Playa Vista official store 12746 Jefferson ...
+codex
+{"complete":true,"school_name":"Loyola Marymount University","town_name":"Los Angeles","boards":[{"complete":true,"school_name":"Loyola Marymount University","town_name":"Los Angeles","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named destinations along Westchester and Playa Vista corridors in LMU’s practical off-campus orbit, each paired with one directly sourced reason to go.","icon":"location_city","cards":[{"subject_id":"westchester-loyola-village-library","subject_type":"street_or_district","entity_name":"Westchester–Loyola Village Branch Library","title":"Set Up at the Student Zone","subtitle":"Manchester Avenue corridor","notes":"Follow Manchester Avenue to a public branch with a Student Zone, Wi-Fi, computers, bike rack, and recurring community programming.","short_summary":"A civic study stop with student-oriented space and practical library resources.","evidence_claim":"The branch is at 7114 W. Manchester Avenue and lists a Student Zone, public computers, Wi-Fi, a bike rack, and scheduled events.","source_url":"https://www.lapl.org/branches/westchester-loyola-village","source_title":"Westchester - Loyola Village | Los Angeles Public Library","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current posted hours vary by day; the branch is closed Sundays. Check the official page before leaving campus.","cost_status":"unknown","under21_safe":true},{"subject_id":"the-book-jewel","subject_type":"street_or_district","entity_name":"The Book Jewel","title":"Browse an Independent Bookshop","subtitle":"West 87th Street corridor","notes":"Turn onto West 87th Street to browse The Book Jewel and check its calendar for author talks and community arts programming.","short_summary":"A neighborhood bookstore with a documented public-events calendar.","evidence_claim":"The Book Jewel identifies its location as 6259 W. 87th Street and publishes bookstore hours and public events on its official website.","source_url":"https://thebookjewel.com/event/2025-08-09/second-saturday-stroll-lps","source_title":"Second Saturday Stroll & LPS | The Book Jewel","source_kind":"business_official","source_published_at":"2025-08-09","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited page lists regular store hours; confirm the current calendar before attending a specific event.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"westchester-family-ymca","subject_type":"street_or_district","entity_name":"Westchester Family YMCA","title":"Find a Pool and Fitness Studios","subtitle":"Sepulveda Boulevard corridor","notes":"Head down Sepulveda Boulevard when you need a facility with indoor pools, exercise studios, cardio equipment, and racquetball courts.","short_summary":"A multipurpose recreation center serving the Westchester corridor.","evidence_claim":"The YMCA lists its address as 8015 S. Sepulveda Boulevard and documents indoor heated pools, exercise studios, fitness equipment, and racquetball courts.","source_url":"https://www.ymcala.org/locations/westchester-family-ymca/","source_title":"Westchester Family YMCA - YMCA of Metropolitan Los Angeles","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page posts daily facility hours. Membership, registration, eligibility, or reservations may apply to amenities and programs.","cost_status":"unknown","under21_safe":true},{"subject_id":"truxtons-westchester","subject_type":"street_or_district","entity_name":"Truxton’s Westchester","title":"Meet Over Daily Brunch","subtitle":"Truxton Avenue corridor","notes":"Use Truxton Avenue for a daytime meal; the Westchester location documents a daily brunch window alongside its regular service.","short_summary":"A sit-down neighborhood restaurant with a clearly documented brunch schedule.","evidence_claim":"Truxton’s official location page places the restaurant at 8611 Truxton Avenue and lists daily brunch from 9 a.m. to 3 p.m.","source_url":"https://truxtonsamericanbistro.com/locations/westchester/","source_title":"Truxton’s Westchester – Truxton's American Bistro","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The restaurant posts separate regular and brunch hours; check the official page for current service details.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"otis-goldsmith-campus","subject_type":"street_or_district","entity_name":"Elaine and Bram Goldsmith Campus","title":"See an Art-and-Design Campus","subtitle":"Lincoln Boulevard corridor","notes":"Continue along Lincoln Boulevard and reserve an Otis tour to see departments, student work, and the college’s residence hall.","short_summary":"A neighboring art-and-design campus offering scheduled prospective-student tours.","evidence_claim":"Otis identifies the Goldsmith Campus at 9045 Lincoln Boulevard and offers registration for student-led tours covering departments, student work, and the residence hall.","source_url":"https://admissions.otis.edu/portal/campus-tours","source_title":"Campus Tours | Otis College of Art and Design","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Advance registration is required for the scheduled campus tours shown on the official admissions calendar.","cost_status":"unknown","under21_safe":true},{"subject_id":"playa-vista-branch-library","subject_type":"street_or_district","entity_name":"Playa Vista Branch Library","title":"Use Wi-Fi and Public Computers","subtitle":"Playa Vista Drive corridor","notes":"Take Playa Vista Drive to a public branch with Wi-Fi, computers, wireless printing, a parking lot, and a bike rack.","short_summary":"A second public-library option serving the Playa Vista side of LMU’s orbit.","evidence_claim":"The library is at 6400 Playa Vista Drive and lists public computers, Wi-Fi, wireless printing, a parking lot, and a bike rack.","source_url":"https://www.lapl.org/branches/playa-vista","source_title":"Playa Vista | Los Angeles Public Library","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":33.972317,"longitude":-118.427132,"maps_url":null,"access_notes":"Current posted hours vary by day; the branch is closed Sundays. Check the official page before visiting.","cost_status":"unknown","under21_safe":true},{"subject_id":"ballona-discovery-park","subject_type":"street_or_district","entity_name":"Ballona Discovery Park","title":"Read the Watershed Outdoors","subtitle":"Bluff Creek Drive corridor","notes":"Follow Bluff Creek Drive to explore a 1.7-acre open-air science and cultural exhibit focused on the Ballona Watershed.","short_summary":"An outdoor interpretive park developed with LMU and Gabrielino/Tongva guidance.","evidence_claim":"Ballona Discovery Park describes itself as a 1.7-acre open-air science and cultural exhibit at 13110 Bluff Creek Drive, open daily from dawn to dusk.","source_url":"https://ballonadiscoverypark.org/","source_title":"Ballona Discovery Park","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The park states that it is open to the public daily from dawn to dusk; remain within the designated public park area.","cost_status":"unknown","under21_safe":true},{"subject_id":"cinemark-playa-vista-xd","subject_type":"street_or_district","entity_name":"Cinemark Playa Vista and XD","title":"Catch a Film with Accessibility Features","subtitle":"Jefferson Boulevard corridor","notes":"Use Jefferson Boulevard for a movie outing with documented closed captioning, descriptive narration, and assisted-listening options.","short_summary":"A Runway cinema whose listings identify accessibility formats by screening.","evidence_claim":"Cinemark locates this theater at 12746 W. Jefferson Boulevard and marks screenings with closed-caption, descriptive-narration, and assisted-listening features.","source_url":"https://www.cinemark.com/theatres/ca-playa-vista/cinemark-playa-vista-and-xd","source_title":"Movie Theater In Playa Vista, CA: Cinemark Playa Vista & XD","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Showtimes, ratings, formats, and accessibility features vary by film; consult the current official listing before purchasing.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"whole-foods-playa-vista","subject_type":"street_or_district","entity_name":"Whole Foods Market Playa Vista","title":"Pick Up Groceries and Prepared Food","subtitle":"Jefferson Boulevard corridor","notes":"Stop along Jefferson Boulevard for groceries or choose among the store’s documented pizza, sandwich, juice, coffee, and taqueria counters.","short_summary":"A grocery stop with several named prepared-food counters under one roof.","evidence_claim":"Whole Foods places its Playa Vista store at 12746 W. Jefferson Boulevard and lists pizza, sandwich, juice, coffee, and taqueria counters.","source_url":"https://www.wholefoodsmarket.com/stores/playavista","source_title":"Playa Vista Store | Whole Foods Market","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The store page posts current grocery hours; individual food counters may operate on different schedules.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"runway-playa-vista","subject_type":"street_or_district","entity_name":"Runway Playa Vista","title":"Combine Errands at One Retail Hub","subtitle":"Runway Road and Jefferson Boulevard corridor","notes":"Enter from Runway Road or Jefferson Boulevard to combine a cinema, grocery stop, restaurants, shops, and creative pop-ups in one complex.","short_summary":"A named mixed-use destination consolidating several practical errands and activities.","evidence_claim":"Playa Vista’s official visitor page describes Runway as a hub for restaurants, shops, fitness studios, and creative pop-ups in central Playa Vista.","source_url":"https://playavista.com/plan-a-visit/","source_title":"New Homes In L.A. | Playa Vista","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Access and operating hours differ by tenant and event; consult the relevant destination page before visiting.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T08:07:32.104124Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa27-4054-7d43-81f0-5fe9243a5e03.1786608304212967000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+61,043
+
+{"complete":true,"school_name":"Loyola Marymount University","town_name":"Los Angeles","boards":[{"complete":true,"school_name":"Loyola Marymount University","town_name":"Los Angeles","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named destinations along Westchester and Playa Vista corridors in LMU’s practical off-campus orbit, each paired with one directly sourced reason to go.","icon":"location_city","cards":[{"subject_id":"westchester-loyola-village-library","subject_type":"street_or_district","entity_name":"Westchester–Loyola Village Branch Library","title":"Set Up at the Student Zone","subtitle":"Manchester Avenue corridor","notes":"Follow Manchester Avenue to a public branch with a Student Zone, Wi-Fi, computers, bike rack, and recurring community programming.","short_summary":"A civic study stop with student-oriented space and practical library resources.","evidence_claim":"The branch is at 7114 W. Manchester Avenue and lists a Student Zone, public computers, Wi-Fi, a bike rack, and scheduled events.","source_url":"https://www.lapl.org/branches/westchester-loyola-village","source_title":"Westchester - Loyola Village | Los Angeles Public Library","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current posted hours vary by day; the branch is closed Sundays. Check the official page before leaving campus.","cost_status":"unknown","under21_safe":true},{"subject_id":"the-book-jewel","subject_type":"street_or_district","entity_name":"The Book Jewel","title":"Browse an Independent Bookshop","subtitle":"West 87th Street corridor","notes":"Turn onto West 87th Street to browse The Book Jewel and check its calendar for author talks and community arts programming.","short_summary":"A neighborhood bookstore with a documented public-events calendar.","evidence_claim":"The Book Jewel identifies its location as 6259 W. 87th Street and publishes bookstore hours and public events on its official website.","source_url":"https://thebookjewel.com/event/2025-08-09/second-saturday-stroll-lps","source_title":"Second Saturday Stroll & LPS | The Book Jewel","source_kind":"business_official","source_published_at":"2025-08-09","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited page lists regular store hours; confirm the current calendar before attending a specific event.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"westchester-family-ymca","subject_type":"street_or_district","entity_name":"Westchester Family YMCA","title":"Find a Pool and Fitness Studios","subtitle":"Sepulveda Boulevard corridor","notes":"Head down Sepulveda Boulevard when you need a facility with indoor pools, exercise studios, cardio equipment, and racquetball courts.","short_summary":"A multipurpose recreation center serving the Westchester corridor.","evidence_claim":"The YMCA lists its address as 8015 S. Sepulveda Boulevard and documents indoor heated pools, exercise studios, fitness equipment, and racquetball courts.","source_url":"https://www.ymcala.org/locations/westchester-family-ymca/","source_title":"Westchester Family YMCA - YMCA of Metropolitan Los Angeles","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page posts daily facility hours. Membership, registration, eligibility, or reservations may apply to amenities and programs.","cost_status":"unknown","under21_safe":true},{"subject_id":"truxtons-westchester","subject_type":"street_or_district","entity_name":"Truxton’s Westchester","title":"Meet Over Daily Brunch","subtitle":"Truxton Avenue corridor","notes":"Use Truxton Avenue for a daytime meal; the Westchester location documents a daily brunch window alongside its regular service.","short_summary":"A sit-down neighborhood restaurant with a clearly documented brunch schedule.","evidence_claim":"Truxton’s official location page places the restaurant at 8611 Truxton Avenue and lists daily brunch from 9 a.m. to 3 p.m.","source_url":"https://truxtonsamericanbistro.com/locations/westchester/","source_title":"Truxton’s Westchester – Truxton's American Bistro","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The restaurant posts separate regular and brunch hours; check the official page for current service details.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"otis-goldsmith-campus","subject_type":"street_or_district","entity_name":"Elaine and Bram Goldsmith Campus","title":"See an Art-and-Design Campus","subtitle":"Lincoln Boulevard corridor","notes":"Continue along Lincoln Boulevard and reserve an Otis tour to see departments, student work, and the college’s residence hall.","short_summary":"A neighboring art-and-design campus offering scheduled prospective-student tours.","evidence_claim":"Otis identifies the Goldsmith Campus at 9045 Lincoln Boulevard and offers registration for student-led tours covering departments, student work, and the residence hall.","source_url":"https://admissions.otis.edu/portal/campus-tours","source_title":"Campus Tours | Otis College of Art and Design","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Advance registration is required for the scheduled campus tours shown on the official admissions calendar.","cost_status":"unknown","under21_safe":true},{"subject_id":"playa-vista-branch-library","subject_type":"street_or_district","entity_name":"Playa Vista Branch Library","title":"Use Wi-Fi and Public Computers","subtitle":"Playa Vista Drive corridor","notes":"Take Playa Vista Drive to a public branch with Wi-Fi, computers, wireless printing, a parking lot, and a bike rack.","short_summary":"A second public-library option serving the Playa Vista side of LMU’s orbit.","evidence_claim":"The library is at 6400 Playa Vista Drive and lists public computers, Wi-Fi, wireless printing, a parking lot, and a bike rack.","source_url":"https://www.lapl.org/branches/playa-vista","source_title":"Playa Vista | Los Angeles Public Library","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":33.972317,"longitude":-118.427132,"maps_url":null,"access_notes":"Current posted hours vary by day; the branch is closed Sundays. Check the official page before visiting.","cost_status":"unknown","under21_safe":true},{"subject_id":"ballona-discovery-park","subject_type":"street_or_district","entity_name":"Ballona Discovery Park","title":"Read the Watershed Outdoors","subtitle":"Bluff Creek Drive corridor","notes":"Follow Bluff Creek Drive to explore a 1.7-acre open-air science and cultural exhibit focused on the Ballona Watershed.","short_summary":"An outdoor interpretive park developed with LMU and Gabrielino/Tongva guidance.","evidence_claim":"Ballona Discovery Park describes itself as a 1.7-acre open-air science and cultural exhibit at 13110 Bluff Creek Drive, open daily from dawn to dusk.","source_url":"https://ballonadiscoverypark.org/","source_title":"Ballona Discovery Park","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The park states that it is open to the public daily from dawn to dusk; remain within the designated public park area.","cost_status":"unknown","under21_safe":true},{"subject_id":"cinemark-playa-vista-xd","subject_type":"street_or_district","entity_name":"Cinemark Playa Vista and XD","title":"Catch a Film with Accessibility Features","subtitle":"Jefferson Boulevard corridor","notes":"Use Jefferson Boulevard for a movie outing with documented closed captioning, descriptive narration, and assisted-listening options.","short_summary":"A Runway cinema whose listings identify accessibility formats by screening.","evidence_claim":"Cinemark locates this theater at 12746 W. Jefferson Boulevard and marks screenings with closed-caption, descriptive-narration, and assisted-listening features.","source_url":"https://www.cinemark.com/theatres/ca-playa-vista/cinemark-playa-vista-and-xd","source_title":"Movie Theater In Playa Vista, CA: Cinemark Playa Vista & XD","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Showtimes, ratings, formats, and accessibility features vary by film; consult the current official listing before purchasing.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"whole-foods-playa-vista","subject_type":"street_or_district","entity_name":"Whole Foods Market Playa Vista","title":"Pick Up Groceries and Prepared Food","subtitle":"Jefferson Boulevard corridor","notes":"Stop along Jefferson Boulevard for groceries or choose among the store’s documented pizza, sandwich, juice, coffee, and taqueria counters.","short_summary":"A grocery stop with several named prepared-food counters under one roof.","evidence_claim":"Whole Foods places its Playa Vista store at 12746 W. Jefferson Boulevard and lists pizza, sandwich, juice, coffee, and taqueria counters.","source_url":"https://www.wholefoodsmarket.com/stores/playavista","source_title":"Playa Vista Store | Whole Foods Market","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The store page posts current grocery hours; individual food counters may operate on different schedules.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"runway-playa-vista","subject_type":"street_or_district","entity_name":"Runway Playa Vista","title":"Combine Errands at One Retail Hub","subtitle":"Runway Road and Jefferson Boulevard corridor","notes":"Enter from Runway Road or Jefferson Boulevard to combine a cinema, grocery stop, restaurants, shops, and creative pop-ups in one complex.","short_summary":"A named mixed-use destination consolidating several practical errands and activities.","evidence_claim":"Playa Vista’s official visitor page describes Runway as a hub for restaurants, shops, fitness studios, and creative pop-ups in central Playa Vista.","source_url":"https://playavista.com/plan-a-visit/","source_title":"New Homes In L.A. | Playa Vista","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Access and operating hours differ by tenant and event; consult the relevant destination page before visiting.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}

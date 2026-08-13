@@ -1,0 +1,77 @@
+{
+  "ok": false,
+  "problems": [
+    "Prohibited ranking, generic, adult-only, or unsafe language found."
+  ],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.toasttab.com/local/order/crave-cafe-67-main-street/item-life-water_4b929495-453c-48e4-820c-a5378fe62b92",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.toasttab.com/local/order/crave-cafe-67-main-street/item-life-water_4b929495-453c-48e4-820c-a5378fe62b92",
+      "error": ""
+    },
+    {
+      "url": "https://www.stlawu.edu/student-life/dining",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stlawu.edu/student-life/dining",
+      "error": ""
+    },
+    {
+      "url": "https://www.canton.edu/ca/dining/hours.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.canton.edu/ca/dining/hours.html",
+      "error": ""
+    },
+    {
+      "url": "https://parkwayexpress.org/contact/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://parkwayexpress.org/contact/",
+      "error": ""
+    },
+    {
+      "url": "https://www.11westcanton.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.11westcanton.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.toasttab.com/local/order/sergi-s-canton-italian-31-main-st/item-water_a0dea45c-59c4-4d1d-8dcd-ded0820050f1",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.toasttab.com/local/order/sergi-s-canton-italian-31-main-st/item-water_a0dea45c-59c4-4d1d-8dcd-ded0820050f1",
+      "error": ""
+    },
+    {
+      "url": "https://www.toasttab.com/local/order/33065-restaurant-best-western-university-inn/item-bacon_061c2eb0-d822-4988-aa29-e28c8f5b48e4",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.toasttab.com/local/order/33065-restaurant-best-western-university-inn/item-bacon_061c2eb0-d822-4988-aa29-e28c8f5b48e4",
+      "error": ""
+    },
+    {
+      "url": "https://order.toasttab.com/online/not-just-sandwiches-canton-5994-u-s-route-11",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://order.toasttab.com/online/not-just-sandwiches-canton-5994-u-s-route-11",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": null,
+  "generationGrade": null
+}

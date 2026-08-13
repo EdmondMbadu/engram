@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://library.csusm.edu/makerspace",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csusm.edu/makerspace",
+      "error": ""
+    },
+    {
+      "url": "https://library.csusm.edu/study-rooms",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csusm.edu/study-rooms",
+      "error": ""
+    },
+    {
+      "url": "https://news.csusm.edu/bright-ideas-under-neufeldt-spirit-of-innovation-is-shining-at-csusm/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.csusm.edu/bright-ideas-under-neufeldt-spirit-of-innovation-is-shining-at-csusm/",
+      "error": ""
+    },
+    {
+      "url": "https://www.csusm.edu/usu/documents/usu-floor-plan.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusm.edu/usu/documents/usu-floor-plan.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.csusm.edu/studentlife/staff_resources/documents-resources/student_life_playbook.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusm.edu/studentlife/staff_resources/documents-resources/student_life_playbook.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.csusm.edu/usu/about/buildinginfo/images/usu_floor_plans.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusm.edu/usu/about/buildinginfo/images/usu_floor_plans.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://news.csusm.edu/the-new-heart-of-csusm-usu-opens-its-doors/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.csusm.edu/the-new-heart-of-csusm-usu-opens-its-doors/",
+      "error": ""
+    },
+    {
+      "url": "https://m.csusm.edu/default/weeks_of_welcome/detail?_kgoui_bookmark=31916891-6ee9-53eb-8030-06998db01d2f&feed=weeks_of_welcome&id=b41109a3-b128-5538-ac34-6f3afb10d435",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://m.csusm.edu/default/weeks_of_welcome/detail?_kgoui_bookmark=31916891-6ee9-53eb-8030-06998db01d2f&feed=weeks_of_welcome&id=b41109a3-b128-5538-ac34-6f3afb10d435",
+      "error": ""
+    },
+    {
+      "url": "https://news.csusm.edu/stories-behind-building-names/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.csusm.edu/stories-behind-building-names/",
+      "error": ""
+    },
+    {
+      "url": "https://www.csusm.edu/admissions/pdf/csusm-walking-tour-brochure-final.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusm.edu/admissions/pdf/csusm-walking-tour-brochure-final.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "The Makery"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

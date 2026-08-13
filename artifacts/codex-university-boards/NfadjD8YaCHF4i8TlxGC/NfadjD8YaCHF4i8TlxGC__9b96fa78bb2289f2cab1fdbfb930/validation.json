@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "The board interprets “blocks” as named, map-listed destinations on specific campus-adjacent or downtown corridors; downtown stops require travel beyond the immediate campus edge.",
+    "Coordinates are null because exact point coordinates were not independently verified from authoritative destination pages.",
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://franciscan.edu/the-inn-at-franciscan-square-opens-for-business/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://franciscan.edu/the-inn-at-franciscan-square-opens-for-business/",
+      "error": ""
+    },
+    {
+      "url": "https://magazine.franciscan.edu/articles/pay-it-forward/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://magazine.franciscan.edu/articles/pay-it-forward/",
+      "error": ""
+    },
+    {
+      "url": "https://franciscan.edu/visit-franciscan/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://franciscan.edu/visit-franciscan/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/places/historic-fort-steuben.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/places/historic-fort-steuben.htm",
+      "error": ""
+    },
+    {
+      "url": "https://drosselmeyers.store/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://drosselmeyers.store/",
+      "error": ""
+    },
+    {
+      "url": "https://bookshop.org/shop/bookmarx",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://bookshop.org/shop/bookmarx",
+      "error": ""
+    },
+    {
+      "url": "https://www.steubenvillelibrary.org/?eventDisplay=venue&page=1&post_type=tribe_venue&tribe_venue=main-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.steubenvillelibrary.org/?eventDisplay=venue&page=1&post_type=tribe_venue&tribe_venue=main-library",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitsteubenville.com/what-to-do/historic-sites-museums/historical-steubenville-churches/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitsteubenville.com/what-to-do/historic-sites-museums/historical-steubenville-churches/",
+      "error": ""
+    },
+    {
+      "url": "https://jeffcountyhistorical.org/contact/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://jeffcountyhistorical.org/contact/",
+      "error": ""
+    },
+    {
+      "url": "https://www.naplesspaghettihouse.com/contact-us/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.naplesspaghettihouse.com/contact-us/",
+      "error": "The operation was aborted due to timeout"
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

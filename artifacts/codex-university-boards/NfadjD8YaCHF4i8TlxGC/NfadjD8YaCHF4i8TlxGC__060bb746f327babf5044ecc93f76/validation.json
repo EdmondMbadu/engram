@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.lawrence.edu/articles/our-favorite-study-spots-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://inside.lawrence.edu/articles/our-favorite-study-spots-campus",
+      "error": ""
+    },
+    {
+      "url": "https://inside.lawrence.edu/offices/warch-campus-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://inside.lawrence.edu/offices/warch-campus-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.lawrence.edu/library/spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lawrence.edu/academics/advising-support/library/spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lawrence.edu/library/spaces/art-artifacts",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lawrence.edu/academics/advising-support/library/spaces/art-artifacts/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

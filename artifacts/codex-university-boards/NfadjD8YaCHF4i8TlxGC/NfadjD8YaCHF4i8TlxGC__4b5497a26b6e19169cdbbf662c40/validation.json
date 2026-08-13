@@ -1,0 +1,79 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.elon.edu/u/university-communications/brand/guide/platform-voice/copy-bank/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/university-communications/brand/guide/platform-voice/copy-bank/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/nsp/elon-lingo/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/nsp/elon-lingo/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/moseley-center/about-the-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/moseley-center/about-the-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/about/campus-maps/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/about/campus-maps/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/fa/facilities/about-us/landscaping-automotive-and-transportation-services/botanical-garden/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/fa/facilities/about-us/landscaping-automotive-and-transportation-services/botanical-garden/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/campus-recreation/facilities/hours-of-operation/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/campus-recreation/facilities/hours-of-operation/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/library/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/library/about/",
+      "error": ""
+    },
+    {
+      "url": "https://www.elon.edu/u/nsp/ewow/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.elon.edu/u/nsp/ewow/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Carol Grotnes Belk Library"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

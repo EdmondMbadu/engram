@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://locations.tacobell.com/or/corvallis/4825-sw-research-way.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/or/corvallis/4825-sw-research-way.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/or/corvallis/700-ne-circle-blvd/takeout",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/or/corvallis/700-ne-circle-blvd/takeout",
+      "error": ""
+    },
+    {
+      "url": "https://www.chick-fil-a.com/locations/or/pacific-hwy-circle",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.chick-fil-a.com/locations/or/pacific-hwy-circle",
+      "error": ""
+    },
+    {
+      "url": "https://www.castorcorvallis.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.castorcorvallis.com/",
+      "error": ""
+    },
+    {
+      "url": "https://adpizza.com/wp-content/uploads/2022/05/22-05-03-ADP-FOOD-Menu-for-website-2.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://adpizza.com/wp-content/uploads/2022/05/22-05-03-ADP-FOOD-Menu-for-website-2.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.toasttab.com/local/order/american-dream-pizza-downtown-214-sw-2nd-st/r-b11860b4-47b2-4de1-9a9c-e69d72779e54/item-omaha-or-bust-slice_e23093c8-05cb-483d-967f-b3f70658b83a",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.toasttab.com/local/order/american-dream-pizza-downtown-214-sw-2nd-st/r-b11860b4-47b2-4de1-9a9c-e69d72779e54/item-omaha-or-bust-slice_e23093c8-05cb-483d-967f-b3f70658b83a",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/oregon/corvallis/1420-nw-9th-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/oregon/corvallis/1420-nw-9th-st",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/oregon/corvallis",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/oregon/corvallis",
+      "error": ""
+    },
+    {
+      "url": "https://delalmarestaurant.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://delalmarestaurant.com/",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.fiveguys.com/845-nw-9th-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.fiveguys.com/845-nw-9th-st",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "American Dream Pizza — Campus"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

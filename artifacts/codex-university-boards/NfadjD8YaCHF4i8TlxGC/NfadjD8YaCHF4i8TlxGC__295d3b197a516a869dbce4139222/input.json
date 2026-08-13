@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "RUxuHRqyTFJ0kEGJOsaZ",
+    "schoolName": "Lebanon Valley College",
+    "shortSchoolName": "Lebanon Valley College",
+    "townName": "Annville",
+    "state": "PA",
+    "countryCode": "US",
+    "unitId": "213507",
+    "website": "https://www.lvc.edu/",
+    "latitude": 40.330604,
+    "longitude": -76.514431,
+    "heroUrl": "https://www.lvc.edu/wp-content/uploads/2025/06/Spring_Outdoor_Shoot_2025-23-e1749133005930.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=lvc.edu&sz=256"
+  },
+  "template": {
+    "id": "college-campus-tour-skips",
+    "version": "1.0",
+    "titlePattern": "What the Campus Tour Skips: {count} Places Students Share With Each Other",
+    "editorialBrief": "Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.",
+    "researchQueries": [
+      "student favorite campus places",
+      "campus map student spaces",
+      "student newspaper campus places"
+    ],
+    "count": 10,
+    "icon": "style",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place",
+      "study_space"
+    ],
+    "freshnessDays": 365
+  },
+  "exact_title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+  "excluded_subjects": [
+    "Vernon and Doris Bishop Library",
+    "Bishop Library Study Rooms",
+    "Bishop-Frock Conference Room",
+    "Wengert Family Living Room",
+    "Commuter Lounge",
+    "Lebegern Learning Commons",
+    "Synodinos Commons",
+    "Mund Technology Center",
+    "Jeanne and Edward H. Arnold Health Professions Pavilion",
+    "LVC Peace Garden"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

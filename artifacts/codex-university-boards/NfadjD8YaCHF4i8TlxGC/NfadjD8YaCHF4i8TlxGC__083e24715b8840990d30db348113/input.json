@@ -1,0 +1,60 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "HeQkGeheAtxuFLmENtyt",
+    "schoolName": "The Cooper Union for the Advancement of Science and Art",
+    "shortSchoolName": "The Cooper Union for the Advancement of Science and Art",
+    "townName": "New York",
+    "state": "NY",
+    "countryCode": "US",
+    "unitId": "190372",
+    "website": "https://www.cooper.edu/",
+    "latitude": 40.728148,
+    "longitude": -73.991609,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/7/75/The_Cooper_Union%27s_Foundation_Building_-_North_Side_%2848072759802%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=cooper.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain The Cooper Union for the Advancement of Science and Art",
+  "excluded_subjects": [
+    "Cooper Union Makerspace",
+    "The Cooper Union Library",
+    "Great Hall",
+    "41 Cooper Gallery",
+    "Media Lab",
+    "Herb Lubalin Study Center of Design and Typography",
+    "AACE Lab",
+    "Frederick P. Rose Auditorium",
+    "Foundation Building Student Studios",
+    "Foundation Building",
+    "Peter Cooper Birthday Wreath-Laying",
+    "Cooper Union Alumni Association Founder’s Day Awards",
+    "End of Year Show",
+    "School of Art Artist-Only Identification",
+    "Architecture Studio Attribution",
+    "End of Year Show Robot Sumo Competition",
+    "Benjamin Menschel Fellowship Exhibition and Gala",
+    "The Mace of The Cooper Union",
+    "Great Hall Commencement",
+    "Hack Cooper"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

@@ -1,0 +1,291 @@
+Reading additional input from stdin...
+2026-08-13T06:37:16.427802Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:37:16.643799Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9d6-dcce-7d10-a6bd-082525c7ef32
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"Yl4ysX9EsZhFDhWjRwyg","schoolName":"California Institute of Technology","shortSchoolName":"California Institute of Technology","townName":"Pasadena","state":"CA","countryCode":"US","website":"https://www.caltech.edu/","latitude":34.137349,"longitude":-118.125878},"templates":[{"id":"college-study-spots","version":"1.0","titlePattern":"Claimed by 9am: {count} Study Spots Worth Showing Up Early For","editorialBrief":"Choose ten distinct study environments. Verify access rules, room or reservation constraints, and the physical affordance that makes each useful. Treat “Claimed by 9am” as editorial framing; never assert crowding or student behavior without evidence.","researchQueries":["campus study spaces","library study rooms students","quiet study campus"],"count":10,"icon":"menu_book","primarySubjectType":"study_space","allowedSubjectTypes":["study_space","place"],"freshnessDays":180,"exactTitle":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For"}]}
+2026-08-13T06:37:25.872178Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for zsh: Snapshot command timed out for zsh
+codex
+{
+  "complete": false,
+  "school_name": "California Institute of Technology",
+  "town_name": "Pasadena",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "California Institute of Technology",
+      "town_name": "Pasadena",
+      "template_id": "college-study-spots",
+      "title": "Claimed by 9am: 10 Study Spots Worth Showing Up Early For",
+      "description": "",
+      "icon": "menu_book",
+      "cards": [
+        {
+          "subject_id": "placeholder",
+          "subject_type": "study_space",
+          "entity_name": "Research in progress",
+          "title": "Research in progress",
+          "subtitle": "",
+          "notes": "I’m checking official Caltech and library pages for ten distinct spaces, access rules, reservations, and useful physical features.",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "https://www.caltech.edu/",
+          "source_title": "Caltech",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+         ,
+      	 		{
+        "subject_id": "placeholder-2",
+        "subject_type": "study_space",
+        "entity_name": "Research in progress",
+        "title": "Research in progress",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "https://www.caltech.edu/",
+        "source_title": "Caltech",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }	
+      ,
+     	 	{
+        "subject_id": "placeholder-3",
+        "subject_type": "study_space",
+        "entity_name": "Research in progress",
+        "title": "Research in progress",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "https://www.caltech.edu/",
+        "source_title": "Caltech",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+     	 	{
+        "subject_id": "placeholder-4",
+        "subject_type": "study_space",
+        "entity_name": "Research in progress",
+        "title": "Research in progress",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "https://www.caltech.edu/",
+        "source_title": "Caltech",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+     	 	{
+        "subject_id": "placeholder-5",
+        "subject_type": "study_space",
+        "entity_name": "Research in progress",
+        "title": "Research in progress",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "https://www.caltech.edu/",
+        "source_title": "Caltech",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+     	 	{
+        "subject_id": "placeholder-6",
+        "subject_type": "study_space",
+        "entity_name": "Research in progress",
+        "title": "Research in progress",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "https://www.caltech.edu/",
+        "source_title": "Caltech",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+     	 	{
+        "subject_id": "placeholder-7",
+        "subject_type": "study_space",
+        "entity_name": "Research in progress",
+        "title": "Research in progress",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "https://www.caltech.edu/",
+        "source_title": "Caltech",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+     	 	{
+        "subject_id": "placeholder-8",
+        "subject_type": "study_space",
+        "entity_name": "Research in progress",
+        "title": "Research in progress",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "https://www.caltech.edu/",
+        "source_title": "Caltech",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+     	 	{
+        "subject_id": "placeholder-9",
+        "subject_type": "study_space",
+        "entity_name": "Research in progress",
+        "title": "Research in progress",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "https://www.caltech.edu/",
+        "source_title": "Caltech",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+     	 	{
+        "subject_id": "placeholder-10",
+        "subject_type": "study_space",
+        "entity_name": "Research in progress",
+        "title": "Research in progress",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "https://www.caltech.edu/",
+        "source_title": "Caltech",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:library.caltech.edu study spaces Sherman Fairchild library study rooms ...
+web search: 
+web search: site:library.caltech.edu/locations Sherman Fairchild Library Caltech hours group study rooms ...
+web search: 
+web search: Caltech Library locations hours Sherman Fairchild Dabney Cahill North Mudd 2026 ...
+codex
+{"complete":true,"school_name":"California Institute of Technology","town_name":"Pasadena","boards":[{"complete":true,"school_name":"California Institute of Technology","town_name":"Pasadena","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten distinct Caltech study settings, from quiet branch libraries to reservable collaboration rooms and flexible campus workspaces.","icon":"menu_book","cards":[{"subject_id":"caltech-sherman-fairchild-library","subject_type":"study_space","entity_name":"Sherman Fairchild Library","title":"Settle Into Caltech’s Main Library","subtitle":"Collaborative and private study settings under one roof","notes":"Start here when your plans may shift between solo reading and collaborative work; check the live library schedule before heading over.","short_summary":"A versatile main-library setting for individual work or group sessions.","evidence_claim":"Caltech identifies Sherman Fairchild Library as its main library and says it offers collaborative and private study spaces and remains open late throughout the week.","source_url":"https://orientation.caltech.edu/documents/34671/2026_New_Student_Handbook.pdf","source_title":"2026–2027 New Undergraduate Student Handbook","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Check the current library schedule before visiting. A Caltech ID card and access.caltech credentials serve as students’ library credentials.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-sfl-group-study-rooms","subject_type":"study_space","entity_name":"Sherman Fairchild Library Group Study Rooms","title":"Reserve a Room for Shared Problem-Solving","subtitle":"Five bookable rooms for collaborative work","notes":"Book ahead when conversation, shared screens, or coordinated problem-solving would disrupt a quieter open-study area.","short_summary":"Reservable rooms give project teams a defined place to work together.","evidence_claim":"The current Caltech catalog says Sherman Fairchild Library contains five bookable group study rooms.","source_url":"https://www.catalog.caltech.edu/current/general-information/education-and-research/","source_title":"Education and Research | Caltech Academic Catalog","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Advance booking is required to secure a specific group study room; consult the library reservation system for availability and rules.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-dabney-library","subject_type":"study_space","entity_name":"Dabney Library","title":"Read and Write Among the Humanities Stacks","subtitle":"Open study space with humanities collections","notes":"Bring reading-heavy or writing-focused work and use the nearby humanities collection when you need to follow a citation mid-session.","short_summary":"A branch-library workspace paired with Caltech’s humanities holdings.","evidence_claim":"Caltech’s 2026–2027 student handbook identifies Dabney as the humanities branch library and says it has open study space and basic printing.","source_url":"https://orientation.caltech.edu/documents/34671/2026_New_Student_Handbook.pdf","source_title":"2026–2027 New Undergraduate Student Handbook","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use is subject to current branch-library access and hours. Bring a Caltech ID and verify the live schedule before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-cahill-library","subject_type":"study_space","entity_name":"Cahill Library","title":"Work Beside the Astrophysics Collection","subtitle":"Open study space inside the Cahill astronomy branch","notes":"Choose this branch for astronomy-centered work, then consult the specialized collection without relocating across campus.","short_summary":"An open workspace closely paired with astronomy and astrophysics resources.","evidence_claim":"Caltech’s 2026–2027 student handbook identifies Cahill as the astronomy and astrophysics branch and confirms open study space and basic printing.","source_url":"https://orientation.caltech.edu/documents/34671/2026_New_Student_Handbook.pdf","source_title":"2026–2027 New Undergraduate Student Handbook","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use is subject to current branch-library access and hours. Bring a Caltech ID and check the library schedule before arriving.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-north-mudd-library","subject_type":"study_space","entity_name":"North Mudd Library","title":"Pair Study Time With Geology Resources","subtitle":"Open study space in the geology branch library","notes":"Use this location when maps, geology references, or planetary-science materials need to stay within reach of your workspace.","short_summary":"A subject-focused branch where geology materials and open study space meet.","evidence_claim":"Caltech’s 2026–2027 student handbook identifies North Mudd as the geology branch library and says it offers open study space and basic printing.","source_url":"https://orientation.caltech.edu/documents/34671/2026_New_Student_Handbook.pdf","source_title":"2026–2027 New Undergraduate Student Handbook","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use is subject to current branch-library access and hours. Bring a Caltech ID and confirm access before making a special trip.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-hall-ninth-floor","subject_type":"study_space","entity_name":"Caltech Hall Ninth-Floor Classroom Area","title":"Spread Out Around Large Displays","subtitle":"A flexible collaboration and study floor","notes":"Bring a group presentation or visual problem set when a flexible layout and large displays would improve the working session.","short_summary":"A technology-equipped collaboration floor suited to visual and team-based work.","evidence_claim":"The current Caltech catalog describes the Caltech Hall ninth-floor classroom area as a flexible collaboration and study space with large displays.","source_url":"https://www.catalog.caltech.edu/current/general-information/education-and-research/","source_title":"Education and Research | Caltech Academic Catalog","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Building access and space availability vary. Confirm current Caltech Hall hours and avoid rooms reserved for scheduled instruction or events.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-hall-room-907","subject_type":"study_space","entity_name":"Caltech Hall Room 907","title":"Book Room 907 for a Structured Session","subtitle":"A reservable meeting or teaching room","notes":"Reserve this room for a planned working meeting, rehearsal, or teaching session rather than relying on unscheduled availability.","short_summary":"A formal bookable room for study sessions needing structure and separation.","evidence_claim":"The current Caltech catalog identifies Caltech Hall Room 907 as a bookable meeting or teaching space.","source_url":"https://www.catalog.caltech.edu/current/general-information/education-and-research/","source_title":"Education and Research | Caltech Academic Catalog","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Room 907 is bookable; obtain a confirmed reservation and comply with current Caltech Hall building-access requirements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-hall-north-study-carrels","subject_type":"study_space","entity_name":"Caltech Hall North-Side Study Carrels","title":"Take a Carrel for Focused Work","subtitle":"Individual carrels beside collaboration spaces","notes":"Choose a carrel for concentrated reading or writing, then shift to an adjacent collaboration area if the task becomes social.","short_summary":"A focused carrel setting with collaborative options nearby on the same floor.","evidence_claim":"The current Caltech catalog says the north side of Caltech Hall provides ample study carrels and collaboration spaces.","source_url":"https://www.catalog.caltech.edu/current/general-information/education-and-research/","source_title":"Education and Research | Caltech Academic Catalog","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Carrels are open study seating rather than guaranteed reservations. Verify current building access and yield any posted restricted area.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-hameetman-center-public-lounge","subject_type":"study_space","entity_name":"Hameetman Center Public Lounge","title":"Use the Lounge for a Conversational Work Block","subtitle":"A large lounge in Caltech’s central student gathering place","notes":"Pick the lounge for work that can tolerate conversation, and use headphones or relocate when your assignment demands quiet focus.","short_summary":"A student-center alternative for informal, conversation-friendly study.","evidence_claim":"Caltech’s current catalog states that Hameetman Center features a large public lounge, and its reservation policy names study groups among the center’s intended uses.","source_url":"https://sfe.caltech.edu/resources/hameetman-center/reservation-policy","source_title":"Hameetman Center Reservation Policy","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The center is a communal student space. Organized groups must follow current reservation priorities, term limits, and posted building policies.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-sac-13-group-study-room","subject_type":"study_space","entity_name":"SAC 13 Group Study Room","title":"Reserve SAC 13 for an Undergraduate Study Group","subtitle":"A named group room in the Student Activities Center","notes":"Sign in and reserve SAC 13 when your group needs a defined room; confirm that every participant meets current SAC access rules.","short_summary":"A reservable Student Activities Center room dedicated to group study.","evidence_claim":"Caltech’s ASCIT reservation system lists SAC 13 as a Group Study Room and requires users to log in to reserve it.","source_url":"https://donut.caltech.edu/reserve","source_title":"ASCIT Room Reservation System","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Login is required to view availability and reserve SAC 13. The reservation service is available to eligible undergraduate Caltech community members.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+tokens used
+48,094
+
+{"complete":true,"school_name":"California Institute of Technology","town_name":"Pasadena","boards":[{"complete":true,"school_name":"California Institute of Technology","town_name":"Pasadena","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten distinct Caltech study settings, from quiet branch libraries to reservable collaboration rooms and flexible campus workspaces.","icon":"menu_book","cards":[{"subject_id":"caltech-sherman-fairchild-library","subject_type":"study_space","entity_name":"Sherman Fairchild Library","title":"Settle Into Caltech’s Main Library","subtitle":"Collaborative and private study settings under one roof","notes":"Start here when your plans may shift between solo reading and collaborative work; check the live library schedule before heading over.","short_summary":"A versatile main-library setting for individual work or group sessions.","evidence_claim":"Caltech identifies Sherman Fairchild Library as its main library and says it offers collaborative and private study spaces and remains open late throughout the week.","source_url":"https://orientation.caltech.edu/documents/34671/2026_New_Student_Handbook.pdf","source_title":"2026–2027 New Undergraduate Student Handbook","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Check the current library schedule before visiting. A Caltech ID card and access.caltech credentials serve as students’ library credentials.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-sfl-group-study-rooms","subject_type":"study_space","entity_name":"Sherman Fairchild Library Group Study Rooms","title":"Reserve a Room for Shared Problem-Solving","subtitle":"Five bookable rooms for collaborative work","notes":"Book ahead when conversation, shared screens, or coordinated problem-solving would disrupt a quieter open-study area.","short_summary":"Reservable rooms give project teams a defined place to work together.","evidence_claim":"The current Caltech catalog says Sherman Fairchild Library contains five bookable group study rooms.","source_url":"https://www.catalog.caltech.edu/current/general-information/education-and-research/","source_title":"Education and Research | Caltech Academic Catalog","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Advance booking is required to secure a specific group study room; consult the library reservation system for availability and rules.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-dabney-library","subject_type":"study_space","entity_name":"Dabney Library","title":"Read and Write Among the Humanities Stacks","subtitle":"Open study space with humanities collections","notes":"Bring reading-heavy or writing-focused work and use the nearby humanities collection when you need to follow a citation mid-session.","short_summary":"A branch-library workspace paired with Caltech’s humanities holdings.","evidence_claim":"Caltech’s 2026–2027 student handbook identifies Dabney as the humanities branch library and says it has open study space and basic printing.","source_url":"https://orientation.caltech.edu/documents/34671/2026_New_Student_Handbook.pdf","source_title":"2026–2027 New Undergraduate Student Handbook","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use is subject to current branch-library access and hours. Bring a Caltech ID and verify the live schedule before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-cahill-library","subject_type":"study_space","entity_name":"Cahill Library","title":"Work Beside the Astrophysics Collection","subtitle":"Open study space inside the Cahill astronomy branch","notes":"Choose this branch for astronomy-centered work, then consult the specialized collection without relocating across campus.","short_summary":"An open workspace closely paired with astronomy and astrophysics resources.","evidence_claim":"Caltech’s 2026–2027 student handbook identifies Cahill as the astronomy and astrophysics branch and confirms open study space and basic printing.","source_url":"https://orientation.caltech.edu/documents/34671/2026_New_Student_Handbook.pdf","source_title":"2026–2027 New Undergraduate Student Handbook","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use is subject to current branch-library access and hours. Bring a Caltech ID and check the library schedule before arriving.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-north-mudd-library","subject_type":"study_space","entity_name":"North Mudd Library","title":"Pair Study Time With Geology Resources","subtitle":"Open study space in the geology branch library","notes":"Use this location when maps, geology references, or planetary-science materials need to stay within reach of your workspace.","short_summary":"A subject-focused branch where geology materials and open study space meet.","evidence_claim":"Caltech’s 2026–2027 student handbook identifies North Mudd as the geology branch library and says it offers open study space and basic printing.","source_url":"https://orientation.caltech.edu/documents/34671/2026_New_Student_Handbook.pdf","source_title":"2026–2027 New Undergraduate Student Handbook","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use is subject to current branch-library access and hours. Bring a Caltech ID and confirm access before making a special trip.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-hall-ninth-floor","subject_type":"study_space","entity_name":"Caltech Hall Ninth-Floor Classroom Area","title":"Spread Out Around Large Displays","subtitle":"A flexible collaboration and study floor","notes":"Bring a group presentation or visual problem set when a flexible layout and large displays would improve the working session.","short_summary":"A technology-equipped collaboration floor suited to visual and team-based work.","evidence_claim":"The current Caltech catalog describes the Caltech Hall ninth-floor classroom area as a flexible collaboration and study space with large displays.","source_url":"https://www.catalog.caltech.edu/current/general-information/education-and-research/","source_title":"Education and Research | Caltech Academic Catalog","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Building access and space availability vary. Confirm current Caltech Hall hours and avoid rooms reserved for scheduled instruction or events.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-hall-room-907","subject_type":"study_space","entity_name":"Caltech Hall Room 907","title":"Book Room 907 for a Structured Session","subtitle":"A reservable meeting or teaching room","notes":"Reserve this room for a planned working meeting, rehearsal, or teaching session rather than relying on unscheduled availability.","short_summary":"A formal bookable room for study sessions needing structure and separation.","evidence_claim":"The current Caltech catalog identifies Caltech Hall Room 907 as a bookable meeting or teaching space.","source_url":"https://www.catalog.caltech.edu/current/general-information/education-and-research/","source_title":"Education and Research | Caltech Academic Catalog","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Room 907 is bookable; obtain a confirmed reservation and comply with current Caltech Hall building-access requirements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-hall-north-study-carrels","subject_type":"study_space","entity_name":"Caltech Hall North-Side Study Carrels","title":"Take a Carrel for Focused Work","subtitle":"Individual carrels beside collaboration spaces","notes":"Choose a carrel for concentrated reading or writing, then shift to an adjacent collaboration area if the task becomes social.","short_summary":"A focused carrel setting with collaborative options nearby on the same floor.","evidence_claim":"The current Caltech catalog says the north side of Caltech Hall provides ample study carrels and collaboration spaces.","source_url":"https://www.catalog.caltech.edu/current/general-information/education-and-research/","source_title":"Education and Research | Caltech Academic Catalog","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Carrels are open study seating rather than guaranteed reservations. Verify current building access and yield any posted restricted area.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-hameetman-center-public-lounge","subject_type":"study_space","entity_name":"Hameetman Center Public Lounge","title":"Use the Lounge for a Conversational Work Block","subtitle":"A large lounge in Caltech’s central student gathering place","notes":"Pick the lounge for work that can tolerate conversation, and use headphones or relocate when your assignment demands quiet focus.","short_summary":"A student-center alternative for informal, conversation-friendly study.","evidence_claim":"Caltech’s current catalog states that Hameetman Center features a large public lounge, and its reservation policy names study groups among the center’s intended uses.","source_url":"https://sfe.caltech.edu/resources/hameetman-center/reservation-policy","source_title":"Hameetman Center Reservation Policy","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The center is a communal student space. Organized groups must follow current reservation priorities, term limits, and posted building policies.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-sac-13-group-study-room","subject_type":"study_space","entity_name":"SAC 13 Group Study Room","title":"Reserve SAC 13 for an Undergraduate Study Group","subtitle":"A named group room in the Student Activities Center","notes":"Sign in and reserve SAC 13 when your group needs a defined room; confirm that every participant meets current SAC access rules.","short_summary":"A reservable Student Activities Center room dedicated to group study.","evidence_claim":"Caltech’s ASCIT reservation system lists SAC 13 as a Group Study Room and requires users to log in to reserve it.","source_url":"https://donut.caltech.edu/reserve","source_title":"ASCIT Room Reservation System","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Login is required to view availability and reserve SAC 13. The reservation service is available to eligible undergraduate Caltech community members.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

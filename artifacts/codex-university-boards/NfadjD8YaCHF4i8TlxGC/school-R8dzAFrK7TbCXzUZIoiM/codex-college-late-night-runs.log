@@ -1,0 +1,304 @@
+Reading additional input from stdin...
+2026-08-13T07:32:34.314555Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa09-1de4-7a32-82bb-8a050d5c1b1f.1786606329317303000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:32:34.353255Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa09-1de3-7f41-8c87-50d04cb528b3.1786606329315924000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa09-7f20-75f2-a1e0-ff5b459731da
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"R8dzAFrK7TbCXzUZIoiM","schoolName":"Hillsdale College","shortSchoolName":"Hillsdale College","townName":"Hillsdale","state":"MI","countryCode":"US","website":"https://www.hillsdale.edu/","latitude":41.933682,"longitude":-84.633195},"templates":[{"id":"college-late-night-runs","version":"1.0","titlePattern":"{count} Late-Night Runs That Explain {school}","editorialBrief":"Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.","researchQueries":["late night dining students","campus dining late hours","restaurants open late near campus"],"count":10,"icon":"nightlife","primarySubjectType":"place","allowedSubjectTypes":["place"],"freshnessDays":120,"exactTitle":"10 Late-Night Runs That Explain Hillsdale College"}]}
+2026-08-13T07:32:34.499041Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa09-1e11-7072-8e2e-fb2f1752c5f3.1786606329362360000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:32:34.649296Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa09-1de7-7eb2-beda-438814fef0f7.1786606329322321000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:32:34.719075Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:32:34.765147Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa09-1de2-7421-8f12-0c7cec9a7543.1786606329314641000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:32:34.772415Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:32:34.810225Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa09-1e09-78b0-969f-d4d515f621b9.1786606329353968000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:32:34.861080Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa09-1e0a-7d30-ab54-6702db4ca8e7.1786606329354492000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Hillsdale College",
+  "town_name": "Hillsdale",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Hillsdale College",
+      "town_name": "Hillsdale",
+      "template_id": "college-late-night-runs",
+      "title": "10 Late-Night Runs That Explain Hillsdale College",
+      "description": "Researching ten distinct, under-21-safe destinations with direct, current late-hours evidence.",
+      "icon": "nightlife",
+      "cards": [
+        {
+          "subject_id": "research-in-progress",
+          "subject_type": "place",
+          "entity_name": "Research in progress",
+          "title": "Verifying late-night destinations",
+          "subtitle": "Hillsdale, Michigan",
+          "notes": "Checking official campus and business pages for current hours, access details, and direct supporting URLs.",
+          "short_summary": "Current source verification is underway.",
+          "evidence_claim": "No final claim yet.",
+          "source_url": "https://www.hillsdale.edu/",
+          "source_title": "Hillsdale College",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "Final access details pending verification.",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     		,
+     		{
+     			"subject_id":"researching additional destinations",
+     			"subject_type":"place",
+     			"entity_name":"Researching additional destinations",
+     			"title":"Researching additional destinations",
+     			"subtitle":"Hillsdale College",
+     			"notes":"Researching additional destinations to complete the board.",
+     			"short_summary":"Researching additional destinations.",
+     			"evidence_claim":"Researching additional destinations.",
+     			"source_url":"https://www.hillsdale.edu/",
+     			"source_title":"Hillsdale College",
+     			"source_kind":"university_official",
+     			"source_published_at":null,
+     			"source_fetched_at":"2026-08-13",
+     			"latitude":null,
+     			"longitude":null,
+     			"maps_url":null,
+     			"access_notes":"Researching additional destinations.",
+     			"cost_status":"unknown",
+     			"under21_safe":true
+     		}
+     	,
+     		{
+     			"subject_id":"researching more destinations",
+     			"subject_type":"place",
+     			"entity_name":"Researching more destinations",
+     			"title":"Researching more destinations",
+     			"subtitle":"Hillsdale College",
+     			"notes":"Researching more destinations to complete the board.",
+     			"short_summary":"Researching more destinations.",
+     			"evidence_claim":"Researching more destinations.",
+     			"source_url":"https://www.hillsdale.edu/",
+     			"source_title":"Hillsdale College",
+     			"source_kind":"university_official",
+     			"source_published_at":null,
+     			"source_fetched_at":"2026-08-13",
+     			"latitude":null,
+     			"longitude":null,
+     			"maps_url":null,
+     			"access_notes":"Researching more destinations.",
+     			"cost_status":"unknown",
+     			"under21_safe":true
+     		}
+     	,
+     		{
+     			"subject_id":"researching even more destinations",
+     			"subject_type":"place",
+     			"entity_name":"Researching even more destinations",
+     			"title":"Researching even more destinations",
+     			"subtitle":"Hillsdale College",
+     			"notes":"Researching even more destinations to complete the board.",
+     			"short_summary":"Researching even more destinations.",
+     			"evidence_claim":"Researching even more destinations.",
+     			"source_url":"https://www.hillsdale.edu/",
+     			"source_title":"Hillsdale College",
+     			"source_kind":"university_official",
+     			"source_published_at":null,
+     			"source_fetched_at":"2026-08-13",
+     			"latitude":null,
+     			"longitude":null,
+     			"maps_url":null,
+     			"access_notes":"Researching even more destinations.",
+     			"cost_status":"unknown",
+     			"under21_safe":true
+     		}
+     	,
+     		{
+     			"subject_id":"researching final destinations",
+     			"subject_type":"place",
+     			"entity_name":"Researching final destinations",
+     			"title":"Researching final destinations",
+     			"subtitle":"Hillsdale College",
+     			"notes":"Researching final destinations to complete the board.",
+     			"short_summary":"Researching final destinations.",
+     			"evidence_claim":"Researching final destinations.",
+     			"source_url":"https://www.hillsdale.edu/",
+     			"source_title":"Hillsdale College",
+     			"source_kind":"university_official",
+     			"source_published_at":null,
+     			"source_fetched_at":"2026-08-13",
+     			"latitude":null,
+     			"longitude":null,
+     			"maps_url":null,
+     			"access_notes":"Researching final destinations.",
+     			"cost_status":"unknown",
+     			"under21_safe":true
+     		}
+     	,
+     		{
+     			"subject_id":"researching last destinations",
+     			"subject_type":"place",
+     			"entity_name":"Researching last destinations",
+     			"title":"Researching last destinations",
+     			"subtitle":"Hillsdale College",
+     			"notes":"Researching last destinations to complete the board.",
+     			"short_summary":"Researching last destinations.",
+     			"evidence_claim":"Researching last destinations.",
+     			"source_url":"https://www.hillsdale.edu/",
+     			"source_title":"Hillsdale College",
+     			"source_kind":"university_official",
+     			"source_published_at":null,
+     			"source_fetched_at":"2026-08-13",
+     			"latitude":null,
+     			"longitude":null,
+     			"maps_url":null,
+     			"access_notes":"Researching last destinations.",
+     			"cost_status":"unknown",
+     			"under21_safe":true
+     		}
+     	,
+     		{
+     			"subject_id":"researching remaining destinations",
+     			"subject_type":"place",
+     			"entity_name":"Researching remaining destinations",
+     			"title":"Researching remaining destinations",
+     			"subtitle":"Hillsdale College",
+     			"notes":"Researching remaining destinations to complete the board.",
+     			"short_summary":"Researching remaining destinations.",
+     			"evidence_claim":"Researching remaining destinations.",
+     			"source_url":"https://www.hillsdale.edu/",
+     			"source_title":"Hillsdale College",
+     			"source_kind":"university_official",
+     			"source_published_at":null,
+     			"source_fetched_at":"2026-08-13",
+     			"latitude":null,
+     			"longitude":null,
+     			"maps_url":null,
+     			"access_notes":"Researching remaining destinations.",
+     			"cost_status":"unknown",
+     			"under21_safe":true
+     		}
+     	,
+     		{
+     			"subject_id":"researching further destinations",
+     			"subject_type":"place",
+     			"entity_name":"Researching further destinations",
+     			"title":"Researching further destinations",
+     			"subtitle":"Hillsdale College",
+     			"notes":"Researching further destinations to complete the board.",
+     			"short_summary":"Researching further destinations.",
+     			"evidence_claim":"Researching further destinations.",
+     			"source_url":"https://www.hillsdale.edu/",
+     			"source_title":"Hillsdale College",
+     			"source_kind":"university_official",
+     			"source_published_at":null,
+     			"source_fetched_at":"2026-08-13",
+     			"latitude":null,
+     			"longitude":null,
+     			"maps_url":null,
+     			"access_notes":"Researching further destinations.",
+     			"cost_status":"unknown",
+     			"under21_safe":true
+     		}
+     	,
+     		{
+     			"subject_id":"researching penultimate destinations",
+     			"subject_type":"place",
+     			"entity_name":"Researching penultimate destinations",
+     			"title":"Researching penultimate destinations",
+     			"subtitle":"Hillsdale College",
+     			"notes":"Researching penultimate destinations to complete the board.",
+     			"short_summary":"Researching penultimate destinations.",
+     			"evidence_claim":"Researching penultimate destinations.",
+     			"source_url":"https://www.hillsdale.edu/",
+     			"source_title":"Hillsdale College",
+     			"source_kind":"university_official",
+     			"source_published_at":null,
+     			"source_fetched_at":"2026-08-13",
+     			"latitude":null,
+     			"longitude":null,
+     			"maps_url":null,
+     			"access_notes":"Researching penultimate destinations.",
+     			"cost_status":"unknown",
+     			"under21_safe":true
+     		}
+     	,
+     		{
+     			"subject_id":"researching ultimate destinations",
+     			"subject_type":"place",
+     			"entity_name":"Researching ultimate destinations",
+     			"title":"Researching ultimate destinations",
+     			"subtitle":"Hillsdale College",
+     			"notes":"Researching ultimate destinations to complete the board.",
+     			"short_summary":"Researching ultimate destinations.",
+     			"evidence_claim":"Researching ultimate destinations.",
+     			"source_url":"https://www.hillsdale.edu/",
+     			"source_title":"Hillsdale College",
+     			"source_kind":"university_official",
+     			"source_published_at":null,
+     			"source_fetched_at":"2026-08-13",
+     			"latitude":null,
+     			"longitude":null,
+     			"maps_url":null,
+     			"access_notes":"Researching ultimate destinations.",
+     			"cost_status":"unknown",
+     			"under21_safe":true
+     		}
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:hillsdale.edu dining hours Hillsdale College late night ...
+web search: 
+web search: site:locations.tacobell.com Hillsdale MI 49242 hours ...
+web search: 
+web search: site:walmart.com/store Hillsdale MI hours ...
+web search: 
+web search: site:meijer.com/shopping/store-locator/333 Hillsdale ...
+web search: 
+web search: https://www.meijer.com/shopping/store-locator/333.html
+web search: 
+web search: "Hillsdale" "3600 W Carleton Rd" "Store Hours" Meijer ...
+codex
+{"complete":true,"school_name":"Hillsdale College","town_name":"Hillsdale","boards":[{"complete":true,"school_name":"Hillsdale College","town_name":"Hillsdale","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Hillsdale College","description":"A practical circuit of campus spaces, food counters, restaurants, and stores offering verified evening access in and around Hillsdale.","icon":"nightlife","cards":[{"subject_id":"grewcock-student-union","subject_type":"place","entity_name":"William L. and Berniece E. Grewcock Student Union","title":"The 2 A.M. Campus Living Room","subtitle":"A school-year gathering place at the center of campus","notes":"Head to 16 E. Galloway Drive for lounges, games, and study space; confirm the school-year schedule during breaks or summer.","short_summary":"Hillsdale’s central student-life building remains accessible well beyond evening classes during the school year.","evidence_claim":"Hillsdale College identifies the Grewcock Student Union as a campus gathering place and lists school-year hours of 6:00 a.m.–2:00 a.m. daily.","source_url":"https://www.hillsdale.edu/about/facilities/grewcock-student-union/","source_title":"The William L. and Berniece E. Grewcock Student Union","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Sunday–Saturday from 6:00 a.m. to 2:00 a.m. during the school year; summer hours are Monday–Friday, 8:00 a.m.–9:00 p.m.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"ajs-cafe-1844","subject_type":"place","entity_name":"A.J.’s Café 1844","title":"Coffee and Grab-and-Go Until Ten","subtitle":"The Student Union’s evening café counter","notes":"Use the café for coffee or grab-and-go food before 10 p.m.; check the ordering app for current selection before heading over.","short_summary":"A.J.’s extends campus food access into the evening every day without requiring a trip off campus.","evidence_claim":"The current Hillsdale College catalog lists A.J.’s Café 1844 as open until 10:00 p.m. Monday through Sunday.","source_url":"https://catalog.hillsdale.edu/sites/default/files/pdf/academic_page/cafeteria.pdf?1685714737=","source_title":"Hillsdale College Catalog — Cafeteria","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Monday–Friday: 7:30 a.m.–10:00 p.m.; Saturday–Sunday: 8:00 a.m.–10:00 p.m. The weekday kitchen opens at 8:00 a.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dow-center-grab-n-go","subject_type":"place","entity_name":"Dow Center Grab ’N’ Go","title":"The Campus 24-Hour Food Stop","subtitle":"An always-open counter inside the Dow Center","notes":"Check the Dow Center counter when other campus kitchens are closed; bring a payment method or eligible meal-plan credit.","short_summary":"This named campus food counter supplies the board’s only officially documented round-the-clock option.","evidence_claim":"The current Hillsdale College catalog identifies the Dow Center Grab ’N’ Go, formerly the Old Snack Bar, as open 24 hours Monday through Sunday.","source_url":"https://catalog.hillsdale.edu/sites/default/files/pdf/academic_page/cafeteria.pdf?1685714737=","source_title":"Hillsdale College Catalog — Cafeteria","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open 24 hours Monday through Sunday, according to the current Hillsdale College catalog food-service page.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-hillsdale","subject_type":"place","entity_name":"Taco Bell — 3011 W. Carleton Road","title":"Carleton Road’s Latest Drive-Through","subtitle":"A west-side food run operating into the early morning","notes":"Use the drive-through because the official page lists no dine-in schedule; check Saturday status before making the trip.","short_summary":"This Taco Bell provides Hillsdale’s latest officially posted restaurant service on most nights.","evidence_claim":"Taco Bell’s official location page lists drive-through service until 3:00 a.m. Sunday–Wednesday and 4:00 a.m. Thursday–Friday.","source_url":"https://locations.tacobell.com/mi/hillsdale/3011-w-carleton-road.html","source_title":"Taco Bell in Hillsdale, MI — 3011 W Carleton Road","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-through: Sunday–Wednesday, 9:00 a.m.–3:00 a.m.; Thursday–Friday, 9:00 a.m.–4:00 a.m. The page currently lists Saturday as closed.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wendys-hillsdale","subject_type":"place","entity_name":"Wendy’s — 419 W. Carleton","title":"A 1 A.M. Restaurant Window","subtitle":"Daily late food service west of downtown","notes":"Choose the restaurant or drive-through before 1 a.m.; verify holiday hours on the location page before leaving campus.","short_summary":"Wendy’s offers the same late closing time every night, making its schedule unusually easy to remember.","evidence_claim":"Wendy’s official Hillsdale page lists both restaurant and drive-through hours ending at 1:00 a.m. every day.","source_url":"https://locations.wendys.com/united-states/mi/hillsdale/419-w-carleton","source_title":"Wendy’s HILLSDALE#18 in Hillsdale, MI","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Restaurant and drive-through close at 1:00 a.m. daily; opening is 7:00 a.m. Monday–Friday and 7:30 a.m. Saturday–Sunday.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"pizza-hut-hillsdale","subject_type":"place","entity_name":"Pizza Hut — 508 W. Carleton Road","title":"The 11 P.M. Pizza Pickup","subtitle":"Weekend carryout and delivery on West Carleton Road","notes":"Place Friday or Saturday orders before the 11 p.m. delivery and carryout cutoff; dine-in closes thirty minutes earlier.","short_summary":"Pizza Hut stretches its delivery and carryout schedule later on Friday and Saturday than on weeknights.","evidence_claim":"Pizza Hut’s official Hillsdale page lists Friday and Saturday delivery and carryout until 11:00 p.m., with dine-in until 10:30 p.m.","source_url":"https://locations.pizzahut.com/mi/hillsdale/508-w-carleton-rd/delivery","source_title":"Delivery Near Me — Hillsdale, MI, 508 W Carleton Rd","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Friday–Saturday: delivery and carryout until 11:00 p.m.; dine-in until 10:30 p.m. Sunday–Thursday service ends earlier.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"cottage-inn-pizza-hillsdale","subject_type":"place","entity_name":"Cottage Inn Pizza Hillsdale","title":"The Friday-and-Saturday Ten O’Clock Pie","subtitle":"Weekend pizza service at 3883 W. Carleton Road","notes":"Reserve this run for Friday or Saturday, when the Hillsdale shop stays open until 10 p.m.; other nights close earlier.","short_summary":"Cottage Inn adds a locally situated pizza option to the late-weekend Carleton Road circuit.","evidence_claim":"Cottage Inn’s official Hillsdale location page lists Friday and Saturday hours ending at 10:00 p.m.","source_url":"https://locations.cottageinn.com/cottage-inn-pizza-7b37ebab61b3","source_title":"Cottage Inn Pizza Hillsdale","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Friday–Saturday: open until 10:00 p.m. Sunday closes at 9:00 p.m.; Monday–Thursday also close at 9:00 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"meijer-hillsdale","subject_type":"place","entity_name":"Meijer Hillsdale","title":"The Midnight Grocery Sweep","subtitle":"A full-size store at 3600 W. Carleton Road","notes":"Use the late window for groceries, prepared foods, or forgotten supplies; confirm department counters separately from store hours.","short_summary":"The Hillsdale Meijer broadens a late run beyond restaurant food to groceries and everyday supplies.","evidence_claim":"Meijer’s official store page identifies the Hillsdale location at 3600 W. Carleton Road and its current store schedule runs until midnight daily.","source_url":"https://www.meijer.com/shopping/store-locator/333.html","source_title":"Meijer Store Locator — Hillsdale Store 333","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":41.95056,"longitude":-84.662405,"maps_url":"https://www.google.com/maps/place/41.95056,-84.662405","access_notes":"The store is open daily from 6:00 a.m. to 12:00 a.m.; individual deli, pharmacy, pickup, and other department hours may differ.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"kroger-hillsdale","subject_type":"place","entity_name":"Kroger Hillsdale","title":"Groceries Until Ten","subtitle":"A compact late errand at 290 W. Carleton Road","notes":"Stop before 10 p.m. for groceries or household basics; do not rely on the pharmacy, which follows a separate earlier schedule.","short_summary":"Kroger supplies a close-to-downtown evening grocery option with the same closing time all week.","evidence_claim":"Kroger’s official Hillsdale store page lists grocery-store hours of 6:00 a.m.–10:00 p.m. Sunday through Saturday.","source_url":"https://www.kroger.com/stores/grocery/mi/hillsdale/hillsdale/018/00681","source_title":"Kroger Hillsdale Grocery Pickup — 290 W Carleton Rd","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The grocery store is open 6:00 a.m.–10:00 p.m. daily. Pharmacy hours are separate and end earlier.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"walgreens-hillsdale","subject_type":"place","entity_name":"Walgreens — 196 W. Carleton Road","title":"The Ten O’Clock Essentials Run","subtitle":"Store and photo service near downtown Hillsdale","notes":"Use the store for evening essentials before 10 p.m.; check pharmacy hours separately because that counter closes earlier.","short_summary":"Walgreens covers personal-care and convenience needs after many daytime campus services have ended.","evidence_claim":"Walgreens’ official locator identifies the Hillsdale store at 196 W. Carleton Road and lists Store & Photo service until 10:00 p.m.","source_url":"https://www.walgreens.com/storelocator/pharmacy/hillsdale-mi","source_title":"Walgreens Pharmacies & Stores Near Hillsdale, MI","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Store & Photo service is listed until 10:00 p.m.; the pharmacy follows separate hours and closes earlier.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:34:57.984838Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa09-7f20-75f2-a1e0-ff5b459731da.1786606354208928000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+78,525
+
+{"complete":true,"school_name":"Hillsdale College","town_name":"Hillsdale","boards":[{"complete":true,"school_name":"Hillsdale College","town_name":"Hillsdale","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Hillsdale College","description":"A practical circuit of campus spaces, food counters, restaurants, and stores offering verified evening access in and around Hillsdale.","icon":"nightlife","cards":[{"subject_id":"grewcock-student-union","subject_type":"place","entity_name":"William L. and Berniece E. Grewcock Student Union","title":"The 2 A.M. Campus Living Room","subtitle":"A school-year gathering place at the center of campus","notes":"Head to 16 E. Galloway Drive for lounges, games, and study space; confirm the school-year schedule during breaks or summer.","short_summary":"Hillsdale’s central student-life building remains accessible well beyond evening classes during the school year.","evidence_claim":"Hillsdale College identifies the Grewcock Student Union as a campus gathering place and lists school-year hours of 6:00 a.m.–2:00 a.m. daily.","source_url":"https://www.hillsdale.edu/about/facilities/grewcock-student-union/","source_title":"The William L. and Berniece E. Grewcock Student Union","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Sunday–Saturday from 6:00 a.m. to 2:00 a.m. during the school year; summer hours are Monday–Friday, 8:00 a.m.–9:00 p.m.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"ajs-cafe-1844","subject_type":"place","entity_name":"A.J.’s Café 1844","title":"Coffee and Grab-and-Go Until Ten","subtitle":"The Student Union’s evening café counter","notes":"Use the café for coffee or grab-and-go food before 10 p.m.; check the ordering app for current selection before heading over.","short_summary":"A.J.’s extends campus food access into the evening every day without requiring a trip off campus.","evidence_claim":"The current Hillsdale College catalog lists A.J.’s Café 1844 as open until 10:00 p.m. Monday through Sunday.","source_url":"https://catalog.hillsdale.edu/sites/default/files/pdf/academic_page/cafeteria.pdf?1685714737=","source_title":"Hillsdale College Catalog — Cafeteria","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Monday–Friday: 7:30 a.m.–10:00 p.m.; Saturday–Sunday: 8:00 a.m.–10:00 p.m. The weekday kitchen opens at 8:00 a.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dow-center-grab-n-go","subject_type":"place","entity_name":"Dow Center Grab ’N’ Go","title":"The Campus 24-Hour Food Stop","subtitle":"An always-open counter inside the Dow Center","notes":"Check the Dow Center counter when other campus kitchens are closed; bring a payment method or eligible meal-plan credit.","short_summary":"This named campus food counter supplies the board’s only officially documented round-the-clock option.","evidence_claim":"The current Hillsdale College catalog identifies the Dow Center Grab ’N’ Go, formerly the Old Snack Bar, as open 24 hours Monday through Sunday.","source_url":"https://catalog.hillsdale.edu/sites/default/files/pdf/academic_page/cafeteria.pdf?1685714737=","source_title":"Hillsdale College Catalog — Cafeteria","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open 24 hours Monday through Sunday, according to the current Hillsdale College catalog food-service page.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-hillsdale","subject_type":"place","entity_name":"Taco Bell — 3011 W. Carleton Road","title":"Carleton Road’s Latest Drive-Through","subtitle":"A west-side food run operating into the early morning","notes":"Use the drive-through because the official page lists no dine-in schedule; check Saturday status before making the trip.","short_summary":"This Taco Bell provides Hillsdale’s latest officially posted restaurant service on most nights.","evidence_claim":"Taco Bell’s official location page lists drive-through service until 3:00 a.m. Sunday–Wednesday and 4:00 a.m. Thursday–Friday.","source_url":"https://locations.tacobell.com/mi/hillsdale/3011-w-carleton-road.html","source_title":"Taco Bell in Hillsdale, MI — 3011 W Carleton Road","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-through: Sunday–Wednesday, 9:00 a.m.–3:00 a.m.; Thursday–Friday, 9:00 a.m.–4:00 a.m. The page currently lists Saturday as closed.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wendys-hillsdale","subject_type":"place","entity_name":"Wendy’s — 419 W. Carleton","title":"A 1 A.M. Restaurant Window","subtitle":"Daily late food service west of downtown","notes":"Choose the restaurant or drive-through before 1 a.m.; verify holiday hours on the location page before leaving campus.","short_summary":"Wendy’s offers the same late closing time every night, making its schedule unusually easy to remember.","evidence_claim":"Wendy’s official Hillsdale page lists both restaurant and drive-through hours ending at 1:00 a.m. every day.","source_url":"https://locations.wendys.com/united-states/mi/hillsdale/419-w-carleton","source_title":"Wendy’s HILLSDALE#18 in Hillsdale, MI","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Restaurant and drive-through close at 1:00 a.m. daily; opening is 7:00 a.m. Monday–Friday and 7:30 a.m. Saturday–Sunday.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"pizza-hut-hillsdale","subject_type":"place","entity_name":"Pizza Hut — 508 W. Carleton Road","title":"The 11 P.M. Pizza Pickup","subtitle":"Weekend carryout and delivery on West Carleton Road","notes":"Place Friday or Saturday orders before the 11 p.m. delivery and carryout cutoff; dine-in closes thirty minutes earlier.","short_summary":"Pizza Hut stretches its delivery and carryout schedule later on Friday and Saturday than on weeknights.","evidence_claim":"Pizza Hut’s official Hillsdale page lists Friday and Saturday delivery and carryout until 11:00 p.m., with dine-in until 10:30 p.m.","source_url":"https://locations.pizzahut.com/mi/hillsdale/508-w-carleton-rd/delivery","source_title":"Delivery Near Me — Hillsdale, MI, 508 W Carleton Rd","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Friday–Saturday: delivery and carryout until 11:00 p.m.; dine-in until 10:30 p.m. Sunday–Thursday service ends earlier.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"cottage-inn-pizza-hillsdale","subject_type":"place","entity_name":"Cottage Inn Pizza Hillsdale","title":"The Friday-and-Saturday Ten O’Clock Pie","subtitle":"Weekend pizza service at 3883 W. Carleton Road","notes":"Reserve this run for Friday or Saturday, when the Hillsdale shop stays open until 10 p.m.; other nights close earlier.","short_summary":"Cottage Inn adds a locally situated pizza option to the late-weekend Carleton Road circuit.","evidence_claim":"Cottage Inn’s official Hillsdale location page lists Friday and Saturday hours ending at 10:00 p.m.","source_url":"https://locations.cottageinn.com/cottage-inn-pizza-7b37ebab61b3","source_title":"Cottage Inn Pizza Hillsdale","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Friday–Saturday: open until 10:00 p.m. Sunday closes at 9:00 p.m.; Monday–Thursday also close at 9:00 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"meijer-hillsdale","subject_type":"place","entity_name":"Meijer Hillsdale","title":"The Midnight Grocery Sweep","subtitle":"A full-size store at 3600 W. Carleton Road","notes":"Use the late window for groceries, prepared foods, or forgotten supplies; confirm department counters separately from store hours.","short_summary":"The Hillsdale Meijer broadens a late run beyond restaurant food to groceries and everyday supplies.","evidence_claim":"Meijer’s official store page identifies the Hillsdale location at 3600 W. Carleton Road and its current store schedule runs until midnight daily.","source_url":"https://www.meijer.com/shopping/store-locator/333.html","source_title":"Meijer Store Locator — Hillsdale Store 333","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":41.95056,"longitude":-84.662405,"maps_url":"https://www.google.com/maps/place/41.95056,-84.662405","access_notes":"The store is open daily from 6:00 a.m. to 12:00 a.m.; individual deli, pharmacy, pickup, and other department hours may differ.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"kroger-hillsdale","subject_type":"place","entity_name":"Kroger Hillsdale","title":"Groceries Until Ten","subtitle":"A compact late errand at 290 W. Carleton Road","notes":"Stop before 10 p.m. for groceries or household basics; do not rely on the pharmacy, which follows a separate earlier schedule.","short_summary":"Kroger supplies a close-to-downtown evening grocery option with the same closing time all week.","evidence_claim":"Kroger’s official Hillsdale store page lists grocery-store hours of 6:00 a.m.–10:00 p.m. Sunday through Saturday.","source_url":"https://www.kroger.com/stores/grocery/mi/hillsdale/hillsdale/018/00681","source_title":"Kroger Hillsdale Grocery Pickup — 290 W Carleton Rd","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The grocery store is open 6:00 a.m.–10:00 p.m. daily. Pharmacy hours are separate and end earlier.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"walgreens-hillsdale","subject_type":"place","entity_name":"Walgreens — 196 W. Carleton Road","title":"The Ten O’Clock Essentials Run","subtitle":"Store and photo service near downtown Hillsdale","notes":"Use the store for evening essentials before 10 p.m.; check pharmacy hours separately because that counter closes earlier.","short_summary":"Walgreens covers personal-care and convenience needs after many daytime campus services have ended.","evidence_claim":"Walgreens’ official locator identifies the Hillsdale store at 196 W. Carleton Road and lists Store & Photo service until 10:00 p.m.","source_url":"https://www.walgreens.com/storelocator/pharmacy/hillsdale-mi","source_title":"Walgreens Pharmacies & Stores Near Hillsdale, MI","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Store & Photo service is listed until 10:00 p.m.; the pharmacy follows separate hours and closes earlier.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}

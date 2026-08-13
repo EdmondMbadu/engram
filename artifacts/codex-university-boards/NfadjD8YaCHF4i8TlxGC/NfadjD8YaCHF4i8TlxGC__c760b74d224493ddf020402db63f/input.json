@@ -1,0 +1,41 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "dW1T5y0cELueSv3Ph5Zz",
+    "schoolName": "University of Maryland-College Park",
+    "shortSchoolName": "University of Maryland-College Park",
+    "townName": "College Park",
+    "state": "MD",
+    "countryCode": "US",
+    "unitId": "163286",
+    "website": "https://www.umd.edu/",
+    "latitude": 38.988178,
+    "longitude": -76.944721,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/3/3e/University_of_Maryland_seal.svg/250px-University_of_Maryland_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=umd.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at University of Maryland-College Park, Shared as Cards",
+  "excluded_subjects": [],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

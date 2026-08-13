@@ -1,0 +1,59 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "IrFE94UzmzC7hbUyCcFY",
+    "schoolName": "University of Michigan-Ann Arbor",
+    "shortSchoolName": "University of Michigan-Ann Arbor",
+    "townName": "Ann Arbor",
+    "state": "MI",
+    "countryCode": "US",
+    "unitId": "170976",
+    "website": "https://umich.edu/",
+    "latitude": 42.278374,
+    "longitude": -83.73481,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Seal_of_the_University_of_Michigan.svg/250px-Seal_of_the_University_of_Michigan.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=umich.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "University of Michigan Museum of Art",
+    "Kelsey Museum of Archaeology",
+    "University of Michigan Museum of Natural History",
+    "Judy and Stanley Frankel Detroit Observatory",
+    "Matthaei Botanical Gardens",
+    "Nichols Arboretum",
+    "Hatcher Gallery",
+    "Institute for the Humanities Gallery",
+    "Lane Hall Exhibit Space",
+    "Art & Environment Gallery",
+    "Central Campus Diag",
+    "Eda U. Gerstacker Grove",
+    "Endover (The Cube)",
+    "Wave Field",
+    "Shapiro Undergraduate Library",
+    "Michigan Union",
+    "William Monroe Trotter Multicultural Center",
+    "Michigan League Underground",
+    "Pierpont Commons"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

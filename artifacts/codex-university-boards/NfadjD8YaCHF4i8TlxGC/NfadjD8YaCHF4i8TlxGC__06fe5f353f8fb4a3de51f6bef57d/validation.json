@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.syracuse.edu/stories/the-best-study-spots-on-campus/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.syracuse.edu/stories/the-best-study-spots-on-campus/",
+      "error": ""
+    },
+    {
+      "url": "https://www.syracuse.edu/campus-life/libraries/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.syracuse.edu/campus-life/libraries/",
+      "error": ""
+    },
+    {
+      "url": "https://www.syracuse.edu/stories/study-spots/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.syracuse.edu/stories/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

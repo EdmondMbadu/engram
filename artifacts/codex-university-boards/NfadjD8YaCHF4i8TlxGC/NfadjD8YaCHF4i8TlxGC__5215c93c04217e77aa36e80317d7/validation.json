@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.csueastbay.edu/music/news-events/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csueastbay.edu/music/news-events/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.csueastbay.edu/preview-day/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csueastbay.edu/preview-day/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ebparks.org/parks/hayward",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ebparks.org/parks/hayward",
+      "error": ""
+    },
+    {
+      "url": "https://www.haywardrec.org/Facilities/Facility/Details/Cannery-Park-Splash-Pad-111?mobile=ON",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.haywardrec.org/Facilities/Facility/Details/Cannery-Park-Splash-Pad-111?mobile=ON",
+      "error": ""
+    },
+    {
+      "url": "https://www.haywardrec.org/2058/Special-Events",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.haywardrec.org/2058/Special-Events",
+      "error": ""
+    },
+    {
+      "url": "https://haywardrec.org/Calendar.aspx?EID=2676&calType=0&day=6&month=9&year=2026",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://haywardrec.org/Calendar.aspx?EID=2676&calType=0&day=6&month=9&year=2026",
+      "error": ""
+    },
+    {
+      "url": "https://www.hayward-ca.gov/community-events",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hayward-ca.gov/community-events",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

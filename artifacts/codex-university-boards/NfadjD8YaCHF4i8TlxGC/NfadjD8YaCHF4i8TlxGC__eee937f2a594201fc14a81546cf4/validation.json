@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://digital.swarthmore.edu/issue/viewbook-2022-2023/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://digital.swarthmore.edu/issue/viewbook-2022-2023/",
+      "error": ""
+    },
+    {
+      "url": "https://www.swarthmore.edu/news-events/unique-commencement-highlights-classes-2022-and-2020",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.swarthmore.edu/news-events/unique-commencement-highlights-classes-2022-and-2020",
+      "error": ""
+    },
+    {
+      "url": "https://blogs.swarthmore.edu/its/2024/04/19/perfect-day-for-a-boat-race/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://blogs.swarthmore.edu/its/2024/04/19/perfect-day-for-a-boat-race/",
+      "error": ""
+    },
+    {
+      "url": "https://magazine.swarthmore.edu/issue/spring-2021/winging-it/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://magazine.swarthmore.edu/issue/spring-2021/winging-it/",
+      "error": ""
+    },
+    {
+      "url": "https://swarthmorephoenix.com/2022/02/24/ninjagrams-return-an-old-tradition-coming-back-to-life/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://swarthmorephoenix.com/2022/02/24/ninjagrams-return-an-old-tradition-coming-back-to-life/",
+      "error": ""
+    },
+    {
+      "url": "https://swarthmorephoenix.com/2022/03/17/worthstock-2022-begins-planning-phase/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://swarthmorephoenix.com/2022/03/17/worthstock-2022-begins-planning-phase/",
+      "error": ""
+    },
+    {
+      "url": "https://swarthmorephoenix.com/2026/04/16/letter-to-the-editor-swarthmore-should-at-least-be-honest-about-their-values/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://swarthmorephoenix.com/2026/04/16/letter-to-the-editor-swarthmore-should-at-least-be-honest-about-their-values/",
+      "error": ""
+    },
+    {
+      "url": "https://digital.swarthmore.edu/viewbook/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://digital.swarthmore.edu/viewbook/",
+      "error": ""
+    },
+    {
+      "url": "https://swarthmorephoenix.com/2011/03/31/folk-festival/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://swarthmorephoenix.com/2011/03/31/folk-festival/",
+      "error": ""
+    },
+    {
+      "url": "https://swarthmorephoenix.com/2003/04/25/friday-april-25-2003/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://swarthmorephoenix.com/2003/04/25/friday-april-25-2003/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 100,
+  "generationGrade": "A"
+}

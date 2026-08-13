@@ -1,0 +1,66 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Published access hours can change for holidays, academic breaks, and special events; verify same-day notices before relying on evening or weekend access.",
+    "The College’s public sources do not provide separately verified coordinates for interior rooms, so card coordinates are null.",
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.gcc.edu/Home/News-Archive/News-Article/college-rededicates-library-after-9-million-renovation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Home/News-Archive/News-Article/college-rededicates-library-after-9-million-renovation",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcc.edu/Home/Experience-the-Grove/Facilities/Staley-Hall-of-Arts-Letters",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Home/Experience-Grove/Facilities/Staley-Hall-of-Arts-Letters",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcc.edu/Home/Experience-the-Grove/Facilities/STEM-Hall",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Home/Experience-the-Grove/Facilities/STEM-Hall",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcc.edu/Home/Staff-Directory/Staff-Detail/engineering-aesthetics-hoyt-hall-gets-a-makeover",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Home/Staff-Directory/Staff-Detail/engineering-aesthetics-hoyt-hall-gets-a-makeover",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcc.edu/Home/Academics/Majors-Departments/Education",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Home/Academics/Majors-Departments/Education",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcc.edu/Home/Experience-the-Grove/Facilities/Breen-Student-Union",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Home/Experience-the-Grove/Facilities/Breen-Student-Union",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Staley Hall of Arts and Letters",
+    "Breen Student Union"
+  ],
+  "sourceCount": 6,
+  "generationScore": 90,
+  "generationGrade": "A"
+}

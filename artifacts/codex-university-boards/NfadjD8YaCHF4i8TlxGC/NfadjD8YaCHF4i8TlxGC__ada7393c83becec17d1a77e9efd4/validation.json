@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.tacobell.com/ia/cedar-falls/6023-university-avenue.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ia/cedar-falls/6023-university-avenue.html",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/iowa/cedar-falls/2024-college-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/iowa/cedar-falls/2024-college-st",
+      "error": ""
+    },
+    {
+      "url": "https://locations.papajohns.com/united-states/ia/50613/cedarfalls/1322-w-1st-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.papajohns.com/united-states/ia/50613/cedarfalls/1322-w-1st-st",
+      "error": ""
+    },
+    {
+      "url": "https://www.communitymainstreet.org/businesses/tonys-lapizzeria",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.communitymainstreet.org/businesses/tonys-lapizzeria",
+      "error": ""
+    },
+    {
+      "url": "https://pancheros.com/location/cedar-falls/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pancheros.com/location/cedar-falls/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/ia/cedar-falls/6719-university-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/ia/cedar-falls/6719-university-ave",
+      "error": ""
+    },
+    {
+      "url": "https://locations.raisingcanes.com/ia/cedar-falls/201-viking-plaza-drive",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.raisingcanes.com/ia/cedar-falls/201-viking-plaza-drive",
+      "error": ""
+    },
+    {
+      "url": "https://zurystacobaria.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://zurystacobaria.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.mulligansbrickoven.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mulligansbrickoven.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.caseys.com/general-store/ia-cedarfalls/5226-university-ave/2630",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.caseys.com/general-store/ia-cedarfalls/5226-university-ave/2630",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

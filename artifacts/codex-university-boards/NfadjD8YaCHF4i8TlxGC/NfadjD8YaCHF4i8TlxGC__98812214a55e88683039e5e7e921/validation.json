@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.udel.edu/apply/undergraduate-admissions/plan-your-visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.udel.edu/apply/undergraduate-admissions/plan-your-visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.udel.edu/students/involvement/usc/visit/trabant-university-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.udel.edu/students/involvement/usc/visit/trabant-university-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.udel.edu/students/involvement/usc/visit/perkins-student-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.udel.edu/students/involvement/usc/visit/perkins-student-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.udel.edu/udaily/2025/may/memorial-hall-centennial-heart-of-ud/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.udel.edu/udaily/2025/may/memorial-hall-centennial-heart-of-ud/",
+      "error": ""
+    },
+    {
+      "url": "https://library.udel.edu/hours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.udel.edu/hours/",
+      "error": ""
+    },
+    {
+      "url": "https://library.udel.edu/museums/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.udel.edu/museums/about/",
+      "error": ""
+    },
+    {
+      "url": "https://www.udel.edu/academics/colleges/canr/about/udairy-creamery/?loc=9&trap=1",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.udel.edu/academics/colleges/canr/about/udairy-creamery/?loc=9&trap=1",
+      "error": ""
+    },
+    {
+      "url": "https://www.udel.edu/alumni-friends/delaware-first/transforming-campus/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.udel.edu/alumni-friends/delaware-first/transforming-campus/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

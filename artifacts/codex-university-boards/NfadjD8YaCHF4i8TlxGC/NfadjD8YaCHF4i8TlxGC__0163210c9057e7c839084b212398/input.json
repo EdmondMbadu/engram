@@ -1,0 +1,69 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "W19bBm2hYTm2Y4pHTH1i",
+    "schoolName": "California State University-East Bay",
+    "shortSchoolName": "California State University-East Bay",
+    "townName": "Hayward",
+    "state": "CA",
+    "countryCode": "US",
+    "unitId": "110574",
+    "website": "https://www.csueastbay.edu/",
+    "latitude": 37.657694,
+    "longitude": -122.054135,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=csueastbay.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=csueastbay.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain California State University-East Bay",
+  "excluded_subjects": [
+    "California State University, East Bay Hayward Campus",
+    "Cal State East Bay University Art Gallery",
+    "CORE Library",
+    "Cal State East Bay University Union",
+    "Recreation and Wellness Center",
+    "Hayward Japanese Gardens",
+    "Hayward Heritage Plaza",
+    "Hayward Mural Arts Program",
+    "Sulphur Creek Nature Center",
+    "Garin Regional Park",
+    "CSU East Bay Recital Hall",
+    "Preview Day 2026",
+    "Hayward Regional Shoreline",
+    "Cannery Park Splash Pad",
+    "Free Outdoor Movie Night at Tennyson Park",
+    "Touch-A-Truck 2026",
+    "Agricultural Day 2026",
+    "Music at the Mansion: The JC Smith Band",
+    "Hayward Airport Open House",
+    "H.A.R.D. Holiday Lights at McConaghy House",
+    "Hayward Public Library—Downtown Library",
+    "Heritage Plaza",
+    "Hayward City Hall",
+    "Sun Gallery",
+    "Japanese Gardens",
+    "HAHS Museum of History & Culture",
+    "Douglas Morrisson Theatre",
+    "Meek Estate Park",
+    "Hayward Shoreline Interpretive Center"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

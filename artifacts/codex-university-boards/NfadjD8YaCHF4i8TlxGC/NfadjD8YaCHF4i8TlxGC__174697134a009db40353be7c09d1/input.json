@@ -1,0 +1,60 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "pIT1btE1qsu5PYbjxNKG",
+    "schoolName": "Florida State University",
+    "shortSchoolName": "Florida State University",
+    "townName": "Tallahassee",
+    "state": "FL",
+    "countryCode": "US",
+    "unitId": "134097",
+    "website": "https://www.fsu.edu/",
+    "latitude": 30.443147,
+    "longitude": -84.295064,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/6/6b/Florida_State_University_seal.svg/250px-Florida_State_University_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=fsu.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "Florida State University Museum of Fine Arts",
+    "Kayaking at FSU Lakefront Park",
+    "Stand-Up Paddleboarding at FSU Lakefront Park",
+    "Swimming at FSU Lakefront Park",
+    "Sand Volleyball at FSU Lakefront Park",
+    "Disc Golf at FSU Lakefront Park",
+    "Climbing Wall at FSU Lakefront Park",
+    "Indoor Track at Bobby E. Leach Student Recreation Center",
+    "Pick-Up Basketball at Bobby E. Leach Student Recreation Center",
+    "FSU Campus Recreation Group Fitness",
+    "Bradley Reading Room",
+    "Dr. Mary Lou Norwood Reading Room",
+    "Strozier Individual Study Rooms 2041–2060",
+    "Strozier Group Study Rooms 331–342",
+    "Dirac Individual Study Rooms 103H–307H",
+    "Dirac Group Study Rooms 303–305",
+    "WJB Learning Studio",
+    "FSU Innovation Hub",
+    "FSU Student Union Study Rooms",
+    "Thagard CARE Study Rooms"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

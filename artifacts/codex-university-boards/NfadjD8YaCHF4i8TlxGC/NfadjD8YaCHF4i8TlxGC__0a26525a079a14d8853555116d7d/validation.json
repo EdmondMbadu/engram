@@ -1,0 +1,64 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://library.ucsc.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.ucsc.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://library.ucsc.edu/study-room-policies",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.ucsc.edu/study-room-policies",
+      "error": ""
+    },
+    {
+      "url": "https://library.ucsc.edu/giving/university-library-newsletter-spring-quarter-2025",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.ucsc.edu/giving/university-library-newsletter-spring-quarter-2025",
+      "error": ""
+    },
+    {
+      "url": "https://library.ucsc.edu/giving/university-library-newsletter-issue-21-spring-2014",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.ucsc.edu/giving/university-library-newsletter-issue-21-spring-2014",
+      "error": ""
+    },
+    {
+      "url": "https://library.ucsc.edu/giving",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.ucsc.edu/giving-to-the-library",
+      "error": ""
+    },
+    {
+      "url": "https://library.ucsc.edu/giving/university-library-newsletter-issue-35-fall-2019",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.ucsc.edu/giving/university-library-newsletter-issue-35-fall-2019",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "McHenry Library",
+    "Science & Engineering Library"
+  ],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

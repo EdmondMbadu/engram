@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://risdmuseum.org/exhibitions-events/events/audience/college-students",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://risdmuseum.org/exhibitions-events/events/audience/college-students",
+      "error": ""
+    },
+    {
+      "url": "https://naturelab.risd.edu/research/looplab/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://naturelab.risd.edu/research/looplab/",
+      "error": ""
+    },
+    {
+      "url": "https://provlib.org/150-anniversary/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://provlib.org/150-anniversary/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/rowi/planyourvisit/fees.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/rowi/planyourvisit/fees.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.sos.ri.gov/divisions/civics-and-education/ri-state-house/state-house-tours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sos.ri.gov/divisions/civics-and-education/ri-state-house/state-house-tours",
+      "error": ""
+    },
+    {
+      "url": "https://epl.providenceri.gov/parks-playgrounds/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://epl.providenceri.gov/parks-playgrounds/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

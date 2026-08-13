@@ -1,0 +1,63 @@
+{
+  "ok": false,
+  "problems": [
+    "Card entities are not unique."
+  ],
+  "warnings": [
+    "Several official pages establish that eligible offerings are free but do not replace checking the current event calendar, seasonal rules, or student-organization procedures before going."
+  ],
+  "reachability": [
+    {
+      "url": "https://athletics.carleton.edu/sports/2019/7/15/cowling-arboretum.aspx?id=6001",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://athletics.carleton.edu/sports/2019/7/15/cowling-arboretum.aspx?id=6001",
+      "error": ""
+    },
+    {
+      "url": "https://cdn.carleton.edu/uploads/sites/594/2020/12/2017B_WArbMapWithRules.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cdn.carleton.edu/uploads/sites/594/2020/12/2017B_WArbMapWithRules.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://cdn.carleton.edu/uploads/sites/563/2020/12/PresidentialProspectus.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cdn.carleton.edu/uploads/sites/563/2020/12/PresidentialProspectus.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://apps.carleton.edu/student/orgs/schiller/assets/Tour_Booklet_10_11.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://apps.carleton.edu/student/orgs/schiller/assets/Tour_Booklet_10_11.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://apps.carleton.edu/student/orgs/schiller/assets/FINALTOURBOOKLET2011_2012.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://apps.carleton.edu/student/orgs/schiller/assets/FINALTOURBOOKLET2011_2012.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://cdn.carleton.edu/uploads/sites/314/2020/06/110613_carleton-climate-action-plan_WEB.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cdn.carleton.edu/uploads/sites/314/2020/06/110613_carleton-climate-action-plan_WEB.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": null,
+  "generationGrade": null
+}

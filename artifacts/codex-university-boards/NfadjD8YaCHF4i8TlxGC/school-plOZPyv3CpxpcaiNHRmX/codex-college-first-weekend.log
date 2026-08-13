@@ -1,0 +1,561 @@
+Reading additional input from stdin...
+2026-08-13T08:38:51.959087Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa45-f482-7040-a0eb-d3454209a5de.1786610316418984000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:38:51.998599Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa45-f5ac-7fa0-928a-4b1d9bdc763b.1786610316717147000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-terra
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa46-30dd-7681-aeb7-062c99fb446e
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"plOZPyv3CpxpcaiNHRmX","schoolName":"North Central College","shortSchoolName":"North Central College","townName":"Naperville","state":"IL","countryCode":"US","website":"https://northcentralcollege.edu/","latitude":41.77576,"longitude":-88.14279},"templates":[{"id":"college-first-weekend","version":"1.0","titlePattern":"Your First Weekend at {school}, Shared as Cards","editorialBrief":"Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.","researchQueries":["new student orientation campus guide","first year student campus activities","weekend near campus students"],"count":10,"icon":"schedule","primarySubjectType":"sequence_stop","allowedSubjectTypes":["sequence_stop","place","activity"],"freshnessDays":180,"exactTitle":"Your First Weekend at North Central College, Shared as Cards"}]}
+2026-08-13T08:38:52.224137Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa45-f61c-7100-9340-6cc63b1e064f.1786610316828738000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:38:52.436614Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa45-f0b9-7b12-84a3-5ed9ec97ac67.1786610315450522000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:38:52.535885Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa45-e88f-7771-81ab-627931db8e5d.1786610313361734000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:38:52.581561Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa45-f0a9-73c1-9c15-731ca1a33362.1786610315434943000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:38:52.601661Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T08:38:52.623475Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T08:38:52.808155Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa45-f6e2-74c2-a45f-2dc364709c4e.1786610319395066000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:38:52.977929Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa45-e8c9-7231-aae9-1c4d91b7db5b.1786610313417702000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:38:53.182345Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa45-f19a-7fe1-9259-ed3712cba245.1786610315675252000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:38:53.392259Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa45-f0f6-7b50-b27d-ae00dcbaf80b.1786610315511302000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:38:53.547746Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa45-f0b3-7762-859a-5ab856bb31e1.1786610315444315000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:38:53.673191Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa45-f457-75b0-915e-bb1ab602ef94.1786610316376230000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:38:53.788638Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa45-f63c-7c12-96b8-720ed5d2731d.1786610316861305000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:38:53.840307Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa45-e90d-7640-a438-0ee22c750982.1786610313486595000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:38:53.871469Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa45-f544-7ac1-a927-e74d1c4f368e.1786610316613102000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:38:53.912666Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa45-f08c-7b62-a9e5-80d376e1476c.1786610315414605000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:38:53.952370Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa45-e8e4-7621-8e1b-06d4674047a7.1786610313445115000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:38:53.984031Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa45-efb6-7001-8ea4-d41f13d8cade.1786610315192383000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{"complete":false,"school_name":"North Central College","town_name":"Naperville","boards":[{"complete":false,"school_name":"North Central College","town_name":"Naperville","template_id":"college-first-weekend","title":"Your First Weekend at North Central College, Shared as Cards","description":"I’m verifying ten under-21-safe, current campus and Naperville stops with direct sources before assembling the board.","icon":"schedule","cards":	[{"subject_id":"research-in-progress","subject_type":"sequence_stop","entity_name":"Research in progress","title":"Verifying sources","subtitle":"North Central College, Naperville","notes":"Checking official campus, city, and cultural sources for distinct first-weekend stops and accurate access details.","short_summary":"A researched sequence is being assembled.","evidence_claim":"Research is in progress.","source_url":"https://northcentralcollege.edu/","source_title":"North Central College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"unknown","under21_safe":true}		   	   	  	   	  	   	  	   	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	    
+   	  	  	  	  	  	  	  	  	  	  	    
+   	  	  	  	  	    
+   	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	    
+   	  	                      	  	  	  	  	  	    
+     	  	  	  	    
+   	    
+     	  	  	  	  	       	
+  	  	  	  	  	  	  	  	  	  	  	  	    
+   	  	  	    
+   	    
+   	  	
+    	
+    	
+    	
+    	
+      
+   	    
+   	    
+   	  	
+    	
+    	
+      
+   	    
+   	   
+     	
+  		
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+		
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  			
+  	
+  	
+  	
+  	
+     
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+		
+  	
+  	
+		
+  	
+  	
+  	
+  	
+  	
+  	
+    
+  	
+  	
+  	
+  	
+  	
+  	   
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+    
+  	
+     
+  	
+   
+  	
+  	
+    
+  	
+      
+     
+  	
+  	
+  	
+    
+  	
+    
+  	
+    
+  	
+     
+  	
+    
+  	
+       
+  	
+      
+    
+  	
+    	
+  	
+  	
+  	
+  	
+  	
+  	
+    
+  	
+     
+  	
+     
+    
+  	
+  	
+  	
+  	
+     
+  	
+    
+  	
+    
+  	
+     
+  	
+    
+   
+  	
+  	
+  	
+  	
+    
+  	
+  	
+  		
+  	
+  	
+  	
+  	
+     
+  	
+    
+    
+  	
+    
+  	
+		
+  	
+  	
+    
+  	
+        
+  	
+  	
+  	
+  	
+    
+  	
+     
+    
+  	
+    
+  	
+     
+  	
+  	
+    
+  	
+  	
+     
+  	
+    
+  	
+     
+  	
+  	
+  	
+  	
+    
+  	
+    
+  	
+     
+  	
+    
+    
+  	
+    
+  	
+  
+  	
+  	
+  	
+    
+    
+  	
+  	
+  	
+      
+  	
+  	
+  	
+  
+  
+  	
+  	
+  	
+    
+  		
+  	
+      
+  	
+  	
+  	
+  	
+  	
+    
+  
+  	
+     
+  	
+     
+    
+  	
+  	
+  	
+  	
+  	
+     
+  	
+     
+  	
+  	
+  	
+     
+  	
+    
+  	
+  
+  	
+  	
+  	
+   
+  	
+  	
+  	
+  	
+  	
+    
+  	
+  	
+   
+  	
+  	
+  	
+     
+  	
+    
+    
+  	
+     
+  	
+     
+    
+  	
+  
+    
+  	
+   
+  	
+    
+  	
+  		
+  	
+    
+  	
+  
+  	
+  	
+      
+  	
+    
+  	
+  
+   
+  	
+   
+  	
+  
+   
+  	
+  	
+  	
+    
+  	
+  
+    
+  	
+  
+  	
+  	
+  	
+     
+    
+  
+  		
+  	
+  		
+  	
+    
+  	
+  	
+        
+  	
+  	
+  	 
+  	
+  	
+  	
+  	
+     
+  	
+   
+  	
+  	
+                          
+  	
+  			            
+  	
+  	
+  
+
+  	
+  			                
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  			            
+  	
+  		
+  	
+  	
+  	
+  	
+     
+  	
+  	
+  	
+  	        	
+  	
+  				 
+  	
+  	
+  	
+  	
+     
+  	
+  	
+     
+  	
+  	
+  		
+  	
+    
+    
+  	
+  
+  	
+  
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  			            
+  	
+    
+  	
+  	
+    
+  	
+  
+  	
+  		
+  	
+   
+  	
+   
+  	
+  
+
+  	
+  	 
+  
+  	
+  	
+  	
+      
+  	
+    	
+  	
+    
+  	
+  
+    
+  	
+    
+  	
+  
+
+  	
+  	
+  	
+  	
+  	
+  	
+   
+  	
+  				     
+  	
+  
+  	
+		
+  	
+  	
+  
+  	
+   
+  	
+		
+  	
+  			
+  	
+  		
+  	
+  	
+  				
+  	
+  	
+    
+  	
+  	
+  	
+
+  	
+  	
+  	
+  
+    
+  	
+  	
+  	
+  	
+          
+  	
+     
+  	
+  	
+  	
+  	
+  	
+  					
+  	
+  	
+  	
+  			
+  	
+  	
+  	
+  	
+  	
+  	,{"subject_id":"research-in-progress","subject_type":"sequence_stop","entity_name":"Research in progress","title":"Verifying sources","subtitle":"North Central College, Naperville","notes":"Checking official campus, city, and cultural sources for distinct first-weekend stops and accurate access details.","short_summary":"A researched sequence is being assembled.","evidence_claim":"Research is in progress.","source_url":"https://northcentralcollege.edu/","source_title":"North Central College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"unknown","under21_safe":true}	,{"subject_id":"research-in-progress","subject_type":"sequence_stop","entity_name":"Research in progress","title":"Verifying sources","subtitle":"North Central College, Naperville","notes":"Checking official campus, city, and cultural sources for distinct first-weekend stops and accurate access details.","short_summary":"A researched sequence is being assembled.","evidence_claim":"Research is in progress.","source_url":"https://northcentralcollege.edu/","source_title":"North Central College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"unknown","under21_safe":true}	,{"subject_id":"research-in-progress","subject_type":"sequence_stop","entity_name":"Research in progress","title":"Verifying sources","subtitle":"North Central College, Naperville","notes":"Checking official campus, city, and cultural sources for distinct first-weekend stops and accurate access details.","short_summary":"A researched sequence is being assembled.","evidence_claim":"Research is in progress.","source_url":"https://northcentralcollege.edu/","source_title":"North Central College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"unknown","under21_safe":true}	,{"subject_id":"research-in-progress","subject_type":"sequence_stop","entity_name":"Research in progress","title":"Verifying sources","subtitle":"North Central College, Naperville","notes":"Checking official campus, city, and cultural sources for distinct first-weekend stops and accurate access details.","short_summary":"A researched sequence is being assembled.","evidence_claim":"Research is in progress.","source_url":"https://northcentralcollege.edu/","source_title":"North Central College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"unknown","under21_safe":true}	,{"subject_id":"research-in-progress","subject_type":"sequence_stop","entity_name":"Research in progress","title":"Verifying sources","subtitle":"North Central College, Naperville","notes":"Checking official campus, city, and cultural sources for distinct first-weekend stops and accurate access details.","short_summary":"A researched sequence is being assembled.","evidence_claim":"Research is in progress.","source_url":"https://northcentralcollege.edu/","source_title":"North Central College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"unknown","under21_safe":true}	,{"subject_id":"research-in-progress","subject_type":"sequence_stop","entity_name":"Research in progress","title":"Verifying sources","subtitle":"North Central College, Naperville","notes":"Checking official campus, city, and cultural sources for distinct first-weekend stops and accurate access details.","short_summary":"A researched sequence is being assembled.","evidence_claim":"Research is in progress.","source_url":"https://northcentralcollege.edu/","source_title":"North Central College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"unknown","under21_safe":true}	,{"subject_id":"research-in-progress","subject_type":"sequence_stop","entity_name":"Research in progress","title":"Verifying sources","subtitle":"North Central College, Naperville","notes":"Checking official campus, city, and cultural sources for distinct first-weekend stops and accurate access details.","short_summary":"A researched sequence is being assembled.","evidence_claim":"Research is in progress.","source_url":"https://northcentralcollege.edu/","source_title":"North Central College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"unknown","under21_safe":true}	,{"subject_id":"research-in-progress","subject_type":"sequence_stop","entity_name":"Research in progress","title":"Verifying sources","subtitle":"North Central College, Naperville","notes":"Checking official campus, city, and cultural sources for distinct first-weekend stops and accurate access details.","short_summary":"A researched sequence is being assembled.","evidence_claim":"Research is in progress.","source_url":"https://northcentralcollege.edu/","source_title":"North Central College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"unknown","under21_safe":true}	,{"subject_id":"research-in-progress","subject_type":"sequence_stop","entity_name":"Research in progress","title":"Verifying sources","subtitle":"North Central College, Naperville","notes":"Checking official campus, city, and cultural sources for distinct first-weekend stops and accurate access details.","short_summary":"A researched sequence is being assembled.","evidence_claim":"Research is in progress.","source_url":"https://northcentralcollege.edu/","source_title":"North Central College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"unknown","under21_safe":true}	] ,"warnings":[]}],"warnings":[]}
+web search: 
+web search: site:northcentralcollege.edu campus map North Central College Wentz Concert Hall library ...
+codex
+{"complete":true,"school_name":"North Central College","town_name":"Naperville","boards":[{"complete":true,"school_name":"North Central College","town_name":"Naperville","template_id":"college-first-weekend","title":"Your First Weekend at North Central College, Shared as Cards","description":"A low-pressure first-weekend sequence that starts on campus, makes room for student programming, and finishes with nearby Naperville recreation.","icon":"schedule","cards":[{"subject_id":"ncc-campus-map","subject_type":"sequence_stop","entity_name":"North Central College Campus Map","title":"Start with the campus map","subtitle":"Orient yourself from 30 N. Brainard Street","notes":"Open the official map and trace a short route between Old Main, the library, dining, and the athletics complex before heading out.","short_summary":"Use the map to turn a first walk into a useful campus orientation.","evidence_claim":"North Central College’s official campus map identifies campus destinations and lists the college address as 30 N. Brainard Street.","source_url":"https://www.northcentralcollege.edu/sites/default/files/NCC%20campus%20map%20and%20directory_2024-2025.pdf","source_title":"North Central College Campus Map and Directory","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use the official map for current building names and locations.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"ncc-oesterle-library-learning-commons","subject_type":"place","entity_name":"Oesterle Library & Learning Commons","title":"Locate Oesterle Library","subtitle":"320 E. School Street","notes":"Find the library early so you know where to return for computers, printing, research help, or a quieter study stop during the term.","short_summary":"A practical landmark for your first campus loop.","evidence_claim":"The official campus map lists Oesterle Library & Learning Commons at 320 E. School Street, and the college lists computer labs there.","source_url":"https://www.northcentralcollege.edu/rent-college-facilities/academic-facilities","source_title":"Academic Facilities | North Central College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Confirm visitor and building access policies with the college before relying on a specific service.","cost_status":"unknown","under21_safe":true},{"subject_id":"ncc-rolland-center-boilerhouse-cafe","subject_type":"place","entity_name":"Rolland Center Boilerhouse Café","title":"Find the Boilerhouse Café","subtitle":"29 N. Loomis Street","notes":"Add the Boilerhouse Café to your walking route as a named campus landmark; ask staff which nearby spaces are open for studying.","short_summary":"Get familiar with a central campus café location.","evidence_claim":"North Central College’s official campus map lists Rolland Center Boilerhouse Café at 29 N. Loomis Street.","source_url":"https://www.northcentralcollege.edu/sites/default/files/NCC%20campus%20map%20and%20directory_2024-2025.pdf","source_title":"North Central College Campus Map and Directory","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Food and drink availability, prices, and hours are not stated on the cited map; check current campus dining information.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"ncc-kaufman-dining-hall","subject_type":"place","entity_name":"Kaufman Dining Hall","title":"Make Kaufman a meetup point","subtitle":"221 S. Brainard Street","notes":"Use Kaufman Dining Hall as an easy meal-time rendezvous point, then compare class schedules and choose one next stop together.","short_summary":"A named dining-hall landmark for a simple group check-in.","evidence_claim":"The official campus map lists Kaufman Dining Hall at 221 S. Brainard Street; the Welcome Week schedule uses it for student meals.","source_url":"https://www.northcentralcollege.edu/admitted-first-years/welcome-week-schedule","source_title":"Welcome Week Schedule | North Central College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Meal-plan eligibility, guest access, menus, and hours should be checked with current campus dining information.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"ncc-jefferson-lawn","subject_type":"place","entity_name":"Jefferson Lawn","title":"Pause at Jefferson Lawn","subtitle":"Campus outdoor gathering area","notes":"Walk through Jefferson Lawn and look for campus notices or scheduled programming, then use the lawn as a clear meeting point for your group.","short_summary":"An outdoor landmark that appears in the college’s new-student programming.","evidence_claim":"North Central College’s Welcome Week schedule names Jefferson Lawn as the location for student activities and an excursion meetup.","source_url":"https://www.northcentralcollege.edu/admitted-first-years/welcome-week-schedule","source_title":"Welcome Week Schedule | North Central College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor programming and weather plans vary; consult the current campus events calendar.","cost_status":"unknown","under21_safe":true},{"subject_id":"ncc-campus-recreation","subject_type":"activity","entity_name":"Campus Recreation","title":"Try a recreation option","subtitle":"Residence Hall/Recreation Center","notes":"Check the current Campus Recreation schedule for a casual activity, or use recreation facilities only when they are not occupied by scheduled events.","short_summary":"A structured way to move around and meet people on campus.","evidence_claim":"North Central College offers campus recreation activities and says students may use recreation facilities when they are not occupied by scheduled events.","source_url":"https://www.northcentralcollege.edu/life-location/recreation-fitness","source_title":"Recreation & Fitness | North Central College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Facility availability depends on scheduled events; consult the current Campus Recreation schedule before going.","cost_status":"unknown","under21_safe":true},{"subject_id":"ncc-cardinal-activities-board","subject_type":"activity","entity_name":"Cardinal Activities Board","title":"Check for a CAB program","subtitle":"Student-led weekend programming","notes":"Use the student events portal to find a Cardinal Activities Board program that fits your evening, then go with a classmate or hall neighbor.","short_summary":"Look for a campus-hosted social activity rather than planning the whole night yourself.","evidence_claim":"North Central College describes the Cardinal Activities Board as a student-led organization that plans and hosts weekend programming.","source_url":"https://www.northcentralcollege.edu/campus-lingo","source_title":"Campus Lingo | North Central College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Specific events, locations, and any requirements vary; verify them through Presence or the current campus calendar.","cost_status":"unknown","under21_safe":true},{"subject_id":"ncc-wentz-concert-hall","subject_type":"place","entity_name":"Wentz Concert Hall","title":"See what is on at Wentz","subtitle":"171 E. Chicago Avenue","notes":"Walk to Wentz Concert Hall and review the current performance calendar; choose a ticketed event only if its timing and price work for you.","short_summary":"A recognizable arts venue to keep on your campus map.","evidence_claim":"North Central College identifies Wentz Concert Hall at 171 E. Chicago Avenue and publishes a calendar of performances there.","source_url":"https://www.northcentralcollege.edu/show/calendar","source_title":"Calendar of Events | North Central College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Performance dates, ticket requirements, and prices vary by event; consult the current calendar before attending.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"naperville-riverwalk","subject_type":"place","entity_name":"Naperville Riverwalk","title":"Take a Riverwalk reset","subtitle":"Downtown Naperville near campus","notes":"Head downtown for a daylight walk on the Riverwalk, keeping it simple: pick a turnaround point, take a few photos, and return with your group.","short_summary":"An easy nearby outdoor stop suggested by the college itself.","evidence_claim":"North Central College identifies the Riverwalk as a nearby place for walking or jogging and includes it among downtown excursion options.","source_url":"https://www.northcentralcollege.edu/life-location/recreation-fitness","source_title":"Recreation & Fitness | North Central College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use public paths and observe posted rules, weather conditions, and daylight considerations.","cost_status":"unknown","under21_safe":true},{"subject_id":"ncc-nest","subject_type":"activity","entity_name":"The Nest","title":"Attend a home game with The Nest","subtitle":"Student seating at home athletic events","notes":"Check the Cardinals’ home schedule, invite someone from your hall, and join the designated student seating area for an under-21-safe campus outing.","short_summary":"A school-supported way to experience a home athletic event with other students.","evidence_claim":"North Central College describes The Nest as a student organization with designated seating at home athletic events for students to cheer on teams.","source_url":"https://www.northcentralcollege.edu/clubs-activities/sports-and-recreation-organizations","source_title":"Club & Varsity Sports & Active Wellness Organizations | North Central College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Game dates, venue access, and admission policies vary; confirm details on the current athletics schedule.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T08:41:35.438350Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa46-30dd-7681-aeb7-062c99fb446e.1786610331869846000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+17,718
+
+{"complete":true,"school_name":"North Central College","town_name":"Naperville","boards":[{"complete":true,"school_name":"North Central College","town_name":"Naperville","template_id":"college-first-weekend","title":"Your First Weekend at North Central College, Shared as Cards","description":"A low-pressure first-weekend sequence that starts on campus, makes room for student programming, and finishes with nearby Naperville recreation.","icon":"schedule","cards":[{"subject_id":"ncc-campus-map","subject_type":"sequence_stop","entity_name":"North Central College Campus Map","title":"Start with the campus map","subtitle":"Orient yourself from 30 N. Brainard Street","notes":"Open the official map and trace a short route between Old Main, the library, dining, and the athletics complex before heading out.","short_summary":"Use the map to turn a first walk into a useful campus orientation.","evidence_claim":"North Central College’s official campus map identifies campus destinations and lists the college address as 30 N. Brainard Street.","source_url":"https://www.northcentralcollege.edu/sites/default/files/NCC%20campus%20map%20and%20directory_2024-2025.pdf","source_title":"North Central College Campus Map and Directory","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use the official map for current building names and locations.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"ncc-oesterle-library-learning-commons","subject_type":"place","entity_name":"Oesterle Library & Learning Commons","title":"Locate Oesterle Library","subtitle":"320 E. School Street","notes":"Find the library early so you know where to return for computers, printing, research help, or a quieter study stop during the term.","short_summary":"A practical landmark for your first campus loop.","evidence_claim":"The official campus map lists Oesterle Library & Learning Commons at 320 E. School Street, and the college lists computer labs there.","source_url":"https://www.northcentralcollege.edu/rent-college-facilities/academic-facilities","source_title":"Academic Facilities | North Central College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Confirm visitor and building access policies with the college before relying on a specific service.","cost_status":"unknown","under21_safe":true},{"subject_id":"ncc-rolland-center-boilerhouse-cafe","subject_type":"place","entity_name":"Rolland Center Boilerhouse Café","title":"Find the Boilerhouse Café","subtitle":"29 N. Loomis Street","notes":"Add the Boilerhouse Café to your walking route as a named campus landmark; ask staff which nearby spaces are open for studying.","short_summary":"Get familiar with a central campus café location.","evidence_claim":"North Central College’s official campus map lists Rolland Center Boilerhouse Café at 29 N. Loomis Street.","source_url":"https://www.northcentralcollege.edu/sites/default/files/NCC%20campus%20map%20and%20directory_2024-2025.pdf","source_title":"North Central College Campus Map and Directory","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Food and drink availability, prices, and hours are not stated on the cited map; check current campus dining information.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"ncc-kaufman-dining-hall","subject_type":"place","entity_name":"Kaufman Dining Hall","title":"Make Kaufman a meetup point","subtitle":"221 S. Brainard Street","notes":"Use Kaufman Dining Hall as an easy meal-time rendezvous point, then compare class schedules and choose one next stop together.","short_summary":"A named dining-hall landmark for a simple group check-in.","evidence_claim":"The official campus map lists Kaufman Dining Hall at 221 S. Brainard Street; the Welcome Week schedule uses it for student meals.","source_url":"https://www.northcentralcollege.edu/admitted-first-years/welcome-week-schedule","source_title":"Welcome Week Schedule | North Central College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Meal-plan eligibility, guest access, menus, and hours should be checked with current campus dining information.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"ncc-jefferson-lawn","subject_type":"place","entity_name":"Jefferson Lawn","title":"Pause at Jefferson Lawn","subtitle":"Campus outdoor gathering area","notes":"Walk through Jefferson Lawn and look for campus notices or scheduled programming, then use the lawn as a clear meeting point for your group.","short_summary":"An outdoor landmark that appears in the college’s new-student programming.","evidence_claim":"North Central College’s Welcome Week schedule names Jefferson Lawn as the location for student activities and an excursion meetup.","source_url":"https://www.northcentralcollege.edu/admitted-first-years/welcome-week-schedule","source_title":"Welcome Week Schedule | North Central College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor programming and weather plans vary; consult the current campus events calendar.","cost_status":"unknown","under21_safe":true},{"subject_id":"ncc-campus-recreation","subject_type":"activity","entity_name":"Campus Recreation","title":"Try a recreation option","subtitle":"Residence Hall/Recreation Center","notes":"Check the current Campus Recreation schedule for a casual activity, or use recreation facilities only when they are not occupied by scheduled events.","short_summary":"A structured way to move around and meet people on campus.","evidence_claim":"North Central College offers campus recreation activities and says students may use recreation facilities when they are not occupied by scheduled events.","source_url":"https://www.northcentralcollege.edu/life-location/recreation-fitness","source_title":"Recreation & Fitness | North Central College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Facility availability depends on scheduled events; consult the current Campus Recreation schedule before going.","cost_status":"unknown","under21_safe":true},{"subject_id":"ncc-cardinal-activities-board","subject_type":"activity","entity_name":"Cardinal Activities Board","title":"Check for a CAB program","subtitle":"Student-led weekend programming","notes":"Use the student events portal to find a Cardinal Activities Board program that fits your evening, then go with a classmate or hall neighbor.","short_summary":"Look for a campus-hosted social activity rather than planning the whole night yourself.","evidence_claim":"North Central College describes the Cardinal Activities Board as a student-led organization that plans and hosts weekend programming.","source_url":"https://www.northcentralcollege.edu/campus-lingo","source_title":"Campus Lingo | North Central College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Specific events, locations, and any requirements vary; verify them through Presence or the current campus calendar.","cost_status":"unknown","under21_safe":true},{"subject_id":"ncc-wentz-concert-hall","subject_type":"place","entity_name":"Wentz Concert Hall","title":"See what is on at Wentz","subtitle":"171 E. Chicago Avenue","notes":"Walk to Wentz Concert Hall and review the current performance calendar; choose a ticketed event only if its timing and price work for you.","short_summary":"A recognizable arts venue to keep on your campus map.","evidence_claim":"North Central College identifies Wentz Concert Hall at 171 E. Chicago Avenue and publishes a calendar of performances there.","source_url":"https://www.northcentralcollege.edu/show/calendar","source_title":"Calendar of Events | North Central College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Performance dates, ticket requirements, and prices vary by event; consult the current calendar before attending.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"naperville-riverwalk","subject_type":"place","entity_name":"Naperville Riverwalk","title":"Take a Riverwalk reset","subtitle":"Downtown Naperville near campus","notes":"Head downtown for a daylight walk on the Riverwalk, keeping it simple: pick a turnaround point, take a few photos, and return with your group.","short_summary":"An easy nearby outdoor stop suggested by the college itself.","evidence_claim":"North Central College identifies the Riverwalk as a nearby place for walking or jogging and includes it among downtown excursion options.","source_url":"https://www.northcentralcollege.edu/life-location/recreation-fitness","source_title":"Recreation & Fitness | North Central College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use public paths and observe posted rules, weather conditions, and daylight considerations.","cost_status":"unknown","under21_safe":true},{"subject_id":"ncc-nest","subject_type":"activity","entity_name":"The Nest","title":"Attend a home game with The Nest","subtitle":"Student seating at home athletic events","notes":"Check the Cardinals’ home schedule, invite someone from your hall, and join the designated student seating area for an under-21-safe campus outing.","short_summary":"A school-supported way to experience a home athletic event with other students.","evidence_claim":"North Central College describes The Nest as a student organization with designated seating at home athletic events for students to cheer on teams.","source_url":"https://www.northcentralcollege.edu/clubs-activities/sports-and-recreation-organizations","source_title":"Club & Varsity Sports & Active Wellness Organizations | North Central College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Game dates, venue access, and admission policies vary; confirm details on the current athletics schedule.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}

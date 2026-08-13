@@ -1,0 +1,39 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "The title's “Claimed by 9am” phrase is editorial framing; no claim about crowding or student arrival behavior is made.",
+    "Room availability and approval status can change with classes and events; users should verify the live university calendar and obtain confirmation where required.",
+    "The Nesting Place source was published outside the template's 180-day freshness window, but it remains the university's direct descriptive page; current booking availability should be reconfirmed."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.fgcu.edu/campusreservations/academicbuildinglist",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fgcu.edu/campusreservations/academicbuildinglist",
+      "error": ""
+    },
+    {
+      "url": "https://www.fgcu.edu/campusmap/ada",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fgcu.edu/campusmap/ada",
+      "error": ""
+    },
+    {
+      "url": "https://www.fgcu.edu/inside/news/nesting_place",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fgcu.edu/inside/news/nesting_place",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 89,
+  "generationGrade": "B"
+}

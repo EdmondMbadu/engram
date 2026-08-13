@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.manchesternh.gov/Departments/Parks-and-Recreation/Parks-Trails-and-Facilities/Parks/Blodget-Park-Black-Brook",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.manchesternh.gov/Departments/Parks-and-Recreation/Parks-Trails-and-Facilities/Parks/Blodget-Park-Black-Brook",
+      "error": ""
+    },
+    {
+      "url": "https://www.manchesternh.gov/Departments/Municipal-Buildings/Buildings",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.manchesternh.gov/Departments/Municipal-Buildings/Buildings",
+      "error": ""
+    },
+    {
+      "url": "https://www.manchesternh.gov/portals/2/departments/parks_and_rec/Greening_the_City_Master_Plan.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.manchesternh.gov/portals/2/departments/parks_and_rec/Greening_the_City_Master_Plan.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://manchestermuseumsnh.org/map/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://manchestermuseumsnh.org/map/",
+      "error": ""
+    },
+    {
+      "url": "https://www.manchesternh.gov/Departments/Parks-and-Recreation/Parks-Trails-and-Facilities/Parks/Veterans-Memorial-Park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.manchesternh.gov/Departments/Parks-and-Recreation/Parks-Trails-and-Facilities/Parks/Veterans-Memorial-Park",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitmanchesternh.com/things-to-do/cat-alley/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitmanchesternh.com/things-to-do/cat-alley/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitmanchesternh.com/arts-entertainment/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitmanchesternh.com/arts-entertainment/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

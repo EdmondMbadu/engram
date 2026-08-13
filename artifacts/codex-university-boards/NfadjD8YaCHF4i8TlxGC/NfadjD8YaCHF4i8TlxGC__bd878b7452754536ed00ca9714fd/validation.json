@@ -1,0 +1,47 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://library.charlotte.edu/about/our-organization/gold-nuggets",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.charlotte.edu/about/our-organization/gold-nuggets",
+      "error": ""
+    },
+    {
+      "url": "https://library.charlotte.edu/visit-study/rooms-spaces/study-quiet-silent-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.charlotte.edu/visit-study/rooms-spaces/study-quiet-silent-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://gardens.charlotte.edu/about-us/collections-and-programs/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gardens.charlotte.edu/about-us/collections-and-programs/",
+      "error": ""
+    },
+    {
+      "url": "https://gardens.charlotte.edu/gardens-and-greenhouse/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gardens.charlotte.edu/gardens-and-greenhouse/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Area 49"
+  ],
+  "sourceCount": 4,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

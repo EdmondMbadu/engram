@@ -1,0 +1,302 @@
+Reading additional input from stdin...
+2026-08-13T06:43:50.886115Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9db-bc25-76b0-a372-57a9ad8859c4.1786603355173607000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:43:50.942359Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9db-bc24-75d0-8b7d-83d3bdf4adda.1786603355172869000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:43:50.952534Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:43:50.997002Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9db-bc3f-7713-893b-2357d012c5b2.1786603355200533000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9dc-e36e-7ba0-8b88-6761a7f4b927
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"5qIELHy7139zbyRAU8Lx","schoolName":"California State University-Long Beach","shortSchoolName":"California State University-Long Beach","townName":"Long Beach","state":"CA","countryCode":"US","website":"https://www.csulb.edu/","latitude":33.782818,"longitude":-118.11204},"templates":[{"id":"college-blocks-off-campus","version":"1.0","titlePattern":"{count} Blocks Off Campus, One Reason Each","editorialBrief":"Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.","researchQueries":["off campus streets student district","campus adjacent commercial streets","neighborhood plan near university"],"count":10,"icon":"location_city","primarySubjectType":"street_or_district","allowedSubjectTypes":["street_or_district"],"freshnessDays":730,"exactTitle":"10 Blocks Off Campus, One Reason Each"}]}
+2026-08-13T06:43:51.018225Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:43:51.186001Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9db-bc26-7eb0-9837-2e57113e7c51.1786603355175831000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:43:51.244208Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9db-bc50-79a3-b08d-1f734523ccb5.1786603355217582000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:43:51.315316Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9db-bc3a-7631-a920-d27d8c058c8b.1786603355195228000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:43:51.409723Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9db-bc35-7cf3-82cb-a96aa95243d2.1786603355189929000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "California State University-Long Beach",
+  "town_name": "Long Beach",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "California State University-Long Beach",
+      "town_name": "Long Beach",
+      "template_id": "college-blocks-off-campus",
+      "title": "10 Blocks Off Campus, One Reason Each",
+      "description": "",
+      "icon": "location_city",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:longbeach.gov "East 4th Street" Long Beach Retro Row ...
+web search: 
+web search: Long Beach official business "Bellflower Blvd" coffee bakery CSULB ...
+web search: 
+web search: official Lazy Acres Long Beach 2080 Bellflower Boulevard ...
+web search: 
+web search: official Wolf's Brew Coffee 4145 Norse Way Long Beach ...
+web search: 
+web search: site:longbeach.gov/park "Whaley Park" 5620 Atherton ...
+codex
+{"complete":true,"school_name":"California State University-Long Beach","town_name":"Long Beach","boards":[{"complete":true,"school_name":"California State University-Long Beach","town_name":"Long Beach","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named destinations on distinct Long Beach corridors within the practical orbit of CSULB, each paired with one verified reason to stop.","icon":"location_city","cards":[{"subject_id":"csulb-whaley-park-atherton-street","subject_type":"street_or_district","entity_name":"Whaley Park","title":"Take a Recreation Break at Whaley Park","subtitle":"Atherton Street, directly north of CSULB","notes":"Cross Atherton Street for a break among the picnic areas, courts, athletic fields, playgrounds, and other park amenities.","short_summary":"A campus-adjacent recreation stop with several choices for an active or low-key break.","evidence_claim":"The City says Whaley Park is adjacent to CSULB and has athletic fields, courts, picnic areas, playgrounds, and restrooms.","source_url":"https://www.longbeach.gov/park/park-and-facilities/directory/whaley-park","source_title":"Whaley Park","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The city page lists recreation-center hours of Monday through Friday, 2:30–5:30 p.m.; park-area rules apply.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csulb-lazy-acres-bellflower-boulevard","subject_type":"street_or_district","entity_name":"Lazy Acres Market — Long Beach","title":"Build a Meal on Bellflower Boulevard","subtitle":"Bellflower Boulevard, northwest of campus","notes":"Stop at the Bellflower Boulevard market when you need prepared food, bakery items, coffee, juice, or groceries in one trip.","short_summary":"A nearby market combining groceries with several made-to-order and prepared-food counters.","evidence_claim":"Lazy Acres lists its Long Beach store at 2080 N. Bellflower Blvd. with an in-house bakery, prepared foods, coffee and juice, and multiple food bars.","source_url":"https://www.lazyacres.com/find-a-store","source_title":"Lazy Acres — Find a Store","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official store page lists daily hours of 6 a.m.–10 p.m.; purchases are required for food or merchandise.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"csulb-rancho-los-alamitos-anaheim-road","subject_type":"street_or_district","entity_name":"Rancho Los Alamitos Historic Ranch & Gardens","title":"Enter the Rancho from Anaheim Road","subtitle":"East Anaheim Road at Palo Verde Avenue, beside campus","notes":"Use the signed residential gate at Anaheim and Palo Verde, then follow the route to the ranch house, gardens, and animals.","short_summary":"A public historic ranch reached through a clearly documented entrance immediately east of CSULB.","evidence_claim":"Rancho Los Alamitos directs visitors to enter at East Anaheim Road and Palo Verde Avenue and offers history, gardens, animals, and free admission.","source_url":"https://www.rancholosalamitos.org/faq.html","source_title":"FAQ — Visiting Rancho Los Alamitos","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Enter through the Bixby Hill gate at Anaheim Road and Palo Verde Avenue; tell the attendant you are visiting the Rancho.","cost_status":"free","under21_safe":true},{"subject_id":"csulb-wolfs-brew-norse-way","subject_type":"street_or_district","entity_name":"Wolf's Brew Coffee","title":"Pause for Coffee on Norse Way","subtitle":"Norse Way in Lakewood Village","notes":"Head to the Norse Way storefront for coffee during a Lakewood Village errand loop, checking the posted schedule before leaving.","short_summary":"A named independent coffee stop anchoring the compact Norse Way business corridor.","evidence_claim":"Wolf's Brew Coffee lists its address as 4145 Norse Way and publishes operating hours on its official website.","source_url":"https://www.wolfsbrewlb.com/","source_title":"Wolf's Brew Coffee","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official site lists Monday–Friday 8 a.m.–5 p.m. and Saturday–Sunday 8 a.m.–4 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"csulb-little-coyote-los-coyotes-diagonal","subject_type":"street_or_district","entity_name":"Little Coyote — Los Coyotes","title":"Order Pizza on Los Coyotes Diagonal","subtitle":"Los Coyotes Diagonal in East Long Beach","notes":"Use the Los Coyotes location—not the separate Retro Row shop—when pizza fits an off-campus lunch or early-evening plan.","short_summary":"A clearly identified pizza destination directly on the diagonal corridor northeast of campus.","evidence_claim":"Little Coyote's official site identifies its Los Coyotes location at 3500 N. Los Coyotes Diagonal and publishes weekday hours.","source_url":"https://littlecoyotelbc.com/","source_title":"Little Coyote: Long Beach Pizza Shop & More","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official site lists the Los Coyotes location Monday–Friday, noon–9 p.m.; verify before a weekend trip.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"csulb-el-dorado-nature-center-spring-street","subject_type":"street_or_district","entity_name":"El Dorado Nature Center","title":"Follow the Trails off Spring Street","subtitle":"Spring Street at the San Gabriel River","notes":"Enter from Spring Street, cross the wooden bridge, and choose the paved quarter-mile route or the longer dirt trails.","short_summary":"A trail-and-lake destination that turns the Spring Street corridor into a nature excursion.","evidence_claim":"The City describes a 105-acre habitat at El Dorado Nature Center with two miles of dirt trails, a quarter-mile paved trail, lakes, a stream, and a visitor center.","source_url":"https://longbeach.gov/park/park-and-facilities/parks-centers-pier/el-dorado-nature-center/","source_title":"El Dorado Nature Center","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page lists daily vehicle-parking charges; consult posted trail and service-dog rules before visiting.","cost_status":"unknown","under21_safe":true},{"subject_id":"csulb-2nd-and-pch-pacific-coast-highway","subject_type":"street_or_district","entity_name":"2ND & PCH","title":"Photograph the Marina-Facing Center","subtitle":"Pacific Coast Highway at Second Street","notes":"Use the center's visitor guidance to photograph its public-facing spaces, while respecting restricted and private areas.","short_summary":"A map-listed shopping center where the official visitor page expressly addresses guest photography.","evidence_claim":"2ND & PCH lists its address as 6480 East Pacific Coast Highway and states that photography is encouraged subject to its guidelines.","source_url":"https://2ndandpch.com/visit/","source_title":"Visit — 2ND & PCH","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Center hours are listed as Monday–Saturday 10 a.m.–9 p.m. and Sunday 11 a.m.–7 p.m.; photography guidelines apply.","cost_status":"unknown","under21_safe":true},{"subject_id":"csulb-recreation-park-seventh-street","subject_type":"street_or_district","entity_name":"Recreation Park","title":"Choose a Sport on Seventh Street","subtitle":"East Seventh Street west of campus","notes":"Arrive from Seventh Street and choose among the picnic area, playground, courts, casting pond, community center, or fields.","short_summary":"A large civic recreation complex that supports several different kinds of daytime outings.","evidence_claim":"The City locates Recreation Park at 4900 E. 7th St. and lists amenities including a casting pond, playground, picnic area, tennis center, fields, and community center.","source_url":"https://www.longbeach.gov/Park/Park-and-Facilities/Directory/Recreation-Park/","source_title":"Recreation Park","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Some facilities, classes, golf, and reserved picnic uses have separate contacts or fees; check the city page before planning them.","cost_status":"unknown","under21_safe":true},{"subject_id":"csulb-los-altos-library-britton-drive","subject_type":"street_or_district","entity_name":"Los Altos Neighborhood Library","title":"Use the Library on Britton Drive","subtitle":"Britton Drive in Los Altos","notes":"Bring a device for the free Wi-Fi or use a public computer, and check the branch calendar if you want to pair the stop with an event.","short_summary":"A neighborhood-library stop with connectivity, computers, accessible facilities, and bike parking.","evidence_claim":"The City locates Los Altos Neighborhood Library at 5614 E. Britton Dr. and lists public computers, free Wi-Fi, accessible facilities, and a bike rack.","source_url":"https://longbeach.gov/library/locations/losaltos/","source_title":"Los Altos Neighborhood Library","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The branch is closed Sunday and Monday; the official page lists Tuesday–Saturday hours that vary by day.","cost_status":"free","under21_safe":true},{"subject_id":"csulb-art-theatre-fourth-street","subject_type":"street_or_district","entity_name":"Art Theatre Long Beach","title":"Catch an Independent Film on Fourth Street","subtitle":"East Fourth Street on Retro Row","notes":"Check the current calendar before heading to the Fourth Street marquee, since films, discussions, and special programs rotate.","short_summary":"A historic independent cinema that gives the Fourth Street corridor a specific cultural destination.","evidence_claim":"The Art Theatre identifies its location at 2025 E. 4th St. and describes itself as an independent Long Beach cinema operating since the 1920s.","source_url":"https://arttheatrelongbeach.org/","source_title":"Art Theatre Long Beach","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Screenings and program times vary; consult the official calendar and ticket details before traveling.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T06:46:03.556859Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9dc-e36e-7ba0-8b88-6761a7f4b927.1786603430766679000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+54,499
+
+{"complete":true,"school_name":"California State University-Long Beach","town_name":"Long Beach","boards":[{"complete":true,"school_name":"California State University-Long Beach","town_name":"Long Beach","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named destinations on distinct Long Beach corridors within the practical orbit of CSULB, each paired with one verified reason to stop.","icon":"location_city","cards":[{"subject_id":"csulb-whaley-park-atherton-street","subject_type":"street_or_district","entity_name":"Whaley Park","title":"Take a Recreation Break at Whaley Park","subtitle":"Atherton Street, directly north of CSULB","notes":"Cross Atherton Street for a break among the picnic areas, courts, athletic fields, playgrounds, and other park amenities.","short_summary":"A campus-adjacent recreation stop with several choices for an active or low-key break.","evidence_claim":"The City says Whaley Park is adjacent to CSULB and has athletic fields, courts, picnic areas, playgrounds, and restrooms.","source_url":"https://www.longbeach.gov/park/park-and-facilities/directory/whaley-park","source_title":"Whaley Park","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The city page lists recreation-center hours of Monday through Friday, 2:30–5:30 p.m.; park-area rules apply.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csulb-lazy-acres-bellflower-boulevard","subject_type":"street_or_district","entity_name":"Lazy Acres Market — Long Beach","title":"Build a Meal on Bellflower Boulevard","subtitle":"Bellflower Boulevard, northwest of campus","notes":"Stop at the Bellflower Boulevard market when you need prepared food, bakery items, coffee, juice, or groceries in one trip.","short_summary":"A nearby market combining groceries with several made-to-order and prepared-food counters.","evidence_claim":"Lazy Acres lists its Long Beach store at 2080 N. Bellflower Blvd. with an in-house bakery, prepared foods, coffee and juice, and multiple food bars.","source_url":"https://www.lazyacres.com/find-a-store","source_title":"Lazy Acres — Find a Store","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official store page lists daily hours of 6 a.m.–10 p.m.; purchases are required for food or merchandise.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"csulb-rancho-los-alamitos-anaheim-road","subject_type":"street_or_district","entity_name":"Rancho Los Alamitos Historic Ranch & Gardens","title":"Enter the Rancho from Anaheim Road","subtitle":"East Anaheim Road at Palo Verde Avenue, beside campus","notes":"Use the signed residential gate at Anaheim and Palo Verde, then follow the route to the ranch house, gardens, and animals.","short_summary":"A public historic ranch reached through a clearly documented entrance immediately east of CSULB.","evidence_claim":"Rancho Los Alamitos directs visitors to enter at East Anaheim Road and Palo Verde Avenue and offers history, gardens, animals, and free admission.","source_url":"https://www.rancholosalamitos.org/faq.html","source_title":"FAQ — Visiting Rancho Los Alamitos","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Enter through the Bixby Hill gate at Anaheim Road and Palo Verde Avenue; tell the attendant you are visiting the Rancho.","cost_status":"free","under21_safe":true},{"subject_id":"csulb-wolfs-brew-norse-way","subject_type":"street_or_district","entity_name":"Wolf's Brew Coffee","title":"Pause for Coffee on Norse Way","subtitle":"Norse Way in Lakewood Village","notes":"Head to the Norse Way storefront for coffee during a Lakewood Village errand loop, checking the posted schedule before leaving.","short_summary":"A named independent coffee stop anchoring the compact Norse Way business corridor.","evidence_claim":"Wolf's Brew Coffee lists its address as 4145 Norse Way and publishes operating hours on its official website.","source_url":"https://www.wolfsbrewlb.com/","source_title":"Wolf's Brew Coffee","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official site lists Monday–Friday 8 a.m.–5 p.m. and Saturday–Sunday 8 a.m.–4 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"csulb-little-coyote-los-coyotes-diagonal","subject_type":"street_or_district","entity_name":"Little Coyote — Los Coyotes","title":"Order Pizza on Los Coyotes Diagonal","subtitle":"Los Coyotes Diagonal in East Long Beach","notes":"Use the Los Coyotes location—not the separate Retro Row shop—when pizza fits an off-campus lunch or early-evening plan.","short_summary":"A clearly identified pizza destination directly on the diagonal corridor northeast of campus.","evidence_claim":"Little Coyote's official site identifies its Los Coyotes location at 3500 N. Los Coyotes Diagonal and publishes weekday hours.","source_url":"https://littlecoyotelbc.com/","source_title":"Little Coyote: Long Beach Pizza Shop & More","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official site lists the Los Coyotes location Monday–Friday, noon–9 p.m.; verify before a weekend trip.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"csulb-el-dorado-nature-center-spring-street","subject_type":"street_or_district","entity_name":"El Dorado Nature Center","title":"Follow the Trails off Spring Street","subtitle":"Spring Street at the San Gabriel River","notes":"Enter from Spring Street, cross the wooden bridge, and choose the paved quarter-mile route or the longer dirt trails.","short_summary":"A trail-and-lake destination that turns the Spring Street corridor into a nature excursion.","evidence_claim":"The City describes a 105-acre habitat at El Dorado Nature Center with two miles of dirt trails, a quarter-mile paved trail, lakes, a stream, and a visitor center.","source_url":"https://longbeach.gov/park/park-and-facilities/parks-centers-pier/el-dorado-nature-center/","source_title":"El Dorado Nature Center","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page lists daily vehicle-parking charges; consult posted trail and service-dog rules before visiting.","cost_status":"unknown","under21_safe":true},{"subject_id":"csulb-2nd-and-pch-pacific-coast-highway","subject_type":"street_or_district","entity_name":"2ND & PCH","title":"Photograph the Marina-Facing Center","subtitle":"Pacific Coast Highway at Second Street","notes":"Use the center's visitor guidance to photograph its public-facing spaces, while respecting restricted and private areas.","short_summary":"A map-listed shopping center where the official visitor page expressly addresses guest photography.","evidence_claim":"2ND & PCH lists its address as 6480 East Pacific Coast Highway and states that photography is encouraged subject to its guidelines.","source_url":"https://2ndandpch.com/visit/","source_title":"Visit — 2ND & PCH","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Center hours are listed as Monday–Saturday 10 a.m.–9 p.m. and Sunday 11 a.m.–7 p.m.; photography guidelines apply.","cost_status":"unknown","under21_safe":true},{"subject_id":"csulb-recreation-park-seventh-street","subject_type":"street_or_district","entity_name":"Recreation Park","title":"Choose a Sport on Seventh Street","subtitle":"East Seventh Street west of campus","notes":"Arrive from Seventh Street and choose among the picnic area, playground, courts, casting pond, community center, or fields.","short_summary":"A large civic recreation complex that supports several different kinds of daytime outings.","evidence_claim":"The City locates Recreation Park at 4900 E. 7th St. and lists amenities including a casting pond, playground, picnic area, tennis center, fields, and community center.","source_url":"https://www.longbeach.gov/Park/Park-and-Facilities/Directory/Recreation-Park/","source_title":"Recreation Park","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Some facilities, classes, golf, and reserved picnic uses have separate contacts or fees; check the city page before planning them.","cost_status":"unknown","under21_safe":true},{"subject_id":"csulb-los-altos-library-britton-drive","subject_type":"street_or_district","entity_name":"Los Altos Neighborhood Library","title":"Use the Library on Britton Drive","subtitle":"Britton Drive in Los Altos","notes":"Bring a device for the free Wi-Fi or use a public computer, and check the branch calendar if you want to pair the stop with an event.","short_summary":"A neighborhood-library stop with connectivity, computers, accessible facilities, and bike parking.","evidence_claim":"The City locates Los Altos Neighborhood Library at 5614 E. Britton Dr. and lists public computers, free Wi-Fi, accessible facilities, and a bike rack.","source_url":"https://longbeach.gov/library/locations/losaltos/","source_title":"Los Altos Neighborhood Library","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The branch is closed Sunday and Monday; the official page lists Tuesday–Saturday hours that vary by day.","cost_status":"free","under21_safe":true},{"subject_id":"csulb-art-theatre-fourth-street","subject_type":"street_or_district","entity_name":"Art Theatre Long Beach","title":"Catch an Independent Film on Fourth Street","subtitle":"East Fourth Street on Retro Row","notes":"Check the current calendar before heading to the Fourth Street marquee, since films, discussions, and special programs rotate.","short_summary":"A historic independent cinema that gives the Fourth Street corridor a specific cultural destination.","evidence_claim":"The Art Theatre identifies its location at 2025 E. 4th St. and describes itself as an independent Long Beach cinema operating since the 1920s.","source_url":"https://arttheatrelongbeach.org/","source_title":"Art Theatre Long Beach","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Screenings and program times vary; consult the official calendar and ticket details before traveling.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}

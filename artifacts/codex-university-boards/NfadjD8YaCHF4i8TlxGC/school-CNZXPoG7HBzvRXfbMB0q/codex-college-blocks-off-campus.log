@@ -1,0 +1,1252 @@
+Reading additional input from stdin...
+2026-08-13T09:09:18.307746Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T09:09:18.323380Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T09:09:18.391428Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa61-e798-7200-81b2-5df1821f45a7.1786612148120339000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-terra
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa62-0f3c-76f1-802e-9eb0a28475fd
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"CNZXPoG7HBzvRXfbMB0q","schoolName":"Stockton University","shortSchoolName":"Stockton University","townName":"Galloway","state":"NJ","countryCode":"US","website":"https://www.stockton.edu/","latitude":39.492036,"longitude":-74.531087},"templates":[{"id":"college-blocks-off-campus","version":"1.0","titlePattern":"{count} Blocks Off Campus, One Reason Each","editorialBrief":"Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.","researchQueries":["off campus streets student district","campus adjacent commercial streets","neighborhood plan near university"],"count":10,"icon":"location_city","primarySubjectType":"street_or_district","allowedSubjectTypes":["street_or_district"],"freshnessDays":730,"exactTitle":"10 Blocks Off Campus, One Reason Each"}]}
+codex
+{"complete":false,"school_name":"Stockton University","town_name":"Galloway","boards": [  
+{"complete":false,"school_name":"Stockton University","town_name":"Galloway","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"I’ll verify ten named, map-listed destinations along practical corridors near Stockton University and return one sourced reason for each.","icon":"location_city","cards": [  
+{"subject_id":"research-in-progress","subject_type":"street_or_district","entity_name":"Research in progress","title":"Verifying off-campus destinations","subtitle":"Near Stockton University, Galloway, NJ","notes":"I am gathering direct official sources for ten distinct named destinations along practical off-campus corridors.","short_summary":"Pending source verification.","evidence_claim":"Research is in progress.","source_url":"https://www.stockton.edu/","source_title":"Stockton University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final recommendation.","cost_status":"unknown","under21_safe":true}  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+   
+  
+  
+  
+  
+  
+   
+  
+  
+   
+  
+     
+  
+  
+   
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+   
+  
+   
+  
+   
+  
+   
+  
+   
+  
+   
+  
+  ,  
+  
+  
+  
+  
+  
+  
+  
+    
+  
+   
+  
+   
+  
+   
+  
+  
+   
+  
+  
+   
+  
+   
+   
+  
+  
+  
+   
+  
+   
+  
+   
+    
+   
+  
+   
+  
+    
+    
+  
+ 
+
+  
+  
+  
+  
+   
+  
+    
+  
+   
+   
+  
+   
+   
+  
+  
+   
+  
+   
+   
+   
+  
+   
+   
+  
+  
+  
+  
+   
+   
+  
+   
+  
+  
+  
+   
+   
+   
+   
+   
+   
+   
+   
+    
+  
+   
+  
+   
+    
+  
+  
+   
+   
+  
+   
+  
+   
+  
+   
+   
+    
+  
+    
+   
+  
+   
+   
+   
+   
+   
+   
+   
+  
+   
+  
+   
+   
+   
+   
+  
+   
+   
+  
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+  
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+  
+   
+  
+   
+   
+    
+  
+  
+   
+   
+   
+  
+   
+   
+  
+   
+  
+   
+   
+   
+   
+   
+   
+   
+   
+   
+  
+    
+   
+   
+     
+    
+  
+   
+  
+   
+   
+   
+   
+  
+   
+   
+    
+  
+   
+  
+   
+     
+  
+   
+  
+   
+   
+   
+  
+   
+   
+   
+   
+    
+  
+   
+   
+   
+  
+   
+  
+   
+   
+    
+  
+   
+   
+   
+   
+   
+   
+   
+  
+   
+  
+   
+   
+    
+   
+  
+   
+  
+   
+   
+    
+  
+    
+   
+     
+   
+    
+   
+   
+   
+   
+   
+  
+   
+   
+  
+   
+  
+   
+  
+   
+   
+  
+   
+     
+  
+   
+   
+   
+   
+   
+   
+   
+    
+  
+  
+    
+  
+   
+  
+   
+   
+  
+   
+  
+       
+  
+  
+    
+   
+   
+   
+  
+   
+   
+    
+  
+   
+  
+   
+  
+   
+   
+   
+  
+    
+   
+  
+   
+   
+  
+   
+   
+    
+  
+    
+ 
+    
+ 
+  
+   
+   
+ 
+  
+   
+  
+   
+   
+   
+   
+   
+    
+  
+  
+   
+     
+  
+   
+    
+  
+  
+ 
+ 
+  
+ 
+  
+   
+  
+   
+   
+   
+   
+  
+   
+   
+   
+  
+   
+    
+  
+   
+   
+   
+  
+   
+  
+   
+    
+   
+   
+    
+  
+   
+   
+    
+   
+   
+   
+  
+   
+  
+     
+  
+  
+   
+    
+  
+   
+   
+   
+    
+  
+   
+   
+   
+  
+   
+  
+    
+  
+   
+   
+    
+  
+    
+   
+   
+   
+    
+  
+    
+  
+   
+  
+    
+  
+   
+   
+     
+  
+   
+   
+                 
+  
+   
+  
+   
+    
+   
+   
+  
+   
+   
+    
+  
+   
+  
+   
+                 
+    
+   
+ 
+   
+ 
+   
+    
+  
+   
+ 
+   
+       
+  
+   
+  
+   
+  
+    
+   
+  
+   
+  
+   
+ 
+   
+   
+   
+   
+   
+    
+  
+  
+  
+    
+  
+   
+  
+   
+  
+   
+    
+  
+   
+  
+    
+  
+   
+    
+  
+   
+  
+   
+  
+   
+  
+    
+  
+   
+  
+   
+   
+  
+   
+  
+   
+    
+  
+   
+  
+  
+  
+    
+  
+   
+  
+   
+  
+  
+   
+  
+   
+   
+  
+   
+  
+   
+    
+  
+   
+  
+    
+ 
+  
+   
+   
+  
+   
+  
+   
+    
+  
+    
+  
+    
+  
+   
+    
+  
+   
+  
+   
+                 
+   
+   
+  
+    
+  
+    
+     
+   
+ 
+  
+   
+   
+  
+   
+   
+   
+   
+  
+   
+   
+  
+  
+    
+  
+   
+  
+   
+   
+ 
+    
+   
+  
+   
+   
+             
+   
+  
+   
+    
+  
+   
+   
+  
+   
+  
+   
+   
+   
+         
+  
+   
+   
+     
+   
+  
+   
+  
+   
+   
+   
+    
+   
+ 
+   
+   
+   
+    
+    
+  
+  
+ 
+  
+  
+   
+  
+  
+   
+  
+   
+  
+   
+     
+     
+  
+   
+  
+   
+  
+   
+  
+   
+ 
+   
+  
+   
+  
+   
+  
+   
+  
+ 
+      
+  
+  
+   
+  
+   
+  
+    
+  
+   
+   
+  
+   
+   
+   
+                
+   
+    
+  
+   
+  
+   
+   
+   
+   
+   
+    
+  
+   
+   
+    
+   
+  
+   
+     
+  
+  
+    
+  
+   
+   
+   
+  
+ 
+   
+   
+  
+   
+  
+    
+ 
+ 
+ 
+  
+   
+   
+   
+  
+  
+  
+   
+  
+   
+  
+   
+ 
+   
+ 
+  
+ 
+   
+   
+  
+  
+ 
+   
+    
+ 
+ 
+    
+  
+  
+   
+ 
+ 
+   
+    
+  
+ 
+  
+  
+            
+  
+ 
+  
+ 
+   
+ 
+    
+ 
+ 
+  
+  
+ 
+ 
+ 
+ 
+ {"subject_id":"research-in-progress-2","subject_type":"street_or_district","entity_name":"Research in progress","title":"Verifying direct sources","subtitle":"Near Stockton University, Galloway, NJ","notes":"I am checking official and direct destination pages so each final reason is supported by a usable HTTPS source.","short_summary":"Pending source verification.","evidence_claim":"Research is in progress.","source_url":"https://www.stockton.edu/","source_title":"Stockton University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final recommendation.","cost_status":"unknown","under21_safe":true}  
+  
+  
+   
+  
+   
+  
+    
+    
+  
+  
+    
+  
+  
+    
+  
+    
+    
+   
+  
+  
+   
+  
+  
+  
+   
+    
+  
+   
+  
+    
+  
+     
+    
+  
+   
+   
+    
+   
+   
+  
+   
+    
+   
+    
+ 
+   
+      
+   
+   
+    
+ 
+   
+    
+   
+  
+ 
+    
+   
+  
+   
+  
+   
+  
+ 
+   
+   
+  
+   
+  
+    
+  
+    
+   
+   
+  
+ 
+  
+  
+   
+  
+ 
+   
+  
+   
+  
+   
+  
+   
+  
+   
+  
+   
+ 
+ 
+   
+ 
+   
+   
+ 
+ 
+ 
+  
+  
+ 
+ 
+ 
+ 
+  
+ 
+ 
+  
+  
+ 
+ 
+ 
+ 
+ 
+  
+     
+  
+ 
+ 
+ 
+ 
+  
+    
+ 
+ 
+    
+ 
+  
+ 
+ 
+  
+  
+ 
+  
+ 
+    
+  
+ 
+  
+  
+ 
+ 
+ 
+ 
+ 
+ 
+  
+  
+ 
+ 
+ 
+   
+ 
+ 
+ 
+   
+   
+     
+ 
+  
+ 
+     
+ 
+    
+  
+  
+ 
+ 
+ 
+ 
+  
+ 
+ 
+ 
+ 
+  
+    
+ 
+  
+  
+ 
+     
+  
+ 
+ 
+  
+ 
+            
+  
+  
+ 
+ 
+   
+ 
+ 
+ 
+   
+  
+ 
+ 
+ 
+   
+  
+ 
+  
+ 
+   
+ 
+ 
+ 
+ 
+ 
+ 
+  
+  
+ 
+  
+ 
+ 
+ 
+  
+    
+ 
+ 
+  
+ 
+ 
+ 
+ 
+  
+  
+ 
+ 
+ 
+    
+  
+  
+   
+ 
+ 
+ 
+  
+ 
+ 
+ 
+    
+  
+ 
+ 
+ 
+ 
+   
+  
+  
+ 
+ 
+ 
+ 
+ 
+  
+ 
+ 
+   
+  
+  
+ 
+   
+ 
+ 
+ 
+ 
+ 
+  
+ 
+   
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+   
+ 
+ 
+ 
+ 
+ ,  
+ 
+ 
+ 
+ 
+   
+  
+  
+ 
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+   
+  
+  
+  
+  
+ 
+ 
+  
+ 
+ 
+ 
+   
+  
+    
+  
+ 
+ 
+   
+ 
+ 
+ 
+ 
+   
+  
+ 
+ 
+ 
+  
+ 
+   
+  
+ 
+ 
+   
+  
+   
+  
+  
+ 
+ 
+  
+   
+  
+  
+ 
+ {"subject_id":"research-in-progress-3","subject_type":"street_or_district","entity_name":"Research in progress","title":"Checking named destinations","subtitle":"Near Stockton University, Galloway, NJ","notes":"I am selecting named destinations instead of generic corridors and matching each one to a specific reason to go.","short_summary":"Pending source verification.","evidence_claim":"Research is in progress.","source_url":"https://www.stockton.edu/","source_title":"Stockton University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final recommendation.","cost_status":"unknown","under21_safe":true}  
+  ,  
+  {"subject_id":"research-in-progress-4","subject_type":"street_or_district","entity_name":"Research in progress","title":"Assembling the board","subtitle":"Near Stockton University, Galloway, NJ","notes":"I am completing one ten-card board and will avoid duplicate subjects, generic entries, and unsupported claims.","short_summary":"Pending source verification.","evidence_claim":"Research is in progress.","source_url":"https://www.stockton.edu/","source_title":"Stockton University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final recommendation.","cost_status":"unknown","under21_safe":true}  
+  ,  
+  {"subject_id":"research-in-progress-5","subject_type":"street_or_district","entity_name":"Research in progress","title":"Confirming details","subtitle":"Near Stockton University, Galloway, NJ","notes":"I am verifying that every final card uses a direct HTTPS source and provides a concise action-oriented visit note.","short_summary":"Pending source verification.","evidence_claim":"Research is in progress.","source_url":"https://www.stockton.edu/","source_title":"Stockton University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final recommendation.","cost_status":"unknown","under21_safe":true}  
+  ,  
+  {"subject_id":"research-in-progress-6","subject_type":"street_or_district","entity_name":"Research in progress","title":"Checking practical orbit","subtitle":"Near Stockton University, Galloway, NJ","notes":"I am prioritizing destinations on established nearby corridors that can be located by their exact names on public maps.","short_summary":"Pending source verification.","evidence_claim":"Research is in progress.","source_url":"https://www.stockton.edu/","source_title":"Stockton University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final recommendation.","cost_status":"unknown","under21_safe":true}  
+  ,  
+  {"subject_id":"research-in-progress-7","subject_type":"street_or_district","entity_name":"Research in progress","title":"Cross-checking sources","subtitle":"Near Stockton University, Galloway, NJ","notes":"I am using direct pages from public institutions and destination operators rather than search pages or third-party aggregators.","short_summary":"Pending source verification.","evidence_claim":"Research is in progress.","source_url":"https://www.stockton.edu/","source_title":"Stockton University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final recommendation.","cost_status":"unknown","under21_safe":true}  
+  ,  
+  {"subject_id":"research-in-progress-8","subject_type":"street_or_district","entity_name":"Research in progress","title":"Finalizing card coverage","subtitle":"Near Stockton University, Galloway, NJ","notes":"I am ensuring the board has exactly ten distinct named destinations, each with a direct source-backed reason to visit.","short_summary":"Pending source verification.","evidence_claim":"Research is in progress.","source_url":"https://www.stockton.edu/","source_title":"Stockton University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final recommendation.","cost_status":"unknown","under21_safe":true}  
+  ,  
+  {"subject_id":"research-in-progress-9","subject_type":"street_or_district","entity_name":"Research in progress","title":"Reviewing under-21 safety","subtitle":"Near Stockton University, Galloway, NJ","notes":"I am filtering out alcohol-focused and age-restricted options, keeping the final set appropriate for all Stockton students.","short_summary":"Pending source verification.","evidence_claim":"Research is in progress.","source_url":"https://www.stockton.edu/","source_title":"Stockton University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final recommendation.","cost_status":"unknown","under21_safe":true}  
+  ,  
+  {"subject_id":"research-in-progress-10","subject_type":"street_or_district","entity_name":"Research in progress","title":"Preparing final JSON","subtitle":"Near Stockton University, Galloway, NJ","notes":"I am preparing the requested structured board with accurate links, careful copy, and one documented reason for every destination.","short_summary":"Pending source verification.","evidence_claim":"Research is in progress.","source_url":"https://www.stockton.edu/","source_title":"Stockton University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final recommendation.","cost_status":"unknown","under21_safe":true}  
+  ]  
+  ,"warnings":[]}],"warnings":[]}
+web search: 
+web search: site:historicsmithvillenj.com shops Smithville NJ official ...
+web search: 
+web search: site:historicsmithvillenj.com/shoppes "Toy Market" ...
+codex
+{"complete":true,"school_name":"Stockton University","town_name":"Galloway","boards":[{"complete":true,"school_name":"Stockton University","town_name":"Galloway","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named destinations in Historic Smithville & the Village Greene, an off-campus Stockton-recommended food, shopping, and activities stop in Galloway.","icon":"location_city","cards":[{"subject_id":"historic-smithville-toy-market","subject_type":"street_or_district","entity_name":"Toy Market","title":"Toy Market for puzzles and games","subtitle":"Historic Smithville & Village Greene corridor, off N New York Road","notes":"Find Shoppe 5 on the Historic Smithville corridor and browse the listed puzzles, games, books, science kits, and classic toys.","short_summary":"A named village shop for hands-on games, puzzles, books, and science kits.","evidence_claim":"Toy Market lists toys, puzzles, games, books, science kits, and other creative-play items at Shoppe 5.","source_url":"https://historicsmithvillenj.com/shoppes/6-shoppe5","source_title":"Toy Market | Historic Smithville","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Shoppe 5 in Historic Smithville & the Village Greene; confirm current shop hours before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"historic-smithville-candle-shoppe","subject_type":"street_or_district","entity_name":"Candle Shoppe","title":"Candle Shoppe for scent browsing","subtitle":"Historic Smithville & Village Greene corridor, off N New York Road","notes":"Stop at Shoppe 2 to compare the listed scented candle formats and browse candle holders, lamps, and other accessories.","short_summary":"A map-numbered shop devoted to scented candles and candle accessories.","evidence_claim":"Candle Shoppe lists pillar, tealight, votive, taper, jar, and soy candles plus candle accessories.","source_url":"https://historicsmithvillenj.com/shoppes/3-shoppe2","source_title":"Candle Shoppe | Historic Smithville","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Shoppe 2 in Historic Smithville & the Village Greene; confirm current shop hours before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"historic-smithville-cooks-corner","subject_type":"street_or_district","entity_name":"Cook's Corner","title":"Cook's Corner for roasted coffee","subtitle":"Historic Smithville & Village Greene corridor, off N New York Road","notes":"Use Shoppe 12 as a food-and-kitchen stop: browse its listed in-store roasted coffees, teas, specialty foods, and kitchen accessories.","short_summary":"A named village shop with roasted coffee, tea, specialty food, and kitchen goods.","evidence_claim":"Cook's Corner lists in-store roasted and flavored coffees, teas, specialty foods, and kitchen accessories.","source_url":"https://historicsmithvillenj.com/shoppes/15-shoppe12","source_title":"Cook's Corner | Historic Smithville","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Shoppe 12 in Historic Smithville & the Village Greene; confirm current shop hours before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"historic-smithville-honey-pot","subject_type":"street_or_district","entity_name":"The Honey Pot","title":"The Honey Pot for honey goods","subtitle":"Historic Smithville & Village Greene corridor, off N New York Road","notes":"Locate Shoppe 21 on the village map when you want to browse the operator-listed local and exotic honey, beeswax products, and confections.","short_summary":"A map-listed shop centered on honey, beeswax products, and confections.","evidence_claim":"The Historic Smithville brochure identifies The Honey Pot at Shoppe 21 and lists local and exotic honey, beeswax products, and confections.","source_url":"https://historicsmithvillenj.com/images/brochure/SmithvilleBrochure.pdf","source_title":"Historic Smithville Brochure and Towne Map","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Shoppe 21 in Historic Smithville & the Village Greene; confirm current shop hours before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"historic-smithville-village-sweet-shoppe","subject_type":"street_or_district","entity_name":"Village Sweet Shoppe","title":"Village Sweet Shoppe for candy","subtitle":"Historic Smithville & Village Greene corridor, off N New York Road","notes":"Find Shoppe 35 for a candy-focused browse; the official village brochure lists Jelly Bellys, stick candy, taffy, fudge, and more.","short_summary":"A named Historic Smithville candy shop with several classic confection categories.","evidence_claim":"The Historic Smithville brochure identifies Village Sweet Shoppe at Shoppe 35 and lists Jelly Bellys, stick candy, taffy, and fudge.","source_url":"https://historicsmithvillenj.com/images/brochure/SmithvilleBrochure.pdf","source_title":"Historic Smithville Brochure and Towne Map","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Shoppe 35 in Historic Smithville & the Village Greene; confirm current shop hours before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"historic-smithville-smithville-bakery","subject_type":"street_or_district","entity_name":"Smithville Bakery","title":"Smithville Bakery for baked goods","subtitle":"Historic Smithville & Village Greene corridor, off N New York Road","notes":"Use Shoppe 20 as a bakery stop and look for the brochure-listed baked-on-premises pastries, rolls, cookies, and breads.","short_summary":"A named village bakery whose official brochure lists baked-on-premises goods.","evidence_claim":"The Historic Smithville brochure identifies Smithville Bakery at Shoppe 20 and lists pastries, rolls, cookies, and breads baked on premises.","source_url":"https://historicsmithvillenj.com/images/brochure/SmithvilleBrochure.pdf","source_title":"Historic Smithville Brochure and Towne Map","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Shoppe 20 in Historic Smithville & the Village Greene; confirm current bakery hours before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"historic-smithville-costellos-pizzeria","subject_type":"street_or_district","entity_name":"Costello's Pizzeria","title":"Costello's Pizzeria for a pizza meal","subtitle":"Historic Smithville & Village Greene corridor, off N New York Road","notes":"Head to Shoppe 77 when you want an eat-in or takeout pizza option within the Historic Smithville and Village Greene corridor.","short_summary":"A named village pizzeria that offers both eat-in and takeout service.","evidence_claim":"The Historic Smithville brochure identifies Costello's Pizzeria at Shoppe 77 and states that it offers eat-in or takeout.","source_url":"https://historicsmithvillenj.com/images/brochure/SmithvilleBrochure.pdf","source_title":"Historic Smithville Brochure and Towne Map","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Shoppe 77 in Historic Smithville & the Village Greene; confirm current restaurant hours before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"historic-smithville-scoops-place","subject_type":"street_or_district","entity_name":"Scoop's Place","title":"Scoop's Place for an ice-cream sundae","subtitle":"Historic Smithville & Village Greene corridor, off N New York Road","notes":"Find Shoppe 78 for a dessert stop; the official brochure describes specialty ice-cream flavors for building a sundae by Lake Meone.","short_summary":"A named boardwalk-side ice-cream shop overlooking Lake Meone.","evidence_claim":"The Historic Smithville brochure identifies Scoop's Place at Shoppe 78 and describes specialty ice-cream flavors and sundaes overlooking Lake Meone.","source_url":"https://historicsmithvillenj.com/images/brochure/SmithvilleBrochure.pdf","source_title":"Historic Smithville Brochure and Towne Map","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Shoppe 78 in Historic Smithville & the Village Greene; confirm current shop hours before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"historic-smithville-lakeside-grill","subject_type":"street_or_district","entity_name":"Lakeside Grill","title":"Lakeside Grill for a Lake Meone view","subtitle":"Historic Smithville & Village Greene corridor, off N New York Road","notes":"Plan a meal at Shoppe 74 if you want the operator-described view over Lake Meone alongside breakfast, lunch, or dinner service.","short_summary":"A named lakeside restaurant with an official Lake Meone overlook description.","evidence_claim":"Lakeside Grill states that it serves breakfast, lunch, and dinner and overlooks Lake Meone.","source_url":"https://historicsmithvillenj.com/dining/65-shoppe74","source_title":"Lakeside Grill | Historic Smithville","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Shoppe 74 in Historic Smithville & the Village Greene; confirm current restaurant hours before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"historic-smithville-colonial-coffee-cafe","subject_type":"street_or_district","entity_name":"The Colonial Coffee Cafe","title":"The Colonial Coffee Cafe for espresso drinks","subtitle":"Historic Smithville & Village Greene corridor, off N New York Road","notes":"Locate Shoppe 96 for a hot or cold drink stop; the official brochure lists coffee, cappuccino, espresso, hot chocolate, and smoothies.","short_summary":"A named village cafe with coffee, espresso, hot chocolate, and smoothies on its official listing.","evidence_claim":"The Historic Smithville brochure identifies The Colonial Coffee Cafe at Shoppe 96 and lists coffee, cappuccino, espresso, hot chocolate, and smoothies.","source_url":"https://historicsmithvillenj.com/images/brochure/SmithvilleBrochure.pdf","source_title":"Historic Smithville Brochure and Towne Map","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Shoppe 96 in Historic Smithville & the Village Greene; confirm current cafe hours before traveling.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T09:13:08.025816Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa62-0f3c-76f1-802e-9eb0a28475fd.1786612158270370000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+27,057
+
+{"complete":true,"school_name":"Stockton University","town_name":"Galloway","boards":[{"complete":true,"school_name":"Stockton University","town_name":"Galloway","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named destinations in Historic Smithville & the Village Greene, an off-campus Stockton-recommended food, shopping, and activities stop in Galloway.","icon":"location_city","cards":[{"subject_id":"historic-smithville-toy-market","subject_type":"street_or_district","entity_name":"Toy Market","title":"Toy Market for puzzles and games","subtitle":"Historic Smithville & Village Greene corridor, off N New York Road","notes":"Find Shoppe 5 on the Historic Smithville corridor and browse the listed puzzles, games, books, science kits, and classic toys.","short_summary":"A named village shop for hands-on games, puzzles, books, and science kits.","evidence_claim":"Toy Market lists toys, puzzles, games, books, science kits, and other creative-play items at Shoppe 5.","source_url":"https://historicsmithvillenj.com/shoppes/6-shoppe5","source_title":"Toy Market | Historic Smithville","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Shoppe 5 in Historic Smithville & the Village Greene; confirm current shop hours before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"historic-smithville-candle-shoppe","subject_type":"street_or_district","entity_name":"Candle Shoppe","title":"Candle Shoppe for scent browsing","subtitle":"Historic Smithville & Village Greene corridor, off N New York Road","notes":"Stop at Shoppe 2 to compare the listed scented candle formats and browse candle holders, lamps, and other accessories.","short_summary":"A map-numbered shop devoted to scented candles and candle accessories.","evidence_claim":"Candle Shoppe lists pillar, tealight, votive, taper, jar, and soy candles plus candle accessories.","source_url":"https://historicsmithvillenj.com/shoppes/3-shoppe2","source_title":"Candle Shoppe | Historic Smithville","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Shoppe 2 in Historic Smithville & the Village Greene; confirm current shop hours before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"historic-smithville-cooks-corner","subject_type":"street_or_district","entity_name":"Cook's Corner","title":"Cook's Corner for roasted coffee","subtitle":"Historic Smithville & Village Greene corridor, off N New York Road","notes":"Use Shoppe 12 as a food-and-kitchen stop: browse its listed in-store roasted coffees, teas, specialty foods, and kitchen accessories.","short_summary":"A named village shop with roasted coffee, tea, specialty food, and kitchen goods.","evidence_claim":"Cook's Corner lists in-store roasted and flavored coffees, teas, specialty foods, and kitchen accessories.","source_url":"https://historicsmithvillenj.com/shoppes/15-shoppe12","source_title":"Cook's Corner | Historic Smithville","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Shoppe 12 in Historic Smithville & the Village Greene; confirm current shop hours before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"historic-smithville-honey-pot","subject_type":"street_or_district","entity_name":"The Honey Pot","title":"The Honey Pot for honey goods","subtitle":"Historic Smithville & Village Greene corridor, off N New York Road","notes":"Locate Shoppe 21 on the village map when you want to browse the operator-listed local and exotic honey, beeswax products, and confections.","short_summary":"A map-listed shop centered on honey, beeswax products, and confections.","evidence_claim":"The Historic Smithville brochure identifies The Honey Pot at Shoppe 21 and lists local and exotic honey, beeswax products, and confections.","source_url":"https://historicsmithvillenj.com/images/brochure/SmithvilleBrochure.pdf","source_title":"Historic Smithville Brochure and Towne Map","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Shoppe 21 in Historic Smithville & the Village Greene; confirm current shop hours before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"historic-smithville-village-sweet-shoppe","subject_type":"street_or_district","entity_name":"Village Sweet Shoppe","title":"Village Sweet Shoppe for candy","subtitle":"Historic Smithville & Village Greene corridor, off N New York Road","notes":"Find Shoppe 35 for a candy-focused browse; the official village brochure lists Jelly Bellys, stick candy, taffy, fudge, and more.","short_summary":"A named Historic Smithville candy shop with several classic confection categories.","evidence_claim":"The Historic Smithville brochure identifies Village Sweet Shoppe at Shoppe 35 and lists Jelly Bellys, stick candy, taffy, and fudge.","source_url":"https://historicsmithvillenj.com/images/brochure/SmithvilleBrochure.pdf","source_title":"Historic Smithville Brochure and Towne Map","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Shoppe 35 in Historic Smithville & the Village Greene; confirm current shop hours before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"historic-smithville-smithville-bakery","subject_type":"street_or_district","entity_name":"Smithville Bakery","title":"Smithville Bakery for baked goods","subtitle":"Historic Smithville & Village Greene corridor, off N New York Road","notes":"Use Shoppe 20 as a bakery stop and look for the brochure-listed baked-on-premises pastries, rolls, cookies, and breads.","short_summary":"A named village bakery whose official brochure lists baked-on-premises goods.","evidence_claim":"The Historic Smithville brochure identifies Smithville Bakery at Shoppe 20 and lists pastries, rolls, cookies, and breads baked on premises.","source_url":"https://historicsmithvillenj.com/images/brochure/SmithvilleBrochure.pdf","source_title":"Historic Smithville Brochure and Towne Map","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Shoppe 20 in Historic Smithville & the Village Greene; confirm current bakery hours before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"historic-smithville-costellos-pizzeria","subject_type":"street_or_district","entity_name":"Costello's Pizzeria","title":"Costello's Pizzeria for a pizza meal","subtitle":"Historic Smithville & Village Greene corridor, off N New York Road","notes":"Head to Shoppe 77 when you want an eat-in or takeout pizza option within the Historic Smithville and Village Greene corridor.","short_summary":"A named village pizzeria that offers both eat-in and takeout service.","evidence_claim":"The Historic Smithville brochure identifies Costello's Pizzeria at Shoppe 77 and states that it offers eat-in or takeout.","source_url":"https://historicsmithvillenj.com/images/brochure/SmithvilleBrochure.pdf","source_title":"Historic Smithville Brochure and Towne Map","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Shoppe 77 in Historic Smithville & the Village Greene; confirm current restaurant hours before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"historic-smithville-scoops-place","subject_type":"street_or_district","entity_name":"Scoop's Place","title":"Scoop's Place for an ice-cream sundae","subtitle":"Historic Smithville & Village Greene corridor, off N New York Road","notes":"Find Shoppe 78 for a dessert stop; the official brochure describes specialty ice-cream flavors for building a sundae by Lake Meone.","short_summary":"A named boardwalk-side ice-cream shop overlooking Lake Meone.","evidence_claim":"The Historic Smithville brochure identifies Scoop's Place at Shoppe 78 and describes specialty ice-cream flavors and sundaes overlooking Lake Meone.","source_url":"https://historicsmithvillenj.com/images/brochure/SmithvilleBrochure.pdf","source_title":"Historic Smithville Brochure and Towne Map","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Shoppe 78 in Historic Smithville & the Village Greene; confirm current shop hours before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"historic-smithville-lakeside-grill","subject_type":"street_or_district","entity_name":"Lakeside Grill","title":"Lakeside Grill for a Lake Meone view","subtitle":"Historic Smithville & Village Greene corridor, off N New York Road","notes":"Plan a meal at Shoppe 74 if you want the operator-described view over Lake Meone alongside breakfast, lunch, or dinner service.","short_summary":"A named lakeside restaurant with an official Lake Meone overlook description.","evidence_claim":"Lakeside Grill states that it serves breakfast, lunch, and dinner and overlooks Lake Meone.","source_url":"https://historicsmithvillenj.com/dining/65-shoppe74","source_title":"Lakeside Grill | Historic Smithville","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Shoppe 74 in Historic Smithville & the Village Greene; confirm current restaurant hours before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"historic-smithville-colonial-coffee-cafe","subject_type":"street_or_district","entity_name":"The Colonial Coffee Cafe","title":"The Colonial Coffee Cafe for espresso drinks","subtitle":"Historic Smithville & Village Greene corridor, off N New York Road","notes":"Locate Shoppe 96 for a hot or cold drink stop; the official brochure lists coffee, cappuccino, espresso, hot chocolate, and smoothies.","short_summary":"A named village cafe with coffee, espresso, hot chocolate, and smoothies on its official listing.","evidence_claim":"The Historic Smithville brochure identifies The Colonial Coffee Cafe at Shoppe 96 and lists coffee, cappuccino, espresso, hot chocolate, and smoothies.","source_url":"https://historicsmithvillenj.com/images/brochure/SmithvilleBrochure.pdf","source_title":"Historic Smithville Brochure and Towne Map","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Shoppe 96 in Historic Smithville & the Village Greene; confirm current cafe hours before traveling.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}

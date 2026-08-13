@@ -1,0 +1,64 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://apps.carleton.edu/campus/scheduling/assets/CampusMap2019.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://apps.carleton.edu/campus/scheduling/assets/CampusMap2019.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://cdn.carleton.edu/uploads/sites/221/2019/10/FacilitiesMasterPlan_May2014.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cdn.carleton.edu/uploads/sites/221/2019/10/FacilitiesMasterPlan_May2014.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://cdn.carleton.edu/uploads/sites/261/2020/01/Chapel_Booklet_Web.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cdn.carleton.edu/uploads/sites/261/2020/01/Chapel_Booklet_Web.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://athletics.carleton.edu/sports/2019/7/15/cowling-arboretum.aspx?id=6001",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://athletics.carleton.edu/sports/2019/7/15/cowling-arboretum.aspx?id=6001",
+      "error": ""
+    },
+    {
+      "url": "https://cdn.carleton.edu/uploads/sites/594/2020/12/2017B_WArbMapWithRules.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cdn.carleton.edu/uploads/sites/594/2020/12/2017B_WArbMapWithRules.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://athletics.carleton.edu/sports/2019/7/14/bell-field.aspx?id=6000",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://athletics.carleton.edu/sports/2019/7/14/bell-field.aspx?id=6000",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Laurence McKinley Gould Library",
+    "Skinner Memorial Chapel"
+  ],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

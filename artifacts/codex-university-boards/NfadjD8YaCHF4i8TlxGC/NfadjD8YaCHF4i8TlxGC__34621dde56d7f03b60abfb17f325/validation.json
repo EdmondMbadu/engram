@@ -1,0 +1,88 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.depauw.edu/virtual-tour/location/18/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depauw.edu/virtual-tour/details/roy-o-west-library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.depauw.edu/stories/details/a-new-roy-o/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depauw.edu/stories/details/a-new-roy-o/",
+      "error": ""
+    },
+    {
+      "url": "https://www.depauw.edu/about/capital-projects/roy-o-west-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depauw.edu/about/capital-projects/roy-o-west-library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.depauw.edu/academics/centers/tenzercenter/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depauw.edu/academics/centers/tenzercenter/",
+      "error": ""
+    },
+    {
+      "url": "https://www.depauw.edu/about/capital-projects/harrison-hall/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depauw.edu/about/capital-projects/harrison-hall/",
+      "error": ""
+    },
+    {
+      "url": "https://www.depauw.edu/academics/majors-and-minors/about-mathematics/student-resources/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depauw.edu/academics/majors-and-minors/about-mathematics/student-resources/",
+      "error": ""
+    },
+    {
+      "url": "https://www.depauw.edu/academics/centers/cdi/cdi-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depauw.edu/academics/centers/cdi/cdi-spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://www.depauw.edu/virtual-tour/location/20/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depauw.edu/virtual-tour/details/the-janet-prindle-institute-for-ethics/",
+      "error": ""
+    },
+    {
+      "url": "https://www.depauw.edu/academics/academic-resources/academic-resource-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depauw.edu/academics/academic-resources/academic-resource-center/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Tenzer Technology Center",
+    "Wood Library"
+  ],
+  "sourceCount": 9,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

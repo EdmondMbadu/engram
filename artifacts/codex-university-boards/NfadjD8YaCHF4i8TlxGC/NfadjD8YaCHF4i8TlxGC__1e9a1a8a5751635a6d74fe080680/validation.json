@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.fairfield.edu/news/the-stag-list/fun-facts-tips-for-first-year-stags.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/news/the-stag-list/fun-facts-tips-for-first-year-stags.html",
+      "error": ""
+    },
+    {
+      "url": "https://events.fairfield.edu/event/annual-tree-lighting-ceremony",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.fairfield.edu/event/annual-tree-lighting-ceremony",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/student-life/stag-traditions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/student-life/stag-traditions/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/news/2024/august/first-fairfield-friday.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/news/2024/august/first-fairfield-friday.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/news/2026/february/stagiving-day-returns.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/news/2026/february/stagiving-day-returns.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/news/2024/november/clinical-initiation-ceremony.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/news/2024/november/clinical-initiation-ceremony.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/alumni-and-friends/get-involved/teddy-bears-with-love/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/alumni-and-friends/get-involved/teddy-bears-with-love/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

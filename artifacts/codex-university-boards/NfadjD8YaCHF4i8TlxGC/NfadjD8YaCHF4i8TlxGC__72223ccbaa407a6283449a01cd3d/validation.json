@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://events.caltech.edu/series/watson",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.caltech.edu/series/watson",
+      "error": ""
+    },
+    {
+      "url": "https://local.caltech.edu/outreach",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://local.caltech.edu/outreach",
+      "error": ""
+    },
+    {
+      "url": "https://www.caltech.edu/campus-life-events/calendar/aim-32nd-birthday-celebration-fair-1",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.caltech.edu/campus-life-events/calendar/aim-32nd-birthday-celebration-fair-1",
+      "error": ""
+    },
+    {
+      "url": "https://events.caltech.edu/series",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.caltech.edu/series",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

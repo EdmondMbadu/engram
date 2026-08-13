@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.butler.edu/library/spaces/irwin/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.butler.edu/library/spaces/irwin/",
+      "error": ""
+    },
+    {
+      "url": "https://www.butler.edu/student-life/off-campus-and-commuter-students/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.butler.edu/student-life/off-campus-and-commuter-students/",
+      "error": ""
+    },
+    {
+      "url": "https://www.butler.edu/library/spaces/study-rooms/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.butler.edu/library/spaces/study-rooms/",
+      "error": ""
+    },
+    {
+      "url": "https://www.butler.edu/library/spaces/science/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.butler.edu/library/spaces/science/",
+      "error": ""
+    },
+    {
+      "url": "https://www.butler.edu/library/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.butler.edu/library/about/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

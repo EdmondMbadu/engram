@@ -1,0 +1,79 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Coordinates are null unless directly verifiable from a supporting official source; two building-level coordinates use established campus location data.",
+    "Event, room, and building availability can change; users should check posted access information before visiting.",
+    "The Globe Room may host varied events, but this card recommends only under-21-safe university activities and guest-speaker programs."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.gonzaga.edu/news-events/stories/2024/12/9/best-study-spots-on-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.gonzaga.edu/news-events/stories/2024/12/9/best-study-spots-on-campus",
+      "error": ""
+    },
+    {
+      "url": "https://www.gonzaga.edu/school-of-education/about/rosauer-center-for-education",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.gonzaga.edu/school-of-education/about/rosauer-center-for-education",
+      "error": ""
+    },
+    {
+      "url": "https://www.gonzaga.edu/about/offices-services/gonzaga-university-event-service-team/venues/john-j-hemmingson-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.gonzaga.edu/about/offices-services/gonzaga-university-event-service-team/venues/john-j-hemmingson-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.gonzaga.edu/about/offices-services/gonzaga-university-event-service-team/venues/john-j-hemmingson-center/whats-inside",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.gonzaga.edu/about/offices-services/gonzaga-university-event-service-team/venues/john-j-hemmingson-center/whats-inside",
+      "error": ""
+    },
+    {
+      "url": "https://www.gonzaga.edu/news-events/stories/gonzaga-students-favorite-spots-on-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.gonzaga.edu/news-events/stories/gonzaga-students-favorite-spots-on-campus",
+      "error": ""
+    },
+    {
+      "url": "https://www.gonzaga.edu/foley-library/services/digital-scholarship-and-publishing",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.gonzaga.edu/foley-library/services/digital-scholarship-and-publishing",
+      "error": ""
+    },
+    {
+      "url": "https://www.gonzaga.edu/foley-library/about/policies/building-use-policy",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.gonzaga.edu/foley-library/about/policies/building-use-policy",
+      "error": ""
+    },
+    {
+      "url": "https://www.gonzaga.edu/about/offices-services/gonzaga-university-event-service-team/venues/the-globe-room-at-cataldo",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.gonzaga.edu/about/offices-services/gonzaga-university-event-service-team/venues/the-globe-room-at-cataldo",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

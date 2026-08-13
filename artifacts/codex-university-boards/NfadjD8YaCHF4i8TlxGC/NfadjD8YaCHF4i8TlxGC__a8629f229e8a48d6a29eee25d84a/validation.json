@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.linfield.edu/orientation/mcminnville/fall-arrival-schedule.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.linfield.edu/orientation/mcminnville/fall-arrival-schedule.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.linfield.edu/assets/files/admission/mcminnville-campus-map.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.linfield.edu/assets/files/admission/mcminnville-campus-map.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.linfield.edu/parents/parent-resources/faq.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.linfield.edu/parents/parent-resources/faq.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.linfield.edu/soan/linfield-anthropology-museum.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.linfield.edu/soan/linfield-anthropology-museum.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.linfield.edu/commencement/guest-information/know-before-you-go.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.linfield.edu/commencement/guest-information/know-before-you-go.html",
+      "error": ""
+    },
+    {
+      "url": "https://linfield.edu/art/gallery.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://linfield.edu/art/gallery.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.linfield.edu/linfield-libraries/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.linfield.edu/linfield-libraries/",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcminnvilleoregon.gov/library/page/about-library-0",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.mcminnvilleoregon.gov/library/page/about-library-0",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.mcminnvilleoregon.gov/cd/page/city-park",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.mcminnvilleoregon.gov/cd/page/city-park",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.evergreenmuseum.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.evergreenmuseum.org/visit/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

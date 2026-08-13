@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "1kBMZmFsoCqvjQ4aXyUG",
+    "schoolName": "University of California-Santa Barbara",
+    "shortSchoolName": "University of California-Santa Barbara",
+    "townName": "Santa Barbara",
+    "state": "CA",
+    "countryCode": "US",
+    "unitId": "110705",
+    "website": "https://www.ucsb.edu/",
+    "latitude": 34.416297,
+    "longitude": -119.846426,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/4/48/UC_Santa_Barbara_Seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=ucsb.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain University of California-Santa Barbara",
+  "excluded_subjects": [
+    "UCSB Library Learning Commons",
+    "Group Study Room 1560A",
+    "Sara Miller McCune Arts Library",
+    "Pacific View Room",
+    "UCSB Library Fifth Floor Quiet Study",
+    "UCSB Library Sixth Floor Quiet Study",
+    "UCSB Library Seventh Floor Quiet Study",
+    "UCSB Library Eighth Floor Quiet Study",
+    "Graduate Study Room 2504",
+    "Graduate Study Room 2582B"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

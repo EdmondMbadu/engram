@@ -1,0 +1,87 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://magazine.emory.edu/issues/2011/autumn/of-note/where-we-began/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://magazine.emory.edu/issues/2011/autumn/of-note/where-we-began/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://studentcenter.emory.edu/centers/emory-student-center.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentcenter.emory.edu/centers/emory-student-center.html",
+      "error": ""
+    },
+    {
+      "url": "https://dining.emory.edu/locations/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dining.emory.edu/locations/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://hr.emory.edu/eu/wellness/physical-activity/walking-on-campus/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://hr.emory.edu/eu/wellness/physical-activity/walking-on-campus/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://prod.libraries.emory.edu/multisitedev/de/woodruff/about/visitor-information",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://prod.libraries.emory.edu/multisitedev/de/woodruff/about/visitor-information",
+      "error": ""
+    },
+    {
+      "url": "https://carlos.emory.edu/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://carlos.emory.edu/visit",
+      "error": ""
+    },
+    {
+      "url": "https://studentcenter.emory.edu/centers/cox-hall.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentcenter.emory.edu/centers/cox-hall.html",
+      "error": ""
+    },
+    {
+      "url": "https://recwell.emory.edu/facilities/saac.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recwell.emory.edu/facilities/saac.html",
+      "error": ""
+    },
+    {
+      "url": "https://schwartz.emory.edu/explore/visit/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://schwartz.emory.edu/explore/visit/index.html",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Dobbs Common Table"
+  ],
+  "sourceCount": 9,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

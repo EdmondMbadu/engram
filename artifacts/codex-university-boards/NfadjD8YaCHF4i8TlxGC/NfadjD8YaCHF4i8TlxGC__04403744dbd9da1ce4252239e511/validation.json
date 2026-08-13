@@ -1,0 +1,79 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://art.ecu.edu/gray-gallery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://art.ecu.edu/gray-gallery/",
+      "error": ""
+    },
+    {
+      "url": "https://art.ecu.edu/visiting-artists/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://art.ecu.edu/visiting-artists/",
+      "error": ""
+    },
+    {
+      "url": "https://rooms.lib.ecu.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://rooms.lib.ecu.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://library.ecu.edu/exhibits/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.ecu.edu/exhibits/",
+      "error": ""
+    },
+    {
+      "url": "https://crw.ecu.edu/sports-programs/fitness/walking-routes/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://crw.ecu.edu/sports-programs/fitness/walking-routes/",
+      "error": ""
+    },
+    {
+      "url": "https://www.greenvillenc.gov/Facilities/Facility/Details/Town-Common-41",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.greenvillenc.gov/Facilities/Facility/Details/Town-Common-41",
+      "error": ""
+    },
+    {
+      "url": "https://www.gmoa.org/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gmoa.org/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.pittcountyarboretum.com/visitor-information.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pittcountyarboretum.com/visitor-information.html",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Greenville Museum of Art"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

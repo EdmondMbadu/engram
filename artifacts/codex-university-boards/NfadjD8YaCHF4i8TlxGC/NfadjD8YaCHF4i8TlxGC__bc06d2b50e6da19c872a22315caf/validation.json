@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.marinosflyingpizza.com/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.marinosflyingpizza.com/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://order.eatpizzakingschenectady.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://order.eatpizzakingschenectady.com/",
+      "error": ""
+    },
+    {
+      "url": "https://statestreetpizzeria.net/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://statestreetpizzeria.net/",
+      "error": ""
+    },
+    {
+      "url": "https://www.eatsicilianpizzeria.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.eatsicilianpizzeria.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.herbiesburgers.com/order",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.herbiesburgers.com/order",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dennys.com/ny/schenectady/248732",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dennys.com/ny/schenectady/248732",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/ny/schenectady/1820-altamont-ave/delivery",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/ny/schenectady/1820-altamont-ave/delivery",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/ny/schenectady/1590-altamont-avenue",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/ny/schenectady/1590-altamont-avenue",
+      "error": ""
+    },
+    {
+      "url": "https://www.sicilianpizzaandgyro.com/about-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sicilianpizzaandgyro.com/about-us",
+      "error": ""
+    },
+    {
+      "url": "https://www.mikehotdogs.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mikehotdogs.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

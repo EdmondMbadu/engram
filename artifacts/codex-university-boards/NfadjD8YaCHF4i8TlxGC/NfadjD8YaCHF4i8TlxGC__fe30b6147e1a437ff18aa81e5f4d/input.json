@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "8DoTYl61eP1n8jjMqeOZ",
+    "schoolName": "Franciscan University of Steubenville",
+    "shortSchoolName": "Franciscan University of Steubenville",
+    "townName": "Steubenville",
+    "state": "OH",
+    "countryCode": "US",
+    "unitId": "205957",
+    "website": "https://www.franciscan.edu/",
+    "latitude": 40.376919,
+    "longitude": -80.620524,
+    "heroUrl": "https://franciscan.edu/wp-content/uploads/2021/11/Home-Page-Featured-Image.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=franciscan.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Totus Tuus Group Study Room",
+    "St. John Paul II Library Quiet Study Areas",
+    "St. John Paul II Library Computer Lab",
+    "St. John Paul II Library Group Study Rooms",
+    "Archives and Special Collections Room",
+    "St. Francis Hall Top-Floor Study Lounge",
+    "St. Thomas More Hall Second-Floor Study Room",
+    "Bl. Solanus Casey Hall Second-Floor Study Room",
+    "St. Junípero Serra Hall Study Rooms",
+    "St. Anthony of Padua Hall Study Lounge"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

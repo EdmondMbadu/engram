@@ -1,0 +1,97 @@
+{
+  "ok": false,
+  "problems": [
+    "Card entities are not unique."
+  ],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://locations.wendys.com/united-states/pa/dallas/2685-memorial-highway",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/pa/dallas/2685-memorial-highway",
+      "error": ""
+    },
+    {
+      "url": "https://primeatcitymarket.com/hours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://primeatcitymarket.com/hours",
+      "error": ""
+    },
+    {
+      "url": "https://www.shamshotchicken.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.shamshotchicken.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.kingzapa.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.kingzapa.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/pa/kingston.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/pa/kingston.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/pa/wilkes-barre/426-kidder-street.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/pa/wilkes-barre/426-kidder-street.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/pa/wilkes-barre/652-carey-ave-hanover-township.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/pa/wilkes-barre/652-carey-ave-hanover-township.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.kfc.com/pa/kingston/523-wyoming-avenue",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.kfc.com/pa/kingston/523-wyoming-avenue",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/pa/kingston/750-wyoming-ave/takeout",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/pa/kingston/750-wyoming-ave/takeout",
+      "error": ""
+    },
+    {
+      "url": "https://www.lokochefpa.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lokochefpa.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Prime at City Market"
+  ],
+  "sourceCount": 10,
+  "generationScore": null,
+  "generationGrade": null
+}

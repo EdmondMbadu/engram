@@ -1,0 +1,72 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://admissions.utk.edu/undergraduate-visits/campus-tour-parking-and-travel-plans/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://admissions.utk.edu/undergraduate-visits/campus-tour-parking-and-travel-plans/",
+      "error": ""
+    },
+    {
+      "url": "https://hr.utk.edu/navigating-campus/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://hr.utk.edu/navigating-campus/",
+      "error": ""
+    },
+    {
+      "url": "https://hubknoxville.com/amenities/new-here-coffee/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://hubknoxville.com/amenities/new-here-coffee/",
+      "error": ""
+    },
+    {
+      "url": "https://www.oscarsrestaurantknoxville.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oscarsrestaurantknoxville.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.gussgoodtimesdeli.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gussgoodtimesdeli.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.sunspotrestaurant.com/about.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sunspotrestaurant.com/about.html",
+      "error": ""
+    },
+    {
+      "url": "https://parking.utk.edu/wp-content/uploads/2025/01/UT-Campus-Parking-Map.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://parking.utk.edu/wp-content/uploads/2025/01/UT-Campus-Parking-Map.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Gus's Good Times Deli",
+    "Ayres Hall"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

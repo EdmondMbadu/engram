@@ -1,0 +1,85 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.queenslibrary.org/about-us/locations/Elmhurst/%26lang%3Den",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.queenslibrary.org/about-us/locations",
+      "error": ""
+    },
+    {
+      "url": "https://php1-84.nycgovparks.org/parks/cunningham-park/inspections/Q021-ZN07",
+      "ok": true,
+      "conclusive": true,
+      "status": 401,
+      "finalUrl": "https://php1-84.nycgovparks.org/parks/cunningham-park/inspections/Q021-ZN07",
+      "error": ""
+    },
+    {
+      "url": "https://www2.nycgovparks.org/parks/kissenapark",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www2.nycgovparks.org/parks/kissenapark",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://php-cms.nycgovparks.org/park-features/hiking/kissena-park-kissena-corridor",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://php-cms.nycgovparks.org/park-features/hiking/kissena-park-kissena-corridor",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://queensbotanical.org/what-to-do-see/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://queensbotanical.org/what-to-do-see/",
+      "error": ""
+    },
+    {
+      "url": "https://queensmuseum.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://queensmuseum.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://shop.nysci.org/pages/nysci-gift-shop-visit-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://shop.nysci.org/pages/nysci-gift-shop-visit-us",
+      "error": ""
+    },
+    {
+      "url": "https://queenszoo.com/plan-your-visit/getting-here",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://queenszoo.com/plan-your-visit/getting-here",
+      "error": ""
+    },
+    {
+      "url": "https://jcal.org/home",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://jcal.org/home",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

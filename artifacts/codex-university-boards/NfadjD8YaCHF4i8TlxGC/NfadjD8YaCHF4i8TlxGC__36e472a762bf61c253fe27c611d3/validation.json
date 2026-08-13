@@ -1,0 +1,99 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Current public pages did not provide verifiable coordinates or stable map URLs for individual subjects, so those fields are null.",
+    "Several official sources document established uses but do not publish current access hours; those limitations are stated in access_notes.",
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://gouldguides.carleton.edu/c.php?g=147169&p=965873",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gouldguides.carleton.edu/c.php?g=147169&p=965873",
+      "error": ""
+    },
+    {
+      "url": "https://cdn.carleton.edu/uploads/sites/221/2019/10/FacilitiesMasterPlan_May2014.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cdn.carleton.edu/uploads/sites/221/2019/10/FacilitiesMasterPlan_May2014.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://imagencloud.carleton.edu/record/67495",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://imagencloud.carleton.edu/record/67495",
+      "error": ""
+    },
+    {
+      "url": "https://athletics.carleton.edu/sports/2019/7/15/recreation-center.aspx?id=6006",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://athletics.carleton.edu/sports/2019/7/15/recreation-center.aspx?id=6006",
+      "error": ""
+    },
+    {
+      "url": "https://cdn.carleton.edu/uploads/sites/594/2020/12/2017B_WArbMapWithRules.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cdn.carleton.edu/uploads/sites/594/2020/12/2017B_WArbMapWithRules.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://cdn.carleton.edu/uploads/sites/275/2020/01/Sherri_sPaper.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cdn.carleton.edu/uploads/sites/275/2020/01/Sherri_sPaper.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://campushistory.sites.carleton.edu/science-essay/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campushistory.sites.carleton.edu/science-essay/",
+      "error": ""
+    },
+    {
+      "url": "https://acad.carleton.edu/curricular/ENTS/curricular/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://acad.carleton.edu/curricular/ENTS/curricular/",
+      "error": ""
+    },
+    {
+      "url": "https://cdn.carleton.edu/uploads/sites/557/2020/09/The_Bi_Weekly_Advising_Bulletin__Weeks_5_6_Fall_2019_1.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cdn.carleton.edu/uploads/sites/557/2020/09/The_Bi_Weekly_Advising_Bulletin__Weeks_5_6_Fall_2019_1.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://dh.classics.sites.carleton.edu/race-antiquity-and-its-legacy-spring-2024/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dh.classics.sites.carleton.edu/race-antiquity-and-its-legacy-spring-2024/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Laurence McKinley Gould Library",
+    "Great Space",
+    "Daugherty Atrium"
+  ],
+  "sourceCount": 10,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

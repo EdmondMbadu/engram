@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.nassaucoliseum.com/plan-your-visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nassaucoliseum.com/plan-your-visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.cradleofaviation.org/links.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cradleofaviation.org/links.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.licm.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.licm.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://nassaucountytourism.com/get-inspired/arts-culture/museum-row-long-island-a-family-destination/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://nassaucountytourism.com/get-inspired/arts-culture/museum-row-long-island-a-family-destination/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nassaucountyny.gov/2642/Mitchel-Athletic-Complex",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nassaucountyny.gov/2642/Mitchel-Athletic-Complex",
+      "error": ""
+    },
+    {
+      "url": "https://www.nassaucountyny.gov/2797/Eisenhower-Park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nassaucountyny.gov/2797/Eisenhower-Park",
+      "error": ""
+    },
+    {
+      "url": "https://www.simon.com/mall/roosevelt-field/about/perks/",
+      "ok": true,
+      "conclusive": true,
+      "status": 307,
+      "finalUrl": "https://www.simon.com/mall/roosevelt-field/about/perks/",
+      "error": ""
+    },
+    {
+      "url": "https://www.exploresamanea.com/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.exploresamanea.com/about",
+      "error": ""
+    },
+    {
+      "url": "https://www.nassaucountyny.gov/2934/African-American-Museum-and-Center-for-A",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nassaucountyny.gov/2934/African-American-Museum-and-Center-for-A",
+      "error": ""
+    },
+    {
+      "url": "https://villageofhempstead.org/Facilities/Facility/Details/Kennedy-Memorial-Park-1",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://villageofhempstead.org/Facilities/Facility/Details/Kennedy-Memorial-Park-1",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

@@ -1,0 +1,61 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "CN2S0x6EgGVVOzPHFYxM",
+    "schoolName": "Duquesne University",
+    "shortSchoolName": "Duquesne University",
+    "townName": "Pittsburgh",
+    "state": "PA",
+    "countryCode": "US",
+    "unitId": "212106",
+    "website": "https://www.duq.edu/",
+    "latitude": 40.43589,
+    "longitude": -79.993123,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/b/b2/Seal_of_Duquesne_University.svg/330px-Seal_of_Duquesne_University.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=duq.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Orientation and Burgh Buck Auction",
+    "Fall Carnival",
+    "Cram Cooper",
+    "Night of Lights",
+    "Christmas Ball",
+    "Founders Week",
+    "Epic Bingo",
+    "Festival on the Bluff",
+    "Ring Blessing",
+    "Late-Night Breakfast",
+    "The Business Leader Bistro",
+    "Campus Market",
+    "Fisher Market Express",
+    "Connections",
+    "The Incline",
+    "Starbucks at Gormley Student Union",
+    "Moonlit Burgers Uptown",
+    "Domino's Pizza — 1001 East Carson Street",
+    "Domino's Pizza — 625 Stanwix Street",
+    "Taco Bell — 121 Costco Drive"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

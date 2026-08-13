@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://visitdecorah.com/business/vesterheim-norwegian-american-museum-folk-art-school/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visitdecorah.com/business/vesterheim-norwegian-american-museum-folk-art-school/",
+      "error": ""
+    },
+    {
+      "url": "https://visitdecorah.com/business/oneota-community-food-co-op/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visitdecorah.com/business/oneota-community-food-co-op/",
+      "error": ""
+    },
+    {
+      "url": "https://visitdecorah.com/business/water-street-deli/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visitdecorah.com/business/water-street-deli/",
+      "error": ""
+    },
+    {
+      "url": "https://visitdecorah.com/blog/kanpai-soda-shop/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visitdecorah.com/blog/kanpai-soda-shop/",
+      "error": ""
+    },
+    {
+      "url": "https://visitdecorah.com/business/games-xp/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visitdecorah.com/business/games-xp/",
+      "error": ""
+    },
+    {
+      "url": "https://visitdecorah.com/business/dragonfly-books/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visitdecorah.com/business/dragonfly-books/",
+      "error": ""
+    },
+    {
+      "url": "https://visitdecorah.com/business/magpie-inc/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visitdecorah.com/business/magpie-inc/",
+      "error": ""
+    },
+    {
+      "url": "https://visitdecorah.com/business/sparrows/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visitdecorah.com/business/sparrows/",
+      "error": ""
+    },
+    {
+      "url": "https://visitdecorah.com/business/j-tupys-on-water-street/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visitdecorah.com/business/j-tupys-on-water-street/",
+      "error": ""
+    },
+    {
+      "url": "https://parks.decorahia.org/wp-content/uploads/2022/11/Parks-Trail-Guide.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://parks.decorahia.org/wp-content/uploads/2022/11/Parks-Trail-Guide.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

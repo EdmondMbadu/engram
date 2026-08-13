@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.northcity.com/places/necessity",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.northcity.com/places/necessity",
+      "error": ""
+    },
+    {
+      "url": "https://www.northcity.com/places/patisserie",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.northcity.com/places/patisserie",
+      "error": ""
+    },
+    {
+      "url": "https://www.northcity.com/places/milonga",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.northcity.com/places/milonga",
+      "error": ""
+    },
+    {
+      "url": "https://www.northcity.com/places/umami-japanese",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.northcity.com/places/umami-japanese",
+      "error": ""
+    },
+    {
+      "url": "https://www.northcity.com/places/a-lo-fresco",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.northcity.com/places/a-lo-fresco",
+      "error": ""
+    },
+    {
+      "url": "https://www.northcity.com/places/buona-forchetta",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.northcity.com/places/buona-forchetta",
+      "error": ""
+    },
+    {
+      "url": "https://www.northcity.com/journal/how-to-spend-a-great-day-in-north-city",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.northcity.com/journal/how-to-spend-a-great-day-in-north-city",
+      "error": ""
+    },
+    {
+      "url": "https://www.northcity.com/places/mesa-rim",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.northcity.com/places/mesa-rim",
+      "error": ""
+    },
+    {
+      "url": "https://www.sdcl.org/locations/32/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sdcl.org/locations/32/",
+      "error": ""
+    },
+    {
+      "url": "https://www.sanmarcosca.gov/Parks-Recreation/Find-Parks-Pools-Facilities/Hollandia-Park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sanmarcosca.gov/Parks-Recreation/Find-Parks-Pools-Facilities/Hollandia-Park",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

@@ -1,0 +1,69 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "UBDdVoMV7KeCORWML3Jg",
+    "schoolName": "Towson University",
+    "shortSchoolName": "Towson University",
+    "townName": "Towson",
+    "state": "MD",
+    "countryCode": "US",
+    "unitId": "164076",
+    "website": "https://www.towson.edu/",
+    "latitude": 39.393622,
+    "longitude": -76.611164,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/b/b2/Towson_University_seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=towson.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at Towson University, Shared as Cards",
+  "excluded_subjects": [
+    "Tiger Express",
+    "The Den @ PAWS",
+    "Taco Bell",
+    "2AM Project",
+    "7-Eleven",
+    "Underground Pizza Company Towson",
+    "MOD Pizza Towson Station",
+    "Seasons Pizza Towson",
+    "Papa Johns Pizza York Rd",
+    "Domino's Pizza",
+    "Study Lounge",
+    "Group Study Spaces",
+    "Presentation Practice Room",
+    "Data Studio",
+    "Graduate Reading Room",
+    "Quiet Study Room CK200C",
+    "Interfaith Meditation Room",
+    "Special Collections & University Archives",
+    "University Union",
+    "Burdick Turf Fields",
+    "Absolute Quiet Room",
+    "Zoom and Study Pods",
+    "Fifth-Floor Quiet Study Workstations",
+    "Fifth-Floor Study Cubicles",
+    "Fourth-Floor Quiet Study Zone",
+    "Individual Semi-Private Study Cubbies",
+    "Second-Floor Reservable Study Rooms"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

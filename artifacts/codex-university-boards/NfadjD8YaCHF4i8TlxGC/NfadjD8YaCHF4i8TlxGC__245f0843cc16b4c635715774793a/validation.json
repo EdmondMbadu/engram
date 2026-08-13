@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://jcra.ncsu.edu/visit/visitor-information/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://jcra.ncsu.edu/visit/visitor-information/",
+      "error": ""
+    },
+    {
+      "url": "https://jcra.ncsu.edu/events/details.php?ID=1035",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://jcra.ncsu.edu/events/details.php?ID=1035",
+      "error": ""
+    },
+    {
+      "url": "https://ncartmuseum.org/plan-your-visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ncartmuseum.org/plan-your-visit/",
+      "error": ""
+    },
+    {
+      "url": "https://ncartmuseum.org/plan-your-visit/museum-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ncartmuseum.org/plan-your-visit/museum-park/",
+      "error": ""
+    },
+    {
+      "url": "https://ncartmuseum.org/plan-your-visit/tours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ncartmuseum.org/plan-your-visit/tours/",
+      "error": ""
+    },
+    {
+      "url": "https://www.naturalsciences.org/visit/hours-admission",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.naturalsciences.org/visit/hours-admission",
+      "error": ""
+    },
+    {
+      "url": "https://raleighnc.gov/parks-and-recreation/news/2026-summer-concert-series",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://raleighnc.gov/parks-and-recreation/news/2026-summer-concert-series",
+      "error": ""
+    },
+    {
+      "url": "https://raleighnc.gov/parks-and-recreation/events/movie-series-pullen-park-2",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://raleighnc.gov/parks-and-recreation/events/movie-series-pullen-park-1",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ncsu.edu/rules/exhibit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ncsu.edu/rules/exhibit",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ncsu.edu/strategic-priorities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ncsu.edu/strategic-priorities",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

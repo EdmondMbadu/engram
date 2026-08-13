@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.eddycommons.com/directory",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.eddycommons.com/directory",
+      "error": ""
+    },
+    {
+      "url": "https://locations.chipotle.com/in/south-bend/1251-n-eddy-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.chipotle.com/in/south-bend/1251-n-eddy-st",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.fiveguys.com/1233-n-eddy-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.fiveguys.com/1233-n-eddy-st",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

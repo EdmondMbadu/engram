@@ -1,0 +1,39 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Trail Tuesdays is restricted to Bethlehem residents and requires registration and a waiver.",
+    "Athletics schedules and venue instructions can change; verify the selected home event before traveling.",
+    "Gallery access is free but remains subject to current building and gallery hours."
+  ],
+  "reachability": [
+    {
+      "url": "https://luag.lehigh.edu/exhibitions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://luag.lehigh.edu/exhibitions",
+      "error": ""
+    },
+    {
+      "url": "https://lehighsports.com/sports/2020/5/4/tickets%20new",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lehighsports.com/sports/2020/5/4/tickets%20new",
+      "error": ""
+    },
+    {
+      "url": "https://www.bethlehem-pa.gov/events/recreation-events/trail-tuesdays/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bethlehem-pa.gov/events/recreation-events/trail-tuesdays/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 89,
+  "generationGrade": "B"
+}

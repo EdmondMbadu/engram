@@ -1,0 +1,87 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://museum.syr.edu/education-2/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://museum.syr.edu/education-2/",
+      "error": ""
+    },
+    {
+      "url": "https://vpa.syracuse.edu/warehouse-gallery/plan-your-visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://vpa.syracuse.edu/warehouse-gallery/plan-your-visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lightwork.org/contact/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lightwork.org/contact/",
+      "error": ""
+    },
+    {
+      "url": "https://lacasita.syr.edu/la-casita-art-gallery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lacasita.syr.edu/la-casita-art-gallery/",
+      "error": ""
+    },
+    {
+      "url": "https://library.syracuse.edu/bird-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.syracuse.edu/bird-library/",
+      "error": ""
+    },
+    {
+      "url": "https://events.syracuse.edu/event/public-tour-of-we-demand-a-legacy-of-activism-in-america",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.syracuse.edu/event/public-tour-of-we-demand-a-legacy-of-activism-in-america",
+      "error": ""
+    },
+    {
+      "url": "https://www.syracuse.edu/campus-life/arts/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.syracuse.edu/campus-life/arts/",
+      "error": ""
+    },
+    {
+      "url": "https://www.syr.gov/Living/Our-Community/Parks-Recreation-Youth-Services/Visit-Our-Parks/Thornden-Park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.syr.gov/Living/Our-Community/Parks-Recreation-Youth-Services/Visit-Our-Parks/Thornden-Park",
+      "error": ""
+    },
+    {
+      "url": "https://eriecanalmuseum.org/about/the-museum/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://eriecanalmuseum.org/about/the-museum/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Bird Library"
+  ],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

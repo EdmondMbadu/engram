@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.pizzahut.com/mn/saint-paul/610-snelling-ave-s",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/mn/saint-paul/610-snelling-ave-s",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jimmyjohns.com/mn/st-paul/sandwiches-4.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jimmyjohns.com/mn/st.-paul/sandwiches-0004.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/mn/saint-paul/1770-university-ave-w",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/mn/saint-paul/1770-university-ave-w",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/mn/saint-paul/612-w-university-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/mn/saint-paul/612-w-university-ave",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/mn/saint-paul",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/mn/saint-paul",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/mn/saint-paul/565-no-snelling/fast-food.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mn/saint-paul/565-no-snelling/fast-food.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/mn/saint-paul/1630-robert-st-s/fast-food.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mn/saint-paul/1630-robert-st-s/fast-food.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/mn/saint-paul/1940-suburban-avenue/fast-food.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mn/saint-paul/1940-suburban-avenue/fast-food.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/mn/saint-paul/1672-rice-st.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mn/saint-paul/1672-rice-st.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

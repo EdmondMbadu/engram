@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.unh.edu/life-unh/explore-campuses/durham-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.unh.edu/life-unh/explore-campuses/durham-campus",
+      "error": ""
+    },
+    {
+      "url": "https://www.unh.edu/mub/venues-services",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.unh.edu/mub/venues-services",
+      "error": ""
+    },
+    {
+      "url": "https://library.unh.edu/exhibits/mascots",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.unh.edu/exhibits/mascots",
+      "error": ""
+    },
+    {
+      "url": "https://library.unh.edu/locations/dimond-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.unh.edu/locations/dimond-library",
+      "error": ""
+    },
+    {
+      "url": "https://www.unh.edu/leadership/blog/2025/11/latest-unh-art-gallery",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.unh.edu/leadership/blog/2025/11/latest-unh-art-gallery",
+      "error": ""
+    },
+    {
+      "url": "https://colsa.unh.edu/collegeWoods",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://colsa.unh.edu/collegeWoods",
+      "error": ""
+    },
+    {
+      "url": "https://campusrec.unh.edu/membership/campus-recreation-student-membership",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusrec.unh.edu/membership/campus-recreation-student-membership",
+      "error": ""
+    },
+    {
+      "url": "https://campusrec.unh.edu/facilities/outdoor-pool",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusrec.unh.edu/facilities/outdoor-pool",
+      "error": ""
+    },
+    {
+      "url": "https://admissions.unh.edu/blog/2023/01/admitted-students-guide-campus-dining",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://admissions.unh.edu/blog/2023/01/admitted-students-guide-campus-dining",
+      "error": ""
+    },
+    {
+      "url": "https://www.unh.edu/dining/unh-dairy-bar",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.unh.edu/dining/unh-dairy-bar",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

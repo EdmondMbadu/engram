@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://sga.umbc.edu/history/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sga.umbc.edu/history/",
+      "error": ""
+    },
+    {
+      "url": "https://umbc.edu/stories/what-makes-a-retriever/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://umbc.edu/stories/what-makes-a-retriever/",
+      "error": ""
+    },
+    {
+      "url": "https://homecoming.umbc.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://homecoming.umbc.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://umbc.edu/stories/building-the-bonfire-from-scratch/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://umbc.edu/stories/building-the-bonfire-from-scratch/",
+      "error": ""
+    },
+    {
+      "url": "https://seb.umbc.edu/events/annual-events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://seb.umbc.edu/events/annual-events/",
+      "error": ""
+    },
+    {
+      "url": "https://retreat.umbc.edu/cocreate/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://retreat.umbc.edu/cocreate/",
+      "error": ""
+    },
+    {
+      "url": "https://umbc.edu/stories/celebrate-retriever-spirit-at-homecoming-2023/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://umbc.edu/stories/celebrate-retriever-spirit-at-homecoming-2023/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

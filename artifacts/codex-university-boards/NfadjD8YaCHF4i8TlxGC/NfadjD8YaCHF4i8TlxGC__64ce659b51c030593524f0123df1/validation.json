@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.up.edu/news/2021/08/best-places-to-study-on-campus.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ww1.up.edu/news/2021/08/best-places-to-study-on-campus.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.up.edu/sarc/services/your-first-year/getting-involved-in-campus-life.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ww1.up.edu/sarc/services/your-first-year/getting-involved-in-campus-life.html",
+      "error": ""
+    },
+    {
+      "url": "https://sites.up.edu/upbiology/greenup/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sites.up.edu/upbiology/greenup/",
+      "error": ""
+    },
+    {
+      "url": "https://www.up.edu/admissions/files/2025-2026-viewbook-accessible.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ww1.up.edu/admissions/files/2025-2026-viewbook-accessible.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://calendar.up.edu/buckley_center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calendar.up.edu/buckley_center",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

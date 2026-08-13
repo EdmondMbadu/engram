@@ -1,0 +1,66 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "sXHwCCAhYtLuVdvWBHib",
+    "schoolName": "New Mexico Institute of Mining and Technology",
+    "shortSchoolName": "New Mexico Institute of Mining and Technology",
+    "townName": "Socorro",
+    "state": "NM",
+    "countryCode": "US",
+    "unitId": "187967",
+    "website": "https://www.nmt.edu/",
+    "latitude": 34.067041,
+    "longitude": -106.905211,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=nmt.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=nmt.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "Tu Taco",
+    "Fire & Ice Coffee Shop",
+    "Fidel Student Services Center",
+    "Fidel Center Game Room",
+    "Los Mario's Mexican Food",
+    "Walmart Supercenter #5492",
+    "Burger King",
+    "SONIC Drive-In",
+    "Arby's",
+    "McDonald's",
+    "Kelly Mine Experience",
+    "Joseph A. Fidel Student Services Center",
+    "NMT Game Room",
+    "Joseph R. Skeen Library",
+    "New Mexico Mineral Museum",
+    "NMT Recreation and Well-Being Center",
+    "NMT Training Bouldering Wall",
+    "Macey Conference Center",
+    "Etscorn Campus Observatory",
+    "Socorro Historic Plaza",
+    "Office for Student Learning",
+    "Library 208",
+    "Fidel 130",
+    "Gold 145",
+    "Student Activity Center",
+    "Macey Center"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

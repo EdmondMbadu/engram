@@ -1,0 +1,40 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "IrFE94UzmzC7hbUyCcFY",
+    "schoolName": "University of Michigan-Ann Arbor",
+    "shortSchoolName": "University of Michigan-Ann Arbor",
+    "townName": "Ann Arbor",
+    "state": "MI",
+    "countryCode": "US",
+    "unitId": "170976",
+    "website": "https://umich.edu/",
+    "latitude": 42.278374,
+    "longitude": -83.73481,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Seal_of_the_University_of_Michigan.svg/250px-Seal_of_the_University_of_Michigan.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=umich.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

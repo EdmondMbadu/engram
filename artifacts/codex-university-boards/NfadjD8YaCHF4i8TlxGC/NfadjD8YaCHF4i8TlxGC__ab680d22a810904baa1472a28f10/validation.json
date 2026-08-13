@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.lawrence.edu/offices/conservatory-office/conservatory-office-faqs",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://inside.lawrence.edu/offices/conservatory-office/conservatory-office-faqs",
+      "error": ""
+    },
+    {
+      "url": "https://www.lawrence.edu/music-arts/performances-productions/performing-arts-lawrence/dance-series",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lawrence.edu/community-events/performances-exhibits/dance/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lawrence.edu/conservatory/music-all/riverview-gardens",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://inside.lawrence.edu/conservatory/music-all/riverview-gardens",
+      "error": ""
+    },
+    {
+      "url": "https://www.lawrence.edu/offices/office-international-student-services/events",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://inside.lawrence.edu/offices/office-international-student-services/events",
+      "error": ""
+    },
+    {
+      "url": "https://www.lawrence.edu/library/spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lawrence.edu/academics/advising-support/library/spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://apl.org/computers-printing-copying-and-faxing/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://apl.org/computers-printing-copying-and-faxing/",
+      "error": ""
+    },
+    {
+      "url": "https://apl.org/technology-help/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://apl.org/technology-help/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

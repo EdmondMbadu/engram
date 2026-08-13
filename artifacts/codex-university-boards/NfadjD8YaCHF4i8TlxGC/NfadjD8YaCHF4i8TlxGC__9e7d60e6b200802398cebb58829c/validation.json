@@ -1,0 +1,50 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "4 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.jmu.edu/union/in-the-union/amenities/tdu.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jmu.edu/union/in-the-union/amenities/tdu.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.jmu.edu/union/galleries/our-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jmu.edu/union/galleries/our-spaces/index.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.jmu.edu/studentaffairs/student-resources/student-spaces.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jmu.edu/studentaffairs/student-resources/student-spaces.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.jmu.edu/students/study-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.jmu.edu/students/study-spaces/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Rose Library 24-Hour Space",
+    "Rose Library Flex Space",
+    "Rose Library Quiet Booths",
+    "The Nook"
+  ],
+  "sourceCount": 4,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

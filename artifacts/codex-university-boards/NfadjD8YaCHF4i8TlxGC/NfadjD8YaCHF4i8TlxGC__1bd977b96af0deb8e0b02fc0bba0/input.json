@@ -1,0 +1,69 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "jbB2Jk04Qaq5lTCWag8L",
+    "schoolName": "California State University-Fresno",
+    "shortSchoolName": "California State University-Fresno",
+    "townName": "Fresno",
+    "state": "CA",
+    "countryCode": "US",
+    "unitId": "110556",
+    "website": "https://www.fresnostate.edu/",
+    "latitude": 36.811154,
+    "longitude": -119.744569,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/d/df/California_State_University%2C_Fresno_seal.svg/250px-California_State_University%2C_Fresno_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=fresnostate.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Maya Cinemas Fresno",
+    "Cold Stone Creamery Store #20732",
+    "Mochinut Campus Pointe",
+    "Wayside Noodles",
+    "Raw Earth Juicery and Cafe",
+    "Ike's Love & Sandwiches Campus Pointe",
+    "Bulldoc Korean Fusion",
+    "Sweet Lyfe Boba Bar",
+    "Pieology Campus Pointe",
+    "Wahoo's Fish Taco Campus Pointe",
+    "Fresno State Peace Garden",
+    "Conley Art Building",
+    "Table Mountain Rancheria Reading Room",
+    "Allergy-Free Demonstration Garden",
+    "Fresno State Greenhouses",
+    "Leon S. Peters Event Plaza",
+    "Reflection Pathway",
+    "University Student Union Courtyard Plaza",
+    "Lynda and Stewart Resnick Student Union",
+    "Fresno Student Recreation Center",
+    "Fresno State Library",
+    "Armenian Genocide Monument",
+    "Student Recreation Center",
+    "Rue and Gwen Gibson Farm Market",
+    "Bulldog Zone",
+    "Bulldog Bowl",
+    "University Dining Hall",
+    "Downing Planetarium"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

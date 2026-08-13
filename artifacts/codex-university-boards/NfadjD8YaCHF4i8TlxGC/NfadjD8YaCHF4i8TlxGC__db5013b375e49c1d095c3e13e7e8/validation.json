@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://bergencountynj.gov/bergen-county-department-of-parks/ramapo-valley-county-reservation/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bergencountynj.gov/bergen-county-department-of-parks/ramapo-valley-county-reservation/",
+      "error": ""
+    },
+    {
+      "url": "https://www.mahwahtwp.org/612/Parks-Facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mahwahtwp.org/612/Parks-Facilities",
+      "error": ""
+    },
+    {
+      "url": "https://www.mahwahtwp.org/DocumentCenter/View/3774/HPC-National-Register-Properties-in-Mahwah",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mahwahtwp.org/DocumentCenter/View/3774/HPC-National-Register-Properties-in-Mahwah",
+      "error": ""
+    },
+    {
+      "url": "https://bergencountynj.gov/tourism/discovering-history/revolutionary-war-sites-in-bergen-county/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bergencountynj.gov/tourism/discovering-history/revolutionary-war-sites-in-bergen-county/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

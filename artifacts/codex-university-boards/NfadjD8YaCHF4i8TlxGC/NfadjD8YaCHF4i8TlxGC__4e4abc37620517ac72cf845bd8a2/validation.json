@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://crevecoeurmo.gov/284/Parks",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://crevecoeurmo.gov/284/Parks",
+      "error": ""
+    },
+    {
+      "url": "https://www.slcl.org/hours-and-locations/thornhill-branch",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.slcl.org/hours-and-locations/thornhill-branch",
+      "error": ""
+    },
+    {
+      "url": "https://mdc.mo.gov/discover-nature/places/creve-coeur-park-lake-st-louis-county",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mdc.mo.gov/discover-nature/places/creve-coeur-park-lake-st-louis-county",
+      "error": ""
+    },
+    {
+      "url": "https://www.town-and-country.org/141/Parks-Recreation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.town-and-country.org/141/Parks-Recreation",
+      "error": ""
+    },
+    {
+      "url": "https://www.town-and-country.org/692/Preservation-Park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.town-and-country.org/692/Preservation-Park",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

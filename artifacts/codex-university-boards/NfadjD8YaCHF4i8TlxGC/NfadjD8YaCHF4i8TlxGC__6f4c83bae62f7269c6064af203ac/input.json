@@ -1,0 +1,60 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "1kBMZmFsoCqvjQ4aXyUG",
+    "schoolName": "University of California-Santa Barbara",
+    "shortSchoolName": "University of California-Santa Barbara",
+    "townName": "Santa Barbara",
+    "state": "CA",
+    "countryCode": "US",
+    "unitId": "110705",
+    "website": "https://www.ucsb.edu/",
+    "latitude": 34.416297,
+    "longitude": -119.846426,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/4/48/UC_Santa_Barbara_Seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=ucsb.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "UCSB Library Learning Commons",
+    "Group Study Room 1560A",
+    "Sara Miller McCune Arts Library",
+    "Pacific View Room",
+    "UCSB Library Fifth Floor Quiet Study",
+    "UCSB Library Sixth Floor Quiet Study",
+    "UCSB Library Seventh Floor Quiet Study",
+    "UCSB Library Eighth Floor Quiet Study",
+    "Graduate Study Room 2504",
+    "Graduate Study Room 2582B",
+    "Art, Design & Architecture Museum",
+    "Summer/Fall 2026 Exhibitions Public Reception",
+    "UCSB Campus Labyrinth",
+    "Sands Beach",
+    "Pond Trail",
+    "Coal Oil Point Reserve Public Tour",
+    "2026 UCSB Summer Carillon Recital Series",
+    "UCSB Student Recital Series",
+    "UCSB World Music Series",
+    "UCSB Library Public Computer Use"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

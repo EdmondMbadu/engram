@@ -1,0 +1,87 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.pizzahouse.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pizzahouse.com/",
+      "error": ""
+    },
+    {
+      "url": "https://btbburrito.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://btbburrito.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.mynewyorkpizzadepot.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mynewyorkpizzadepot.com/",
+      "error": ""
+    },
+    {
+      "url": "https://orderfleetwooddiner.com/diners-Kerrytown",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://orderfleetwooddiner.com/diners-Kerrytown",
+      "error": ""
+    },
+    {
+      "url": "https://dining.umich.edu/menus-locations/cafes/eigen-cafe/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://dining.umich.edu/menus-locations/cafes/eigen-cafe/",
+      "error": ""
+    },
+    {
+      "url": "https://dining.umich.edu/menus-locations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://dining.umich.edu/menus-locations/",
+      "error": ""
+    },
+    {
+      "url": "https://lib.umich.edu/locations-and-hours/shapiro-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.umich.edu/locations-and-hours/shapiro-library",
+      "error": ""
+    },
+    {
+      "url": "https://www.dc.umich.edu/about-the-dc/hours-of-operation/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.dc.umich.edu/about-the-dc/hours-of-operation/",
+      "error": ""
+    },
+    {
+      "url": "https://tour.umich.edu/text-based/locations/wilson-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://tour.umich.edu/text-based/locations/wilson-center/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Shapiro Undergraduate Library"
+  ],
+  "sourceCount": 9,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

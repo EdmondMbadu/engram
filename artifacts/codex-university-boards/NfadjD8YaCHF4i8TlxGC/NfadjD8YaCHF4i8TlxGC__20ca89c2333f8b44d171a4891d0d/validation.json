@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.stmarys-ca.edu/library/interim-library-service",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stmarys-ca.edu/library/interim-library-service",
+      "error": ""
+    },
+    {
+      "url": "https://www.stmarys-ca.edu/arts-sciences/science-facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stmarys-ca.edu/arts-sciences/science-facilities",
+      "error": ""
+    },
+    {
+      "url": "https://www.stmarys-ca.edu/student-life/housing-dining/campus-housing/living-learning-communities/honors",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stmarys-ca.edu/student-life/housing-dining/campus-housing/living-learning-communities/honors",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

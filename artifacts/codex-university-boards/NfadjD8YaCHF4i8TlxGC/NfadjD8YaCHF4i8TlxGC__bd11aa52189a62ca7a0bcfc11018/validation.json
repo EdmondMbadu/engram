@@ -1,0 +1,64 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://dasa.fiu.edu/all-departments/graham-center/panther-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dasa.fiu.edu/all-departments/graham-center/panther-spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://dasa.fiu.edu/all-departments/survival-guide/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dasa.fiu.edu/all-departments/survival-guide/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://case.fiu.edu/life-on-land/on-campus/forests/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://case.fiu.edu/life-on-land/on-campus/forests/",
+      "error": ""
+    },
+    {
+      "url": "https://frost.fiu.edu/visit/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://frost.fiu.edu/visit/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://libanswers.fiu.edu/systems/5458?post_id=8164",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libanswers.fiu.edu/systems/5458?post_id=8164",
+      "error": ""
+    },
+    {
+      "url": "https://discovery.fiu.edu/display/org-999000022",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://discovery.fiu.edu/display/org-999000022",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "FIU Nature Preserve",
+    "Patricia & Phillip Frost Art Museum"
+  ],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

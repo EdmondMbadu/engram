@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://recwell.umd.edu/eppley-recreation-center-0",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recwell.umd.edu/eppley-recreation-center-0",
+      "error": ""
+    },
+    {
+      "url": "https://academiccatalog.umd.edu/undergraduate/campus-administration-resources-student-services/student-programs-services/university-recreation-wellness/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://academiccatalog.umd.edu/undergraduate/campus-administration-resources-student-services/student-programs-services/university-recreation-wellness/",
+      "error": ""
+    },
+    {
+      "url": "https://recwell.umd.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recwell.umd.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://arboretum.umd.edu/dessie-m-moxley-gardens",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arboretum.umd.edu/dessie-m-moxley-gardens",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

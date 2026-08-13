@@ -1,0 +1,87 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://mercycollege.edu/my-mercy/library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mercycollege.edu/my-mercy/library",
+      "error": ""
+    },
+    {
+      "url": "https://mercycollege.edu/news/mercy-college-of-ohio-unveils-new-library-with-ribbon-cutting-ceremony",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mercycollege.edu/news/mercy-college-of-ohio-unveils-new-library-with-ribbon-cutting-ceremony",
+      "error": ""
+    },
+    {
+      "url": "https://www.toledolibrary.org/locations/main-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.toledolibrary.org/locations/main-library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.toledolibrary.org/give/our-priorities/the-saloff-childrens-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.toledolibrary.org/give/our-priorities/the-saloff-childrens-library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.toledolibrary.org/wp-content/uploads/Main-map-2025.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.toledolibrary.org/wp-content/uploads/Main-map-2025.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.toledolibrary.org/locations/west-toledo/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.toledolibrary.org/locations/west-toledo/",
+      "error": ""
+    },
+    {
+      "url": "https://www.toledolibrary.org/locations/kent/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.toledolibrary.org/locations/kent/",
+      "error": ""
+    },
+    {
+      "url": "https://www.toledolibrary.org/locations/point-place/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.toledolibrary.org/locations/point-place/",
+      "error": ""
+    },
+    {
+      "url": "https://www.toledolibrary.org/locations/king-road/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.toledolibrary.org/locations/king-road/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Mercy College Library"
+  ],
+  "sourceCount": 9,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

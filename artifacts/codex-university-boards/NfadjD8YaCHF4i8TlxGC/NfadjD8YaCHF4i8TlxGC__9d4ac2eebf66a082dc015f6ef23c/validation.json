@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.buffalo.edu/studentlife/who-we-are/departments/student-unions.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.buffalo.edu/studentlife/who-we-are/departments/student-unions.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.buffalo.edu/administrative-services/managing-facilities/planning-designing-and-construction/building-profiles/profile-host-page.host.html/content/shared/university/page-content/facilities/brdpt.detail.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.buffalo.edu/administrative-services/managing-facilities/planning-designing-and-construction/building-profiles/profile-host-page.host.html/content/shared/university/page-content/facilities/brdpt.detail.html",
+      "error": ""
+    },
+    {
+      "url": "https://library.buffalo.edu/lml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.buffalo.edu/lml",
+      "error": ""
+    },
+    {
+      "url": "https://www.buffalo.edu/home/visiting-ub.to-downtown-campus.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.buffalo.edu/home/visiting-ub.to-downtown-campus.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.buffalo.edu/art-galleries.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.buffalo.edu/art-galleries.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.buffalo.edu/recreation/about-us/join-us.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.buffalo.edu/recreation/about-us/join-us.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

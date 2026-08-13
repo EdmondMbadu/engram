@@ -1,0 +1,298 @@
+Reading additional input from stdin...
+2026-08-13T07:00:32.617866Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9ec-0fe8-7b21-b264-89d9356c945c.1786604425192551000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:00:32.664939Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9ec-1019-7c50-9a88-e5714926160a.1786604425242293000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9ec-2c5d-71e3-9aa3-87343582d944
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"AluNifqQ9Q7y3pWd4QMo","schoolName":"Emmanuel College","shortSchoolName":"Emmanuel College","townName":"Boston","state":"MA","countryCode":"US","website":"https://www.emmanuel.edu/","latitude":42.340602,"longitude":-71.103634},"templates":[{"id":"college-zero-dollar-hangs","version":"1.0","titlePattern":"Zero Dollars: {count} Hangs That Cost Nothing","editorialBrief":"Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.","researchQueries":["free student activities campus","free campus spaces students","free public places near campus"],"count":10,"icon":"money_off","primarySubjectType":"activity","allowedSubjectTypes":["activity","place"],"freshnessDays":180,"exactTitle":"Zero Dollars: 10 Hangs That Cost Nothing"}]}
+2026-08-13T07:00:32.852197Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9ec-101c-7813-be75-989950766860.1786604425245029000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:00:32.999679Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9ec-0fe8-72b1-a732-0243ec50c362.1786604425192576000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:00:33.046169Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:00:33.065117Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:00:33.145726Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9ec-1019-7543-9488-d2dd8026f484.1786604425242354000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:00:33.306237Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9ec-0ff5-7c82-8559-49172f64842a.1786604425206937000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:00:33.435223Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9ec-0ff6-74c2-aae6-307f5ae1dd26.1786604425207668000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Emmanuel College",
+  "town_name": "Boston",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Emmanuel College",
+      "town_name": "Boston",
+      "template_id": "college-zero-dollar-hangs",
+      "title": "Zero Dollars: 10 Hangs That Cost Nothing",
+      "description": "",
+      "icon": "money_off",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+      
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:emmanuel.edu Boston free museum admission students Emmanuel College Isabella Gardner MFA ...
+web search: 
+web search: Boston museums free admission official MassArt Art Museum Harvard museums free official ...
+web search: 
+web search: MIT List Visual Arts Center admission free official visit ...
+codex
+{"complete":true,"school_name":"Emmanuel College","town_name":"Boston","boards":[{"complete":true,"school_name":"Emmanuel College","town_name":"Boston","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"Ten admission-free outings for Emmanuel students and friends, from nearby art museums to public galleries, library architecture, historic collections, and an arboretum walk.","icon":"money_off","cards":[{"subject_id":"emmanuel-mfa-boston-free-visit","subject_type":"activity","entity_name":"Museum of Fine Arts, Boston","title":"Compare Favorites at the MFA","subtitle":"A free museum outing for Emmanuel students","notes":"Bring your Emmanuel student ID, choose one gallery together, then regroup to compare the artwork each person would take home.","short_summary":"Turn Emmanuel’s museum access into a low-pressure group art afternoon near campus.","evidence_claim":"Emmanuel College states that the Museum of Fine Arts is 0.5 miles from campus and free for Emmanuel students.","source_url":"https://www.emmanuel.edu/beyond-campus/our-neighborhood-and-neighbors/explore-our-neighborhood","source_title":"Explore Our Neighborhood","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free admission is limited to Emmanuel students; bring a valid Emmanuel student ID and confirm the museum's current entry procedure before leaving.","cost_status":"free","under21_safe":true},{"subject_id":"emmanuel-gardner-museum-free-visit","subject_type":"activity","entity_name":"Isabella Stewart Gardner Museum","title":"Circle the Gardner Courtyard","subtitle":"Student admission covered through Emmanuel","notes":"Bring your Emmanuel ID, walk the galleries in pairs, and meet beside the courtyard to trade one detail everyone nearly overlooked.","short_summary":"Use Emmanuel’s student benefit for a shared look at art, architecture, and the central garden.","evidence_claim":"Emmanuel College states that its students receive free access to the Isabella Stewart Gardner Museum.","source_url":"https://www.emmanuel.edu/information/why-emmanuel/community","source_title":"Community","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free access is for Emmanuel students. Bring a valid student ID and check the museum's current reservation procedure before visiting.","cost_status":"free","under21_safe":true},{"subject_id":"massart-art-museum-gallery-hang","subject_type":"activity","entity_name":"MassArt Art Museum","title":"Trade Takes at MAAM","subtitle":"An always-free contemporary art meetup","notes":"Reserve free tickets, pick one work that starts a conversation, and compare interpretations outside after everyone finishes the galleries.","short_summary":"Gather around changing contemporary exhibitions at a museum that charges no admission.","evidence_claim":"The MassArt Art Museum describes itself as always free and provides free advance tickets.","source_url":"https://maam.massart.edu/alwaysfree","source_title":"Always free!","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Admission is free, but advance ticket reservations are encouraged. Indoor programming is paused during summer 2026, so verify reopening before going.","cost_status":"free","under21_safe":true},{"subject_id":"bpl-central-library-self-guided-art-tour","subject_type":"activity","entity_name":"Boston Public Library Central Library","title":"Take the Library Art Tour","subtitle":"Free architecture and artwork in Copley Square","notes":"Open the library’s mobile guide, follow the 30-minute audio route together, and pause in the courtyard to compare favorite rooms.","short_summary":"Explore the Central Library’s murals, sculpture, and architecture without booking a paid tour.","evidence_claim":"Boston Public Library says the Central Library is free and open to the public and provides a free self-guided mobile audio tour.","source_url":"https://www.bpl.org/art-tours/","source_title":"Art & Architecture Tours at the Central Library","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The Central Library is free and open to the public during operating hours. Groups larger than 30 must register in advance.","cost_status":"free","under21_safe":true},{"subject_id":"harvard-art-museums-gallery-hang","subject_type":"activity","entity_name":"Harvard Art Museums","title":"Pick an Artwork Conversation Starter","subtitle":"Free galleries open to every visitor","notes":"Pair off for one gallery, choose a work that deserves discussion, and reunite in the Calderwood Courtyard to share your choices.","short_summary":"Build a group outing around three Harvard art collections with no admission charge.","evidence_claim":"Harvard University states that the Harvard Art Museums are free and open to all visitors Tuesday through Sunday.","source_url":"https://www.harvard.edu/campus/museums/","source_title":"Museums","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Admission is free for all visitors Tuesday through Sunday; check current hours and closure notices before traveling to Cambridge.","cost_status":"free","under21_safe":true},{"subject_id":"harvard-ancient-near-east-museum-visit","subject_type":"activity","entity_name":"Harvard Museum of the Ancient Near East","title":"Decode an Ancient Gallery Together","subtitle":"Free admission to a public Harvard museum","notes":"Choose one object per person, read its label closely, and meet at the end of the gallery to connect the objects into a shared story.","short_summary":"Make a collaborative history exercise from a compact, admission-free museum visit.","evidence_claim":"Harvard University says the Harvard Museum of the Ancient Near East is open to the public and free of admission Sunday through Friday.","source_url":"https://www.harvard.edu/campus/museums/","source_title":"Museums","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"General admission is free, and the museum welcomes the public Sunday through Friday; verify current daily hours before visiting.","cost_status":"free","under21_safe":true},{"subject_id":"harvard-scientific-instruments-collection-visit","subject_type":"activity","entity_name":"Collection of Historical Scientific Instruments","title":"Spot the Strangest Scientific Instrument","subtitle":"A free science-history gallery challenge","notes":"Have everyone nominate the most unfamiliar instrument, inspect its label, and explain to the group what problem it was designed to solve.","short_summary":"Turn Harvard’s free instrument collection into a friendly object-identification challenge.","evidence_claim":"Harvard Museums of Science & Culture lists general admission to the Collection of Historical Scientific Instruments as free.","source_url":"https://hmsc.harvard.edu/visit/","source_title":"Visit All Four Harvard Museums of Science & Culture","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"General admission is free. The collection is listed as open Sunday through Friday from 11 a.m. to 4 p.m.; check for closures before departure.","cost_status":"free","under21_safe":true},{"subject_id":"arnold-arboretum-group-walk","subject_type":"activity","entity_name":"Arnold Arboretum of Harvard University","title":"Walk a Living Collection","subtitle":"A free outdoor plant tour with friends","notes":"Pick a landscape section on the arboretum map, photograph three labeled plants, and compare your finds at the end of the route.","short_summary":"Use the labeled living collection for a social walk that needs neither tickets nor purchases.","evidence_claim":"Harvard University states that the Arnold Arboretum is open daily and free for all to explore.","source_url":"https://www.harvard.edu/campus/museums/","source_title":"Museums","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The landscape is open daily and free for everyone to explore. Check weather, seasonal notices, and gate information before setting out.","cost_status":"free","under21_safe":true},{"subject_id":"mit-list-center-gallery-meetup","subject_type":"activity","entity_name":"MIT List Visual Arts Center","title":"Meet Around Contemporary Art","subtitle":"Free galleries in MIT’s Wiesner Building","notes":"Start in separate galleries, select one piece that raises a question, and reconvene in the atrium to discuss everyone’s picks.","short_summary":"Use the List Center’s changing exhibitions as the setting for an admission-free Cambridge meetup.","evidence_claim":"The MIT List Visual Arts Center states that it is free and open to all visitors.","source_url":"https://listart.mit.edu/visit","source_title":"Visit | MIT List Visual Arts Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The List Center is free and open to all Tuesday through Sunday. Confirm current gallery hours and exhibition transitions before visiting.","cost_status":"free","under21_safe":true},{"subject_id":"mcmullen-museum-free-gallery-visit","subject_type":"activity","entity_name":"McMullen Museum of Art","title":"Share a Slow-Looking Session","subtitle":"Seven-day free public access at Boston College","notes":"Set a five-minute timer at one artwork, write down what each person notices, and compare observations before exploring the next room.","short_summary":"Try structured slow looking together inside Boston College’s free public art museum.","evidence_claim":"Boston College’s McMullen Museum states that it is open to the public free of charge seven days a week.","source_url":"https://mcmullenmuseum.bc.edu/about/","source_title":"About the McMullen Museum","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public admission is free seven days a week. Review the museum calendar before visiting because gallery availability changes with exhibitions and events.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}
+tokens used
+33,152
+
+{"complete":true,"school_name":"Emmanuel College","town_name":"Boston","boards":[{"complete":true,"school_name":"Emmanuel College","town_name":"Boston","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"Ten admission-free outings for Emmanuel students and friends, from nearby art museums to public galleries, library architecture, historic collections, and an arboretum walk.","icon":"money_off","cards":[{"subject_id":"emmanuel-mfa-boston-free-visit","subject_type":"activity","entity_name":"Museum of Fine Arts, Boston","title":"Compare Favorites at the MFA","subtitle":"A free museum outing for Emmanuel students","notes":"Bring your Emmanuel student ID, choose one gallery together, then regroup to compare the artwork each person would take home.","short_summary":"Turn Emmanuel’s museum access into a low-pressure group art afternoon near campus.","evidence_claim":"Emmanuel College states that the Museum of Fine Arts is 0.5 miles from campus and free for Emmanuel students.","source_url":"https://www.emmanuel.edu/beyond-campus/our-neighborhood-and-neighbors/explore-our-neighborhood","source_title":"Explore Our Neighborhood","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free admission is limited to Emmanuel students; bring a valid Emmanuel student ID and confirm the museum's current entry procedure before leaving.","cost_status":"free","under21_safe":true},{"subject_id":"emmanuel-gardner-museum-free-visit","subject_type":"activity","entity_name":"Isabella Stewart Gardner Museum","title":"Circle the Gardner Courtyard","subtitle":"Student admission covered through Emmanuel","notes":"Bring your Emmanuel ID, walk the galleries in pairs, and meet beside the courtyard to trade one detail everyone nearly overlooked.","short_summary":"Use Emmanuel’s student benefit for a shared look at art, architecture, and the central garden.","evidence_claim":"Emmanuel College states that its students receive free access to the Isabella Stewart Gardner Museum.","source_url":"https://www.emmanuel.edu/information/why-emmanuel/community","source_title":"Community","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free access is for Emmanuel students. Bring a valid student ID and check the museum's current reservation procedure before visiting.","cost_status":"free","under21_safe":true},{"subject_id":"massart-art-museum-gallery-hang","subject_type":"activity","entity_name":"MassArt Art Museum","title":"Trade Takes at MAAM","subtitle":"An always-free contemporary art meetup","notes":"Reserve free tickets, pick one work that starts a conversation, and compare interpretations outside after everyone finishes the galleries.","short_summary":"Gather around changing contemporary exhibitions at a museum that charges no admission.","evidence_claim":"The MassArt Art Museum describes itself as always free and provides free advance tickets.","source_url":"https://maam.massart.edu/alwaysfree","source_title":"Always free!","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Admission is free, but advance ticket reservations are encouraged. Indoor programming is paused during summer 2026, so verify reopening before going.","cost_status":"free","under21_safe":true},{"subject_id":"bpl-central-library-self-guided-art-tour","subject_type":"activity","entity_name":"Boston Public Library Central Library","title":"Take the Library Art Tour","subtitle":"Free architecture and artwork in Copley Square","notes":"Open the library’s mobile guide, follow the 30-minute audio route together, and pause in the courtyard to compare favorite rooms.","short_summary":"Explore the Central Library’s murals, sculpture, and architecture without booking a paid tour.","evidence_claim":"Boston Public Library says the Central Library is free and open to the public and provides a free self-guided mobile audio tour.","source_url":"https://www.bpl.org/art-tours/","source_title":"Art & Architecture Tours at the Central Library","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The Central Library is free and open to the public during operating hours. Groups larger than 30 must register in advance.","cost_status":"free","under21_safe":true},{"subject_id":"harvard-art-museums-gallery-hang","subject_type":"activity","entity_name":"Harvard Art Museums","title":"Pick an Artwork Conversation Starter","subtitle":"Free galleries open to every visitor","notes":"Pair off for one gallery, choose a work that deserves discussion, and reunite in the Calderwood Courtyard to share your choices.","short_summary":"Build a group outing around three Harvard art collections with no admission charge.","evidence_claim":"Harvard University states that the Harvard Art Museums are free and open to all visitors Tuesday through Sunday.","source_url":"https://www.harvard.edu/campus/museums/","source_title":"Museums","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Admission is free for all visitors Tuesday through Sunday; check current hours and closure notices before traveling to Cambridge.","cost_status":"free","under21_safe":true},{"subject_id":"harvard-ancient-near-east-museum-visit","subject_type":"activity","entity_name":"Harvard Museum of the Ancient Near East","title":"Decode an Ancient Gallery Together","subtitle":"Free admission to a public Harvard museum","notes":"Choose one object per person, read its label closely, and meet at the end of the gallery to connect the objects into a shared story.","short_summary":"Make a collaborative history exercise from a compact, admission-free museum visit.","evidence_claim":"Harvard University says the Harvard Museum of the Ancient Near East is open to the public and free of admission Sunday through Friday.","source_url":"https://www.harvard.edu/campus/museums/","source_title":"Museums","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"General admission is free, and the museum welcomes the public Sunday through Friday; verify current daily hours before visiting.","cost_status":"free","under21_safe":true},{"subject_id":"harvard-scientific-instruments-collection-visit","subject_type":"activity","entity_name":"Collection of Historical Scientific Instruments","title":"Spot the Strangest Scientific Instrument","subtitle":"A free science-history gallery challenge","notes":"Have everyone nominate the most unfamiliar instrument, inspect its label, and explain to the group what problem it was designed to solve.","short_summary":"Turn Harvard’s free instrument collection into a friendly object-identification challenge.","evidence_claim":"Harvard Museums of Science & Culture lists general admission to the Collection of Historical Scientific Instruments as free.","source_url":"https://hmsc.harvard.edu/visit/","source_title":"Visit All Four Harvard Museums of Science & Culture","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"General admission is free. The collection is listed as open Sunday through Friday from 11 a.m. to 4 p.m.; check for closures before departure.","cost_status":"free","under21_safe":true},{"subject_id":"arnold-arboretum-group-walk","subject_type":"activity","entity_name":"Arnold Arboretum of Harvard University","title":"Walk a Living Collection","subtitle":"A free outdoor plant tour with friends","notes":"Pick a landscape section on the arboretum map, photograph three labeled plants, and compare your finds at the end of the route.","short_summary":"Use the labeled living collection for a social walk that needs neither tickets nor purchases.","evidence_claim":"Harvard University states that the Arnold Arboretum is open daily and free for all to explore.","source_url":"https://www.harvard.edu/campus/museums/","source_title":"Museums","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The landscape is open daily and free for everyone to explore. Check weather, seasonal notices, and gate information before setting out.","cost_status":"free","under21_safe":true},{"subject_id":"mit-list-center-gallery-meetup","subject_type":"activity","entity_name":"MIT List Visual Arts Center","title":"Meet Around Contemporary Art","subtitle":"Free galleries in MIT’s Wiesner Building","notes":"Start in separate galleries, select one piece that raises a question, and reconvene in the atrium to discuss everyone’s picks.","short_summary":"Use the List Center’s changing exhibitions as the setting for an admission-free Cambridge meetup.","evidence_claim":"The MIT List Visual Arts Center states that it is free and open to all visitors.","source_url":"https://listart.mit.edu/visit","source_title":"Visit | MIT List Visual Arts Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The List Center is free and open to all Tuesday through Sunday. Confirm current gallery hours and exhibition transitions before visiting.","cost_status":"free","under21_safe":true},{"subject_id":"mcmullen-museum-free-gallery-visit","subject_type":"activity","entity_name":"McMullen Museum of Art","title":"Share a Slow-Looking Session","subtitle":"Seven-day free public access at Boston College","notes":"Set a five-minute timer at one artwork, write down what each person notices, and compare observations before exploring the next room.","short_summary":"Try structured slow looking together inside Boston College’s free public art museum.","evidence_claim":"Boston College’s McMullen Museum states that it is open to the public free of charge seven days a week.","source_url":"https://mcmullenmuseum.bc.edu/about/","source_title":"About the McMullen Museum","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public admission is free seven days a week. Review the museum calendar before visiting because gallery availability changes with exhibitions and events.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}

@@ -1,0 +1,486 @@
+Reading additional input from stdin...
+2026-08-13T06:49:37.306962Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e1-b815-7ff1-b19e-a8912cffa72b.1786603747349624000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:49:37.310694Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:49:37.356728Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e1-b846-74f0-afdc-8b0686f2727b.1786603747399040000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:49:37.410475Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e1-b82b-7402-a463-2d8c3908f8d6.1786603747371688000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:49:37.415032Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9e2-2cc6-7e50-b062-37a53de22cba
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"bQIlmwbhpS5iLxm9sslo","schoolName":"California State University-Stanislaus","shortSchoolName":"California State University-Stanislaus","townName":"Turlock","state":"CA","countryCode":"US","website":"https://www.csustan.edu/","latitude":37.52577,"longitude":-120.852511},"templates":[{"id":"college-zero-dollar-hangs","version":"1.0","titlePattern":"Zero Dollars: {count} Hangs That Cost Nothing","editorialBrief":"Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.","researchQueries":["free student activities campus","free campus spaces students","free public places near campus"],"count":10,"icon":"money_off","primarySubjectType":"activity","allowedSubjectTypes":["activity","place"],"freshnessDays":180,"exactTitle":"Zero Dollars: 10 Hangs That Cost Nothing"}]}
+2026-08-13T06:49:37.522534Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e1-b813-7bc0-8e1d-75d93ffb257a.1786603747347727000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:49:37.563152Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e1-b82b-7c83-8d6f-28832e091700.1786603747371724000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:49:37.609441Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e1-b864-72e0-8212-da93390c643a.1786603747429379000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:49:37.656864Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e1-b836-7782-b436-dc4f7cb19c34.1786603747382765000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "California State University-Stanislaus",
+  "town_name": "Turlock",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "California State University-Stanislaus",
+      "town_name": "Turlock",
+      "template_id": "college-zero-dollar-hangs",
+      "title": "Zero Dollars: 10 Hangs That Cost Nothing",
+      "description": "",
+      "icon": "money_off",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+     				,							{
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+     				,							{
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+     				,							{
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+     				,							{
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+     				,							{
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+     				,							{
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+     				,							{
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+     				,							{
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+     				,							{
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+      ],
+      "warnings": [
+        "Research in progress."
+      ]
+    }
+  ],
+  "warnings": [
+    "Research in progress."
+  ]
+}
+codex
+{"complete":false,"school_name":"California State University-Stanislaus","town_name":"Turlock","boards":[{"complete":false,"school_name":"California State University-Stanislaus","town_name":"Turlock","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"Researching ten distinct, currently documented no-cost activities and places using direct official sources.","icon":"money_off","cards":[{"subject_id":"research-in-progress","subject_type":"activity","entity_name":"Research in progress","title":"Verifying free access","subtitle":"Official sources under review","notes":"Checking direct university, city, county, and cultural-institution pages for explicit no-purchase or no-admission evidence.","short_summary":"Source verification is underway.","evidence_claim":"Research is in progress.","source_url":"https://www.csustan.edu/","source_title":"Stanislaus State","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Final access conditions are being verified.","cost_status":"free","under21_safe":true}
+     				,							{
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+     				,							{
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+     				,							{
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+     				,							{
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+     				,							{
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+     				,							{
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+     				,							{
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+     				,							{
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+     				,							{
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+      ],
+      "warnings":["Research in progress."]}],"warnings":["Research in progress."]}
+web search: 
+web search: site:csustan.edu free admission gallery Stanislaus State Turlock ...
+web search: 
+web search: Turlock free admission museum official ...
+web search: 
+web search: site:csustan.edu/campus-recreation group exercise free students 2026 ...
+codex
+{"complete":true,"school_name":"California State University-Stanislaus","town_name":"Turlock","boards":[{"complete":true,"school_name":"California State University-Stanislaus","town_name":"Turlock","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"Ten verified no-cost ways to gather, explore, exercise, and get around Stan State and Turlock, with eligibility and access conditions noted.","icon":"money_off","cards":[{"subject_id":"stan-state-university-art-gallery","subject_type":"place","entity_name":"University Art Gallery","title":"Browse the University Art Gallery","subtitle":"A free public gallery inside the Theatre Building","notes":"Meet by the Theatre Building, browse the current exhibition together, and use Thursday’s extended gallery hours when convenient.","short_summary":"Contemporary art provides an easy conversation-focused campus hang.","evidence_claim":"The university states that University Art Gallery events are free and open to the public and identifies its Theatre Building location and regular hours.","source_url":"https://www.csustan.edu/art-galleries/university-art-gallery/contact-us","source_title":"Contact Us | University Art Gallery","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open to the public during posted gallery hours; the university says the gallery is wheelchair accessible.","cost_status":"free","under21_safe":true},{"subject_id":"stan-state-art-space","subject_type":"place","entity_name":"Stan State Art Space","title":"See Student Art Downtown","subtitle":"Two university gallery rooms on North First Street","notes":"Gather at the downtown gallery, compare work in the Main and BFA rooms, and confirm the current exhibition before setting out.","short_summary":"A downtown gallery outing centered on university and contemporary artwork.","evidence_claim":"An official university page states that Stan State Art Space offers free admission for entry and receptions and is open to the public at 226 North First Street.","source_url":"https://www.csustan.edu/node?page=370","source_title":"Stanislaus State Events and News Archive","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public access; check the current gallery schedule because exhibitions and operating days can change.","cost_status":"free","under21_safe":true},{"subject_id":"turlock-historical-society-museum","subject_type":"place","entity_name":"Turlock Historical Society Museum","title":"Trade Stories at the History Museum","subtitle":"Local artifacts and 25 displays on South Center Street","notes":"Visit on Saturday, choose one display each to investigate, then compare what you learned about Turlock’s community history.","short_summary":"A volunteer-run museum offers a shared look at Turlock’s past.","evidence_claim":"The Turlock Historical Society states that museum admission is free and describes 25 display areas devoted to Turlock history.","source_url":"https://turlockhistoricalsociety.org/pages/about-us.html","source_title":"Turlock Historical Society Museum","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open to the public on Saturdays; verify the current closing time with the museum because its official pages show differing Saturday hours.","cost_status":"free","under21_safe":true},{"subject_id":"turlock-library-programs","subject_type":"activity","entity_name":"Turlock Library","title":"Join a Free Library Program","subtitle":"Public activities in the Turlock Library community room","notes":"Filter the county calendar to Turlock, pick a book discussion, craft, or movement session, and check any age guidance before attending.","short_summary":"The library calendar supplies rotating, structured ways to socialize without buying anything.","evidence_claim":"The Stanislaus County Library events calendar states that all listed events are free and open to the public and includes programs at Turlock Library.","source_url":"https://engagedpatrons.org/EventsCalendar.cfm?SiteID=2487","source_title":"Events and Classes - Stanislaus County Library","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open to the public; consult the live calendar for dates, registration requirements, age ranges, and cancellations.","cost_status":"free","under21_safe":true},{"subject_id":"carnegie-arts-center-first-friday","subject_type":"activity","entity_name":"Carnegie Arts Center","title":"Plan a First-Friday Gallery Meetup","subtitle":"Monthly free-admission day at the Carnegie Arts Center","notes":"Choose the first Friday of the month, meet at the information desk, and explore the current exhibitions without paying gallery admission.","short_summary":"A monthly free day turns the downtown arts center into a no-cost group outing.","evidence_claim":"The Carnegie Arts Center FAQ states that the first Friday of every month is free for all visitors.","source_url":"https://carnegieartsturlock.org/about/faqs/","source_title":"FAQs – Carnegie Arts Center","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free for everyone on the first Friday of each month; visit during posted gallery hours and check for holiday changes.","cost_status":"free","under21_safe":true},{"subject_id":"stan-state-intramural-sports","subject_type":"activity","entity_name":"Stanislaus State Intramural Sports","title":"Form an Intramural Team","subtitle":"No-cost campus leagues for currently enrolled students","notes":"Invite classmates, select a listed sport, and register through FusionPlay; solo participants can enter as free agents seeking a team.","short_summary":"Student leagues create a recurring social activity with no participation charge.","evidence_claim":"Stanislaus State says intramural participation is free for currently enrolled students and permits individuals without teams to register as free agents.","source_url":"https://www.csustan.edu/campus-recreation/intramural-sports/intramural-faqs","source_title":"Intramural FAQs","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Limited to eligible Campus Recreation members; currently enrolled, fee-paying students participate free and must bring valid identification.","cost_status":"free","under21_safe":true},{"subject_id":"stan-state-aquatic-facility-swim","subject_type":"activity","entity_name":"Stanislaus State Aquatic Facility","title":"Meet for a Student Swim","subtitle":"Free pool access for students with active membership","notes":"Check the current pool schedule, bring swim gear, meet at the Aquatic Facility, and complete the required waiver before entering.","short_summary":"An eligibility-limited pool session offers a relaxed active hang for students.","evidence_claim":"The university states that students with active membership use the Aquatic Facility free and may sign a waiver at the facility without buying a pass.","source_url":"https://www.csustan.edu/campus-recreation/aquatic-facility","source_title":"Aquatic Facility","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Only students with active membership receive free access; check current weekday sessions, closures, and waiver requirements.","cost_status":"free","under21_safe":true},{"subject_id":"warrior-stadium-track-walk","subject_type":"activity","entity_name":"Warrior Stadium Track","title":"Walk Four Laps Together","subtitle":"Daylight track access for student recreation members","notes":"Check in at the Recreation welcome desk, keep to the outside four lanes, and turn four laps into a one-mile conversation walk.","short_summary":"The stadium track supports a simple campus walk with a clear one-mile loop.","evidence_claim":"Campus Recreation says the track is open to students and members during facility daylight hours when unreserved, and four laps equal one mile.","source_url":"https://www.csustan.edu/campus-recreation/resources-faqs","source_title":"Resources & FAQs | Campus Recreation","source_kind":"university_official","source_published_at":"2026-07-20","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Eligible students and members must check in; use is limited to daylight facility hours and times when the track is not reserved.","cost_status":"free","under21_safe":true},{"subject_id":"stan-state-group-x-classes","subject_type":"activity","entity_name":"Group X Classes","title":"Take a Group X Class","subtitle":"Drop-in fitness classes included with student access","notes":"Pick a beginner-friendly class from the current schedule, arrive with a friend, and note whether it meets in the Recreation Center or Village Café.","short_summary":"Instructor-led workouts make a structured, social alternative to exercising alone.","evidence_claim":"The university says current-student Campus Recreation access is included in tuition, Group X requires no sign-up, and membership classes carry no additional charge.","source_url":"https://www.csustan.edu/campus-recreation/turlock-student-fitness-center/group-x-classes","source_title":"Group X Classes","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"For eligible Campus Recreation members; current students need a Warrior ID and required release, and should consult the active class schedule.","cost_status":"free","under21_safe":true},{"subject_id":"turlock-transit-fixed-route-ride","subject_type":"activity","entity_name":"Turlock Transit Fixed Route Service","title":"Take a Fare-Free Turlock Ride","subtitle":"Free fixed-route travel for college students and faculty","notes":"Bring student identification, choose a fixed route and destination, and use the Transit Center to transfer while exploring Turlock together.","short_summary":"Fare-free fixed-route service lets students turn a local trip into a no-cost outing.","evidence_claim":"Turlock Transit lists fixed-route fares as free for college students and faculty and advises qualifying riders to be ready to present photo identification.","source_url":"https://www.turlocktransit.com/fares.html","source_title":"Fares - Turlock Transit","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free eligibility applies to fixed-route service for college students and faculty; carry photo ID and avoid paid On-Demand or paratransit services.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T06:51:44.491579Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9e2-2cc6-7e50-b062-37a53de22cba.1786603777223279000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+48,969
+
+{"complete":true,"school_name":"California State University-Stanislaus","town_name":"Turlock","boards":[{"complete":true,"school_name":"California State University-Stanislaus","town_name":"Turlock","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"Ten verified no-cost ways to gather, explore, exercise, and get around Stan State and Turlock, with eligibility and access conditions noted.","icon":"money_off","cards":[{"subject_id":"stan-state-university-art-gallery","subject_type":"place","entity_name":"University Art Gallery","title":"Browse the University Art Gallery","subtitle":"A free public gallery inside the Theatre Building","notes":"Meet by the Theatre Building, browse the current exhibition together, and use Thursday’s extended gallery hours when convenient.","short_summary":"Contemporary art provides an easy conversation-focused campus hang.","evidence_claim":"The university states that University Art Gallery events are free and open to the public and identifies its Theatre Building location and regular hours.","source_url":"https://www.csustan.edu/art-galleries/university-art-gallery/contact-us","source_title":"Contact Us | University Art Gallery","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open to the public during posted gallery hours; the university says the gallery is wheelchair accessible.","cost_status":"free","under21_safe":true},{"subject_id":"stan-state-art-space","subject_type":"place","entity_name":"Stan State Art Space","title":"See Student Art Downtown","subtitle":"Two university gallery rooms on North First Street","notes":"Gather at the downtown gallery, compare work in the Main and BFA rooms, and confirm the current exhibition before setting out.","short_summary":"A downtown gallery outing centered on university and contemporary artwork.","evidence_claim":"An official university page states that Stan State Art Space offers free admission for entry and receptions and is open to the public at 226 North First Street.","source_url":"https://www.csustan.edu/node?page=370","source_title":"Stanislaus State Events and News Archive","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public access; check the current gallery schedule because exhibitions and operating days can change.","cost_status":"free","under21_safe":true},{"subject_id":"turlock-historical-society-museum","subject_type":"place","entity_name":"Turlock Historical Society Museum","title":"Trade Stories at the History Museum","subtitle":"Local artifacts and 25 displays on South Center Street","notes":"Visit on Saturday, choose one display each to investigate, then compare what you learned about Turlock’s community history.","short_summary":"A volunteer-run museum offers a shared look at Turlock’s past.","evidence_claim":"The Turlock Historical Society states that museum admission is free and describes 25 display areas devoted to Turlock history.","source_url":"https://turlockhistoricalsociety.org/pages/about-us.html","source_title":"Turlock Historical Society Museum","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open to the public on Saturdays; verify the current closing time with the museum because its official pages show differing Saturday hours.","cost_status":"free","under21_safe":true},{"subject_id":"turlock-library-programs","subject_type":"activity","entity_name":"Turlock Library","title":"Join a Free Library Program","subtitle":"Public activities in the Turlock Library community room","notes":"Filter the county calendar to Turlock, pick a book discussion, craft, or movement session, and check any age guidance before attending.","short_summary":"The library calendar supplies rotating, structured ways to socialize without buying anything.","evidence_claim":"The Stanislaus County Library events calendar states that all listed events are free and open to the public and includes programs at Turlock Library.","source_url":"https://engagedpatrons.org/EventsCalendar.cfm?SiteID=2487","source_title":"Events and Classes - Stanislaus County Library","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open to the public; consult the live calendar for dates, registration requirements, age ranges, and cancellations.","cost_status":"free","under21_safe":true},{"subject_id":"carnegie-arts-center-first-friday","subject_type":"activity","entity_name":"Carnegie Arts Center","title":"Plan a First-Friday Gallery Meetup","subtitle":"Monthly free-admission day at the Carnegie Arts Center","notes":"Choose the first Friday of the month, meet at the information desk, and explore the current exhibitions without paying gallery admission.","short_summary":"A monthly free day turns the downtown arts center into a no-cost group outing.","evidence_claim":"The Carnegie Arts Center FAQ states that the first Friday of every month is free for all visitors.","source_url":"https://carnegieartsturlock.org/about/faqs/","source_title":"FAQs – Carnegie Arts Center","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free for everyone on the first Friday of each month; visit during posted gallery hours and check for holiday changes.","cost_status":"free","under21_safe":true},{"subject_id":"stan-state-intramural-sports","subject_type":"activity","entity_name":"Stanislaus State Intramural Sports","title":"Form an Intramural Team","subtitle":"No-cost campus leagues for currently enrolled students","notes":"Invite classmates, select a listed sport, and register through FusionPlay; solo participants can enter as free agents seeking a team.","short_summary":"Student leagues create a recurring social activity with no participation charge.","evidence_claim":"Stanislaus State says intramural participation is free for currently enrolled students and permits individuals without teams to register as free agents.","source_url":"https://www.csustan.edu/campus-recreation/intramural-sports/intramural-faqs","source_title":"Intramural FAQs","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Limited to eligible Campus Recreation members; currently enrolled, fee-paying students participate free and must bring valid identification.","cost_status":"free","under21_safe":true},{"subject_id":"stan-state-aquatic-facility-swim","subject_type":"activity","entity_name":"Stanislaus State Aquatic Facility","title":"Meet for a Student Swim","subtitle":"Free pool access for students with active membership","notes":"Check the current pool schedule, bring swim gear, meet at the Aquatic Facility, and complete the required waiver before entering.","short_summary":"An eligibility-limited pool session offers a relaxed active hang for students.","evidence_claim":"The university states that students with active membership use the Aquatic Facility free and may sign a waiver at the facility without buying a pass.","source_url":"https://www.csustan.edu/campus-recreation/aquatic-facility","source_title":"Aquatic Facility","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Only students with active membership receive free access; check current weekday sessions, closures, and waiver requirements.","cost_status":"free","under21_safe":true},{"subject_id":"warrior-stadium-track-walk","subject_type":"activity","entity_name":"Warrior Stadium Track","title":"Walk Four Laps Together","subtitle":"Daylight track access for student recreation members","notes":"Check in at the Recreation welcome desk, keep to the outside four lanes, and turn four laps into a one-mile conversation walk.","short_summary":"The stadium track supports a simple campus walk with a clear one-mile loop.","evidence_claim":"Campus Recreation says the track is open to students and members during facility daylight hours when unreserved, and four laps equal one mile.","source_url":"https://www.csustan.edu/campus-recreation/resources-faqs","source_title":"Resources & FAQs | Campus Recreation","source_kind":"university_official","source_published_at":"2026-07-20","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Eligible students and members must check in; use is limited to daylight facility hours and times when the track is not reserved.","cost_status":"free","under21_safe":true},{"subject_id":"stan-state-group-x-classes","subject_type":"activity","entity_name":"Group X Classes","title":"Take a Group X Class","subtitle":"Drop-in fitness classes included with student access","notes":"Pick a beginner-friendly class from the current schedule, arrive with a friend, and note whether it meets in the Recreation Center or Village Café.","short_summary":"Instructor-led workouts make a structured, social alternative to exercising alone.","evidence_claim":"The university says current-student Campus Recreation access is included in tuition, Group X requires no sign-up, and membership classes carry no additional charge.","source_url":"https://www.csustan.edu/campus-recreation/turlock-student-fitness-center/group-x-classes","source_title":"Group X Classes","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"For eligible Campus Recreation members; current students need a Warrior ID and required release, and should consult the active class schedule.","cost_status":"free","under21_safe":true},{"subject_id":"turlock-transit-fixed-route-ride","subject_type":"activity","entity_name":"Turlock Transit Fixed Route Service","title":"Take a Fare-Free Turlock Ride","subtitle":"Free fixed-route travel for college students and faculty","notes":"Bring student identification, choose a fixed route and destination, and use the Transit Center to transfer while exploring Turlock together.","short_summary":"Fare-free fixed-route service lets students turn a local trip into a no-cost outing.","evidence_claim":"Turlock Transit lists fixed-route fares as free for college students and faculty and advises qualifying riders to be ready to present photo identification.","source_url":"https://www.turlocktransit.com/fares.html","source_title":"Fares - Turlock Transit","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free eligibility applies to fixed-route service for college students and faculty; carry photo ID and avoid paid On-Demand or paratransit services.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}

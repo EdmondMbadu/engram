@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.taqueriadiana.com/locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.taqueriadiana.com/locations",
+      "error": ""
+    },
+    {
+      "url": "https://www.nuovoyorkpizza.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nuovoyorkpizza.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.mazacloudkitchens.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mazacloudkitchens.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.empanadamama.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.empanadamama.com/",
+      "error": ""
+    },
+    {
+      "url": "https://grandcentral.veselka.com/pages/locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://grandcentral.veselka.com/pages/locations",
+      "error": ""
+    },
+    {
+      "url": "https://locations.7thstreetburger.com/locations/ny/new-york/91-e-7th-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.7thstreetburger.com/locations/ny/new-york/91-e-7th-st",
+      "error": ""
+    },
+    {
+      "url": "https://www.hyatt.com/the-standard/en-US/lgase-the-standard-east-village/dining",
+      "ok": true,
+      "conclusive": true,
+      "status": 429,
+      "finalUrl": "https://www.hyatt.com/the-standard/en-US/lgase-the-standard-east-village/dining",
+      "error": ""
+    },
+    {
+      "url": "https://www.pommesfritesnyc.com/ourmenu",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pommesfritesnyc.com/ourmenu",
+      "error": ""
+    },
+    {
+      "url": "https://www.crifdogs.com/location/crif-dogs-east-village/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.crifdogs.com/location/crif-dogs-east-village/",
+      "error": ""
+    },
+    {
+      "url": "https://www.mamouns.com/location/mamouns-greenwich-village-nyc/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mamouns.com/location/mamouns-greenwich-village-nyc/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

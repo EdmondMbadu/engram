@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.georgefox.edu/recreation/student-center/policies.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.georgefox.edu/recreation/student-center/policies.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.georgefox.edu/recreation/student-center/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.georgefox.edu/recreation/student-center/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.georgefox.edu/recreation/fitness-programs/groupx-classes.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.georgefox.edu/recreation/fitness-programs/groupx-classes.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.georgefox.edu/recreation/fitness-programs/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.georgefox.edu/recreation/fitness-programs/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.georgefox.edu/recreation/student-center/access.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.georgefox.edu/recreation/student-center/access.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

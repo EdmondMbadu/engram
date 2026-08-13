@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.onu.edu/heterick-memorial-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/heterick-memorial-library",
+      "error": ""
+    },
+    {
+      "url": "https://www.onu.edu/admissions-aid/accepted-students",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/admissions-aid/accepted-students",
+      "error": ""
+    },
+    {
+      "url": "https://www.onu.edu/student-life/health-and-wellness/religious-spiritual-life",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/student-life/health-and-wellness/religious-spiritual-life",
+      "error": ""
+    },
+    {
+      "url": "https://www.onu.edu/camps-and-events",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/camps-and-events",
+      "error": ""
+    },
+    {
+      "url": "https://www.onu.edu/freed",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/freed",
+      "error": ""
+    },
+    {
+      "url": "https://www.onu.edu/freed/information-facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/freed/information-facilities",
+      "error": ""
+    },
+    {
+      "url": "https://www.onu.edu/inauguration",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.onu.edu/inauguration",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

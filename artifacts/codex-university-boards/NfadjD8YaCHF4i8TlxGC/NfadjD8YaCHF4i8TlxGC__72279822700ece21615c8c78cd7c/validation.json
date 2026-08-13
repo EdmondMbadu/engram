@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www2.naz.edu/files/5116/9566/1217/Campus_Map.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.naz.edu/files/5116/9566/1217/Campus_Map.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www2.naz.edu/building-hours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.naz.edu/building-hours/",
+      "error": ""
+    },
+    {
+      "url": "https://www2.naz.edu/registration-records/course-registration",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.naz.edu/registration-records/course-registration",
+      "error": ""
+    },
+    {
+      "url": "https://www2.naz.edu/files/2714/3281/8205/Tunnel_Map.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.naz.edu/files/2714/3281/8205/Tunnel_Map.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www2.naz.edu/shults-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.naz.edu/shults-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www2.naz.edu/about/facts-recognition",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.naz.edu/about/facts-recognition",
+      "error": ""
+    },
+    {
+      "url": "https://www2.naz.edu/dept/art-design/art-galleries",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.naz.edu/dept/art-design/art-galleries",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.tacobell.com/mo/rolla/1109-n-bishop-avenue.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mo/rolla/1109-n-bishop-avenue.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/mo/rolla/120-highway-72-west.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mo/rolla/120-highway-72-west.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/mo/rolla/1007-kings-highway",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/mo/rolla/1007-kings-highway",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/mo/rolla/1024-kings-hwy",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/mo/rolla/1024-kings-hwy",
+      "error": ""
+    },
+    {
+      "url": "https://www.imospizza.com/store/rolla/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.imospizza.com/store/rolla/",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.ihop.com/en-us/mo/rolla/breakfast-1735-n.-bishop-ave-3554",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.ihop.com/en-us/mo/rolla/breakfast-1735-n.-bishop-ave-3554",
+      "error": ""
+    },
+    {
+      "url": "https://www.freddys.com/blog/freddys-rolla-opens-tuesday",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.freddys.com/blog/freddys-rolla-opens-tuesday",
+      "error": ""
+    },
+    {
+      "url": "https://www.sonicdrivein.com/locations/us/mo/rolla/109-south-bishop-avenue/store-6799/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sonicdrivein.com/locations/us/mo/rolla/109-south-bishop-avenue/store-6799/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dennys.com/mo/rolla/248783",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dennys.com/mo/rolla/248783",
+      "error": ""
+    },
+    {
+      "url": "https://www.losarcosrolla.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.losarcosrolla.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

@@ -1,0 +1,64 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.iwu.edu/center-engaged-learning/using-the-space.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iwu.edu/center-engaged-learning/using-the-space.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.iwu.edu/library/tools/computers.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iwu.edu/library/tools/computers.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.iwu.edu/library/collaborate/projectrooms.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iwu.edu/library/collaborate/projectrooms.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.iwu.edu/library/collaborate/otherspaces.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iwu.edu/library/collaborate/otherspaces.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.iwu.edu/library/information/user-conduct-policy.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iwu.edu/library/information/user-conduct-policy.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.iwu.edu/news/2023/iwu-celebrates-a-decade-of-business-economics-finance-education-at-state-farm-hall.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iwu.edu/news/2023/iwu-celebrates-a-decade-of-business-economics-finance-education-at-state-farm-hall.html",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Center for Engaged Learning",
+    "Ames Roof Garden"
+  ],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

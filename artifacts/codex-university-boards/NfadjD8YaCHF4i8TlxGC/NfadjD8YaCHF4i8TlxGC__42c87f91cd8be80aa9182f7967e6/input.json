@@ -1,0 +1,61 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "oVJp2T2hdaAh7bzbRohC",
+    "schoolName": "Trinity University",
+    "shortSchoolName": "Trinity University",
+    "townName": "San Antonio",
+    "state": "TX",
+    "countryCode": "US",
+    "unitId": "229267",
+    "website": "https://new.trinity.edu/",
+    "latitude": 29.462682,
+    "longitude": -98.48186,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/b/b2/Trinity_University%2C_Texas_seal.svg/250px-Trinity_University%2C_Texas_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=new.trinity.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Japanese Tea Garden",
+    "San Antonio Zoo",
+    "Kiddie Park",
+    "Sunken Garden Theater",
+    "Brackenridge Park",
+    "Witte Museum",
+    "Pioneer Hall",
+    "The DoSeum",
+    "San Antonio Botanical Garden",
+    "McNay Art Museum",
+    "Coates Library 4th Floor Outdoor Patio",
+    "Coates Library 4th Floor Study Rooms",
+    "Coates Library 4th Floor Private Cubicles",
+    "Coates Library 4th Floor Movable Whiteboards",
+    "Coates Library Information Commons",
+    "Starbucks Cafe at Coates Library",
+    "Coates Library 2nd Floor Quiet Area",
+    "Coates Library Special Collections & Archives",
+    "Coates Library 2nd Floor Study Cubicles",
+    "Coates Library 1st Floor Study Rooms with Computers"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

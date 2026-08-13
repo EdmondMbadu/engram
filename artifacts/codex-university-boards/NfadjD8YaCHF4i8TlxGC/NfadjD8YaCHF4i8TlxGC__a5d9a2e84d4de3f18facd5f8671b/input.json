@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "VNasyg0pzZgqAEcRIFCx",
+    "schoolName": "Pratt Institute-Main",
+    "shortSchoolName": "Pratt Institute-Main",
+    "townName": "Brooklyn",
+    "state": "NY",
+    "countryCode": "US",
+    "unitId": "194578",
+    "website": "https://www.pratt.edu/",
+    "latitude": 40.691297,
+    "longitude": -73.96431,
+    "heroUrl": "https://www.pratt.edu/wp-content/themes/pratt/static/img/og.png",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=pratt.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Pratt Institute Brooklyn Library",
+    "Pratt Student Union",
+    "William “Bill” Menking Reading Room",
+    "Engineering Computer Lab",
+    "Machinery Computer Lab",
+    "Foundation Media Lab",
+    "Higgins Hall Labs",
+    "2D Printing Center",
+    "3D Printing Center",
+    "Assembly Loop Lab"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

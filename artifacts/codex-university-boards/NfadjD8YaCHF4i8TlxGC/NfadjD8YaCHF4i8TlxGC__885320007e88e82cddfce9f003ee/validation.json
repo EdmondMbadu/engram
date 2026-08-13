@@ -1,0 +1,96 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.bloedows.com/contact/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bloedows.com/contact/",
+      "error": ""
+    },
+    {
+      "url": "https://www.bgcoffeehouse.com/calendar/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bgcoffeehouse.com/calendar/",
+      "error": ""
+    },
+    {
+      "url": "https://www.acousticcafewinona.com/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.acousticcafewinona.com/about/",
+      "error": ""
+    },
+    {
+      "url": "https://visitwinona.com/venue/lakeview-drive-inn/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visitwinona.com/venue/lakeview-drive-inn/",
+      "error": ""
+    },
+    {
+      "url": "https://winonahistory.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://winonahistory.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://mmam.org/hours-admission-location",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mmam.org/hours-admission-location",
+      "error": ""
+    },
+    {
+      "url": "https://www.winonamn.gov/780/Outdoor-Recreation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.winonamn.gov/780/Outdoor-Recreation",
+      "error": ""
+    },
+    {
+      "url": "https://www.winonamn.gov/facilities/facility/details/Bandshell-28",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.winonamn.gov/facilities/facility/details/Bandshell-28",
+      "error": ""
+    },
+    {
+      "url": "https://www.watkins1868.com/pages/museum-store",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.watkins1868.com/pages/general-store",
+      "error": ""
+    },
+    {
+      "url": "https://winona.lib.mn.us/contact-hours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://winona.lib.mn.us/contact-hours/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Winona County History Center",
+    "Minnesota Marine Art Museum"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

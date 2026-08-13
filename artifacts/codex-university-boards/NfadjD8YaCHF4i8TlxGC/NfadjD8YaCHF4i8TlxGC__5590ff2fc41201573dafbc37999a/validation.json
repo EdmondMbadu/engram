@@ -1,0 +1,26 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "4 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.up.edu/news/2021/08/best-places-to-study-on-campus.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ww1.up.edu/news/2021/08/best-places-to-study-on-campus.html",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Franz Lounge",
+    "Vollum Study Room",
+    "Quiet Side of Bauccio Commons",
+    "Holy Cross Lounge"
+  ],
+  "sourceCount": 1,
+  "generationScore": 90,
+  "generationGrade": "A"
+}

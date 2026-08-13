@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://mofa.fsu.edu/visitor-information/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://mofa.fsu.edu/visitor-information/",
+      "error": ""
+    },
+    {
+      "url": "https://campusrec.fsu.edu/outdoors/lakefront-activities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusrec.fsu.edu/outdoors/lakefront-activities/",
+      "error": ""
+    },
+    {
+      "url": "https://campusrec.fsu.edu/outdoors/lake/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusrec.fsu.edu/outdoors/lake/",
+      "error": ""
+    },
+    {
+      "url": "https://campusrec.fsu.edu/fitness/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusrec.fsu.edu/fitness/",
+      "error": ""
+    },
+    {
+      "url": "https://campusrec.fsu.edu/fitness/fitness-facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusrec.fsu.edu/fitness/fitness-facilities/",
+      "error": ""
+    },
+    {
+      "url": "https://campusrec.fsu.edu/fitness/group-fitness/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusrec.fsu.edu/fitness/group-fitness/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www2.naz.edu/about/location/area-attractions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.naz.edu/about/location/area-attractions/",
+      "error": ""
+    },
+    {
+      "url": "https://www.townofpittsford.org/business-directory",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.townofpittsfordny.gov/business-directory",
+      "error": ""
+    },
+    {
+      "url": "https://www.townofpittsford.org/discover",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.townofpittsfordny.gov/discover",
+      "error": ""
+    },
+    {
+      "url": "https://www.townofpittsford.org/eriecanal200",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.townofpittsfordny.gov/eriecanal200",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "UXO9kXEu4GhFcbtmkM9t",
+    "schoolName": "Ramapo College of New Jersey",
+    "shortSchoolName": "Ramapo College of New Jersey",
+    "townName": "Mahwah",
+    "state": "NJ",
+    "countryCode": "US",
+    "unitId": "186201",
+    "website": "https://www.ramapo.edu/",
+    "latitude": 41.080942,
+    "longitude": -74.174086,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/7/7b/Ramapo_college_seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=ramapo.edu&sz=256"
+  },
+  "template": {
+    "id": "college-campus-tour-skips",
+    "version": "1.0",
+    "titlePattern": "What the Campus Tour Skips: {count} Places Students Share With Each Other",
+    "editorialBrief": "Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.",
+    "researchQueries": [
+      "student favorite campus places",
+      "campus map student spaces",
+      "student newspaper campus places"
+    ],
+    "count": 10,
+    "icon": "style",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place",
+      "study_space"
+    ],
+    "freshnessDays": 365
+  },
+  "exact_title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+  "excluded_subjects": [
+    "Robert A. Scott Student Center",
+    "The Atrium",
+    "Bandshell",
+    "Student Involvement Fair",
+    "Peter P. Mercer Learning Commons",
+    "Kresge and Pascal Galleries",
+    "Selden Rodman Gallery of Popular Arts",
+    "Bill Bradley Sports and Recreation Center",
+    "Arch Performances",
+    "J. Lee’s"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

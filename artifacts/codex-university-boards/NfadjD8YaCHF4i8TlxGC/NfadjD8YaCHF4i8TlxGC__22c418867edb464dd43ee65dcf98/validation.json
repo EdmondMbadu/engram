@@ -1,0 +1,55 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://gustavus.edu/admission/choose/traditions.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/admission/choose/traditions.php",
+      "error": ""
+    },
+    {
+      "url": "https://news.blog.gustavus.edu/2016/12/05/75-years-of-st-lucia/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.blog.gustavus.edu/2016/12/05/75-years-of-st-lucia/",
+      "error": ""
+    },
+    {
+      "url": "https://gustavus.edu/student-life/immersive-experience/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/student-experience",
+      "error": ""
+    },
+    {
+      "url": "https://gustavus.edu/showtheworld/priorities/signatureevents.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/showtheworld/priorities/signatureevents.php",
+      "error": ""
+    },
+    {
+      "url": "https://gustavus.edu/events/ccc/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/about/administrative-offices/chaplains/christmas-christ-chapel",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Painting the Rock"
+  ],
+  "sourceCount": 5,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

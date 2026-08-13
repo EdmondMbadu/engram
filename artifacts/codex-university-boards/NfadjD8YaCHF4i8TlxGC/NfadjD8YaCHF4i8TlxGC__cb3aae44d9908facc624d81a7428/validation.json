@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://libraries.uky.edu/locations/william-t-young-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.uky.edu/locations/william-t-young-library",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.uky.edu/locations/william-t-young-library/young-library-spaces-technology",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.uky.edu/locations/william-t-young-library/young-library-spaces-technology",
+      "error": ""
+    },
+    {
+      "url": "https://its.uky.edu/our-teams/information-services",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://its.uky.edu/our-teams/information-services",
+      "error": ""
+    },
+    {
+      "url": "https://studentsuccess.uky.edu/transformative-learning/study-drop-tutoring-schedule",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentsuccess.uky.edu/study-hub/study-drop-tutoring-schedule",
+      "error": ""
+    },
+    {
+      "url": "https://studentsuccess.uky.edu/transformative-learning/services/peer-tutoring-study",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentsuccess.uky.edu/study-hub/services/drop-peer-tutoring",
+      "error": ""
+    },
+    {
+      "url": "https://studentsuccess.uky.edu/transformative-learning/tl-resources/faculty-staff",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://adfs.uky.edu/adfs/ls/?SAMLRequest=nZJNT8MwDIb%2FSpV723TdxhZtkwYTYhIf01Y4cEFu47GINglxguDf03V8jAMcOEV%2B48d%2BbXlC0NRWzIPf6TU%2BByQfvTa1JtF9TFlwWhggRUJDgyR8JTbzq0vRS7iwznhTmZodIX8TQITOK6NZtFxM2UPOB4gn2wphwAcc%2BnkPRgDDfjnGrByO%2BWgMMi8zBGTRHTpqySlrC7U4UcClJg%2FatxLvDWM%2BirO84GOR9wUf3LNo0U6jNPiO2nlvSaQpyC0l4ektQRm6IK0pZdH809mZ0RQadBt0L6rC2%2FXlN1uidKZ6%2BsJJNbbG%2FdhpY2SoMbE7m3YxHd5eDBV1qnTBQh2TZdHqY2%2BnSkulH%2F9eWXlIInFRFKt4dbMp2GyyLy26FbjZ%2F8w16EGCh5%2FeJulx5cnhOK5bT8vFytSqeovOjWvA%2F245S7JOUTLedqkiaLJYqa1CydLZocPPi5u9Aw%3D%3D",
+      "error": ""
+    },
+    {
+      "url": "https://evpfa.uky.edu/campus-life",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://evpfa.uky.edu/campus-life",
+      "error": ""
+    },
+    {
+      "url": "https://gsc.uky.edu/look-inside/cats-den",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gsc.uky.edu/look-inside/cats-den",
+      "error": ""
+    },
+    {
+      "url": "https://esports.uky.edu/reservations-new",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://esports.uky.edu/reservations",
+      "error": ""
+    },
+    {
+      "url": "https://esports.uky.edu/our-program",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://esports.uky.edu/home",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

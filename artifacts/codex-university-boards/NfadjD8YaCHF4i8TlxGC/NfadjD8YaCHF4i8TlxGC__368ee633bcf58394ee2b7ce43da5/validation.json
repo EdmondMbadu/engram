@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.lapistapizzeria.com/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lapistapizzeria.com/contact",
+      "error": ""
+    },
+    {
+      "url": "https://www.toasttab.com/local/order/blue-sail-coffee-1028-front-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.toasttab.com/local/order/blue-sail-coffee-1028-front-street",
+      "error": ""
+    },
+    {
+      "url": "https://conwayarkansas.gov/parks/simon-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://conwayarkansas.gov/parks/simon-park/",
+      "error": ""
+    },
+    {
+      "url": "https://www.crosscreeksandwichshop.com/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.crosscreeksandwichshop.com/contact",
+      "error": ""
+    },
+    {
+      "url": "https://maps.conwayarkansas.gov/documents/publicart/TinyToadsTour.pdf",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://maps.conwayarkansas.gov/documents/publicart/TinyToadsTour.pdf",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.faulknercountyar.gov/museum/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.faulknercountyar.gov/museum/",
+      "error": ""
+    },
+    {
+      "url": "https://www.conwayarkansas.gov/meetings/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.conwayarkansas.gov/meetings/",
+      "error": ""
+    },
+    {
+      "url": "https://conwayarkansas.gov/parks/martin-luther-king-jr-square/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://conwayarkansas.gov/parks/martin-luther-king-jr-square/",
+      "error": ""
+    },
+    {
+      "url": "https://fcl.org/conway/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fcl.org/conway/",
+      "error": ""
+    },
+    {
+      "url": "https://www.conwayarkansas.gov/parks/laurel-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.conwayarkansas.gov/parks/laurel-park/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

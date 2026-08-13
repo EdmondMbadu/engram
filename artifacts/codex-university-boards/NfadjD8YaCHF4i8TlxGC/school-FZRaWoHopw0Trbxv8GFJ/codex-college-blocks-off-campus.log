@@ -1,0 +1,293 @@
+Reading additional input from stdin...
+2026-08-13T07:27:16.483812Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa04-9c7f-7ec2-a6fa-54963edb8fb3.1786606034048273000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:27:16.552631Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa04-9c71-73d1-8b8d-34c733fabbd0.1786606034034171000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:27:16.568830Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:27:16.574172Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa04-a589-7db2-9819-06468c065dca
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"FZRaWoHopw0Trbxv8GFJ","schoolName":"Harding University","shortSchoolName":"Harding University","townName":"Searcy","state":"AR","countryCode":"US","website":"https://www.harding.edu/","latitude":35.247386,"longitude":-91.726143},"templates":[{"id":"college-blocks-off-campus","version":"1.0","titlePattern":"{count} Blocks Off Campus, One Reason Each","editorialBrief":"Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.","researchQueries":["off campus streets student district","campus adjacent commercial streets","neighborhood plan near university"],"count":10,"icon":"location_city","primarySubjectType":"street_or_district","allowedSubjectTypes":["street_or_district"],"freshnessDays":730,"exactTitle":"10 Blocks Off Campus, One Reason Each"}]}
+2026-08-13T07:27:16.618504Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa04-9c6b-7b10-8c12-af105b73e836.1786606034027735000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:27:16.662556Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa04-9c7c-7ef1-88f8-8c7b289f2df6.1786606034045113000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:27:16.807191Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa04-9c6a-75d3-94b3-0237bb6f52f5.1786606034026967000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:27:16.850469Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa04-9c6c-7700-84c5-51dcc8c6adaf.1786606034029602000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:27:16.897752Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa04-9c5f-7f90-bb3a-2876e2119341.1786606034016100000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Harding University",
+  "town_name": "Searcy",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Harding University",
+      "town_name": "Searcy",
+      "template_id": "college-blocks-off-campus",
+      "title": "10 Blocks Off Campus, One Reason Each",
+      "description": "",
+      "icon": "location_city",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+     
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": ["Researching current direct sources and map-listed destinations."]
+}
+web search: 
+web search: site:cityofsearcy.org downtown Searcy attractions Spring Street Market Avenue ...
+web search: 
+web search: site:experiencesearcy.com "Art Alley" Searcy ...
+web search: 
+web search: Burrito Day Searcy official address ...
+web search: 
+web search: Pho Ever and More Searcy official website address ...
+codex
+{"complete":true,"school_name":"Harding University","town_name":"Searcy","boards":[{"complete":true,"school_name":"Harding University","town_name":"Searcy","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named destinations along Searcy corridors within Harding University’s practical off-campus orbit, each with one sourced reason to stop.","icon":"location_city","cards":[{"subject_id":"midnight-oil-race-avenue","subject_type":"street_or_district","entity_name":"Midnight Oil Coffeehouse","title":"Coffee and House-Baked Fare","subtitle":"East Race Avenue corridor","notes":"Walk west on Race Avenue for espresso, house-made syrups, baked goods or lunch; check the posted menu before choosing what to order.","short_summary":"An independent coffeehouse and café just west of Harding’s campus.","evidence_claim":"Midnight Oil’s official site identifies it as an independent Searcy coffeehouse and café serving coffee, espresso, baked goods and lunch at 801 East Race Avenue.","source_url":"https://www.midnightoilcoffeehouse.com/","source_title":"Midnight Oil Coffeehouse & Cafe","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Midnight+Oil+Coffeehouse%2C+801+East+Race+Avenue%2C+Searcy%2C+AR+72143","access_notes":"The official site lists service Monday through Saturday; food and drinks require purchase.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"black-house-race-street","subject_type":"street_or_district","entity_name":"Historic Benjamin Clayton Black House and Art Gallery","title":"A Historic House with Rotating Art","subtitle":"East Race Street corridor","notes":"Continue west along Race Street and step inside during posted gallery hours to pair the furnished historic home with its current visual-art exhibit.","short_summary":"A nineteenth-century residence now used for visual-art exhibitions.","evidence_claim":"The City of Searcy says the 1874 Benjamin Clayton Black House is a furnished historic home hosting visual-art exhibits at 300 East Race.","source_url":"https://www.cityofsearcy.org/cityservices/the-historic-benjamin-clayton-black-house-and-art-gallery","source_title":"The Historic Benjamin Clayton Black House and Art Gallery","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Historic+Benjamin+Clayton+Black+House%2C+300+East+Race%2C+Searcy%2C+AR+72143","access_notes":"The city page lists Tuesday–Saturday gallery hours; confirm before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"berryhill-park-race-street","subject_type":"street_or_district","entity_name":"Berryhill Park","title":"Courts Just off Race Street","subtitle":"Race Street corridor","notes":"Follow Race Street to the park and bring a paddle or racquet for its tennis and pickleball courts; the playground and pavilion offer alternatives.","short_summary":"A city park centered on court recreation and open-air gathering space.","evidence_claim":"Experience Searcy places Berryhill Park just off Race Street and documents tennis and pickleball courts, a playground and a pavilion.","source_url":"https://www.experiencesearcy.com/searcy-happenings/searcy-parks","source_title":"Searcy Parks","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Berryhill+Park%2C+Searcy%2C+AR","access_notes":"Outdoor city park; verify court availability and any event-related restrictions locally.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"rialto-theater-race-spring","subject_type":"street_or_district","entity_name":"Rialto Theater","title":"Cinema beneath an Art Deco Marquee","subtitle":"Race Avenue at Spring Street","notes":"Pause at the Race-and-Spring corner to photograph the neon marquee, then consult the theater’s current program if you want to catch a screening.","short_summary":"A downtown single-screen cinema distinguished by its Art Deco design.","evidence_claim":"Experience Searcy locates the Rialto at Race and Spring Streets and describes its 1920s origin, Art Deco styling and neon marquee.","source_url":"https://www.experiencesearcy.com/searcy-happenings/searcy-rialto","source_title":"Searcy Rialto","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Rialto+Theater%2C+100+West+Race+Avenue%2C+Searcy%2C+AR+72143","access_notes":"The exterior is visible from downtown sidewalks; screenings and interior access require checking the current schedule and purchasing admission.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"burrito-day-center-avenue","subject_type":"street_or_district","entity_name":"Burrito Day","title":"Build a Downtown Burrito","subtitle":"East Center Avenue corridor","notes":"Turn onto Center Avenue for a customizable meal; review the official menu first and plan around the restaurant’s Sunday–Monday closure.","short_summary":"A downtown counter-service stop for burritos and related dishes.","evidence_claim":"Burrito Day’s official menu page lists its location at 110 East Center Avenue and provides online ordering and a current menu.","source_url":"https://burrito-day.com/index.php/menu","source_title":"Menu - Burrito Day, Searcy","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Burrito+Day%2C+110+East+Center+Avenue%2C+Searcy%2C+AR+72143","access_notes":"The official page lists Tuesday–Saturday service and closure Sunday–Monday; a purchase is required to dine.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"art-alley-arch-avenue","subject_type":"street_or_district","entity_name":"Searcy Art Alley","title":"Murals along an Downtown Passage","subtitle":"West Arch Avenue corridor","notes":"Walk the Arch Avenue passage slowly and photograph individual murals without blocking doors or service areas; daylight offers the clearest view.","short_summary":"A named downtown alley transformed into an outdoor mural collection.","evidence_claim":"Experience Searcy identifies Art Alley as a collection of murals at 218 West Arch in downtown Searcy.","source_url":"https://www.experiencesearcy.com/searcy-happenings/art-alley","source_title":"Art Alley","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Searcy+Art+Alley%2C+218+West+Arch+Avenue%2C+Searcy%2C+AR+72143","access_notes":"View from public downtown paths and respect adjacent properties, active events and any temporary closures.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"center-on-the-square-arch-avenue","subject_type":"street_or_district","entity_name":"Performing Arts Center on the Square","title":"Community Theater on Arch Avenue","subtitle":"West Arch Avenue corridor","notes":"Check the production calendar before walking Arch Avenue; choose a performance date or explore the theater’s published volunteer opportunities.","short_summary":"A downtown venue for community productions and theater participation.","evidence_claim":"The theater’s official site identifies it as a downtown community theater presenting productions at 219 West Arch Avenue.","source_url":"https://centeronthesquare.org/","source_title":"Performing Arts Center on the Square","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Performing+Arts+Center+on+the+Square%2C+219+West+Arch+Avenue%2C+Searcy%2C+AR+72143","access_notes":"Interior access follows performance, audition, class or volunteer schedules; ticketed productions require purchase.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"make-do-spruce-street","subject_type":"street_or_district","entity_name":"Make.Do.","title":"Hands-On Creativity on Spruce Street","subtitle":"North Spruce Street corridor","notes":"Check Make.Do.’s current class listings before heading to Spruce Street, since participation is program-based and class fees support its work.","short_summary":"A nonprofit creative organization offering structured making activities.","evidence_claim":"Make.Do.’s official site identifies the organization as a Searcy nonprofit at 118 North Spruce Street and states that class fees fund part of its work.","source_url":"https://makedocreate.org/fundraising/","source_title":"Make.Do. - Fundraising","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Make.Do.%2C+118+North+Spruce+Street%2C+Searcy%2C+AR+72143","access_notes":"Visit only for a posted class, program or public event; participation may require registration and a fee.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wild-sweet-williams-main-street","subject_type":"street_or_district","entity_name":"Wild Sweet William's Baking House","title":"Pastries Baked on Main Street","subtitle":"South Main Street corridor","notes":"Head south on Main Street early in the service window, review the posted selection and expect individual pastries or lunch items to sell out.","short_summary":"A locally owned baking house serving pastries and lunch.","evidence_claim":"Wild Sweet William’s official site describes a locally owned Searcy baking house at 504 South Main Street and lists pastries and lunch service.","source_url":"https://www.wildsweetwilliams.com/index.php/9-uncategorised/134-review-by-arkansas-s-ay-magazine-about-you","source_title":"Wild Sweet William's Baking House","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Wild+Sweet+William%27s%2C+504+South+Main+Street%2C+Searcy%2C+AR+72143","access_notes":"The official site lists Tuesday–Saturday service and notes items may sell out; purchases are required.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"crain-memorial-library-beebe-capps","subject_type":"street_or_district","entity_name":"Janett and Larry Crain Memorial Library","title":"Study Rooms beyond the Stacks","subtitle":"West Beebe Capps Expressway corridor","notes":"Take Beebe Capps west to use the library’s study spaces or explore its gallery; ask staff about reservations before planning group work.","short_summary":"A public library with study rooms, creative facilities and exhibition space.","evidence_claim":"Experience Searcy locates the Janett and Larry Crain Memorial Library at 1609 West Beebe Capps Expressway and documents study rooms, a recording studio and an exhibition gallery.","source_url":"https://www.experiencesearcy.com/searcy-happenings/searcy-public-library","source_title":"Searcy Public Library","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Janett+and+Larry+Crain+Memorial+Library%2C+1609+West+Beebe+Capps+Expressway%2C+Searcy%2C+AR+72143","access_notes":"Library services follow current public hours; study rooms may require a reservation, and the in-building coffee shop requires purchase.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:29:18.758709Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa04-a589-7db2-9819-06468c065dca.1786606036361909000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+40,939
+
+{"complete":true,"school_name":"Harding University","town_name":"Searcy","boards":[{"complete":true,"school_name":"Harding University","town_name":"Searcy","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named destinations along Searcy corridors within Harding University’s practical off-campus orbit, each with one sourced reason to stop.","icon":"location_city","cards":[{"subject_id":"midnight-oil-race-avenue","subject_type":"street_or_district","entity_name":"Midnight Oil Coffeehouse","title":"Coffee and House-Baked Fare","subtitle":"East Race Avenue corridor","notes":"Walk west on Race Avenue for espresso, house-made syrups, baked goods or lunch; check the posted menu before choosing what to order.","short_summary":"An independent coffeehouse and café just west of Harding’s campus.","evidence_claim":"Midnight Oil’s official site identifies it as an independent Searcy coffeehouse and café serving coffee, espresso, baked goods and lunch at 801 East Race Avenue.","source_url":"https://www.midnightoilcoffeehouse.com/","source_title":"Midnight Oil Coffeehouse & Cafe","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Midnight+Oil+Coffeehouse%2C+801+East+Race+Avenue%2C+Searcy%2C+AR+72143","access_notes":"The official site lists service Monday through Saturday; food and drinks require purchase.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"black-house-race-street","subject_type":"street_or_district","entity_name":"Historic Benjamin Clayton Black House and Art Gallery","title":"A Historic House with Rotating Art","subtitle":"East Race Street corridor","notes":"Continue west along Race Street and step inside during posted gallery hours to pair the furnished historic home with its current visual-art exhibit.","short_summary":"A nineteenth-century residence now used for visual-art exhibitions.","evidence_claim":"The City of Searcy says the 1874 Benjamin Clayton Black House is a furnished historic home hosting visual-art exhibits at 300 East Race.","source_url":"https://www.cityofsearcy.org/cityservices/the-historic-benjamin-clayton-black-house-and-art-gallery","source_title":"The Historic Benjamin Clayton Black House and Art Gallery","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Historic+Benjamin+Clayton+Black+House%2C+300+East+Race%2C+Searcy%2C+AR+72143","access_notes":"The city page lists Tuesday–Saturday gallery hours; confirm before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"berryhill-park-race-street","subject_type":"street_or_district","entity_name":"Berryhill Park","title":"Courts Just off Race Street","subtitle":"Race Street corridor","notes":"Follow Race Street to the park and bring a paddle or racquet for its tennis and pickleball courts; the playground and pavilion offer alternatives.","short_summary":"A city park centered on court recreation and open-air gathering space.","evidence_claim":"Experience Searcy places Berryhill Park just off Race Street and documents tennis and pickleball courts, a playground and a pavilion.","source_url":"https://www.experiencesearcy.com/searcy-happenings/searcy-parks","source_title":"Searcy Parks","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Berryhill+Park%2C+Searcy%2C+AR","access_notes":"Outdoor city park; verify court availability and any event-related restrictions locally.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"rialto-theater-race-spring","subject_type":"street_or_district","entity_name":"Rialto Theater","title":"Cinema beneath an Art Deco Marquee","subtitle":"Race Avenue at Spring Street","notes":"Pause at the Race-and-Spring corner to photograph the neon marquee, then consult the theater’s current program if you want to catch a screening.","short_summary":"A downtown single-screen cinema distinguished by its Art Deco design.","evidence_claim":"Experience Searcy locates the Rialto at Race and Spring Streets and describes its 1920s origin, Art Deco styling and neon marquee.","source_url":"https://www.experiencesearcy.com/searcy-happenings/searcy-rialto","source_title":"Searcy Rialto","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Rialto+Theater%2C+100+West+Race+Avenue%2C+Searcy%2C+AR+72143","access_notes":"The exterior is visible from downtown sidewalks; screenings and interior access require checking the current schedule and purchasing admission.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"burrito-day-center-avenue","subject_type":"street_or_district","entity_name":"Burrito Day","title":"Build a Downtown Burrito","subtitle":"East Center Avenue corridor","notes":"Turn onto Center Avenue for a customizable meal; review the official menu first and plan around the restaurant’s Sunday–Monday closure.","short_summary":"A downtown counter-service stop for burritos and related dishes.","evidence_claim":"Burrito Day’s official menu page lists its location at 110 East Center Avenue and provides online ordering and a current menu.","source_url":"https://burrito-day.com/index.php/menu","source_title":"Menu - Burrito Day, Searcy","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Burrito+Day%2C+110+East+Center+Avenue%2C+Searcy%2C+AR+72143","access_notes":"The official page lists Tuesday–Saturday service and closure Sunday–Monday; a purchase is required to dine.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"art-alley-arch-avenue","subject_type":"street_or_district","entity_name":"Searcy Art Alley","title":"Murals along an Downtown Passage","subtitle":"West Arch Avenue corridor","notes":"Walk the Arch Avenue passage slowly and photograph individual murals without blocking doors or service areas; daylight offers the clearest view.","short_summary":"A named downtown alley transformed into an outdoor mural collection.","evidence_claim":"Experience Searcy identifies Art Alley as a collection of murals at 218 West Arch in downtown Searcy.","source_url":"https://www.experiencesearcy.com/searcy-happenings/art-alley","source_title":"Art Alley","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Searcy+Art+Alley%2C+218+West+Arch+Avenue%2C+Searcy%2C+AR+72143","access_notes":"View from public downtown paths and respect adjacent properties, active events and any temporary closures.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"center-on-the-square-arch-avenue","subject_type":"street_or_district","entity_name":"Performing Arts Center on the Square","title":"Community Theater on Arch Avenue","subtitle":"West Arch Avenue corridor","notes":"Check the production calendar before walking Arch Avenue; choose a performance date or explore the theater’s published volunteer opportunities.","short_summary":"A downtown venue for community productions and theater participation.","evidence_claim":"The theater’s official site identifies it as a downtown community theater presenting productions at 219 West Arch Avenue.","source_url":"https://centeronthesquare.org/","source_title":"Performing Arts Center on the Square","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Performing+Arts+Center+on+the+Square%2C+219+West+Arch+Avenue%2C+Searcy%2C+AR+72143","access_notes":"Interior access follows performance, audition, class or volunteer schedules; ticketed productions require purchase.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"make-do-spruce-street","subject_type":"street_or_district","entity_name":"Make.Do.","title":"Hands-On Creativity on Spruce Street","subtitle":"North Spruce Street corridor","notes":"Check Make.Do.’s current class listings before heading to Spruce Street, since participation is program-based and class fees support its work.","short_summary":"A nonprofit creative organization offering structured making activities.","evidence_claim":"Make.Do.’s official site identifies the organization as a Searcy nonprofit at 118 North Spruce Street and states that class fees fund part of its work.","source_url":"https://makedocreate.org/fundraising/","source_title":"Make.Do. - Fundraising","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Make.Do.%2C+118+North+Spruce+Street%2C+Searcy%2C+AR+72143","access_notes":"Visit only for a posted class, program or public event; participation may require registration and a fee.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wild-sweet-williams-main-street","subject_type":"street_or_district","entity_name":"Wild Sweet William's Baking House","title":"Pastries Baked on Main Street","subtitle":"South Main Street corridor","notes":"Head south on Main Street early in the service window, review the posted selection and expect individual pastries or lunch items to sell out.","short_summary":"A locally owned baking house serving pastries and lunch.","evidence_claim":"Wild Sweet William’s official site describes a locally owned Searcy baking house at 504 South Main Street and lists pastries and lunch service.","source_url":"https://www.wildsweetwilliams.com/index.php/9-uncategorised/134-review-by-arkansas-s-ay-magazine-about-you","source_title":"Wild Sweet William's Baking House","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Wild+Sweet+William%27s%2C+504+South+Main+Street%2C+Searcy%2C+AR+72143","access_notes":"The official site lists Tuesday–Saturday service and notes items may sell out; purchases are required.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"crain-memorial-library-beebe-capps","subject_type":"street_or_district","entity_name":"Janett and Larry Crain Memorial Library","title":"Study Rooms beyond the Stacks","subtitle":"West Beebe Capps Expressway corridor","notes":"Take Beebe Capps west to use the library’s study spaces or explore its gallery; ask staff about reservations before planning group work.","short_summary":"A public library with study rooms, creative facilities and exhibition space.","evidence_claim":"Experience Searcy locates the Janett and Larry Crain Memorial Library at 1609 West Beebe Capps Expressway and documents study rooms, a recording studio and an exhibition gallery.","source_url":"https://www.experiencesearcy.com/searcy-happenings/searcy-public-library","source_title":"Searcy Public Library","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Janett+and+Larry+Crain+Memorial+Library%2C+1609+West+Beebe+Capps+Expressway%2C+Searcy%2C+AR+72143","access_notes":"Library services follow current public hours; study rooms may require a reservation, and the in-building coffee shop requires purchase.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

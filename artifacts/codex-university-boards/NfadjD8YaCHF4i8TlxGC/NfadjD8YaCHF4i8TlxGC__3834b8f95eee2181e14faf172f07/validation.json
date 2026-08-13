@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://stories.butler.edu/butler-homecoming-traditions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stories.butler.edu/butler-homecoming-traditions/",
+      "error": ""
+    },
+    {
+      "url": "https://www.butler.edu/alumni/homecoming/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.butler.edu/alumni/homecoming/",
+      "error": ""
+    },
+    {
+      "url": "https://www.butler.edu/student-life/bits/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.butler.edu/student-life/bits/",
+      "error": ""
+    },
+    {
+      "url": "https://www.butler.edu/butlerblue/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.butler.edu/butlerblue/",
+      "error": ""
+    },
+    {
+      "url": "https://www.butler.edu/student-life/orientation/orientation-schedule/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.butler.edu/student-life/orientation/orientation-schedule/",
+      "error": ""
+    },
+    {
+      "url": "https://www.butler.edu/student-life/orientation/orientation-schedule/full-schedule/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.butler.edu/student-life/orientation/orientation-schedule/full-schedule/",
+      "error": ""
+    },
+    {
+      "url": "https://www.butler.edu/student-life/orientation/orientation-schedule/sunday/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.butler.edu/student-life/orientation/orientation-schedule/sunday/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

@@ -1,0 +1,52 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "9vL3IJdrpWaaBrIk3mni",
+    "schoolName": "Northeastern University",
+    "shortSchoolName": "Northeastern University",
+    "townName": "Boston",
+    "state": "MA",
+    "countryCode": "US",
+    "unitId": "167358",
+    "website": "https://www.northeastern.edu/",
+    "latitude": 42.339992,
+    "longitude": -71.088782,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/b/bb/NU_RGB_seal_R.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=northeastern.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at Northeastern University, Shared as Cards",
+  "excluded_subjects": [
+    "Snell Library Open Study Space",
+    "Snell Library Room 255",
+    "Graduate Study Room (Room 320)",
+    "Graduate Group Study Rooms",
+    "Silent Study Room (Room 490)",
+    "Silent Individual Study Rooms",
+    "Snell Library Group Study Rooms",
+    "Snell Library Individual Study Rooms",
+    "Centers for Digital Scholarship Presentation Space",
+    "Centers for Digital Scholarship Large Collaboration Space"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

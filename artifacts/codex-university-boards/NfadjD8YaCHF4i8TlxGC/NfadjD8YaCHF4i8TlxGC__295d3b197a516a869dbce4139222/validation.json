@@ -1,0 +1,64 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.lvc.edu/library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lvc.edu/library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lvc.edu/student-life/housing-dining/mund-college-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lvc.edu/student-life/housing-dining/mund-college-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lvc.edu/offices/conference-services/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lvc.edu/offices/conference-services/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lvc.edu/admission-aid/admitted/new-student-orientation/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lvc.edu/admission-aid/admitted/new-student-orientation/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lvc.edu/offices/sports-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lvc.edu/offices/sports-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lvc.edu/suzanne-h-arnold-art-gallery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lvc.edu/suzanne-h-arnold-art-gallery/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Vernon and Doris Bishop Library",
+    "Commuter Lounge"
+  ],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

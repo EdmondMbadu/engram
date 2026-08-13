@@ -1,0 +1,62 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Coordinates and Google Maps URLs are null because exact entrances or room-level map pins were not verified from direct sources.",
+    "Access to several spaces is restricted to Lake Forest College students or the wider College community, and some rooms require a key, reservation, appointment, or College ID."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.lakeforest.edu/academic-resources/library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakeforest.edu/academic-resources/library",
+      "error": ""
+    },
+    {
+      "url": "https://www.lakeforest.edu/student-resources/dining",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakeforest.edu/student-resources/dining",
+      "error": ""
+    },
+    {
+      "url": "https://www.lakeforest.edu/student-resources/accessibility-services/applying-for-accommodations/housing-accomodations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakeforest.edu/student-resources/accessibility-services/applying-for-accommodations/housing-accomodations",
+      "error": ""
+    },
+    {
+      "url": "https://www.lakeforest.edu/student-resources/intercultural-relations/success-and-support",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakeforest.edu/about-us/administration/campus-life/office-for-community-advocacy-resources-and-empowerment/success-and-support",
+      "error": ""
+    },
+    {
+      "url": "https://www.lakeforest.edu/academic-resources/quantitative-resource-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakeforest.edu/academic-resources/quantitative-resource-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.lakeforest.edu/on-campus-facilities-hours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakeforest.edu/on-campus-facilities-hours",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

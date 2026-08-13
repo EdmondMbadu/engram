@@ -1,0 +1,62 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "fk0u7b8ah6hFRHVlWQmh",
+    "schoolName": "Stonehill College",
+    "shortSchoolName": "Stonehill College",
+    "townName": "Easton",
+    "state": "MA",
+    "countryCode": "US",
+    "unitId": "167996",
+    "website": "https://www.stonehill.edu/",
+    "latitude": 42.05905,
+    "longitude": -71.080632,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/b/bb/Stonehill_Emblem.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=stonehill.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at Stonehill College, Shared as Cards",
+  "excluded_subjects": [
+    "MacPháidín Library Second Floor",
+    "MacPháidín Library Third Floor",
+    "MacPháidín Library Study Rooms",
+    "Zoom Room (ML 211)",
+    "Digital Innovation Lab (107)",
+    "Huddle Hutch (108)",
+    "Podcasting Studio (112)",
+    "Great Room",
+    "Collaboration Zone",
+    "Meehan School of Business Computer Lab",
+    "Ames Free Library",
+    "Queset House at Ames Free Library",
+    "Oakes Ames Memorial Hall",
+    "The Children's Museum in Easton",
+    "Frothingham Hall",
+    "Easton Community Access Television",
+    "The Beanery on Washington",
+    "Farmer's Daughter",
+    "Simpson Spring",
+    "Borderland State Park"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

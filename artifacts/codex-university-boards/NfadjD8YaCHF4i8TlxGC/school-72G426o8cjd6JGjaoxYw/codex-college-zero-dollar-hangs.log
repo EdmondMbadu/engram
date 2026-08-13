@@ -1,0 +1,296 @@
+Reading additional input from stdin...
+2026-08-13T06:57:51.799851Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-7987-7f82-b97b-ea7a145e55b8.1786604255624481000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:57:51.801467Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:57:51.803148Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:57:51.841050Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-798a-7461-9edc-dd97abf41d2d.1786604255627254000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9e9-b845-76a1-bce9-870f2d256c04
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"72G426o8cjd6JGjaoxYw","schoolName":"Elmhurst University","shortSchoolName":"Elmhurst University","townName":"Elmhurst","state":"IL","countryCode":"US","website":"https://www.elmhurst.edu/","latitude":41.897164,"longitude":-87.945369},"templates":[{"id":"college-zero-dollar-hangs","version":"1.0","titlePattern":"Zero Dollars: {count} Hangs That Cost Nothing","editorialBrief":"Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.","researchQueries":["free student activities campus","free campus spaces students","free public places near campus"],"count":10,"icon":"money_off","primarySubjectType":"activity","allowedSubjectTypes":["activity","place"],"freshnessDays":180,"exactTitle":"Zero Dollars: 10 Hangs That Cost Nothing"}]}
+2026-08-13T06:57:51.915642Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-7987-7a71-a5c3-5b271b0e2efb.1786604255623815000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:57:51.994073Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-7985-7161-b763-db9b2ed589a7.1786604255621553000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:57:52.039154Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-7986-7f70-9ac0-01b5846d379e.1786604255622326000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:57:52.078560Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-799d-7e90-a88b-3f4e26e818e7.1786604255645974000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:57:52.120749Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-7985-7383-8b49-05bfee3caf34.1786604255621921000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Elmhurst University",
+  "town_name": "Elmhurst",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Elmhurst University",
+      "town_name": "Elmhurst",
+      "template_id": "college-zero-dollar-hangs",
+      "title": "Zero Dollars: 10 Hangs That Cost Nothing",
+      "description": "",
+      "icon": "money_off",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "government",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "activity",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "cultural_institution",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      }
+    ,
+        {
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "cultural_institution",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "government",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "government",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "government",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "government",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "government",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+      ],
+      "warnings": [
+        "Research in progress."
+      ]
+    }
+  ],
+  "warnings": [
+    "Research in progress."
+  ]
+}
+web search: 
+web search: site:elmhurst.edu campus arboretum museum gallery free Elmhurst University ...
+web search: 
+web search: site:epd.org/parks Elmhurst Wilder Park free park admission ...
+web search: 
+web search: site:epd.org "Fees will not be charged" parks trails playgrounds ...
+codex
+{"complete":true,"school_name":"Elmhurst University","town_name":"Elmhurst","boards":[{"complete":true,"school_name":"Elmhurst University","town_name":"Elmhurst","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"Ten no-cost ways to share art, history, nature, library programs and outdoor time on campus and around Elmhurst.","icon":"money_off","cards":[{"subject_id":"elmhurst-university-buehler-library-art","subject_type":"activity","entity_name":"A.C. Buehler Library Art Collection","title":"Browse Chicago Imagist Art","subtitle":"A free public collection inside A.C. Buehler Library","notes":"Walk the library displays together and each choose one work to discuss; confirm regular library hours before entering campus.","short_summary":"Turn a library visit into a self-guided conversation about Chicago Imagist and Abstractionist art.","evidence_claim":"Elmhurst University states that its art collection in A.C. Buehler Library is free and open to the public during regular library hours.","source_url":"https://www.elmhurst.edu/about/community-outreach/","source_title":"Community Outreach","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=A.C.%20Buehler%20Library%20Elmhurst%20University","access_notes":"Free and open to the public during regular library hours; check the library schedule before visiting.","cost_status":"free","under21_safe":true},{"subject_id":"elmhurst-history-museum-general-admission","subject_type":"activity","entity_name":"Elmhurst History Museum","title":"Explore Elmhurst History","subtitle":"Free general admission in the historic Glos Mansion","notes":"Start with the core displays, then compare discoveries from the rotating exhibition; groups of 10 or more need an appointment.","short_summary":"Share a museum afternoon focused on the people, places and events that shaped Elmhurst.","evidence_claim":"The Elmhurst History Museum states that general admission is free, while tours and select programs may carry nominal fees.","source_url":"https://www.elmhursthistory.org/visit-us/","source_title":"Visit Us","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Elmhurst%20History%20Museum","access_notes":"General admission is free. A donation is optional; guided tours and select programs may require payment.","cost_status":"free","under21_safe":true},{"subject_id":"wilder-park-conservatory-flower-displays","subject_type":"activity","entity_name":"Wilder Park Conservatory","title":"See the Seasonal Flower Displays","subtitle":"A year-round public conservatory beside Wilder Park","notes":"Circle the conservatory slowly, compare seasonal blooms and pause by the koi pond; check posted closures during display changes.","short_summary":"Trade screens for tropical foliage, seasonal color and a compact indoor garden walk.","evidence_claim":"Elmhurst Park District states that Wilder Park Conservatory is free and open to the public year-round.","source_url":"https://www.epd.org/facilities/wilder-park-conservatory","source_title":"Wilder Park Conservatory","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Wilder%20Park%20Conservatory%20Elmhurst%20IL","access_notes":"Free and open to the public year-round, except posted weather closures and installation periods between flower shows.","cost_status":"free","under21_safe":true},{"subject_id":"safety-town-public-visit","subject_type":"activity","entity_name":"Safety Town","title":"Walk the Miniature Elmhurst Streets","subtitle":"A free seasonal visit along a tiny model town","notes":"Follow the miniature sidewalks, identify road-safety features and connect the visit with a walk on the adjacent Prairie Path.","short_summary":"Explore a playful small-scale streetscape designed for pedestrian and bicycle safety education.","evidence_claim":"Elmhurst Park District states that Safety Town is free to visit and open to the public from dawn to dusk, April 1 through November 1.","source_url":"https://www.epd.org/facilities/safety-town","source_title":"Safety Town","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Safety%20Town%20Elmhurst%20IL","access_notes":"Free public access dawn–dusk, April 1–November 1; avoid the specifically posted 2026 camp closure periods.","cost_status":"free","under21_safe":true},{"subject_id":"elmhurst-public-library-free-program","subject_type":"activity","entity_name":"Elmhurst Public Library","title":"Pick a Free Library Program","subtitle":"No-cost events available with student library access","notes":"Check the events calendar together, choose a free program and confirm whether registration or an Elmhurst library card is required.","short_summary":"Use student library eligibility to turn a scheduled talk, workshop or gathering into a free group outing.","evidence_claim":"The library says Elmhurst University students can obtain or register a library card and that library programs are free.","source_url":"https://www.elmhurstpubliclibrary.org/get-my-library-card","source_title":"Get My Library Card","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Elmhurst%20Public%20Library","access_notes":"Programs are free, but some may require registration or cardholder status. Student card requirements vary by residence.","cost_status":"free","under21_safe":true},{"subject_id":"wilder-park-walking-paths","subject_type":"activity","entity_name":"Wilder Park","title":"Walk Wilder Park’s Paths","subtitle":"A no-admission park hang near campus","notes":"Loop the walking paths, stop at the formal gardens and bring your own snack for the picnic area; skip reservable spaces.","short_summary":"Combine an easy walk, gardens and conversation in the civic green space beside campus.","evidence_claim":"Elmhurst Park District policy states that Elmhurst residents are not charged entrance fees for parks, trails or playgrounds.","source_url":"https://www.epd.org/sites/default/files/pdf/2021%20Budget%20Document.pdf","source_title":"Elmhurst Park District 2021 Budget Document","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Wilder%20Park%20Elmhurst%20IL","access_notes":"Free park entrance for Elmhurst residents. Rentals, reserved picnic areas and special facilities may charge fees; open sunrise–sunset.","cost_status":"free","under21_safe":true},{"subject_id":"illinois-prairie-path-elmhurst-walk","subject_type":"activity","entity_name":"Illinois Prairie Path","title":"Walk the Elmhurst Prairie Path","subtitle":"A no-fee rail-trail route through Elmhurst","notes":"Choose an out-and-back distance, keep right and pause at the prairie landscape; bring water and return before sunset.","short_summary":"Share a walk or easy ride on the historic rail-trail corridor that crosses Elmhurst.","evidence_claim":"Elmhurst Park District policy states that Elmhurst residents are not charged entrance fees for parks or trails.","source_url":"https://www.epd.org/sites/default/files/pdf/2021%20Budget%20Document.pdf","source_title":"Elmhurst Park District 2021 Budget Document","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Illinois%20Prairie%20Path%20Elmhurst%20IL","access_notes":"Free trail entrance for Elmhurst residents; no purchase is required for walking or riding. District trails are open sunrise–sunset.","cost_status":"free","under21_safe":true},{"subject_id":"keith-a-olson-prairie-nature-walk","subject_type":"activity","entity_name":"Keith A. Olson Prairie","title":"Spot Native Prairie Plants","subtitle":"A free conservation-area walk beside the Prairie Path","notes":"Stay on established edges, look for seasonal grasses and flowers, and leave plants undisturbed in this protected prairie remnant.","short_summary":"Compare native grasses and wildflowers in one of Elmhurst’s oldest surviving natural environments.","evidence_claim":"Elmhurst Park District policy states that Elmhurst residents are not charged entrance fees for conservation areas or trails.","source_url":"https://www.epd.org/sites/default/files/pdf/2021%20Budget%20Document.pdf","source_title":"Elmhurst Park District 2021 Budget Document","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Keith%20A.%20Olson%20Prairie%20Elmhurst%20IL","access_notes":"Free entrance for Elmhurst residents. Use the public conservation area without joining a scheduled program; visit sunrise–sunset.","cost_status":"free","under21_safe":true},{"subject_id":"berens-park-running-trail","subject_type":"activity","entity_name":"Berens Park","title":"Loop the Berens Park Trail","subtitle":"A free resident park walk with room to spread out","notes":"Walk or jog the park trail, then regroup in an open picnic area; avoid fee-based Hub attractions and active construction zones.","short_summary":"Use the large neighborhood park for a conversational loop or an informal group workout.","evidence_claim":"Elmhurst Park District policy states that Elmhurst residents are not charged entrance fees for parks, trails or informal outdoor athletic use.","source_url":"https://www.epd.org/sites/default/files/pdf/2021%20Budget%20Document.pdf","source_title":"Elmhurst Park District 2021 Budget Document","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Berens%20Park%20Elmhurst%20IL","access_notes":"Free park and trail entrance for Elmhurst residents. Mini-golf, batting cages, spray ground and reservations are excluded.","cost_status":"free","under21_safe":true},{"subject_id":"eldridge-park-lagoon-walk","subject_type":"activity","entity_name":"Eldridge Park","title":"Circle Eldridge Lagoon","subtitle":"A no-admission park walk along Salt Creek","notes":"Follow the perimeter path, cross the park bridge and pause by the lagoon; use marked paths and finish before the park closes.","short_summary":"Pair a waterside loop with views of the lagoon, Salt Creek and the park’s butterfly garden.","evidence_claim":"Elmhurst Park District policy states that Elmhurst residents are not charged entrance fees for parks, trails or playgrounds.","source_url":"https://www.epd.org/sites/default/files/pdf/2021%20Budget%20Document.pdf","source_title":"Elmhurst Park District 2021 Budget Document","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Eldridge%20Park%20Elmhurst%20IL","access_notes":"Free park and trail entrance for Elmhurst residents; equipment, organized programs and reserved facilities are not included.","cost_status":"free","under21_safe":true}],"warnings":["Five Park District cards rely on the district's explicit resident no-fee policy; students who do not reside in Elmhurst should verify eligibility before visiting."]}],"warnings":["The Park District's direct no-fee policy is resident-specific, so access notes preserve that limitation rather than implying universal free entry."]}
+2026-08-13T06:59:48.984930Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-b845-76a1-bce9-870f2d256c04.1786604271686728000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+32,189
+
+{"complete":true,"school_name":"Elmhurst University","town_name":"Elmhurst","boards":[{"complete":true,"school_name":"Elmhurst University","town_name":"Elmhurst","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"Ten no-cost ways to share art, history, nature, library programs and outdoor time on campus and around Elmhurst.","icon":"money_off","cards":[{"subject_id":"elmhurst-university-buehler-library-art","subject_type":"activity","entity_name":"A.C. Buehler Library Art Collection","title":"Browse Chicago Imagist Art","subtitle":"A free public collection inside A.C. Buehler Library","notes":"Walk the library displays together and each choose one work to discuss; confirm regular library hours before entering campus.","short_summary":"Turn a library visit into a self-guided conversation about Chicago Imagist and Abstractionist art.","evidence_claim":"Elmhurst University states that its art collection in A.C. Buehler Library is free and open to the public during regular library hours.","source_url":"https://www.elmhurst.edu/about/community-outreach/","source_title":"Community Outreach","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=A.C.%20Buehler%20Library%20Elmhurst%20University","access_notes":"Free and open to the public during regular library hours; check the library schedule before visiting.","cost_status":"free","under21_safe":true},{"subject_id":"elmhurst-history-museum-general-admission","subject_type":"activity","entity_name":"Elmhurst History Museum","title":"Explore Elmhurst History","subtitle":"Free general admission in the historic Glos Mansion","notes":"Start with the core displays, then compare discoveries from the rotating exhibition; groups of 10 or more need an appointment.","short_summary":"Share a museum afternoon focused on the people, places and events that shaped Elmhurst.","evidence_claim":"The Elmhurst History Museum states that general admission is free, while tours and select programs may carry nominal fees.","source_url":"https://www.elmhursthistory.org/visit-us/","source_title":"Visit Us","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Elmhurst%20History%20Museum","access_notes":"General admission is free. A donation is optional; guided tours and select programs may require payment.","cost_status":"free","under21_safe":true},{"subject_id":"wilder-park-conservatory-flower-displays","subject_type":"activity","entity_name":"Wilder Park Conservatory","title":"See the Seasonal Flower Displays","subtitle":"A year-round public conservatory beside Wilder Park","notes":"Circle the conservatory slowly, compare seasonal blooms and pause by the koi pond; check posted closures during display changes.","short_summary":"Trade screens for tropical foliage, seasonal color and a compact indoor garden walk.","evidence_claim":"Elmhurst Park District states that Wilder Park Conservatory is free and open to the public year-round.","source_url":"https://www.epd.org/facilities/wilder-park-conservatory","source_title":"Wilder Park Conservatory","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Wilder%20Park%20Conservatory%20Elmhurst%20IL","access_notes":"Free and open to the public year-round, except posted weather closures and installation periods between flower shows.","cost_status":"free","under21_safe":true},{"subject_id":"safety-town-public-visit","subject_type":"activity","entity_name":"Safety Town","title":"Walk the Miniature Elmhurst Streets","subtitle":"A free seasonal visit along a tiny model town","notes":"Follow the miniature sidewalks, identify road-safety features and connect the visit with a walk on the adjacent Prairie Path.","short_summary":"Explore a playful small-scale streetscape designed for pedestrian and bicycle safety education.","evidence_claim":"Elmhurst Park District states that Safety Town is free to visit and open to the public from dawn to dusk, April 1 through November 1.","source_url":"https://www.epd.org/facilities/safety-town","source_title":"Safety Town","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Safety%20Town%20Elmhurst%20IL","access_notes":"Free public access dawn–dusk, April 1–November 1; avoid the specifically posted 2026 camp closure periods.","cost_status":"free","under21_safe":true},{"subject_id":"elmhurst-public-library-free-program","subject_type":"activity","entity_name":"Elmhurst Public Library","title":"Pick a Free Library Program","subtitle":"No-cost events available with student library access","notes":"Check the events calendar together, choose a free program and confirm whether registration or an Elmhurst library card is required.","short_summary":"Use student library eligibility to turn a scheduled talk, workshop or gathering into a free group outing.","evidence_claim":"The library says Elmhurst University students can obtain or register a library card and that library programs are free.","source_url":"https://www.elmhurstpubliclibrary.org/get-my-library-card","source_title":"Get My Library Card","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Elmhurst%20Public%20Library","access_notes":"Programs are free, but some may require registration or cardholder status. Student card requirements vary by residence.","cost_status":"free","under21_safe":true},{"subject_id":"wilder-park-walking-paths","subject_type":"activity","entity_name":"Wilder Park","title":"Walk Wilder Park’s Paths","subtitle":"A no-admission park hang near campus","notes":"Loop the walking paths, stop at the formal gardens and bring your own snack for the picnic area; skip reservable spaces.","short_summary":"Combine an easy walk, gardens and conversation in the civic green space beside campus.","evidence_claim":"Elmhurst Park District policy states that Elmhurst residents are not charged entrance fees for parks, trails or playgrounds.","source_url":"https://www.epd.org/sites/default/files/pdf/2021%20Budget%20Document.pdf","source_title":"Elmhurst Park District 2021 Budget Document","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Wilder%20Park%20Elmhurst%20IL","access_notes":"Free park entrance for Elmhurst residents. Rentals, reserved picnic areas and special facilities may charge fees; open sunrise–sunset.","cost_status":"free","under21_safe":true},{"subject_id":"illinois-prairie-path-elmhurst-walk","subject_type":"activity","entity_name":"Illinois Prairie Path","title":"Walk the Elmhurst Prairie Path","subtitle":"A no-fee rail-trail route through Elmhurst","notes":"Choose an out-and-back distance, keep right and pause at the prairie landscape; bring water and return before sunset.","short_summary":"Share a walk or easy ride on the historic rail-trail corridor that crosses Elmhurst.","evidence_claim":"Elmhurst Park District policy states that Elmhurst residents are not charged entrance fees for parks or trails.","source_url":"https://www.epd.org/sites/default/files/pdf/2021%20Budget%20Document.pdf","source_title":"Elmhurst Park District 2021 Budget Document","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Illinois%20Prairie%20Path%20Elmhurst%20IL","access_notes":"Free trail entrance for Elmhurst residents; no purchase is required for walking or riding. District trails are open sunrise–sunset.","cost_status":"free","under21_safe":true},{"subject_id":"keith-a-olson-prairie-nature-walk","subject_type":"activity","entity_name":"Keith A. Olson Prairie","title":"Spot Native Prairie Plants","subtitle":"A free conservation-area walk beside the Prairie Path","notes":"Stay on established edges, look for seasonal grasses and flowers, and leave plants undisturbed in this protected prairie remnant.","short_summary":"Compare native grasses and wildflowers in one of Elmhurst’s oldest surviving natural environments.","evidence_claim":"Elmhurst Park District policy states that Elmhurst residents are not charged entrance fees for conservation areas or trails.","source_url":"https://www.epd.org/sites/default/files/pdf/2021%20Budget%20Document.pdf","source_title":"Elmhurst Park District 2021 Budget Document","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Keith%20A.%20Olson%20Prairie%20Elmhurst%20IL","access_notes":"Free entrance for Elmhurst residents. Use the public conservation area without joining a scheduled program; visit sunrise–sunset.","cost_status":"free","under21_safe":true},{"subject_id":"berens-park-running-trail","subject_type":"activity","entity_name":"Berens Park","title":"Loop the Berens Park Trail","subtitle":"A free resident park walk with room to spread out","notes":"Walk or jog the park trail, then regroup in an open picnic area; avoid fee-based Hub attractions and active construction zones.","short_summary":"Use the large neighborhood park for a conversational loop or an informal group workout.","evidence_claim":"Elmhurst Park District policy states that Elmhurst residents are not charged entrance fees for parks, trails or informal outdoor athletic use.","source_url":"https://www.epd.org/sites/default/files/pdf/2021%20Budget%20Document.pdf","source_title":"Elmhurst Park District 2021 Budget Document","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Berens%20Park%20Elmhurst%20IL","access_notes":"Free park and trail entrance for Elmhurst residents. Mini-golf, batting cages, spray ground and reservations are excluded.","cost_status":"free","under21_safe":true},{"subject_id":"eldridge-park-lagoon-walk","subject_type":"activity","entity_name":"Eldridge Park","title":"Circle Eldridge Lagoon","subtitle":"A no-admission park walk along Salt Creek","notes":"Follow the perimeter path, cross the park bridge and pause by the lagoon; use marked paths and finish before the park closes.","short_summary":"Pair a waterside loop with views of the lagoon, Salt Creek and the park’s butterfly garden.","evidence_claim":"Elmhurst Park District policy states that Elmhurst residents are not charged entrance fees for parks, trails or playgrounds.","source_url":"https://www.epd.org/sites/default/files/pdf/2021%20Budget%20Document.pdf","source_title":"Elmhurst Park District 2021 Budget Document","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Eldridge%20Park%20Elmhurst%20IL","access_notes":"Free park and trail entrance for Elmhurst residents; equipment, organized programs and reserved facilities are not included.","cost_status":"free","under21_safe":true}],"warnings":["Five Park District cards rely on the district's explicit resident no-fee policy; students who do not reside in Elmhurst should verify eligibility before visiting."]}],"warnings":["The Park District's direct no-fee policy is resident-specific, so access notes preserve that limitation rather than implying universal free entry."]}

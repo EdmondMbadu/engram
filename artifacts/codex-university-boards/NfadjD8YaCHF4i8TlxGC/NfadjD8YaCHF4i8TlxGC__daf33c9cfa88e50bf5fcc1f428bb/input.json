@@ -1,0 +1,59 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "BAVeoGdNsBmcsScw9FdG",
+    "schoolName": "University of Miami",
+    "shortSchoolName": "University of Miami",
+    "townName": "Coral Gables",
+    "state": "FL",
+    "countryCode": "US",
+    "unitId": "135726",
+    "website": "https://www.miami.edu/",
+    "latitude": 25.72126,
+    "longitude": -80.278662,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/2/27/University_of_Miami_seal.svg/330px-University_of_Miami_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=miami.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "Otto G. Richter Library",
+    "Learning Commons at Richter Library",
+    "Creative Studio at Richter Library",
+    "Richter Library Stack Tower",
+    "Kislak Center at the University of Miami",
+    "Cuban Heritage Collection Reading Room",
+    "Architecture Research Center",
+    "Marta and Austin Weeks Music Library",
+    "Gifford Arboretum",
+    "Butterfly Gardens",
+    "Office of Undergraduate Admission",
+    "Donna E. Shalala Student Center",
+    "Lake Osceola",
+    "Kislak Center",
+    "Lowe Art Museum",
+    "Patti and Allan Herbert Wellness Center",
+    "Bill Cosford Cinema",
+    "Gusman Concert Hall",
+    "Newman Recital Hall"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

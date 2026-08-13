@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://uag.arts.uci.edu/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://uag.arts.uci.edu/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.imca.uci.edu/home-copy/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://langson.uci.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.uci.edu/suggestions-successful-visits",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.uci.edu/suggestions-successful-visits",
+      "error": ""
+    },
+    {
+      "url": "https://exhibits.lib.uci.edu/exhibits/visitor-information",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://exhibits.lib.uci.edu/exhibits/visitor-information",
+      "error": ""
+    },
+    {
+      "url": "https://news.uci.edu/2011/03/14/arboretum-is-no-garden-variety-greenhouse/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.uci.edu/2011/03/14/arboretum-is-no-garden-variety-greenhouse/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

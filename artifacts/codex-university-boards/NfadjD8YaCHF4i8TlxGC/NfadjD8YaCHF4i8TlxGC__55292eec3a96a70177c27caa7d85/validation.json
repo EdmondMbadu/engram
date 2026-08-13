@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://lib.smumn.edu/libraries/winona-study-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.smumn.edu/libraries/winona-study-spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://international.smumn.edu/wp-content/uploads/sites/28/2025/06/Win_CampusMap.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://international.smumn.edu/wp-content/uploads/sites/28/2025/06/Win_CampusMap.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 2,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

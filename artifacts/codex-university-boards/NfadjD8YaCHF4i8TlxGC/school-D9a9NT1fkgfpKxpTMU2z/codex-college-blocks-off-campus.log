@@ -1,0 +1,288 @@
+Reading additional input from stdin...
+2026-08-13T07:40:01.898017Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0f-337d-7611-83aa-c1ead43eb852.1786606728062260000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:40:01.900153Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:40:01.903008Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa10-537a-7b61-9ed2-f74de414766a
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"D9a9NT1fkgfpKxpTMU2z","schoolName":"Illinois State University","shortSchoolName":"Illinois State University","townName":"Normal","state":"IL","countryCode":"US","website":"https://illinoisstate.edu/","latitude":40.509403,"longitude":-88.990058},"templates":[{"id":"college-blocks-off-campus","version":"1.0","titlePattern":"{count} Blocks Off Campus, One Reason Each","editorialBrief":"Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.","researchQueries":["off campus streets student district","campus adjacent commercial streets","neighborhood plan near university"],"count":10,"icon":"location_city","primarySubjectType":"street_or_district","allowedSubjectTypes":["street_or_district"],"freshnessDays":730,"exactTitle":"10 Blocks Off Campus, One Reason Each"}]}
+codex
+{
+  "complete": false,
+  "school_name": "Illinois State University",
+  "town_name": "Normal",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Illinois State University",
+      "town_name": "Normal",
+      "template_id": "college-blocks-off-campus",
+      "title": "10 Blocks Off Campus, One Reason Each",
+      "description": "",
+      "icon": "location_city",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "I’m verifying ten named, map-listed destinations along distinct campus-adjacent corridors, with direct supporting pages for each.",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+     ,
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:uptownnormal.com businesses Uptown Normal Illinois restaurants shops ...
+web search: 
+web search: Coffee Hound Normal IL official address ...
+web search: 
+web search: site:childrensdiscoverymuseum.net visit address 101 E Beaufort ...
+web search: 
+web search: site:normalil.gov "Uptown Station" Normal transit address ...
+web search: 
+web search: site:insomniacookies.com Normal IL 115 E Beaufort ...
+codex
+{"complete":true,"school_name":"Illinois State University","town_name":"Normal","boards":[{"complete":true,"school_name":"Illinois State University","town_name":"Normal","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named destinations in Uptown Normal’s campus-adjacent blocks, each paired with one sourced reason to follow its corridor.","icon":"location_city","cards":[{"subject_id":"normal-public-library-college-avenue","subject_type":"street_or_district","entity_name":"Normal Public Library","title":"Use the Library’s Public Tech","subtitle":"College Avenue — computers, Wi-Fi, and document services","notes":"Follow College Avenue to use a public computer or Wi-Fi; printing, copying, and faxing are also available on site.","short_summary":"A practical College Avenue stop for public connectivity and document tasks.","evidence_claim":"Normal Public Library is at 206 W. College Avenue and provides computers, laptops, Wi-Fi, printing, faxing, and copying services.","source_url":"https://www.normalpl.org/visit","source_title":"Visiting NPL | Normal Public Library","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Main Branch access and current services are listed on the library’s official visit page.","cost_status":"unknown","under21_safe":true},{"subject_id":"coffee-hound-north-street","subject_type":"street_or_district","entity_name":"Coffee Hound Uptown Normal","title":"Start with an Early Café Stop","subtitle":"North Street — coffee and bakery items from 6:30 a.m.","notes":"Walk North Street for an early café option; check the official location page before relying on its posted daily schedule.","short_summary":"An independently documented café address on the campus-facing end of North Street.","evidence_claim":"Coffee Hound’s Uptown Normal café is at 205 W. North Street and serves drinks and bakery items, with daily hours beginning at 6:30 a.m.","source_url":"https://coffeehound.cafe/locations/","source_title":"Locations - The Coffee Hound","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The business currently posts daily hours of 6:30 a.m.–4 p.m.; confirm before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"normal-theater-north-street","subject_type":"street_or_district","entity_name":"Normal Theater","title":"See the Restored Uptown Cinema","subtitle":"North Street — scheduled films and live shows","notes":"Continue east on North Street for the theater marquee, then consult the official calendar and buy tickets for a scheduled program.","short_summary":"A named historic cinema gives this North Street block a clear visual landmark.","evidence_claim":"Normal Theater is located at 209 North Street in historic Uptown Normal, with walk-up and online ticket sales for its programming.","source_url":"https://www.normaltheater.com/92/Contact","source_title":"Contact | Normal Theater, IL - Official Website","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The box office opens 30 minutes before showtime; consult the theater calendar for current programs.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"coffeehouse-deli-beaufort-street","subject_type":"street_or_district","entity_name":"The Coffeehouse & Deli","title":"Pause at the Beaufort Café","subtitle":"Beaufort Street — café service seven days a week","notes":"Use Beaufort Street for a daytime café break; verify the posted schedule and place an order by phone if timing is tight.","short_summary":"A long-running café storefront anchors the eastern approach to Uptown Circle.","evidence_claim":"The Coffeehouse & Deli is located at 114 E. Beaufort Street and lists café hours seven days a week.","source_url":"https://thecoffeehousenormal.com/pages/contact","source_title":"Contact Us | The Coffeehouse & Deli","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The business currently lists Monday–Sunday hours of 7 a.m.–6 p.m.; confirm before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"childrens-discovery-museum-beaufort-street","subject_type":"street_or_district","entity_name":"Children's Discovery Museum","title":"Find Three Floors of Hands-On Exhibits","subtitle":"Beaufort Street — an interactive museum in Uptown","notes":"Follow Beaufort Street to the museum’s distinctive entrance; review admission and exhibit details before planning an indoor visit.","short_summary":"A highly photographable museum facade and interactive exhibits define this Beaufort block.","evidence_claim":"Children’s Discovery Museum is at 101 E. Beaufort Street in Uptown Normal and offers three floors of hands-on exhibits.","source_url":"https://www.normalil.gov/DocumentCenter/View/23558/Uptown-Normal-Visitor-Guide-adapted-for-web","source_title":"Uptown Normal Visitor Guide","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Admission is generally required; check the museum’s official hours and ticket information before entering.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"pizza-payaa-beaufort-street","subject_type":"street_or_district","entity_name":"Pizza Payaa Uptown","title":"Order Sicilian-Style Pizza","subtitle":"Beaufort Street — dine-in or takeout beside the museum","notes":"Continue along Beaufort Street for Sicilian-style pizza; use the direct menu for current choices and ordering details.","short_summary":"A named pizza storefront adds a food stop beside the museum and station.","evidence_claim":"Pizza Payaa Uptown is at 107 E. Beaufort Street and offers Sicilian-style pizza for dine-in, takeout, or delivery.","source_url":"https://www.pizzapayaa.com/faqs","source_title":"FAQ'S - Pizza Payaa","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page lists daily service, but visitors should confirm current hours before ordering.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"university-galleries-uptown-circle","subject_type":"street_or_district","entity_name":"University Galleries of Illinois State University","title":"See the Current University Exhibition","subtitle":"Uptown Circle — free contemporary art exhibitions","notes":"Enter from Uptown Circle and check the exhibition calendar first; admission to gallery exhibitions and events is free.","short_summary":"ISU’s public contemporary-art venue extends campus culture into Uptown Station.","evidence_claim":"University Galleries is located at 11 Uptown Circle, Suite 103, and all exhibitions and events are free and open to the public.","source_url":"https://galleries.illinoisstate.edu/about/visit/","source_title":"Visit the Galleries | University Galleries | Illinois State","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use the gallery’s official visit page for current seasonal hours; exhibitions and events are free and public.","cost_status":"free","under21_safe":true},{"subject_id":"uptown-station-uptown-circle","subject_type":"street_or_district","entity_name":"Uptown Station","title":"Connect to Rail and Local Transit","subtitle":"Uptown Circle — Normal’s multimodal transportation hub","notes":"Approach from Uptown Circle to connect with rail or bus service; verify tickets and departure times with the relevant carrier.","short_summary":"The station makes this block the district’s principal transportation connection.","evidence_claim":"Uptown Station at 11 Uptown Circle is a multimodal hub connecting rail, intercity and local buses, airport shuttles, taxis, cars, and pedestrians.","source_url":"https://www.normalil.gov/1102/Uptown-Station","source_title":"Uptown Station | Normal, IL - Official Website","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The first-floor station currently lists daily operations from 6:30 a.m.–9:30 p.m.; carrier schedules vary.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"uptown-circle-minipark","subject_type":"street_or_district","entity_name":"Uptown Circle","title":"Step into the Circle Minipark","subtitle":"Uptown Circle — a public space inside the roundabout","notes":"Use marked crossings to reach the minipark, then pause among its shade trees and water feature without entering the roadway.","short_summary":"A designed public minipark turns the district’s roundabout into a recognizable destination.","evidence_claim":"Uptown Circle contains a public gathering space with mature shade trees and a flowing water feature inside the roundabout linking Beaufort, North, and Constitution.","source_url":"https://www.normalil.gov/1622/History","source_title":"History | Normal, IL - Official Website","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Reach the minipark only by designated pedestrian crossings and follow posted traffic controls.","cost_status":"free","under21_safe":true},{"subject_id":"constitution-trail-constitution-boulevard","subject_type":"street_or_district","entity_name":"Constitution Trail","title":"Join the Paved Recreation Trail","subtitle":"Constitution Boulevard — walk or bike through Uptown","notes":"Join the paved trail near Uptown, keep right, and review current rules before walking, jogging, or riding beyond the district.","short_summary":"A converted rail corridor provides a car-free route extending beyond Uptown’s blocks.","evidence_claim":"Constitution Trail is a former railway converted into a paved recreational trail used for walking, hiking, biking, and jogging through Normal and Bloomington.","source_url":"https://www.normalil.gov/1289/Biking-Trails","source_title":"Biking Trails | Normal, IL - Official Website","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open from one hour before sunrise until one hour after sunset; follow posted trail rules and device restrictions.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:42:25.446667Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa10-537a-7b61-9ed2-f74de414766a.1786606801786992000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+50,921
+
+{"complete":true,"school_name":"Illinois State University","town_name":"Normal","boards":[{"complete":true,"school_name":"Illinois State University","town_name":"Normal","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named destinations in Uptown Normal’s campus-adjacent blocks, each paired with one sourced reason to follow its corridor.","icon":"location_city","cards":[{"subject_id":"normal-public-library-college-avenue","subject_type":"street_or_district","entity_name":"Normal Public Library","title":"Use the Library’s Public Tech","subtitle":"College Avenue — computers, Wi-Fi, and document services","notes":"Follow College Avenue to use a public computer or Wi-Fi; printing, copying, and faxing are also available on site.","short_summary":"A practical College Avenue stop for public connectivity and document tasks.","evidence_claim":"Normal Public Library is at 206 W. College Avenue and provides computers, laptops, Wi-Fi, printing, faxing, and copying services.","source_url":"https://www.normalpl.org/visit","source_title":"Visiting NPL | Normal Public Library","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Main Branch access and current services are listed on the library’s official visit page.","cost_status":"unknown","under21_safe":true},{"subject_id":"coffee-hound-north-street","subject_type":"street_or_district","entity_name":"Coffee Hound Uptown Normal","title":"Start with an Early Café Stop","subtitle":"North Street — coffee and bakery items from 6:30 a.m.","notes":"Walk North Street for an early café option; check the official location page before relying on its posted daily schedule.","short_summary":"An independently documented café address on the campus-facing end of North Street.","evidence_claim":"Coffee Hound’s Uptown Normal café is at 205 W. North Street and serves drinks and bakery items, with daily hours beginning at 6:30 a.m.","source_url":"https://coffeehound.cafe/locations/","source_title":"Locations - The Coffee Hound","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The business currently posts daily hours of 6:30 a.m.–4 p.m.; confirm before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"normal-theater-north-street","subject_type":"street_or_district","entity_name":"Normal Theater","title":"See the Restored Uptown Cinema","subtitle":"North Street — scheduled films and live shows","notes":"Continue east on North Street for the theater marquee, then consult the official calendar and buy tickets for a scheduled program.","short_summary":"A named historic cinema gives this North Street block a clear visual landmark.","evidence_claim":"Normal Theater is located at 209 North Street in historic Uptown Normal, with walk-up and online ticket sales for its programming.","source_url":"https://www.normaltheater.com/92/Contact","source_title":"Contact | Normal Theater, IL - Official Website","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The box office opens 30 minutes before showtime; consult the theater calendar for current programs.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"coffeehouse-deli-beaufort-street","subject_type":"street_or_district","entity_name":"The Coffeehouse & Deli","title":"Pause at the Beaufort Café","subtitle":"Beaufort Street — café service seven days a week","notes":"Use Beaufort Street for a daytime café break; verify the posted schedule and place an order by phone if timing is tight.","short_summary":"A long-running café storefront anchors the eastern approach to Uptown Circle.","evidence_claim":"The Coffeehouse & Deli is located at 114 E. Beaufort Street and lists café hours seven days a week.","source_url":"https://thecoffeehousenormal.com/pages/contact","source_title":"Contact Us | The Coffeehouse & Deli","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The business currently lists Monday–Sunday hours of 7 a.m.–6 p.m.; confirm before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"childrens-discovery-museum-beaufort-street","subject_type":"street_or_district","entity_name":"Children's Discovery Museum","title":"Find Three Floors of Hands-On Exhibits","subtitle":"Beaufort Street — an interactive museum in Uptown","notes":"Follow Beaufort Street to the museum’s distinctive entrance; review admission and exhibit details before planning an indoor visit.","short_summary":"A highly photographable museum facade and interactive exhibits define this Beaufort block.","evidence_claim":"Children’s Discovery Museum is at 101 E. Beaufort Street in Uptown Normal and offers three floors of hands-on exhibits.","source_url":"https://www.normalil.gov/DocumentCenter/View/23558/Uptown-Normal-Visitor-Guide-adapted-for-web","source_title":"Uptown Normal Visitor Guide","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Admission is generally required; check the museum’s official hours and ticket information before entering.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"pizza-payaa-beaufort-street","subject_type":"street_or_district","entity_name":"Pizza Payaa Uptown","title":"Order Sicilian-Style Pizza","subtitle":"Beaufort Street — dine-in or takeout beside the museum","notes":"Continue along Beaufort Street for Sicilian-style pizza; use the direct menu for current choices and ordering details.","short_summary":"A named pizza storefront adds a food stop beside the museum and station.","evidence_claim":"Pizza Payaa Uptown is at 107 E. Beaufort Street and offers Sicilian-style pizza for dine-in, takeout, or delivery.","source_url":"https://www.pizzapayaa.com/faqs","source_title":"FAQ'S - Pizza Payaa","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page lists daily service, but visitors should confirm current hours before ordering.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"university-galleries-uptown-circle","subject_type":"street_or_district","entity_name":"University Galleries of Illinois State University","title":"See the Current University Exhibition","subtitle":"Uptown Circle — free contemporary art exhibitions","notes":"Enter from Uptown Circle and check the exhibition calendar first; admission to gallery exhibitions and events is free.","short_summary":"ISU’s public contemporary-art venue extends campus culture into Uptown Station.","evidence_claim":"University Galleries is located at 11 Uptown Circle, Suite 103, and all exhibitions and events are free and open to the public.","source_url":"https://galleries.illinoisstate.edu/about/visit/","source_title":"Visit the Galleries | University Galleries | Illinois State","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use the gallery’s official visit page for current seasonal hours; exhibitions and events are free and public.","cost_status":"free","under21_safe":true},{"subject_id":"uptown-station-uptown-circle","subject_type":"street_or_district","entity_name":"Uptown Station","title":"Connect to Rail and Local Transit","subtitle":"Uptown Circle — Normal’s multimodal transportation hub","notes":"Approach from Uptown Circle to connect with rail or bus service; verify tickets and departure times with the relevant carrier.","short_summary":"The station makes this block the district’s principal transportation connection.","evidence_claim":"Uptown Station at 11 Uptown Circle is a multimodal hub connecting rail, intercity and local buses, airport shuttles, taxis, cars, and pedestrians.","source_url":"https://www.normalil.gov/1102/Uptown-Station","source_title":"Uptown Station | Normal, IL - Official Website","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The first-floor station currently lists daily operations from 6:30 a.m.–9:30 p.m.; carrier schedules vary.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"uptown-circle-minipark","subject_type":"street_or_district","entity_name":"Uptown Circle","title":"Step into the Circle Minipark","subtitle":"Uptown Circle — a public space inside the roundabout","notes":"Use marked crossings to reach the minipark, then pause among its shade trees and water feature without entering the roadway.","short_summary":"A designed public minipark turns the district’s roundabout into a recognizable destination.","evidence_claim":"Uptown Circle contains a public gathering space with mature shade trees and a flowing water feature inside the roundabout linking Beaufort, North, and Constitution.","source_url":"https://www.normalil.gov/1622/History","source_title":"History | Normal, IL - Official Website","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Reach the minipark only by designated pedestrian crossings and follow posted traffic controls.","cost_status":"free","under21_safe":true},{"subject_id":"constitution-trail-constitution-boulevard","subject_type":"street_or_district","entity_name":"Constitution Trail","title":"Join the Paved Recreation Trail","subtitle":"Constitution Boulevard — walk or bike through Uptown","notes":"Join the paved trail near Uptown, keep right, and review current rules before walking, jogging, or riding beyond the district.","short_summary":"A converted rail corridor provides a car-free route extending beyond Uptown’s blocks.","evidence_claim":"Constitution Trail is a former railway converted into a paved recreational trail used for walking, hiking, biking, and jogging through Normal and Bloomington.","source_url":"https://www.normalil.gov/1289/Biking-Trails","source_title":"Biking Trails | Normal, IL - Official Website","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open from one hour before sunrise until one hour after sunset; follow posted trail rules and device restrictions.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}

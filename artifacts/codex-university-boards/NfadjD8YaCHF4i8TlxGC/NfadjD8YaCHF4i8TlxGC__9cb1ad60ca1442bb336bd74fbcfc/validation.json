@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://international.smumn.edu/wp-content/uploads/sites/28/2025/06/Win_CampusMap.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://international.smumn.edu/wp-content/uploads/sites/28/2025/06/Win_CampusMap.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://lib.smumn.edu/libraries/winona-hours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.smumn.edu/libraries/winona-hours/",
+      "error": ""
+    },
+    {
+      "url": "https://today.smumn.edu/articles/founders-day-celebrations-2/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://today.smumn.edu/articles/founders-day-celebrations-2/",
+      "error": ""
+    },
+    {
+      "url": "https://www.smumn.edu/newsroom/saint-marys-university-partners-with-great-river-shakespeare-festival-for-student-showcase/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smumn.edu/newsroom/saint-marys-university-partners-with-great-river-shakespeare-festival-for-student-showcase/",
+      "error": ""
+    },
+    {
+      "url": "https://www.smumn.edu/newsroom/alumnus-leaves-lasting-mark-on-saint-marys/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smumn.edu/newsroom/alumnus-leaves-lasting-mark-on-saint-marys/",
+      "error": ""
+    },
+    {
+      "url": "https://www.winonamn.gov/780/Outdoor-Recreation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.winonamn.gov/780/Outdoor-Recreation",
+      "error": ""
+    },
+    {
+      "url": "https://www.winonamn.gov/Facilities/Facility/Details/Garvin-Heights-Park-58",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.winonamn.gov/Facilities/Facility/Details/Garvin-Heights-Park-58",
+      "error": ""
+    },
+    {
+      "url": "https://mmam.org/hours-admission-location",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mmam.org/hours-admission-location",
+      "error": ""
+    },
+    {
+      "url": "https://winonahistory.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://winonahistory.org/visit/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

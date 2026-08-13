@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "zJH1mWjcd36USFinOZSH",
+    "schoolName": "University of Missouri-Kansas City",
+    "shortSchoolName": "University of Missouri-Kansas City",
+    "townName": "Kansas City",
+    "state": "MO",
+    "countryCode": "US",
+    "unitId": "178402",
+    "website": "https://www.umkc.edu/",
+    "latitude": 39.034179,
+    "longitude": -94.582141,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=umkc.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=umkc.edu&sz=256"
+  },
+  "template": {
+    "id": "college-campus-tour-skips",
+    "version": "1.0",
+    "titlePattern": "What the Campus Tour Skips: {count} Places Students Share With Each Other",
+    "editorialBrief": "Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.",
+    "researchQueries": [
+      "student favorite campus places",
+      "campus map student spaces",
+      "student newspaper campus places"
+    ],
+    "count": 10,
+    "icon": "style",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place",
+      "study_space"
+    ],
+    "freshnessDays": 365
+  },
+  "exact_title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+  "excluded_subjects": [
+    "The Nelson-Atkins Museum of Art",
+    "Donald J. Hall Sculpture Park",
+    "Kemper Museum of Contemporary Art",
+    "Emily & Todd Voth Artspace at KCAI",
+    "Community Christian Church",
+    "Plaza Branch, Kansas City Public Library",
+    "Ewing and Muriel Kauffman Memorial Garden",
+    "Linda Hall Library",
+    "Linda Hall Library Arboretum",
+    "The National Museum of Toys and Miniatures"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

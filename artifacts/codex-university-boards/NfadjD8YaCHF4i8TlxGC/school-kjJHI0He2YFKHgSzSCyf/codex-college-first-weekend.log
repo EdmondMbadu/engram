@@ -1,0 +1,294 @@
+Reading additional input from stdin...
+2026-08-13T07:08:29.209896Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f3-1be1-78c3-abb9-99e9a351a6a8.1786604887009720000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9f3-7211-77a3-a300-8aad71290cea
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"kjJHI0He2YFKHgSzSCyf","schoolName":"Florida Southern College","shortSchoolName":"Florida Southern College","townName":"Lakeland","state":"FL","countryCode":"US","website":"https://www.flsouthern.edu/","latitude":28.032443,"longitude":-81.948203},"templates":[{"id":"college-first-weekend","version":"1.0","titlePattern":"Your First Weekend at {school}, Shared as Cards","editorialBrief":"Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.","researchQueries":["new student orientation campus guide","first year student campus activities","weekend near campus students"],"count":10,"icon":"schedule","primarySubjectType":"sequence_stop","allowedSubjectTypes":["sequence_stop","place","activity"],"freshnessDays":180,"exactTitle":"Your First Weekend at Florida Southern College, Shared as Cards"}]}
+2026-08-13T07:08:29.309409Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f3-1be6-7bb1-9dd1-4cfc6318ec58.1786604887015776000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:08:29.397016Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f3-1bd8-7793-8499-0549f3fc1cd0.1786604887000964000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:08:29.406052Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:08:29.410163Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:08:29.463973Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f3-1be0-7e52-a3ac-0a001318b911.1786604887009233000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:08:29.542786Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f3-1be0-7160-aacb-a6a988fc3e3b.1786604887009324000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:08:29.650492Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f3-1bd8-7ad3-a8ef-86ddbd9612db.1786604887001197000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:08:29.744909Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f3-1be2-74f3-afc7-d19bfadcbf00.1786604887010861000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Florida Southern College",
+  "town_name": "Lakeland",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Florida Southern College",
+      "town_name": "Lakeland",
+      "template_id": "college-first-weekend",
+      "title": "Your First Weekend at Florida Southern College, Shared as Cards",
+      "description": "",
+      "icon": "schedule",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+  ]
+      ,
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:flsouthern.edu Florida Southern campus life student activities wellness center library dining campus map ...
+web search: 
+web search: site:lakelandgov.net Lake Hollingsworth trail official Lake Morton Hollis Garden hours ...
+web search: 
+web search: site:polkmuseumofart.org visit admission hours Ashley Gibson Barnett Museum official ...
+web search: 
+web search: Ashley Gibson Barnett Museum of Art official visit admission free hours ...
+codex
+{"complete":true,"school_name":"Florida Southern College","town_name":"Lakeland","boards":[{"complete":true,"school_name":"Florida Southern College","town_name":"Lakeland","template_id":"college-first-weekend","title":"Your First Weekend at Florida Southern College, Shared as Cards","description":"A Friday-to-Sunday introduction to FSC traditions, campus resources, Wright architecture, recreation, dining, and nearby Lakeland culture.","icon":"schedule","cards":[{"subject_id":"fsc-red-shirt-friday","subject_type":"sequence_stop","entity_name":"Red Shirt Friday","title":"Friday: Start With Something Red","subtitle":"Join FSC’s weekly Friday spirit tradition","notes":"Wear red while settling in, then check Engage for any scheduled campus activities that fit the rest of your Friday.","short_summary":"A simple, documented way to participate in campus life from the first day.","evidence_claim":"Florida Southern states that every Friday is Red Shirt Friday and invites community members to wear red; its campus-lingo guide directs students to Engage for campus events.","source_url":"https://www.flsouthern.edu/campus-life/campus-traditions","source_title":"Campus Traditions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Participation depends on being on campus on Friday; prizes are described as possible, not guaranteed.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fsc-wynees-bistro","subject_type":"sequence_stop","entity_name":"Wynee’s Bistro","title":"Friday Dinner: Learn the Main Dining Hall","subtitle":"Find the heart-of-campus dining option","notes":"Use dinner to learn the serving layout and meal-plan process; review the live portal before going because hours can change.","short_summary":"A practical first meal that makes later campus dining easier to navigate.","evidence_claim":"Florida Southern identifies Wynee’s Bistro as a dining location in the heart of campus and lists weekend breakfast, lunch, and dinner service.","source_url":"https://www.flsouthern.edu/campus-life/dining-experience","source_title":"Dining Experience","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The FSC portal currently lists Saturday–Sunday breakfast/lunch from 8:00 AM–1:30 PM and dinner from 4:30–8:00 PM; verify live hours.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"fsc-rinker-technology-center","subject_type":"sequence_stop","entity_name":"Marshall and Vera Lea Rinker Technology Center","title":"Friday Evening: Test Your Tech Setup","subtitle":"Confirm logins, printing, and study tools early","notes":"Bring your laptop and student credentials, test essential accounts, and note where to return if a course platform fails.","short_summary":"An early systems check can prevent avoidable problems once coursework begins.","evidence_claim":"Florida Southern says the Rinker Technology Center supports coursework and collaboration and provides PCs, Macs, printers, and scanners.","source_url":"https://www.flsouthern.edu/campus-offices/offices-directory/office-of-technology-services","source_title":"Office of Information Technology Services","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Standard lab hours list Friday 8:00 AM–9:00 PM; summer hours are Monday–Friday 8:00 AM–5:00 PM. Check which schedule applies.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fsc-waterfront","subject_type":"sequence_stop","entity_name":"Florida Southern College Waterfront","title":"Saturday Morning: Try the Waterfront","subtitle":"Use FSC’s Lake Hollingsworth recreation program","notes":"Take your FSC ID, sign the required waiver, follow the attendant’s instructions, and keep your life jacket on while afloat.","short_summary":"A supervised introduction to FSC recreation directly across from campus.","evidence_claim":"FSC’s Waterfront is open Friday through Sunday during the academic year and offers students free kayak and paddleboard checkout with an FSC ID and waiver.","source_url":"https://www.flsouthern.edu/campus-offices/offices-directory/office-of-wellness/waterfront","source_title":"Waterfront","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Academic-year Friday–Sunday operation only; an FSC ID and signed waiver are required, and life jackets must remain on while on the water.","cost_status":"free","under21_safe":true},{"subject_id":"fsc-water-dome","subject_type":"sequence_stop","entity_name":"J. Edgar Wall Water Dome","title":"Saturday Midday: See the Water Dome","subtitle":"Observe a centerpiece of Wright’s campus plan","notes":"Photograph the fountain from outside its basin and look for the circular jet arrangement; never enter the water without an official event.","short_summary":"A close look at one of the campus’s most recognizable Wright-designed features.","evidence_claim":"The college archives describe the Water Dome as a Frank Lloyd Wright-designed fountain with 75 jets capable of sending water 45 feet into the air.","source_url":"https://www.flsouthern.edu/library/archives/fsc-history/fsc-building-history/j-edgar-wall-waterdome","source_title":"J. Edgar Wall Waterdome","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Viewing is appropriate, but entering the basin is prohibited except during an authorized college event such as Senior Splash.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fsc-frank-lloyd-wright-visitor-center","subject_type":"sequence_stop","entity_name":"Frank Lloyd Wright Visitor Center","title":"Saturday Afternoon: Decode the Wright Campus","subtitle":"Begin at the official interpretive hub","notes":"Reserve at least a day ahead if you want a guided tour, then report to the GEICO Gift Shop at 840 Johnson Avenue.","short_summary":"The visitor center supplies context for the architecture encountered across campus.","evidence_claim":"Florida Southern identifies the Sharp Family Tourism and Education Center as the interpretive hub for its Wright campus and the departure point for guided walking tours.","source_url":"https://www.flsouthern.edu/frank-lloyd-wright-home","source_title":"Frank Lloyd Wright Visitor Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Visitor Center hours are daily 9:30 AM–4:30 PM. Reservations are strongly suggested at least 24 hours before a tour; tour tickets require purchase.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"fsc-usonian-faculty-house","subject_type":"sequence_stop","entity_name":"Usonian Faculty House","title":"Saturday Afternoon: Examine Wright’s Usonian Idea","subtitle":"Continue beside the Visitor Center","notes":"Check the current admission arrangement before entering and compare the compact house with FSC’s larger academic buildings.","short_summary":"A residential-scale counterpart to the monumental structures elsewhere on campus.","evidence_claim":"Florida Southern says the Tourism and Education Center includes the Usonian Faculty House, a showcase of Frank Lloyd Wright’s residential vision for the campus.","source_url":"https://www.flsouthern.edu/frank-lloyd-wright-home","source_title":"Frank Lloyd Wright Visitor Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page lists daily Usonian House hours of 10:00 AM–3:00 PM; confirm tour or admission requirements before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"fsc-agb-museum-of-art","subject_type":"sequence_stop","entity_name":"Ashley Gibson Barnett Museum of Art","title":"Saturday Gallery Break: Visit the AGB","subtitle":"Explore FSC’s museum near Lake Morton","notes":"Choose a few galleries rather than rushing the entire museum, and check entrance signs before photographing any artwork.","short_summary":"A free cultural stop connecting the college with Lakeland’s wider community.","evidence_claim":"The museum states that general admission is free and lists regular Saturday hours from 10:00 AM to 4:00 PM.","source_url":"https://agbmuseum.org/faq","source_title":"Frequently Asked Questions — The Ashley Gibson Barnett Museum of Art","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Regular Saturday hours are 10:00 AM–4:00 PM. Photography is allowed in many galleries, but visitors must follow gallery signs.","cost_status":"free","under21_safe":true},{"subject_id":"lakeland-hollis-garden","subject_type":"sequence_stop","entity_name":"Hollis Garden","title":"Saturday Late Afternoon: Walk Hollis Garden","subtitle":"Add a city garden to the campus-focused day","notes":"Walk the formal beds and fountains at an unhurried pace, respect any rental closure, and leave enough time to exit before closing.","short_summary":"A structured botanical walk within Lakeland’s historic Lake Mirror Park.","evidence_claim":"The City of Lakeland describes Hollis Garden as a 1.2-acre botanical display garden in Lake Mirror Park with patterned beds, public art, fountains, and more than 10,000 flowers.","source_url":"https://www.lakelandgov.net/hollisgarden","source_title":"Hollis Garden | City of Lakeland","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"June–August hours are 10:00 AM–6:00 PM Tuesday–Sunday; the garden is closed Mondays. Friday and Saturday rentals may affect access after 6:00 PM.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fsc-roux-library","subject_type":"sequence_stop","entity_name":"Roux Library","title":"Sunday Evening: Set Up Your Study Base","subtitle":"Finish the weekend by locating library resources","notes":"Find a preferred study zone, save the librarian contact details, and identify the café and group areas before classes begin.","short_summary":"A low-pressure orientation to the campus’s main research and study facility.","evidence_claim":"Florida Southern says Roux Library provides extensive research resources, librarian appointments, group-study seating, meeting rooms, and casual seating.","source_url":"https://www.flsouthern.edu/library/about","source_title":"About Roux Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Posted summer hours currently show Sunday closed; academic-term hours may differ. Consult the library’s live hours before making this the Sunday stop.","cost_status":"not_applicable","under21_safe":true}],"warnings":["Campus dining, library, technology-center, museum, waterfront, and garden schedules vary by academic term, summer season, holidays, or special events; verify the linked pages before setting out.","The Waterfront is limited to eligible FSC community members and requires an FSC ID, waiver, and compliance with safety rules.","The Water Dome is for viewing only unless Florida Southern expressly authorizes entry during an official event."]}],"warnings":[]}
+2026-08-13T07:10:56.828081Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9f3-7211-77a3-a300-8aad71290cea.1786604909073957000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+40,784
+
+{"complete":true,"school_name":"Florida Southern College","town_name":"Lakeland","boards":[{"complete":true,"school_name":"Florida Southern College","town_name":"Lakeland","template_id":"college-first-weekend","title":"Your First Weekend at Florida Southern College, Shared as Cards","description":"A Friday-to-Sunday introduction to FSC traditions, campus resources, Wright architecture, recreation, dining, and nearby Lakeland culture.","icon":"schedule","cards":[{"subject_id":"fsc-red-shirt-friday","subject_type":"sequence_stop","entity_name":"Red Shirt Friday","title":"Friday: Start With Something Red","subtitle":"Join FSC’s weekly Friday spirit tradition","notes":"Wear red while settling in, then check Engage for any scheduled campus activities that fit the rest of your Friday.","short_summary":"A simple, documented way to participate in campus life from the first day.","evidence_claim":"Florida Southern states that every Friday is Red Shirt Friday and invites community members to wear red; its campus-lingo guide directs students to Engage for campus events.","source_url":"https://www.flsouthern.edu/campus-life/campus-traditions","source_title":"Campus Traditions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Participation depends on being on campus on Friday; prizes are described as possible, not guaranteed.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fsc-wynees-bistro","subject_type":"sequence_stop","entity_name":"Wynee’s Bistro","title":"Friday Dinner: Learn the Main Dining Hall","subtitle":"Find the heart-of-campus dining option","notes":"Use dinner to learn the serving layout and meal-plan process; review the live portal before going because hours can change.","short_summary":"A practical first meal that makes later campus dining easier to navigate.","evidence_claim":"Florida Southern identifies Wynee’s Bistro as a dining location in the heart of campus and lists weekend breakfast, lunch, and dinner service.","source_url":"https://www.flsouthern.edu/campus-life/dining-experience","source_title":"Dining Experience","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The FSC portal currently lists Saturday–Sunday breakfast/lunch from 8:00 AM–1:30 PM and dinner from 4:30–8:00 PM; verify live hours.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"fsc-rinker-technology-center","subject_type":"sequence_stop","entity_name":"Marshall and Vera Lea Rinker Technology Center","title":"Friday Evening: Test Your Tech Setup","subtitle":"Confirm logins, printing, and study tools early","notes":"Bring your laptop and student credentials, test essential accounts, and note where to return if a course platform fails.","short_summary":"An early systems check can prevent avoidable problems once coursework begins.","evidence_claim":"Florida Southern says the Rinker Technology Center supports coursework and collaboration and provides PCs, Macs, printers, and scanners.","source_url":"https://www.flsouthern.edu/campus-offices/offices-directory/office-of-technology-services","source_title":"Office of Information Technology Services","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Standard lab hours list Friday 8:00 AM–9:00 PM; summer hours are Monday–Friday 8:00 AM–5:00 PM. Check which schedule applies.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fsc-waterfront","subject_type":"sequence_stop","entity_name":"Florida Southern College Waterfront","title":"Saturday Morning: Try the Waterfront","subtitle":"Use FSC’s Lake Hollingsworth recreation program","notes":"Take your FSC ID, sign the required waiver, follow the attendant’s instructions, and keep your life jacket on while afloat.","short_summary":"A supervised introduction to FSC recreation directly across from campus.","evidence_claim":"FSC’s Waterfront is open Friday through Sunday during the academic year and offers students free kayak and paddleboard checkout with an FSC ID and waiver.","source_url":"https://www.flsouthern.edu/campus-offices/offices-directory/office-of-wellness/waterfront","source_title":"Waterfront","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Academic-year Friday–Sunday operation only; an FSC ID and signed waiver are required, and life jackets must remain on while on the water.","cost_status":"free","under21_safe":true},{"subject_id":"fsc-water-dome","subject_type":"sequence_stop","entity_name":"J. Edgar Wall Water Dome","title":"Saturday Midday: See the Water Dome","subtitle":"Observe a centerpiece of Wright’s campus plan","notes":"Photograph the fountain from outside its basin and look for the circular jet arrangement; never enter the water without an official event.","short_summary":"A close look at one of the campus’s most recognizable Wright-designed features.","evidence_claim":"The college archives describe the Water Dome as a Frank Lloyd Wright-designed fountain with 75 jets capable of sending water 45 feet into the air.","source_url":"https://www.flsouthern.edu/library/archives/fsc-history/fsc-building-history/j-edgar-wall-waterdome","source_title":"J. Edgar Wall Waterdome","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Viewing is appropriate, but entering the basin is prohibited except during an authorized college event such as Senior Splash.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fsc-frank-lloyd-wright-visitor-center","subject_type":"sequence_stop","entity_name":"Frank Lloyd Wright Visitor Center","title":"Saturday Afternoon: Decode the Wright Campus","subtitle":"Begin at the official interpretive hub","notes":"Reserve at least a day ahead if you want a guided tour, then report to the GEICO Gift Shop at 840 Johnson Avenue.","short_summary":"The visitor center supplies context for the architecture encountered across campus.","evidence_claim":"Florida Southern identifies the Sharp Family Tourism and Education Center as the interpretive hub for its Wright campus and the departure point for guided walking tours.","source_url":"https://www.flsouthern.edu/frank-lloyd-wright-home","source_title":"Frank Lloyd Wright Visitor Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Visitor Center hours are daily 9:30 AM–4:30 PM. Reservations are strongly suggested at least 24 hours before a tour; tour tickets require purchase.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"fsc-usonian-faculty-house","subject_type":"sequence_stop","entity_name":"Usonian Faculty House","title":"Saturday Afternoon: Examine Wright’s Usonian Idea","subtitle":"Continue beside the Visitor Center","notes":"Check the current admission arrangement before entering and compare the compact house with FSC’s larger academic buildings.","short_summary":"A residential-scale counterpart to the monumental structures elsewhere on campus.","evidence_claim":"Florida Southern says the Tourism and Education Center includes the Usonian Faculty House, a showcase of Frank Lloyd Wright’s residential vision for the campus.","source_url":"https://www.flsouthern.edu/frank-lloyd-wright-home","source_title":"Frank Lloyd Wright Visitor Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page lists daily Usonian House hours of 10:00 AM–3:00 PM; confirm tour or admission requirements before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"fsc-agb-museum-of-art","subject_type":"sequence_stop","entity_name":"Ashley Gibson Barnett Museum of Art","title":"Saturday Gallery Break: Visit the AGB","subtitle":"Explore FSC’s museum near Lake Morton","notes":"Choose a few galleries rather than rushing the entire museum, and check entrance signs before photographing any artwork.","short_summary":"A free cultural stop connecting the college with Lakeland’s wider community.","evidence_claim":"The museum states that general admission is free and lists regular Saturday hours from 10:00 AM to 4:00 PM.","source_url":"https://agbmuseum.org/faq","source_title":"Frequently Asked Questions — The Ashley Gibson Barnett Museum of Art","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Regular Saturday hours are 10:00 AM–4:00 PM. Photography is allowed in many galleries, but visitors must follow gallery signs.","cost_status":"free","under21_safe":true},{"subject_id":"lakeland-hollis-garden","subject_type":"sequence_stop","entity_name":"Hollis Garden","title":"Saturday Late Afternoon: Walk Hollis Garden","subtitle":"Add a city garden to the campus-focused day","notes":"Walk the formal beds and fountains at an unhurried pace, respect any rental closure, and leave enough time to exit before closing.","short_summary":"A structured botanical walk within Lakeland’s historic Lake Mirror Park.","evidence_claim":"The City of Lakeland describes Hollis Garden as a 1.2-acre botanical display garden in Lake Mirror Park with patterned beds, public art, fountains, and more than 10,000 flowers.","source_url":"https://www.lakelandgov.net/hollisgarden","source_title":"Hollis Garden | City of Lakeland","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"June–August hours are 10:00 AM–6:00 PM Tuesday–Sunday; the garden is closed Mondays. Friday and Saturday rentals may affect access after 6:00 PM.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fsc-roux-library","subject_type":"sequence_stop","entity_name":"Roux Library","title":"Sunday Evening: Set Up Your Study Base","subtitle":"Finish the weekend by locating library resources","notes":"Find a preferred study zone, save the librarian contact details, and identify the café and group areas before classes begin.","short_summary":"A low-pressure orientation to the campus’s main research and study facility.","evidence_claim":"Florida Southern says Roux Library provides extensive research resources, librarian appointments, group-study seating, meeting rooms, and casual seating.","source_url":"https://www.flsouthern.edu/library/about","source_title":"About Roux Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Posted summer hours currently show Sunday closed; academic-term hours may differ. Consult the library’s live hours before making this the Sunday stop.","cost_status":"not_applicable","under21_safe":true}],"warnings":["Campus dining, library, technology-center, museum, waterfront, and garden schedules vary by academic term, summer season, holidays, or special events; verify the linked pages before setting out.","The Waterfront is limited to eligible FSC community members and requires an FSC ID, waiver, and compliance with safety rules.","The Water Dome is for viewing only unless Florida Southern expressly authorizes entry during an official event."]}],"warnings":[]}

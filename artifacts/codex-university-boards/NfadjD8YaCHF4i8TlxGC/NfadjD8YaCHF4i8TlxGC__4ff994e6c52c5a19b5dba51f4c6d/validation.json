@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.georgetown.edu/news/senior-spring-bucket-list/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.georgetown.edu/news/senior-spring-bucket-list/",
+      "error": ""
+    },
+    {
+      "url": "https://getinvolved.georgetown.edu/signature-events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://getinvolved.georgetown.edu/signature-events/",
+      "error": ""
+    },
+    {
+      "url": "https://www.georgetown.edu/news/a-backstage-look-at-rangila-30-georgetowns-south-asian-dance-show/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.georgetown.edu/news/a-backstage-look-at-rangila-30-georgetowns-south-asian-dance-show/",
+      "error": ""
+    },
+    {
+      "url": "https://www.georgetown.edu/news/the-best-halloween-traditions-at-georgetown/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.georgetown.edu/news/the-best-halloween-traditions-at-georgetown/",
+      "error": ""
+    },
+    {
+      "url": "https://www.georgetown.edu/news/what-being-a-hoya-means-to-the-2025-2026-georgetown-storytellers/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.georgetown.edu/news/what-being-a-hoya-means-to-the-2025-2026-georgetown-storytellers/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

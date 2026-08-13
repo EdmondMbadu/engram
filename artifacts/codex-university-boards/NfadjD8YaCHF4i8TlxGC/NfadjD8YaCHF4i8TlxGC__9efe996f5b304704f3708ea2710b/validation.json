@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Bishop Library reports limited space availability during its summer 2026 renovation; verify conditions before visiting.",
+    "Public sources do not provide current room-level coordinates or authoritative Google Maps URLs, so those fields are null.",
+    "The Peace Garden is documented as a relaxation space rather than a formally designated study area; its study use is limited to portable coursework."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.lvc.edu/library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lvc.edu/library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lvc.edu/about/our-location/campus-maps/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lvc.edu/about/our-location/campus-maps/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lvc.edu/visit/virtual-tour/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lvc.edu/visit/virtual-tour/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lvc.edu/student-life/commuter-resources/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lvc.edu/student-life/commuter-resources/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lvc.edu/events/welcome-week-at-the-lebegern-learning-commons/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lvc.edu/events/welcome-week-at-the-lebegern-learning-commons/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lvc.edu/academics/resources/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lvc.edu/academics/resources/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 90,
+  "generationGrade": "A"
+}

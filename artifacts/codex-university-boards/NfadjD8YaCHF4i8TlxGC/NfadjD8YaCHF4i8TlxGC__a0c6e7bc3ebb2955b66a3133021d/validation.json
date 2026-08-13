@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.experiencesearcy.com/searcy-restaurants/mi-pueblito",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.experiencesearcy.com/searcy-restaurants/mi-pueblito",
+      "error": ""
+    },
+    {
+      "url": "https://www.cityofsearcy.org/cityservices/the-historic-benjamin-clayton-black-house-and-art-gallery",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cityofsearcy.org/cityservices/the-historic-benjamin-clayton-black-house-and-art-gallery",
+      "error": ""
+    },
+    {
+      "url": "https://www.experiencesearcy.com/searcy-happenings/art-alley",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.experiencesearcy.com/searcy-happenings/art-alley",
+      "error": ""
+    },
+    {
+      "url": "https://www.experiencesearcy.com/searcy-happenings/searcy-rialto",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.experiencesearcy.com/searcy-happenings/searcy-rialto",
+      "error": ""
+    },
+    {
+      "url": "https://www.experiencesearcy.com/searcy-restaurants/wildflour-bakery-1",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.experiencesearcy.com/searcy-restaurants/wildflour-bakery-1",
+      "error": ""
+    },
+    {
+      "url": "https://www.experiencesearcy.com/searcy-restaurants/wild-sweet-williams",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.experiencesearcy.com/searcy-restaurants/wild-sweet-williams",
+      "error": ""
+    },
+    {
+      "url": "https://www.experiencesearcy.com/searcy-restaurants/greek-house",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.experiencesearcy.com/searcy-restaurants/greek-house",
+      "error": ""
+    },
+    {
+      "url": "https://www.experiencesearcy.com/searcy-happenings/searcy-public-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.experiencesearcy.com/searcy-happenings/searcy-public-library",
+      "error": ""
+    },
+    {
+      "url": "https://www.experiencesearcy.com/searcy-happenings/playgrounds-in-searcy",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.experiencesearcy.com/searcy-happenings/playgrounds-in-searcy",
+      "error": ""
+    },
+    {
+      "url": "https://www.experiencesearcy.com/searcy-happenings/searcy-skate",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.experiencesearcy.com/searcy-happenings/searcy-skate",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://emerson.edu/departments/campus-centers/172-tremont",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://emerson.edu/departments/campus-centers/172-tremont",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://emersoncontemporary.org/media-art-gallery",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://emersoncontemporary.org/locations/media-art-gallery/",
+      "error": ""
+    },
+    {
+      "url": "https://emerson.edu/departments/business-services/emerson-dining-catering-eccash/dining-center-cafes",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sso-cedf2f54.sso.duosecurity.com/saml2/sp/DI4ULWHUR71ILNFY6O6W/sso?SAMLRequest=jZJLi9swEMfvhX4HobssP1KvEXGWdENYQ7ob8ujSXoojjxOBLbkaaR%2FfvkrSwPaQpQId5sX85j8zvn3tO%2FIMFpXRJU2imBLQ0jRK70u63cxZQW8nY6z7bhBT7w56Bb89oCOhTqM4BUrqrRamRoVC1z2gcFKsp98WIo1iMVjjjDQdPZd8nFwjgnWBhZJqVtJfLWTFKGl2TZaNElmHn8ndzQ3EOcgGkl2e522RBX9ByffLFOlxigrRQ6XR1doFV5zmLC5Ykm3iQiSFGBU%2FKVn%2BRfuq9Hngj9B25yQU95vNki0f1xtKphfcO6PR92DXYJ%2BVhO1qUdKDcwMKzg9%2BF0GIodERNJ5TMgsCKl27E%2B0lDdEwCU2btl9GUTCixhsE6a1yb5E0PT9qnXIc%2BKwabRdP99vVTVItHuY%2F8sf86VhOz4sSp9Htuw39r%2BaTa8gvA5NGO9COD53fK428V1oZW%2Bs9sGMLlsYMgzxdMNVeM6P5mL%2BjudzQQ2hfzZamU%2FKNTLvOvNxZqB2U1FkPlMyN7Wt3HTiJkpNHNaw9pQqvcQCpWgUN%2FfyJXHl8csb594onfwA%3D&RelayState=hub.emerson.edu%2Fbusiness-services%2Femerson-dining-catering-eccash%2Fdining-center-cafes%2F&SigAlg=http%3A%2F%2Fwww.w3.org%2F2001%2F04%2Fxmldsig-more%23rsa-sha256&Signature=qtd5SjRirzJwmIrimsiRm7dZXxjZeH4xTNRRWJsT3PQ0YSPA%2FBq7ME3wozetxjySAls4aNl5e7Iehe0sp6Utu2UgVbbbF17ubUA5GqnwX8v6sqI26espwzxLkEl0%2FFqk7dM4G4lZbqAmcsrVtI8cMR1JubgAklaY2AQY5PngxSZrZC1s3NsVN8eUzYm9ucEb4qhS1SSRkEOPZsHFrunKkgs053DGpXOIFAPMPHH75MO49OpPE3Rcj8qjftTmPmoYjhZTY5M52uccmdOJRBrvhF6%2BbsiYMUdBDnwTDbrUvqQwSZlOTwP4AdoW87%2FcY6dX3u45YSU1KuZWlvifWmWGXqw%3D",
+      "error": ""
+    },
+    {
+      "url": "https://emconnect.emerson.edu/seal/home/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://emconnect.emerson.edu/seal/home/",
+      "error": ""
+    },
+    {
+      "url": "https://www.boston.gov/departments/parks-and-recreation/playgrounds-and-parks-boston",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.boston.gov/departments/parks-and-recreation/playgrounds-and-parks-boston",
+      "error": ""
+    },
+    {
+      "url": "https://www.boston.gov/ht/parks/public-garden",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.boston.gov/ht/parks/public-garden",
+      "error": ""
+    },
+    {
+      "url": "https://www.bpl.org/locations/central/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bpl.org/locations/central/",
+      "error": ""
+    },
+    {
+      "url": "https://www.boston.gov/neighborhood/chinatown-leather-district",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.boston.gov/neighborhood/chinatown-leather-district",
+      "error": ""
+    },
+    {
+      "url": "https://www.thefreedomtrail.org/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.thefreedomtrail.org/visit",
+      "error": ""
+    },
+    {
+      "url": "https://emerson.edu/departments/office-arts/venues/robert-j-orchard-stageparamount-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sso-cedf2f54.sso.duosecurity.com/saml2/sp/DI4ULWHUR71ILNFY6O6W/sso?SAMLRequest=jZJNb9swDIbvA%2FYfBN1l2W78USFOkTUIaiBrg3ys2C6DI9OJAFvyRKld%2F%2F2cZAG6Q4rpRpEEn%2Fclx3e%2Fu5a8gEVldEGjIKQEtDS10vuCbjdzltO7yRirru3F1LuDXsEvD%2BjI0KdRnBIF9VYLU6FCoasOUDgp1tOvCxEHoeitcUaalp5bPi6uEMG6gYWSclbQn%2FHtLkuyJkpks4MwTbOkqW%2FzmyRNmkpmIOM6gyasR0lEybeLiviookT0UGp0lXbDVxinLMxZdLMJcxHlYpT%2FoGT5F%2B2L0mfBH6HtzkUoHjabJVs%2BrTeUTC%2B490aj78Cuwb4oCdvVoqAH53oUnB%2F8LoAhh0YHUHtOyWwwUOnKnWgvZYiGSaibuElGwRAEtTcI0lvl3gJpOn70OubY81k52i6eH7arLCoXj%2FPv6VP6fGyn50WJk3T7bkP%2F6%2FnkGvJrz6TRDrTjfev3SiPvlFbGVnoP7DiCxSHDwZ52CNVeM6P5mL%2BjudzQ4zC%2BnC1Nq%2BQbmbateb23UDkoqLMeKJkb21XuOnAURKcfVbPmVCq8xh6kahTU9PMncuXxyRnn3yue%2FAE%3D&RelayState=hub.emerson.edu%2Foffice-arts%2Fvenues%2Frobert-j-orchard-stageparamount-center%2F&SigAlg=http%3A%2F%2Fwww.w3.org%2F2001%2F04%2Fxmldsig-more%23rsa-sha256&Signature=fJ2HeVdGx76RPV0tndP%2FFU%2FrmfAhEj93%2BCFGW4J2WD7In%2ByZwUOW7wJQ4Ylq%2BIiNmtUeiYGe1AJuhqmtxy7PT1QqVzROJuSFyQ7dtLKK%2Fm1%2B7gyedNMM4Fk54bPnrYPnu3MoWWDt7TEs5JpYgxlsVuK3KuYvPwCx%2FWxWC5Nin547EmClRnlXpUq99B6%2BDeMi6mUbEOGjmXGxCkmwPRXWoz0vyB5VHtYRFuRHDAg7oscUYFmiVsSve75oQSw%2FG66z2wZGVsG%2F3LMzsxx4s904dV%2B7VplsvfnYpipaFIhkTaMD9DCTFbSvA2yRy8NsWUR5AoFyHWggnHDy2A1NXGOwA%2Bs%3D",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

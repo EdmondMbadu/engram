@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.pizzalovesemily.com/location/brooklyn/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pizzalovesemily.com/location/brooklyn/",
+      "error": ""
+    },
+    {
+      "url": "https://www.aitaclintonhill.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.aitaclintonhill.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.smornyc.com/location/smor-clinton-hill/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smornyc.com/location/smor-clinton-hill/",
+      "error": ""
+    },
+    {
+      "url": "https://www.batikitchen.com/hours-location",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.batikitchen.com/hours-location",
+      "error": ""
+    },
+    {
+      "url": "https://www.coloniaverdenyc.com/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.coloniaverdenyc.com/contact",
+      "error": ""
+    },
+    {
+      "url": "https://dino-restaurant-anzj.squarespace.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dino-restaurant-anzj.squarespace.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.blackforestbrooklyn.com/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.blackforestbrooklyn.com/about",
+      "error": ""
+    },
+    {
+      "url": "https://www.themito.com/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.themito.com/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.lacayebk.com/?lightbox=image19cl",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lacayebk.com/?lightbox=image19cl",
+      "error": ""
+    },
+    {
+      "url": "https://www.hops-hill.com/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hops-hill.com/index.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

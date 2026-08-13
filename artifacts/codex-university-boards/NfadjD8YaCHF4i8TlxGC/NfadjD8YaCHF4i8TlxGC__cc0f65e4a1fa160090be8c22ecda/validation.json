@@ -1,0 +1,55 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.lakeforest.edu/student-resources/accessibility-services/applying-for-accommodations/housing-accomodations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakeforest.edu/student-resources/accessibility-services/applying-for-accommodations/housing-accomodations",
+      "error": ""
+    },
+    {
+      "url": "https://www.lakeforest.edu/on-campus-facilities-hours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakeforest.edu/on-campus-facilities-hours",
+      "error": ""
+    },
+    {
+      "url": "https://www.lakeforest.edu/student-life/mohr-student-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakeforest.edu/student-life/mohr-student-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.lakeforest.edu/about-us/our-campus/brown-hall-the-newest-building-on-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakeforest.edu/about-us/our-campus/brown-hall-the-newest-building-on-campus",
+      "error": ""
+    },
+    {
+      "url": "https://www.lakeforest.edu/student-life/commuter-students",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakeforest.edu/student-life/commuter-students",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Donnelley and Lee Library Study Rooms"
+  ],
+  "sourceCount": 5,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

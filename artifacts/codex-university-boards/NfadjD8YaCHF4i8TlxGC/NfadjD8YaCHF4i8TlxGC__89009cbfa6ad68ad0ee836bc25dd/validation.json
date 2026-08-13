@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.irvinecompanyretail.com/centers/irvine/university-center/target/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.irvinecompanyretail.com/centers/irvine/university-center/target/",
+      "error": ""
+    },
+    {
+      "url": "https://www.irvinecompanyretail.com/centers/irvine/university-center/trader-joes/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.irvinecompanyretail.com/centers/irvine/university-center/trader-joes/",
+      "error": ""
+    },
+    {
+      "url": "https://www.irvinecompanyretail.com/centers/irvine/university-center/regal-edwards-university-town-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.irvinecompanyretail.com/centers/irvine/university-center/regal-edwards-university-town-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.irvinecompanyretail.com/centers/irvine/university-center/chick-fil-a/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.irvinecompanyretail.com/centers/irvine/university-center/chick-fil-a/",
+      "error": ""
+    },
+    {
+      "url": "https://www.irvinecompanyretail.com/centers/irvine/university-center/chipotle-mexican-grill/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.irvinecompanyretail.com/centers/irvine/university-center/chipotle-mexican-grill/",
+      "error": ""
+    },
+    {
+      "url": "https://www.irvinecompanyretail.com/centers/irvine/university-center/blaze-fast-fired-pizza/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.irvinecompanyretail.com/centers/irvine/university-center/blaze-fast-fired-pizza/",
+      "error": ""
+    },
+    {
+      "url": "https://www.irvinecompanyretail.com/centers/irvine/university-center/mendocino-farms/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.irvinecompanyretail.com/centers/irvine/university-center/mendocino-farms/",
+      "error": ""
+    },
+    {
+      "url": "https://www.irvinecompanyretail.com/centers/irvine/university-center/tender-greens/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.irvinecompanyretail.com/centers/irvine/university-center/tender-greens/",
+      "error": ""
+    },
+    {
+      "url": "https://www.irvinecompanyretail.com/centers/irvine/university-center/taco-bell/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.irvinecompanyretail.com/centers/irvine/university-center/taco-bell/",
+      "error": ""
+    },
+    {
+      "url": "https://www.irvinecompanyretail.com/centers/irvine/university-center/in-n-out-burger/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.irvinecompanyretail.com/centers/irvine/university-center/in-n-out-burger/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

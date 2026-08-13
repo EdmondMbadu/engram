@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://traditions.illinoisstate.edu/traditions/commencement/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://traditions.illinoisstate.edu/traditions/commencement/",
+      "error": ""
+    },
+    {
+      "url": "https://traditions.illinoisstate.edu/traditions/homecoming/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://traditions.illinoisstate.edu/traditions/homecoming/",
+      "error": ""
+    },
+    {
+      "url": "https://traditions.illinoisstate.edu/traditions/founding-celebration/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://traditions.illinoisstate.edu/traditions/founding-celebration/",
+      "error": ""
+    },
+    {
+      "url": "https://traditions.illinoisstate.edu/traditions/battle-bird/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://traditions.illinoisstate.edu/traditions/battle-bird/",
+      "error": ""
+    },
+    {
+      "url": "https://traditions.illinoisstate.edu/traditions/fight-song/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://traditions.illinoisstate.edu/traditions/fight-song/",
+      "error": ""
+    },
+    {
+      "url": "https://traditions.illinoisstate.edu/traditions/festival-isu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://traditions.illinoisstate.edu/traditions/festival-isu/",
+      "error": ""
+    },
+    {
+      "url": "https://traditions.illinoisstate.edu/traditions/welcome-week/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://traditions.illinoisstate.edu/traditions/welcome-week/",
+      "error": ""
+    },
+    {
+      "url": "https://traditions.illinoisstate.edu/traditions/alma-mater/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://traditions.illinoisstate.edu/traditions/alma-mater/",
+      "error": ""
+    },
+    {
+      "url": "https://traditions.illinoisstate.edu/traditions/gamma-phi/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://traditions.illinoisstate.edu/traditions/gamma-phi/",
+      "error": ""
+    },
+    {
+      "url": "https://traditions.illinoisstate.edu/traditions/red/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://traditions.illinoisstate.edu/traditions/red/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 100,
+  "generationGrade": "A"
+}

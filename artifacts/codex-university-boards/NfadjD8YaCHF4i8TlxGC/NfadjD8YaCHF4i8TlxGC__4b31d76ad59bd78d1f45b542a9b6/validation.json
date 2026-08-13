@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.stjohns.edu/sites/default/files/uploads/Living%20At%20St.%20John%27s%20Guide.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stjohns.edu/sites/default/files/uploads/Living%20At%20St.%20John%27s%20Guide.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.stjohns.edu/life-st-johns/new-york-locations/queens-residential-campus/dining-services",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stjohns.edu/life-st-johns/new-york-locations/queens-residential-campus/dining-services",
+      "error": ""
+    },
+    {
+      "url": "https://order.toasttab.com/online/kin-d-fresh-meadows-192-03-union-turnpike",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://order.toasttab.com/online/kin-d-fresh-meadows-192-03-union-turnpike",
+      "error": ""
+    },
+    {
+      "url": "https://www.poshcafeny.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.poshcafeny.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.bennyskosherpizza.com/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.bennyskosherpizza.com/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.supthainy.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.supthainy.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ubereats.com/store/chipotle-mexican-grill-176-61-union-turnpike/OZacf2e8VTKHPo-nMgRuoA",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.ubereats.com/store/chipotle-mexican-grill-176-61-union-turnpike/OZacf2e8VTKHPo-nMgRuoA",
+      "error": ""
+    },
+    {
+      "url": "https://www.ubereats.com/store/empire-chinese-restaurants/PsLY-Ky9SN6nos0OVmwfmA",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.ubereats.com/store/empire-chinese-restaurants/PsLY-Ky9SN6nos0OVmwfmA",
+      "error": ""
+    },
+    {
+      "url": "https://unionpizzeria.us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://unionpizzeria.us/",
+      "error": ""
+    },
+    {
+      "url": "https://www.tandirkebabhouse.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.tandirkebabhouse.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

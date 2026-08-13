@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://history.army.mil/Army-Museum-Enterprise/Find-an-Army-Museum/West-Point-Museum/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://history.army.mil/Army-Museum-Enterprise/Find-an-Army-Museum/West-Point-Museum/",
+      "error": ""
+    },
+    {
+      "url": "https://highlandfallslibrary.org/about/history-of-our-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://highlandfallslibrary.org/about/history-of-our-library/",
+      "error": ""
+    },
+    {
+      "url": "https://highlands-ny.gov/Departments-Officials/Town-Clerk",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://highlands-ny.gov/Departments-Officials/Town-Clerk",
+      "error": ""
+    },
+    {
+      "url": "https://www.haciendahighlandfalls.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.haciendahighlandfalls.com/",
+      "error": ""
+    },
+    {
+      "url": "https://brotherspizzahf.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://brotherspizzahf.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.grandmasbagelspizza.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.grandmasbagelspizza.com/",
+      "error": ""
+    },
+    {
+      "url": "https://andysrestauranthighlandfalls.com/reviews/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://andysrestauranthighlandfalls.com/reviews/",
+      "error": ""
+    },
+    {
+      "url": "https://www.wppizza.net/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.wppizza.net/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://bearmtnbakery.com/contact-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bearmtnbakery.com/contact-us/",
+      "error": ""
+    },
+    {
+      "url": "https://www.thewintermarket-toh.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.thewintermarket-toh.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

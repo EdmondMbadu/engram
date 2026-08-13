@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.hmc.edu/cis/services/computer-labs/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hmc.edu/cis/services/computer-labs/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hmc.edu/cs/student-resources/computing-resources/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hmc.edu/cs/student-resources/computing-resources/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hmc.edu/cs/student-resources/cs-study-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hmc.edu/cs/student-resources/cs-study-spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://library.claremont.edu/spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.claremont.edu/spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://library.claremont.edu/digital-scholarship-collaboratory/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.claremont.edu/digital-scholarship-collaboratory/",
+      "error": ""
+    },
+    {
+      "url": "https://library.claremont.edu/rooms/study-room-403/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.claremont.edu/rooms/study-room-403/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

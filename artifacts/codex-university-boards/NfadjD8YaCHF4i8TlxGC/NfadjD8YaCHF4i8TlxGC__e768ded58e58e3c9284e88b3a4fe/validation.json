@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://havener.mst.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://havener.mst.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://dining.mst.edu/locations/havenercenter/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dining.mst.edu/locations/havenercenter/",
+      "error": ""
+    },
+    {
+      "url": "https://econnection.mst.edu/2026/01/library-announces-new-hours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://econnection.mst.edu/2026/01/library-announces-new-hours/",
+      "error": ""
+    },
+    {
+      "url": "https://innovationlab.mst.edu/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://innovationlab.mst.edu/about/",
+      "error": ""
+    },
+    {
+      "url": "https://make.mst.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://make.mst.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://events.mst.edu/venues/outdoor/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.mst.edu/venues/outdoor/",
+      "error": ""
+    },
+    {
+      "url": "https://studentrec.mst.edu/general-information/contact-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentrec.mst.edu/general-information/contact-us/",
+      "error": ""
+    },
+    {
+      "url": "https://leachtheatre.mst.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://leachtheatre.mst.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://directory.mst.edu/buildingsmap/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://directory.mst.edu/buildingsmap/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

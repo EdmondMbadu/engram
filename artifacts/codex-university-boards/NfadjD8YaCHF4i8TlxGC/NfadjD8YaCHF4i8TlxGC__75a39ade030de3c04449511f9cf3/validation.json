@@ -1,0 +1,55 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.sxu.edu/about/location.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sxu.edu/about/location.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.sxu.edu/parents/parent-guide.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sxu.edu/parents/parent-guide.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.sxu.edu/catalog/current/undergraduate/sxu/library.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sxu.edu/catalog/current/undergraduate/sxu/library.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.sxu.edu/student-life/dining/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sxu.edu/student-life/dining/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.sxu.edu/campus-ministry/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sxu.edu/campus-ministry/index.html",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Robert and Mary Rita Murphy Stump Library"
+  ],
+  "sourceCount": 5,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

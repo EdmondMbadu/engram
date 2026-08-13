@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.hofstra.edu/student-leadership-engagement/programs-traditions.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hofstra.edu/student-leadership-engagement/programs-traditions.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.hofstra.edu/about/points-pride/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hofstra.edu/about/points-pride/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hofstra.edu/drama-dance/shakespeare-festival",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hofstra.edu/drama-dance/shakespeare-festival/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hofstra.edu/alumni/senior-class-gift/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hofstra.edu/alumni/senior-class-gift/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hofstra.edu/alumni/fund/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hofstra.edu/alumni/fund/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

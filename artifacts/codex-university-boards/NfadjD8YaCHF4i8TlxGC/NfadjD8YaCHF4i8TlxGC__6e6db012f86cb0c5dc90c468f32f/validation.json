@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://coffeehound.cafe/locations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://coffeehound.cafe/locations/",
+      "error": ""
+    },
+    {
+      "url": "https://bookshop.org/shop/Bobzbay",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://bookshop.org/shop/Bobzbay",
+      "error": ""
+    },
+    {
+      "url": "https://www.bloomingtonparks.org/facilities/advanced-components/facility-directory-formatted-list",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bloomingtonparks.org/facilities/advanced-components/facility-directory-formatted-list",
+      "error": ""
+    },
+    {
+      "url": "https://mchistory.org/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mchistory.org/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.bloomingtonlibrary.org/branch/bloomington-public-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bloomingtonlibrary.org/branch/bloomington-public-library",
+      "error": ""
+    },
+    {
+      "url": "https://www.grossingermotorsarena.com/plan-your-visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.grossingermotorsarena.com/plan-your-visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.bloomingtonparks.org/Home/Components/FacilityDirectory/FacilityDirectory/44/825",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bloomingtonparks.org/Home/Components/FacilityDirectory/FacilityDirectory/44/825",
+      "error": ""
+    },
+    {
+      "url": "https://www.bloomingtonparks.org/programs/aquatics/aquatics-1566",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bloomingtonparks.org/programs/aquatics/aquatics-1566",
+      "error": ""
+    },
+    {
+      "url": "https://www.bloomingtonparks.org/facilities/miller-park-zoo/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bloomingtonparks.org/facilities/miller-park-zoo/about",
+      "error": ""
+    },
+    {
+      "url": "https://dnrhistoric.illinois.gov/experience/sites/site.david-davis-mansion.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dnrhistoric.illinois.gov/experience/sites/site.david-davis-mansion.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

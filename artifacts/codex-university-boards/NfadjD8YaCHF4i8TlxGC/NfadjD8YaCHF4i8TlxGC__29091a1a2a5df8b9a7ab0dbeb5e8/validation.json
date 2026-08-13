@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://wellcoffeeroasters.com/pages/well-green-hills",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wellcoffeeroasters.com/pages/well-green-hills",
+      "error": ""
+    },
+    {
+      "url": "https://radnorlake.org/park/visitors-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://radnorlake.org/park/visitors-center/",
+      "error": ""
+    },
+    {
+      "url": "https://hillcentergreenhills.com/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://hillcentergreenhills.com/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.traderjoes.com/tn/nashville/664/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.traderjoes.com/tn/nashville/664/",
+      "error": ""
+    },
+    {
+      "url": "https://parnassusbooks.net/event/2025-10-01/snow-day-amos-mcgee-philip-stead-and-erin-stead",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://parnassusbooks.net/event/2025-10-01/snow-day-amos-mcgee-philip-stead-and-erin-stead",
+      "error": ""
+    },
+    {
+      "url": "https://www.wholefoodsmarket.com/stores/greenhills",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.wholefoodsmarket.com/stores/greenhills",
+      "error": ""
+    },
+    {
+      "url": "https://www.simon.com/mall/the-mall-at-green-hills/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 307,
+      "finalUrl": "https://www.simon.com/mall/the-mall-at-green-hills/about",
+      "error": ""
+    },
+    {
+      "url": "https://www.nashville.gov/departments/parks/community-centers-and-recreation/regional-recreation-centers/sevier-park-community-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nashville.gov/departments/parks/community-centers-and-recreation/regional-recreation-centers/sevier-park-community-center",
+      "error": ""
+    },
+    {
+      "url": "https://frothymonkey.com/locations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://frothymonkey.com/locations/",
+      "error": ""
+    },
+    {
+      "url": "https://shopwhitesmercantile.com/pages/locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://shopwhitesmercantile.com/pages/locations",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

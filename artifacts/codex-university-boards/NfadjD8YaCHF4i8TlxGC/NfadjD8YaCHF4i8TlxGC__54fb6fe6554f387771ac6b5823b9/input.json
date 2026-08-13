@@ -1,0 +1,39 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "6xWP86Ui1AzlSNu1Anx2",
+    "schoolName": "Stevenson University",
+    "shortSchoolName": "Stevenson University",
+    "townName": "Owings Mills",
+    "state": "MD",
+    "countryCode": "US",
+    "unitId": "164173",
+    "website": "https://www.stevenson.edu/",
+    "latitude": 39.426413,
+    "longitude": -76.775809,
+    "heroUrl": "https://www.stevenson.edu/wp-content/uploads/zhanna_alyssa_change_v1.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=stevenson.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain Stevenson University",
+  "excluded_subjects": [],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

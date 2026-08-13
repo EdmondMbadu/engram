@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://w2.csun.edu/mike-curb-arts-media-communication/art-galleries/current-art-events",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://w2.csun.edu/mike-curb-arts-media-communication/art-galleries/current-art-events",
+      "error": ""
+    },
+    {
+      "url": "https://www.csun.edu/mike-curb-arts-media-communication/cinema-television-arts/cinematheque",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csun.edu/mike-curb-arts-media-communication/cinema-television-arts/cinematheque",
+      "error": ""
+    },
+    {
+      "url": "https://www.csun.edu/node/175651/tour",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csun.edu/node/175651/tour",
+      "error": ""
+    },
+    {
+      "url": "https://library.csun.edu/services/alumni-community/computers",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csun.edu/services/alumni-community/computers",
+      "error": ""
+    },
+    {
+      "url": "https://library.csun.edu/services/alumni-community/borrowing",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csun.edu/services/alumni-community/borrowing",
+      "error": ""
+    },
+    {
+      "url": "https://catalog.csun.edu/about/colleges/lib/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.csun.edu/about/colleges/lib/",
+      "error": ""
+    },
+    {
+      "url": "https://library.csun.edu/sites/default/files/users/apweiss/csun-soar-policy.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csun.edu/sites/default/files/users/apweiss/csun-soar-policy.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://sundial.csun.edu/94574/arts-entertainment/kcsn-to-have-its-grand-opening-in-the-fall/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sundial.csun.edu/94574/arts-entertainment/kcsn-to-have-its-grand-opening-in-the-fall/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

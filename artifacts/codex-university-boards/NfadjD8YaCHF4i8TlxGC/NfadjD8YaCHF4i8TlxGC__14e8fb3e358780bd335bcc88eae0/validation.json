@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.plu.edu/catalog-2023-2024/student-life-and-campus-resources/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.plu.edu/catalog-2023-2024/student-life-and-campus-resources/",
+      "error": ""
+    },
+    {
+      "url": "https://www.plu.edu/dining/campus-restaurants/hours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.plu.edu/dining/campus-restaurants/hours/",
+      "error": ""
+    },
+    {
+      "url": "https://www.plu.edu/lutecard/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.plu.edu/lutecard/",
+      "error": ""
+    },
+    {
+      "url": "https://www.plu.edu/recreations/faq/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.plu.edu/recreations/faq/",
+      "error": ""
+    },
+    {
+      "url": "https://www.plu.edu/recreations/experience/rec-facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.plu.edu/recreations/experience/rec-facilities/",
+      "error": ""
+    },
+    {
+      "url": "https://www.plu.edu/recreations/outdoor-rec/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.plu.edu/recreations/outdoor-rec/",
+      "error": ""
+    },
+    {
+      "url": "https://calendar.plu.edu/eastvold_auditorium",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calendar.plu.edu/eastvold_auditorium",
+      "error": ""
+    },
+    {
+      "url": "https://www.plu.edu/commuter/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.plu.edu/commuter/",
+      "error": ""
+    },
+    {
+      "url": "https://www.plu.edu/clubs/club-list/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.plu.edu/clubs/club-list/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

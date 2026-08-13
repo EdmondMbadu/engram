@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "h0e8x4JeKD01LAQLYq5l",
+    "schoolName": "Embry-Riddle Aeronautical University-Daytona Beach",
+    "shortSchoolName": "Embry-Riddle Aeronautical University-Daytona Beach",
+    "townName": "Daytona Beach",
+    "state": "FL",
+    "countryCode": "US",
+    "unitId": "133553",
+    "website": "https://daytonabeach.erau.edu/",
+    "latitude": 29.189903,
+    "longitude": -81.048367,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/6/69/Embry-Riddle-COA.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=original",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=daytonabeach.erau.edu&sz=256"
+  },
+  "template": {
+    "id": "college-campus-tour-skips",
+    "version": "1.0",
+    "titlePattern": "What the Campus Tour Skips: {count} Places Students Share With Each Other",
+    "editorialBrief": "Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.",
+    "researchQueries": [
+      "student favorite campus places",
+      "campus map student spaces",
+      "student newspaper campus places"
+    ],
+    "count": 10,
+    "icon": "style",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place",
+      "study_space"
+    ],
+    "freshnessDays": 365
+  },
+  "exact_title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+  "excluded_subjects": [
+    "Hunt Library Group Study Room SU 347",
+    "Hunt Library Group Study Room SU 348",
+    "Hunt Library Group Study Room SU 349",
+    "Hunt Library Group Study Room SU 350",
+    "Hunt Library Group Study Room SU 351",
+    "Hunt Library Fourth-Floor Quiet Study Space",
+    "Hunt Library Individual Study Carrels",
+    "Hunt Library Collaborative Study Pods",
+    "Hunt Library Collaborative Tables",
+    "Hunt Library Leisure Reading Area"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

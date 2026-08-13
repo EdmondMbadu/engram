@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.tacobell.com/oh/steubenville/2118-sunset-blvd.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/oh/steubenville/2118-sunset-blvd.html",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/ohio/steubenville/2825-sunset-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/ohio/steubenville/2825-sunset-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/oh/steubenville/2206-sunset-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/oh/steubenville/2206-sunset-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://locations.eatnpark.com/steubenville/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.eatnpark.com/steubenville/",
+      "error": ""
+    },
+    {
+      "url": "https://www.walmart.com/store/2193-steubenville-oh",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.walmart.com/blocked?url=L3N0b3JlLzIxOTMtc3RldWJlbnZpbGxlLW9o&uuid=d2566847-96ef-11f1-b9f1-9af851f75c77&vid=&g=b",
+      "error": ""
+    },
+    {
+      "url": "https://locations.kfc.com/oh/steubenville/4187-sunset-boulevard",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.kfc.com/oh/steubenville/4187-sunset-boulevard",
+      "error": ""
+    },
+    {
+      "url": "https://ohchinagarden.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ohchinagarden.com/",
+      "error": ""
+    },
+    {
+      "url": "https://thevillerestaurant.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thevillerestaurant.com/",
+      "error": ""
+    },
+    {
+      "url": "https://maps.apple.com/place?place-id=I245478DDA70DDA75",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://maps.apple.com/place?place-id=I245478DDA70DDA75",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jimmyjohns.com/oh/steubenville/sandwiches-4520.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jimmyjohns.com/oh/steubenville/sandwiches-4520.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.gvsu.edu/library/study-spaces-by-building-132.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gvsu.edu/library/study-spaces-by-building-132.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.gvsu.edu/library/mary-idema-pew-library-21.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gvsu.edu/library/mary-idema-pew-library-21.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.gvsu.edu/eventservices/russel-h-kirkhof-center-4",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gvsu.edu/eventservices/russel-h-kirkhof-center-4",
+      "error": ""
+    },
+    {
+      "url": "https://www.gvsu.edu/studentlife/weekly/choose-your-own-adventure-find-louie-160.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gvsu.edu/studentlife/weekly/choose-your-own-adventure-find-louie-160.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.gvsu.edu/studentlife/weekly/take-a-hike-to-these-4-gorgeous-hiking-trails-201.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gvsu.edu/studentlife/weekly/take-a-hike-to-these-4-gorgeous-hiking-201.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.gvsu.edu/outdoors/climbing-center-44",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gvsu.edu/outdoors/climbing-center-44",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

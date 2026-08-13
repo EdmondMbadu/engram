@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "XsuMMcG2sDZnoYqUjuej",
+    "schoolName": "Johns Hopkins University",
+    "shortSchoolName": "Johns Hopkins University",
+    "townName": "Baltimore",
+    "state": "MD",
+    "countryCode": "US",
+    "unitId": "162928",
+    "website": "https://www.jhu.edu/",
+    "latitude": 39.328977,
+    "longitude": -76.621595,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/0/09/Johns_Hopkins_University%27s_Academic_Seal.svg/250px-Johns_Hopkins_University%27s_Academic_Seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=jhu.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "Charles Street Market",
+    "Peabody Dining Hall",
+    "Connie’s",
+    "Hopkins Café",
+    "Lucky Danger",
+    "Koshary",
+    "Mo’s Place",
+    "Nolan’s on 33rd",
+    "Arcade Daily Grind Cafe",
+    "Subway at Cobblestone Cafe"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

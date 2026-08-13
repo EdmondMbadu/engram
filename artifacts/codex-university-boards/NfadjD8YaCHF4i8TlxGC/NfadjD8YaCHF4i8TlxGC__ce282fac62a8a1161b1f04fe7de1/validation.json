@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://scua.library.uni.edu/uni-history/building-histories/campanile-1924",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://scua.library.uni.edu/uni-history/building-histories/campanile-1924",
+      "error": ""
+    },
+    {
+      "url": "https://library.uni.edu/spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.uni.edu/spaces",
+      "error": ""
+    },
+    {
+      "url": "https://union.uni.edu/about-us/welcome",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://union.uni.edu/about-us/welcome",
+      "error": ""
+    },
+    {
+      "url": "https://chas.uni.edu/gallery-art/visitor-information",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://chas.uni.edu/gallery-art/visitor-information",
+      "error": ""
+    },
+    {
+      "url": "https://uni.edu/resources/arts",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://uni.edu/resources/arts",
+      "error": ""
+    },
+    {
+      "url": "https://volleyball.uni.edu/facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://volleyball.uni.edu/facilities",
+      "error": ""
+    },
+    {
+      "url": "https://recreation.uni.edu/facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recreation.uni.edu/facilities",
+      "error": ""
+    },
+    {
+      "url": "https://www.cedarfalls.com/176/Big-Woods-Lake-Recreation-Area",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cedarfalls.com/176/Big-Woods-Lake-Recreation-Area",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

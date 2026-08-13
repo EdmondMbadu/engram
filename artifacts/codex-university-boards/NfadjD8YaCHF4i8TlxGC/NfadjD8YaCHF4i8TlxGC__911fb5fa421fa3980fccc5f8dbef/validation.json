@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://catalog.saintmarys.edu/campus-buildings/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.saintmarys.edu/campus-buildings/",
+      "error": ""
+    },
+    {
+      "url": "https://www.saintmarys.edu/files/2020/05/Sisters%20of%20Holy%20Cross%20and%20College%20Boundary%20Map_2020.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.saintmarys.edu/files/2020/05/Sisters%20of%20Holy%20Cross%20and%20College%20Boundary%20Map_2020.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.saintmarys.edu/student-life/residence-life/study-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.saintmarys.edu/student-life/residence-life/study-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://www.saintmarys.edu/academics/centers-of-distinction/center-for-academic-innovation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.saintmarys.edu/academics/centers-of-distinction/center-for-academic-innovation",
+      "error": ""
+    },
+    {
+      "url": "https://www.saintmarys.edu/housing/mccandless-hall",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.saintmarys.edu/housing/mccandless-hall",
+      "error": ""
+    },
+    {
+      "url": "https://www.saintmarys.edu/belles-athletics-sports",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.saintmarys.edu/belles-athletics-sports",
+      "error": ""
+    },
+    {
+      "url": "https://www.saintmarys.edu/news/holy-spirit-chapel-celebrates-its-centennial",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.saintmarys.edu/news/holy-spirit-chapel-celebrates-its-centennial",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

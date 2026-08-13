@@ -1,0 +1,73 @@
+{
+  "target": {
+    "atlasId": "RUxuHRqyTFJ0kEGJOsaZ",
+    "schoolName": "Lebanon Valley College",
+    "shortSchoolName": "Lebanon Valley College",
+    "townName": "Annville",
+    "state": "PA",
+    "countryCode": "US",
+    "website": "https://www.lvc.edu/",
+    "latitude": 40.330604,
+    "longitude": -76.514431
+  },
+  "templates": [
+    {
+      "id": "college-zero-dollar-hangs",
+      "version": "1.0",
+      "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+      "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+      "researchQueries": [
+        "free student activities campus",
+        "free campus spaces students",
+        "free public places near campus"
+      ],
+      "count": 10,
+      "icon": "money_off",
+      "primarySubjectType": "activity",
+      "allowedSubjectTypes": [
+        "activity",
+        "place"
+      ],
+      "freshnessDays": 180,
+      "exactTitle": "Zero Dollars: 10 Hangs That Cost Nothing"
+    },
+    {
+      "id": "college-blocks-off-campus",
+      "version": "1.0",
+      "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+      "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+      "researchQueries": [
+        "off campus streets student district",
+        "campus adjacent commercial streets",
+        "neighborhood plan near university"
+      ],
+      "count": 10,
+      "icon": "location_city",
+      "primarySubjectType": "street_or_district",
+      "allowedSubjectTypes": [
+        "street_or_district"
+      ],
+      "freshnessDays": 730,
+      "exactTitle": "10 Blocks Off Campus, One Reason Each"
+    },
+    {
+      "id": "college-only-happens-here",
+      "version": "1.0",
+      "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+      "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+      "researchQueries": [
+        "university traditions alumni",
+        "campus traditions student newspaper",
+        "school rituals history"
+      ],
+      "count": 10,
+      "icon": "fingerprint",
+      "primarySubjectType": "tradition",
+      "allowedSubjectTypes": [
+        "tradition"
+      ],
+      "freshnessDays": 1095,
+      "exactTitle": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else"
+    }
+  ]
+}

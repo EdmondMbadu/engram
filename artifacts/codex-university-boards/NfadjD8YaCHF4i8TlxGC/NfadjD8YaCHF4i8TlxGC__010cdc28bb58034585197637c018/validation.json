@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.visitmarin.org/things-to-do/attractions/landmarks/mission-san-rafael-arcangel/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitmarin.org/things-to-do/attractions/landmarks/mission-san-rafael-arcangel/",
+      "error": ""
+    },
+    {
+      "url": "https://srpubliclibrary.org/downtown-library-renovation-project/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://srpubliclibrary.org/downtown-library-renovation-project/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitmarin.org/things-to-do/attractions/arts-entertainment-cultural/falkirk-cultural-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitmarin.org/things-to-do/attractions/arts-entertainment-cultural/falkirk-cultural-center/",
+      "error": ""
+    },
+    {
+      "url": "https://marinhistory.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://marinhistory.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.artworksdowntown.org/about-awd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.artworksdowntown.org/about-awd",
+      "error": ""
+    },
+    {
+      "url": "https://rafaelfilm.cafilm.org/mary-oliver/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://rafaelfilm.cafilm.org/mary-oliver/",
+      "error": ""
+    },
+    {
+      "url": "https://downtownsanrafael.org/about-san-rafael/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://downtownsanrafael.org/about-san-rafael/",
+      "error": ""
+    },
+    {
+      "url": "https://reboundbookstore.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://reboundbookstore.com/",
+      "error": ""
+    },
+    {
+      "url": "https://bordenavesbakery.com/pages/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bordenavesbakery.com/pages/contact",
+      "error": ""
+    },
+    {
+      "url": "https://museumofpropaganda.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://museumofpropaganda.org/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

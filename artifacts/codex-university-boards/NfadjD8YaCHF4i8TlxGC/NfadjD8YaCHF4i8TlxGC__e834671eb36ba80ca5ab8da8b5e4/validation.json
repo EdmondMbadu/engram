@@ -1,0 +1,69 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://tcnj.edu/2024/12/10/luck-be-a-lion/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://tcnj.edu/2024/12/10/luck-be-a-lion/",
+      "error": ""
+    },
+    {
+      "url": "https://studenttransitions.tcnj.edu/welcome-week/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://studenttransitions.tcnj.edu/welcome-week/",
+      "error": ""
+    },
+    {
+      "url": "https://housing.tcnj.edu/wp-content/uploads/sites/173/2025/04/ASD-Fall-2025-Virtual-Brochure-compressed.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://housing.tcnj.edu/wp-content/uploads/sites/173/2025/04/ASD-Fall-2025-Virtual-Brochure-compressed.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://campuslife.tcnj.edu/entertainment-and-area-guide/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://campuslife.tcnj.edu/entertainment-and-area-guide/",
+      "error": ""
+    },
+    {
+      "url": "https://hr.tcnj.edu/wp-content/uploads/sites/128/2026/05/HR-Newsletter-May-2026-Edition.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://hr.tcnj.edu/wp-content/uploads/sites/128/2026/05/HR-Newsletter-May-2026-Edition.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://atom.tcnj.edu/uploads/r/the-college-of-new-jersey-2/b/8/0/b80a8bff17c1b6b6c053fdb318126f8e7924d7ba7c828f31d3c38a187637e9a0/005_b06_f01_i02.pdf",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://atom.tcnj.edu/uploads/r/the-college-of-new-jersey-2/b/8/0/b80a8bff17c1b6b6c053fdb318126f8e7924d7ba7c828f31d3c38a187637e9a0/005_b06_f01_i02.pdf",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://news.tcnj.edu/wp-content/uploads/sites/222/2018/05/PeriodicTable_v2.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://news.tcnj.edu/wp-content/uploads/sites/222/2018/05/PeriodicTable_v2.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

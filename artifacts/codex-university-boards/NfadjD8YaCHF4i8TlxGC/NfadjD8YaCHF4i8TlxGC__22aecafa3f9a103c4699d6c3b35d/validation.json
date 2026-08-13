@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://thechimes.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thechimes.com/",
+      "error": ""
+    },
+    {
+      "url": "https://highlandcoffees.com/about-highland-coffees",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://highlandcoffees.com/about-highland-coffees",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitbatonrouge.com/directory/varsity-theatre-venues/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitbatonrouge.com/directory/varsity-theatre-venues/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitbatonrouge.com/directory/rouls-deli-highland-road/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitbatonrouge.com/directory/rouls-deli-highland-road/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.raisingcanes.com/la/baton-rouge/3313-highland-road",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.raisingcanes.com/la/baton-rouge/3313-highland-road",
+      "error": ""
+    },
+    {
+      "url": "https://louiescafe.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://louiescafe.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.cherrybombcoffeeco.com/locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cherrybombcoffeeco.com/locations",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitbatonrouge.com/directory/bengals-and-bandits-lsu-northgate/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitbatonrouge.com/directory/bengals-and-bandits-lsu-northgate/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitbatonrouge.com/plan-your-visit/transportation/maps/near-lsu-neighborhood-map/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitbatonrouge.com/plan-your-visit/transportation/maps/near-lsu-neighborhood-map/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

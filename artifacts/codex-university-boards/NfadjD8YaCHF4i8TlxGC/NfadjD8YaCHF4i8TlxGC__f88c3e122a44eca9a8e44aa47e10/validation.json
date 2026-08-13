@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://admissions.ecu.edu/rich-with-tradition/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://admissions.ecu.edu/rich-with-tradition/",
+      "error": ""
+    },
+    {
+      "url": "https://licensing.ecu.edu/trademarks/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://licensing.ecu.edu/trademarks/",
+      "error": ""
+    },
+    {
+      "url": "https://sga.ecu.edu/bell/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sga.ecu.edu/bell/",
+      "error": ""
+    },
+    {
+      "url": "https://news.ecu.edu/2024/04/22/barefoot-on-the-mall-celebrates-end-of-academic-year/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.ecu.edu/2024/04/22/barefoot-on-the-mall-celebrates-end-of-academic-year/",
+      "error": ""
+    },
+    {
+      "url": "https://news.ecu.edu/2026/01/28/final-polar-bear-plunge-reflects-campus-tradition/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.ecu.edu/2026/01/28/final-polar-bear-plunge-reflects-campus-tradition/",
+      "error": ""
+    },
+    {
+      "url": "https://news.ecu.edu/2019/08/19/new-crew/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.ecu.edu/2019/08/19/new-crew/",
+      "error": ""
+    },
+    {
+      "url": "https://news.ecu.edu/2022/06/21/summer-orientation/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.ecu.edu/2022/06/21/summer-orientation/",
+      "error": ""
+    },
+    {
+      "url": "https://news.ecu.edu/1994/04/21/ecu-uses-ancient-symbol-in-graduation-ceremony/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.ecu.edu/1994/04/21/ecu-uses-ancient-symbol-in-graduation-ceremony/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

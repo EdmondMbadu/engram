@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.tailfeatherkitchen.com/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.tailfeatherkitchen.com/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://dennys.com/location/denny-s-9529-634675",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://dennys.com/location/denny-s-9529-634675",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/ca/hayward/355-w-a-st/18516.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/ca/hayward/355-w-a-st/18516.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.carlsjr.com/ca/hayward/20550-mission-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.carlsjr.com/ca/hayward/20550-mission-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://www.expresspizzahaywardca.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.expresspizzahaywardca.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/ca/hayward/23969-mission-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/ca/hayward/23969-mission-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jackinthebox.com/us/ca/hayward/25198-hesperian-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jackinthebox.com/us/ca/hayward/25198-hesperian-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://locations.in-n-out.com/193-Hayward",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.in-n-out.com/193-Hayward",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ca/hayward/215-west-jackson-street/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ca/hayward/215-west-jackson-street/restaurant.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/ca/hayward/22859-mission-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/ca/hayward/22859-mission-blvd",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

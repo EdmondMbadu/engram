@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.smu.edu/libraries/visit/spaces/study",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smu.edu/libraries/visit/spaces/study",
+      "error": ""
+    },
+    {
+      "url": "https://www.smu.edu/studentaffairs/campus-recreation/facilities/dedman-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smu.edu/studentaffairs/campus-recreation/facilities/dedman-center",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 2,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

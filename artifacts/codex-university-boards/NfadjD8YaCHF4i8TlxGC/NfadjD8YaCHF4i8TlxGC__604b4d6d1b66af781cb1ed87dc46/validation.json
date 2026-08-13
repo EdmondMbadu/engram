@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://calvin.edu/places/commons-building",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calvin.edu/places/commons-building",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.ihop.com/en-us/mi/grand-rapids/breakfast-5039-28th-st-se-5418",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.ihop.com/en-us/mi/grand-rapids/breakfast-5039-28th-st-se-5418",
+      "error": ""
+    },
+    {
+      "url": "https://www.thegrandconey.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.thegrandconey.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/mi/grand-rapids/2829-28th-street-se.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mi/grand-rapids/2829-28th-street-se.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/mi/grand-rapids/2333-28th-se",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/mi/grand-rapids/2333-28th-se",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wingstop.com/mi/grand-rapids/wingstop-1512-grand-rapids-mi-49512",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wingstop.com/mi/grand-rapids/wingstop-1512-grand-rapids-mi-49512",
+      "error": ""
+    },
+    {
+      "url": "https://locations.papajohns.com/united-states/mi/grand-rapids",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.papajohns.com/united-states/mi/grand-rapids",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/mi/grand-rapids/6670-kalamazoo-se",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/mi/grand-rapids/6670-kalamazoo-se",
+      "error": ""
+    },
+    {
+      "url": "https://www.culvers.com/restaurants/Grand_Rapids-28th",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.culvers.com/restaurants/Grand_Rapids-28th",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jimmyjohns.com/mi/grand-rapids/sandwiches-0671.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jimmyjohns.com/mi/grand-rapids/sandwiches-0671.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

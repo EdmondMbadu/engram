@@ -1,0 +1,88 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.gfparks.org/parks-facilities/parks/university/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gfparks.org/parks-facilities/parks/university/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitgrandforks.com/directory/red-pepper-university/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitgrandforks.com/directory/red-pepper-university/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitgrandforks.com/blog/forks-local-coffee-hot-spots/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitgrandforks.com/blog/forks-local-coffee-hot-spots/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitgrandforks.com/blog/five-places-to-discover-forksful-of-cool-culture/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitgrandforks.com/blog/five-places-to-discover-forksful-of-cool-culture/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitgrandforks.com/directory/town-square/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitgrandforks.com/directory/town-square/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitgrandforks.com/directory/grand-forks-mural/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitgrandforks.com/directory/grand-forks-mural/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitgrandforks.com/directory/paddlewheel-sculpture-at-town-square/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitgrandforks.com/directory/paddlewheel-sculpture-at-town-square/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitgrandforks.com/directory/pocket-parks/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitgrandforks.com/directory/pocket-parks/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitgrandforks.com/directory/the-greenway/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitgrandforks.com/directory/the-greenway/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "University Park",
+    "The Greenway"
+  ],
+  "sourceCount": 9,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

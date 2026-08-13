@@ -17,6 +17,7 @@ const valueAfter = (flag) => {
 const onlyAtlas = valueAfter('--atlas');
 const universityLimit = Math.max(1, Number.parseInt(valueAfter('--university-limit') || '10000', 10));
 const universityOffset = Math.max(0, Number.parseInt(valueAfter('--university-offset') || '0', 10));
+const skipCommons = args.includes('--skip-commons');
 const projectId = process.env.FIREBASE_PROJECT_ID || 'living-atlas-7622a';
 const bucketName = process.env.FIREBASE_STORAGE_BUCKET || `${projectId}.firebasestorage.app`;
 admin.initializeApp({ projectId, storageBucket: bucketName });
@@ -75,7 +76,7 @@ for (const [atlasId, boardRows] of selectedGroups) {
   const officialWebsite = String(config.website || '').trim();
   const sourceUrls = [...new Set(boardRows.flatMap(({ board }) => (board.cards || []).map((card) => card.sourceUrl).filter(Boolean)))];
   const [commonsCandidates, officialCandidates] = await Promise.all([
-    universityCampusFallbackCandidates(target),
+    skipCommons ? [] : universityCampusFallbackCandidates(target),
     officialUniversitySiteCandidates(target, officialWebsite, sourceUrls),
   ]);
   const candidates = [...commonsCandidates, ...officialCandidates];

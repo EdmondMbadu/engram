@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www2.naz.edu/alumni/alumni-services",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.naz.edu/alumni/alumni-services",
+      "error": ""
+    },
+    {
+      "url": "https://www2.naz.edu/stories/moment-chime",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.naz.edu/stories/moment-chime",
+      "error": ""
+    },
+    {
+      "url": "https://www2.naz.edu/about/strategic-plan/campus-connected/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.naz.edu/about/strategic-plan/campus-connected/",
+      "error": ""
+    },
+    {
+      "url": "https://www2.naz.edu/academic-affairs/provost-news-know/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.naz.edu/academic-affairs/provost-news-know/",
+      "error": ""
+    },
+    {
+      "url": "https://www2.naz.edu/connections/past-issues/summer-fall-2014/news-views/students-learn-impact-philanthropy",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.naz.edu/connections/past-issues/summer-fall-2014/news-views/students-learn-impact-philanthropy",
+      "error": ""
+    },
+    {
+      "url": "https://www2.naz.edu/news/archive/2025/May/856/nazareth-celebrates-commencement-on-may-16-and-17-and-legacy-diplomas-create-special-moments",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.naz.edu/news/archive/2025/May/856/nazareth-celebrates-commencement-on-may-16-and-17-and-legacy-diplomas-create-special-moments",
+      "error": ""
+    },
+    {
+      "url": "https://www2.naz.edu/nazweekend/schedule-events",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.naz.edu/nazweekend/schedule-events",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "qnGvtnI5V3dBjhuh9UoP",
+    "schoolName": "The University of Texas at San Antonio",
+    "shortSchoolName": "The University of Texas at San Antonio",
+    "townName": "San Antonio",
+    "state": "TX",
+    "countryCode": "US",
+    "unitId": "229027",
+    "website": "https://www.utsa.edu/",
+    "latitude": 29.583709,
+    "longitude": -98.620657,
+    "heroUrl": "https://www.utsa.edu/_files/images/previews/ut-san-antonio.png",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=utsa.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain The University of Texas at San Antonio",
+  "excluded_subjects": [
+    "Villas at Babcock",
+    "The Reserve",
+    "Campus Edge on UTSA Boulevard",
+    "Avalon Place",
+    "Hill Country Place",
+    "Broadstone",
+    "The Oasis",
+    "High View Place",
+    "Maverick Creek",
+    "Lark San Antonio"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

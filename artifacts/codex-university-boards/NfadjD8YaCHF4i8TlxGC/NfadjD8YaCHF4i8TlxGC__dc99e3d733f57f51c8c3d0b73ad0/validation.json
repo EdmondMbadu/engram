@@ -1,0 +1,87 @@
+{
+  "ok": false,
+  "problems": [
+    "Card entities are not unique."
+  ],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://melbas.com/locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://melbas.com/locations",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/la/new-orleans/1918-n-broad-st/7374.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/la/new-orleans/1918-n-broad-st/7374.html",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.ihop.com/en-us/la/new-orleans/breakfast-833-canal-st-3257",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.ihop.com/en-us/la/new-orleans/breakfast-833-canal-st-3257",
+      "error": ""
+    },
+    {
+      "url": "https://www.datdog.com/locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.datdog.com/locations",
+      "error": ""
+    },
+    {
+      "url": "https://www.upizzanola.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.upizzanola.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.13nola.com/menu/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.13nola.com/menu/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.newyorkpizzanola.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.newyorkpizzanola.com/",
+      "error": ""
+    },
+    {
+      "url": "https://magazinepizzanola.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://magazinepizzanola.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.datdog.com/frenchmen-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.datdog.com/frenchmen-street",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": null,
+  "generationGrade": null
+}

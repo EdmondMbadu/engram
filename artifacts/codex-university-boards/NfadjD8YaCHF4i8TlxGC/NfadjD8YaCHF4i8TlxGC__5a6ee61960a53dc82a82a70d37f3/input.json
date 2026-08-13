@@ -1,0 +1,41 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "kjJHI0He2YFKHgSzSCyf",
+    "schoolName": "Florida Southern College",
+    "shortSchoolName": "Florida Southern College",
+    "townName": "Lakeland",
+    "state": "FL",
+    "countryCode": "US",
+    "unitId": "134079",
+    "website": "https://www.flsouthern.edu/",
+    "latitude": 28.032443,
+    "longitude": -81.948203,
+    "heroUrl": "https://flsouthern.edu/getmedia/801fc351-0a25-443e-9ce6-54ffb175b40e/hero-future-focused.jpg?width=1920&height=1080&ext=.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=flsouthern.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at Florida Southern College, Shared as Cards",
+  "excluded_subjects": [],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.usna.edu/Museum/Visitors.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usna.edu/Museum/Visitors.php",
+      "error": ""
+    },
+    {
+      "url": "https://usna.edu/Cemetery/faq.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://usna.edu/Cemetery/faq.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.usna.edu/PAO/calendars.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usna.edu/PAO/calendars.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitannapolis.org/blog/stories/post/a-history-lovers-itinerary/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitannapolis.org/blog/stories/post/a-history-lovers-itinerary/",
+      "error": ""
+    },
+    {
+      "url": "https://www.annapolis.gov/1085/Waterworks-Park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.annapolis.gov/1085/Waterworks-Park",
+      "error": ""
+    },
+    {
+      "url": "https://www.annapolis.gov/585/About-the-Memorial",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.annapolis.gov/585/About-the-Memorial",
+      "error": ""
+    },
+    {
+      "url": "https://www.annapolis.gov/ArchiveCenter/ViewFile/Item/3195",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.annapolis.gov/ArchiveCenter/ViewFile/Item/3195",
+      "error": ""
+    },
+    {
+      "url": "https://www.annapolis.gov/2328/Amenities-at-Parks-Trails-and-Playground",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.annapolis.gov/2328/Amenities-at-Parks-Trails-and-Playground",
+      "error": ""
+    },
+    {
+      "url": "https://annapolis.gov/m/newsflash/home/detail/2140",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://annapolis.gov/m/newsflash/home/detail/2140",
+      "error": ""
+    },
+    {
+      "url": "https://msa.maryland.gov/msa/mdstatehouse/html/tours.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://msa.maryland.gov/msa/mdstatehouse/html/tours.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

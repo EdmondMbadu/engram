@@ -1,0 +1,72 @@
+Reading additional input from stdin...
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-terra
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa82-d02d-7851-99c0-5d1e17ddbbbc
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"1x2Snmq9FNgQWG50xhOy","schoolName":"Washington and Lee University","shortSchoolName":"Washington and Lee University","townName":"Lexington","state":"VA","countryCode":"US","website":"https://www.wlu.edu/","latitude":37.788939,"longitude":-79.443018},"templates":[{"id":"college-first-weekend","version":"1.0","titlePattern":"Your First Weekend at {school}, Shared as Cards","editorialBrief":"Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.","researchQueries":["new student orientation campus guide","first year student campus activities","weekend near campus students"],"count":10,"icon":"schedule","primarySubjectType":"sequence_stop","allowedSubjectTypes":["sequence_stop","place","activity"],"freshnessDays":180,"exactTitle":"Your First Weekend at Washington and Lee University, Shared as Cards"}]}
+2026-08-13T09:45:05.208356Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa82-b32f-7381-8bbf-161327b854cd.1786614297392473000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:45:05.260377Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa82-b330-7de3-8a2f-b711bc05676e.1786614297392749000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:45:05.329958Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa82-a0f7-7e71-826b-78225f44768c.1786614296000058000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:45:05.453365Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa82-9d59-7ab3-8b5f-359f78ff2ac8.1786614291805865000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:45:05.551267Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T09:45:05.556822Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T09:45:05.618679Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa82-9bff-7cb2-92fa-7c691585816d.1786614291456395000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:45:05.829258Z ERROR codex_models_manager::manager: failed to refresh available models: exceeded retry limit, last status: 429 Too Many Requests, request id: ca176384-2aa6-4f11-af65-6368d2da9c91
+2026-08-13T09:45:05.913793Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa82-9b67-71e2-89ec-4a9d6f7fbbe8.1786614291304066000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:45:06.180311Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa82-94c8-7ee2-bdae-38a5666fe135.1786614289608549000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:45:07.018421Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa82-9005-7d23-96ef-6e5ce88b18e9.1786614288399836000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:45:07.452917Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa82-b3b2-7ef2-b725-1a43d70fef7e.1786614297523346000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:45:07.764446Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa82-b330-73d2-a351-103200fbd9e2.1786614297392710000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:45:08.738712Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa82-b4ce-7261-a7cc-3c763a2b422d.1786614297806926000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:45:09.424026Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa82-9be1-70b1-9397-b5ee15cece02.1786614291426256000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:45:10.259721Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa82-964e-7df0-a7d2-ce70c9227763.1786614289999385000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:45:11.111297Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses
+2026-08-13T09:45:11.121694Z  WARN codex_core::session_startup_prewarm: startup websocket prewarm setup failed: unexpected status 403 Forbidden: Unknown error, url: wss://chatgpt.com/backend-api/codex/responses, cf-ray: a2a6c913dd0e4320-LAS
+2026-08-13T09:45:14.816391Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses
+2026-08-13T09:45:14.816533Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (1/5 in 218ms)... turn_id=019ffa82-d11f-7ca2-924a-46c44d10de9e retries=1 max_retries=5 sampling_error=unexpected status 403 Forbidden: Unknown error, url: wss://chatgpt.com/backend-api/codex/responses, cf-ray: a2a6c92b0ff37b7f-LAS
+2026-08-13T09:45:16.699717Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses
+2026-08-13T09:45:16.699844Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (2/5 in 382ms)... turn_id=019ffa82-d11f-7ca2-924a-46c44d10de9e retries=2 max_retries=5 sampling_error=unexpected status 403 Forbidden: Unknown error, url: wss://chatgpt.com/backend-api/codex/responses, cf-ray: a2a6c936c99cf317-LAS
+ERROR: Reconnecting... 2/5
+2026-08-13T09:45:18.709766Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses
+2026-08-13T09:45:18.709894Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (3/5 in 801ms)... turn_id=019ffa82-d11f-7ca2-924a-46c44d10de9e retries=3 max_retries=5 sampling_error=unexpected status 403 Forbidden: Unknown error, url: wss://chatgpt.com/backend-api/codex/responses, cf-ray: a2a6c9436c1e09f5-LAS
+ERROR: Reconnecting... 3/5
+2026-08-13T09:45:22.196405Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses
+2026-08-13T09:45:22.196487Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (4/5 in 1.615s)... turn_id=019ffa82-d11f-7ca2-924a-46c44d10de9e retries=4 max_retries=5 sampling_error=unexpected status 403 Forbidden: Unknown error, url: wss://chatgpt.com/backend-api/codex/responses, cf-ray: a2a6c958bc979994-LAS
+ERROR: Reconnecting... 4/5
+2026-08-13T09:45:27.207271Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 403 Forbidden, url: wss://chatgpt.com/backend-api/codex/responses
+2026-08-13T09:45:27.207431Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (5/5 in 3.122s)... turn_id=019ffa82-d11f-7ca2-924a-46c44d10de9e retries=5 max_retries=5 sampling_error=unexpected status 403 Forbidden: Unknown error, url: wss://chatgpt.com/backend-api/codex/responses, cf-ray: a2a6c9784ab69994-LAS
+ERROR: Reconnecting... 5/5
+ERROR: You've hit your usage limit. Visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Aug 19th, 2026 8:33 PM.
+ERROR: You've hit your usage limit. Visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Aug 19th, 2026 8:33 PM.
+2026-08-13T09:45:32.805421Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa82-d02d-7851-99c0-5d1e17ddbbbc.1786614304814275000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+

@@ -1,0 +1,59 @@
+{
+  "ok": false,
+  "problems": [
+    "Cross-board overlap exceeds four subjects: Callahan Center, Commuter & Veterans Lounge, Walter J. Manninen Center for the Arts, Heftler Visiting Artist Gallery, Spencer Presentation Gallery."
+  ],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.endicott.edu/student-life/callahan-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.endicott.edu/student-life/callahan-center",
+      "error": ""
+    },
+    {
+      "url": "https://map.endicott.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://map.endicott.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://www.endicott.edu/news-events/news/news-articles/2022/06/10-hidden-gems-on-endicotts-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.endicott.edu/news-events/news/news-articles/2022/06/10-hidden-gems-on-endicotts-campus",
+      "error": ""
+    },
+    {
+      "url": "https://www.endicott.edu/about/arts-culture/manninen-center-for-the-arts",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.endicott.edu/about/arts-culture/manninen-center-for-the-arts",
+      "error": ""
+    },
+    {
+      "url": "https://www.endicott.edu/academics/schools/visual-performing-arts/school-of-visual-and-performing-arts-facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.endicott.edu/academics/schools/visual-performing-arts/school-of-visual-and-performing-arts-facilities",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Callahan Center",
+    "Commuter & Veterans Lounge",
+    "Walter J. Manninen Center for the Arts",
+    "Heftler Visiting Artist Gallery",
+    "Spencer Presentation Gallery"
+  ],
+  "sourceCount": 5,
+  "generationScore": null,
+  "generationGrade": null
+}

@@ -1,0 +1,73 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.gatech.edu/about/history-traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gatech.edu/about/history-traditions",
+      "error": ""
+    },
+    {
+      "url": "https://students.gatech.edu/news/new-georgia-tech-student-center-place-students-reset-restore-and-refuel",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://students.gatech.edu/news/new-georgia-tech-student-center-place-students-reset-restore-and-refuel",
+      "error": ""
+    },
+    {
+      "url": "https://students.gatech.edu/tpm_provisions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://students.gatech.edu/tpm_provisions",
+      "error": ""
+    },
+    {
+      "url": "https://library.gatech.edu/about/hours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.gatech.edu/about/hours",
+      "error": ""
+    },
+    {
+      "url": "https://crc.gatech.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://crc.gatech.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://livingbuilding.gatech.edu/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://livingbuilding.gatech.edu/visit",
+      "error": ""
+    },
+    {
+      "url": "https://commencement.gatech.edu/traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://commencement.gatech.edu/traditions",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Tech Rec",
+    "Crosland Terrace",
+    "The Kendeda Building for Innovative Sustainable Design"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

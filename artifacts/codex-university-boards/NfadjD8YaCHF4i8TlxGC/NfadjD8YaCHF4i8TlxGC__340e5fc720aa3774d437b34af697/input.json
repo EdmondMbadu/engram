@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "FhMXnNH4Xd6BDgY67kfJ",
+    "schoolName": "St. John's University-New York",
+    "shortSchoolName": "St. John's University-New York",
+    "townName": "Queens",
+    "state": "NY",
+    "countryCode": "US",
+    "unitId": "195809",
+    "website": "https://www.stjohns.edu/",
+    "latitude": 40.722523,
+    "longitude": -73.796104,
+    "heroUrl": "https://www.stjohns.edu/sites/default/files/2022-12/20220928_sju_fall-425.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=stjohns.edu&sz=256"
+  },
+  "template": {
+    "id": "college-study-spots",
+    "version": "1.0",
+    "titlePattern": "Claimed by 9am: {count} Study Spots Worth Showing Up Early For",
+    "editorialBrief": "Choose ten distinct study environments. Verify access rules, room or reservation constraints, and the physical affordance that makes each useful. Treat “Claimed by 9am” as editorial framing; never assert crowding or student behavior without evidence.",
+    "researchQueries": [
+      "campus study spaces",
+      "library study rooms students",
+      "quiet study campus"
+    ],
+    "count": 10,
+    "icon": "menu_book",
+    "primarySubjectType": "study_space",
+    "allowedSubjectTypes": [
+      "study_space",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Claimed by 9am: 10 Study Spots Worth Showing Up Early For",
+  "excluded_subjects": [
+    "Red Storm Welcome",
+    "Fall Fest",
+    "Winter Carnival",
+    "Ice Skating in New York",
+    "Central Park Christmas",
+    "Winter Carnival Dessert Party",
+    "Spring Month",
+    "Senior Week",
+    "Stormin’ Loud",
+    "Relay For Life"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

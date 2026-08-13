@@ -1,0 +1,72 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "The Study Pavilion source is a third-party hosted copy of Fleet Library architectural documentation; all other cards use RISD-operated sources.",
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://digitalcommons.risd.edu/library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://digitalcommons.risd.edu/library/",
+      "error": ""
+    },
+    {
+      "url": "https://doczz.net/doc/4104536/fleet-risd-library---fleet-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://doczz.net/doc/4104536/fleet-risd-library---fleet-library",
+      "error": ""
+    },
+    {
+      "url": "https://unbound.risd.edu/?page_id=80",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://unbound.risd.edu/?page_id=80",
+      "error": ""
+    },
+    {
+      "url": "https://www.risd.edu/sites/g/files/upbtqy111/files/2024-12/architecture-program-report-2023.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.risd.edu/sites/g/files/upbtqy111/files/2024-12/architecture-program-report-2023.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.risd.edu/academics/campus-resources/fleet-library-risd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.risd.edu/academics/campus-resources/fleet-library-risd",
+      "error": ""
+    },
+    {
+      "url": "https://digitalcommons.risd.edu/naturelab/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://digitalcommons.risd.edu/naturelab/",
+      "error": ""
+    },
+    {
+      "url": "https://www.risd.edu/academics/campus-resources/risd-museum",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.risd.edu/academics/campus-resources/risd-museum",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Edna W. Lawrence Nature Lab"
+  ],
+  "sourceCount": 7,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

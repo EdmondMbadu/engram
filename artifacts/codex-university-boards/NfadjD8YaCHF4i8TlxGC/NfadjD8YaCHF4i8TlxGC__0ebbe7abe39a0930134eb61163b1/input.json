@@ -1,0 +1,72 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "x9J184J5hltrYVnsfoRv",
+    "schoolName": "SUNY College at Geneseo",
+    "shortSchoolName": "SUNY College at Geneseo",
+    "townName": "Geneseo",
+    "state": "NY",
+    "countryCode": "US",
+    "unitId": "196167",
+    "website": "https://www.geneseo.edu/",
+    "latitude": 42.796645,
+    "longitude": -77.821894,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/d/d1/SUNY_Geneseo_seal.svg/250px-SUNY_Geneseo_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=geneseo.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at SUNY College at Geneseo, Shared as Cards",
+  "excluded_subjects": [
+    "Roemer Arboretum Outer Loop Trail",
+    "Roemer Arboretum Inner Loop Trail",
+    "Roemer Arboretum Native Plant Gardens",
+    "Roemer Arboretum 9/11 Memorial",
+    "Roemer Arboretum Gazebo",
+    "Roemer Arboretum Picnic Tables",
+    "Roemer Arboretum Oak Trees",
+    "Roemer Arboretum Black Walnut Trees",
+    "Roemer Arboretum Entrance Kiosk",
+    "Roemer Arboretum Public Walk",
+    "Village Park",
+    "Bear Fountain",
+    "Wadsworth Homestead",
+    "The Geneseo Riviera",
+    "Livingston County Historical Society & Museum",
+    "Wadsworth Library",
+    "Highland Park",
+    "Temple Hill Cemetery",
+    "Geneseo Methodist Church",
+    "Geneseo Square Plaza",
+    "Milne Library",
+    "Milne Library Quiet Study Spaces",
+    "Milne Library Group Study Rooms",
+    "College Union Study Room 134",
+    "Computer Project Area (CoPA), Room 112",
+    "College Union Conference Room 324",
+    "College Union Conference Room 325",
+    "Bailey Hall Atrium",
+    "Erwin 14 Sensory/Study Room",
+    "College Green"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

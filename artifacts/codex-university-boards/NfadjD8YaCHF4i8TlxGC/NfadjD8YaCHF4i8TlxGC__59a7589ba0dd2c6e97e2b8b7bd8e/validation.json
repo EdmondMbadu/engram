@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.sip305.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sip305.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.saharagrillmiami.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.saharagrillmiami.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.toasttab.com/local/night-owl-cookie-co-commissary/r-1910b700-a996-4402-845e-98a4ad2ca33a",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.toasttab.com/local/night-owl-cookie-co-commissary/r-1910b700-a996-4402-845e-98a4ad2ca33a",
+      "error": ""
+    },
+    {
+      "url": "https://pinecrestbakery.com/pages/locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pinecrestbakery.com/pages/locations",
+      "error": ""
+    },
+    {
+      "url": "https://specialtealounge.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://specialtealounge.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.doscroquetas.com/pages/order-1",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.doscroquetas.com/pages/order-1",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/fl/miami/9655-west-flagler",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/fl/miami/9655-west-flagler",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/fl/sweetwater/10530-w-flagler-st/6431.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/fl/sweetwater/10530-w-flagler-st/6431.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/fl/miami/10580-sw-8th-st.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/fl/miami/10580-sw-8th-st.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

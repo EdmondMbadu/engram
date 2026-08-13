@@ -1,0 +1,75 @@
+{
+  "target": {
+    "atlasId": "NyMKr4MyBpirfwOjxUn2",
+    "schoolName": "Carleton College",
+    "shortSchoolName": "Carleton College",
+    "townName": "Northfield",
+    "state": "MN",
+    "countryCode": "US",
+    "website": "https://www.carleton.edu/",
+    "latitude": 44.462318,
+    "longitude": -93.154666
+  },
+  "templates": [
+    {
+      "id": "college-late-night-runs",
+      "version": "1.0",
+      "titlePattern": "{count} Late-Night Runs That Explain {school}",
+      "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+      "researchQueries": [
+        "late night dining students",
+        "campus dining late hours",
+        "restaurants open late near campus"
+      ],
+      "count": 10,
+      "icon": "nightlife",
+      "primarySubjectType": "place",
+      "allowedSubjectTypes": [
+        "place"
+      ],
+      "freshnessDays": 120,
+      "exactTitle": "10 Late-Night Runs That Explain Carleton College"
+    },
+    {
+      "id": "college-zero-dollar-hangs",
+      "version": "1.0",
+      "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+      "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+      "researchQueries": [
+        "free student activities campus",
+        "free campus spaces students",
+        "free public places near campus"
+      ],
+      "count": 10,
+      "icon": "money_off",
+      "primarySubjectType": "activity",
+      "allowedSubjectTypes": [
+        "activity",
+        "place"
+      ],
+      "freshnessDays": 180,
+      "exactTitle": "Zero Dollars: 10 Hangs That Cost Nothing"
+    },
+    {
+      "id": "college-first-weekend",
+      "version": "1.0",
+      "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+      "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+      "researchQueries": [
+        "new student orientation campus guide",
+        "first year student campus activities",
+        "weekend near campus students"
+      ],
+      "count": 10,
+      "icon": "schedule",
+      "primarySubjectType": "sequence_stop",
+      "allowedSubjectTypes": [
+        "sequence_stop",
+        "place",
+        "activity"
+      ],
+      "freshnessDays": 180,
+      "exactTitle": "Your First Weekend at Carleton College, Shared as Cards"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.buffalo.edu/vpsl/traditions/interlocking-ub.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.buffalo.edu/vpsl/traditions/interlocking-ub.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.buffalo.edu/vpsl/traditions/family.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.buffalo.edu/vpsl/traditions/family.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.buffalo.edu/vpsl/traditions/oozefest.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.buffalo.edu/vpsl/traditions/oozefest.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.buffalo.edu/home/life/our-ub-traditions.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.buffalo.edu/home/life/our-ub-traditions.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

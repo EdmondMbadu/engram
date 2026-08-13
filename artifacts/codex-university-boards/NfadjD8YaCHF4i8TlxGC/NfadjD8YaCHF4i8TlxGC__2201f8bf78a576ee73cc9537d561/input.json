@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "R15xDLBD19OkG0Eexpn6",
+    "schoolName": "California State University-San Bernardino",
+    "shortSchoolName": "California State University-San Bernardino",
+    "townName": "San Bernardino",
+    "state": "CA",
+    "countryCode": "US",
+    "unitId": "110510",
+    "website": "https://www.csusb.edu/",
+    "latitude": 34.182622,
+    "longitude": -117.323801,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=csusb.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=csusb.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Baguette Express",
+    "Farmer Boys",
+    "Baker's Drive-Thru",
+    "Royal Dumpling House",
+    "WaBa Grill",
+    "Dickey's Barbecue Pit",
+    "Jamba",
+    "Chick-fil-A University Parkway & Hwy 215",
+    "Carl's Jr.",
+    "Hung Up on Cane"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://historicgeneva.org/visit/geneva-history-museum/geneva-history-museum-faqs",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://historicgeneva.org/geneva-history-museum/",
+      "error": ""
+    },
+    {
+      "url": "https://gplny.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gplny.org/",
+      "error": ""
+    },
+    {
+      "url": "https://thesmith.org/faqs/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thesmith.org/faqs/",
+      "error": ""
+    },
+    {
+      "url": "https://www.stompinggrounds.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stompinggrounds.com/",
+      "error": ""
+    },
+    {
+      "url": "https://lakecityhobbies.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lakecityhobbies.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hws.edu/centers/service/geneva-partnership.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hws.edu/centers/service/geneva-partnership.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.hws.edu/admissions/visit/places-to-stay-and-eat.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hws.edu/admissions/visit/places-to-stay-and-eat.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.fingerlakes.org/partners/finger-lakes-welcome-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fingerlakes.org/partners/finger-lakes-welcome-center",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

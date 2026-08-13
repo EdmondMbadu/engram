@@ -1,0 +1,98 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "4 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://uunions.umich.edu/union/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://uunions.umich.edu/union/",
+      "error": ""
+    },
+    {
+      "url": "https://tour.umich.edu/text-based/tours/diag/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://tour.umich.edu/text-based/tours/diag/",
+      "error": ""
+    },
+    {
+      "url": "https://tour.umich.edu/text-based/locations/law-quad/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://tour.umich.edu/text-based/locations/law-quad/",
+      "error": ""
+    },
+    {
+      "url": "https://umma.umich.edu/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://umma.umich.edu/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://uunions.umich.edu/league/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://uunions.umich.edu/league/",
+      "error": ""
+    },
+    {
+      "url": "https://www.a2gov.org/parks-and-recreation/parks-and-places/ann-arbor-farmers-market/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.a2gov.org/parks-and-recreation/parks-and-places/ann-arbor-farmers-market/",
+      "error": ""
+    },
+    {
+      "url": "https://aadl.org/aboutus/locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://aadl.org/aboutus/locations",
+      "error": ""
+    },
+    {
+      "url": "https://lsa.umich.edu/ummnh/visitors/visitor-info.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://lsa.umich.edu/ummnh/visitors/visitor-info.html",
+      "error": ""
+    },
+    {
+      "url": "https://mbgna.umich.edu/nichols-arboretum",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://mbgna.umich.edu/nichols-arboretum",
+      "error": ""
+    },
+    {
+      "url": "https://www.a2gov.org/parks-and-recreation/parks-and-places/argo-park-nature-area/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.a2gov.org/parks-and-recreation/parks-and-places/argo-park-nature-area/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Michigan Union",
+    "University of Michigan Museum of Art",
+    "University of Michigan Museum of Natural History",
+    "Nichols Arboretum"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

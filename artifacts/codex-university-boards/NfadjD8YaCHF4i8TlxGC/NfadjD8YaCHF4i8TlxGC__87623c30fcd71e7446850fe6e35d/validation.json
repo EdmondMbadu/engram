@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Weekend movie screenings and Stars on Sundays are recurring but schedule-dependent; verify the live Hofstra event listing before going.",
+    "Emily Lowe Gallery closes on summer weekends, university recesses, major holidays, and during exhibition installation periods.",
+    "The arboretum’s bird sanctuary is currently closed and is intentionally excluded from the walking activity.",
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.hofstra.edu/visitors/student-center.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hofstra.edu/visitors/student-center.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.hofstra.edu/orientation-new-student/75-things-before-graduation.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hofstra.edu/orientation-new-student/75-things-before-graduation.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.hofstra.edu/student-leadership-engagement/game-room.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hofstra.edu/student-leadership-engagement/game-room.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.hofstra.edu/campus-life/student-enrollment-engagement-success/campus-recreation/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hofstra.edu/campus-life/student-enrollment-engagement-success/campus-recreation/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hofstra.edu/about/campus/facops/facops-grounds-arboretum.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hofstra.edu/facilities-operations/arboretum.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.hofstra.edu/museum/outdoor-sculpture-collection.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hofstra.edu/museum/outdoor-sculpture-collection.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.hofstra.edu/museum/visitor-info.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hofstra.edu/museum/visitor-info.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.hofstra.edu/advising/campus-resources.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hofstra.edu/advising/campus-resources.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.hofstra.edu/physics-astronomy/observatory.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hofstra.edu/physics-astronomy/observatory.html",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Hofstra Game Room",
+    "Emily Lowe Gallery"
+  ],
+  "sourceCount": 9,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.tacobell.com/al/birmingham/381-palisades-blvd.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/al/birmingham/381-palisades-blvd.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/al/homewood/159-state-farm-parkway.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/al/homewood/159-state-farm-parkway.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/al/birmingham/2124-7th-ave-s.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/al/birmingham/2124-7th-ave-s.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/al/birmingham.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/al/birmingham.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/al/birmingham/345-valley-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/al/birmingham/345-valley-ave",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/al/birmingham/2327-7th-avenue-s",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/al/birmingham/2327-7th-avenue-s",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/al/birmingham/1501-5th-avenue-s/31194.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/al/birmingham/1501-5th-avenue-s/31194.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/al/birmingham/1309-forestdale-blvd/6985.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/al/birmingham/1309-forestdale-blvd/6985.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.whataburger.com/al/birmingham.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.whataburger.com/al/birmingham.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.checkersandrallys.com/al/birmingham/4030-first-avenue-n",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://locations.checkersandrallys.com/al/birmingham/4030-first-avenue-n",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

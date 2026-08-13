@@ -1,0 +1,39 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "zJH1mWjcd36USFinOZSH",
+    "schoolName": "University of Missouri-Kansas City",
+    "shortSchoolName": "University of Missouri-Kansas City",
+    "townName": "Kansas City",
+    "state": "MO",
+    "countryCode": "US",
+    "unitId": "178402",
+    "website": "https://www.umkc.edu/",
+    "latitude": 39.034179,
+    "longitude": -94.582141,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=umkc.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=umkc.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

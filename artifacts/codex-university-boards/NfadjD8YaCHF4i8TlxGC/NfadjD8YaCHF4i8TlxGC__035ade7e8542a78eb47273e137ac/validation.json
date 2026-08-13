@@ -1,0 +1,97 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://calendar.uab.edu/campus_green_456",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calendar.uab.edu/campus_green_456",
+      "error": ""
+    },
+    {
+      "url": "https://www.uab.edu/aeiva/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uab.edu/aeiva/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.uab.edu/cas/art/gallery-501",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uab.edu/cas/art/gallery-501",
+      "error": ""
+    },
+    {
+      "url": "https://library.uab.edu/special-collections/dennis-g-pappas-historical-collections-gallery/visit-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.uab.edu/special-collections/dennis-g-pappas-historical-collections-gallery/visit-us",
+      "error": ""
+    },
+    {
+      "url": "https://www.artsbma.org/plan-your-visit-2/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.artsbma.org/plan-your-visit-2/",
+      "error": ""
+    },
+    {
+      "url": "https://railroadpark.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://railroadpark.org/",
+      "error": ""
+    },
+    {
+      "url": "https://bbgardens.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://bbgardens.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.jeffcogreenways.org/park/red-mountain-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jeffcogreenways.org/park/red-mountain-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/bicr/planyourvisit/basicinfo.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/bicr/planyourvisit/basicinfo.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/bicr/planyourvisit/hours.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/bicr/planyourvisit/hours.htm",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "UAB Campus Green",
+    "Birmingham Museum of Art",
+    "Railroad Park"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

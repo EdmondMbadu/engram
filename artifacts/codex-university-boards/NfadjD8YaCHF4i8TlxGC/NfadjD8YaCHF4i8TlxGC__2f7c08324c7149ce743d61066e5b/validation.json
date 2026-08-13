@@ -1,0 +1,74 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Campus access, tours, and chapel availability are subject to security procedures and official events; verify details immediately before visiting.",
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.usna.edu/Admissions/Connect/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usna.edu/Admissions/Connect/index.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.usna.edu/Museum/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usna.edu/Museum/",
+      "error": ""
+    },
+    {
+      "url": "https://www.usna.edu/Chaplains/virtualTour/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usna.edu/Chaplains/virtualTour/index.php",
+      "error": ""
+    },
+    {
+      "url": "https://msa.maryland.gov/msa/mdstatehouse/html/tours.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://msa.maryland.gov/msa/mdstatehouse/html/tours.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.annapolis.gov/585/About-the-Memorial",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.annapolis.gov/585/About-the-Memorial",
+      "error": ""
+    },
+    {
+      "url": "https://annapolis.gov/ArchiveCenter/ViewFile/Item/3606",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://annapolis.gov/ArchiveCenter/ViewFile/Item/3606",
+      "error": ""
+    },
+    {
+      "url": "https://amaritime.org/visit-2025/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://amaritime.org/visit-2025/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Maryland State House",
+    "Kunta Kinte-Alex Haley Memorial",
+    "Susan Campbell Park"
+  ],
+  "sourceCount": 7,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

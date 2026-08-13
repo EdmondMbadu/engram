@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Several destinations have eligibility, reservation, or event-specific access; verify current details before visiting.",
+    "4 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://students.gwu.edu/university-student-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://students.gwu.edu/university-student-center",
+      "error": ""
+    },
+    {
+      "url": "https://smhs.gwu.edu/academics/health-sciences/student-services/student-resources/academic-support",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://smhs.gwu.edu/academics/health-sciences/student-services/student-resources/academic-support",
+      "error": ""
+    },
+    {
+      "url": "https://explore.gwu.edu/virtual-tour-map",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://explore.gwu.edu/virtual-tour-map",
+      "error": ""
+    },
+    {
+      "url": "https://students.gwu.edu/student-center-space-requirements",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://students.gwu.edu/student-center-space-requirements",
+      "error": ""
+    },
+    {
+      "url": "https://events-venues.gwu.edu/space-scheduling",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events-venues.gwu.edu/space-scheduling",
+      "error": ""
+    },
+    {
+      "url": "https://students.gwu.edu/campus-rec-facilities-hours-operation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://students.gwu.edu/campus-rec-facilities-hours-operation",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "University Student Center",
+    "Gelman Library",
+    "University Yard",
+    "The George Washington University Museum and The Textile Museum"
+  ],
+  "sourceCount": 6,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

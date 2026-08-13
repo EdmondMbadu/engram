@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://csm.rowan.edu/departments/cs/news/articles/spotlight-on-tech-lounge.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://csm.rowan.edu/departments/cs/news/articles/spotlight-on-tech-lounge.html",
+      "error": ""
+    },
+    {
+      "url": "https://sites.rowan.edu/scca/WhatWeOffer/eventsservices/spaces/special-event.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sites.rowan.edu/scca/WhatWeOffer/eventsservices/spaces/special-event.html",
+      "error": ""
+    },
+    {
+      "url": "https://sites.rowan.edu/scca/_docs/scca-policies-and-procedures.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sites.rowan.edu/scca/_docs/scca-policies-and-procedures.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://today.rowan.edu/news/2025/03/campus-celebrates-student-center-expansion.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://today.rowan.edu/news/2025/03/campus-celebrates-student-center-expansion.html",
+      "error": ""
+    },
+    {
+      "url": "https://sites.rowan.edu/housing/housing-options/apartments/whitney_center.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sites.rowan.edu/housing/housing-options/apartments/whitney_center.html",
+      "error": ""
+    },
+    {
+      "url": "https://sites.rowan.edu/housing/housing-options/residence_halls/evergreen-hall-description.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sites.rowan.edu/housing/housing-options/residence_halls/evergreen-hall-description.html",
+      "error": ""
+    },
+    {
+      "url": "https://sites.rowan.edu/housing/housing-options/residence_halls/holly_pointe.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sites.rowan.edu/housing/housing-options/residence_halls/holly_pointe.html",
+      "error": ""
+    },
+    {
+      "url": "https://sites.rowan.edu/housing/housing-options/apartments/rowan_blvd_apartments.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sites.rowan.edu/housing/housing-options/apartments/rowan_blvd_apartments.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

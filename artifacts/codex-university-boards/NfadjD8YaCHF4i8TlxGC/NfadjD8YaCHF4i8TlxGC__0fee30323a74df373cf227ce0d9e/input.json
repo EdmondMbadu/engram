@@ -1,0 +1,60 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "17fiBF5QM9liPCmM3E4N",
+    "schoolName": "Rhode Island School of Design",
+    "shortSchoolName": "Rhode Island School of Design",
+    "townName": "Providence",
+    "state": "RI",
+    "countryCode": "US",
+    "unitId": "217493",
+    "website": "https://www.risd.edu/",
+    "latitude": 41.827114,
+    "longitude": -71.409309,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/RISD_Seal.svg/960px-RISD_Seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=risd.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "Fleet Library at RISD",
+    "RISD Museum",
+    "Co-Works Research Lab",
+    "Color Lab",
+    "Movement Lab",
+    "Edna W. Lawrence Nature Lab",
+    "Studio for Research in Sound and Technology",
+    "Sustainability Design Lab",
+    "Gelman Student Exhibitions Gallery",
+    "Woods-Gerry Gallery",
+    "Artist Ball",
+    "Haunted Haus",
+    "Care Week and Late Night Breakfast",
+    "Student Art Sale",
+    "Collection",
+    "FAV Senior Show",
+    "Founders Day",
+    "Open Studios",
+    "RISD Grad Show",
+    "RISD Commencement"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

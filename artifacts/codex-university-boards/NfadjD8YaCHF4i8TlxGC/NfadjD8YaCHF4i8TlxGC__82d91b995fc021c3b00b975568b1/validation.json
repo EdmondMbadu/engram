@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.saintmarys.edu/saint-marys-traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.saintmarys.edu/saint-marys-traditions",
+      "error": ""
+    },
+    {
+      "url": "https://www.saintmarys.edu/about/who-we-are/traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.saintmarys.edu/about/who-we-are/traditions",
+      "error": ""
+    },
+    {
+      "url": "https://www.saintmarys.edu/files/SMC%20Style%20Guide%208-4-17%20FINAL_0.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.saintmarys.edu/files/SMC%20Style%20Guide%208-4-17%20FINAL_0.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

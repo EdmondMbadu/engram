@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.tacobell.com/nj/glassboro/1101-n--delsea-drive/fast-food.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/nj/glassboro/1101-n--delsea-drive/fast-food.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/nj/glassboro/685-n-delsea-drive",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/nj/glassboro/685-n-delsea-drive",
+      "error": ""
+    },
+    {
+      "url": "https://www.7-eleven.com/locations/nj/glassboro/324-rowan-blvd-37038",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.7-eleven.com/locations/nj/glassboro/324-rowan-blvd-37038",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/new-jersey/glassboro/231-rowan-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/new-jersey/glassboro/231-rowan-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://www.toasttab.com/local/order/el-mariachi-mexican-restaurant-glassboro/item-flan_2e4446de-6590-45df-990d-977164e30ee6",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.toasttab.com/local/order/el-mariachi-mexican-restaurant-glassboro/item-flan_2e4446de-6590-45df-990d-977164e30ee6",
+      "error": ""
+    },
+    {
+      "url": "https://locations.baskinrobbins.com/nj/glassboro",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.baskinrobbins.com/nj/glassboro",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/NJ/GLASSBORO/656-DELSEA-DRIVE/1749.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/NJ/GLASSBORO/656-DELSEA-DRIVE/1749.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.chick-fil-a.com/locations/nj/glassboro",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.chick-fil-a.com/locations/nj/glassboro",
+      "error": ""
+    },
+    {
+      "url": "https://iloveginospizza.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://iloveginospizza.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.monarchdinernj.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.monarchdinernj.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

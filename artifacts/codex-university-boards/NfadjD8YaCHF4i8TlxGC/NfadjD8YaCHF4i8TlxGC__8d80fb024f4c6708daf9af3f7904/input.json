@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "VNasyg0pzZgqAEcRIFCx",
+    "schoolName": "Pratt Institute-Main",
+    "shortSchoolName": "Pratt Institute-Main",
+    "townName": "Brooklyn",
+    "state": "NY",
+    "countryCode": "US",
+    "unitId": "194578",
+    "website": "https://www.pratt.edu/",
+    "latitude": 40.691297,
+    "longitude": -73.96431,
+    "heroUrl": "https://www.pratt.edu/wp-content/themes/pratt/static/img/og.png",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=pratt.edu&sz=256"
+  },
+  "template": {
+    "id": "college-campus-tour-skips",
+    "version": "1.0",
+    "titlePattern": "What the Campus Tour Skips: {count} Places Students Share With Each Other",
+    "editorialBrief": "Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.",
+    "researchQueries": [
+      "student favorite campus places",
+      "campus map student spaces",
+      "student newspaper campus places"
+    ],
+    "count": 10,
+    "icon": "style",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place",
+      "study_space"
+    ],
+    "freshnessDays": 365
+  },
+  "exact_title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+  "excluded_subjects": [
+    "Pratt Institute Brooklyn Library",
+    "Pratt Student Union",
+    "William “Bill” Menking Reading Room",
+    "Engineering Computer Lab",
+    "Machinery Computer Lab",
+    "Foundation Media Lab",
+    "Higgins Hall Labs",
+    "2D Printing Center",
+    "3D Printing Center",
+    "Assembly Loop Lab"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

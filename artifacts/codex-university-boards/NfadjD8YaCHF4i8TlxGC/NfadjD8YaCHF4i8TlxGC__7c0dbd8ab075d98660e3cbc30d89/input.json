@@ -1,0 +1,40 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "Ve3H2HMwAZg4MiDFzF1N",
+    "schoolName": "Mercy College of Ohio",
+    "shortSchoolName": "Mercy College of Ohio",
+    "townName": "Toledo",
+    "state": "OH",
+    "countryCode": "US",
+    "unitId": "203960",
+    "website": "https://www.mercycollege.edu/",
+    "latitude": 41.658319,
+    "longitude": -83.552538,
+    "heroUrl": "https://assets.mercycollege.edu/uploads/images/_1200x630_crop_center-center_82_none/RJW_3976.jpg?mtime=1707927997",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=mercycollege.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

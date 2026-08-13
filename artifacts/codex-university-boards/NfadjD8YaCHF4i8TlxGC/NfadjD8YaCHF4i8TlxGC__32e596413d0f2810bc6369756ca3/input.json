@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "1wwkqmQZYB5cl8TodTVG",
+    "schoolName": "Gonzaga University",
+    "shortSchoolName": "Gonzaga University",
+    "townName": "Spokane",
+    "state": "WA",
+    "countryCode": "US",
+    "unitId": "235316",
+    "website": "https://www.gonzaga.edu/",
+    "latitude": 47.666531,
+    "longitude": -117.400625,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/8/8d/Gonzaga_University_coat_of_arms.svg/250px-Gonzaga_University_coat_of_arms.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=gonzaga.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain Gonzaga University",
+  "excluded_subjects": [
+    "John and Joan Bollier Family Center for Integrated Science and Engineering",
+    "UW-GU Health Partnership Building",
+    "Foley Center Library",
+    "Rosauer Active Learning Center",
+    "John J. Hemmingson Center",
+    "Hemmingson Second-Floor Community Spaces",
+    "Hughes Hall Third-Floor Study Area",
+    "Digital Scholarship Lab",
+    "Foley Library Group Study Rooms",
+    "The Globe Room at Cataldo"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

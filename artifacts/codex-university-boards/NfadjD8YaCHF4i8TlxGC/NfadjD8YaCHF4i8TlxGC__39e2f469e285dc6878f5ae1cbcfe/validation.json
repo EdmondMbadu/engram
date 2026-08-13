@@ -1,0 +1,56 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.jcu.edu/about/visiting/campus-maps",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jcu.edu/about/visiting/campus-maps",
+      "error": ""
+    },
+    {
+      "url": "https://www.jcu.edu/academics/centers/grasselli-library-breen-learning-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jcu.edu/academics/centers/grasselli-library-breen-learning-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.jcu.edu/news/2025/09/john-carroll-celebrates-grand-opening-of-new-athletic-wellness-event-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jcu.edu/news/2025/09/john-carroll-celebrates-grand-opening-of-new-athletic-wellness-event-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.jcu.edu/student-experience/thriving-here/student-groups-activities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jcu.edu/student-experience/thriving-here/student-groups-activities",
+      "error": ""
+    },
+    {
+      "url": "https://www.clevelandart.org/plan-your-visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.clevelandart.org/plan-your-visit",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Main Quad",
+    "Cleveland Museum of Art"
+  ],
+  "sourceCount": 5,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.rit.edu/admissions/blog/best-spots-hang-out-rit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rit.edu/admissions/blog/best-spots-hang-out-rit",
+      "error": ""
+    },
+    {
+      "url": "https://www.rit.edu/magic/work-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rit.edu/magic/work-us",
+      "error": ""
+    },
+    {
+      "url": "https://www.rit.edu/library/building-room-information",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rit.edu/library/building-room-information",
+      "error": ""
+    },
+    {
+      "url": "https://www.rit.edu/shed",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rit.edu/shed/",
+      "error": ""
+    },
+    {
+      "url": "https://www.rit.edu/admissions/blog/rit-beyond-studies-guide-campus-life-activities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rit.edu/admissions/blog/rit-beyond-studies-guide-campus-life-activities",
+      "error": ""
+    },
+    {
+      "url": "https://www.rit.edu/facilities/university-gallery",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rit.edu/facilities/university-gallery",
+      "error": ""
+    },
+    {
+      "url": "https://www.rit.edu/artdesign/galleries",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rit.edu/artdesign/galleries",
+      "error": ""
+    },
+    {
+      "url": "https://www.rit.edu/recreationwellness/facilities/red-barn",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rit.edu/recreationwellness/facilities/red-barn",
+      "error": ""
+    },
+    {
+      "url": "https://www.rit.edu/wellness",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rit.edu/wellness",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

@@ -1,0 +1,302 @@
+Reading additional input from stdin...
+2026-08-13T06:47:53.819153Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e0-6328-71f1-bc0a-f14dc08a488c.1786603660073145000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:47:53.873275Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e0-630d-7313-afd6-1b29faf0da0a.1786603660046320000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:47:53.877759Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9e0-9894-7621-a945-aa6f0f3c2fe8
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"R15xDLBD19OkG0Eexpn6","schoolName":"California State University-San Bernardino","shortSchoolName":"California State University-San Bernardino","townName":"San Bernardino","state":"CA","countryCode":"US","website":"https://www.csusb.edu/","latitude":34.182622,"longitude":-117.323801},"templates":[{"id":"college-campus-tour-skips","version":"1.0","titlePattern":"What the Campus Tour Skips: {count} Places Students Share With Each Other","editorialBrief":"Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.","researchQueries":["student favorite campus places","campus map student spaces","student newspaper campus places"],"count":10,"icon":"style","primarySubjectType":"place","allowedSubjectTypes":["place","study_space"],"freshnessDays":365,"exactTitle":"What the Campus Tour Skips: 10 Places Students Share With Each Other"}]}
+2026-08-13T06:47:53.921050Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e0-6329-7360-8866-d9d42e36f777.1786603660074443000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:47:54.188720Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e0-6336-7961-a91d-636a5d4bf463.1786603660086817000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:47:54.209062Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:47:54.463949Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e0-633b-7d61-a32d-738c00350496.1786603660091812000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:47:54.513856Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e0-630d-77c1-8302-72b45e7a5982.1786603660046318000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:47:54.560987Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e0-6315-7bd1-9b4f-3719988b5b2a.1786603660053784000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "California State University-San Bernardino",
+  "town_name": "San Bernardino",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "California State University-San Bernardino",
+      "town_name": "San Bernardino",
+      "template_id": "college-campus-tour-skips",
+      "title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+      "description": "",
+      "icon": "style",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+     , 
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      , 
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      , 
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      , 
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      , 
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      , 
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      , 
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      , 
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      , 
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ],
+      "warnings": [
+        "Research in progress."
+      ]
+    }
+  ],
+  "warnings": [
+    "Research in progress."
+  ]
+}
+web search: 
+web search: site:csusb.edu student spaces campus library study rooms CSUSB ...
+web search: 
+web search: site:csusb.edu "The Cave" CSUSB 24/7 ...
+web search: 
+web search: site:csusb.edu "Interfaith Center" "study" ...
+codex
+{"complete":true,"school_name":"California State University-San Bernardino","town_name":"San Bernardino","boards":[{"complete":true,"school_name":"California State University-San Bernardino","town_name":"San Bernardino","template_id":"college-campus-tour-skips","title":"What the Campus Tour Skips: 10 Places Students Share With Each Other","description":"Ten campus-specific places for studying, collaborating, making, resting and playing between classes, verified through current CSUSB sources.","icon":"style","cards":[{"subject_id":"csusb-the-cave","subject_type":"study_space","entity_name":"The Cave","title":"Settle Into The Cave","subtitle":"A 24/7 study area inside the Pfau Library Wedge","notes":"Bring your coursework to the Library Wedge when you need computer access and a study station beyond the library’s regular schedule.","short_summary":"An around-the-clock study base with computers in the library’s wedge-shaped annex.","evidence_claim":"CSUSB identifies The Cave as a 24/7 study area on the first floor of the Library Wedge and lists 71 computer stations in the Wedge lab.","source_url":"https://www.csusb.edu/its/support/technology-support/computer-labs","source_title":"Open Computer Labs | Information Technology Services | CSUSB","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open 24/7; CSUSB describes the space as a student study area, and computer login requires a Coyote ID and CSUSB password.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csusb-pfau-first-floor-commons","subject_type":"study_space","entity_name":"John M. Pfau Library 1st Floor Commons","title":"Meet at the First Floor Commons","subtitle":"A collaboration-ready commons inside Pfau Library","notes":"Use the commons for a meet-up or working session when your group needs computers, printing tools and flexible seating in one area.","short_summary":"A remodeled library commons designed for student interaction and shared academic work.","evidence_claim":"CSUSB reports that the remodeled 1st Floor Commons has furniture, computers, monitors, printers and scanners and was designed for student interaction and collaboration.","source_url":"https://www.csusb.edu/inside/article/573851/csusb-libraries-hosts-dedication-john-m-pfau-library-1st-floor-commons","source_title":"CSUSB Libraries hosts dedication of John M. Pfau Library 1st Floor Commons","source_kind":"university_official","source_published_at":"2023-09-19","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on the first floor of John M. Pfau Library; use is subject to current library access and building hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csusb-pfau-pl-503","subject_type":"study_space","entity_name":"Pfau Library Multi-Group Study Room PL-503","title":"Share a Table in PL-503","subtitle":"The library’s non-reservable multi-group room","notes":"Head to PL-503 when reservable rooms are booked, choose an open table and expect to share the room with another study group.","short_summary":"A shared fifth-floor room where several groups can work at separate tables.","evidence_claim":"Pfau Library identifies PL-503 as a Multi-Group Study Room with several tables; it cannot be reserved, and users must share while a table is open.","source_url":"https://www.csusb.edu/library/services/reserve-study-rooms","source_title":"Reserve Study Rooms | John M. Pfau Library | CSUSB","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"PL-503 is not reservable. Groups may use an unoccupied table and must share the room when space remains.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csusb-innovation-lab","subject_type":"place","entity_name":"Pfau Library Innovation Lab","title":"Prototype in the Innovation Lab","subtitle":"A library workspace for hands-on digital making","notes":"Bring a project idea and ask about the available tools before planning a 3D-printing, scanning, modeling or virtual-reality session.","short_summary":"A campus makerspace where students from different majors can experiment with emerging tools.","evidence_claim":"CSUSB states that the Pfau Library Innovation Lab gives students of all majors opportunities to learn 3D printing and scanning, modeling and virtual reality.","source_url":"https://www.csusb.edu/sites/default/files/CSUSB_WSCUC%20Institutional%20Report%202021_0.pdf","source_title":"WSCUC Reaffirmation of Accreditation Institutional Report","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located in Pfau Library. Confirm current lab availability and any equipment procedures before beginning a project.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csusb-the-retreat","subject_type":"study_space","entity_name":"The Retreat","title":"Reset at The Retreat","subtitle":"Hammocks, study space and quiet rest in SMSU South","notes":"Stop in between classes to study, rest in a hammock or use a massage chair; check the posted office hours before making the walk.","short_summary":"A wellness-oriented room that combines study seating with spaces for rest and recovery.","evidence_claim":"The Retreat’s official page documents hammocks, study space, napping space and no-cost massage-chair use in SMSU South 102A.","source_url":"https://www.csusb.edu/retreat/services-we-offer","source_title":"Services We Offer | The Retreat | CSUSB","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located in SMSU South 102A. The page lists Monday–Thursday, 9:00 a.m.–5:00 p.m., with Friday–Sunday closed.","cost_status":"free","under21_safe":true},{"subject_id":"csusb-student-success-studio","subject_type":"study_space","entity_name":"Student Success Studio (S3)","title":"Work Without a Reservation at S3","subtitle":"Independent and group study space in Indian Wells 202/203","notes":"Drop in for solo or group work without reserving a room, and use the computers, academic software or microwave when needed.","short_summary":"A no-reservation academic workspace with technology, tutoring support and practical amenities.","evidence_claim":"CSUSB says S3 provides group and independent study space without reservations, plus computers, academic software, internet and microwave access.","source_url":"https://www.csusb.edu/student-success-studio","source_title":"Student Success Studio (S3) | CSUSB","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located in Indian Wells 202/203. Summer 2026 hours are Monday–Thursday, 7:00 a.m.–5:30 p.m.; Friday–Sunday closed.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csusb-smsu-social-stairs","subject_type":"study_space","entity_name":"SMSU North Social Stairs","title":"Use the Social Stairs Between Classes","subtitle":"Tiered seating inside Santos Manuel Student Union North","notes":"Choose a step for a short study block or a relaxed meet-up, while keeping the stair route clear for people moving through the union.","short_summary":"A recognizable student-union feature used for both informal studying and time with friends.","evidence_claim":"CSUSB’s SMSU employee handbook states that students can study and relax with friends on the Social Stairs in SMSU North.","source_url":"https://www.csusb.edu/sites/default/files/upload/file/2025/SMSU%20and%20SRWC%20Student%20Employee%20Handbook%205.1.25_0.pdf","source_title":"SMSU and SRWC Student Employee Handbook","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on the first floor of SMSU North; access follows current student-union building hours and event use.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csusb-smsu-plaza-deck","subject_type":"study_space","entity_name":"SMSU North Plaza Deck","title":"Take Work Out to the Plaza Deck","subtitle":"An outdoor second-floor study and relaxation area","notes":"Bring a portable assignment to the second-floor deck for an outdoor work session, then move inside if weather or an event intervenes.","short_summary":"An elevated outdoor union space documented for studying and taking a break.","evidence_claim":"CSUSB’s SMSU employee handbook identifies a second-floor plaza deck where students can relax and study.","source_url":"https://www.csusb.edu/sites/default/files/upload/file/2025/SMSU%20and%20SRWC%20Student%20Employee%20Handbook%205.1.25_0.pdf","source_title":"SMSU and SRWC Student Employee Handbook","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outside the SMSU North second floor; availability follows building operations, scheduled events and weather conditions.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csusb-esports-arena","subject_type":"place","entity_name":"CSUSB Esports Arena","title":"Drop Into the Esports Arena","subtitle":"Student gaming stations in SMSU South 117","notes":"Bring your Coyote ID and use an open gaming station for casual play; contact the arena first if you want a formal tour of the facility.","short_summary":"A student-focused gaming room built for casual sessions, connection and competitive esports.","evidence_claim":"CSUSB says the Esports Arena in SMSU South 117 has 18 gaming PCs and two Nintendo Switch consoles that all CSUSB students may use free.","source_url":"https://www.csusb.edu/smsu/resources/esports-arena","source_title":"Esports Arena | Santos Manuel Student Union | CSUSB","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current hours are Monday–Thursday, 11:00 a.m.–8:00 p.m., and Friday, 11:00 a.m.–5:00 p.m.; closed weekends. Guests need a student escort.","cost_status":"free","under21_safe":true},{"subject_id":"csusb-coyote-lanes","subject_type":"place","entity_name":"Coyote Lanes","title":"Roll a Game at Coyote Lanes","subtitle":"Eight bowling lanes and four pool tables in SMSU North","notes":"Bring a physical Coyote ID, check walk-in availability and ask staff about the current student game and equipment charges before playing.","short_summary":"An on-campus bowling and billiards space suited to a break with classmates.","evidence_claim":"CSUSB documents Coyote Lanes as an eight-lane bowling alley open to students and the community, with four pool tables and walk-in play.","source_url":"https://www.csusb.edu/smsu/resources/coyote-lanes","source_title":"Coyote Lanes | Santos Manuel Student Union | CSUSB","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Bring a physical Coyote ID for affiliate rates. Walk-ins are first-come, first-served; bowling shoes and socks are required.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T06:49:46.348509Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9e0-9894-7621-a945-aa6f0f3c2fe8.1786603673748831000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+34,320
+
+{"complete":true,"school_name":"California State University-San Bernardino","town_name":"San Bernardino","boards":[{"complete":true,"school_name":"California State University-San Bernardino","town_name":"San Bernardino","template_id":"college-campus-tour-skips","title":"What the Campus Tour Skips: 10 Places Students Share With Each Other","description":"Ten campus-specific places for studying, collaborating, making, resting and playing between classes, verified through current CSUSB sources.","icon":"style","cards":[{"subject_id":"csusb-the-cave","subject_type":"study_space","entity_name":"The Cave","title":"Settle Into The Cave","subtitle":"A 24/7 study area inside the Pfau Library Wedge","notes":"Bring your coursework to the Library Wedge when you need computer access and a study station beyond the library’s regular schedule.","short_summary":"An around-the-clock study base with computers in the library’s wedge-shaped annex.","evidence_claim":"CSUSB identifies The Cave as a 24/7 study area on the first floor of the Library Wedge and lists 71 computer stations in the Wedge lab.","source_url":"https://www.csusb.edu/its/support/technology-support/computer-labs","source_title":"Open Computer Labs | Information Technology Services | CSUSB","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open 24/7; CSUSB describes the space as a student study area, and computer login requires a Coyote ID and CSUSB password.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csusb-pfau-first-floor-commons","subject_type":"study_space","entity_name":"John M. Pfau Library 1st Floor Commons","title":"Meet at the First Floor Commons","subtitle":"A collaboration-ready commons inside Pfau Library","notes":"Use the commons for a meet-up or working session when your group needs computers, printing tools and flexible seating in one area.","short_summary":"A remodeled library commons designed for student interaction and shared academic work.","evidence_claim":"CSUSB reports that the remodeled 1st Floor Commons has furniture, computers, monitors, printers and scanners and was designed for student interaction and collaboration.","source_url":"https://www.csusb.edu/inside/article/573851/csusb-libraries-hosts-dedication-john-m-pfau-library-1st-floor-commons","source_title":"CSUSB Libraries hosts dedication of John M. Pfau Library 1st Floor Commons","source_kind":"university_official","source_published_at":"2023-09-19","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on the first floor of John M. Pfau Library; use is subject to current library access and building hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csusb-pfau-pl-503","subject_type":"study_space","entity_name":"Pfau Library Multi-Group Study Room PL-503","title":"Share a Table in PL-503","subtitle":"The library’s non-reservable multi-group room","notes":"Head to PL-503 when reservable rooms are booked, choose an open table and expect to share the room with another study group.","short_summary":"A shared fifth-floor room where several groups can work at separate tables.","evidence_claim":"Pfau Library identifies PL-503 as a Multi-Group Study Room with several tables; it cannot be reserved, and users must share while a table is open.","source_url":"https://www.csusb.edu/library/services/reserve-study-rooms","source_title":"Reserve Study Rooms | John M. Pfau Library | CSUSB","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"PL-503 is not reservable. Groups may use an unoccupied table and must share the room when space remains.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csusb-innovation-lab","subject_type":"place","entity_name":"Pfau Library Innovation Lab","title":"Prototype in the Innovation Lab","subtitle":"A library workspace for hands-on digital making","notes":"Bring a project idea and ask about the available tools before planning a 3D-printing, scanning, modeling or virtual-reality session.","short_summary":"A campus makerspace where students from different majors can experiment with emerging tools.","evidence_claim":"CSUSB states that the Pfau Library Innovation Lab gives students of all majors opportunities to learn 3D printing and scanning, modeling and virtual reality.","source_url":"https://www.csusb.edu/sites/default/files/CSUSB_WSCUC%20Institutional%20Report%202021_0.pdf","source_title":"WSCUC Reaffirmation of Accreditation Institutional Report","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located in Pfau Library. Confirm current lab availability and any equipment procedures before beginning a project.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csusb-the-retreat","subject_type":"study_space","entity_name":"The Retreat","title":"Reset at The Retreat","subtitle":"Hammocks, study space and quiet rest in SMSU South","notes":"Stop in between classes to study, rest in a hammock or use a massage chair; check the posted office hours before making the walk.","short_summary":"A wellness-oriented room that combines study seating with spaces for rest and recovery.","evidence_claim":"The Retreat’s official page documents hammocks, study space, napping space and no-cost massage-chair use in SMSU South 102A.","source_url":"https://www.csusb.edu/retreat/services-we-offer","source_title":"Services We Offer | The Retreat | CSUSB","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located in SMSU South 102A. The page lists Monday–Thursday, 9:00 a.m.–5:00 p.m., with Friday–Sunday closed.","cost_status":"free","under21_safe":true},{"subject_id":"csusb-student-success-studio","subject_type":"study_space","entity_name":"Student Success Studio (S3)","title":"Work Without a Reservation at S3","subtitle":"Independent and group study space in Indian Wells 202/203","notes":"Drop in for solo or group work without reserving a room, and use the computers, academic software or microwave when needed.","short_summary":"A no-reservation academic workspace with technology, tutoring support and practical amenities.","evidence_claim":"CSUSB says S3 provides group and independent study space without reservations, plus computers, academic software, internet and microwave access.","source_url":"https://www.csusb.edu/student-success-studio","source_title":"Student Success Studio (S3) | CSUSB","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located in Indian Wells 202/203. Summer 2026 hours are Monday–Thursday, 7:00 a.m.–5:30 p.m.; Friday–Sunday closed.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csusb-smsu-social-stairs","subject_type":"study_space","entity_name":"SMSU North Social Stairs","title":"Use the Social Stairs Between Classes","subtitle":"Tiered seating inside Santos Manuel Student Union North","notes":"Choose a step for a short study block or a relaxed meet-up, while keeping the stair route clear for people moving through the union.","short_summary":"A recognizable student-union feature used for both informal studying and time with friends.","evidence_claim":"CSUSB’s SMSU employee handbook states that students can study and relax with friends on the Social Stairs in SMSU North.","source_url":"https://www.csusb.edu/sites/default/files/upload/file/2025/SMSU%20and%20SRWC%20Student%20Employee%20Handbook%205.1.25_0.pdf","source_title":"SMSU and SRWC Student Employee Handbook","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on the first floor of SMSU North; access follows current student-union building hours and event use.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csusb-smsu-plaza-deck","subject_type":"study_space","entity_name":"SMSU North Plaza Deck","title":"Take Work Out to the Plaza Deck","subtitle":"An outdoor second-floor study and relaxation area","notes":"Bring a portable assignment to the second-floor deck for an outdoor work session, then move inside if weather or an event intervenes.","short_summary":"An elevated outdoor union space documented for studying and taking a break.","evidence_claim":"CSUSB’s SMSU employee handbook identifies a second-floor plaza deck where students can relax and study.","source_url":"https://www.csusb.edu/sites/default/files/upload/file/2025/SMSU%20and%20SRWC%20Student%20Employee%20Handbook%205.1.25_0.pdf","source_title":"SMSU and SRWC Student Employee Handbook","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outside the SMSU North second floor; availability follows building operations, scheduled events and weather conditions.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"csusb-esports-arena","subject_type":"place","entity_name":"CSUSB Esports Arena","title":"Drop Into the Esports Arena","subtitle":"Student gaming stations in SMSU South 117","notes":"Bring your Coyote ID and use an open gaming station for casual play; contact the arena first if you want a formal tour of the facility.","short_summary":"A student-focused gaming room built for casual sessions, connection and competitive esports.","evidence_claim":"CSUSB says the Esports Arena in SMSU South 117 has 18 gaming PCs and two Nintendo Switch consoles that all CSUSB students may use free.","source_url":"https://www.csusb.edu/smsu/resources/esports-arena","source_title":"Esports Arena | Santos Manuel Student Union | CSUSB","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current hours are Monday–Thursday, 11:00 a.m.–8:00 p.m., and Friday, 11:00 a.m.–5:00 p.m.; closed weekends. Guests need a student escort.","cost_status":"free","under21_safe":true},{"subject_id":"csusb-coyote-lanes","subject_type":"place","entity_name":"Coyote Lanes","title":"Roll a Game at Coyote Lanes","subtitle":"Eight bowling lanes and four pool tables in SMSU North","notes":"Bring a physical Coyote ID, check walk-in availability and ask staff about the current student game and equipment charges before playing.","short_summary":"An on-campus bowling and billiards space suited to a break with classmates.","evidence_claim":"CSUSB documents Coyote Lanes as an eight-lane bowling alley open to students and the community, with four pool tables and walk-in play.","source_url":"https://www.csusb.edu/smsu/resources/coyote-lanes","source_title":"Coyote Lanes | Santos Manuel Student Union | CSUSB","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Bring a physical Coyote ID for affiliate rates. Walk-ins are first-come, first-served; bowling shoes and socks are required.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}

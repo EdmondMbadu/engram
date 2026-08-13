@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "B4LodEqccUz5Kfrvs3Mt",
+    "schoolName": "Pomona College",
+    "shortSchoolName": "Pomona College",
+    "townName": "Claremont",
+    "state": "CA",
+    "countryCode": "US",
+    "unitId": "121345",
+    "website": "https://www.pomona.edu/",
+    "latitude": 34.099027,
+    "longitude": -117.714556,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/f/f9/Pomona_College_seal.svg/250px-Pomona_College_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=pomona.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "Collaborative Commons",
+    "Glass Bridge & Treadmill Desks",
+    "Digital Scholarship Collaboratory",
+    "Study Cubes",
+    "Honnold & Mudd 3 Open Study Spaces",
+    "Honnold Fourth-Floor Quiet Study Spaces",
+    "Honnold 4 Study Rooms",
+    "Honnold 3 South Study Rooms",
+    "History Department Library",
+    "Mudd 1 Open Study Area"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://umd.edu/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://umd.edu/visit",
+      "error": ""
+    },
+    {
+      "url": "https://umd.edu/about/landmarks",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://umd.edu/about/landmarks",
+      "error": ""
+    },
+    {
+      "url": "https://www.academiccatalog.umd.edu/undergraduate/campus-administration-resources-student-services/student-programs-services/student-union/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.academiccatalog.umd.edu/undergraduate/campus-administration-resources-student-services/student-programs-services/student-union/",
+      "error": ""
+    },
+    {
+      "url": "https://stamp.umd.edu/visit/memorial_chapel",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stamp.umd.edu/visit/memorial_chapel",
+      "error": ""
+    },
+    {
+      "url": "https://recwell.umd.edu/eppley-recreation-center-0",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recwell.umd.edu/eppley-recreation-center-0",
+      "error": ""
+    },
+    {
+      "url": "https://arts.umd.edu/experience/spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arts.umd.edu/experience/spaces",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

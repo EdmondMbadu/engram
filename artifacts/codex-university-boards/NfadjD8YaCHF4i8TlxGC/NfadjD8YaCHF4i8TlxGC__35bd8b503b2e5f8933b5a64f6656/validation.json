@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.smu.edu/academic-ceremonies/history-and-archives/symbols-and-traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smu.edu/academic-ceremonies/history-and-archives/symbols-and-traditions",
+      "error": ""
+    },
+    {
+      "url": "https://www.smu.edu/admission/experience/spirit-traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smu.edu/admission/experience/spirit-traditions",
+      "error": ""
+    },
+    {
+      "url": "https://www.smu.edu/admission/experience",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smu.edu/admission/experience",
+      "error": ""
+    },
+    {
+      "url": "https://www.smu.edu/stories/spirit-and-traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smu.edu/stories/spirit-and-traditions",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

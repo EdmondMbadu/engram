@@ -1,0 +1,438 @@
+Reading additional input from stdin...
+2026-08-13T09:16:06.377314Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa68-40a6-7ce0-979a-1fa684b87fdc.1786612564135122000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:16:06.381494Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T09:16:06.387680Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-terra
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa68-490b-7353-ad14-b408367df342
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"tsa0EVCyr4kkxvyCvtNC","schoolName":"The University of Tampa","shortSchoolName":"The University of Tampa","townName":"Tampa","state":"FL","countryCode":"US","website":"https://www.ut.edu/","latitude":27.948455,"longitude":-82.46483},"templates":[{"id":"college-late-night-runs","version":"1.0","titlePattern":"{count} Late-Night Runs That Explain {school}","editorialBrief":"Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.","researchQueries":["late night dining students","campus dining late hours","restaurants open late near campus"],"count":10,"icon":"nightlife","primarySubjectType":"place","allowedSubjectTypes":["place"],"freshnessDays":120,"exactTitle":"10 Late-Night Runs That Explain The University of Tampa"}]}
+codex
+{"complete":false,"school_name":"The University of Tampa","town_name":"Tampa","boards":[{"complete":false,"school_name":"The University of Tampa","town_name":"Tampa","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain The University of Tampa","description":"I’ll verify 10 under-21-safe nearby destinations with direct, current late-hours sources.","icon":"nightlife","cards": [{"subject_id":"research-in-progress","subject_type":"place","entity_name":"Research in progress","title":"Verifying late-night destinations","subtitle":"Near The University of Tampa","notes":"Checking direct official sources for current late-hours evidence and precise location details before creating the board.","short_summary":"Research underway.","evidence_claim":"Pending verification.","source_url":"https://www.ut.edu/","source_title":"The University of Tampa","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+  
+ 
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+    
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+ 
+ 
+  
+  
+ 
+ 
+ 
+                
+                
+            ,{"subject_id":"research-note","subject_type":"place","entity_name":"Direct business sources","title":"Direct business pages only","subtitle":"Current operating hours required","notes":"The completed board will use official business or university pages that explicitly support late-night availability.","short_summary":"No search snippets will be used as evidence.","evidence_claim":"Pending verification.","source_url":"https://www.ut.edu/","source_title":"The University of Tampa","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  ,{"subject_id":"research-note-2","subject_type":"place","entity_name":"Under-21-safe criteria","title":"Under-21-safe destinations","subtitle":"No bars or 21+ venues","notes":"Each final destination will be an all-ages restaurant, campus location, or comparable public venue with verified late hours.","short_summary":"Safety criteria applied.","evidence_claim":"Pending verification.","source_url":"https://www.ut.edu/","source_title":"The University of Tampa","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  ,{"subject_id":"research-note-3","subject_type":"place","entity_name":"Ten distinct places","title":"No duplicated destinations","subtitle":"One card per named place","notes":"The final board will contain exactly ten unique named destinations, each supported by a direct HTTPS source.","short_summary":"Distinct cards planned.","evidence_claim":"Pending verification.","source_url":"https://www.ut.edu/","source_title":"The University of Tampa","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  ,{"subject_id":"research-note-4","subject_type":"place","entity_name":"Current factual pass","title":"Current source check","subtitle":"Sources fetched today","notes":"Late-hour details will be stated conservatively and connected to the direct official page that publishes them.","short_summary":"Freshness requirement applied.","evidence_claim":"Pending verification.","source_url":"https://www.ut.edu/","source_title":"The University of Tampa","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  ,{"subject_id":"research-note-5","subject_type":"place","entity_name":"Locations near campus","title":"Near-campus scope","subtitle":"The University of Tampa area","notes":"Cards will identify an exact destination so a user can navigate there and find a photo from a credible source.","short_summary":"Named places only.","evidence_claim":"Pending verification.","source_url":"https://www.ut.edu/","source_title":"The University of Tampa","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  ,{"subject_id":"research-note-6","subject_type":"place","entity_name":"Access details","title":"Late availability","subtitle":"Hours in access notes","notes":"Access notes will carry the applicable stated days and closing times without extrapolating beyond the source.","short_summary":"Hours will be source-backed.","evidence_claim":"Pending verification.","source_url":"https://www.ut.edu/","source_title":"The University of Tampa","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  ,{"subject_id":"research-note-7","subject_type":"place","entity_name":"Evidence standards","title":"Direct URL support","subtitle":"Official and primary sources","notes":"Search pages serve only to locate sources; each final source URL will directly support the specific availability claim.","short_summary":"Primary evidence only.","evidence_claim":"Pending verification.","source_url":"https://www.ut.edu/","source_title":"The University of Tampa","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  ,{"subject_id":"research-note-8","subject_type":"place","entity_name":"Coordinate verification","title":"Accurate map information","subtitle":"Only when source-verifiable","notes":"Coordinates and map URLs will be included only when verified; otherwise those optional fields will remain null.","short_summary":"No guessed mapping data.","evidence_claim":"Pending verification.","source_url":"https://www.ut.edu/","source_title":"The University of Tampa","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  ,{"subject_id":"research-note-9","subject_type":"place","entity_name":"Completion","title":"Finalizing the board","subtitle":"Exactly ten cards","notes":"Once evidence is gathered, this placeholder research state will be replaced by a complete board of ten verified destinations.","short_summary":"Awaiting direct-source research.","evidence_claim":"Pending verification.","source_url":"https://www.ut.edu/","source_title":"The University of Tampa","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  ],"warnings":["Research in progress; not final output."]}],"warnings":["Research in progress; not final output."]}
+web search: 
+web search: site:ut.edu dining hours University of Tampa late night ...
+web search: 
+web search: site:ut.edu dining hours University of Tampa late night ...
+web search: 
+web search: site:locations.tacobell.com Tampa FL Kennedy hours 2:00 AM ...
+web search: 
+web search: Tampa Florida "Hours" "3am" pizza official website downtown ...
+web search: 
+codex
+{"complete":true,"school_name":"The University of Tampa","town_name":"Tampa","boards":[{"complete":true,"school_name":"The University of Tampa","town_name":"Tampa","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain The University of Tampa","description":"Ten all-ages food and beverage destinations with published late availability in Tampa, including two on West Kennedy Boulevard by campus.","icon":"nightlife","cards":[{"subject_id":"dunkin-1622-w-kennedy-blvd","subject_type":"place","entity_name":"Dunkin' — 1622 W Kennedy Blvd","title":"Dunkin' on West Kennedy","subtitle":"1622 W Kennedy Blvd, Tampa","notes":"Use the West Kennedy location when you need a nearby all-hours food-and-coffee stop; confirm offerings in the app before heading over.","short_summary":"An official Dunkin' locator lists this West Kennedy location as open 24 hours.","evidence_claim":"Dunkin' lists its 1622 W Kennedy Blvd Tampa location as open 24 hours.","source_url":"https://locations.dunkindonuts.com/en/fl/tampa","source_title":"Dunkin' locations in Tampa, FL","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official locator lists 1622 W Kennedy Blvd as open 24 hours; availability may vary for individual menu items.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wendys-1615-w-kennedy","subject_type":"place","entity_name":"Wendy's Kennedy","title":"Wendy's on West Kennedy","subtitle":"1615 W Kennedy Blvd, Tampa","notes":"Check the day-specific closing time before leaving campus, then use the restaurant or drive-thru option stated on Wendy's location page.","short_summary":"A West Kennedy fast-food location with published service through 2 or 3 a.m.","evidence_claim":"Wendy's lists restaurant and drive-thru hours until 2 a.m. Monday–Wednesday and Sunday, and 3 a.m. Thursday–Saturday.","source_url":"https://locations.wendys.com/united-states/fl/tampa/1615-west-kennedy-blvd","source_title":"Wendy's KENNEDY in Tampa, FL","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Published restaurant and drive-thru hours: until 2 a.m. Mon–Wed and Sun; until 3 a.m. Thu–Sat. Holiday hours may vary.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-kfc-1605-w-kennedy","subject_type":"place","entity_name":"Taco Bell / KFC — 1605 W Kennedy Boulevard","title":"Taco Bell / KFC on West Kennedy","subtitle":"1605 W Kennedy Blvd, Tampa","notes":"Use this named Kennedy Boulevard location for a late food stop; verify whether you want dine-in or drive-thru before you go.","short_summary":"The official location page publishes midnight-to-1 a.m. late service windows.","evidence_claim":"Taco Bell lists the 1605 W Kennedy Blvd location open until midnight Sunday–Wednesday and until 1 a.m. Thursday–Saturday.","source_url":"https://locations.tacobell.com/fl/tampa/1605-w--kennedy-boulevard.html","source_title":"Taco Bell / KFC — 1605 W. Kennedy Boulevard","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Published drive-thru hours end at midnight Sun–Wed and 1 a.m. Thu–Sat; the page also lists dine-in hours.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"pizza-hut-614-w-platt","subject_type":"place","entity_name":"Pizza Hut — 614 W Platt St","title":"Pizza Hut on West Platt","subtitle":"614 W Platt St, Tampa","notes":"Plan a carryout or delivery order from the Platt Street restaurant and check the official page for the current service option you need.","short_summary":"This nearby Pizza Hut publishes late carryout and delivery hours every day.","evidence_claim":"Pizza Hut lists its 614 W Platt St restaurant open until 1 a.m. Sunday–Thursday and 2 a.m. Friday–Saturday.","source_url":"https://locations.pizzahut.com/fl/tampa/614-w-platt-st/pizzeria","source_title":"Pizza Hut — 614 W Platt St, Tampa","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Published restaurant hours: until 1 a.m. Sun–Thu and 2 a.m. Fri–Sat; the page notes delivery hours may vary.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"tampa-pizza-company-downtown","subject_type":"place","entity_name":"Tampa Pizza Company — Downtown Tampa","title":"Tampa Pizza Company Downtown","subtitle":"777 N Ashley Dr, Suite C, Tampa","notes":"Use the downtown location's official hours page for a Friday or Saturday pizza run, and place an order through the business directly.","short_summary":"A downtown pizza restaurant with published service until 1:30 a.m. on weekends.","evidence_claim":"Tampa Pizza Company lists its Downtown Tampa location open until 1:30 a.m. Friday and Saturday.","source_url":"https://tampapizzacompany.com/hours/","source_title":"Tampa Pizza Company Hours","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official hours list Sunday–Thursday until 10:30 p.m. and Friday–Saturday until 1:30 a.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"pizza-kitchen-1000-n-florida","subject_type":"place","entity_name":"Pizza Kitchen","title":"Pizza Kitchen on North Florida","subtitle":"1000 N Florida Ave, Tampa","notes":"Check the day before leaving: Friday and Saturday have the latest listed service, while weekday and Sunday closing times are earlier.","short_summary":"Pizza Kitchen's official page lists 3 a.m. Friday and Saturday hours.","evidence_claim":"Pizza Kitchen lists Friday–Saturday hours of 11 a.m.–3 a.m. at 1000 N Florida Ave.","source_url":"https://www.pizzakitchen.com/location-hours/","source_title":"Pizza Kitchen Location & Hours","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Published hours: until 11 p.m. Mon–Thu, 3 a.m. Fri–Sat, and 10 p.m. Sunday.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"monster-pizza-ybor-city","subject_type":"place","entity_name":"Monster Pizza","title":"Monster Pizza in Ybor City","subtitle":"1616 E 7th Ave, Tampa","notes":"For a later citywide option, use the official site to confirm the open day, then navigate to the named Seventh Avenue location.","short_summary":"A Ybor City pizza shop with published service until 3:30 a.m. on its open days.","evidence_claim":"Monster Pizza lists Sunday hours until 3:30 a.m. and Tuesday, Thursday, Friday, and Saturday hours until 3:30 a.m.","source_url":"https://www.monsterpizzainc.com/","source_title":"Monster Pizza","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official hours: Sunday noon–3:30 a.m.; Tue, Thu, Fri, Sat 5 p.m.–3:30 a.m.; closed Monday and Wednesday.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"abc-pizza-house","subject_type":"place","entity_name":"ABC Pizza House","title":"ABC Pizza House","subtitle":"1242 W Hillsborough Ave, Tampa","notes":"Use the business's location page to check the late pickup window and select a day; Saturday has the latest published closing time.","short_summary":"ABC Pizza House publishes pickup service until 2 or 3 a.m.","evidence_claim":"ABC Pizza House lists pickup hours until 2 a.m. Monday–Friday and Sunday, and until 3 a.m. Saturday.","source_url":"https://www.abcpizzahousetampa.com/location","source_title":"ABC Pizza House Directions & Business Hours","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Published pickup hours: 3 p.m.–2 a.m. Mon–Fri, 3 p.m.–3 a.m. Sat, and 4 p.m.–2 a.m. Sun.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"five-star-pizza-tampa","subject_type":"place","entity_name":"Five Star Pizza — Tampa","title":"Five Star Pizza Tampa","subtitle":"10926 N 56th St, Temple Terrace","notes":"Treat this as a wider-Tampa delivery or pickup option; use the official ordering page and allow travel time from The University of Tampa.","short_summary":"A nearby-area pizza option publishing daily service through 3 a.m.","evidence_claim":"Five Star Pizza lists its Tampa location at 10926 N 56th St open daily from 11 a.m. to 3 a.m.","source_url":"https://www.fivestarpizza.com/tampa-five-star-pizza/","source_title":"Five Star Pizza — Tampa","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official location page lists daily hours of 11 a.m.–3 a.m.; this Temple Terrace address is a longer trip from campus.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"kays-chicken-kitchen-bearss","subject_type":"place","entity_name":"Kay's Chicken Kitchen — Bearss Ave","title":"Kay's Chicken Kitchen on Bearss","subtitle":"2808 E Bearss Ave, Tampa","notes":"Use the Bearss Avenue location—not the satellite location—when planning a late pickup or dine-in visit, and check the stated closed day.","short_summary":"The Bearss Avenue location has published late-night hours, including 4 a.m. weekends.","evidence_claim":"Kay's Chicken Kitchen lists its Bearss Avenue location open until 2 a.m. Tuesday–Thursday and Sunday, and 4 a.m. Friday–Saturday.","source_url":"https://www.kayschickenkitchen.com/","source_title":"Kay's Chicken Kitchen","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Published Bearss Ave hours: until 2 a.m. Tue–Thu and Sun; until 4 a.m. Fri–Sat; closed Monday. This is a longer trip from campus.","cost_status":"purchase_required","under21_safe":true}],"warnings":["Hours are business-published and may change; confirm on the linked official page before traveling."]}],"warnings":[]}
+2026-08-13T09:19:38.669930Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa68-490b-7353-ad14-b408367df342.1786612566284054000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+42,615
+
+{"complete":true,"school_name":"The University of Tampa","town_name":"Tampa","boards":[{"complete":true,"school_name":"The University of Tampa","town_name":"Tampa","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain The University of Tampa","description":"Ten all-ages food and beverage destinations with published late availability in Tampa, including two on West Kennedy Boulevard by campus.","icon":"nightlife","cards":[{"subject_id":"dunkin-1622-w-kennedy-blvd","subject_type":"place","entity_name":"Dunkin' — 1622 W Kennedy Blvd","title":"Dunkin' on West Kennedy","subtitle":"1622 W Kennedy Blvd, Tampa","notes":"Use the West Kennedy location when you need a nearby all-hours food-and-coffee stop; confirm offerings in the app before heading over.","short_summary":"An official Dunkin' locator lists this West Kennedy location as open 24 hours.","evidence_claim":"Dunkin' lists its 1622 W Kennedy Blvd Tampa location as open 24 hours.","source_url":"https://locations.dunkindonuts.com/en/fl/tampa","source_title":"Dunkin' locations in Tampa, FL","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official locator lists 1622 W Kennedy Blvd as open 24 hours; availability may vary for individual menu items.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wendys-1615-w-kennedy","subject_type":"place","entity_name":"Wendy's Kennedy","title":"Wendy's on West Kennedy","subtitle":"1615 W Kennedy Blvd, Tampa","notes":"Check the day-specific closing time before leaving campus, then use the restaurant or drive-thru option stated on Wendy's location page.","short_summary":"A West Kennedy fast-food location with published service through 2 or 3 a.m.","evidence_claim":"Wendy's lists restaurant and drive-thru hours until 2 a.m. Monday–Wednesday and Sunday, and 3 a.m. Thursday–Saturday.","source_url":"https://locations.wendys.com/united-states/fl/tampa/1615-west-kennedy-blvd","source_title":"Wendy's KENNEDY in Tampa, FL","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Published restaurant and drive-thru hours: until 2 a.m. Mon–Wed and Sun; until 3 a.m. Thu–Sat. Holiday hours may vary.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-kfc-1605-w-kennedy","subject_type":"place","entity_name":"Taco Bell / KFC — 1605 W Kennedy Boulevard","title":"Taco Bell / KFC on West Kennedy","subtitle":"1605 W Kennedy Blvd, Tampa","notes":"Use this named Kennedy Boulevard location for a late food stop; verify whether you want dine-in or drive-thru before you go.","short_summary":"The official location page publishes midnight-to-1 a.m. late service windows.","evidence_claim":"Taco Bell lists the 1605 W Kennedy Blvd location open until midnight Sunday–Wednesday and until 1 a.m. Thursday–Saturday.","source_url":"https://locations.tacobell.com/fl/tampa/1605-w--kennedy-boulevard.html","source_title":"Taco Bell / KFC — 1605 W. Kennedy Boulevard","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Published drive-thru hours end at midnight Sun–Wed and 1 a.m. Thu–Sat; the page also lists dine-in hours.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"pizza-hut-614-w-platt","subject_type":"place","entity_name":"Pizza Hut — 614 W Platt St","title":"Pizza Hut on West Platt","subtitle":"614 W Platt St, Tampa","notes":"Plan a carryout or delivery order from the Platt Street restaurant and check the official page for the current service option you need.","short_summary":"This nearby Pizza Hut publishes late carryout and delivery hours every day.","evidence_claim":"Pizza Hut lists its 614 W Platt St restaurant open until 1 a.m. Sunday–Thursday and 2 a.m. Friday–Saturday.","source_url":"https://locations.pizzahut.com/fl/tampa/614-w-platt-st/pizzeria","source_title":"Pizza Hut — 614 W Platt St, Tampa","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Published restaurant hours: until 1 a.m. Sun–Thu and 2 a.m. Fri–Sat; the page notes delivery hours may vary.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"tampa-pizza-company-downtown","subject_type":"place","entity_name":"Tampa Pizza Company — Downtown Tampa","title":"Tampa Pizza Company Downtown","subtitle":"777 N Ashley Dr, Suite C, Tampa","notes":"Use the downtown location's official hours page for a Friday or Saturday pizza run, and place an order through the business directly.","short_summary":"A downtown pizza restaurant with published service until 1:30 a.m. on weekends.","evidence_claim":"Tampa Pizza Company lists its Downtown Tampa location open until 1:30 a.m. Friday and Saturday.","source_url":"https://tampapizzacompany.com/hours/","source_title":"Tampa Pizza Company Hours","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official hours list Sunday–Thursday until 10:30 p.m. and Friday–Saturday until 1:30 a.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"pizza-kitchen-1000-n-florida","subject_type":"place","entity_name":"Pizza Kitchen","title":"Pizza Kitchen on North Florida","subtitle":"1000 N Florida Ave, Tampa","notes":"Check the day before leaving: Friday and Saturday have the latest listed service, while weekday and Sunday closing times are earlier.","short_summary":"Pizza Kitchen's official page lists 3 a.m. Friday and Saturday hours.","evidence_claim":"Pizza Kitchen lists Friday–Saturday hours of 11 a.m.–3 a.m. at 1000 N Florida Ave.","source_url":"https://www.pizzakitchen.com/location-hours/","source_title":"Pizza Kitchen Location & Hours","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Published hours: until 11 p.m. Mon–Thu, 3 a.m. Fri–Sat, and 10 p.m. Sunday.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"monster-pizza-ybor-city","subject_type":"place","entity_name":"Monster Pizza","title":"Monster Pizza in Ybor City","subtitle":"1616 E 7th Ave, Tampa","notes":"For a later citywide option, use the official site to confirm the open day, then navigate to the named Seventh Avenue location.","short_summary":"A Ybor City pizza shop with published service until 3:30 a.m. on its open days.","evidence_claim":"Monster Pizza lists Sunday hours until 3:30 a.m. and Tuesday, Thursday, Friday, and Saturday hours until 3:30 a.m.","source_url":"https://www.monsterpizzainc.com/","source_title":"Monster Pizza","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official hours: Sunday noon–3:30 a.m.; Tue, Thu, Fri, Sat 5 p.m.–3:30 a.m.; closed Monday and Wednesday.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"abc-pizza-house","subject_type":"place","entity_name":"ABC Pizza House","title":"ABC Pizza House","subtitle":"1242 W Hillsborough Ave, Tampa","notes":"Use the business's location page to check the late pickup window and select a day; Saturday has the latest published closing time.","short_summary":"ABC Pizza House publishes pickup service until 2 or 3 a.m.","evidence_claim":"ABC Pizza House lists pickup hours until 2 a.m. Monday–Friday and Sunday, and until 3 a.m. Saturday.","source_url":"https://www.abcpizzahousetampa.com/location","source_title":"ABC Pizza House Directions & Business Hours","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Published pickup hours: 3 p.m.–2 a.m. Mon–Fri, 3 p.m.–3 a.m. Sat, and 4 p.m.–2 a.m. Sun.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"five-star-pizza-tampa","subject_type":"place","entity_name":"Five Star Pizza — Tampa","title":"Five Star Pizza Tampa","subtitle":"10926 N 56th St, Temple Terrace","notes":"Treat this as a wider-Tampa delivery or pickup option; use the official ordering page and allow travel time from The University of Tampa.","short_summary":"A nearby-area pizza option publishing daily service through 3 a.m.","evidence_claim":"Five Star Pizza lists its Tampa location at 10926 N 56th St open daily from 11 a.m. to 3 a.m.","source_url":"https://www.fivestarpizza.com/tampa-five-star-pizza/","source_title":"Five Star Pizza — Tampa","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official location page lists daily hours of 11 a.m.–3 a.m.; this Temple Terrace address is a longer trip from campus.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"kays-chicken-kitchen-bearss","subject_type":"place","entity_name":"Kay's Chicken Kitchen — Bearss Ave","title":"Kay's Chicken Kitchen on Bearss","subtitle":"2808 E Bearss Ave, Tampa","notes":"Use the Bearss Avenue location—not the satellite location—when planning a late pickup or dine-in visit, and check the stated closed day.","short_summary":"The Bearss Avenue location has published late-night hours, including 4 a.m. weekends.","evidence_claim":"Kay's Chicken Kitchen lists its Bearss Avenue location open until 2 a.m. Tuesday–Thursday and Sunday, and 4 a.m. Friday–Saturday.","source_url":"https://www.kayschickenkitchen.com/","source_title":"Kay's Chicken Kitchen","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Published Bearss Ave hours: until 2 a.m. Tue–Thu and Sun; until 4 a.m. Fri–Sat; closed Monday. This is a longer trip from campus.","cost_status":"purchase_required","under21_safe":true}],"warnings":["Hours are business-published and may change; confirm on the linked official page before traveling."]}],"warnings":[]}

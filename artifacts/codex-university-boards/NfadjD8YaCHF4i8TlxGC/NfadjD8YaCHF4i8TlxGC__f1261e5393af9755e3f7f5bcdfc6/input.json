@@ -1,0 +1,61 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "0q9cJHHcMVEhoukFSbjL",
+    "schoolName": "University of Denver",
+    "shortSchoolName": "University of Denver",
+    "townName": "Denver",
+    "state": "CO",
+    "countryCode": "US",
+    "unitId": "127060",
+    "website": "https://www.du.edu/",
+    "latitude": 39.678005,
+    "longitude": -104.963259,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/a/a9/University_of_Denver_seal.svg/250px-University_of_Denver_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=du.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Community Commons",
+    "Rebecca Chopp Grand Central Market",
+    "Evans Pedestrian Bridge",
+    "Anderson Academic Commons",
+    "Buchtel Memorial Tower",
+    "Evans Chapel",
+    "Coors Fitness Center",
+    "Robert and Judi Newman Center for the Performing Arts",
+    "Chamberlin Observatory",
+    "Driscoll Commons",
+    "Fogel Reading Room",
+    "Gottesfeld Reading Room",
+    "Quinette Family Reading Room",
+    "Faculty Reading Room",
+    "Frank Study Area",
+    "The Loft",
+    "Viewing Area",
+    "Large Group Study Room 182",
+    "Small Group Study Room 108A",
+    "Research Carrel Room"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

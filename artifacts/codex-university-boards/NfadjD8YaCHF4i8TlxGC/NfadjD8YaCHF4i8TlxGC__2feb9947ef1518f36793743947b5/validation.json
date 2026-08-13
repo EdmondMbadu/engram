@@ -1,0 +1,73 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.lipscomb.edu/sites/default/files/2025-10/Lipscomb%20Campus%20Map%202025.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lipscomb.edu/sites/default/files/2025-10/Lipscomb%20Campus%20Map%202025.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.lipscomb.edu/visiting-lipscomb",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lipscomb.edu/visiting-lipscomb",
+      "error": ""
+    },
+    {
+      "url": "https://www.lipscomb.edu/student-life/student-services/department-security/id-cards",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lipscomb.edu/student-life/student-services/department-security/id-cards",
+      "error": ""
+    },
+    {
+      "url": "https://lipscomb.edu/events/shane-and-mattie-ree-neal-art-exhibit-opening",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lipscomb.edu/events/shane-and-mattie-ree-neal-art-exhibit-opening",
+      "error": ""
+    },
+    {
+      "url": "https://lipscomb.edu/student-life/housing-residence-life/dining",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lipscomb.edu/student-life/housing-residence-life/dining",
+      "error": ""
+    },
+    {
+      "url": "https://lipscomb.edu/student-life/health-wellness/campus-recreation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lipscomb.edu/student-life/health-wellness/campus-recreation",
+      "error": ""
+    },
+    {
+      "url": "https://lipscomb.edu/student-life/student-engagement/student-leadership/student-activities-board",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lipscomb.edu/student-life/student-engagement/student-leadership/student-activities-board",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Beaman Library",
+    "Bennett Campus Center",
+    "Student Activities Center"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

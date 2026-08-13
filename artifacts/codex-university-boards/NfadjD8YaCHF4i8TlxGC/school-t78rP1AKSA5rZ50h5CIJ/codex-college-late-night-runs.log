@@ -1,0 +1,308 @@
+Reading additional input from stdin...
+2026-08-13T08:05:04.289030Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa26-9646-7660-8055-6b8f0cd4ec7d.1786608260678947000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:05:04.329895Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa26-9646-7a50-8a2f-593b68699b96.1786608260679412000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa27-4027-78d3-8b16-c2239b99f275
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"t78rP1AKSA5rZ50h5CIJ","schoolName":"Loyola Marymount University","shortSchoolName":"Loyola Marymount University","townName":"Los Angeles","state":"CA","countryCode":"US","website":"https://www.lmu.edu/","latitude":33.97085,"longitude":-118.415744},"templates":[{"id":"college-late-night-runs","version":"1.0","titlePattern":"{count} Late-Night Runs That Explain {school}","editorialBrief":"Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.","researchQueries":["late night dining students","campus dining late hours","restaurants open late near campus"],"count":10,"icon":"nightlife","primarySubjectType":"place","allowedSubjectTypes":["place"],"freshnessDays":120,"exactTitle":"10 Late-Night Runs That Explain Loyola Marymount University"}]}
+2026-08-13T08:05:04.441484Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa26-9661-7381-8e7e-38a2ee52763a.1786608260705891000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:05:04.448947Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T08:05:04.500929Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa26-966e-75e3-a7db-2d5b73d9154d.1786608260719104000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:05:04.505682Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T08:05:04.545801Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa26-966a-7de1-aadd-42ef3f7a4728.1786608260715929000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:05:04.589161Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa26-9661-7b40-850f-a1969254b47a.1786608260705833000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:05:04.651742Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa26-9674-7771-8ce2-448e23f4a5e9.1786608260724713000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Loyola Marymount University",
+  "town_name": "Los Angeles",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Loyola Marymount University",
+      "town_name": "Los Angeles",
+      "template_id": "college-late-night-runs",
+      "title": "10 Late-Night Runs That Explain Loyola Marymount University",
+      "description": "",
+      "icon": "nightlife",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ],
+      "warnings": [
+        "Researching current official late hours and direct destination pages."
+      ]
+    }
+  ],
+  "warnings": [
+    "Research in progress."
+  ]
+}
+web search: 
+web search: site:locations.in-n-out.com Los Angeles 9149 S Sepulveda hours ...
+web search: 
+web search: Denny's 5535 West Century Boulevard official hours ...
+web search: 
+web search: Fat Sal's Deli Playa Vista official hours ...
+web search: 
+web search: site:locations.tacobell.com/ca/los-angeles/ "Lincoln Blvd" "Hours" ...
+web search: 
+web search: site:normsrestaurants.com locations La Cienega 24 hours ...
+web search: 
+web search: site:cvs.com/store-locator/los-angeles-ca-pharmacies 8601 S Sepulveda 24 hours ...
+codex
+{"complete":true,"school_name":"Loyola Marymount University","town_name":"Los Angeles","boards":[{"complete":true,"school_name":"Loyola Marymount University","town_name":"Los Angeles","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Loyola Marymount University","description":"Ten under-21-safe food and essentials stops with directly documented late-night availability around LMU and greater West Los Angeles.","icon":"nightlife","cards":[{"subject_id":"in-n-out-lax-sepulveda","subject_type":"place","entity_name":"In-N-Out Burger — 9149 S. Sepulveda Boulevard","title":"Sepulveda After Midnight","subtitle":"Burgers near LAX until 1:00 or 1:30 a.m.","notes":"Check the day’s closing time, then use the official directions link; dine-in seating and a drive-through are both documented here.","short_summary":"A clearly photographed LAX-area burger stop with service past midnight every night.","evidence_claim":"The official location page lists 9149 S. Sepulveda Boulevard, dine-in seating, a drive-through, and normal closing times of 1:00 a.m. Sunday–Thursday and 1:30 a.m. Friday–Saturday.","source_url":"https://locations.in-n-out.com/117","source_title":"In-N-Out Burger — Los Angeles, CA, 9149 S. Sepulveda Blvd.","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until 1:00 a.m. Sunday–Thursday and 1:30 a.m. Friday–Saturday; the official page advises checking today's hours.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"ihop-westchester-sepulveda","subject_type":"place","entity_name":"IHOP — 8600 S. Sepulveda Boulevard","title":"The All-Night Pancake Table","subtitle":"A 24-hour Westchester dining room","notes":"Use this for a sit-down meal at an odd hour, but confirm holiday service before leaving and note that the location also serves beer and wine.","short_summary":"An all-day breakfast room on Sepulveda with round-the-clock service documented for every weekday.","evidence_claim":"IHOP’s official location page identifies the restaurant at 8600 S. Sepulveda Boulevard and lists it as open 24 hours Monday through Sunday with dine-in and takeout.","source_url":"https://restaurants.ihop.com/en-us/ca/los-angeles/breakfast-8600-s-sepulveda-blvd-782/takeout","source_title":"IHOP Takeout at 8600 S. Sepulveda Blvd","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open 24 hours every day according to the official restaurant page; dine-in and takeout are listed. Alcohol is optional, not required for entry.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dennys-century-boulevard","subject_type":"place","entity_name":"Denny’s — 5535 W. Century Boulevard","title":"Century Boulevard at Any Hour","subtitle":"A 24-hour diner east of LAX","notes":"Choose dine-in or order ahead for pickup; verify holiday details by phone even though the location page lists continuous daily operation.","short_summary":"A round-the-clock diner option with walk-in service and breakfast, lunch, and dinner.","evidence_claim":"Denny’s official page lists the 5535 W. Century Boulevard restaurant as open 24 hours every day, with round-the-clock breakfast, walk-ins, and takeout.","source_url":"https://locations.dennys.com/ca/los-angeles/201918","source_title":"Denny’s 5535 W Century Restaurant","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open 24 hours daily; the official page lists walk-ins, takeout, and round-the-clock breakfast. Confirm exceptional holiday changes directly.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"randys-donuts-inglewood","subject_type":"place","entity_name":"Randy’s Donuts — Inglewood","title":"The Giant Donut at 2 A.M.","subtitle":"The original Inglewood shop runs 24 hours","notes":"Look for the giant rooftop donut at 805 W. Manchester Boulevard, then use the official location page for directions and current offers.","short_summary":"A visually unmistakable all-night bakery stop centered on an enormous roadside donut.","evidence_claim":"Randy’s official Inglewood location page gives the address as 805 W. Manchester Boulevard and lists business hours as open 24 hours Sunday through Saturday.","source_url":"https://randysdonuts.com/locations/inglewood-ca/","source_title":"Inglewood, California — Randy’s Donuts","source_kind":"business_official","source_published_at":"2022-04-14","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open 24 hours every day according to the official location page; ordering requires a purchase.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"daves-hot-chicken-ladera","subject_type":"place","entity_name":"Dave’s Hot Chicken — Ladera","title":"Centinela’s Two-A.M. Window","subtitle":"Hot chicken with extended late-week hours","notes":"Check the weekday before setting out: the published schedule runs to midnight early in the week and 2:00 a.m. Thursday through Sunday.","short_summary":"A late-closing chicken counter on Centinela with its longest hours over the extended weekend.","evidence_claim":"Dave’s official locations page lists the Ladera restaurant at 5301 Centinela Avenue as open until midnight Monday–Wednesday and 2:00 a.m. Thursday–Sunday.","source_url":"https://about.daveshotchicken.com/locations/","source_title":"Locations — Dave’s Hot Chicken","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until 12:00 a.m. Monday–Wednesday and 2:00 a.m. Thursday–Sunday on the official locations page.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"fat-sals-venice","subject_type":"place","entity_name":"Fat Sal’s Deli — Venice","title":"Washington Boulevard’s Late Deli","subtitle":"Sandwich pickup until 2:00 or 3:00 a.m.","notes":"Use the direct ordering page to confirm service before traveling; closing shifts from 2:00 a.m. to 3:00 a.m. depending on the night.","short_summary":"A Marina del Rey sandwich counter whose direct ordering page documents service deep into the night.","evidence_claim":"Fat Sal’s direct Toast ordering page identifies the Venice location at 37 Washington Boulevard and lists closing at 2:00 a.m. Sunday–Tuesday and 3:00 a.m. Wednesday–Saturday.","source_url":"https://www.toasttab.com/local/fat-sals-venice-1-37-washington-blvd/r-80560c4b-c8bc-4fb7-8a1c-4c36847dc5cc","source_title":"Fat Sal’s — Venice","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until 2:00 a.m. Sunday–Tuesday and 3:00 a.m. Wednesday–Saturday, according to its direct ordering page.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jack-in-the-box-washington-place","subject_type":"place","entity_name":"Jack in the Box — 12403 Washington Place","title":"The All-Night Drive-Through","subtitle":"Twenty-four-hour drive-through service in Mar Vista","notes":"Plan on drive-through service after 10:00 p.m.; the official page lists an earlier lobby close even while the drive-through continues overnight.","short_summary":"An all-night drive-through with a clearly documented split between vehicle and lobby access.","evidence_claim":"Jack in the Box’s official location page lists 12403 Washington Place and shows drive-through hours continuously from 4:00 a.m. to 4:00 a.m., while lobby hours end at 10:00 p.m.","source_url":"https://locations.jackinthebox.com/us/ca/los-angeles/12403-washington-pl","source_title":"Jack in the Box — 12403 Washington Place","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-through operates 24 hours daily; lobby access ends at 10:00 p.m. A vehicle may be necessary after lobby closing.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"the-kettle-manhattan-beach","subject_type":"place","entity_name":"The Kettle","title":"Weekend at The Kettle","subtitle":"A Manhattan Beach diner open through the night on weekends","notes":"Reserve this run for the documented 24-hour weekend window; on weekdays, consult the live hours panel before making the trip south.","short_summary":"A recognizable Highland Avenue diner whose official site documents uninterrupted weekend service.","evidence_claim":"The Kettle’s official website identifies its Manhattan Beach restaurant at 1138 Highland Avenue and describes 24-hour weekend service, with Sunday shown as open 24 hours.","source_url":"https://thekettle.net/","source_title":"The Kettle — Manhattan Beach","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Officially described as offering 24-hour weekend service; weekday hours are shorter, so check the site's live hours before departure.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"canters-deli-fairfax","subject_type":"place","entity_name":"Canter’s Deli — Fairfax","title":"The 24-Hour Deli Counter","subtitle":"Fairfax pickup when the dining room is closed","notes":"Use the deli counter or online pickup overnight; do not assume the dining room shares the counter’s hours, and avoid the separate cocktail lounge.","short_summary":"A historic Fairfax deli with overnight takeout access even when table service has ended.","evidence_claim":"Canter’s official site gives the Fairfax address as 419 N. Fairfax Avenue and states that online ordering or pickup is available 24 hours, while posted dining hours vary by day.","source_url":"https://cantersdeli.com/","source_title":"Canter’s Deli — Los Angeles","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Online ordering and pickup are available 24 hours; dining-room hours vary. Use the deli counter and avoid the separate cocktail lounge.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"cvs-sepulveda-westway","subject_type":"place","entity_name":"CVS Pharmacy — 8900 Sepulveda Westway","title":"The Overnight Essentials Run","subtitle":"A 24-hour Westchester store near Sepulveda","notes":"Use the all-night retail floor for snacks or essentials, but check pharmacy hours separately because the pharmacy counter closes overnight.","short_summary":"A nearby overnight option for groceries, first aid, and household necessities rather than a restaurant meal.","evidence_claim":"CVS’s official Los Angeles store listing identifies the location at 8900 Sepulveda Westway and lists its Store & Photo department as open 24 hours, with shorter pharmacy-counter hours.","source_url":"https://www.cvs.com/store-locator/cvs-pharmacy-locations/California/Los-Angeles","source_title":"CVS Stores Near Me in Los Angeles, CA","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Store and photo services are open 24 hours; the pharmacy counter is not. Consult the official listing for current pharmacy hours.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T08:07:15.265493Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa27-4027-78d3-8b16-c2239b99f275.1786608304168314000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+61,433
+
+{"complete":true,"school_name":"Loyola Marymount University","town_name":"Los Angeles","boards":[{"complete":true,"school_name":"Loyola Marymount University","town_name":"Los Angeles","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Loyola Marymount University","description":"Ten under-21-safe food and essentials stops with directly documented late-night availability around LMU and greater West Los Angeles.","icon":"nightlife","cards":[{"subject_id":"in-n-out-lax-sepulveda","subject_type":"place","entity_name":"In-N-Out Burger — 9149 S. Sepulveda Boulevard","title":"Sepulveda After Midnight","subtitle":"Burgers near LAX until 1:00 or 1:30 a.m.","notes":"Check the day’s closing time, then use the official directions link; dine-in seating and a drive-through are both documented here.","short_summary":"A clearly photographed LAX-area burger stop with service past midnight every night.","evidence_claim":"The official location page lists 9149 S. Sepulveda Boulevard, dine-in seating, a drive-through, and normal closing times of 1:00 a.m. Sunday–Thursday and 1:30 a.m. Friday–Saturday.","source_url":"https://locations.in-n-out.com/117","source_title":"In-N-Out Burger — Los Angeles, CA, 9149 S. Sepulveda Blvd.","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until 1:00 a.m. Sunday–Thursday and 1:30 a.m. Friday–Saturday; the official page advises checking today's hours.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"ihop-westchester-sepulveda","subject_type":"place","entity_name":"IHOP — 8600 S. Sepulveda Boulevard","title":"The All-Night Pancake Table","subtitle":"A 24-hour Westchester dining room","notes":"Use this for a sit-down meal at an odd hour, but confirm holiday service before leaving and note that the location also serves beer and wine.","short_summary":"An all-day breakfast room on Sepulveda with round-the-clock service documented for every weekday.","evidence_claim":"IHOP’s official location page identifies the restaurant at 8600 S. Sepulveda Boulevard and lists it as open 24 hours Monday through Sunday with dine-in and takeout.","source_url":"https://restaurants.ihop.com/en-us/ca/los-angeles/breakfast-8600-s-sepulveda-blvd-782/takeout","source_title":"IHOP Takeout at 8600 S. Sepulveda Blvd","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open 24 hours every day according to the official restaurant page; dine-in and takeout are listed. Alcohol is optional, not required for entry.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dennys-century-boulevard","subject_type":"place","entity_name":"Denny’s — 5535 W. Century Boulevard","title":"Century Boulevard at Any Hour","subtitle":"A 24-hour diner east of LAX","notes":"Choose dine-in or order ahead for pickup; verify holiday details by phone even though the location page lists continuous daily operation.","short_summary":"A round-the-clock diner option with walk-in service and breakfast, lunch, and dinner.","evidence_claim":"Denny’s official page lists the 5535 W. Century Boulevard restaurant as open 24 hours every day, with round-the-clock breakfast, walk-ins, and takeout.","source_url":"https://locations.dennys.com/ca/los-angeles/201918","source_title":"Denny’s 5535 W Century Restaurant","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open 24 hours daily; the official page lists walk-ins, takeout, and round-the-clock breakfast. Confirm exceptional holiday changes directly.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"randys-donuts-inglewood","subject_type":"place","entity_name":"Randy’s Donuts — Inglewood","title":"The Giant Donut at 2 A.M.","subtitle":"The original Inglewood shop runs 24 hours","notes":"Look for the giant rooftop donut at 805 W. Manchester Boulevard, then use the official location page for directions and current offers.","short_summary":"A visually unmistakable all-night bakery stop centered on an enormous roadside donut.","evidence_claim":"Randy’s official Inglewood location page gives the address as 805 W. Manchester Boulevard and lists business hours as open 24 hours Sunday through Saturday.","source_url":"https://randysdonuts.com/locations/inglewood-ca/","source_title":"Inglewood, California — Randy’s Donuts","source_kind":"business_official","source_published_at":"2022-04-14","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open 24 hours every day according to the official location page; ordering requires a purchase.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"daves-hot-chicken-ladera","subject_type":"place","entity_name":"Dave’s Hot Chicken — Ladera","title":"Centinela’s Two-A.M. Window","subtitle":"Hot chicken with extended late-week hours","notes":"Check the weekday before setting out: the published schedule runs to midnight early in the week and 2:00 a.m. Thursday through Sunday.","short_summary":"A late-closing chicken counter on Centinela with its longest hours over the extended weekend.","evidence_claim":"Dave’s official locations page lists the Ladera restaurant at 5301 Centinela Avenue as open until midnight Monday–Wednesday and 2:00 a.m. Thursday–Sunday.","source_url":"https://about.daveshotchicken.com/locations/","source_title":"Locations — Dave’s Hot Chicken","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until 12:00 a.m. Monday–Wednesday and 2:00 a.m. Thursday–Sunday on the official locations page.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"fat-sals-venice","subject_type":"place","entity_name":"Fat Sal’s Deli — Venice","title":"Washington Boulevard’s Late Deli","subtitle":"Sandwich pickup until 2:00 or 3:00 a.m.","notes":"Use the direct ordering page to confirm service before traveling; closing shifts from 2:00 a.m. to 3:00 a.m. depending on the night.","short_summary":"A Marina del Rey sandwich counter whose direct ordering page documents service deep into the night.","evidence_claim":"Fat Sal’s direct Toast ordering page identifies the Venice location at 37 Washington Boulevard and lists closing at 2:00 a.m. Sunday–Tuesday and 3:00 a.m. Wednesday–Saturday.","source_url":"https://www.toasttab.com/local/fat-sals-venice-1-37-washington-blvd/r-80560c4b-c8bc-4fb7-8a1c-4c36847dc5cc","source_title":"Fat Sal’s — Venice","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until 2:00 a.m. Sunday–Tuesday and 3:00 a.m. Wednesday–Saturday, according to its direct ordering page.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jack-in-the-box-washington-place","subject_type":"place","entity_name":"Jack in the Box — 12403 Washington Place","title":"The All-Night Drive-Through","subtitle":"Twenty-four-hour drive-through service in Mar Vista","notes":"Plan on drive-through service after 10:00 p.m.; the official page lists an earlier lobby close even while the drive-through continues overnight.","short_summary":"An all-night drive-through with a clearly documented split between vehicle and lobby access.","evidence_claim":"Jack in the Box’s official location page lists 12403 Washington Place and shows drive-through hours continuously from 4:00 a.m. to 4:00 a.m., while lobby hours end at 10:00 p.m.","source_url":"https://locations.jackinthebox.com/us/ca/los-angeles/12403-washington-pl","source_title":"Jack in the Box — 12403 Washington Place","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-through operates 24 hours daily; lobby access ends at 10:00 p.m. A vehicle may be necessary after lobby closing.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"the-kettle-manhattan-beach","subject_type":"place","entity_name":"The Kettle","title":"Weekend at The Kettle","subtitle":"A Manhattan Beach diner open through the night on weekends","notes":"Reserve this run for the documented 24-hour weekend window; on weekdays, consult the live hours panel before making the trip south.","short_summary":"A recognizable Highland Avenue diner whose official site documents uninterrupted weekend service.","evidence_claim":"The Kettle’s official website identifies its Manhattan Beach restaurant at 1138 Highland Avenue and describes 24-hour weekend service, with Sunday shown as open 24 hours.","source_url":"https://thekettle.net/","source_title":"The Kettle — Manhattan Beach","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Officially described as offering 24-hour weekend service; weekday hours are shorter, so check the site's live hours before departure.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"canters-deli-fairfax","subject_type":"place","entity_name":"Canter’s Deli — Fairfax","title":"The 24-Hour Deli Counter","subtitle":"Fairfax pickup when the dining room is closed","notes":"Use the deli counter or online pickup overnight; do not assume the dining room shares the counter’s hours, and avoid the separate cocktail lounge.","short_summary":"A historic Fairfax deli with overnight takeout access even when table service has ended.","evidence_claim":"Canter’s official site gives the Fairfax address as 419 N. Fairfax Avenue and states that online ordering or pickup is available 24 hours, while posted dining hours vary by day.","source_url":"https://cantersdeli.com/","source_title":"Canter’s Deli — Los Angeles","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Online ordering and pickup are available 24 hours; dining-room hours vary. Use the deli counter and avoid the separate cocktail lounge.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"cvs-sepulveda-westway","subject_type":"place","entity_name":"CVS Pharmacy — 8900 Sepulveda Westway","title":"The Overnight Essentials Run","subtitle":"A 24-hour Westchester store near Sepulveda","notes":"Use the all-night retail floor for snacks or essentials, but check pharmacy hours separately because the pharmacy counter closes overnight.","short_summary":"A nearby overnight option for groceries, first aid, and household necessities rather than a restaurant meal.","evidence_claim":"CVS’s official Los Angeles store listing identifies the location at 8900 Sepulveda Westway and lists its Store & Photo department as open 24 hours, with shorter pharmacy-counter hours.","source_url":"https://www.cvs.com/store-locator/cvs-pharmacy-locations/California/Los-Angeles","source_title":"CVS Stores Near Me in Los Angeles, CA","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Store and photo services are open 24 hours; the pharmacy counter is not. Consult the official listing for current pharmacy hours.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}

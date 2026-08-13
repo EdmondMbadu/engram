@@ -1,0 +1,73 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.usafa.edu/facilities/mcdermott-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usafa.edu/facilities/mcdermott-library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.usafa.edu/facilities/arnold-hall/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usafa.edu/facilities/arnold-hall/",
+      "error": ""
+    },
+    {
+      "url": "https://www.usafa.edu/cadet-life/day-in-the-life/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usafa.edu/cadet-life/day-in-the-life/",
+      "error": ""
+    },
+    {
+      "url": "https://www.usafa.edu/cadet-life/dormitories-dining/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usafa.edu/cadet-life/dormitories-dining/",
+      "error": ""
+    },
+    {
+      "url": "https://www.usafa.edu/visitors/self-guided-tour/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usafa.edu/visitors/self-guided-tour/",
+      "error": ""
+    },
+    {
+      "url": "https://www.usafa.edu/parents-weekend/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usafa.edu/parents-weekend/",
+      "error": ""
+    },
+    {
+      "url": "https://www.usafa.edu/parents-weekend/cadet-wing-parade/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usafa.edu/parents-weekend/cadet-wing-parade/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Arnold Hall",
+    "Honor Court",
+    "U.S. Air Force Academy Planetarium"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

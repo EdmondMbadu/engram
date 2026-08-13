@@ -1,0 +1,61 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://libraries.mercer.edu/index.php/university-libraries/mercer-university-libraries-policies/24-hour-study-floor-policy-tarver/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.mercer.edu/index.php/university-libraries/mercer-university-libraries-policies/24-hour-study-floor-policy-tarver/",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.mercer.edu/index.php/university-libraries/mercer-university-libraries-policies/study-rooms-policy-tarver/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.mercer.edu/index.php/university-libraries/mercer-university-libraries-policies/study-rooms-policy-tarver/",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.mercer.edu/index.php/university-libraries/tarver-library/tarver-floor-plans/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.mercer.edu/index.php/university-libraries/tarver-library/tarver-floor-plans/",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.mercer.edu/index.php/university-libraries/mercer-university-libraries-policies/silent-study-floor-policy-tarver/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.mercer.edu/index.php/university-libraries/mercer-university-libraries-policies/silent-study-floor-policy-tarver/",
+      "error": ""
+    },
+    {
+      "url": "https://medicine.mercer.edu/about-the-school/campus-locations/macon/macon-facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://medicine.mercer.edu/about-the-school/campus-locations/macon/macon-facilities/",
+      "error": ""
+    },
+    {
+      "url": "https://arc.mercer.edu/about-us/our-facility/our-facility.cfm",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://arc.mercer.edu/about-us/our-facility/our-facility.cfm",
+      "error": "fetch failed"
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

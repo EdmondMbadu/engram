@@ -1,0 +1,70 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "YUS9BhwOFjH0oTWedCra",
+    "schoolName": "Holy Family University",
+    "shortSchoolName": "Holy Family University",
+    "townName": "Philadelphia",
+    "state": "PA",
+    "countryCode": "US",
+    "unitId": "212984",
+    "website": "https://www.holyfamily.edu/",
+    "latitude": 40.060581,
+    "longitude": -74.986451,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=holyfamily.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=holyfamily.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "7-Eleven — 9001 Frankford Avenue",
+    "Dunkin' — 9490 Blue Grass Road",
+    "Wendy's — Academy Plaza",
+    "7-Eleven — 7901 Frankford Avenue",
+    "Dunkin' — 2327 Cottman Avenue",
+    "IHOP — 4310 Roosevelt Boulevard",
+    "Dunkin' — 4046 Woodhaven Boulevard",
+    "7-Eleven — 1900–10 Welsh Road",
+    "Dunkin' — 11725 Bustleton Avenue",
+    "McDonald's — 1801 Torresdale Avenue",
+    "Esports Center free-hour play",
+    "Holy Family University Distinguished Writers Series public reading",
+    "Tutor.com online tutoring session",
+    "Holy Family University Library study rooms",
+    "Zen Den",
+    "Essential Needs Pantry",
+    "Counseling Services appointment",
+    "Health Services visit",
+    "Delaney Hall Residence laundry room",
+    "Newtown West Shuttle ride",
+    "Campus Center",
+    "Holy Family University Library",
+    "Holy Family University Art Gallery",
+    "Tiger Café",
+    "Holy Family University Esports Center",
+    "Albert & Carolyn Smith Cardio Room and Weight Room",
+    "Athletic Field & Metz Family Fieldhouse",
+    "Glen Foerd Grounds",
+    "Blessed Mary of Jesus the Good Shepherd Chapel",
+    "Holy Family University Labyrinth"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

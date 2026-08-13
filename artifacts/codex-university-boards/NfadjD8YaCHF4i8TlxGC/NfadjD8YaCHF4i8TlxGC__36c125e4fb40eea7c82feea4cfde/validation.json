@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.dillard.edu/admissions-aid/visit-du/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.dillard.edu/admissions-aid/visit-du/",
+      "error": ""
+    },
+    {
+      "url": "https://neworleans.libnet.info/widget?bodyonly=1&id=14049&location=1603&style=473",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://neworleans.libnet.info/widget?bodyonly=1&id=14049&location=1603&style=473",
+      "error": ""
+    },
+    {
+      "url": "https://www.archdiocese-no.org/schoolfinder",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.archdiocese-no.org/schoolfinder",
+      "error": ""
+    },
+    {
+      "url": "https://nordc.org/nordc/media/Assets/Files/YOUTH-SUMMER-CAMP-2026-TRIFOLD-LISTING-%285%29.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://nordc.org/nordc/media/Assets/Files/YOUTH-SUMMER-CAMP-2026-TRIFOLD-LISTING-%285%29.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.suno.edu/page/contact-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.suno.edu/page/contact-us",
+      "error": ""
+    },
+    {
+      "url": "https://www.uno.edu/uc/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lsuneworleans.edu/uc/contact",
+      "error": ""
+    },
+    {
+      "url": "https://www.ticketmaster.com/venue/221659?brand=lakefront&tt_scene=anchor_view",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ticketmaster.com/venue/221659?brand=lakefront&tt_scene=anchor_view",
+      "error": ""
+    },
+    {
+      "url": "https://lakefrontairport.com/contact/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lakefrontairport.com/contact/",
+      "error": ""
+    },
+    {
+      "url": "https://nola.gov/nola/media/PPW/NO_Parks_Greenspace_Jurisdiction_download.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://nola.gov/nola/media/PPW/NO_Parks_Greenspace_Jurisdiction_download.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://council.nola.gov/getattachment/c9621e72-e9b4-42ae-b1fe-03b202b62a8e/file",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://council.nola.gov/getattachment/c9621e72-e9b4-42ae-b1fe-03b202b62a8e/file",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

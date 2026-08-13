@@ -1,0 +1,60 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "ZLnlCTOaXMtoONCvH3ik",
+    "schoolName": "Saint Xavier University",
+    "shortSchoolName": "Saint Xavier University",
+    "townName": "Chicago",
+    "state": "IL",
+    "countryCode": "US",
+    "unitId": "148627",
+    "website": "https://www.sxu.edu/",
+    "latitude": 41.707199,
+    "longitude": -87.714749,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=sxu.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=sxu.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "Wendy's — 8302 S Ashland",
+    "Taco Bell — 7906 S Western Avenue",
+    "Taco Bell — 9540 S Cicero Avenue",
+    "Taco Bell — 7601 W 111th Street",
+    "Taco Bell — 11750 South Palaski Road",
+    "Wendy's — 758 West 117th Street",
+    "Wendy's — 11110 S Cicero Avenue",
+    "Wendy's — 3516 E 118th Street",
+    "Wendy's — 7031 South Western Avenue",
+    "Wendy's — 145 S Western Avenue",
+    "Dan Ryan Woods Visitor Center",
+    "Dan Ryan Sledding Hill",
+    "Dan Ryan Woods Pavilion",
+    "Walker Branch, Chicago Public Library",
+    "Beverly Branch, Chicago Public Library",
+    "Ridge Historical Society",
+    "Beverly Arts Center",
+    "Kennedy (Dennis) Park",
+    "Mount Greenwood Park",
+    "Chicago High School for Agricultural Sciences"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

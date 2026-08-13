@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.geneseo.edu/admissions/self-guided-tour/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.geneseo.edu/admissions/self-guided-tour/",
+      "error": ""
+    },
+    {
+      "url": "https://www.geneseo.edu/support/naming-opportunities-milne-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.geneseo.edu/support/naming-opportunities-milne-library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.geneseo.edu/events_office/book_room/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.geneseo.edu/events_office/book_room/",
+      "error": ""
+    },
+    {
+      "url": "https://www.geneseo.edu/student_life/services-and-forms",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.geneseo.edu/student_life/services-and-forms",
+      "error": ""
+    },
+    {
+      "url": "https://www.geneseo.edu/accessibility-office/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.geneseo.edu/accessibility-office/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

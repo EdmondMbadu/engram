@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://hawkeyesports.com/wave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://hawkeyesports.com/wave",
+      "error": ""
+    },
+    {
+      "url": "https://honors.uiowa.edu/its-corn-look-2024-hawkeye-homecoming-monument",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://honors.uiowa.edu/its-corn-look-2024-hawkeye-homecoming-monument",
+      "error": ""
+    },
+    {
+      "url": "https://homecoming.uiowa.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://homecoming.uiowa.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://homecoming.uiowa.edu/history",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://homecoming.uiowa.edu/history",
+      "error": ""
+    },
+    {
+      "url": "https://blog.lib.uiowa.edu/rbml/2024/09/13/a-brief-history-of-school-songs-at-the-university-of-iowa/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://blog.lib.uiowa.edu/rbml/2024/09/13/a-brief-history-of-school-songs-at-the-university-of-iowa/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.uiowa.edu/sc/archives/faq/faqtraditions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.uiowa.edu/sc/archives/faq/faqtraditions/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

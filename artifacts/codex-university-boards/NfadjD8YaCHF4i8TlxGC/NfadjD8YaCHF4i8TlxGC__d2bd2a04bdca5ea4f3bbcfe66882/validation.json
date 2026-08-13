@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://visitkirksville.com/t/arts-culture",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visitkirksville.com/t/arts-culture",
+      "error": ""
+    },
+    {
+      "url": "https://www.downtowncinema8.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.downtowncinema8.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.kirksvillecity.com/p/parks-trails-facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.kirksvillecity.com/p/parks-trails-facilities",
+      "error": ""
+    },
+    {
+      "url": "https://www.adairco.org/our-locations-and-hours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.adairco.org/our-locations-and-hours",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

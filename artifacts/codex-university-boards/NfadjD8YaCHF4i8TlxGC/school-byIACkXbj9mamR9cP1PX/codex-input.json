@@ -1,0 +1,35 @@
+{
+  "target": {
+    "atlasId": "byIACkXbj9mamR9cP1PX",
+    "schoolName": "California State University-San Marcos",
+    "shortSchoolName": "California State University-San Marcos",
+    "townName": "San Marcos",
+    "state": "CA",
+    "countryCode": "US",
+    "website": "https://www.csusm.edu/",
+    "latitude": 33.130569,
+    "longitude": -117.159013
+  },
+  "templates": [
+    {
+      "id": "college-zero-dollar-hangs",
+      "version": "1.0",
+      "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+      "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+      "researchQueries": [
+        "free student activities campus",
+        "free campus spaces students",
+        "free public places near campus"
+      ],
+      "count": 10,
+      "icon": "money_off",
+      "primarySubjectType": "activity",
+      "allowedSubjectTypes": [
+        "activity",
+        "place"
+      ],
+      "freshnessDays": 180,
+      "exactTitle": "Zero Dollars: 10 Hangs That Cost Nothing"
+    }
+  ]
+}

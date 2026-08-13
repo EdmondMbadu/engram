@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.hsc.edu/student-life/campus-culture",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hsc.edu/student-life/campus-culture",
+      "error": ""
+    },
+    {
+      "url": "https://www.hsc.edu/Documents/StudentLife/TheKey2025%E2%80%9326.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hsc.edu/Documents/StudentLife/TheKey2025%E2%80%9326.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://blogs.hsc.edu/untoldstory/groundskeepers/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://blogs.hsc.edu/untoldstory/groundskeepers/",
+      "error": ""
+    },
+    {
+      "url": "https://250.hsc.edu/symbols/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://250.hsc.edu/symbols/",
+      "error": ""
+    },
+    {
+      "url": "https://250.hsc.edu/civic-virtue/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://250.hsc.edu/civic-virtue/",
+      "error": ""
+    },
+    {
+      "url": "https://hscathletics.com/news/2026/4/16/hampden-sydney-announces-2026-football-schedule.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://hscathletics.com/news/2026/4/16/hampden-sydney-announces-2026-football-schedule.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.hsc.edu/parents-and-family/commencement/commencement-schedule",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hsc.edu/parents-and-family/commencement/commencement-schedule",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

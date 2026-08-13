@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.reed.edu/campus-life/traditions.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.reed.edu/campus-life/traditions.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.reed.edu/newsroom/stories/2026/paideia-2026-a-tradition-in-three-classes.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.reed.edu/newsroom/stories/2026/paideia-2026-a-tradition-in-three-classes.html",
+      "error": ""
+    },
+    {
+      "url": "https://events.reed.edu/event/raw-moonage-daydream-art-market",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.reed.edu/events/",
+      "error": ""
+    },
+    {
+      "url": "https://www.reed.edu/canyon/canyon-day.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.reed.edu/canyon/canyon-day.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.reed.edu/newsroom/stories/2026/baking-bad-team-triumphs-in-the-2026-great-reedie-bakeoff.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.reed.edu/newsroom/stories/2026/baking-bad-team-triumphs-in-the-2026-great-reedie-bakeoff.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.reed.edu/admission-aid/assets/downloads/mini-viewbook-2022.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.reed.edu/admission-aid/assets/downloads/mini-viewbook-2022.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://blogs.reed.edu/riffin_griffin/2025/11/a-visit-from-boarus/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://blogs.reed.edu/riffin_griffin/2025/11/a-visit-from-boarus/",
+      "error": ""
+    },
+    {
+      "url": "https://www.reed.edu/international-student-services/international-student-engagement/international-student-advisory-board.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.reed.edu/international-student-services/international-student-engagement/international-student-advisory-board.html",
+      "error": ""
+    },
+    {
+      "url": "https://blogs.reed.edu/riffin_griffin/2026/04/7th-annual-nitrogen-day-again/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://blogs.reed.edu/riffin_griffin/2026/04/7th-annual-nitrogen-day-again/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 100,
+  "generationGrade": "A"
+}

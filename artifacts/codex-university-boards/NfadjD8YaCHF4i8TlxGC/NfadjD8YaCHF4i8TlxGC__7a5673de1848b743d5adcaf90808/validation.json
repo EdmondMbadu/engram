@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.readysetpizza.net/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.readysetpizza.net/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fastwaypizza.com/hours.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fastwaypizza.com/hours.html",
+      "error": ""
+    },
+    {
+      "url": "https://papaflamepizza.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://papaflamepizza.com/",
+      "error": ""
+    },
+    {
+      "url": "https://goldenpizzalincoln.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://goldenpizzalincoln.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.freshwaypizzawaterst.com/hours.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.freshwaypizzawaterst.com/hours.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.jandjpizza.com/hours.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jandjpizza.com/hours.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.freshwaypizzaofworcester.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.freshwaypizzaofworcester.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ma/worcester/801-grafton-street/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ma/worcester/801-grafton-street/restaurant.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ma/worcester/418-park-ave/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ma/worcester/418-park-ave/restaurant.html",
+      "error": ""
+    },
+    {
+      "url": "https://worcesterpizzafactory.com/menu.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://worcesterpizzafactory.com/menu.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

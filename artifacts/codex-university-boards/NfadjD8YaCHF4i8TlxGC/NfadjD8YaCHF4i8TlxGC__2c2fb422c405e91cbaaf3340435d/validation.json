@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.csus.edu/student-affairs/campus-life/spotlight/convocation.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csus.edu/student-affairs/campus-life/spotlight/convocation.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.csus.edu/experience/homecoming/students.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csus.edu/experience/homecoming/students.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.csus.edu/news/articles/2017/11/14/hornet-tailgating-should-be-something-to-cheer-about.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csus.edu/news/articles/2017/11/14/hornet-tailgating-should-be-something-to-cheer-about.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.csus.edu/news/newsroom/stories/2024/7/causeway-boxing-classic-announcement.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csus.edu/news/newsroom/stories/2024/7/causeway-boxing-classic-announcement.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.csus.edu/experience/community-engaged-university/carnegie-reclassification/engaged-campus.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csus.edu/experience/community-engaged-university/carnegie-reclassification/engaged-campus.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.csus.edu/news/articles/2020/10/1/Hed-goes-here.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csus.edu/news/articles/2020/10/1/Hed-goes-here.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.csus.edu/student-affairs/spotlights/hornet-wow.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csus.edu/student-affairs/spotlights/hornet-wow.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.csus.edu/student-life/student-organizations/student-organizations/club-days.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csus.edu/student-life/student-organizations/student-organizations/club-days.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.csus.edu/experience/homecoming/alumni.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csus.edu/experience/homecoming/alumni.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 100,
+  "generationGrade": "A"
+}

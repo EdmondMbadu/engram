@@ -1,0 +1,71 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "RxnkKKBEHxZUMuIiabQk",
+    "schoolName": "Ohio University-Main Campus",
+    "shortSchoolName": "Ohio University",
+    "townName": "Athens",
+    "state": "OH",
+    "countryCode": "US",
+    "unitId": "204857",
+    "website": "https://www.ohio.edu/",
+    "latitude": 39.326798,
+    "longitude": -82.100985,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=ohio.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=ohio.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Alden Library First Floor",
+    "Alden Library Learning Commons",
+    "Alden Library Hushpods",
+    "CoLab",
+    "Alden Library Third Floor",
+    "Class of 1951 Lounge",
+    "Very Quiet Study Area",
+    "Alden Library Fifth Floor",
+    "Alden Library Sixth Floor",
+    "Alden Library Seventh Floor",
+    "Earl's Coop on East Green",
+    "Maggie Davis Market Express",
+    "Courtside Pizza",
+    "Shively Commons",
+    "The Hungry Cat Food Truck",
+    "Brick City Deli On The Go",
+    "Jefferson Marketplace",
+    "Boyd Market",
+    "Nelson Market",
+    "Latitude 39",
+    "College Green",
+    "Baker University Center",
+    "Calendar of University Events",
+    "Vernon R. Alden Library",
+    "Charles J. Ping Student Recreation Center",
+    "Athens Farmers Market",
+    "CATS Purple Loop",
+    "The Ridges Hiking Trails",
+    "Ohio University Observatory",
+    "Center for Student Engagement & Leadership"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

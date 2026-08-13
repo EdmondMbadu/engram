@@ -1,0 +1,72 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.callutheran.edu/students/fall-orientation/families/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.callutheran.edu/students/fall-orientation/families/",
+      "error": ""
+    },
+    {
+      "url": "https://www.callutheran.edu/library/about/visiting-the-library.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.callutheran.edu/library/about/visiting-the-library.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.callutheran.edu/student-life/dining/dining-locations.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.callutheran.edu/student-life/dining/dining-locations.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.callutheran.edu/student-life/student-union/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.callutheran.edu/student-life/student-union/",
+      "error": ""
+    },
+    {
+      "url": "https://catalog.callutheran.edu/undergraduate/student-life",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.callutheran.edu/undergraduate/student-life",
+      "error": ""
+    },
+    {
+      "url": "https://www.callutheran.edu/students/fall-orientation/first-year/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.callutheran.edu/students/fall-orientation/first-year/",
+      "error": ""
+    },
+    {
+      "url": "https://www.callutheran.edu/galleries/visit.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.callutheran.edu/galleries/visit.html",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Kingsmen Park",
+    "Student Union"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

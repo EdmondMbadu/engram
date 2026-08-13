@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.portland.gov/parks/crystal-springs-rhododendron-garden",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.portland.gov/parks/crystal-springs-rhododendron-garden",
+      "error": ""
+    },
+    {
+      "url": "https://www.reed.edu/cep/assets/pdfs/19-reed-summer-conference-handbook.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.reed.edu/cep/assets/pdfs/19-reed-summer-conference-handbook.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://808grinds.com/contact/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://808grinds.com/contact/",
+      "error": ""
+    },
+    {
+      "url": "https://laughingplanet.com/locations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://laughingplanet.com/locations/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ottossausage.com/contact/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ottossausage.com/contact/",
+      "error": ""
+    },
+    {
+      "url": "https://nudipdx.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://nudipdx.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.newseasonsmarket.com/find-a-store",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.newseasonsmarket.com/find-a-store",
+      "error": ""
+    },
+    {
+      "url": "https://local.safeway.com/safeway/or/portland/4515-se-woodstock-blvd.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://local.safeway.com/safeway/or/portland/4515-se-woodstock-blvd.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

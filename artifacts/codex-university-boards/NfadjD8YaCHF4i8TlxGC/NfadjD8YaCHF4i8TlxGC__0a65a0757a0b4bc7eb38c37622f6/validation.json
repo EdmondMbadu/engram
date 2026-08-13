@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.pizzahut.com/ia/decorah/1002-short-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/ia/decorah/1002-short-st",
+      "error": ""
+    },
+    {
+      "url": "https://www.culvers.com/restaurants/decorah",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.culvers.com/restaurants/decorah",
+      "error": ""
+    },
+    {
+      "url": "https://www.caseys.com/general-store/ia-decorah/401-college-dr/1591",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.caseys.com/general-store/ia-decorah/401-college-dr/1591",
+      "error": ""
+    },
+    {
+      "url": "https://www.walmart.com/store/913-decorah-ia",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.walmart.com/blocked?url=L3N0b3JlLzkxMy1kZWNvcmFoLWlh&uuid=2caed2df-96f1-11f1-a51e-5c364eab3010&vid=&g=b",
+      "error": ""
+    },
+    {
+      "url": "https://www.sugarbowldecorah.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sugarbowldecorah.com/",
+      "error": ""
+    },
+    {
+      "url": "https://decorahdonjose.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://decorahdonjose.com/",
+      "error": ""
+    },
+    {
+      "url": "https://mabespizza.com/menu",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mabespizza.com/menu",
+      "error": ""
+    },
+    {
+      "url": "https://www.kpec.us/bowling-reservation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.kpec.us/bowling-reservation",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.subway.com/united-states/ia/decorah/809-short-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.subway.com/united-states/ia/decorah/809-short-st",
+      "error": ""
+    },
+    {
+      "url": "https://www.impactcoffee.com/pages/hours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.impactcoffee.com/pages/hours",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

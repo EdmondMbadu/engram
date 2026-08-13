@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://maa.missouri.edu/visit-tours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://maa.missouri.edu/visit-tours",
+      "error": ""
+    },
+    {
+      "url": "https://anthromuseum.missouri.edu/tour-information",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://anthromuseum.missouri.edu/tour-information",
+      "error": ""
+    },
+    {
+      "url": "https://showme.missouri.edu/2025/discover-mizzou-check-out-these-10-things-to-do-on-campus-this-summer/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://showme.missouri.edu/2025/discover-mizzou-check-out-these-10-things-to-do-on-campus-this-summer/",
+      "error": ""
+    },
+    {
+      "url": "https://www.como.gov/parks-and-recreation/special-events/stephens-lake-amphitheater-concert-series/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.como.gov/parks-and-recreation/special-events/stephens-lake-amphitheater-concert-series/",
+      "error": ""
+    },
+    {
+      "url": "https://www.como.gov/parks/stephens-lake-park/stephens-lake-park-faqs/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.como.gov/parks/stephens-lake-park/stephens-lake-park-faqs/",
+      "error": ""
+    },
+    {
+      "url": "https://www.como.gov/contacts/flatbranch-spraygrounds/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.como.gov/contacts/flatbranch-spraygrounds/",
+      "error": ""
+    },
+    {
+      "url": "https://www.como.gov/contacts/columbia-skate-park/columbia-skate-park-frequently-asked-questions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.como.gov/contacts/columbia-skate-park/columbia-skate-park-frequently-asked-questions/",
+      "error": ""
+    },
+    {
+      "url": "https://www.dbrl.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.dbrl.org/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

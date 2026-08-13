@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "oAvIKuYgMbVs04KFuvyB",
+    "schoolName": "Saint Francis University",
+    "shortSchoolName": "Saint Francis University",
+    "townName": "Loretto",
+    "state": "PA",
+    "countryCode": "US",
+    "unitId": "215743",
+    "website": "https://www.francis.edu/",
+    "latitude": 40.506734,
+    "longitude": -78.63904,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/b/bb/Saint_Francis_University_seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=francis.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain Saint Francis University",
+  "excluded_subjects": [
+    "Saint Francis University Mock National Convention",
+    "Mr. and Ms. Frankie Awards",
+    "Mass of the Holy Spirit",
+    "Founders Day",
+    "President’s Awards Convocation",
+    "March on the Mountain",
+    "STEAM Day",
+    "Rural Outreach Chemistry for Kids (R.O.C.K.)",
+    "Saint Francis University Red Mass",
+    "Lourdes Army Grotto Service Project and Twilight Mass"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

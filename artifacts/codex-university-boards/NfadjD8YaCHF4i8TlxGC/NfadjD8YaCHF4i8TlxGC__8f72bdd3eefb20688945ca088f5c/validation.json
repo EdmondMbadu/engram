@@ -1,0 +1,48 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://library.uni.edu/spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.uni.edu/spaces",
+      "error": ""
+    },
+    {
+      "url": "https://library.uni.edu/spaces/learning-commons",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.uni.edu/spaces/learning-commons",
+      "error": ""
+    },
+    {
+      "url": "https://library.uni.edu/about-us/our-building/floor-maps/floor-map-descriptions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.uni.edu/about-us/our-building/floor-maps/floor-map-descriptions",
+      "error": ""
+    },
+    {
+      "url": "https://teachstudio.library.uni.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://teachstudio.library.uni.edu/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Rod Library Study Rooms",
+    "Anatomy Room LIB 280"
+  ],
+  "sourceCount": 4,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

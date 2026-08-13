@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://ap.tcu.edu/general-information/dining-options/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ap.tcu.edu/general-information/dining-options/",
+      "error": ""
+    },
+    {
+      "url": "https://www.dutchshamburgers.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.dutchshamburgers.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fatshack.com/locations/fort-worth",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fatshack.com/locations/fort-worth",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

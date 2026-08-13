@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://news.hofstra.edu/2024/09/23/celebrating-the-librarys-10th-floor-makeover/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://news.hofstra.edu/2024/09/23/celebrating-the-librarys-10th-floor-makeover/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hofstra.edu/provost/edtech-open-access-labs.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hofstra.edu/provost/edtech-open-access-labs.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.hofstra.edu/facilities-operations/projects-archive.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hofstra.edu/facilities-operations/projects-archive.html",
+      "error": ""
+    },
+    {
+      "url": "https://lawblogs.hofstra.edu/lawlibrary/welcome-to-the-law-library-2/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://lawblogs.hofstra.edu/lawlibrary/welcome-to-the-law-library-2/",
+      "error": ""
+    },
+    {
+      "url": "https://law.hofstra.edu/facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://law.hofstra.edu/about/facilities/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hofstra.edu/music/music-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hofstra.edu/music/music-library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hofstra.edu/business/core-skills-lab.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hofstra.edu/business/core-skills-lab.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

@@ -1,0 +1,299 @@
+Reading additional input from stdin...
+2026-08-13T07:00:32.662222Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9ec-1019-7c50-9a88-e5714926160a.1786604425242293000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9ec-2c58-77c1-b33f-034ca5c171c1
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"AluNifqQ9Q7y3pWd4QMo","schoolName":"Emmanuel College","shortSchoolName":"Emmanuel College","townName":"Boston","state":"MA","countryCode":"US","website":"https://www.emmanuel.edu/","latitude":42.340602,"longitude":-71.103634},"templates":[{"id":"college-only-happens-here","version":"1.0","titlePattern":"Only Happens Here: {count} Traditions That Make No Sense Anywhere Else","editorialBrief":"Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.","researchQueries":["university traditions alumni","campus traditions student newspaper","school rituals history"],"count":10,"icon":"fingerprint","primarySubjectType":"tradition","allowedSubjectTypes":["tradition"],"freshnessDays":1095,"exactTitle":"Only Happens Here: 10 Traditions That Make No Sense Anywhere Else"}]}
+2026-08-13T07:00:32.850758Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9ec-101c-7813-be75-989950766860.1786604425245029000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:00:32.927578Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9ec-0fe8-72b1-a732-0243ec50c362.1786604425192576000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:00:32.931197Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:00:32.940400Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:00:33.079204Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9ec-1019-7543-9488-d2dd8026f484.1786604425242354000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:00:33.205934Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9ec-0ff5-7c82-8559-49172f64842a.1786604425206937000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:00:33.362348Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9ec-0ff6-74c2-aae6-307f5ae1dd26.1786604425207668000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Emmanuel College",
+  "town_name": "Boston",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Emmanuel College",
+      "town_name": "Boston",
+      "template_id": "college-only-happens-here",
+      "title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+      "description": "I’m verifying ten distinct, school-specific traditions against direct sources, prioritizing Emmanuel’s own pages and archives.",
+      "icon": "fingerprint",
+      "cards": [
+        {
+          "subject_id": "research-in-progress",
+          "subject_type": "tradition",
+          "entity_name": "Research in progress",
+          "title": "Research in progress",
+          "subtitle": "Emmanuel College",
+          "notes": "Checking direct sources for documented recurring practices and excluding generic campus events.",
+          "short_summary": "Source verification is underway.",
+          "evidence_claim": "Research is in progress.",
+          "source_url": "https://www.emmanuel.edu/",
+          "source_title": "Emmanuel College",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "No access claim made.",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+     ,
+      {
+        "subject_id": "research-in-progress-2",
+        "subject_type": "tradition",
+        "entity_name": "Research in progress",
+        "title": "Research in progress",
+        "subtitle": "Emmanuel College",
+        "notes": "Checking direct sources for documented recurring practices and excluding generic campus events.",
+        "short_summary": "Source verification is underway.",
+        "evidence_claim": "Research is in progress.",
+        "source_url": "https://www.emmanuel.edu/",
+        "source_title": "Emmanuel College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "No access claim made.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "research-in-progress-3",
+        "subject_type": "tradition",
+        "entity_name": "Research in progress",
+        "title": "Research in progress",
+        "subtitle": "Emmanuel College",
+        "notes": "Checking direct sources for documented recurring practices and excluding generic campus events.",
+        "short_summary": "Source verification is underway.",
+        "evidence_claim": "Research is in progress.",
+        "source_url": "https://www.emmanuel.edu/",
+        "source_title": "Emmanuel College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "No access claim made.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "research-in-progress-4",
+        "subject_type": "tradition",
+        "entity_name": "Research in progress",
+        "title": "Research in progress",
+        "subtitle": "Emmanuel College",
+        "notes": "Checking direct sources for documented recurring practices and excluding generic campus events.",
+        "short_summary": "Source verification is underway.",
+        "evidence_claim": "Research is in progress.",
+        "source_url": "https://www.emmanuel.edu/",
+        "source_title": "Emmanuel College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "No access claim made.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "research-in-progress-5",
+        "subject_type": "tradition",
+        "entity_name": "Research in progress",
+        "title": "Research in progress",
+        "subtitle": "Emmanuel College",
+        "notes": "Checking direct sources for documented recurring practices and excluding generic campus events.",
+        "short_summary": "Source verification is underway.",
+        "evidence_claim": "Research is in progress.",
+        "source_url": "https://www.emmanuel.edu/",
+        "source_title": "Emmanuel College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "No access claim made.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "research-in-progress-6",
+        "subject_type": "tradition",
+        "entity_name": "Research in progress",
+        "title": "Research in progress",
+        "subtitle": "Emmanuel College",
+        "notes": "Checking direct sources for documented recurring practices and excluding generic campus events.",
+        "short_summary": "Source verification is underway.",
+        "evidence_claim": "Research is in progress.",
+        "source_url": "https://www.emmanuel.edu/",
+        "source_title": "Emmanuel College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "No access claim made.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "research-in-progress-7",
+        "subject_type": "tradition",
+        "entity_name": "Research in progress",
+        "title": "Research in progress",
+        "subtitle": "Emmanuel College",
+        "notes": "Checking direct sources for documented recurring practices and excluding generic campus events.",
+        "short_summary": "Source verification is underway.",
+        "evidence_claim": "Research is in progress.",
+        "source_url": "https://www.emmanuel.edu/",
+        "source_title": "Emmanuel College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "No access claim made.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "research-in-progress-8",
+        "subject_type": "tradition",
+        "entity_name": "Research in progress",
+        "title": "Research in progress",
+        "subtitle": "Emmanuel College",
+        "notes": "Checking direct sources for documented recurring practices and excluding generic campus events.",
+        "short_summary": "Source verification is underway.",
+        "evidence_claim": "Research is in progress.",
+        "source_url": "https://www.emmanuel.edu/",
+        "source_title": "Emmanuel College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "No access claim made.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "research-in-progress-9",
+        "subject_type": "tradition",
+        "entity_name": "Research in progress",
+        "title": "Research in progress",
+        "subtitle": "Emmanuel College",
+        "notes": "Checking direct sources for documented recurring practices and excluding generic campus events.",
+        "short_summary": "Source verification is underway.",
+        "evidence_claim": "Research is in progress.",
+        "source_url": "https://www.emmanuel.edu/",
+        "source_title": "Emmanuel College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "No access claim made.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "research-in-progress-10",
+        "subject_type": "tradition",
+        "entity_name": "Research in progress",
+        "title": "Research in progress",
+        "subtitle": "Emmanuel College",
+        "notes": "Checking direct sources for documented recurring practices and excluding generic campus events.",
+        "short_summary": "Source verification is underway.",
+        "evidence_claim": "Research is in progress.",
+        "source_url": "https://www.emmanuel.edu/",
+        "source_title": "Emmanuel College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "No access claim made.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ],
+      "warnings": [
+        "Interim research status; final board will contain exactly 10 verified distinct traditions."
+      ]
+    }
+  ],
+  "warnings": [
+    "Research in progress."
+  ]
+}
+web search: 
+web search: site:emmanuel.edu traditions Emmanuel College Boston annual tradition ...
+web search: 
+web search: 
+web search: 
+web search: 
+web search: 
+web search: site:emmanuel.edu "Moonlight Breakfast" Emmanuel ...
+web search: 
+web search: site:emmanuel.edu/events "tree lighting" Emmanuel College Boston 2025 ...
+web search: 
+web search: 
+codex
+{"complete":true,"school_name":"Emmanuel College","town_name":"Boston","boards":[{"complete":true,"school_name":"Emmanuel College","town_name":"Boston","template_id":"college-only-happens-here","title":"Only Happens Here: 10 Traditions That Make No Sense Anywhere Else","description":"Ten documented Emmanuel College rituals marking the student journey, from a first class portrait and service day through annual academic, spiritual, and seasonal gatherings.","icon":"fingerprint","cards":[{"subject_id":"emmanuel-class-photo","subject_type":"tradition","entity_name":"Emmanuel Class Photo","title":"Step Into the Official Class Photo","subtitle":"A move-in-weekend tradition with a class banner","notes":"Watch for Welcome Week instructions, then join your cohort at the announced campus location for the formal portrait and banner procession.","short_summary":"New students enter Emmanuel’s visual record together, creating a cohort portrait near the beginning of their college journey.","evidence_claim":"Emmanuel calls the formal class photo one of its oldest traditions; the documented Class of 2025 event also included an official class banner and procession.","source_url":"https://events.emmanuel.edu/event/class_of_2025_photo","source_title":"Class of 2025 Photo - Emmanuel College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited 2021 event was limited to the Class of 2025; future cohorts should follow their own Welcome Week schedule.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emmanuel-academic-convocation","subject_type":"tradition","entity_name":"Academic Convocation","title":"Open the Year at Academic Convocation","subtitle":"First-years are formally welcomed as seniors don regalia","notes":"Attend with your class and listen for the speakers who connect the new academic year to Emmanuel’s founding values and shared purpose.","short_summary":"A formal gathering places incoming students and graduating seniors at opposite ends of the Emmanuel academic journey.","evidence_claim":"Emmanuel celebrates Academic Convocation at the start of every academic year, recognizing first-year students as new community members and seniors as they first don caps and gowns.","source_url":"https://www.emmanuel.edu/about/who-we-are/traditions-events/convocation","source_title":"Convocation | Emmanuel College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Scheduled by the College at the beginning of the academic year; consult the current campus calendar for attendance details.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emmanuel-sophomore-pinning","subject_type":"tradition","entity_name":"Sophomore Pinning Ceremony","title":"Receive the Emmanuel Seal Pin","subtitle":"Sophomores mark the declaration of their major","notes":"Register by the announced deadline, invite permitted guests, and meet the faculty member who will present your Emmanuel College seal pin.","short_summary":"The sophomore class turns choosing a major into a formal milestone recognized by faculty and families.","evidence_claim":"Emmanuel describes Sophomore Pinning as a yearly class tradition where faculty present sophomores with an Emmanuel College seal pin to recognize selection of a major.","source_url":"https://www.emmanuel.edu/Pinning2026","source_title":"Sophomore Pinning Ceremony 2026 | Emmanuel College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"For eligible sophomores and registered guests; the 2026 ceremony permitted each student four guests in the gymnasium.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emmanuel-junior-twilight","subject_type":"tradition","entity_name":"Junior Twilight","title":"Cross Junior Twilight","subtitle":"A spring career panel marks the rise to senior year","notes":"Join the junior-class panel, bring a career question, and stay for the concluding gathering that recognizes the transition into senior year.","short_summary":"Emmanuel gives the in-between stage of college its own name and pairs the moment with practical career preparation.","evidence_claim":"Emmanuel documents Junior Twilight as an annual spring tradition featuring a junior-class career panel followed by food and music to mark the class’s rise to senior year.","source_url":"https://www.emmanuel.edu/about/who-we-are/traditions-events/class-traditions","source_title":"Class Traditions | Emmanuel College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Intended for the junior class; current scheduling and entry details are announced by Emmanuel.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emmanuel-moonlight-breakfast","subject_type":"tradition","entity_name":"Moonlight Breakfast","title":"Eat Breakfast at the End of the Day","subtitle":"A finals-season evening in the Jean Yawkey Center","notes":"Check the semester calendar, arrive for the early activities, and follow the event into Marian Hall when the late-evening breakfast service begins.","short_summary":"Finals preparation pauses for an evening sequence of activities followed by breakfast foods in the dining hall.","evidence_claim":"Emmanuel’s 2026 event page calls Moonlight Breakfast an annual end-of-semester tradition, with activities in the Jean Yawkey Center followed by breakfast in the dining hall.","source_url":"https://events.emmanuel.edu/event/moonlight-breakfast-6601","source_title":"Moonlight Breakfast - Emmanuel College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"A campus student event; the cited 2026 edition ran from 7:00–11:00 p.m. Current dates and eligibility may differ.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emmanuel-christmas-tree-lighting","subject_type":"tradition","entity_name":"Emmanuel Christmas Tree Lighting","title":"Gather for the Annual Tree Lighting","subtitle":"A December observance on Emmanuel’s mission calendar","notes":"Confirm the December date through Mission & Ministry, then arrive before the announced lighting time to gather with the campus community.","short_summary":"Emmanuel’s seasonal calendar centers a recurring community gathering around the lighting of its Christmas tree.","evidence_claim":"Emmanuel’s Traditions & Events page identifies the Christmas tree lighting as annual, while Mission & Ministry listed the 2025 lighting for December 4 at 5:00 p.m.","source_url":"https://www.emmanuel.edu/student-life/student-support/mission-ministry/mission-ministry/worship-and-rituals","source_title":"Worship and Rituals | Emmanuel College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited calendar date was for 2025; check the current Mission & Ministry calendar before attending.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emmanuel-founders-week","subject_type":"tradition","entity_name":"Founders’ Week","title":"Trace Two Foundings in One Week","subtitle":"Emmanuel’s 1919 origin meets the Sisters’ 1804 story","notes":"Choose a liturgy, lecture, or reflection activity and use it to connect Emmanuel’s founding with the mission of St. Julie Billiart.","short_summary":"The College devotes a full week to the linked histories of Emmanuel and the Sisters of Notre Dame de Namur.","evidence_claim":"Emmanuel documents Founders’ Week as an annual celebration honoring both the Sisters of Notre Dame de Namur’s 1804 founding and their founding of Emmanuel in 1919.","source_url":"https://www.emmanuel.edu/about/who-we-are/traditions-events/founders-week","source_title":"Founders' Week | Emmanuel College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The week includes multiple community events; consult the current program because individual activities may have separate arrangements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emmanuel-mass-holy-spirit","subject_type":"tradition","entity_name":"Mass of the Holy Spirit","title":"Begin the Academic Year With an Invocation","subtitle":"The College pairs this Mass with Convocation","notes":"Check the opening-week schedule and attend respectfully as the community invokes guidance and wisdom for the coming academic year.","short_summary":"A centuries-old Catholic practice becomes Emmanuel’s spiritual counterpart to the formal academic opening.","evidence_claim":"Emmanuel celebrates the Mass of the Holy Spirit with Academic Convocation as the official start of its academic year, invoking guidance and wisdom.","source_url":"https://www.emmanuel.edu/about/who-we-are/traditions-events/mass-holy-spirit","source_title":"Mass of the Holy Spirit | Emmanuel College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"A Catholic liturgy for the College community; current time and location should be confirmed through Mission & Ministry.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emmanuel-new-student-day-service","subject_type":"tradition","entity_name":"New Student Day of Service","title":"Start College by Serving Boston","subtitle":"New Saints volunteer before classes formally begin","notes":"Follow orientation placement details, dress for the assigned task, and work alongside classmates at the designated Boston-area nonprofit.","short_summary":"Emmanuel’s newest class meets one another through organized work at food programs, shelters, farms, and public spaces.","evidence_claim":"Emmanuel reports that its New Student Day of Service was a tradition for more than 20 years before a pandemic hiatus and resumed in 2025 with over 360 students volunteering.","source_url":"https://www.emmanuel.edu/pulse/news/class-29-connects-community-through-new-student-day-service","source_title":"Class of ’29 Connects with Community Through the New Student Day of Service | Emmanuel College","source_kind":"university_official","source_published_at":"2025-09-08","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Organized for new students through orientation; assignments may involve off-campus travel and task-specific clothing or mobility needs.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emmanuel-baccalaureate-liturgy","subject_type":"tradition","entity_name":"Baccalaureate Liturgy","title":"Process Into Baccalaureate in Academic Dress","subtitle":"Graduates gather for Mass one day before Commencement","notes":"Bring your gown and hood, arrive at the time issued to graduates, and join the faculty procession and thanksgiving for the graduating class.","short_summary":"On Commencement eve, academic regalia enters a liturgy dedicated to learning, gratitude, and the graduating class.","evidence_claim":"Emmanuel describes Baccalaureate as a longstanding tradition held the day before Commencement; graduates attend in gowns and hoods while faculty process in full academic attire.","source_url":"https://www.emmanuel.edu/about/who-we-are/traditions-events/baccalaureate","source_title":"Baccalaureate | Emmanuel College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"All students and guests were invited regardless of religious affiliation in 2026; graduates were instructed to wear gowns and hoods.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:02:44.095586Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9ec-2c58-77c1-b33f-034ca5c171c1.1786604432474441000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+54,020
+
+{"complete":true,"school_name":"Emmanuel College","town_name":"Boston","boards":[{"complete":true,"school_name":"Emmanuel College","town_name":"Boston","template_id":"college-only-happens-here","title":"Only Happens Here: 10 Traditions That Make No Sense Anywhere Else","description":"Ten documented Emmanuel College rituals marking the student journey, from a first class portrait and service day through annual academic, spiritual, and seasonal gatherings.","icon":"fingerprint","cards":[{"subject_id":"emmanuel-class-photo","subject_type":"tradition","entity_name":"Emmanuel Class Photo","title":"Step Into the Official Class Photo","subtitle":"A move-in-weekend tradition with a class banner","notes":"Watch for Welcome Week instructions, then join your cohort at the announced campus location for the formal portrait and banner procession.","short_summary":"New students enter Emmanuel’s visual record together, creating a cohort portrait near the beginning of their college journey.","evidence_claim":"Emmanuel calls the formal class photo one of its oldest traditions; the documented Class of 2025 event also included an official class banner and procession.","source_url":"https://events.emmanuel.edu/event/class_of_2025_photo","source_title":"Class of 2025 Photo - Emmanuel College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited 2021 event was limited to the Class of 2025; future cohorts should follow their own Welcome Week schedule.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emmanuel-academic-convocation","subject_type":"tradition","entity_name":"Academic Convocation","title":"Open the Year at Academic Convocation","subtitle":"First-years are formally welcomed as seniors don regalia","notes":"Attend with your class and listen for the speakers who connect the new academic year to Emmanuel’s founding values and shared purpose.","short_summary":"A formal gathering places incoming students and graduating seniors at opposite ends of the Emmanuel academic journey.","evidence_claim":"Emmanuel celebrates Academic Convocation at the start of every academic year, recognizing first-year students as new community members and seniors as they first don caps and gowns.","source_url":"https://www.emmanuel.edu/about/who-we-are/traditions-events/convocation","source_title":"Convocation | Emmanuel College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Scheduled by the College at the beginning of the academic year; consult the current campus calendar for attendance details.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emmanuel-sophomore-pinning","subject_type":"tradition","entity_name":"Sophomore Pinning Ceremony","title":"Receive the Emmanuel Seal Pin","subtitle":"Sophomores mark the declaration of their major","notes":"Register by the announced deadline, invite permitted guests, and meet the faculty member who will present your Emmanuel College seal pin.","short_summary":"The sophomore class turns choosing a major into a formal milestone recognized by faculty and families.","evidence_claim":"Emmanuel describes Sophomore Pinning as a yearly class tradition where faculty present sophomores with an Emmanuel College seal pin to recognize selection of a major.","source_url":"https://www.emmanuel.edu/Pinning2026","source_title":"Sophomore Pinning Ceremony 2026 | Emmanuel College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"For eligible sophomores and registered guests; the 2026 ceremony permitted each student four guests in the gymnasium.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emmanuel-junior-twilight","subject_type":"tradition","entity_name":"Junior Twilight","title":"Cross Junior Twilight","subtitle":"A spring career panel marks the rise to senior year","notes":"Join the junior-class panel, bring a career question, and stay for the concluding gathering that recognizes the transition into senior year.","short_summary":"Emmanuel gives the in-between stage of college its own name and pairs the moment with practical career preparation.","evidence_claim":"Emmanuel documents Junior Twilight as an annual spring tradition featuring a junior-class career panel followed by food and music to mark the class’s rise to senior year.","source_url":"https://www.emmanuel.edu/about/who-we-are/traditions-events/class-traditions","source_title":"Class Traditions | Emmanuel College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Intended for the junior class; current scheduling and entry details are announced by Emmanuel.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emmanuel-moonlight-breakfast","subject_type":"tradition","entity_name":"Moonlight Breakfast","title":"Eat Breakfast at the End of the Day","subtitle":"A finals-season evening in the Jean Yawkey Center","notes":"Check the semester calendar, arrive for the early activities, and follow the event into Marian Hall when the late-evening breakfast service begins.","short_summary":"Finals preparation pauses for an evening sequence of activities followed by breakfast foods in the dining hall.","evidence_claim":"Emmanuel’s 2026 event page calls Moonlight Breakfast an annual end-of-semester tradition, with activities in the Jean Yawkey Center followed by breakfast in the dining hall.","source_url":"https://events.emmanuel.edu/event/moonlight-breakfast-6601","source_title":"Moonlight Breakfast - Emmanuel College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"A campus student event; the cited 2026 edition ran from 7:00–11:00 p.m. Current dates and eligibility may differ.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emmanuel-christmas-tree-lighting","subject_type":"tradition","entity_name":"Emmanuel Christmas Tree Lighting","title":"Gather for the Annual Tree Lighting","subtitle":"A December observance on Emmanuel’s mission calendar","notes":"Confirm the December date through Mission & Ministry, then arrive before the announced lighting time to gather with the campus community.","short_summary":"Emmanuel’s seasonal calendar centers a recurring community gathering around the lighting of its Christmas tree.","evidence_claim":"Emmanuel’s Traditions & Events page identifies the Christmas tree lighting as annual, while Mission & Ministry listed the 2025 lighting for December 4 at 5:00 p.m.","source_url":"https://www.emmanuel.edu/student-life/student-support/mission-ministry/mission-ministry/worship-and-rituals","source_title":"Worship and Rituals | Emmanuel College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited calendar date was for 2025; check the current Mission & Ministry calendar before attending.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emmanuel-founders-week","subject_type":"tradition","entity_name":"Founders’ Week","title":"Trace Two Foundings in One Week","subtitle":"Emmanuel’s 1919 origin meets the Sisters’ 1804 story","notes":"Choose a liturgy, lecture, or reflection activity and use it to connect Emmanuel’s founding with the mission of St. Julie Billiart.","short_summary":"The College devotes a full week to the linked histories of Emmanuel and the Sisters of Notre Dame de Namur.","evidence_claim":"Emmanuel documents Founders’ Week as an annual celebration honoring both the Sisters of Notre Dame de Namur’s 1804 founding and their founding of Emmanuel in 1919.","source_url":"https://www.emmanuel.edu/about/who-we-are/traditions-events/founders-week","source_title":"Founders' Week | Emmanuel College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The week includes multiple community events; consult the current program because individual activities may have separate arrangements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emmanuel-mass-holy-spirit","subject_type":"tradition","entity_name":"Mass of the Holy Spirit","title":"Begin the Academic Year With an Invocation","subtitle":"The College pairs this Mass with Convocation","notes":"Check the opening-week schedule and attend respectfully as the community invokes guidance and wisdom for the coming academic year.","short_summary":"A centuries-old Catholic practice becomes Emmanuel’s spiritual counterpart to the formal academic opening.","evidence_claim":"Emmanuel celebrates the Mass of the Holy Spirit with Academic Convocation as the official start of its academic year, invoking guidance and wisdom.","source_url":"https://www.emmanuel.edu/about/who-we-are/traditions-events/mass-holy-spirit","source_title":"Mass of the Holy Spirit | Emmanuel College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"A Catholic liturgy for the College community; current time and location should be confirmed through Mission & Ministry.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emmanuel-new-student-day-service","subject_type":"tradition","entity_name":"New Student Day of Service","title":"Start College by Serving Boston","subtitle":"New Saints volunteer before classes formally begin","notes":"Follow orientation placement details, dress for the assigned task, and work alongside classmates at the designated Boston-area nonprofit.","short_summary":"Emmanuel’s newest class meets one another through organized work at food programs, shelters, farms, and public spaces.","evidence_claim":"Emmanuel reports that its New Student Day of Service was a tradition for more than 20 years before a pandemic hiatus and resumed in 2025 with over 360 students volunteering.","source_url":"https://www.emmanuel.edu/pulse/news/class-29-connects-community-through-new-student-day-service","source_title":"Class of ’29 Connects with Community Through the New Student Day of Service | Emmanuel College","source_kind":"university_official","source_published_at":"2025-09-08","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Organized for new students through orientation; assignments may involve off-campus travel and task-specific clothing or mobility needs.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emmanuel-baccalaureate-liturgy","subject_type":"tradition","entity_name":"Baccalaureate Liturgy","title":"Process Into Baccalaureate in Academic Dress","subtitle":"Graduates gather for Mass one day before Commencement","notes":"Bring your gown and hood, arrive at the time issued to graduates, and join the faculty procession and thanksgiving for the graduating class.","short_summary":"On Commencement eve, academic regalia enters a liturgy dedicated to learning, gratitude, and the graduating class.","evidence_claim":"Emmanuel describes Baccalaureate as a longstanding tradition held the day before Commencement; graduates attend in gowns and hoods while faculty process in full academic attire.","source_url":"https://www.emmanuel.edu/about/who-we-are/traditions-events/baccalaureate","source_title":"Baccalaureate | Emmanuel College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"All students and guests were invited regardless of religious affiliation in 2026; graduates were instructed to wear gowns and hoods.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

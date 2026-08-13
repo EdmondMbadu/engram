@@ -1,0 +1,47 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.k-state.edu/gardens/gardens/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.k-state.edu/gardens/plan-your-visit/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.riley.k-state.edu/master-gardener/Water%20and%20Whimsy22.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.riley.k-state.edu/master-gardener/Water%20and%20Whimsy22.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://enewsletters.k-state.edu/beach/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://enewsletters.k-state.edu/beach/",
+      "error": ""
+    },
+    {
+      "url": "https://keep.konza.k-state.edu/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://keep.konza.k-state.edu/visit/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Kansas State University Gardens"
+  ],
+  "sourceCount": 4,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

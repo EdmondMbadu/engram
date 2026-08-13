@@ -1,0 +1,80 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.geneseo.edu/admissions/self-guided-tour/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.geneseo.edu/admissions/self-guided-tour/",
+      "error": ""
+    },
+    {
+      "url": "https://www.geneseo.edu/orientation/geneseo-lingo-terminology",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.geneseo.edu/orientation/geneseo-lingo-terminology",
+      "error": ""
+    },
+    {
+      "url": "https://www.geneseo.edu/summer-sessions/campus-resources",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.geneseo.edu/summer-sessions/campus-resources",
+      "error": ""
+    },
+    {
+      "url": "https://www.geneseo.edu/advising/advising-resources-commuting-students",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.geneseo.edu/advising/advising-resources-commuting-students",
+      "error": ""
+    },
+    {
+      "url": "https://www.geneseo.edu/multicultural/multicultural-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.geneseo.edu/multicultural/multicultural-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.geneseo.edu/admissions/visit-guide/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.geneseo.edu/admissions/visit-guide/",
+      "error": ""
+    },
+    {
+      "url": "https://www.geneseo.edu/health/things-to-do-wny",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.geneseo.edu/health/things-to-do-wny",
+      "error": ""
+    },
+    {
+      "url": "https://www.geneseo.edu/intramurals/open_recreation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.geneseo.edu/intramurals/open_recreation",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Milne Library",
+    "Ira S. Wilson Ice Arena"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

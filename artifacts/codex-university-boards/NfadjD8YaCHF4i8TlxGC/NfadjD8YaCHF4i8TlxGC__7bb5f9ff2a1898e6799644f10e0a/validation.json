@@ -1,0 +1,77 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Current official pages do not publish standalone access hours or reservation rules for every room; affected cards explicitly direct students to verify availability."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.hendrix.edu/ChangingSpacesBaileyLibrary.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hendrix.edu/ChangingSpacesBaileyLibrary.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.hendrix.edu/academicsuccess/peerlearning/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hendrix.edu/academicsuccess/peerlearning/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hendrix.edu/HelpDesk_Articles/Print%2C_Copy%2C_Scan%2C_Fax%2C_Phone/Printing_and_Computer_Labs/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hendrix.edu/HelpDesk_Articles/Print%2C_Copy%2C_Scan%2C_Fax%2C_Phone/Printing_and_Computer_Labs/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hendrix.edu/baileylibrary/baileylibrary.aspx?id=1606",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hendrix.edu/baileylibrary/baileylibrary.aspx?id=1606",
+      "error": ""
+    },
+    {
+      "url": "https://www.hendrix.edu/academics/academics.aspx?id=1781",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hendrix.edu/academics/academics.aspx?id=1781",
+      "error": ""
+    },
+    {
+      "url": "https://www.hendrix.edu/baileylibrary/baileylibrary.aspx?id=90388",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hendrix.edu/baileylibrary/baileylibrary.aspx?id=90388",
+      "error": ""
+    },
+    {
+      "url": "https://www.hendrix.edu/location/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hendrix.edu/location/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hendrix.edu/construction/construction.aspx?id=1934",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hendrix.edu/construction/construction.aspx?id=1934",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

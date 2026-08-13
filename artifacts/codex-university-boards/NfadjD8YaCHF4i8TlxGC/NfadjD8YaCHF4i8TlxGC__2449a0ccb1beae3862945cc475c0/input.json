@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "UXO9kXEu4GhFcbtmkM9t",
+    "schoolName": "Ramapo College of New Jersey",
+    "shortSchoolName": "Ramapo College of New Jersey",
+    "townName": "Mahwah",
+    "state": "NJ",
+    "countryCode": "US",
+    "unitId": "186201",
+    "website": "https://www.ramapo.edu/",
+    "latitude": 41.080942,
+    "longitude": -74.174086,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/7/7b/Ramapo_college_seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=ramapo.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain Ramapo College of New Jersey",
+  "excluded_subjects": [
+    "Robert A. Scott Student Center",
+    "The Atrium",
+    "Bandshell",
+    "Student Involvement Fair",
+    "Peter P. Mercer Learning Commons",
+    "Kresge and Pascal Galleries",
+    "Selden Rodman Gallery of Popular Arts",
+    "Bill Bradley Sports and Recreation Center",
+    "Arch Performances",
+    "J. Lee’s"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

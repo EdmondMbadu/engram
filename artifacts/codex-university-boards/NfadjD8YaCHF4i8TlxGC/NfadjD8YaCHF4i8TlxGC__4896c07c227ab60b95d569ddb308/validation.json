@@ -1,0 +1,69 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "On-base destinations remain subject to Academy entry rules and operational restrictions. The Friday-only Noon Meal Formation and weekday Planetarium option are intentionally conditional rather than assumed weekend activities."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.usafa.edu/visitors/visitor-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usafa.edu/visitors/visitor-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.usafa.edu/visitors/self-guided-tour/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usafa.edu/visitors/self-guided-tour/",
+      "error": ""
+    },
+    {
+      "url": "https://www.usafa.edu/facilities/cadet-chapel/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usafa.edu/facilities/cadet-chapel/",
+      "error": ""
+    },
+    {
+      "url": "https://www.usafa.edu/visitors/noon-meal-formation/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usafa.edu/visitors/noon-meal-formation/",
+      "error": ""
+    },
+    {
+      "url": "https://www.usafa.edu/facilities/planetarium/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usafa.edu/facilities/planetarium/",
+      "error": ""
+    },
+    {
+      "url": "https://www.usafa.edu/facilities/arnold-hall/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usafa.edu/facilities/arnold-hall/",
+      "error": ""
+    },
+    {
+      "url": "https://www.usafa.edu/visitors/hiking-and-biking-trails/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.usafa.edu/visitors/hiking-and-biking-trails/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

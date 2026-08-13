@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://geneseony.org/services/village-departments/parks/village-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://geneseony.org/services/village-departments/parks/village-park/",
+      "error": ""
+    },
+    {
+      "url": "https://geneseony.org/site/assets/files/1957/2022_geneseo_compl_plan_-_complete.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://geneseony.org/site/assets/files/1957/2022_geneseo_compl_plan_-_complete.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitgeneseo.com/arts-culture-historical-sites-museums",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitgeneseo.com/arts-culture-historical-sites-museums",
+      "error": ""
+    },
+    {
+      "url": "https://geneseoriviera.com/rental/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://geneseoriviera.com/rental/",
+      "error": ""
+    },
+    {
+      "url": "https://www.livingstoncountyhistoricalsociety.com/location",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.livingstoncountyhistoricalsociety.com/location",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitgeneseo.com/arts-culture-directory/category/Libraries",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitgeneseo.com/arts-culture-directory/category/Libraries",
+      "error": ""
+    },
+    {
+      "url": "https://geneseony.org/site/assets/files/1957/2007villageofgeneseomasterplan.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://geneseony.org/site/assets/files/1957/2007villageofgeneseomasterplan.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://templehillcemetery.com/tours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://templehillcemetery.com/tours",
+      "error": ""
+    },
+    {
+      "url": "https://www.geneseo.edu/pts/geneseo-bus-stops-businesses/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.geneseo.edu/pts/geneseo-bus-stops-businesses/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

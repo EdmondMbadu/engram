@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.jackinthebox.com/us/ca/thousand-oaks/484-moorpark-rd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jackinthebox.com/us/ca/thousand-oaks/484-moorpark-rd",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ca/thousand-oaks/25-rancho-rd.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ca/thousand-oaks/25-rancho-rd.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dennys.com/ca/newbury-park/248012-bb",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dennys.com/ca",
+      "error": ""
+    },
+    {
+      "url": "https://locations.in-n-out.com/58-Newbury-Park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.in-n-out.com/58-Newbury-Park",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/ca/thousand-oaks/2790-w-hillcrest-dr",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/ca/thousand-oaks/2790-w-hillcrest-dr",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ca/thousand-oaks/1928-e-avenida-de-los-arboles/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ca/thousand-oaks/1928-e-avenida-de-los-arboles/restaurant.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.chick-fil-a.com/locations/ca/moorpark-road",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.chick-fil-a.com/locations/ca/moorpark-road",
+      "error": ""
+    },
+    {
+      "url": "https://www.7-eleven.com/locations/ca/thousand-oaks/50-east-wilbur-13880?yext=13880",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.7-eleven.com/locations/ca/thousand-oaks/50-east-wilbur-13880?yext=13880",
+      "error": ""
+    },
+    {
+      "url": "https://www.7-eleven.com/locations/ca/thousand-oaks/1773-thousand-oaks-blvd.-13869",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.7-eleven.com/locations/ca/thousand-oaks/1773-thousand-oaks-blvd.-13869",
+      "error": ""
+    },
+    {
+      "url": "https://www.7-eleven.com/locations/ca/thousand-oaks/609-rancho-conejo-33162?yext=33162",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.7-eleven.com/locations/ca/thousand-oaks/609-rancho-conejo-33162?yext=33162",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

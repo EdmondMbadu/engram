@@ -1,0 +1,281 @@
+Reading additional input from stdin...
+2026-08-13T07:41:09.636082Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:41:09.714548Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa11-5bcf-7e50-868a-d3b5a5add29f
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"zudqLSJZQDmfELPijPGw","schoolName":"Immaculata University","shortSchoolName":"Immaculata University","townName":"Immaculata","state":"PA","countryCode":"US","website":"https://www.immaculata.edu/","latitude":40.027981,"longitude":-75.570711},"templates":[{"id":"college-zero-dollar-hangs","version":"1.0","titlePattern":"Zero Dollars: {count} Hangs That Cost Nothing","editorialBrief":"Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.","researchQueries":["free student activities campus","free campus spaces students","free public places near campus"],"count":10,"icon":"money_off","primarySubjectType":"activity","allowedSubjectTypes":["activity","place"],"freshnessDays":180,"exactTitle":"Zero Dollars: 10 Hangs That Cost Nothing"}]}
+codex
+{
+  "complete": false,
+  "school_name": "Immaculata University",
+  "town_name": "Immaculata",
+  "boards": [{
+    "complete": false,
+    "school_name": "Immaculata University",
+    "town_name": "Immaculata",
+    "template_id": "college-zero-dollar-hangs",
+    "title": "Zero Dollars: 10 Hangs That Cost Nothing",
+    "description": "",
+    "icon": "money_off",
+    "cards": [
+    {
+      "subject_id": "research-status",
+      "subject_type": "place",
+      "entity_name": "Immaculata University",
+      "title": "Researching free-access hangs",
+      "subtitle": "",
+      "notes": "I’m verifying ten distinct options, including no-cost access and direct supporting pages.",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "https://www.immaculata.edu/",
+      "source_title": "Immaculata University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": 40.027981,
+      "longitude": -75.570711,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    }
+ 	   		, 
+    {
+      "subject_id": "research-status2",
+      "subject_type": "place",
+      "entity_name": "Immaculata University",
+      "title": "Researching free-access hangs",
+      "subtitle": "",
+      "notes": "I’m verifying ten distinct options, including no-cost access and direct supporting pages.",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "https://www.immaculata.edu/",
+      "source_title": "Immaculata University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": 40.027981,
+      "longitude": -75.570711,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "research-status3",
+      "subject_type": "place",
+      "entity_name": "Immaculata University",
+      "title": "Researching free-access hangs",
+      "subtitle": "",
+      "notes": "I’m verifying ten distinct options, including no-cost access and direct supporting pages.",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "https://www.immaculata.edu/",
+      "source_title": "Immaculata University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": 40.027981,
+      "longitude": -75.570711,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "research-status4",
+      "subject_type": "place",
+      "entity_name": "Immaculata University",
+      "title": "Researching free-access hangs",
+      "subtitle": "",
+      "notes": "I’m verifying ten distinct options, including no-cost access and direct supporting pages.",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "https://www.immaculata.edu/",
+      "source_title": "Immaculata University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": 40.027981,
+      "longitude": -75.570711,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "research-status5",
+      "subject_type": "place",
+      "entity_name": "Immaculata University",
+      "title": "Researching free-access hangs",
+      "subtitle": "",
+      "notes": "I’m verifying ten distinct options, including no-cost access and direct supporting pages.",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "https://www.immaculata.edu/",
+      "source_title": "Immaculata University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": 40.027981,
+      "longitude": -75.570711,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "research-status6",
+      "subject_type": "place",
+      "entity_name": "Immaculata University",
+      "title": "Researching free-access hangs",
+      "subtitle": "",
+      "notes": "I’m verifying ten distinct options, including no-cost access and direct supporting pages.",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "https://www.immaculata.edu/",
+      "source_title": "Immaculata University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": 40.027981,
+      "longitude": -75.570711,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "research-status7",
+      "subject_type": "place",
+      "entity_name": "Immaculata University",
+      "title": "Researching free-access hangs",
+      "subtitle": "",
+      "notes": "I’m verifying ten distinct options, including no-cost access and direct supporting pages.",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "https://www.immaculata.edu/",
+      "source_title": "Immaculata University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": 40.027981,
+      "longitude": -75.570711,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "research-status8",
+      "subject_type": "place",
+      "entity_name": "Immaculata University",
+      "title": "Researching free-access hangs",
+      "subtitle": "",
+      "notes": "I’m verifying ten distinct options, including no-cost access and direct supporting pages.",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "https://www.immaculata.edu/",
+      "source_title": "Immaculata University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": 40.027981,
+      "longitude": -75.570711,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "research-status9",
+      "subject_type": "place",
+      "entity_name": "Immaculata University",
+      "title": "Researching free-access hangs",
+      "subtitle": "",
+      "notes": "I’m verifying ten distinct options, including no-cost access and direct supporting pages.",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "https://www.immaculata.edu/",
+      "source_title": "Immaculata University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": 40.027981,
+      "longitude": -75.570711,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "research-status10",
+      "subject_type": "place",
+      "entity_name": "Immaculata University",
+      "title": "Researching free-access hangs",
+      "subtitle": "",
+      "notes": "I’m verifying ten distinct options, including no-cost access and direct supporting pages.",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "https://www.immaculata.edu/",
+      "source_title": "Immaculata University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": 40.027981,
+      "longitude": -75.570711,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "free",
+      "under21_safe": true
+    }
+    ],
+    "warnings": []
+  }],
+  "warnings": []
+}
+web search: 
+web search: site:immaculata.edu campus facilities library chapel art gallery arboretum Immaculata University ...
+web search: 
+web search: site:chesco.org "free" "park" Chester County trails admission ...
+web search: 
+web search: site:chesco.org/parks "Black Rock Sanctuary" trails ...
+codex
+{"complete":true,"school_name":"Immaculata University","town_name":"Immaculata","boards":[{"complete":true,"school_name":"Immaculata University","town_name":"Immaculata","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"Ten no-cost outings across Chester County’s seven regional parks and three regional trails, all officially confirmed free to visit.","icon":"money_off","cards":[{"subject_id":"black-rock-sanctuary-interpretive-hike","subject_type":"activity","entity_name":"Black Rock Sanctuary","title":"Follow the Wetland Interpretive Trail","subtitle":"An accessible nature walk near Phoenixville","notes":"Walk the 0.8-mile interpretive loop together and pause at the wetlands to look for amphibians, waterfowl and seasonal changes.","short_summary":"A short, ADA-accessible loop turns a reclaimed industrial landscape into an easy group nature outing.","evidence_claim":"Chester County identifies Black Rock Sanctuary as a county park and states that all county parks and trails are free to visit.","source_url":"https://www.chesco.org/FAQ.aspx?QID=930","source_title":"Chester County Parks + Preservation Frequently Asked Questions","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public county park; visit between 8:00 a.m. and the posted seasonal closing time. No admission or purchase is required.","cost_status":"free","under21_safe":true},{"subject_id":"exton-county-park-picnic","subject_type":"activity","entity_name":"Exton County Park","title":"Pack a Picnic for Exton Park","subtitle":"Trails and open space in Exton","notes":"Bring food from home, claim an unreserved picnic spot and pair lunch with a walk through the park’s connected trail network.","short_summary":"A bring-your-own picnic makes this large shared county-and-township park a flexible, purchase-free meetup.","evidence_claim":"Chester County lists Exton County Park among its seven county parks and confirms that all county parks and trails are free to visit.","source_url":"https://www.chesco.org/FAQ.aspx?QID=930","source_title":"Chester County Parks + Preservation Frequently Asked Questions","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public county park; open from 8:00 a.m. to the applicable seasonal closing time. Paid reservations are unnecessary for a casual visit.","cost_status":"free","under21_safe":true},{"subject_id":"hibernia-county-park-hike","subject_type":"activity","entity_name":"Hibernia County Park","title":"Take a Group Hike at Hibernia","subtitle":"Woodland trails around a historic county park","notes":"Choose a park trail that fits the group’s pace, carry water and leave time to view the grounds around historic Hibernia Mansion.","short_summary":"Woodland paths and historic scenery provide a full afternoon outing without an entrance charge.","evidence_claim":"Chester County names Hibernia County Park as a county park and explicitly says all county parks and trails are free to visit.","source_url":"https://www.chesco.org/FAQ.aspx?QID=930","source_title":"Chester County Parks + Preservation Frequently Asked Questions","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public county park; arrive after 8:00 a.m. and leave by the posted seasonal closing time. Ordinary park access is free.","cost_status":"free","under21_safe":true},{"subject_id":"nottingham-county-park-picnic","subject_type":"activity","entity_name":"Nottingham County Park","title":"Meet for an Outdoor Lunch","subtitle":"A bring-your-own gathering in southern Chester County","notes":"Pack lunch and a blanket, use an available picnic area and add a walk among the park’s distinctive serpentine-barren landscape.","short_summary":"Picnic space and unusual natural terrain create an unhurried group outing with nothing to buy.","evidence_claim":"Chester County identifies Nottingham County Park as one of its county parks and states that every county park and trail is free to visit.","source_url":"https://www.chesco.org/FAQ.aspx?QID=930","source_title":"Chester County Parks + Preservation Frequently Asked Questions","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public county park; standard access runs from 8:00 a.m. to the seasonal closing time. Bring your own supplies to keep the outing free.","cost_status":"free","under21_safe":true},{"subject_id":"springton-manor-farm-animals","subject_type":"activity","entity_name":"Springton Manor Farm","title":"Visit the Farm Animals","subtitle":"A demonstration-farm meetup in Glenmoore","notes":"Stop by the barn complex to see the farm animals, then follow a marked trail through the fields, woodland edges and historic landscape.","short_summary":"Animals, agricultural history and walking trails combine in a varied no-admission outing.","evidence_claim":"Chester County lists Springton Manor Farm as a county park and confirms that all its county parks and trails are free to visit.","source_url":"https://www.chesco.org/FAQ.aspx?QID=930","source_title":"Chester County Parks + Preservation Frequently Asked Questions","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Park hours are 8:00 a.m. to the seasonal closing time; the barn and museum are normally open 10:00 a.m.–2:30 p.m. Admission is free.","cost_status":"free","under21_safe":true},{"subject_id":"warwick-county-park-games","subject_type":"activity","entity_name":"Warwick County Park","title":"Bring a Ball for Lawn Games","subtitle":"An active afternoon beside French Creek","notes":"Pack a ball or flying disc, use an open recreation area and cool down afterward with a walk along the park’s creekside trails.","short_summary":"Open recreation space and wooded paths let a group mix casual games with a nature walk.","evidence_claim":"Chester County identifies Warwick County Park as a county park and says all county parks and trails are available free of charge.","source_url":"https://www.chesco.org/FAQ.aspx?QID=930","source_title":"Chester County Parks + Preservation Frequently Asked Questions","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public county park; use the grounds from 8:00 a.m. until the posted seasonal closing time. No admission or purchase is required.","cost_status":"free","under21_safe":true},{"subject_id":"wolfs-hollow-county-park-birding","subject_type":"activity","entity_name":"Wolf's Hollow County Park","title":"Go Birding in Wolf’s Hollow","subtitle":"A rustic woodland outing near Atglen","notes":"Bring binoculars if you have them, select a trail suited to the group and scan the mature woodland for tanagers, orioles and thrashers.","short_summary":"Nearly ten miles of rustic trails offer a quiet, equipment-optional birding meetup.","evidence_claim":"Chester County lists Wolf's Hollow County Park among its county parks and states that all county parks and trails are free to visit.","source_url":"https://www.chesco.org/FAQ.aspx?QID=930","source_title":"Chester County Parks + Preservation Frequently Asked Questions","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open daily from 8:00 a.m. to sunset except Christmas Day. Facilities are limited, so carry water and pack out trash; access is free.","cost_status":"free","under21_safe":true},{"subject_id":"chester-valley-trail-walk","subject_type":"activity","entity_name":"Chester Valley Trail","title":"Walk the Chester Valley Trail","subtitle":"A paved regional-trail meetup near Exton","notes":"Pick a public trailhead, agree on a turnaround point and use the smooth multi-use path for an easy out-and-back walk with friends.","short_summary":"A paved regional route makes distance and pace easy to adjust for a casual social walk.","evidence_claim":"Chester County identifies the Chester Valley Trail as a county regional trail and confirms that all county parks and trails are free.","source_url":"https://www.chesco.org/FAQ.aspx?QID=930","source_title":"Chester County Parks + Preservation Frequently Asked Questions","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open one-half hour before sunrise until one-half hour after sunset. Walking requires no admission or purchase.","cost_status":"free","under21_safe":true},{"subject_id":"schuylkill-river-trail-ride","subject_type":"activity","entity_name":"Schuylkill River Trail","title":"Plan a River-Trail Bike Ride","subtitle":"A choose-your-distance ride on a county trail","notes":"Meet at a public trailhead with your own bikes, choose a comfortable turnaround landmark and keep right while sharing the multi-use path.","short_summary":"The county-managed trail segment supports a flexible ride using equipment you already own.","evidence_claim":"Chester County names the Schuylkill River Trail as a regional county trail and states that all county parks and trails are free to visit.","source_url":"https://www.chesco.org/FAQ.aspx?QID=930","source_title":"Chester County Parks + Preservation Frequently Asked Questions","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open one-half hour before sunrise to one-half hour after sunset. Trail use is free; this activity assumes participants bring their own bicycles.","cost_status":"free","under21_safe":true},{"subject_id":"struble-trail-stroll","subject_type":"activity","entity_name":"Struble Trail","title":"Take a Creekside Stroll","subtitle":"A relaxed multi-use trail outing near Downingtown","notes":"Start from a public trailhead, walk beside East Branch Brandywine Creek and choose a turnaround time that leaves daylight for the return.","short_summary":"A creekside route provides a straightforward, conversation-friendly walk with no required spending.","evidence_claim":"Chester County identifies the Struble Trail as a county regional trail and explicitly confirms that all county parks and trails are free.","source_url":"https://www.chesco.org/FAQ.aspx?QID=930","source_title":"Chester County Parks + Preservation Frequently Asked Questions","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open one-half hour before sunrise until one-half hour after sunset. Public trail access requires no fee or purchase.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:43:02.460522Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa11-5bcf-7e50-868a-d3b5a5add29f.1786606869457019000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+49,374
+
+{"complete":true,"school_name":"Immaculata University","town_name":"Immaculata","boards":[{"complete":true,"school_name":"Immaculata University","town_name":"Immaculata","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"Ten no-cost outings across Chester County’s seven regional parks and three regional trails, all officially confirmed free to visit.","icon":"money_off","cards":[{"subject_id":"black-rock-sanctuary-interpretive-hike","subject_type":"activity","entity_name":"Black Rock Sanctuary","title":"Follow the Wetland Interpretive Trail","subtitle":"An accessible nature walk near Phoenixville","notes":"Walk the 0.8-mile interpretive loop together and pause at the wetlands to look for amphibians, waterfowl and seasonal changes.","short_summary":"A short, ADA-accessible loop turns a reclaimed industrial landscape into an easy group nature outing.","evidence_claim":"Chester County identifies Black Rock Sanctuary as a county park and states that all county parks and trails are free to visit.","source_url":"https://www.chesco.org/FAQ.aspx?QID=930","source_title":"Chester County Parks + Preservation Frequently Asked Questions","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public county park; visit between 8:00 a.m. and the posted seasonal closing time. No admission or purchase is required.","cost_status":"free","under21_safe":true},{"subject_id":"exton-county-park-picnic","subject_type":"activity","entity_name":"Exton County Park","title":"Pack a Picnic for Exton Park","subtitle":"Trails and open space in Exton","notes":"Bring food from home, claim an unreserved picnic spot and pair lunch with a walk through the park’s connected trail network.","short_summary":"A bring-your-own picnic makes this large shared county-and-township park a flexible, purchase-free meetup.","evidence_claim":"Chester County lists Exton County Park among its seven county parks and confirms that all county parks and trails are free to visit.","source_url":"https://www.chesco.org/FAQ.aspx?QID=930","source_title":"Chester County Parks + Preservation Frequently Asked Questions","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public county park; open from 8:00 a.m. to the applicable seasonal closing time. Paid reservations are unnecessary for a casual visit.","cost_status":"free","under21_safe":true},{"subject_id":"hibernia-county-park-hike","subject_type":"activity","entity_name":"Hibernia County Park","title":"Take a Group Hike at Hibernia","subtitle":"Woodland trails around a historic county park","notes":"Choose a park trail that fits the group’s pace, carry water and leave time to view the grounds around historic Hibernia Mansion.","short_summary":"Woodland paths and historic scenery provide a full afternoon outing without an entrance charge.","evidence_claim":"Chester County names Hibernia County Park as a county park and explicitly says all county parks and trails are free to visit.","source_url":"https://www.chesco.org/FAQ.aspx?QID=930","source_title":"Chester County Parks + Preservation Frequently Asked Questions","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public county park; arrive after 8:00 a.m. and leave by the posted seasonal closing time. Ordinary park access is free.","cost_status":"free","under21_safe":true},{"subject_id":"nottingham-county-park-picnic","subject_type":"activity","entity_name":"Nottingham County Park","title":"Meet for an Outdoor Lunch","subtitle":"A bring-your-own gathering in southern Chester County","notes":"Pack lunch and a blanket, use an available picnic area and add a walk among the park’s distinctive serpentine-barren landscape.","short_summary":"Picnic space and unusual natural terrain create an unhurried group outing with nothing to buy.","evidence_claim":"Chester County identifies Nottingham County Park as one of its county parks and states that every county park and trail is free to visit.","source_url":"https://www.chesco.org/FAQ.aspx?QID=930","source_title":"Chester County Parks + Preservation Frequently Asked Questions","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public county park; standard access runs from 8:00 a.m. to the seasonal closing time. Bring your own supplies to keep the outing free.","cost_status":"free","under21_safe":true},{"subject_id":"springton-manor-farm-animals","subject_type":"activity","entity_name":"Springton Manor Farm","title":"Visit the Farm Animals","subtitle":"A demonstration-farm meetup in Glenmoore","notes":"Stop by the barn complex to see the farm animals, then follow a marked trail through the fields, woodland edges and historic landscape.","short_summary":"Animals, agricultural history and walking trails combine in a varied no-admission outing.","evidence_claim":"Chester County lists Springton Manor Farm as a county park and confirms that all its county parks and trails are free to visit.","source_url":"https://www.chesco.org/FAQ.aspx?QID=930","source_title":"Chester County Parks + Preservation Frequently Asked Questions","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Park hours are 8:00 a.m. to the seasonal closing time; the barn and museum are normally open 10:00 a.m.–2:30 p.m. Admission is free.","cost_status":"free","under21_safe":true},{"subject_id":"warwick-county-park-games","subject_type":"activity","entity_name":"Warwick County Park","title":"Bring a Ball for Lawn Games","subtitle":"An active afternoon beside French Creek","notes":"Pack a ball or flying disc, use an open recreation area and cool down afterward with a walk along the park’s creekside trails.","short_summary":"Open recreation space and wooded paths let a group mix casual games with a nature walk.","evidence_claim":"Chester County identifies Warwick County Park as a county park and says all county parks and trails are available free of charge.","source_url":"https://www.chesco.org/FAQ.aspx?QID=930","source_title":"Chester County Parks + Preservation Frequently Asked Questions","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public county park; use the grounds from 8:00 a.m. until the posted seasonal closing time. No admission or purchase is required.","cost_status":"free","under21_safe":true},{"subject_id":"wolfs-hollow-county-park-birding","subject_type":"activity","entity_name":"Wolf's Hollow County Park","title":"Go Birding in Wolf’s Hollow","subtitle":"A rustic woodland outing near Atglen","notes":"Bring binoculars if you have them, select a trail suited to the group and scan the mature woodland for tanagers, orioles and thrashers.","short_summary":"Nearly ten miles of rustic trails offer a quiet, equipment-optional birding meetup.","evidence_claim":"Chester County lists Wolf's Hollow County Park among its county parks and states that all county parks and trails are free to visit.","source_url":"https://www.chesco.org/FAQ.aspx?QID=930","source_title":"Chester County Parks + Preservation Frequently Asked Questions","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open daily from 8:00 a.m. to sunset except Christmas Day. Facilities are limited, so carry water and pack out trash; access is free.","cost_status":"free","under21_safe":true},{"subject_id":"chester-valley-trail-walk","subject_type":"activity","entity_name":"Chester Valley Trail","title":"Walk the Chester Valley Trail","subtitle":"A paved regional-trail meetup near Exton","notes":"Pick a public trailhead, agree on a turnaround point and use the smooth multi-use path for an easy out-and-back walk with friends.","short_summary":"A paved regional route makes distance and pace easy to adjust for a casual social walk.","evidence_claim":"Chester County identifies the Chester Valley Trail as a county regional trail and confirms that all county parks and trails are free.","source_url":"https://www.chesco.org/FAQ.aspx?QID=930","source_title":"Chester County Parks + Preservation Frequently Asked Questions","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open one-half hour before sunrise until one-half hour after sunset. Walking requires no admission or purchase.","cost_status":"free","under21_safe":true},{"subject_id":"schuylkill-river-trail-ride","subject_type":"activity","entity_name":"Schuylkill River Trail","title":"Plan a River-Trail Bike Ride","subtitle":"A choose-your-distance ride on a county trail","notes":"Meet at a public trailhead with your own bikes, choose a comfortable turnaround landmark and keep right while sharing the multi-use path.","short_summary":"The county-managed trail segment supports a flexible ride using equipment you already own.","evidence_claim":"Chester County names the Schuylkill River Trail as a regional county trail and states that all county parks and trails are free to visit.","source_url":"https://www.chesco.org/FAQ.aspx?QID=930","source_title":"Chester County Parks + Preservation Frequently Asked Questions","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open one-half hour before sunrise to one-half hour after sunset. Trail use is free; this activity assumes participants bring their own bicycles.","cost_status":"free","under21_safe":true},{"subject_id":"struble-trail-stroll","subject_type":"activity","entity_name":"Struble Trail","title":"Take a Creekside Stroll","subtitle":"A relaxed multi-use trail outing near Downingtown","notes":"Start from a public trailhead, walk beside East Branch Brandywine Creek and choose a turnaround time that leaves daylight for the return.","short_summary":"A creekside route provides a straightforward, conversation-friendly walk with no required spending.","evidence_claim":"Chester County identifies the Struble Trail as a county regional trail and explicitly confirms that all county parks and trails are free.","source_url":"https://www.chesco.org/FAQ.aspx?QID=930","source_title":"Chester County Parks + Preservation Frequently Asked Questions","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open one-half hour before sunrise until one-half hour after sunset. Public trail access requires no fee or purchase.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}

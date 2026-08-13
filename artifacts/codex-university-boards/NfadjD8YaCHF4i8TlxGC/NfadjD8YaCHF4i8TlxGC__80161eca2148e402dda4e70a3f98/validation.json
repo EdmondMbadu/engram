@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://lib.ku.edu/locations/watson",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.ku.edu/locations/watson",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ku.edu/locations/watson/study-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ku.edu/locations/watson/study-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ku.edu/academic-resources",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ku.edu/academic-resources",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ku.edu/anschutz-study-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ku.edu/anschutz-study-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://lib.ku.edu/sites/lib/files/images/2021/Publications/StartwithUs25WEB.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.ku.edu/sites/lib/files/images/2021/Publications/StartwithUs25WEB.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://lib.ku.edu/locations/anschutz/floormap",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.ku.edu/locations/anschutz/floormap",
+      "error": ""
+    },
+    {
+      "url": "https://lib.ku.edu/locations/spahr",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.ku.edu/locations/spahr",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.ku.edu/locations/art-architecture/circulation-policies",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.ku.edu/locations/art-architecture/circulation-policies",
+      "error": ""
+    },
+    {
+      "url": "https://spencer.lib.ku.edu/using-the-library/use-collections",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://spencer.lib.ku.edu/using-the-library/use-collections",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

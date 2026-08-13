@@ -1,0 +1,79 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.luther.edu/library/about/services/bike-share-and-fixit-station",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.luther.edu/library/about/services/bike-share-and-fixit-station",
+      "error": ""
+    },
+    {
+      "url": "https://www.luther.edu/offices/its/help-desk/services/computerlabs",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.luther.edu/offices/its/help-desk/services/computerlabs",
+      "error": ""
+    },
+    {
+      "url": "https://vesterheim.org/vesterheim-commons-is-open/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://vesterheim.org/vesterheim-commons-is-open/",
+      "error": ""
+    },
+    {
+      "url": "https://www.iowadnr.gov/places-go/state-preserves/decorah-ice-cave-state-preserve",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iowadnr.gov/places-go/state-preserves/decorah-ice-cave-state-preserve",
+      "error": ""
+    },
+    {
+      "url": "https://www.iowadnr.gov/news-release/2024-07-09/new-watershed-plan-improves-water-quality-chuck-gipp-decorah-fishery-hatchery",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iowadnr.gov/news-release/2024-07-09/new-watershed-plan-improves-water-quality-chuck-gipp-decorah-fishery-hatchery",
+      "error": ""
+    },
+    {
+      "url": "https://parks.decorahia.org/wp-content/uploads/2022/11/Parks-Trail-Guide.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://parks.decorahia.org/wp-content/uploads/2022/11/Parks-Trail-Guide.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://parks.decorahia.org/wp-content/uploads/2020/01/Decorah-Parks-Trails-002-002.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://parks.decorahia.org/wp-content/uploads/2020/01/Decorah-Parks-Trails-002-002.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://parks.decorahia.org/wp-content/uploads/2024/04/Decorah-Parks-and-Recreation-Rules-and-Regulations-Doc-As-of-2.19.24.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://parks.decorahia.org/wp-content/uploads/2024/04/Decorah-Parks-and-Recreation-Rules-and-Regulations-Doc-As-of-2.19.24.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Preus Library"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

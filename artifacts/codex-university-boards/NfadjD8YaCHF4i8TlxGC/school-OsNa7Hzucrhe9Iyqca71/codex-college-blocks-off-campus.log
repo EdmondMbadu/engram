@@ -1,0 +1,293 @@
+Reading additional input from stdin...
+2026-08-13T08:03:31.297469Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T08:03:31.334837Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T08:03:31.380910Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa24-c9dc-76d0-a7a0-3efaf68ad9d8.1786608142812935000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa25-d550-7c42-9fbc-ec5660228e2c
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"OsNa7Hzucrhe9Iyqca71","schoolName":"Loras College","shortSchoolName":"Loras College","townName":"Dubuque","state":"IA","countryCode":"US","website":"https://www.loras.edu/","latitude":42.503908,"longitude":-90.679023},"templates":[{"id":"college-blocks-off-campus","version":"1.0","titlePattern":"{count} Blocks Off Campus, One Reason Each","editorialBrief":"Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.","researchQueries":["off campus streets student district","campus adjacent commercial streets","neighborhood plan near university"],"count":10,"icon":"location_city","primarySubjectType":"street_or_district","allowedSubjectTypes":["street_or_district"],"freshnessDays":730,"exactTitle":"10 Blocks Off Campus, One Reason Each"}]}
+codex
+{
+  "complete": false,
+  "school_name": "Loras College",
+  "town_name": "Dubuque",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Loras College",
+      "town_name": "Dubuque",
+      "template_id": "college-blocks-off-campus",
+      "title": "10 Blocks Off Campus, One Reason Each",
+      "description": "",
+      "icon": "location_city",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "I’m researching ten named, map-listed destinations along nearby corridors and checking each claim against a direct public source.",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+    ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:cityofdubuque.org Dubuque attractions parks museum Main Street Central Avenue official ...
+web search: 
+web search: Dubuque Museum of Art official visit 701 Locust Street ...
+web search: 
+web search: Grand Opera House Dubuque official 135 W 8th Street ...
+codex
+{"complete":true,"school_name":"Loras College","town_name":"Dubuque","boards":[{"complete":true,"school_name":"Loras College","town_name":"Dubuque","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named destinations along downtown and riverfront corridors within Loras College’s practical off-campus orbit, each paired with one documented reason to go.","icon":"location_city","cards":[{"subject_id":"loras-carnegie-stout-library","subject_type":"street_or_district","entity_name":"Carnegie-Stout Public Library","title":"Find the Library Rotunda","subtitle":"West 11th Street at Bluff Street","notes":"Enter from West 11th Street and look up inside the historic rotunda, where a domed light well, Corinthian columns, and original finishes define the space.","short_summary":"A working public library inside a landmark Classical Revival building.","evidence_claim":"The city identifies Carnegie-Stout Public Library at 360 W. 11th St. and documents its central rotunda, Corinthian columns, marble flooring, and white-oak woodwork.","source_url":"https://www.cityofdubuque.org/694/Carnegie-Stout-Public-Library","source_title":"Carnegie Stout Public Library","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Carnegie-Stout+Public+Library+360+W+11th+St+Dubuque+IA","access_notes":"Public library hours and holiday closures can change; confirm the current schedule on the library website before entering.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"loras-steeple-square","subject_type":"street_or_district","entity_name":"Steeple Square","title":"See the Restored Steeple Campus","subtitle":"East 15th Street beside the Central Avenue corridor","notes":"Approach from East 15th Street for a clear exterior view, then contact Steeple Square directly if you want to arrange a tour of the event-center campus.","short_summary":"A recognizable community campus anchored by a historic church steeple.","evidence_claim":"Steeple Square lists its campus at 101 East 15th Street and provides direct contacts for tours, volunteer opportunities, programs, and events.","source_url":"https://www.steeplesquare.com/contact/","source_title":"Contact - Steeple Square","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Steeple+Square+101+East+15th+Street+Dubuque+IA","access_notes":"Interior access is program- or arrangement-dependent; use the official tour contact before planning to enter.","cost_status":"unknown","under21_safe":true},{"subject_id":"loras-dubuque-museum-art","subject_type":"street_or_district","entity_name":"Dubuque Museum of Art","title":"Enter Through Dupaco Alley","subtitle":"10th Street in the Historic Millwork District","notes":"Use the museum’s specified Dupaco Alley entrance on 10th Street, then check the current exhibition list before choosing what to see inside.","short_summary":"A local art stop with an unusually specific alley-side entrance.","evidence_claim":"The Dubuque Museum of Art says its current space is in the Millwork District and directs visitors to enter via Dupaco Alley on 10th Street between Jackson and Washington.","source_url":"https://dbqart.org/","source_title":"Home | Dubuque Museum of Art","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Dubuque+Museum+of+Art+Dubuque+IA","access_notes":"The official site lists Wednesday-Sunday visitor hours, with later Thursday hours; verify closures and exhibitions before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"loras-grand-opera-house","subject_type":"street_or_district","entity_name":"The Grand Opera House","title":"Catch a Community Production","subtitle":"West 8th Street at Iowa Street","notes":"Check the production calendar before walking down West 8th Street; the historic venue presents community-focused theatre, dance, and performing-arts programs.","short_summary":"A nineteenth-century theater still operating as a nonprofit performance venue.","evidence_claim":"The Grand Opera House documents that it has served Dubuque since 1890 and now operates as the city’s largest nonprofit theatre.","source_url":"https://thegrandoperahouse.com/","source_title":"The Grand Opera House","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=The+Grand+Opera+House+135+W+8th+St+Dubuque+IA","access_notes":"Entry generally depends on a scheduled performance or program; consult the official calendar and ticket details.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"loras-washington-park","subject_type":"street_or_district","entity_name":"Washington Park","title":"Pause at the Gazebo","subtitle":"Locust Street between West 6th and West 7th streets","notes":"Walk in from Locust Street and use the gazebo as your visual landmark; benches, picnic tables, vegetation, and a city time capsule fill the block.","short_summary":"A full downtown park block centered on a highly photographable gazebo.","evidence_claim":"The city locates Washington Park at 700 Locust Street and lists its gazebo, planted areas, time capsule, benches, picnic tables, and water fountains.","source_url":"https://cityofdubuque.org/2790/Washington-Park","source_title":"Washington Park","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Washington+Park+700+Locust+Street+Dubuque+IA","access_notes":"The city lists seasonal park hours from 7 a.m. to 10 p.m.; amenities may be unavailable outside the stated park season.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"loras-town-clock","subject_type":"street_or_district","entity_name":"Dubuque Town Clock","title":"Frame the Clock from Main Street","subtitle":"Main Street at Town Clock Plaza","notes":"Stand back along Main Street to fit the elevated clock and its four-column pedestal into one frame, then compare the structure with nearby storefront scale.","short_summary":"A 110-foot downtown landmark raised above its pedestrian plaza.","evidence_claim":"The city says the Town Clock stands in Town Clock Plaza on Main Street, was moved there in 1971, and reaches approximately 110 feet when assembled.","source_url":"https://www.cityofdubuque.org/1596/Town-Clock","source_title":"Town Clock","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Dubuque+Town+Clock+700+Main+Street+Dubuque+IA","access_notes":"View the exterior from Town Clock Plaza; nearby festivals or street activity can temporarily affect access.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"loras-five-flags-center","subject_type":"street_or_district","entity_name":"Five Flags Center","title":"Use the Locust Street Entrance","subtitle":"Main Street between West 4th and West 5th streets","notes":"When attending an event, approach the Main Street venue from its signed Locust Street entrance between Fourth and Fifth streets and review the bag policy first.","short_summary":"A downtown civic and entertainment complex spanning an arena and historic theater.","evidence_claim":"Five Flags Center lists its address as 405 Main Street and specifies that its visitor entrance is on Locust Street between Fourth and Fifth streets.","source_url":"https://www.fiveflagscenter.com/directions.aspx","source_title":"Location & Directions","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Five+Flags+Center+405+Main+Street+Dubuque+IA","access_notes":"Building entry is event-dependent; check the official schedule, ticket requirements, entrance details, and current bag policy.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"loras-fenelon-place-elevator","subject_type":"street_or_district","entity_name":"Fenelon Place Elevator","title":"Ride Above Fourth Street","subtitle":"West 4th Street at Bluff Street","notes":"Start at Fourth and Bluff for the lower station, bring cash for the fare, and ride the 296-foot funicular toward Fenelon Place for the elevated view.","short_summary":"A compact seasonal funicular climbing directly from downtown to the bluff.","evidence_claim":"The operator describes the Fenelon Place Elevator as a 296-foot funicular rising 189 feet from Fourth Street to Fenelon Place and directs GPS users to Fourth and Bluff streets.","source_url":"https://www.fenelonplaceelevator.com/","source_title":"Fenelon Place Elevator Company","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Fenelon+Place+Elevator+4th+and+Bluff+Streets+Dubuque+IA","access_notes":"The operator lists seasonal daily service from April 1 through November 30, excluding Thanksgiving, and says payment is cash only.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"loras-river-museum","subject_type":"street_or_district","entity_name":"National Mississippi River Museum & Aquarium","title":"Follow Third Street to the River","subtitle":"East 3rd Street in the Port of Dubuque","notes":"Take the Third Street bridge toward the Port and follow the museum’s alternate directions if rail traffic blocks the more common Fifth Street approach.","short_summary":"A combined aquarium, river-history museum, and science center on the waterfront.","evidence_claim":"The museum locates its campus at 350 East 3rd Street in the Port of Dubuque and describes it as part museum, part aquarium, and part science center.","source_url":"https://www.rivermuseum.org/map","source_title":"Maps & Directions | National Mississippi River Museum & Aquarium","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=National+Mississippi+River+Museum+350+East+3rd+Street+Dubuque+IA","access_notes":"Admission is ticketed; verify current hours and use the museum’s alternate route when train traffic obstructs the Fifth Street crossing.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"loras-shot-tower","subject_type":"street_or_district","entity_name":"Dubuque Shot Tower","title":"Study the Stone-to-Brick Tower","subtitle":"Commercial Street at the Mississippi River","notes":"Approach from Commercial Street and study the exterior transition from seven stone stories to three brick stories; do not attempt to enter the structure.","short_summary":"A 120-foot industrial landmark built for nineteenth-century lead-shot production.","evidence_claim":"The city locates the Shot Tower at Commercial Street and the Mississippi River and documents its seven stone stories, three brick stories, and 120-foot height.","source_url":"https://www.cityofdubuque.org/712/Shot-Tower","source_title":"Shot Tower","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Dubuque+Shot+Tower+Commercial+Street+Dubuque+IA","access_notes":"Treat this as an exterior landmark stop; the city page does not advertise public interior access.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T08:05:22.487593Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa25-d550-7c42-9fbc-ec5660228e2c.1786608211281070000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+34,421
+
+{"complete":true,"school_name":"Loras College","town_name":"Dubuque","boards":[{"complete":true,"school_name":"Loras College","town_name":"Dubuque","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named destinations along downtown and riverfront corridors within Loras College’s practical off-campus orbit, each paired with one documented reason to go.","icon":"location_city","cards":[{"subject_id":"loras-carnegie-stout-library","subject_type":"street_or_district","entity_name":"Carnegie-Stout Public Library","title":"Find the Library Rotunda","subtitle":"West 11th Street at Bluff Street","notes":"Enter from West 11th Street and look up inside the historic rotunda, where a domed light well, Corinthian columns, and original finishes define the space.","short_summary":"A working public library inside a landmark Classical Revival building.","evidence_claim":"The city identifies Carnegie-Stout Public Library at 360 W. 11th St. and documents its central rotunda, Corinthian columns, marble flooring, and white-oak woodwork.","source_url":"https://www.cityofdubuque.org/694/Carnegie-Stout-Public-Library","source_title":"Carnegie Stout Public Library","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Carnegie-Stout+Public+Library+360+W+11th+St+Dubuque+IA","access_notes":"Public library hours and holiday closures can change; confirm the current schedule on the library website before entering.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"loras-steeple-square","subject_type":"street_or_district","entity_name":"Steeple Square","title":"See the Restored Steeple Campus","subtitle":"East 15th Street beside the Central Avenue corridor","notes":"Approach from East 15th Street for a clear exterior view, then contact Steeple Square directly if you want to arrange a tour of the event-center campus.","short_summary":"A recognizable community campus anchored by a historic church steeple.","evidence_claim":"Steeple Square lists its campus at 101 East 15th Street and provides direct contacts for tours, volunteer opportunities, programs, and events.","source_url":"https://www.steeplesquare.com/contact/","source_title":"Contact - Steeple Square","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Steeple+Square+101+East+15th+Street+Dubuque+IA","access_notes":"Interior access is program- or arrangement-dependent; use the official tour contact before planning to enter.","cost_status":"unknown","under21_safe":true},{"subject_id":"loras-dubuque-museum-art","subject_type":"street_or_district","entity_name":"Dubuque Museum of Art","title":"Enter Through Dupaco Alley","subtitle":"10th Street in the Historic Millwork District","notes":"Use the museum’s specified Dupaco Alley entrance on 10th Street, then check the current exhibition list before choosing what to see inside.","short_summary":"A local art stop with an unusually specific alley-side entrance.","evidence_claim":"The Dubuque Museum of Art says its current space is in the Millwork District and directs visitors to enter via Dupaco Alley on 10th Street between Jackson and Washington.","source_url":"https://dbqart.org/","source_title":"Home | Dubuque Museum of Art","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Dubuque+Museum+of+Art+Dubuque+IA","access_notes":"The official site lists Wednesday-Sunday visitor hours, with later Thursday hours; verify closures and exhibitions before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"loras-grand-opera-house","subject_type":"street_or_district","entity_name":"The Grand Opera House","title":"Catch a Community Production","subtitle":"West 8th Street at Iowa Street","notes":"Check the production calendar before walking down West 8th Street; the historic venue presents community-focused theatre, dance, and performing-arts programs.","short_summary":"A nineteenth-century theater still operating as a nonprofit performance venue.","evidence_claim":"The Grand Opera House documents that it has served Dubuque since 1890 and now operates as the city’s largest nonprofit theatre.","source_url":"https://thegrandoperahouse.com/","source_title":"The Grand Opera House","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=The+Grand+Opera+House+135+W+8th+St+Dubuque+IA","access_notes":"Entry generally depends on a scheduled performance or program; consult the official calendar and ticket details.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"loras-washington-park","subject_type":"street_or_district","entity_name":"Washington Park","title":"Pause at the Gazebo","subtitle":"Locust Street between West 6th and West 7th streets","notes":"Walk in from Locust Street and use the gazebo as your visual landmark; benches, picnic tables, vegetation, and a city time capsule fill the block.","short_summary":"A full downtown park block centered on a highly photographable gazebo.","evidence_claim":"The city locates Washington Park at 700 Locust Street and lists its gazebo, planted areas, time capsule, benches, picnic tables, and water fountains.","source_url":"https://cityofdubuque.org/2790/Washington-Park","source_title":"Washington Park","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Washington+Park+700+Locust+Street+Dubuque+IA","access_notes":"The city lists seasonal park hours from 7 a.m. to 10 p.m.; amenities may be unavailable outside the stated park season.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"loras-town-clock","subject_type":"street_or_district","entity_name":"Dubuque Town Clock","title":"Frame the Clock from Main Street","subtitle":"Main Street at Town Clock Plaza","notes":"Stand back along Main Street to fit the elevated clock and its four-column pedestal into one frame, then compare the structure with nearby storefront scale.","short_summary":"A 110-foot downtown landmark raised above its pedestrian plaza.","evidence_claim":"The city says the Town Clock stands in Town Clock Plaza on Main Street, was moved there in 1971, and reaches approximately 110 feet when assembled.","source_url":"https://www.cityofdubuque.org/1596/Town-Clock","source_title":"Town Clock","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Dubuque+Town+Clock+700+Main+Street+Dubuque+IA","access_notes":"View the exterior from Town Clock Plaza; nearby festivals or street activity can temporarily affect access.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"loras-five-flags-center","subject_type":"street_or_district","entity_name":"Five Flags Center","title":"Use the Locust Street Entrance","subtitle":"Main Street between West 4th and West 5th streets","notes":"When attending an event, approach the Main Street venue from its signed Locust Street entrance between Fourth and Fifth streets and review the bag policy first.","short_summary":"A downtown civic and entertainment complex spanning an arena and historic theater.","evidence_claim":"Five Flags Center lists its address as 405 Main Street and specifies that its visitor entrance is on Locust Street between Fourth and Fifth streets.","source_url":"https://www.fiveflagscenter.com/directions.aspx","source_title":"Location & Directions","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Five+Flags+Center+405+Main+Street+Dubuque+IA","access_notes":"Building entry is event-dependent; check the official schedule, ticket requirements, entrance details, and current bag policy.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"loras-fenelon-place-elevator","subject_type":"street_or_district","entity_name":"Fenelon Place Elevator","title":"Ride Above Fourth Street","subtitle":"West 4th Street at Bluff Street","notes":"Start at Fourth and Bluff for the lower station, bring cash for the fare, and ride the 296-foot funicular toward Fenelon Place for the elevated view.","short_summary":"A compact seasonal funicular climbing directly from downtown to the bluff.","evidence_claim":"The operator describes the Fenelon Place Elevator as a 296-foot funicular rising 189 feet from Fourth Street to Fenelon Place and directs GPS users to Fourth and Bluff streets.","source_url":"https://www.fenelonplaceelevator.com/","source_title":"Fenelon Place Elevator Company","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Fenelon+Place+Elevator+4th+and+Bluff+Streets+Dubuque+IA","access_notes":"The operator lists seasonal daily service from April 1 through November 30, excluding Thanksgiving, and says payment is cash only.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"loras-river-museum","subject_type":"street_or_district","entity_name":"National Mississippi River Museum & Aquarium","title":"Follow Third Street to the River","subtitle":"East 3rd Street in the Port of Dubuque","notes":"Take the Third Street bridge toward the Port and follow the museum’s alternate directions if rail traffic blocks the more common Fifth Street approach.","short_summary":"A combined aquarium, river-history museum, and science center on the waterfront.","evidence_claim":"The museum locates its campus at 350 East 3rd Street in the Port of Dubuque and describes it as part museum, part aquarium, and part science center.","source_url":"https://www.rivermuseum.org/map","source_title":"Maps & Directions | National Mississippi River Museum & Aquarium","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=National+Mississippi+River+Museum+350+East+3rd+Street+Dubuque+IA","access_notes":"Admission is ticketed; verify current hours and use the museum’s alternate route when train traffic obstructs the Fifth Street crossing.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"loras-shot-tower","subject_type":"street_or_district","entity_name":"Dubuque Shot Tower","title":"Study the Stone-to-Brick Tower","subtitle":"Commercial Street at the Mississippi River","notes":"Approach from Commercial Street and study the exterior transition from seven stone stories to three brick stories; do not attempt to enter the structure.","short_summary":"A 120-foot industrial landmark built for nineteenth-century lead-shot production.","evidence_claim":"The city locates the Shot Tower at Commercial Street and the Mississippi River and documents its seven stone stories, three brick stories, and 120-foot height.","source_url":"https://www.cityofdubuque.org/712/Shot-Tower","source_title":"Shot Tower","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Dubuque+Shot+Tower+Commercial+Street+Dubuque+IA","access_notes":"Treat this as an exterior landmark stop; the city page does not advertise public interior access.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

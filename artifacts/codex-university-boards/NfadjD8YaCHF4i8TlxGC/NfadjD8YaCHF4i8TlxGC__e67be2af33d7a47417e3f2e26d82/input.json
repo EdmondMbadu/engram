@@ -1,0 +1,72 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "eBkXDVIxzY4sB2zXUYAM",
+    "schoolName": "Purdue University-Main Campus",
+    "shortSchoolName": "Purdue University",
+    "townName": "West Lafayette",
+    "state": "IN",
+    "countryCode": "US",
+    "unitId": "243780",
+    "website": "https://www.purdue.edu/",
+    "latitude": 40.428206,
+    "longitude": -86.914435,
+    "heroUrl": "https://www.purdue.edu/home/wp-content/uploads/2023/09/cropped-Home-Cover-2023_KAL_1419.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=purdue.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at Purdue University, Shared as Cards",
+  "excluded_subjects": [
+    "Grand Reading Room, Wilmeth Active Learning Center",
+    "Study Rooms, Wilmeth Active Learning Center",
+    "Humanities, Social Sciences and Education Library",
+    "Mathematical Sciences Library",
+    "Roland G. Parrish Library of Management and Economics",
+    "Veterinary Medical Library",
+    "Aviation and Transportation Technology Library",
+    "University Residences Support Center, Shreve Hall",
+    "University Hall Commons Area",
+    "Chemistry Resource Room",
+    "Purdue Varsity Glee Club presents First Nighter",
+    "Mucca Pazza",
+    "Purduette Premiere",
+    "Tippecanoe Latino Festival",
+    "31st Annual West Lafayette Global Fest",
+    "Archaeology Month Celebration",
+    "Star City Nights",
+    "Art on the Wabash 2026",
+    "Purdue Football Spring Showcase",
+    "Purdue Bands & Orchestras Presents Jazz on the Hill",
+    "Purdue Memorial Union",
+    "Purdue Memorial Union Outdoor Terraces",
+    "Boiler Game Mine",
+    "Union Rack and Roll",
+    "Hicks Undergraduate Library",
+    "Wilmeth Active Learning Center",
+    "Krach Leadership Center",
+    "Black Cultural Center Library",
+    "Leighty Commons",
+    "JamSpace"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

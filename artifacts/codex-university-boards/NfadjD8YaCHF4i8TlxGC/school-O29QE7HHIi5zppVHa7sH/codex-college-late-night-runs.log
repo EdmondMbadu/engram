@@ -1,0 +1,295 @@
+Reading additional input from stdin...
+2026-08-13T06:57:35.750901Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-5380-7a40-b84d-85a978f7435e.1786604245888978000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:57:35.755146Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:57:35.759622Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9e9-7987-7a71-a5c3-5b271b0e2efb
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"O29QE7HHIi5zppVHa7sH","schoolName":"Elizabethtown College","shortSchoolName":"Elizabethtown College","townName":"Elizabethtown","state":"PA","countryCode":"US","website":"https://www.etown.edu/","latitude":40.149236,"longitude":-76.593224},"templates":[{"id":"college-late-night-runs","version":"1.0","titlePattern":"{count} Late-Night Runs That Explain {school}","editorialBrief":"Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.","researchQueries":["late night dining students","campus dining late hours","restaurants open late near campus"],"count":10,"icon":"nightlife","primarySubjectType":"place","allowedSubjectTypes":["place"],"freshnessDays":120,"exactTitle":"10 Late-Night Runs That Explain Elizabethtown College"}]}
+codex
+{
+  "complete": false,
+  "school_name": "Elizabethtown College",
+  "town_name": "Elizabethtown",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Elizabethtown College",
+      "town_name": "Elizabethtown",
+      "template_id": "college-late-night-runs",
+      "title": "10 Late-Night Runs That Explain Elizabethtown College",
+      "description": "",
+      "icon": "nightlife",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+    ],
+      "warnings": []
+    }
+  ],
+  "warnings": [
+    "Research in progress; this is not the final board."
+  ]
+}
+web search: 
+web search: site:etown.edu dining hours late night Elizabethtown College Jay's Nest ...
+web search: 
+web search: site:locations.sheetz.com Elizabethtown PA hours ...
+web search: 
+web search: Elizabethtown PA Rutter's official store hours 24 hours ...
+web search: 
+web search: site:locations.wendys.com/united-states/pa/elizabethtown hours ...
+web search: 
+web search: site:locations.dominos.com/pennsylvania/elizabethtown Domino's hours ...
+web search: 
+web search: 
+web search: 
+web search: Elizabethtown PA "Hours" "10:00 PM" restaurant official ...
+codex
+{"complete":true,"school_name":"Elizabethtown College","town_name":"Elizabethtown","boards":[{"complete":true,"school_name":"Elizabethtown College","town_name":"Elizabethtown","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Elizabethtown College","description":"Ten under-21-safe food and essentials stops with verified evening hours, spanning campus, Elizabethtown, and nearby Mount Joy.","icon":"nightlife","cards":[{"subject_id":"jays-nest","subject_type":"place","entity_name":"Jay's Nest","title":"Midnight at Jay's Nest","subtitle":"The on-campus option inside Baugher Student Center","notes":"Check modified-hour notices first, then use this campus counter when you want prepared food or convenience items without leaving Etown.","short_summary":"Etown's regular schedule keeps its campus convenience stop open until midnight every day.","evidence_claim":"Elizabethtown College identifies Jay's Nest as a Baugher Student Center destination serving made-to-order meals, snacks, drinks, and essentials; its normal hours end at midnight daily.","source_url":"https://www.etown.edu/offices/dining/jays.aspx","source_title":"Jay's Nest | Elizabethtown College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Normal operating hours are 7 a.m.–midnight Monday–Friday and noon–midnight Saturday–Sunday. The college currently posts modified summer hours, so verify before going.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-elizabethtown","subject_type":"place","entity_name":"Taco Bell","title":"South Market After Midnight","subtitle":"A late drive-through at 825 South Market Street","notes":"Use the drive-through after the dining room closes, and confirm the live location page before making a post-midnight trip.","short_summary":"The town's Taco Bell maintains the latest verified drive-through schedule in this set.","evidence_claim":"Taco Bell's official location page lists the Elizabethtown drive-through until 1 a.m. Sunday–Thursday and 2 a.m. Friday–Saturday.","source_url":"https://locations.tacobell.com/pa/elizabethtown/825-south-market-st.html","source_title":"Taco Bell in Elizabethtown, PA - 825 South Market St","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-through: 8 a.m.–1 a.m. Sunday–Thursday and 8 a.m.–2 a.m. Friday–Saturday. The posted dine-in schedule closes earlier.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dominos-elizabethtown","subject_type":"place","entity_name":"Domino's Pizza","title":"Domino's at Midnight","subtitle":"Pizza pickup or delivery from 1575 South Market Street","notes":"Check the live closing time, then choose carryout or delivery rather than assuming the counter and delivery windows match.","short_summary":"This South Market pizza shop provides a verified midnight ordering option.","evidence_claim":"Domino's official Elizabethtown location page identifies the store at 1575 South Market Street and displays a current closing time of midnight.","source_url":"https://pizza.dominos.com/pennsylvania/elizabethtown/1575-s-market-st","source_title":"Domino's Pizza at 1575 S Market St | Domino's in Elizabethtown","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official location page showed service until midnight when fetched. Hours vary by day and can change; check the live page before leaving.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"papa-johns-south-cherry-alley","subject_type":"place","entity_name":"Papa Johns Pizza","title":"Cherry Alley Pizza Run","subtitle":"Carryout and delivery near downtown Elizabethtown","notes":"Save this stop for Friday or Saturday if you need the midnight window; on other nights, place the order before 11 p.m.","short_summary":"Weekend hours extend this Cherry Alley pizza counter to midnight.","evidence_claim":"Papa Johns' official page lists its 250 South Cherry Alley location, with delivery and carryout until midnight Friday–Saturday and 11 p.m. on other days.","source_url":"https://locations.papajohns.com/united-states/pa/17022/elizabethtown/250-south-cherry-alley","source_title":"Papa Johns South Cherry Alley | Papa Johns Elizabethtown, PA","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Delivery and carryout close at midnight Friday–Saturday, 11 p.m. Monday–Thursday and Sunday. Sunday opens at 10:30 a.m.; other days open at 10 a.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"giant-elizabethtown","subject_type":"place","entity_name":"GIANT Food Stores","title":"The 11 P.M. Grocery Run","subtitle":"Groceries and prepared-food departments on South Market Street","notes":"Arrive well before closing if you need a specific service counter, since department hours can end before the main grocery store closes.","short_summary":"GIANT offers a full-store alternative when the need is groceries rather than restaurant food.","evidence_claim":"GIANT's official page lists the Elizabethtown store at 1278 South Market Street as open from 6 a.m. to 11 p.m. every day.","source_url":"https://stores.giantfoodstores.com/pa/elizabethtown/1278-s-market-st","source_title":"GIANT at 1278 S Market St Elizabethtown, PA","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Main store hours are 6 a.m.–11 p.m. daily. Pharmacy, pickup, and individual service-counter schedules are shorter and should not be treated as 11 p.m. services.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"cvs-south-market-street","subject_type":"place","entity_name":"CVS Pharmacy","title":"The 10 P.M. Essentials Stop","subtitle":"Snacks, toiletries, first aid, and household supplies","notes":"Use the main store for late essentials, but handle prescriptions earlier because the pharmacy counter follows a shorter schedule.","short_summary":"CVS fills the practical late run for supplies that a restaurant cannot cover.","evidence_claim":"CVS's official store page identifies its Elizabethtown location at 1575 South Market Street and lists the main store until 10 p.m. on most days.","source_url":"https://www.cvs.com/store-locator/elizabethtown-pa-pharmacies/1575-south-market-street-elizabethtown-pa-17022/storeid%3D1672","source_title":"CVS Pharmacy at 1575 South Market Street Elizabethtown, PA 17022","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The posted main-store schedule is 8 a.m.–10 p.m. Monday–Saturday and 9 a.m.–8 p.m. Sunday. Pharmacy hours are shorter and include a lunch closure.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"sals-pizza-etown","subject_type":"place","entity_name":"Sal's Pizza Etown","title":"Friday Night at Sal's","subtitle":"A South Market Street pizzeria with a weekend extension","notes":"Plan this as a Friday or Saturday run for the 10 p.m. closing; the restaurant ends service earlier on the rest of the week.","short_summary":"Sal's adds a locally operated pizzeria to the weekend evening rotation.","evidence_claim":"Sal's official website lists its Elizabethtown restaurant at 2345 South Market Street and Friday–Saturday hours ending at 10 p.m.","source_url":"https://mysalspizza.com/","source_title":"Sal's Pizza | Company Website","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until 10 p.m. Friday–Saturday, 9 p.m. Monday–Thursday, and 9 p.m. Sunday. The 10 p.m. late window is weekends only.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"tj-rockwells-elizabethtown","subject_type":"place","entity_name":"TJ Rockwell's","title":"A Sit-Down Stop Before Ten","subtitle":"Weekend table service on Mount Gretna Road","notes":"Choose Friday or Saturday for the latest seating window and contact the restaurant if arriving close to the posted 10 p.m. closing.","short_summary":"This Mount Gretna Road restaurant supplies a weekend sit-down choice beyond quick-service counters.","evidence_claim":"TJ Rockwell's official location page lists its Elizabethtown restaurant at 800 Mount Gretna Road and hours until 10 p.m. Friday–Saturday.","source_url":"https://www.tjrockwells.com/location/tj-rockwells-elizabethtown/","source_title":"Elizabethtown | Hours + Location | TJ Rockwell's","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until 10 p.m. Friday–Saturday and 9 p.m. Sunday–Thursday. Confirm kitchen or final-seating availability when arriving near closing.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-mount-joy","subject_type":"place","entity_name":"Taco Bell","title":"The Mount Joy Extension","subtitle":"A nearby late drive-through at 1580 Strickler Road","notes":"Use this as a backup beyond Elizabethtown, allowing extra travel time and relying on the drive-through after dine-in service ends.","short_summary":"The Mount Joy location broadens the late-night radius with midnight-or-later drive-through service.","evidence_claim":"Taco Bell's official Mount Joy location page lists drive-through service until midnight Sunday–Thursday and 1 a.m. Friday–Saturday.","source_url":"https://locations.tacobell.com/pa/mount-joy/1580-strickler-rd.html","source_title":"Taco Bell in Mount Joy, PA - 1580 Strickler Rd","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-through hours are 8 a.m.–midnight Sunday–Thursday and 8 a.m.–1 a.m. Friday–Saturday. Dine-in closes earlier.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"sheetz-mount-joy","subject_type":"place","entity_name":"Sheetz","title":"The 24-Hour Mount Joy Run","subtitle":"Round-the-clock made-to-order food and convenience goods","notes":"Reserve this drive for needs that outlast closer options, and confirm the destination address before leaving Elizabethtown.","short_summary":"Sheetz supplies the board's round-the-clock option a short drive beyond town.","evidence_claim":"The map-listed Sheetz destination at 1455 East Main Street in Mount Joy is identified as open 24 hours daily and offering made-to-order food and convenience items.","source_url":"https://maps.apple.com/place?place-id=IFF056F7D42D2FA07","source_title":"Sheetz in Mount Joy, PA | Apple Maps","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://maps.apple.com/place?place-id=IFF056F7D42D2FA07","access_notes":"Listed as open 24 hours every day. This destination is in Mount Joy rather than Elizabethtown, so account for the additional drive from campus.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T06:59:52.472671Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-7987-7a71-a5c3-5b271b0e2efb.1786604255623815000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+73,030
+
+{"complete":true,"school_name":"Elizabethtown College","town_name":"Elizabethtown","boards":[{"complete":true,"school_name":"Elizabethtown College","town_name":"Elizabethtown","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Elizabethtown College","description":"Ten under-21-safe food and essentials stops with verified evening hours, spanning campus, Elizabethtown, and nearby Mount Joy.","icon":"nightlife","cards":[{"subject_id":"jays-nest","subject_type":"place","entity_name":"Jay's Nest","title":"Midnight at Jay's Nest","subtitle":"The on-campus option inside Baugher Student Center","notes":"Check modified-hour notices first, then use this campus counter when you want prepared food or convenience items without leaving Etown.","short_summary":"Etown's regular schedule keeps its campus convenience stop open until midnight every day.","evidence_claim":"Elizabethtown College identifies Jay's Nest as a Baugher Student Center destination serving made-to-order meals, snacks, drinks, and essentials; its normal hours end at midnight daily.","source_url":"https://www.etown.edu/offices/dining/jays.aspx","source_title":"Jay's Nest | Elizabethtown College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Normal operating hours are 7 a.m.–midnight Monday–Friday and noon–midnight Saturday–Sunday. The college currently posts modified summer hours, so verify before going.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-elizabethtown","subject_type":"place","entity_name":"Taco Bell","title":"South Market After Midnight","subtitle":"A late drive-through at 825 South Market Street","notes":"Use the drive-through after the dining room closes, and confirm the live location page before making a post-midnight trip.","short_summary":"The town's Taco Bell maintains the latest verified drive-through schedule in this set.","evidence_claim":"Taco Bell's official location page lists the Elizabethtown drive-through until 1 a.m. Sunday–Thursday and 2 a.m. Friday–Saturday.","source_url":"https://locations.tacobell.com/pa/elizabethtown/825-south-market-st.html","source_title":"Taco Bell in Elizabethtown, PA - 825 South Market St","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-through: 8 a.m.–1 a.m. Sunday–Thursday and 8 a.m.–2 a.m. Friday–Saturday. The posted dine-in schedule closes earlier.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dominos-elizabethtown","subject_type":"place","entity_name":"Domino's Pizza","title":"Domino's at Midnight","subtitle":"Pizza pickup or delivery from 1575 South Market Street","notes":"Check the live closing time, then choose carryout or delivery rather than assuming the counter and delivery windows match.","short_summary":"This South Market pizza shop provides a verified midnight ordering option.","evidence_claim":"Domino's official Elizabethtown location page identifies the store at 1575 South Market Street and displays a current closing time of midnight.","source_url":"https://pizza.dominos.com/pennsylvania/elizabethtown/1575-s-market-st","source_title":"Domino's Pizza at 1575 S Market St | Domino's in Elizabethtown","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official location page showed service until midnight when fetched. Hours vary by day and can change; check the live page before leaving.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"papa-johns-south-cherry-alley","subject_type":"place","entity_name":"Papa Johns Pizza","title":"Cherry Alley Pizza Run","subtitle":"Carryout and delivery near downtown Elizabethtown","notes":"Save this stop for Friday or Saturday if you need the midnight window; on other nights, place the order before 11 p.m.","short_summary":"Weekend hours extend this Cherry Alley pizza counter to midnight.","evidence_claim":"Papa Johns' official page lists its 250 South Cherry Alley location, with delivery and carryout until midnight Friday–Saturday and 11 p.m. on other days.","source_url":"https://locations.papajohns.com/united-states/pa/17022/elizabethtown/250-south-cherry-alley","source_title":"Papa Johns South Cherry Alley | Papa Johns Elizabethtown, PA","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Delivery and carryout close at midnight Friday–Saturday, 11 p.m. Monday–Thursday and Sunday. Sunday opens at 10:30 a.m.; other days open at 10 a.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"giant-elizabethtown","subject_type":"place","entity_name":"GIANT Food Stores","title":"The 11 P.M. Grocery Run","subtitle":"Groceries and prepared-food departments on South Market Street","notes":"Arrive well before closing if you need a specific service counter, since department hours can end before the main grocery store closes.","short_summary":"GIANT offers a full-store alternative when the need is groceries rather than restaurant food.","evidence_claim":"GIANT's official page lists the Elizabethtown store at 1278 South Market Street as open from 6 a.m. to 11 p.m. every day.","source_url":"https://stores.giantfoodstores.com/pa/elizabethtown/1278-s-market-st","source_title":"GIANT at 1278 S Market St Elizabethtown, PA","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Main store hours are 6 a.m.–11 p.m. daily. Pharmacy, pickup, and individual service-counter schedules are shorter and should not be treated as 11 p.m. services.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"cvs-south-market-street","subject_type":"place","entity_name":"CVS Pharmacy","title":"The 10 P.M. Essentials Stop","subtitle":"Snacks, toiletries, first aid, and household supplies","notes":"Use the main store for late essentials, but handle prescriptions earlier because the pharmacy counter follows a shorter schedule.","short_summary":"CVS fills the practical late run for supplies that a restaurant cannot cover.","evidence_claim":"CVS's official store page identifies its Elizabethtown location at 1575 South Market Street and lists the main store until 10 p.m. on most days.","source_url":"https://www.cvs.com/store-locator/elizabethtown-pa-pharmacies/1575-south-market-street-elizabethtown-pa-17022/storeid%3D1672","source_title":"CVS Pharmacy at 1575 South Market Street Elizabethtown, PA 17022","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The posted main-store schedule is 8 a.m.–10 p.m. Monday–Saturday and 9 a.m.–8 p.m. Sunday. Pharmacy hours are shorter and include a lunch closure.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"sals-pizza-etown","subject_type":"place","entity_name":"Sal's Pizza Etown","title":"Friday Night at Sal's","subtitle":"A South Market Street pizzeria with a weekend extension","notes":"Plan this as a Friday or Saturday run for the 10 p.m. closing; the restaurant ends service earlier on the rest of the week.","short_summary":"Sal's adds a locally operated pizzeria to the weekend evening rotation.","evidence_claim":"Sal's official website lists its Elizabethtown restaurant at 2345 South Market Street and Friday–Saturday hours ending at 10 p.m.","source_url":"https://mysalspizza.com/","source_title":"Sal's Pizza | Company Website","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until 10 p.m. Friday–Saturday, 9 p.m. Monday–Thursday, and 9 p.m. Sunday. The 10 p.m. late window is weekends only.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"tj-rockwells-elizabethtown","subject_type":"place","entity_name":"TJ Rockwell's","title":"A Sit-Down Stop Before Ten","subtitle":"Weekend table service on Mount Gretna Road","notes":"Choose Friday or Saturday for the latest seating window and contact the restaurant if arriving close to the posted 10 p.m. closing.","short_summary":"This Mount Gretna Road restaurant supplies a weekend sit-down choice beyond quick-service counters.","evidence_claim":"TJ Rockwell's official location page lists its Elizabethtown restaurant at 800 Mount Gretna Road and hours until 10 p.m. Friday–Saturday.","source_url":"https://www.tjrockwells.com/location/tj-rockwells-elizabethtown/","source_title":"Elizabethtown | Hours + Location | TJ Rockwell's","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open until 10 p.m. Friday–Saturday and 9 p.m. Sunday–Thursday. Confirm kitchen or final-seating availability when arriving near closing.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-mount-joy","subject_type":"place","entity_name":"Taco Bell","title":"The Mount Joy Extension","subtitle":"A nearby late drive-through at 1580 Strickler Road","notes":"Use this as a backup beyond Elizabethtown, allowing extra travel time and relying on the drive-through after dine-in service ends.","short_summary":"The Mount Joy location broadens the late-night radius with midnight-or-later drive-through service.","evidence_claim":"Taco Bell's official Mount Joy location page lists drive-through service until midnight Sunday–Thursday and 1 a.m. Friday–Saturday.","source_url":"https://locations.tacobell.com/pa/mount-joy/1580-strickler-rd.html","source_title":"Taco Bell in Mount Joy, PA - 1580 Strickler Rd","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-through hours are 8 a.m.–midnight Sunday–Thursday and 8 a.m.–1 a.m. Friday–Saturday. Dine-in closes earlier.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"sheetz-mount-joy","subject_type":"place","entity_name":"Sheetz","title":"The 24-Hour Mount Joy Run","subtitle":"Round-the-clock made-to-order food and convenience goods","notes":"Reserve this drive for needs that outlast closer options, and confirm the destination address before leaving Elizabethtown.","short_summary":"Sheetz supplies the board's round-the-clock option a short drive beyond town.","evidence_claim":"The map-listed Sheetz destination at 1455 East Main Street in Mount Joy is identified as open 24 hours daily and offering made-to-order food and convenience items.","source_url":"https://maps.apple.com/place?place-id=IFF056F7D42D2FA07","source_title":"Sheetz in Mount Joy, PA | Apple Maps","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://maps.apple.com/place?place-id=IFF056F7D42D2FA07","access_notes":"Listed as open 24 hours every day. This destination is in Mount Joy rather than Elizabethtown, so account for the additional drive from campus.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}

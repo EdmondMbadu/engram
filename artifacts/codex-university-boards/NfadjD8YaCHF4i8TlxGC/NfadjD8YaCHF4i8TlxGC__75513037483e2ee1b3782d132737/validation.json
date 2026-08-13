@@ -1,0 +1,90 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation.",
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.mercer.edu/academics/libraries/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mercer.edu/academics/libraries/",
+      "error": ""
+    },
+    {
+      "url": "https://arc.mercer.edu/services/macon/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://arc.mercer.edu/services/macon/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://ctl.mercer.edu/about-academic-technology-services/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ctl.mercer.edu/about-academic-technology-services/",
+      "error": ""
+    },
+    {
+      "url": "https://den.mercer.edu/original-mercer-theatre-show-brings-circus-style-spectacles-to-historic-quad/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://den.mercer.edu/original-mercer-theatre-show-brings-circus-style-spectacles-to-historic-quad/",
+      "error": ""
+    },
+    {
+      "url": "https://www.mercer.edu/about-mercer/history/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mercer.edu/about-mercer/history/",
+      "error": ""
+    },
+    {
+      "url": "https://uc.mercer.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://uc.mercer.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://www.mercer.edu/wp-content/uploads/2019/03/mercerian-10-fall.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mercer.edu/wp-content/uploads/2019/03/mercerian-10-fall.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.mercer.edu/wp-content/uploads/2019/05/Mercerian_Fall18_smplX2.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mercer.edu/wp-content/uploads/2019/05/Mercerian_Fall18_smplX2.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://den.mercer.edu/wiggs-hall-renovation-modernizes-building-while-preserving-historic-features/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://den.mercer.edu/wiggs-hall-renovation-modernizes-building-while-preserving-historic-features/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Jack Tarver Library",
+    "University Center",
+    "Bear Statue"
+  ],
+  "sourceCount": 9,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

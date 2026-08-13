@@ -1,0 +1,81 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.ohio.edu/engagement",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ohio.edu/engagement",
+      "error": ""
+    },
+    {
+      "url": "https://www.ohio.edu/student-affairs/event-services/venues/visit-baker-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ohio.edu/student-affairs/event-services/venues/visit-baker-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.ohio.edu/library/about/alden-library-floors",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ohio.edu/library/about/alden-library-floors",
+      "error": ""
+    },
+    {
+      "url": "https://www.ohio.edu/recreation/ping",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ohio.edu/recreation/ping",
+      "error": ""
+    },
+    {
+      "url": "https://www.ohio.edu/recreation/ping/well-being-wing",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ohio.edu/recreation/ping/well-being-wing",
+      "error": ""
+    },
+    {
+      "url": "https://www.ohio.edu/museum/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ohio.edu/museum/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.ohio.edu/museum-complex/outdoor-museum",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ohio.edu/museum-complex/outdoor-museum",
+      "error": ""
+    },
+    {
+      "url": "https://www.ohio.edu/sustainability/programs/transportation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ohio.edu/sustainability/programs/transportation",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "College Green",
+    "Alden Library Learning Commons",
+    "Alden Library Seventh Floor"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

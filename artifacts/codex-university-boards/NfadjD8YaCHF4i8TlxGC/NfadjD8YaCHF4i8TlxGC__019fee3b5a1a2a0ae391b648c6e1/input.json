@@ -1,0 +1,52 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "h0e8x4JeKD01LAQLYq5l",
+    "schoolName": "Embry-Riddle Aeronautical University-Daytona Beach",
+    "shortSchoolName": "Embry-Riddle Aeronautical University-Daytona Beach",
+    "townName": "Daytona Beach",
+    "state": "FL",
+    "countryCode": "US",
+    "unitId": "133553",
+    "website": "https://daytonabeach.erau.edu/",
+    "latitude": 29.189903,
+    "longitude": -81.048367,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/6/69/Embry-Riddle-COA.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=original",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=daytonabeach.erau.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at Embry-Riddle Aeronautical University-Daytona Beach, Shared as Cards",
+  "excluded_subjects": [
+    "Hunt Library Group Study Room SU 347",
+    "Hunt Library Group Study Room SU 348",
+    "Hunt Library Group Study Room SU 349",
+    "Hunt Library Group Study Room SU 350",
+    "Hunt Library Group Study Room SU 351",
+    "Hunt Library Fourth-Floor Quiet Study Space",
+    "Hunt Library Individual Study Carrels",
+    "Hunt Library Collaborative Study Pods",
+    "Hunt Library Collaborative Tables",
+    "Hunt Library Leisure Reading Area"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://gustavus.edu/about/administrative-offices/arboretum/visit-arboretum",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/about/administrative-offices/arboretum/visit-arboretum",
+      "error": ""
+    },
+    {
+      "url": "https://gustavus.edu/about/administrative-offices/arboretum",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/about/administrative-offices/arboretum",
+      "error": ""
+    },
+    {
+      "url": "https://news.blog.gustavus.edu/2014/09/10/hillstrom-museum-opens-season-with-pull-left-not-always-right/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.blog.gustavus.edu/2014/09/10/hillstrom-museum-opens-season-with-pull-left-not-always-right/",
+      "error": ""
+    },
+    {
+      "url": "https://www.saintpetermn.gov/DocumentCenter/View/4507",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.saintpetermn.gov/DocumentCenter/View/4507/2026-Winter-Brochure?bidId=",
+      "error": ""
+    },
+    {
+      "url": "https://www.saintpetermn.gov/AgendaCenter/ViewFile/Agenda/_03102026-1243",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.saintpetermn.gov/AgendaCenter/ViewFile/Agenda/_03102026-1243",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

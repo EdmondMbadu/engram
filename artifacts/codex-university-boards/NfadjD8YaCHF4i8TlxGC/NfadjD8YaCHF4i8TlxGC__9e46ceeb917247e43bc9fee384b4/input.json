@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "7ypvhLDi162LAkq76pVE",
+    "schoolName": "University of Illinois Urbana-Champaign",
+    "shortSchoolName": "University of Illinois Urbana-Champaign",
+    "townName": "Champaign",
+    "state": "IL",
+    "countryCode": "US",
+    "unitId": "145637",
+    "website": "https://www.illinois.edu/",
+    "latitude": 40.104718,
+    "longitude": -88.229114,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/University_of_Illinois_seal.svg/250px-University_of_Illinois_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=illinois.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "ACES (Funk) Library Floors 2–4",
+    "Communications Library Room 39",
+    "Communications Library Room 122",
+    "Grainger 1 West Design Space",
+    "SSHEL Main Library Room 101",
+    "SSHEL Main Library Room 123",
+    "The Orange Room",
+    "Shebik Family Reading Room",
+    "Central Access Services Room 204",
+    "Media Commons Room 220"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

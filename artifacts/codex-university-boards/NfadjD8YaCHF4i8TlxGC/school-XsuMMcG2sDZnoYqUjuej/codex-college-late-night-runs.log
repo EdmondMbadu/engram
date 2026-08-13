@@ -1,0 +1,286 @@
+Reading additional input from stdin...
+2026-08-13T07:47:02.757727Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:47:02.841696Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa16-aedf-78a3-9aeb-fbc68cca77b4.1786607218400031000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:47:02.842928Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa16-bfc9-75e3-808c-fc3ebe15d22c
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"XsuMMcG2sDZnoYqUjuej","schoolName":"Johns Hopkins University","shortSchoolName":"Johns Hopkins University","townName":"Baltimore","state":"MD","countryCode":"US","website":"https://www.jhu.edu/","latitude":39.328977,"longitude":-76.621595},"templates":[{"id":"college-late-night-runs","version":"1.0","titlePattern":"{count} Late-Night Runs That Explain {school}","editorialBrief":"Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.","researchQueries":["late night dining students","campus dining late hours","restaurants open late near campus"],"count":10,"icon":"nightlife","primarySubjectType":"place","allowedSubjectTypes":["place"],"freshnessDays":120,"exactTitle":"10 Late-Night Runs That Explain Johns Hopkins University"}]}
+codex
+{
+  "complete": false,
+  "school_name": "Johns Hopkins University",
+  "town_name": "Baltimore",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Johns Hopkins University",
+      "town_name": "Baltimore",
+      "template_id": "college-late-night-runs",
+      "title": "10 Late-Night Runs That Explain Johns Hopkins University",
+      "description": "",
+      "icon": "nightlife",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+       ,
+      {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ],
+      "warnings": ["Unable to perform the required web research because internet browsing was unavailable in this session; current late-hours evidence could not be verified."]
+    }
+  ],
+  "warnings": ["Incomplete: the board cannot truthfully be marked complete without direct, current web sources for exactly 10 late-night destinations."]
+}
+codex
+{"complete":false,"school_name":"Johns Hopkins University","town_name":"Baltimore","boards":[{"complete":false,"school_name":"Johns Hopkins University","town_name":"Baltimore","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Johns Hopkins University","description":"Researching current late-night destinations and direct official hours pages.","icon":"nightlife","cards": [{"subject_id":"research-in-progress","subject_type":"place","entity_name":"Research in progress","title":"Research in progress","subtitle":"Baltimore","notes":"Verifying ten distinct, under-21-safe destinations with current late-hours evidence from direct official sources.","short_summary":"Current hours and direct sources are being checked.","evidence_claim":"Research is in progress.","source_url":"https://www.jhu.edu/","source_title":"Johns Hopkins University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}      ,{"subject_id":"","subject_type":"place","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true},{"subject_id":"","subject_type":"place","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true},{"subject_id":"","subject_type":"place","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true},{"subject_id":"","subject_type":"place","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true},{"subject_id":"","subject_type":"place","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true},{"subject_id":"","subject_type":"place","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true},{"subject_id":"","subject_type":"place","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true},{"subject_id":"","subject_type":"place","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true},{"subject_id":"","subject_type":"place","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"unknown","under21_safe":true}],"warnings":["Interim research status; final response will contain only the completed board JSON."]}],"warnings":["Web research is underway."]}
+web search: 
+web search: site:dining.jhu.edu hours late night Homewood dining Johns Hopkins ...
+web search: 
+web search: 
+web search: 
+web search: site:insomniacookies.com/stores Baltimore Charles Village hours ...
+codex
+{"complete":true,"school_name":"Johns Hopkins University","town_name":"Baltimore","boards":[{"complete":true,"school_name":"Johns Hopkins University","town_name":"Baltimore","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Johns Hopkins University","description":"Ten under-21-safe Johns Hopkins dining destinations with officially posted service at or after 9 p.m., spanning Homewood, Peabody, and the East Baltimore medical campus.","icon":"nightlife","cards":[{"subject_id":"jhu-charles-street-market","subject_type":"place","entity_name":"Charles Street Market","title":"The Midnight Market Run","subtitle":"Homewood campus convenience stop","notes":"Head to Charles Street Market when the dining halls have wound down; its posted schedule reaches midnight every day of the week.","short_summary":"A seven-day Homewood option with the latest posted closing time on the campus dining schedule.","evidence_claim":"Hopkins Dining lists Charles Street Market as open from 9 a.m. to midnight Monday through Sunday.","source_url":"https://studentaffairs.jhu.edu/dining/where-to-eat/hours-of-operation/","source_title":"Hours of Operation | Hopkins Dining","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official current schedule lists service until midnight every day; check the page for academic-break changes.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jhu-peabody-dining-hall","subject_type":"place","entity_name":"Peabody Dining Hall","title":"Late Night at Peabody","subtitle":"Peabody Institute dining hall","notes":"Use the designated Late Night period for an evening meal, noting that the longest posted service runs Thursday through Saturday.","short_summary":"A formally scheduled Late Night service inside the Peabody Institute.","evidence_claim":"Hopkins Dining posts Peabody Dining Hall Late Night service until 10 p.m. Sunday through Wednesday and until 11 p.m. Thursday through Saturday.","source_url":"https://studentaffairs.jhu.edu/dining/where-to-eat/hours-of-operation/","source_title":"Hours of Operation | Hopkins Dining","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Late Night runs 9–10 p.m. Sunday–Wednesday and 9–11 p.m. Thursday–Saturday on the posted schedule.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jhu-connies-bloomberg-center","subject_type":"place","entity_name":"Connie’s","title":"Connie’s After Ten","subtitle":"Bloomberg Student Center","notes":"Choose Connie’s for a student-center food run after 10 p.m.; the same closing time is posted across all seven days.","short_summary":"The Bloomberg Student Center’s consistently late-closing food counter.","evidence_claim":"Hopkins Dining lists Connie’s as open until 10:30 p.m. every day, with weekday opening at 10 a.m. and weekend opening at 11:30 a.m.","source_url":"https://studentaffairs.jhu.edu/dining/where-to-eat/hours-of-operation/","source_title":"Hours of Operation | Hopkins Dining","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official schedule currently shows a 10:30 p.m. closing time Monday through Sunday.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jhu-hopkins-cafe","subject_type":"place","entity_name":"Hopkins Café","title":"Dinner to Ten","subtitle":"Homewood residential dining","notes":"Plan this run Sunday through Thursday, when the posted dinner window continues two hours later than on Friday and Saturday.","short_summary":"A Homewood dining-hall dinner option extending to 10 p.m. on five nights.","evidence_claim":"Hopkins Dining lists Hopkins Café dinner until 10 p.m. Monday through Thursday and Sunday, and until 8 p.m. Friday and Saturday.","source_url":"https://studentaffairs.jhu.edu/dining/where-to-eat/hours-of-operation/","source_title":"Hours of Operation | Hopkins Dining","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Dinner is posted through 10 p.m. Monday–Thursday and Sunday; Friday and Saturday service ends at 8 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jhu-lucky-danger","subject_type":"place","entity_name":"Lucky Danger","title":"The Nine O’Clock Cutoff","subtitle":"Bloomberg Student Center","notes":"Arrive before the posted 9 p.m. close for this seven-day student-center option, and verify the schedule during university breaks.","short_summary":"An evening food counter with identical posted hours throughout the week.","evidence_claim":"Hopkins Dining lists Lucky Danger as open from 11 a.m. to 9 p.m. Monday through Sunday.","source_url":"https://studentaffairs.jhu.edu/dining/where-to-eat/hours-of-operation/","source_title":"Hours of Operation | Hopkins Dining","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The current official schedule lists service until 9 p.m. every day of the week.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jhu-koshary","subject_type":"place","entity_name":"Koshary","title":"A Weeknight Koshary Run","subtitle":"Bloomberg Student Center","notes":"Make this a Monday-through-Friday run and order before 9 p.m.; the official schedule lists the counter as closed on weekends.","short_summary":"A weekday-only student-center counter serving through the evening.","evidence_claim":"Hopkins Dining lists Koshary as open from 11 a.m. to 9 p.m. Monday through Friday and closed Saturday and Sunday.","source_url":"https://studentaffairs.jhu.edu/dining/where-to-eat/hours-of-operation/","source_title":"Hours of Operation | Hopkins Dining","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current posted hours end at 9 p.m. Monday–Friday; the location is closed Saturday and Sunday.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jhu-mos-place","subject_type":"place","entity_name":"Mo’s Place","title":"Mo’s Before Closing","subtitle":"Bloomberg Student Center","notes":"Use Mo’s Place for a weekday evening stop and arrive ahead of 9 p.m.; Saturday and Sunday are marked closed on the dining page.","short_summary":"A five-day evening option in the Bloomberg Student Center lineup.","evidence_claim":"Hopkins Dining lists Mo’s Place as open from 11 a.m. to 9 p.m. Monday through Friday and closed on weekends.","source_url":"https://studentaffairs.jhu.edu/dining/where-to-eat/hours-of-operation/","source_title":"Hours of Operation | Hopkins Dining","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official schedule posts a 9 p.m. weekday close and no Saturday or Sunday service.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jhu-nolans-on-33rd","subject_type":"place","entity_name":"Nolan’s on 33rd","title":"Dinner on 33rd","subtitle":"Homewood residential dining","notes":"Choose a Monday-through-Friday dinner run to use the full posted window; weekend dinner closes one hour earlier.","short_summary":"A named Homewood dining hall with weekday dinner service through 9 p.m.","evidence_claim":"Hopkins Dining lists dinner at Nolan’s on 33rd until 9 p.m. Monday through Friday and until 8 p.m. Saturday and Sunday.","source_url":"https://studentaffairs.jhu.edu/dining/where-to-eat/hours-of-operation/","source_title":"Hours of Operation | Hopkins Dining","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Dinner currently ends at 9 p.m. Monday–Friday and at 8 p.m. on Saturday and Sunday.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jhh-arcade-daily-grind-cafe","subject_type":"place","entity_name":"Arcade Daily Grind Cafe","title":"Coffee in the Hospital Arcade","subtitle":"Johns Hopkins Hospital campus","notes":"Use this medical-campus café for an evening grab-and-go stop; the hospital posts the same 10 p.m. close every day.","short_summary":"A daily late café option between the Zayed and Bloomberg buildings.","evidence_claim":"Johns Hopkins Medicine identifies Arcade Daily Grind Cafe in the arcade between the Zayed and Bloomberg buildings and lists daily hours of 6 a.m. to 10 p.m.","source_url":"https://www.hopkinsmedicine.org/patient-care/patients-visitors/services-amenities/johns-hopkins-hospital/dining","source_title":"Dining at The Johns Hopkins Hospital | Johns Hopkins Medicine","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Johns Hopkins Medicine currently posts 6 a.m.–10 p.m. daily; hospital visitor access requirements may apply.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jhh-cobblestone-subway","subject_type":"place","entity_name":"Subway at Cobblestone Cafe","title":"The Around-the-Clock Sandwich Run","subtitle":"Johns Hopkins Hospital campus","notes":"Use the Cobblestone Cafe Subway when other counters are closed, while observing any hospital entry and visitor requirements.","short_summary":"A 24-hour restaurant option on the East Baltimore medical campus.","evidence_claim":"Johns Hopkins Medicine lists Subway in Cobblestone Cafe as open 24/7 and serving sandwiches, protein bowls, and related items.","source_url":"https://www.hopkinsmedicine.org/patient-care/patients-visitors/services-amenities/johns-hopkins-hospital/dining","source_title":"Dining at The Johns Hopkins Hospital | Johns Hopkins Medicine","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The restaurant is officially listed as open 24/7; hospital entry or visitor-access procedures may still apply.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:49:30.727864Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa16-bfc9-75e3-808c-fc3ebe15d22c.1786607222730011000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+33,859
+
+{"complete":true,"school_name":"Johns Hopkins University","town_name":"Baltimore","boards":[{"complete":true,"school_name":"Johns Hopkins University","town_name":"Baltimore","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Johns Hopkins University","description":"Ten under-21-safe Johns Hopkins dining destinations with officially posted service at or after 9 p.m., spanning Homewood, Peabody, and the East Baltimore medical campus.","icon":"nightlife","cards":[{"subject_id":"jhu-charles-street-market","subject_type":"place","entity_name":"Charles Street Market","title":"The Midnight Market Run","subtitle":"Homewood campus convenience stop","notes":"Head to Charles Street Market when the dining halls have wound down; its posted schedule reaches midnight every day of the week.","short_summary":"A seven-day Homewood option with the latest posted closing time on the campus dining schedule.","evidence_claim":"Hopkins Dining lists Charles Street Market as open from 9 a.m. to midnight Monday through Sunday.","source_url":"https://studentaffairs.jhu.edu/dining/where-to-eat/hours-of-operation/","source_title":"Hours of Operation | Hopkins Dining","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official current schedule lists service until midnight every day; check the page for academic-break changes.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jhu-peabody-dining-hall","subject_type":"place","entity_name":"Peabody Dining Hall","title":"Late Night at Peabody","subtitle":"Peabody Institute dining hall","notes":"Use the designated Late Night period for an evening meal, noting that the longest posted service runs Thursday through Saturday.","short_summary":"A formally scheduled Late Night service inside the Peabody Institute.","evidence_claim":"Hopkins Dining posts Peabody Dining Hall Late Night service until 10 p.m. Sunday through Wednesday and until 11 p.m. Thursday through Saturday.","source_url":"https://studentaffairs.jhu.edu/dining/where-to-eat/hours-of-operation/","source_title":"Hours of Operation | Hopkins Dining","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Late Night runs 9–10 p.m. Sunday–Wednesday and 9–11 p.m. Thursday–Saturday on the posted schedule.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jhu-connies-bloomberg-center","subject_type":"place","entity_name":"Connie’s","title":"Connie’s After Ten","subtitle":"Bloomberg Student Center","notes":"Choose Connie’s for a student-center food run after 10 p.m.; the same closing time is posted across all seven days.","short_summary":"The Bloomberg Student Center’s consistently late-closing food counter.","evidence_claim":"Hopkins Dining lists Connie’s as open until 10:30 p.m. every day, with weekday opening at 10 a.m. and weekend opening at 11:30 a.m.","source_url":"https://studentaffairs.jhu.edu/dining/where-to-eat/hours-of-operation/","source_title":"Hours of Operation | Hopkins Dining","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official schedule currently shows a 10:30 p.m. closing time Monday through Sunday.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jhu-hopkins-cafe","subject_type":"place","entity_name":"Hopkins Café","title":"Dinner to Ten","subtitle":"Homewood residential dining","notes":"Plan this run Sunday through Thursday, when the posted dinner window continues two hours later than on Friday and Saturday.","short_summary":"A Homewood dining-hall dinner option extending to 10 p.m. on five nights.","evidence_claim":"Hopkins Dining lists Hopkins Café dinner until 10 p.m. Monday through Thursday and Sunday, and until 8 p.m. Friday and Saturday.","source_url":"https://studentaffairs.jhu.edu/dining/where-to-eat/hours-of-operation/","source_title":"Hours of Operation | Hopkins Dining","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Dinner is posted through 10 p.m. Monday–Thursday and Sunday; Friday and Saturday service ends at 8 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jhu-lucky-danger","subject_type":"place","entity_name":"Lucky Danger","title":"The Nine O’Clock Cutoff","subtitle":"Bloomberg Student Center","notes":"Arrive before the posted 9 p.m. close for this seven-day student-center option, and verify the schedule during university breaks.","short_summary":"An evening food counter with identical posted hours throughout the week.","evidence_claim":"Hopkins Dining lists Lucky Danger as open from 11 a.m. to 9 p.m. Monday through Sunday.","source_url":"https://studentaffairs.jhu.edu/dining/where-to-eat/hours-of-operation/","source_title":"Hours of Operation | Hopkins Dining","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The current official schedule lists service until 9 p.m. every day of the week.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jhu-koshary","subject_type":"place","entity_name":"Koshary","title":"A Weeknight Koshary Run","subtitle":"Bloomberg Student Center","notes":"Make this a Monday-through-Friday run and order before 9 p.m.; the official schedule lists the counter as closed on weekends.","short_summary":"A weekday-only student-center counter serving through the evening.","evidence_claim":"Hopkins Dining lists Koshary as open from 11 a.m. to 9 p.m. Monday through Friday and closed Saturday and Sunday.","source_url":"https://studentaffairs.jhu.edu/dining/where-to-eat/hours-of-operation/","source_title":"Hours of Operation | Hopkins Dining","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current posted hours end at 9 p.m. Monday–Friday; the location is closed Saturday and Sunday.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jhu-mos-place","subject_type":"place","entity_name":"Mo’s Place","title":"Mo’s Before Closing","subtitle":"Bloomberg Student Center","notes":"Use Mo’s Place for a weekday evening stop and arrive ahead of 9 p.m.; Saturday and Sunday are marked closed on the dining page.","short_summary":"A five-day evening option in the Bloomberg Student Center lineup.","evidence_claim":"Hopkins Dining lists Mo’s Place as open from 11 a.m. to 9 p.m. Monday through Friday and closed on weekends.","source_url":"https://studentaffairs.jhu.edu/dining/where-to-eat/hours-of-operation/","source_title":"Hours of Operation | Hopkins Dining","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official schedule posts a 9 p.m. weekday close and no Saturday or Sunday service.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jhu-nolans-on-33rd","subject_type":"place","entity_name":"Nolan’s on 33rd","title":"Dinner on 33rd","subtitle":"Homewood residential dining","notes":"Choose a Monday-through-Friday dinner run to use the full posted window; weekend dinner closes one hour earlier.","short_summary":"A named Homewood dining hall with weekday dinner service through 9 p.m.","evidence_claim":"Hopkins Dining lists dinner at Nolan’s on 33rd until 9 p.m. Monday through Friday and until 8 p.m. Saturday and Sunday.","source_url":"https://studentaffairs.jhu.edu/dining/where-to-eat/hours-of-operation/","source_title":"Hours of Operation | Hopkins Dining","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Dinner currently ends at 9 p.m. Monday–Friday and at 8 p.m. on Saturday and Sunday.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jhh-arcade-daily-grind-cafe","subject_type":"place","entity_name":"Arcade Daily Grind Cafe","title":"Coffee in the Hospital Arcade","subtitle":"Johns Hopkins Hospital campus","notes":"Use this medical-campus café for an evening grab-and-go stop; the hospital posts the same 10 p.m. close every day.","short_summary":"A daily late café option between the Zayed and Bloomberg buildings.","evidence_claim":"Johns Hopkins Medicine identifies Arcade Daily Grind Cafe in the arcade between the Zayed and Bloomberg buildings and lists daily hours of 6 a.m. to 10 p.m.","source_url":"https://www.hopkinsmedicine.org/patient-care/patients-visitors/services-amenities/johns-hopkins-hospital/dining","source_title":"Dining at The Johns Hopkins Hospital | Johns Hopkins Medicine","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Johns Hopkins Medicine currently posts 6 a.m.–10 p.m. daily; hospital visitor access requirements may apply.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jhh-cobblestone-subway","subject_type":"place","entity_name":"Subway at Cobblestone Cafe","title":"The Around-the-Clock Sandwich Run","subtitle":"Johns Hopkins Hospital campus","notes":"Use the Cobblestone Cafe Subway when other counters are closed, while observing any hospital entry and visitor requirements.","short_summary":"A 24-hour restaurant option on the East Baltimore medical campus.","evidence_claim":"Johns Hopkins Medicine lists Subway in Cobblestone Cafe as open 24/7 and serving sandwiches, protein bowls, and related items.","source_url":"https://www.hopkinsmedicine.org/patient-care/patients-visitors/services-amenities/johns-hopkins-hospital/dining","source_title":"Dining at The Johns Hopkins Hospital | Johns Hopkins Medicine","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The restaurant is officially listed as open 24/7; hospital entry or visitor-access procedures may still apply.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}

@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "1kBMZmFsoCqvjQ4aXyUG",
+    "schoolName": "University of California-Santa Barbara",
+    "shortSchoolName": "University of California-Santa Barbara",
+    "townName": "Santa Barbara",
+    "state": "CA",
+    "countryCode": "US",
+    "unitId": "110705",
+    "website": "https://www.ucsb.edu/",
+    "latitude": 34.416297,
+    "longitude": -119.846426,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/4/48/UC_Santa_Barbara_Seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=ucsb.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "UCSB Library Learning Commons",
+    "Group Study Room 1560A",
+    "Sara Miller McCune Arts Library",
+    "Pacific View Room",
+    "UCSB Library Fifth Floor Quiet Study",
+    "UCSB Library Sixth Floor Quiet Study",
+    "UCSB Library Seventh Floor Quiet Study",
+    "UCSB Library Eighth Floor Quiet Study",
+    "Graduate Study Room 2504",
+    "Graduate Study Room 2582B"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

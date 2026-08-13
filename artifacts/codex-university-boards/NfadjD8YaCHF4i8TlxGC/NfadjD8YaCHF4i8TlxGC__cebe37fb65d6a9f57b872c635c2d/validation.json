@@ -1,0 +1,55 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.lvc.edu/about/traditions-history/alma-mater/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lvc.edu/about/traditions-history/alma-mater/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lvc.edu/admission-aid/admitted/new-student-orientation/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lvc.edu/admission-aid/admitted/new-student-orientation/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lvc.edu/about/traditions-history/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lvc.edu/about/traditions-history/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lvc.edu/student-life/activities-clubs/annual-events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lvc.edu/student-life/activities-clubs/annual-events/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lvc.edu/student-life/activities-clubs/annual-events/valleyfest/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lvc.edu/student-life/activities-clubs/annual-events/valleyfest/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Opening Convocation"
+  ],
+  "sourceCount": 5,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

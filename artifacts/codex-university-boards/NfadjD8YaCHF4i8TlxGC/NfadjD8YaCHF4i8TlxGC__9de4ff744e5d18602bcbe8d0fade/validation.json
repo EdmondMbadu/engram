@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://cowell.ucsc.edu/visit-contact-us/maps-tours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cowell.ucsc.edu/visit-contact-us/maps-tours/",
+      "error": ""
+    },
+    {
+      "url": "https://maps.ucsc.edu/printable-maps/quarry_plaza_map_05-16.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://maps.ucsc.edu/printable-maps/quarry_plaza_map_05-16.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://housing.ucsc.edu/colleges/ucsc-colleges-map.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://housing.ucsc.edu/communities/colleges/",
+      "error": ""
+    },
+    {
+      "url": "https://library.ucsc.edu/study-room-policies",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.ucsc.edu/study-room-policies",
+      "error": ""
+    },
+    {
+      "url": "https://guides.library.ucsc.edu/gratefuldeadarchive/exhibits",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://guides.library.ucsc.edu/gratefuldeadarchive/exhibits",
+      "error": ""
+    },
+    {
+      "url": "https://getinvolved.ucsc.edu/slug-life/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://getinvolved.ucsc.edu/slug-life/",
+      "error": ""
+    },
+    {
+      "url": "https://arboretum.ucsc.edu/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arboretum.ucsc.edu/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.parks.ca.gov/?page_id=541",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.parks.ca.gov/?page_id=541",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

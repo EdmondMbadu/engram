@@ -1,0 +1,71 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "CR81gWwpizW8N2Hsgk7T",
+    "schoolName": "Emory University",
+    "shortSchoolName": "Emory University",
+    "townName": "Atlanta",
+    "state": "GA",
+    "countryCode": "US",
+    "unitId": "139658",
+    "website": "https://www.emory.edu/",
+    "latitude": 33.790183,
+    "longitude": -84.325512,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/6/63/Emory_University_Seal.svg/250px-Emory_University_Seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=emory.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Eagle Emporium",
+    "Nom Station at Eagle Emporium",
+    "Banjo Coffee at Woodruff Library",
+    "Kaldi's Coffee at The Depot",
+    "Woodruff Residential Center Late Night Dining",
+    "Dobbs Common Table",
+    "Clairmont Café",
+    "Sankranti Indian Kitchen – Emory Village",
+    "Sweetgreen – Emory Village",
+    "Double Zero",
+    "Matheson Reading Room",
+    "Learning Commons in Woodruff Library",
+    "Marian K. Heilbrun Music and Media Library",
+    "Computing Center at Cox Hall",
+    "ESC South Rec Lounge",
+    "ESC North Lounge",
+    "The Hatchery",
+    "Science Commons",
+    "Pitts Theology Library",
+    "Woodruff Health Sciences Center Library",
+    "Dooley’s Week",
+    "Wonderful Wednesday",
+    "Songfest",
+    "Emory Gate Crossing + Coke Toast",
+    "Class Day Crossover",
+    "Midnight Pancakes",
+    "First Day Fest",
+    "Seney Hall Bell Graduate Toll",
+    "MD Program Alumni Book Signing",
+    "Society of Corpus Cordis Aureum Procession"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.towson.edu/studentlife/activities/recreation/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.towson.edu/studentlife/activities/recreation/",
+      "error": ""
+    },
+    {
+      "url": "https://www.towson.edu/studentlife/activities/recreation/campusrec/sports/intramurals/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.towson.edu/studentlife/activities/recreation/campusrec/sports/intramurals/",
+      "error": ""
+    },
+    {
+      "url": "https://www.towson.edu/campus/artsculture/centers/holtzman-gallery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.towson.edu/campus/artsculture/centers/holtzman-gallery/",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.towson.edu/using-the-libraries/guests",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.towson.edu/using-the-libraries/guests",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

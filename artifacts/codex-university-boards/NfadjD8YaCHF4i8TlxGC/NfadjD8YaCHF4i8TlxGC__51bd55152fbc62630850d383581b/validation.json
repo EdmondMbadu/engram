@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.union.edu/schaffer-library/staff-resources",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.union.edu/schaffer-library/staff-resources",
+      "error": ""
+    },
+    {
+      "url": "https://www.union.edu/theater-dance/current-season",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.union.edu/theater-dance/current-season",
+      "error": ""
+    },
+    {
+      "url": "https://www.union.edu/ucall/courses",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.union.edu/ucall/courses",
+      "error": ""
+    },
+    {
+      "url": "https://www.schenectadycountyny.gov/news/schenectady-county-announces-lineup-free-and-family-friendly-events-summer-break",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.schenectadycountyny.gov/news/schenectady-county-announces-lineup-free-and-family-friendly-events-summer-break",
+      "error": ""
+    },
+    {
+      "url": "https://www.schenectadycountyny.gov/event/schenectady-county-outdoor-summer-movie-night-1",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.schenectadycountyny.gov/event/schenectady-county-outdoor-summer-movie-night-1",
+      "error": ""
+    },
+    {
+      "url": "https://jazzonjay.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://jazzonjay.org/",
+      "error": ""
+    },
+    {
+      "url": "https://www.musichavenstage.org/press",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.musichavenstage.org/press",
+      "error": ""
+    },
+    {
+      "url": "https://schenectady.librarycalendar.com/reserve-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://schenectady.librarycalendar.com/reserve-room",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

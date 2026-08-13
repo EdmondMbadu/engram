@@ -1,0 +1,56 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://memphisparks.com/park/overton-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://memphisparks.com/park/overton-park/",
+      "error": ""
+    },
+    {
+      "url": "https://www.rhodes.edu/admission-aid/visit-campus/discover-memphis",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rhodes.edu/admission-aid/visit-campus/discover-memphis",
+      "error": ""
+    },
+    {
+      "url": "https://www.brooksmuseum.org/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.brooksmuseum.org/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.memphiszoo.org/contact-request-form",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.memphiszoo.org/contact-request-form",
+      "error": ""
+    },
+    {
+      "url": "https://overtonpark.org/the-park/park-history/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://overtonpark.org/the-park/park-history/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Old Forest State Natural Area",
+    "Memphis Brooks Museum of Art"
+  ],
+  "sourceCount": 5,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

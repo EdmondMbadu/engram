@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.gcc.edu/Home/Experience-the-Grove/Campus-Life/Dining",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Home/Experience-the-Grove/Campus-Life/Dining",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcc.edu/Home/Experience-the-Grove/Facilities/Buhl-Library/Writing-Center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Home/Experience-the-Grove/Facilities/Buhl-Library/Writing-Center",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/pa/grove-city/1560-w--main-street.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/pa/grove-city/1560-w--main-street.html",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/pennsylvania/grove-city/150-south-broad-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/pennsylvania/grove-city/150-south-broad-street",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/pa/grove-city/1902-leesburg-grove-city-road/16569.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/pa/grove-city/1902-leesburg-grove-city-road/16569.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/pa/grove-city/1925-leesburg/grove-city-road",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/pa/grove-city/1925-leesburg/grove-city-road",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/pa/grove-city/715-w-main-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/pa/grove-city/715-w-main-st",
+      "error": ""
+    },
+    {
+      "url": "https://maps.apple.com/place?place-id=IFC8E5936D19E8F0C",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://maps.apple.com/place?place-id=IFC8E5936D19E8F0C",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://parks.indy.gov/parks/tarkington-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://parks.indy.gov/parks/tarkington-park/",
+      "error": ""
+    },
+    {
+      "url": "https://discovernewfields.org/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://discovernewfields.org/about-newfields",
+      "error": ""
+    },
+    {
+      "url": "https://crownhillhf.org/tours-events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://crownhillhf.org/tours-events/",
+      "error": ""
+    },
+    {
+      "url": "https://hoagiesandhops.com/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://hoagiesandhops.com/about/",
+      "error": ""
+    },
+    {
+      "url": "https://www.cafepatachou.com/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cafepatachou.com/about/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lunamusic.net/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lunamusic.net/contact",
+      "error": ""
+    },
+    {
+      "url": "https://www.isfeindy.com/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 429,
+      "finalUrl": "https://www.isfeindy.com/about",
+      "error": ""
+    },
+    {
+      "url": "https://www.goldleafindy.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.goldleafindy.com/",
+      "error": ""
+    },
+    {
+      "url": "https://indyartcenter.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://indyartcenter.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://parks.indy.gov/parks/broad-ripple-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://parks.indy.gov/parks/broad-ripple-park/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

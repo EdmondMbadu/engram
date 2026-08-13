@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://historicsmithvillenj.com/shoppes/6-shoppe5",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://historicsmithvillenj.com/shoppes/6-shoppe5",
+      "error": ""
+    },
+    {
+      "url": "https://historicsmithvillenj.com/shoppes/3-shoppe2",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://historicsmithvillenj.com/shoppes/3-shoppe2",
+      "error": ""
+    },
+    {
+      "url": "https://historicsmithvillenj.com/shoppes/15-shoppe12",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://historicsmithvillenj.com/shoppes/15-shoppe12",
+      "error": ""
+    },
+    {
+      "url": "https://historicsmithvillenj.com/images/brochure/SmithvilleBrochure.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://historicsmithvillenj.com/images/brochure/SmithvilleBrochure.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://historicsmithvillenj.com/dining/65-shoppe74",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://historicsmithvillenj.com/dining/65-shoppe74",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

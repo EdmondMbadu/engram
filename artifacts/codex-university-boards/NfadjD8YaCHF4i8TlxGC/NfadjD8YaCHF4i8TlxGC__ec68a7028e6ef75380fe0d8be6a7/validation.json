@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.bitecomo.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bitecomo.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.picklemans.com/location/downtown-columbia/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.picklemans.com/location/downtown-columbia/",
+      "error": ""
+    },
+    {
+      "url": "https://www.picklemans.com/location/old-63/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.picklemans.com/location/old-63/",
+      "error": ""
+    },
+    {
+      "url": "https://www.southsidepizzacomo.com/contact/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.southsidepizzacomo.com/contact/",
+      "error": ""
+    },
+    {
+      "url": "https://thecolumbiagrind.com/the-grind-south",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://thecolumbiagrind.com/the-grind-south",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/mo/columbia/411-s-providence-rd.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mo/columbia/411-s-providence-rd.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/mo/columbia/508-e-nifong-blvd.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mo/columbia/508-e-nifong-blvd.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/mo/columbia/220-business-loop-70-e.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mo/columbia/220-business-loop-70-e.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/mo/columbia/1421-cinnamon-hill-lane.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mo/columbia/1421-cinnamon-hill-lane.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.papajohns.com/united-states/mo/65201/columbia/1205-e-broadway/food-near-me",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.papajohns.com/united-states/mo/65201/columbia/1205-e-broadway/food-near-me",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

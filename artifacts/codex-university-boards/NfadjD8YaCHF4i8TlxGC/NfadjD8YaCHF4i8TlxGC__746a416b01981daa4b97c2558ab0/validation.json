@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.butler.edu/holcomb-gardens/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.butler.edu/holcomb-gardens/",
+      "error": ""
+    },
+    {
+      "url": "https://www.butler.edu/arts-sciences/holcomb-observatory/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.butler.edu/arts-sciences/holcomb-observatory/",
+      "error": ""
+    },
+    {
+      "url": "https://www.butler.edu/campus-services/parking/alternative-transportation/bikeshare/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.butler.edu/campus-services/parking/alternative-transportation/bikeshare/",
+      "error": ""
+    },
+    {
+      "url": "https://www.butler.edu/esports/esports-park/park-membership/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.butler.edu/esports/esports-park/park-membership/",
+      "error": ""
+    },
+    {
+      "url": "https://www.butler.edu/student-life/off-campus-and-commuter-students/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.butler.edu/student-life/off-campus-and-commuter-students/",
+      "error": ""
+    },
+    {
+      "url": "https://indyartcenter.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://indyartcenter.org/visit/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Holcomb Gardens"
+  ],
+  "sourceCount": 6,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

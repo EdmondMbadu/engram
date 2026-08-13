@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://stockton.edu/about-stockton/traditions.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stockton.edu/about-stockton/traditions.html",
+      "error": ""
+    },
+    {
+      "url": "https://stockton.edu/development-foundation/alumni-affairs/golden-ospreys.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stockton.edu/development-foundation/alumni-affairs/golden-ospreys.html",
+      "error": ""
+    },
+    {
+      "url": "https://stockton.edu/university-weekend/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stockton.edu/university-weekend/",
+      "error": ""
+    },
+    {
+      "url": "https://www.stockton.edu/university-weekend/show-your-pride.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stockton.edu/university-weekend/show-your-pride.html",
+      "error": ""
+    },
+    {
+      "url": "https://stockton.edu/news/2024/10-things-every-osprey-needs-to-know-2024.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stockton.edu/news/2024/10-things-every-osprey-needs-to-know-2024.html",
+      "error": ""
+    },
+    {
+      "url": "https://stockton.edu/student-development/programs-initiatives/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stockton.edu/student-development/programs-initiatives/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://stockton.edu/news/2021/picture-stockton-taking-flight-for-fall-2021.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stockton.edu/news/2021/picture-stockton-taking-flight-for-fall-2021.html",
+      "error": ""
+    },
+    {
+      "url": "https://stockton.edu/news/2023/picture-stockton-welcoming-new-ospreys-with-open-wings.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stockton.edu/news/2023/picture-stockton-welcoming-new-ospreys-with-open-wings.html",
+      "error": ""
+    },
+    {
+      "url": "https://stockton.edu/engagement/documents/FY24FinalConnectionsReport.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stockton.edu/engagement/documents/FY24FinalConnectionsReport.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 100,
+  "generationGrade": "A"
+}

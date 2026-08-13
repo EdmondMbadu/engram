@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.eljefestaqueria.com/symphony-order",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.eljefestaqueria.com/symphony-order",
+      "error": ""
+    },
+    {
+      "url": "https://www.eljefestaqueria.com/copy-of-menu",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.eljefestaqueria.com/copy-of-menu",
+      "error": ""
+    },
+    {
+      "url": "https://www.tastyburger.com/location/fenway/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.tastyburger.com/location/fenway/",
+      "error": ""
+    },
+    {
+      "url": "https://www.tastyburger.com/location/back-bay/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.tastyburger.com/location/back-bay/",
+      "error": ""
+    },
+    {
+      "url": "https://crispydoughpizzeria.net/contact-us.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://crispydoughpizzeria.net/contact-us.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.thepenguinpizza.com/menu",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.thepenguinpizza.com/menu",
+      "error": ""
+    },
+    {
+      "url": "https://www.fenwaygrillbar.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fenwaygrillbar.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.boston-shawarma.com/contact-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.boston-shawarma.com/contact-us/",
+      "error": ""
+    },
+    {
+      "url": "https://www.teddysboston.com/general-8",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.teddysboston.com/general-8",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

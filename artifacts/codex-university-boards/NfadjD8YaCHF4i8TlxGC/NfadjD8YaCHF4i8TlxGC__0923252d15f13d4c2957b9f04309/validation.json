@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.gcc.edu/Home/Staff-Directory/Staff-Detail/grove-city-college-opens-year-with-a-call-for-community",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Home/Staff-Directory/Staff-Detail/grove-city-college-opens-year-with-a-call-for-community",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcc.edu/Portals/0/2024-Recognition-Convocation-Program.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Portals/0/2024-Recognition-Convocation-Program.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcc.edu/Home/News-Archive/News-Article/family-weekend-showcases-student-talent",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Home/News-Archive/News-Article/family-weekend-showcases-student-talent",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcc.edu/Home/Staff-Directory/Staff-Detail/game-on-homecoming-unites-campus-community",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Home/Staff-Directory/Staff-Detail/game-on-homecoming-unites-campus-community",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcc.edu/Home/Campus-Calendar/Event/gcc-light-up-night",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Home/Campus-Calendar/Event/gcc-light-up-night",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcc.edu/Home/News-Archive/News-Article/a-grove-city-college-christmas-music-cheer-and-faith",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcc.edu/Home/News-Archive/News-Article/a-grove-city-college-christmas-music-cheer-and-faith",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

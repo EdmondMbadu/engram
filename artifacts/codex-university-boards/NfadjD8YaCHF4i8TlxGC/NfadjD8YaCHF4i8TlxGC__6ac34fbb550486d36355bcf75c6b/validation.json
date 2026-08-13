@@ -1,0 +1,97 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://jimmorancollege.fsu.edu/gcec-2026",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://jimmorancollege.fsu.edu/gcec-2026",
+      "error": ""
+    },
+    {
+      "url": "https://union.fsu.edu/about-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://union.fsu.edu/about-us",
+      "error": ""
+    },
+    {
+      "url": "https://mofa.fsu.edu/visitor-information/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://mofa.fsu.edu/visitor-information/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.fsu.edu/visit-and-study/strozier-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.fsu.edu/visit-and-study/strozier-library",
+      "error": ""
+    },
+    {
+      "url": "https://calendar.fsu.edu/askew_student_life_center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calendar.fsu.edu/askew_student_life_center",
+      "error": ""
+    },
+    {
+      "url": "https://labyrinth.fsu.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://labyrinth.fsu.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://legacywalk.fsu.edu/locations/westcott-fountain",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://legacywalk.fsu.edu/locations/westcott-fountain",
+      "error": ""
+    },
+    {
+      "url": "https://www.fsu.edu/seminole-tribe/presence.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fsu.edu/seminole-tribe/presence.html",
+      "error": ""
+    },
+    {
+      "url": "https://campusrec.fsu.edu/outdoors/lake/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusrec.fsu.edu/outdoors/lake/",
+      "error": ""
+    },
+    {
+      "url": "https://circus.fsu.edu/student-tickets",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://circus.fsu.edu/student-tickets",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "FSU Student Union",
+    "Robert Manning Strozier Library",
+    "Askew Student Life Center"
+  ],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

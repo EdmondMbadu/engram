@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://dallas.pbnepa.com/dallas-pizza-bella/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://dallas.pbnepa.com/dallas-pizza-bella/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://bagelartshopping.com/site/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bagelartshopping.com/site/",
+      "error": ""
+    },
+    {
+      "url": "https://www.cksdallaspa.com/menu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cksdallaspa.com/menu/",
+      "error": ""
+    },
+    {
+      "url": "https://primeatcitymarket.com/contact-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://primeatcitymarket.com/contact-us",
+      "error": ""
+    },
+    {
+      "url": "https://www.diferros.com/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.diferros.com/about",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/pa/dallas/2685-memorial-highway",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/pa/dallas/2685-memorial-highway",
+      "error": ""
+    },
+    {
+      "url": "https://ilovebernies.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ilovebernies.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.backmountainbowl.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.backmountainbowl.com/",
+      "error": ""
+    },
+    {
+      "url": "https://burritolocomexicangrillpa.com/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://burritolocomexicangrillpa.com/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.misericordia.edu/campus-community/parents-families",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.misericordia.edu/campus-community/parents-families",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

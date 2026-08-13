@@ -1,0 +1,92 @@
+{
+  "ok": false,
+  "problems": [
+    "Cross-board overlap exceeds four subjects: The Beach, Brody Learning Commons, Bloomberg Student Center, Levering Hall, Baltimore Museum of Art, Ralph S. O’Connor Center for Recreation and Well-Being."
+  ],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.jhu.edu/life/campuses/homewood/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.jhu.edu/life/campuses/homewood/",
+      "error": ""
+    },
+    {
+      "url": "https://apply.jhu.edu/life-at-hopkins/our-network-of-campuses/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://apply.jhu.edu/life-at-hopkins/our-network-of-campuses/",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.jhu.edu/library-hours/brody-learning-commons/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.library.jhu.edu/library-hours/brody-learning-commons/",
+      "error": ""
+    },
+    {
+      "url": "https://students.jhu.edu/events-spaces/bloomberg-student-center/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://students.jhu.edu/events-spaces/bloomberg-student-center/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://artbma.org/faq/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://artbma.org/faq/",
+      "error": ""
+    },
+    {
+      "url": "https://museums.jhu.edu/tickets-to-homewood-museum/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://museums.jhu.edu/tickets-to-homewood-museum/",
+      "error": ""
+    },
+    {
+      "url": "https://students.jhu.edu/student-life/get-involved/oconnor-center-for-recreation-well-being/memberships-services/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://students.jhu.edu/student-life/get-involved/oconnor-center-for-recreation-well-being/memberships-services/",
+      "error": ""
+    },
+    {
+      "url": "https://wellbeing.jhu.edu/blog/2021/11/03/why-joining-the-flock-is-good-for-your-health/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://wellbeing.jhu.edu/blog/2021/11/03/why-joining-the-flock-is-good-for-your-health/",
+      "error": ""
+    },
+    {
+      "url": "https://wellbeing.jhu.edu/blog/2024/09/04/well-being-day-2024/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://wellbeing.jhu.edu/blog/2024/09/04/well-being-day-2024/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "The Beach",
+    "Brody Learning Commons",
+    "Bloomberg Student Center",
+    "Levering Hall",
+    "Baltimore Museum of Art",
+    "Ralph S. O’Connor Center for Recreation and Well-Being"
+  ],
+  "sourceCount": 9,
+  "generationScore": null,
+  "generationGrade": null
+}

@@ -1,0 +1,303 @@
+Reading additional input from stdin...
+2026-08-13T07:38:13.792978Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0e-5bae-7560-9f38-2926ca581bb2.1786606672815741000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:38:13.836761Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0e-5baf-7282-b492-0fbc0ce8d25c.1786606672816618000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa0e-ad2e-7a42-84e3-5f3be03b72d1
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"KhqRwC0DBX7dVUFCZyTk","schoolName":"Illinois Institute of Technology","shortSchoolName":"Illinois Institute of Technology","townName":"Chicago","state":"IL","countryCode":"US","website":"https://www.iit.edu/","latitude":41.8313,"longitude":-87.627321},"templates":[{"id":"college-zero-dollar-hangs","version":"1.0","titlePattern":"Zero Dollars: {count} Hangs That Cost Nothing","editorialBrief":"Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.","researchQueries":["free student activities campus","free campus spaces students","free public places near campus"],"count":10,"icon":"money_off","primarySubjectType":"activity","allowedSubjectTypes":["activity","place"],"freshnessDays":180,"exactTitle":"Zero Dollars: 10 Hangs That Cost Nothing"}]}
+2026-08-13T07:38:13.919704Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0e-5ba8-7c71-8976-7a13196c026e.1786606672809297000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:38:13.924874Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:38:13.929530Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:38:14.020042Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0e-5b9c-7bd3-8893-b659bb543f9c.1786606672797221000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:38:14.092449Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0e-5ba9-7d73-98c1-263bd57bc46d.1786606672809874000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:38:14.149768Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0e-5b93-7162-a35f-fd38589f799e.1786606672788652000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:38:14.211545Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0e-5bab-77c1-93b5-0cf9216a4492.1786606672811902000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Illinois Institute of Technology",
+  "town_name": "Chicago",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Illinois Institute of Technology",
+      "town_name": "Chicago",
+      "template_id": "college-zero-dollar-hangs",
+      "title": "Zero Dollars: 10 Hangs That Cost Nothing",
+      "description": "",
+      "icon": "money_off",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "activity",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "activity",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "government",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "cultural_institution",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "cultural_institution",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "government",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "cultural_institution",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "government",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "activity",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "government",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      }
+    ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:iit.edu Illinois Tech campus public art free Crown Hall visitor campus architecture ...
+web search: 
+web search: site:chicagoparkdistrict.com "Admission is free" park Chicago Palmisano Dunbar Armour Square ...
+web search: 
+web search: site:iit.edu free students "admission" museum Illinois Tech ...
+web search: 
+web search: site:illinoistechathletics.com Keating Sports Center free students basketball pool racquetball hours 2026 ...
+web search: 
+web search: site:chicago.gov Chicago Cultural Center free admission official ...
+codex
+{"complete":true,"school_name":"Illinois Institute of Technology","town_name":"Chicago","boards":[{"complete":true,"school_name":"Illinois Institute of Technology","town_name":"Chicago","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"Ten verified no-cost ways to spend time together on Illinois Tech’s Mies Campus and around Chicago, with student eligibility or registration requirements noted.","icon":"money_off","cards":[{"subject_id":"iit-alphawood-arboretum-walk","subject_type":"activity","entity_name":"Alphawood Arboretum","title":"Walk the Campus Arboretum","subtitle":"A public, no-cost walk among nearly 2,000 trees on Mies Campus","notes":"Choose a campus loop, compare tree forms with friends, and use the arboretum landscape as a backdrop for an unhurried outdoor catch-up.","short_summary":"Take a free, self-guided social walk through Illinois Tech’s 120-acre campus arboretum.","evidence_claim":"Illinois Tech states that Alphawood Arboretum covers its 120-acre Mies Campus, contains nearly 2,000 trees, and is free to visit and open to the public.","source_url":"https://www.iit.edu/alphawood-arboretum","source_title":"Alphawood Arboretum","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open to the public; outdoor conditions and individual campus-building access rules may vary.","cost_status":"free","under21_safe":true},{"subject_id":"iit-bog-free-bowling","subject_type":"activity","entity_name":"The BOG","title":"Bowl a Free Game at The BOG","subtitle":"Eight-lane student hangout beneath Hermann Hall","notes":"Bring classmates for a bowling round, then stay for conversation in the game area; check the page before going because summer closure is posted.","short_summary":"Use The BOG’s eight-lane alley for a free on-campus bowling hang.","evidence_claim":"The official BOG page explicitly invites visitors to bowl for free in its eight-lane bowling alley.","source_url":"https://www.iit.edu/student-life/get-involved/bog","source_title":"The BOG","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on Hermann Hall’s lower level; the venue is closed for summer 2026 and says normal hours will resume in fall.","cost_status":"free","under21_safe":true},{"subject_id":"iit-arc-peer-tutoring","subject_type":"activity","entity_name":"Academic Resource Center","title":"Make Tutoring a Group Session","subtitle":"Free peer-supported learning for current Illinois Tech students","notes":"Bring one course question each, sign in on arrival, and work through the material together with an ARC tutor when one is available.","short_summary":"Turn a difficult assignment into a collaborative, no-charge peer-tutoring meetup.","evidence_claim":"Illinois Tech states that all Academic Resource Center services are free for current Illinois Tech students and include peer tutoring.","source_url":"https://www.iit.edu/arc/about","source_title":"About | Academic Resource Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current Illinois Tech students only; visitors must sign in, and immediate tutor availability is not guaranteed.","cost_status":"free","under21_safe":true},{"subject_id":"iit-keating-basketball","subject_type":"activity","entity_name":"Keating Sports Center Basketball Courts","title":"Meet for a Basketball Run","subtitle":"Regulation and auxiliary courts for Illinois Tech affiliates","notes":"Coordinate a small group, bring proper athletic clothes and shoes, and confirm that general-use court space is open before walking over.","short_summary":"Gather classmates for basketball using the courts included with affiliate access.","evidence_claim":"Illinois Tech’s benefits guide says affiliates may use Keating Sports Center free of charge and identifies basketball among its available facilities.","source_url":"https://www.iit.edu/sites/default/files/2024-10/9a-Faculty-Staff-Benefit-Summary-2025-10-24-2024.pdf","source_title":"2025 Annual Benefits Enrollment Guide","source_kind":"university_official","source_published_at":"2024-10-24","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Illinois Tech affiliates must show university ID; courts can close for varsity practices or events, and proper athletic attire is required.","cost_status":"free","under21_safe":true},{"subject_id":"iit-ekco-pool-swim","subject_type":"activity","entity_name":"Ekco Pool","title":"Swim Laps Together at Ekco Pool","subtitle":"Six-lane pool inside Keating Sports Center","notes":"Check the recreational-swim window, meet in the lobby with university IDs, and share an easy lap session while a lifeguard is on duty.","short_summary":"Plan a free recreational swim with another Illinois Tech affiliate.","evidence_claim":"Illinois Tech’s benefits guide says affiliates use Keating free of charge and lists its swimming pool; the athletics site identifies the six-lane Ekco Pool.","source_url":"https://www.iit.edu/sites/default/files/2024-10/9a-Faculty-Staff-Benefit-Summary-2025-10-24-2024.pdf","source_title":"2025 Annual Benefits Enrollment Guide","source_kind":"university_official","source_published_at":"2024-10-24","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Illinois Tech affiliates must show university ID; enter only during posted recreational-swim periods when a lifeguard is present.","cost_status":"free","under21_safe":true},{"subject_id":"iit-keating-volleyball","subject_type":"activity","entity_name":"Keating Sports Center Volleyball Court","title":"Set Up a Volleyball Rally","subtitle":"Indoor court play included for Illinois Tech affiliates","notes":"Assemble enough classmates for a casual rally, wear gym shoes, and check facility availability so a varsity booking does not interrupt the plan.","short_summary":"Use affiliate access for a no-cost indoor volleyball meetup.","evidence_claim":"Illinois Tech’s benefits guide states that affiliates can use Keating Sports Center free of charge and lists volleyball as an available facility activity.","source_url":"https://www.iit.edu/sites/default/files/2024-10/9a-Faculty-Staff-Benefit-Summary-2025-10-24-2024.pdf","source_title":"2025 Annual Benefits Enrollment Guide","source_kind":"university_official","source_published_at":"2024-10-24","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Illinois Tech affiliates must show university ID; court availability is subject to athletic practices and events.","cost_status":"free","under21_safe":true},{"subject_id":"iit-keating-group-workout","subject_type":"activity","entity_name":"Keating Sports Center Fitness Center","title":"Share a Fitness-Center Workout","subtitle":"Cardio, weights, and group fitness for Illinois Tech affiliates","notes":"Pick a simple circuit everyone can adapt, arrive in proper training attire, and keep bags in the locker-room area as facility rules require.","short_summary":"Exercise alongside friends using Keating’s no-charge affiliate access.","evidence_claim":"Illinois Tech’s benefits guide says affiliates can use Keating free of charge and lists weight rooms, cardio rooms, and group fitness classes.","source_url":"https://www.iit.edu/sites/default/files/2024-10/9a-Faculty-Staff-Benefit-Summary-2025-10-24-2024.pdf","source_title":"2025 Annual Benefits Enrollment Guide","source_kind":"university_official","source_published_at":"2024-10-24","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Illinois Tech affiliates must show university ID; proper training attire is required, and belongings must remain in the locker room.","cost_status":"free","under21_safe":true},{"subject_id":"iit-community-affairs-program","subject_type":"activity","entity_name":"Office of Community Affairs and Outreach Programs","title":"Join a Free Community Program","subtitle":"Public cultural and educational events organized by Illinois Tech","notes":"Review the upcoming-events list with friends, select a screening, talk, or book-club program, and register individually before capacity fills.","short_summary":"Attend an Illinois Tech community event together without paying admission.","evidence_claim":"Illinois Tech says the office presents cultural events and activities and that, unless noted otherwise, all programs are free to the community with registration required.","source_url":"https://www.iit.edu/community-affairs/events","source_title":"Events | Office of Community Affairs and Outreach Programs","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open to the community unless an event states otherwise; advance registration is required for planning purposes.","cost_status":"free","under21_safe":true},{"subject_id":"chicago-cultural-center-exhibits","subject_type":"place","entity_name":"Chicago Cultural Center","title":"Explore the Cultural Center Galleries","subtitle":"Free exhibitions and public rooms beneath two stained-glass domes","notes":"Meet beneath the Tiffany dome, browse the current galleries at the same pace, and compare one work each before leaving the building.","short_summary":"Spend an admission-free afternoon with art and landmark architecture downtown.","evidence_claim":"Choose Chicago states that the Chicago Cultural Center is always free for the public to explore and offers free exhibitions and cultural programming.","source_url":"https://www.choosechicago.com/articles/museums-art/chicago-cultural-center/","source_title":"Chicago Cultural Center | Find Events, Tours & Architecture","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public access requires no ticket; listed building hours are daily 10 a.m.–5 p.m., with holiday closures and earlier gallery closing.","cost_status":"free","under21_safe":true},{"subject_id":"cpl-blackstone-free-programs","subject_type":"activity","entity_name":"Blackstone Branch, Chicago Public Library","title":"Meet at a Free Library Program","subtitle":"Recurring public programming in a historic South Side branch","notes":"Check the branch calendar together, choose an age-appropriate program, and arrive early enough to find seats without splitting up your group.","short_summary":"Use Blackstone Branch’s regularly offered free programs as a neighborhood meetup.","evidence_claim":"Chicago Public Library records that Blackstone Branch delivers free programs regularly and provides free Wi-Fi alongside dedicated adult spaces.","source_url":"https://www.chipublib.org/news/board-of-directors-meeting-minutes-november-28-2023/","source_title":"Board of Directors Meeting Minutes – November 28, 2023","source_kind":"government","source_published_at":"2023-11-28","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Programs are free, but dates, capacity, registration rules, and intended age groups vary; verify the branch calendar before traveling.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:40:17.297490Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa0e-ad2e-7a42-84e3-5f3be03b72d1.1786606693679275000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+50,869
+
+{"complete":true,"school_name":"Illinois Institute of Technology","town_name":"Chicago","boards":[{"complete":true,"school_name":"Illinois Institute of Technology","town_name":"Chicago","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"Ten verified no-cost ways to spend time together on Illinois Tech’s Mies Campus and around Chicago, with student eligibility or registration requirements noted.","icon":"money_off","cards":[{"subject_id":"iit-alphawood-arboretum-walk","subject_type":"activity","entity_name":"Alphawood Arboretum","title":"Walk the Campus Arboretum","subtitle":"A public, no-cost walk among nearly 2,000 trees on Mies Campus","notes":"Choose a campus loop, compare tree forms with friends, and use the arboretum landscape as a backdrop for an unhurried outdoor catch-up.","short_summary":"Take a free, self-guided social walk through Illinois Tech’s 120-acre campus arboretum.","evidence_claim":"Illinois Tech states that Alphawood Arboretum covers its 120-acre Mies Campus, contains nearly 2,000 trees, and is free to visit and open to the public.","source_url":"https://www.iit.edu/alphawood-arboretum","source_title":"Alphawood Arboretum","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open to the public; outdoor conditions and individual campus-building access rules may vary.","cost_status":"free","under21_safe":true},{"subject_id":"iit-bog-free-bowling","subject_type":"activity","entity_name":"The BOG","title":"Bowl a Free Game at The BOG","subtitle":"Eight-lane student hangout beneath Hermann Hall","notes":"Bring classmates for a bowling round, then stay for conversation in the game area; check the page before going because summer closure is posted.","short_summary":"Use The BOG’s eight-lane alley for a free on-campus bowling hang.","evidence_claim":"The official BOG page explicitly invites visitors to bowl for free in its eight-lane bowling alley.","source_url":"https://www.iit.edu/student-life/get-involved/bog","source_title":"The BOG","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on Hermann Hall’s lower level; the venue is closed for summer 2026 and says normal hours will resume in fall.","cost_status":"free","under21_safe":true},{"subject_id":"iit-arc-peer-tutoring","subject_type":"activity","entity_name":"Academic Resource Center","title":"Make Tutoring a Group Session","subtitle":"Free peer-supported learning for current Illinois Tech students","notes":"Bring one course question each, sign in on arrival, and work through the material together with an ARC tutor when one is available.","short_summary":"Turn a difficult assignment into a collaborative, no-charge peer-tutoring meetup.","evidence_claim":"Illinois Tech states that all Academic Resource Center services are free for current Illinois Tech students and include peer tutoring.","source_url":"https://www.iit.edu/arc/about","source_title":"About | Academic Resource Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current Illinois Tech students only; visitors must sign in, and immediate tutor availability is not guaranteed.","cost_status":"free","under21_safe":true},{"subject_id":"iit-keating-basketball","subject_type":"activity","entity_name":"Keating Sports Center Basketball Courts","title":"Meet for a Basketball Run","subtitle":"Regulation and auxiliary courts for Illinois Tech affiliates","notes":"Coordinate a small group, bring proper athletic clothes and shoes, and confirm that general-use court space is open before walking over.","short_summary":"Gather classmates for basketball using the courts included with affiliate access.","evidence_claim":"Illinois Tech’s benefits guide says affiliates may use Keating Sports Center free of charge and identifies basketball among its available facilities.","source_url":"https://www.iit.edu/sites/default/files/2024-10/9a-Faculty-Staff-Benefit-Summary-2025-10-24-2024.pdf","source_title":"2025 Annual Benefits Enrollment Guide","source_kind":"university_official","source_published_at":"2024-10-24","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Illinois Tech affiliates must show university ID; courts can close for varsity practices or events, and proper athletic attire is required.","cost_status":"free","under21_safe":true},{"subject_id":"iit-ekco-pool-swim","subject_type":"activity","entity_name":"Ekco Pool","title":"Swim Laps Together at Ekco Pool","subtitle":"Six-lane pool inside Keating Sports Center","notes":"Check the recreational-swim window, meet in the lobby with university IDs, and share an easy lap session while a lifeguard is on duty.","short_summary":"Plan a free recreational swim with another Illinois Tech affiliate.","evidence_claim":"Illinois Tech’s benefits guide says affiliates use Keating free of charge and lists its swimming pool; the athletics site identifies the six-lane Ekco Pool.","source_url":"https://www.iit.edu/sites/default/files/2024-10/9a-Faculty-Staff-Benefit-Summary-2025-10-24-2024.pdf","source_title":"2025 Annual Benefits Enrollment Guide","source_kind":"university_official","source_published_at":"2024-10-24","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Illinois Tech affiliates must show university ID; enter only during posted recreational-swim periods when a lifeguard is present.","cost_status":"free","under21_safe":true},{"subject_id":"iit-keating-volleyball","subject_type":"activity","entity_name":"Keating Sports Center Volleyball Court","title":"Set Up a Volleyball Rally","subtitle":"Indoor court play included for Illinois Tech affiliates","notes":"Assemble enough classmates for a casual rally, wear gym shoes, and check facility availability so a varsity booking does not interrupt the plan.","short_summary":"Use affiliate access for a no-cost indoor volleyball meetup.","evidence_claim":"Illinois Tech’s benefits guide states that affiliates can use Keating Sports Center free of charge and lists volleyball as an available facility activity.","source_url":"https://www.iit.edu/sites/default/files/2024-10/9a-Faculty-Staff-Benefit-Summary-2025-10-24-2024.pdf","source_title":"2025 Annual Benefits Enrollment Guide","source_kind":"university_official","source_published_at":"2024-10-24","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Illinois Tech affiliates must show university ID; court availability is subject to athletic practices and events.","cost_status":"free","under21_safe":true},{"subject_id":"iit-keating-group-workout","subject_type":"activity","entity_name":"Keating Sports Center Fitness Center","title":"Share a Fitness-Center Workout","subtitle":"Cardio, weights, and group fitness for Illinois Tech affiliates","notes":"Pick a simple circuit everyone can adapt, arrive in proper training attire, and keep bags in the locker-room area as facility rules require.","short_summary":"Exercise alongside friends using Keating’s no-charge affiliate access.","evidence_claim":"Illinois Tech’s benefits guide says affiliates can use Keating free of charge and lists weight rooms, cardio rooms, and group fitness classes.","source_url":"https://www.iit.edu/sites/default/files/2024-10/9a-Faculty-Staff-Benefit-Summary-2025-10-24-2024.pdf","source_title":"2025 Annual Benefits Enrollment Guide","source_kind":"university_official","source_published_at":"2024-10-24","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Illinois Tech affiliates must show university ID; proper training attire is required, and belongings must remain in the locker room.","cost_status":"free","under21_safe":true},{"subject_id":"iit-community-affairs-program","subject_type":"activity","entity_name":"Office of Community Affairs and Outreach Programs","title":"Join a Free Community Program","subtitle":"Public cultural and educational events organized by Illinois Tech","notes":"Review the upcoming-events list with friends, select a screening, talk, or book-club program, and register individually before capacity fills.","short_summary":"Attend an Illinois Tech community event together without paying admission.","evidence_claim":"Illinois Tech says the office presents cultural events and activities and that, unless noted otherwise, all programs are free to the community with registration required.","source_url":"https://www.iit.edu/community-affairs/events","source_title":"Events | Office of Community Affairs and Outreach Programs","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open to the community unless an event states otherwise; advance registration is required for planning purposes.","cost_status":"free","under21_safe":true},{"subject_id":"chicago-cultural-center-exhibits","subject_type":"place","entity_name":"Chicago Cultural Center","title":"Explore the Cultural Center Galleries","subtitle":"Free exhibitions and public rooms beneath two stained-glass domes","notes":"Meet beneath the Tiffany dome, browse the current galleries at the same pace, and compare one work each before leaving the building.","short_summary":"Spend an admission-free afternoon with art and landmark architecture downtown.","evidence_claim":"Choose Chicago states that the Chicago Cultural Center is always free for the public to explore and offers free exhibitions and cultural programming.","source_url":"https://www.choosechicago.com/articles/museums-art/chicago-cultural-center/","source_title":"Chicago Cultural Center | Find Events, Tours & Architecture","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public access requires no ticket; listed building hours are daily 10 a.m.–5 p.m., with holiday closures and earlier gallery closing.","cost_status":"free","under21_safe":true},{"subject_id":"cpl-blackstone-free-programs","subject_type":"activity","entity_name":"Blackstone Branch, Chicago Public Library","title":"Meet at a Free Library Program","subtitle":"Recurring public programming in a historic South Side branch","notes":"Check the branch calendar together, choose an age-appropriate program, and arrive early enough to find seats without splitting up your group.","short_summary":"Use Blackstone Branch’s regularly offered free programs as a neighborhood meetup.","evidence_claim":"Chicago Public Library records that Blackstone Branch delivers free programs regularly and provides free Wi-Fi alongside dedicated adult spaces.","source_url":"https://www.chipublib.org/news/board-of-directors-meeting-minutes-november-28-2023/","source_title":"Board of Directors Meeting Minutes – November 28, 2023","source_kind":"government","source_published_at":"2023-11-28","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Programs are free, but dates, capacity, registration rules, and intended age groups vary; verify the branch calendar before traveling.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}

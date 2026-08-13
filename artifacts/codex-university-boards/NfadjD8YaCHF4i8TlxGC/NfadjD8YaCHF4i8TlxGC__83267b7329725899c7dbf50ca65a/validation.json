@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.moravian.edu/academics/reeves-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.moravian.edu/academics/reeves-library",
+      "error": ""
+    },
+    {
+      "url": "https://www.moravian.edu/behavioral-community-health/msw-handbook",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.moravian.edu/sites/default/files/pdf/MSW%20Student%20Handbook%202024-2025%20-%20Revised%20August%202024.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.moravian.edu/handbook/directory",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.moravian.edu/handbook/directory",
+      "error": ""
+    },
+    {
+      "url": "https://amos.moravian.edu/ics/reeves_library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://amos.moravian.edu/ics/reeves_library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.moravian.edu/reeves/debra-gaspar-reading-nook",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.moravian.edu/reeves/debra-gaspar-reading-nook",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

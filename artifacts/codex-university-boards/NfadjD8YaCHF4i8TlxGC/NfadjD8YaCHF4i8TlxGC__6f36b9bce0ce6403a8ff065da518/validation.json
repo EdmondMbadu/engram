@@ -1,0 +1,79 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://mu.oregonstate.edu/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mu.oregonstate.edu/about",
+      "error": ""
+    },
+    {
+      "url": "https://events.oregonstate.edu/memorial_union_quad_mu_quad_179",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.oregonstate.edu/memorial_union_quad_mu_quad_179",
+      "error": ""
+    },
+    {
+      "url": "https://events.oregonstate.edu/student_experience_center_plaza_sec_plaza_292",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.oregonstate.edu/student_experience_center_plaza_sec_plaza_292",
+      "error": ""
+    },
+    {
+      "url": "https://oregonstate.edu/stories/coziest-places-study",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://oregonstate.edu/stories/coziest-places-study",
+      "error": ""
+    },
+    {
+      "url": "https://today.oregonstate.edu/all-stories/popular-library-study-area-gets-refresh",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://today.oregonstate.edu/all-stories/popular-library-study-area-gets-refresh",
+      "error": ""
+    },
+    {
+      "url": "https://ecampus.oregonstate.edu/services/student-services/learning_centers.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ecampus.oregonstate.edu/services/student-services/learning_centers.htm",
+      "error": ""
+    },
+    {
+      "url": "https://see.oregonstate.edu/dce/centers-initiatives/asian-pacific-cultural-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://see.oregonstate.edu/dce/centers-initiatives/asian-pacific-cultural-center",
+      "error": ""
+    },
+    {
+      "url": "https://recsports.oregonstate.edu/renovation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recsports.oregonstate.edu/renovation",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Valley Library Rotunda"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

@@ -1,0 +1,55 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.pitzer.edu/student-life/living-pitzer/our-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pitzer.edu/student-life/living-pitzer/our-campus",
+      "error": ""
+    },
+    {
+      "url": "https://www.pitzer.edu/get-involved-sustainability",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pitzer.edu/get-involved-sustainability",
+      "error": ""
+    },
+    {
+      "url": "https://www.pitzer.edu/murals",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pitzer.edu/murals",
+      "error": ""
+    },
+    {
+      "url": "https://www.pitzer.edu/student-life",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pitzer.edu/student-life",
+      "error": ""
+    },
+    {
+      "url": "https://www.pitzer.edu/documents/pitzer-college-campus-map-letter-sized",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://map.concept3d.com/?id=564",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "The Mounds"
+  ],
+  "sourceCount": 5,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

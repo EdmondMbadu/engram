@@ -1,0 +1,97 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://studentcenters.ecu.edu/main-campus-student-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentcenters.ecu.edu/main-campus-student-center/",
+      "error": ""
+    },
+    {
+      "url": "https://academic-success.ecu.edu/iconic-pirate-history/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://academic-success.ecu.edu/iconic-pirate-history/",
+      "error": ""
+    },
+    {
+      "url": "https://maps.ecu.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://maps.ecu.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://lib.ecu.edu/hours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.ecu.edu/hours",
+      "error": ""
+    },
+    {
+      "url": "https://dining.ecu.edu/locations/west-end-dining-hall/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ecu.mydininghub.com/en",
+      "error": ""
+    },
+    {
+      "url": "https://news.ecu.edu/2009/03/30/trustees-fountain-dedicated/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.ecu.edu/2009/03/30/trustees-fountain-dedicated/",
+      "error": ""
+    },
+    {
+      "url": "https://calendar.ecu.edu/wright_auditorium",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calendar.ecu.edu/wright_auditorium",
+      "error": ""
+    },
+    {
+      "url": "https://crw.ecu.edu/facilities-services/student-recreation-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://crw.ecu.edu/facilities-services/student-recreation-center/",
+      "error": ""
+    },
+    {
+      "url": "https://admissions.ecu.edu/explore/student-life/campus-recreation-wellness/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://admissions.ecu.edu/explore/student-life/campus-recreation-wellness/",
+      "error": ""
+    },
+    {
+      "url": "https://www.greenvillenc.gov/513/Greenville-Town-Common",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.greenvillenc.gov/513/Greenville-Town-Common",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Main Campus Student Center",
+    "Richard R. and JoAnn M. Eakin Student Recreation Center",
+    "Greenville Town Common"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

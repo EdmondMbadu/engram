@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://galleries.illinoisstate.edu/about/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://galleries.illinoisstate.edu/about/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://horticulturecenter.illinoisstate.edu/wp-content/uploads/2025/02/25-32195-HORT-Membership-Informational-brochure-2025.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://horticulturecenter.illinoisstate.edu/wp-content/uploads/2025/02/25-32195-HORT-Membership-Informational-brochure-2025.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://mchistory.org/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mchistory.org/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.normalil.gov/1245/WiFi",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.normalil.gov/1245/WiFi",
+      "error": ""
+    },
+    {
+      "url": "https://events.illinoisstate.edu/events/month/2026-08/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.illinoisstate.edu/events/month/2026-08/",
+      "error": ""
+    },
+    {
+      "url": "https://events.illinoisstate.edu/events/month/2026-09/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.illinoisstate.edu/events/month/2026-09/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "University Galleries of Illinois State University"
+  ],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://cortlandfreelibrary.org/location-and-hours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cortlandfreelibrary.org/location-and-hours/",
+      "error": ""
+    },
+    {
+      "url": "https://www.experiencecortland.com/partners/cortland-city-farmers-market",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.experiencecortland.com/partners/cortland-city-farmers-market",
+      "error": ""
+    },
+    {
+      "url": "https://www.cortlandny.gov/142/Contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cortlandny.gov/142/Contact",
+      "error": ""
+    },
+    {
+      "url": "https://cortlandfire.org/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cortlandfire.org/about/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nycourts.gov/courts/cortland-county-courthouse",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.nycourts.gov/courts/cortland-county-courthouse",
+      "error": ""
+    },
+    {
+      "url": "https://cortlandhistory.org/suggett-house/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cortlandhistory.org/suggett-house/",
+      "error": ""
+    },
+    {
+      "url": "https://allmyfriendsbooks.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://allmyfriendsbooks.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.experiencecortland.com/destination/the-port-watson-mini-conference-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.experiencecortland.com/partners/the-port-watson-mini-conference-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.experiencecortland.com/2025_visitors_guide/files/basic-html/page41.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.experiencecortland.com/2025_visitors_guide/files/basic-html/page41.html",
+      "error": ""
+    },
+    {
+      "url": "https://cortlandhistory.org/main-street/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cortlandhistory.org/main-street/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

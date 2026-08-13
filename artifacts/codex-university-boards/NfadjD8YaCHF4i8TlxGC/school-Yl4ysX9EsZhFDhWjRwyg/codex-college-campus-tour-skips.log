@@ -1,0 +1,290 @@
+Reading additional input from stdin...
+2026-08-13T06:37:16.234219Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:37:16.524085Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9d6-dcdc-7f33-ac50-309a0bdfa360
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"Yl4ysX9EsZhFDhWjRwyg","schoolName":"California Institute of Technology","shortSchoolName":"California Institute of Technology","townName":"Pasadena","state":"CA","countryCode":"US","website":"https://www.caltech.edu/","latitude":34.137349,"longitude":-118.125878},"templates":[{"id":"college-campus-tour-skips","version":"1.0","titlePattern":"What the Campus Tour Skips: {count} Places Students Share With Each Other","editorialBrief":"Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.","researchQueries":["student favorite campus places","campus map student spaces","student newspaper campus places"],"count":10,"icon":"style","primarySubjectType":"place","allowedSubjectTypes":["place","study_space"],"freshnessDays":365,"exactTitle":"What the Campus Tour Skips: 10 Places Students Share With Each Other"}]}
+2026-08-13T06:37:25.904497Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for zsh: Snapshot command timed out for zsh
+codex
+{
+  "complete": false,
+  "school_name": "California Institute of Technology",
+  "town_name": "Pasadena",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "California Institute of Technology",
+      "town_name": "Pasadena",
+      "template_id": "college-campus-tour-skips",
+      "title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+      "description": "I’m verifying ten distinct, named campus spaces against direct Caltech or affiliated pages, including map coordinates and access details where published.",
+      "icon": "style",
+      "cards": [
+        {
+          "subject_id": "research-in-progress",
+          "subject_type": "place",
+          "entity_name": "Research in progress",
+          "title": "Research in progress",
+          "subtitle": "Caltech campus",
+          "notes": "Checking direct sources for concrete shared uses, current access details, and map-listed names before completing all ten cards.",
+          "short_summary": "Source verification is underway.",
+          "evidence_claim": "Research is underway.",
+          "source_url": "https://www.caltech.edu/",
+          "source_title": "California Institute of Technology",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "Pending verification.",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      
+      ,
+      {
+      
+      "subject_id": "research-in-progress-2",
+      "subject_type": "study_space",
+      "entity_name": "Research in progress",
+      "title": "Research in progress",
+      "subtitle": "Caltech campus",
+      "notes": "Checking direct sources for concrete shared uses, current access details, and map-listed names before completing all ten cards.",
+      "short_summary": "Source verification is underway.",
+      "evidence_claim": "Research is underway.",
+      "source_url": "https://www.caltech.edu/",
+      "source_title": "California Institute of Technology",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending verification.",
+      "cost_status": "unknown",
+      "under21_safe": true
+        }
+      ,
+      {
+        "subject_id": "research-in-progress-3",
+        "subject_type": "place",
+        "entity_name": "Research in progress",
+        "title": "Research in progress",
+        "subtitle": "Caltech campus",
+        "notes": "Checking direct sources for concrete shared uses, current access details, and map-listed names before completing all ten cards.",
+        "short_summary": "Source verification is underway.",
+        "evidence_claim": "Research is underway.",
+        "source_url": "https://www.caltech.edu/",
+        "source_title": "California Institute of Technology",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "Pending verification.",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "research-in-progress-4",
+        "subject_type": "study_space",
+        "entity_name": "Research in progress",
+        "title": "Research in progress",
+        "subtitle": "Caltech campus",
+        "notes": "Checking direct sources for concrete shared uses, current access details, and map-listed names before completing all ten cards.",
+        "short_summary": "Source verification is underway.",
+        "evidence_claim": "Research is underway.",
+        "source_url": "https://www.caltech.edu/",
+        "source_title": "California Institute of Technology",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "Pending verification.",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "research-in-progress-5",
+        "subject_type": "place",
+        "entity_name": "Research in progress",
+        "title": "Research in progress",
+        "subtitle": "Caltech campus",
+        "notes": "Checking direct sources for concrete shared uses, current access details, and map-listed names before completing all ten cards.",
+        "short_summary": "Source verification is underway.",
+        "evidence_claim": "Research is underway.",
+        "source_url": "https://www.caltech.edu/",
+        "source_title": "California Institute of Technology",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "Pending verification.",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "research-in-progress-6",
+        "subject_type": "study_space",
+        "entity_name": "Research in progress",
+        "title": "Research in progress",
+        "subtitle": "Caltech campus",
+        "notes": "Checking direct sources for concrete shared uses, current access details, and map-listed names before completing all ten cards.",
+        "short_summary": "Source verification is underway.",
+        "evidence_claim": "Research is underway.",
+        "source_url": "https://www.caltech.edu/",
+        "source_title": "California Institute of Technology",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "Pending verification.",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "research-in-progress-7",
+        "subject_type": "place",
+        "entity_name": "Research in progress",
+        "title": "Research in progress",
+        "subtitle": "Caltech campus",
+        "notes": "Checking direct sources for concrete shared uses, current access details, and map-listed names before completing all ten cards.",
+        "short_summary": "Source verification is underway.",
+        "evidence_claim": "Research is underway.",
+        "source_url": "https://www.caltech.edu/",
+        "source_title": "California Institute of Technology",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "Pending verification.",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "research-in-progress-8",
+        "subject_type": "study_space",
+        "entity_name": "Research in progress",
+        "title": "Research in progress",
+        "subtitle": "Caltech campus",
+        "notes": "Checking direct sources for concrete shared uses, current access details, and map-listed names before completing all ten cards.",
+        "short_summary": "Source verification is underway.",
+        "evidence_claim": "Research is underway.",
+        "source_url": "https://www.caltech.edu/",
+        "source_title": "California Institute of Technology",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "Pending verification.",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "research-in-progress-9",
+        "subject_type": "place",
+        "entity_name": "Research in progress",
+        "title": "Research in progress",
+        "subtitle": "Caltech campus",
+        "notes": "Checking direct sources for concrete shared uses, current access details, and map-listed names before completing all ten cards.",
+        "short_summary": "Source verification is underway.",
+        "evidence_claim": "Research is underway.",
+        "source_url": "https://www.caltech.edu/",
+        "source_title": "California Institute of Technology",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "Pending verification.",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "research-in-progress-10",
+        "subject_type": "study_space",
+        "entity_name": "Research in progress",
+        "title": "Research in progress",
+        "subtitle": "Caltech campus",
+        "notes": "Checking direct sources for concrete shared uses, current access details, and map-listed names before completing all ten cards.",
+        "short_summary": "Source verification is underway.",
+        "evidence_claim": "Research is underway.",
+        "source_url": "https://www.caltech.edu/",
+        "source_title": "California Institute of Technology",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "Pending verification.",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+      ],
+      "warnings": ["Interim research status; final board will replace these placeholders."]
+    }
+  ],
+  "warnings": ["Researching current direct sources before producing the requested JSON-only result."]
+}
+web search: 
+web search: site:caltech.edu campus spaces student lounge Caltech Pasadena ...
+web search: 
+web search: site:library.caltech.edu "Sherman Fairchild Library" study spaces ...
+web search: 
+web search: site:caltech.edu Caltech "lounge" students campus center diversity ...
+web search: 
+web search: site:library.caltech.edu spaces Sherman Fairchild Library hours group study rooms 2026 ...
+web search: 
+web search: Caltech Library Sherman Fairchild Library spaces official ...
+codex
+{"complete":true,"school_name":"California Institute of Technology","town_name":"Pasadena","boards":[{"complete":true,"school_name":"California Institute of Technology","town_name":"Pasadena","template_id":"college-campus-tour-skips","title":"What the Campus Tour Skips: 10 Places Students Share With Each Other","description":"Ten named Caltech spaces for collaborative study, making, meetings, recreation, and performing arts, with student uses and access conditions verified through direct Institute sources.","icon":"style","cards":[{"subject_id":"caltech-hameetman-center","subject_type":"place","entity_name":"Hameetman Center","title":"Meet in the Campus Living Room","subtitle":"Public lounge and student-activity hub","notes":"Use the large lounge for an informal meetup, then check the building’s club rooms or rehearsal spaces when your group needs a dedicated setup.","short_summary":"A central indoor gathering point with lounge, club, dining, retail, and rehearsal spaces.","evidence_claim":"Caltech states that the Hameetman Center features a large public lounge, student-club rooms, music rehearsal facilities, a multipurpose room, and a conference room.","source_url":"https://hr.caltech.edu/news/campus-celebrates-opening-hameetman-center","source_title":"Campus Celebrates Opening of the Hameetman Center","source_kind":"university_official","source_published_at":"2019-02-27","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The lounge is described as public, but individual club, conference, rehearsal, and multipurpose rooms may require scheduling or program access.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-student-activities-center","subject_type":"place","entity_name":"Student Activities Center","title":"Find the Room That Fits the Project","subtitle":"Club, publication, music, gaming, and screening rooms","notes":"Head to the south-housing basement when a team needs meeting, rehearsal, publication, shop, gaming, or movie-screening space.","short_summary":"A student-run cluster of specialized rooms beneath the south undergraduate houses.","evidence_claim":"Caltech’s current catalog says the Student Activities Center contains student-government and publication workspaces, rehearsal and club rooms, a library, shop, and movie-screening room.","source_url":"https://catalog.caltech.edu/current/general-information/student-life/","source_title":"Student Life | Caltech Academic Catalog","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located in the basement of the south undergraduate housing complex and open for student use 24 hours a day; most rooms are open 24 hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-techhub","subject_type":"study_space","entity_name":"Caltech Hall TechHub","title":"Prototype Beyond the Problem Set","subtitle":"Library makerspace on Caltech Hall’s first floor","notes":"Bring a fabrication or presentation idea here for 3D printing, poster production, technology loans, or hands-on crafting machinery.","short_summary":"A library makerspace combining digital fabrication, large-format output, lending, and DIY equipment.","evidence_claim":"Caltech identifies TechHub as a free library makerspace offering 3D printing, large-scale poster printing, technology lending, and DIY machines.","source_url":"https://www.caltech.edu/campus-life-events/calendar/techhub-open-house-2","source_title":"Caltech Library - TechHub Open House","source_kind":"university_official","source_published_at":"2025-10-02","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited event was internal. Routine equipment access, training, availability, and eligibility should be confirmed with TechHub staff before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-sherman-fairchild-library","subject_type":"study_space","entity_name":"Sherman Fairchild Library","title":"Choose Collaboration or Quiet","subtitle":"Caltech’s main library and group-study base","notes":"Reserve one of five group rooms for shared work, or move into a private study area when the conversation turns into individual focus.","short_summary":"The main campus library supports both collaborative sessions and independent concentration.","evidence_claim":"Caltech’s current academic catalog calls Sherman Fairchild the main campus library and documents collaborative and private study areas, including five bookable group-study rooms.","source_url":"https://catalog.caltech.edu/current/general-information/education-and-research/","source_title":"Education and Research | Caltech Academic Catalog","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Usually open seven days a week into the evening. Entry and group-room reservations may require Caltech credentials; verify current library hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-hall-lookout","subject_type":"study_space","entity_name":"Caltech Hall Lookout","title":"Spread Out Around a Large Display","subtitle":"Ninth-floor collaboration and study space","notes":"Take a group here when diagrams, slides, or shared screens need more room; reserve Room 907 for a meeting or teaching session.","short_summary":"An upper-floor library space designed for flexible study and screen-based collaboration.","evidence_claim":"Caltech’s current catalog describes the Caltech Hall ninth floor as a flexible collaboration and study space with large displays and Room 907 as bookable.","source_url":"https://catalog.caltech.edu/current/general-information/education-and-research/","source_title":"Education and Research | Caltech Academic Catalog","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Room 907 is bookable. Confirm current Caltech Hall entry rules, ninth-floor availability, and reservation procedures with the Library.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-ccid-lounge","subject_type":"place","entity_name":"CCID Lounge","title":"Gather Around Community Programming","subtitle":"Center for Inclusion and Diversity lounge","notes":"Use the lounge for an eligible community gathering or program, and follow CCID’s booking process before planning exclusive group use.","short_summary":"A reservable gathering space connected to Caltech’s inclusion and cultural-exchange programs.","evidence_claim":"The Caltech Center for Inclusion and Diversity directly provides a booking pathway for the CCID Lounge and CSS Common Area.","source_url":"https://ccid.caltech.edu/resources/ccid-services","source_title":"CCID Services","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Booking is handled through CCID. Programs and support structures are available to the campus community, but room use remains subject to approval.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-music-house","subject_type":"place","entity_name":"Music House","title":"Practice Without Taking Over a Lounge","subtitle":"Card-access rehearsal rooms at 305 South Hill Avenue","notes":"Request card access before your first visit, then use a practice room for solo or chamber work without displacing a scheduled coaching.","short_summary":"A dedicated music facility with ensemble rooms, pianos, and smaller practice rooms.","evidence_claim":"Caltech documents a large rehearsal room with two grand pianos, two chamber rooms, and five practice rooms at Music House; its chamber-music page explains student card access.","source_url":"https://pva.caltech.edu/music/chamber-music/chamber-music-qa","source_title":"Chamber Music Q&A","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Student card access must be requested by email with a university ID. The cited page says reservations are not currently required, but verify before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-dabney-lounge","subject_type":"place","entity_name":"Dabney Lounge","title":"See Student Performance Up Close","subtitle":"Intimate performing-arts venue in Dabney Hall","notes":"Watch the PVA calendar for student concerts or performances here; attend a scheduled program rather than assuming the room is open.","short_summary":"A small campus performance setting used alongside Caltech’s larger auditoriums.","evidence_claim":"Caltech Performing and Visual Arts identifies Dabney Lounge as an intimate venue where student performances are held.","source_url":"https://pva.caltech.edu/venues","source_title":"Venues - Performing and Visual Arts","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Access is tied to scheduled performances or authorized activities; consult the PVA calendar or organizer for event admission and room access.","cost_status":"unknown","under21_safe":true},{"subject_id":"caltech-braun-athletic-center","subject_type":"place","entity_name":"Braun Athletic Center","title":"Reset Between Work Sessions","subtitle":"Indoor recreation base south of the main campus core","notes":"Check the weekly facility schedule before gathering for exercise, then bring the credentials required by Recreation for building entry.","short_summary":"Caltech’s principal indoor recreation facility supports individual and group physical activity.","evidence_claim":"Caltech Recreation lists Braun Athletic Center among its recreational facilities and publishes current building hours and facility schedules for community use.","source_url":"https://gocaltech.com/sports/2023/4/12/recreational-facilities.aspx","source_title":"Recreational Facilities - California Institute of Technology","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Published hours are Monday–Friday 6 a.m.–10 p.m. and weekends 8 a.m.–8 p.m.; consult weekly schedules and Recreation membership rules before entry.","cost_status":"unknown","under21_safe":true},{"subject_id":"caltech-climbing-wall-bouldering-cave","subject_type":"place","entity_name":"Climbing Wall and Bouldering Cave","title":"Trade Screens for a Climbing Session","subtitle":"Specialized recreation space at the Athletic Center","notes":"Review the facility calendar and safety requirements first, then arrange a session that matches every participant’s authorization and skill level.","short_summary":"A named Athletic Center facility for supervised, skill-based climbing recreation.","evidence_claim":"Caltech’s current recreational-facilities page lists the Climbing Wall and Bouldering Cave as a distinct facility with a dedicated schedule link.","source_url":"https://gocaltech.com/sports/2023/4/12/recreational-facilities.aspx","source_title":"Recreational Facilities - California Institute of Technology","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use is governed by Recreation schedules, membership rules, and climbing-safety requirements. Confirm orientation or supervision requirements before arrival.","cost_status":"unknown","under21_safe":true}],"warnings":["Public access varies by space. Several locations require a Caltech ID, reservation, program participation, event admission, training, or Recreation eligibility; cards preserve those restrictions."]}],"warnings":[]}
+tokens used
+64,621
+
+{"complete":true,"school_name":"California Institute of Technology","town_name":"Pasadena","boards":[{"complete":true,"school_name":"California Institute of Technology","town_name":"Pasadena","template_id":"college-campus-tour-skips","title":"What the Campus Tour Skips: 10 Places Students Share With Each Other","description":"Ten named Caltech spaces for collaborative study, making, meetings, recreation, and performing arts, with student uses and access conditions verified through direct Institute sources.","icon":"style","cards":[{"subject_id":"caltech-hameetman-center","subject_type":"place","entity_name":"Hameetman Center","title":"Meet in the Campus Living Room","subtitle":"Public lounge and student-activity hub","notes":"Use the large lounge for an informal meetup, then check the building’s club rooms or rehearsal spaces when your group needs a dedicated setup.","short_summary":"A central indoor gathering point with lounge, club, dining, retail, and rehearsal spaces.","evidence_claim":"Caltech states that the Hameetman Center features a large public lounge, student-club rooms, music rehearsal facilities, a multipurpose room, and a conference room.","source_url":"https://hr.caltech.edu/news/campus-celebrates-opening-hameetman-center","source_title":"Campus Celebrates Opening of the Hameetman Center","source_kind":"university_official","source_published_at":"2019-02-27","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The lounge is described as public, but individual club, conference, rehearsal, and multipurpose rooms may require scheduling or program access.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-student-activities-center","subject_type":"place","entity_name":"Student Activities Center","title":"Find the Room That Fits the Project","subtitle":"Club, publication, music, gaming, and screening rooms","notes":"Head to the south-housing basement when a team needs meeting, rehearsal, publication, shop, gaming, or movie-screening space.","short_summary":"A student-run cluster of specialized rooms beneath the south undergraduate houses.","evidence_claim":"Caltech’s current catalog says the Student Activities Center contains student-government and publication workspaces, rehearsal and club rooms, a library, shop, and movie-screening room.","source_url":"https://catalog.caltech.edu/current/general-information/student-life/","source_title":"Student Life | Caltech Academic Catalog","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located in the basement of the south undergraduate housing complex and open for student use 24 hours a day; most rooms are open 24 hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-techhub","subject_type":"study_space","entity_name":"Caltech Hall TechHub","title":"Prototype Beyond the Problem Set","subtitle":"Library makerspace on Caltech Hall’s first floor","notes":"Bring a fabrication or presentation idea here for 3D printing, poster production, technology loans, or hands-on crafting machinery.","short_summary":"A library makerspace combining digital fabrication, large-format output, lending, and DIY equipment.","evidence_claim":"Caltech identifies TechHub as a free library makerspace offering 3D printing, large-scale poster printing, technology lending, and DIY machines.","source_url":"https://www.caltech.edu/campus-life-events/calendar/techhub-open-house-2","source_title":"Caltech Library - TechHub Open House","source_kind":"university_official","source_published_at":"2025-10-02","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited event was internal. Routine equipment access, training, availability, and eligibility should be confirmed with TechHub staff before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-sherman-fairchild-library","subject_type":"study_space","entity_name":"Sherman Fairchild Library","title":"Choose Collaboration or Quiet","subtitle":"Caltech’s main library and group-study base","notes":"Reserve one of five group rooms for shared work, or move into a private study area when the conversation turns into individual focus.","short_summary":"The main campus library supports both collaborative sessions and independent concentration.","evidence_claim":"Caltech’s current academic catalog calls Sherman Fairchild the main campus library and documents collaborative and private study areas, including five bookable group-study rooms.","source_url":"https://catalog.caltech.edu/current/general-information/education-and-research/","source_title":"Education and Research | Caltech Academic Catalog","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Usually open seven days a week into the evening. Entry and group-room reservations may require Caltech credentials; verify current library hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-hall-lookout","subject_type":"study_space","entity_name":"Caltech Hall Lookout","title":"Spread Out Around a Large Display","subtitle":"Ninth-floor collaboration and study space","notes":"Take a group here when diagrams, slides, or shared screens need more room; reserve Room 907 for a meeting or teaching session.","short_summary":"An upper-floor library space designed for flexible study and screen-based collaboration.","evidence_claim":"Caltech’s current catalog describes the Caltech Hall ninth floor as a flexible collaboration and study space with large displays and Room 907 as bookable.","source_url":"https://catalog.caltech.edu/current/general-information/education-and-research/","source_title":"Education and Research | Caltech Academic Catalog","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Room 907 is bookable. Confirm current Caltech Hall entry rules, ninth-floor availability, and reservation procedures with the Library.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-ccid-lounge","subject_type":"place","entity_name":"CCID Lounge","title":"Gather Around Community Programming","subtitle":"Center for Inclusion and Diversity lounge","notes":"Use the lounge for an eligible community gathering or program, and follow CCID’s booking process before planning exclusive group use.","short_summary":"A reservable gathering space connected to Caltech’s inclusion and cultural-exchange programs.","evidence_claim":"The Caltech Center for Inclusion and Diversity directly provides a booking pathway for the CCID Lounge and CSS Common Area.","source_url":"https://ccid.caltech.edu/resources/ccid-services","source_title":"CCID Services","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Booking is handled through CCID. Programs and support structures are available to the campus community, but room use remains subject to approval.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-music-house","subject_type":"place","entity_name":"Music House","title":"Practice Without Taking Over a Lounge","subtitle":"Card-access rehearsal rooms at 305 South Hill Avenue","notes":"Request card access before your first visit, then use a practice room for solo or chamber work without displacing a scheduled coaching.","short_summary":"A dedicated music facility with ensemble rooms, pianos, and smaller practice rooms.","evidence_claim":"Caltech documents a large rehearsal room with two grand pianos, two chamber rooms, and five practice rooms at Music House; its chamber-music page explains student card access.","source_url":"https://pva.caltech.edu/music/chamber-music/chamber-music-qa","source_title":"Chamber Music Q&A","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Student card access must be requested by email with a university ID. The cited page says reservations are not currently required, but verify before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"caltech-dabney-lounge","subject_type":"place","entity_name":"Dabney Lounge","title":"See Student Performance Up Close","subtitle":"Intimate performing-arts venue in Dabney Hall","notes":"Watch the PVA calendar for student concerts or performances here; attend a scheduled program rather than assuming the room is open.","short_summary":"A small campus performance setting used alongside Caltech’s larger auditoriums.","evidence_claim":"Caltech Performing and Visual Arts identifies Dabney Lounge as an intimate venue where student performances are held.","source_url":"https://pva.caltech.edu/venues","source_title":"Venues - Performing and Visual Arts","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Access is tied to scheduled performances or authorized activities; consult the PVA calendar or organizer for event admission and room access.","cost_status":"unknown","under21_safe":true},{"subject_id":"caltech-braun-athletic-center","subject_type":"place","entity_name":"Braun Athletic Center","title":"Reset Between Work Sessions","subtitle":"Indoor recreation base south of the main campus core","notes":"Check the weekly facility schedule before gathering for exercise, then bring the credentials required by Recreation for building entry.","short_summary":"Caltech’s principal indoor recreation facility supports individual and group physical activity.","evidence_claim":"Caltech Recreation lists Braun Athletic Center among its recreational facilities and publishes current building hours and facility schedules for community use.","source_url":"https://gocaltech.com/sports/2023/4/12/recreational-facilities.aspx","source_title":"Recreational Facilities - California Institute of Technology","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Published hours are Monday–Friday 6 a.m.–10 p.m. and weekends 8 a.m.–8 p.m.; consult weekly schedules and Recreation membership rules before entry.","cost_status":"unknown","under21_safe":true},{"subject_id":"caltech-climbing-wall-bouldering-cave","subject_type":"place","entity_name":"Climbing Wall and Bouldering Cave","title":"Trade Screens for a Climbing Session","subtitle":"Specialized recreation space at the Athletic Center","notes":"Review the facility calendar and safety requirements first, then arrange a session that matches every participant’s authorization and skill level.","short_summary":"A named Athletic Center facility for supervised, skill-based climbing recreation.","evidence_claim":"Caltech’s current recreational-facilities page lists the Climbing Wall and Bouldering Cave as a distinct facility with a dedicated schedule link.","source_url":"https://gocaltech.com/sports/2023/4/12/recreational-facilities.aspx","source_title":"Recreational Facilities - California Institute of Technology","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use is governed by Recreation schedules, membership rules, and climbing-safety requirements. Confirm orientation or supervision requirements before arrival.","cost_status":"unknown","under21_safe":true}],"warnings":["Public access varies by space. Several locations require a Caltech ID, reservation, program participation, event admission, training, or Recreation eligibility; cards preserve those restrictions."]}],"warnings":[]}

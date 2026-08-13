@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.risd.edu/academics/campus-resources/fleet-library-risd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.risd.edu/academics/campus-resources/fleet-library-risd",
+      "error": ""
+    },
+    {
+      "url": "https://www.risd.edu/academics/campus-resources",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.risd.edu/academics/campus-resources",
+      "error": ""
+    },
+    {
+      "url": "https://www.risd.edu/campus-resources/nature-lab/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.risd.edu/academics/campus-resources/nature-lab",
+      "error": ""
+    },
+    {
+      "url": "https://www.risd.edu/campus-life",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.risd.edu/campus-life",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

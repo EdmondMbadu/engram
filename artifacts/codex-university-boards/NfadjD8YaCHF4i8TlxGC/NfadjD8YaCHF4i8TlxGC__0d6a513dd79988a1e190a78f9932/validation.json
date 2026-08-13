@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.universityheights.com/departments/recreation/walter-stinson-community-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://universityheightsoh.gov/departments/recreation/walter-stinson-community-park/",
+      "error": ""
+    },
+    {
+      "url": "https://www.universityheights.com/departments/recreation/purvispark/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://universityheightsoh.gov/departments/recreation/purvispark/",
+      "error": ""
+    },
+    {
+      "url": "https://www.clevelandart.org/plan-your-visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.clevelandart.org/plan-your-visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/thingstodo/hike-the-ledges-trail.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/thingstodo/hike-the-ledges-trail.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/thingstodo/hike-the-brandywine-gorge-loop.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/thingstodo/hike-the-brandywine-gorge-loop.htm",
+      "error": ""
+    },
+    {
+      "url": "https://home.nps.gov/thingstodo/short-towpath-trail-walks.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://home.nps.gov/thingstodo/short-towpath-trail-walks.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/thingstodo/stop-by-boston-mill-visitor-center.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/thingstodo/stop-by-boston-mill-visitor-center.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/thingstodo/visit-canal-exploration-center.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/thingstodo/visit-canal-exploration-center.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/thingstodo/go-mountain-biking-in-cuyahoga-valley.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/thingstodo/go-mountain-biking-in-cuyahoga-valley.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/thingstodo/visit-cuyahoga-valley-farms-markets.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/thingstodo/visit-cuyahoga-valley-farms-markets.htm",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 100,
+  "generationGrade": "A"
+}

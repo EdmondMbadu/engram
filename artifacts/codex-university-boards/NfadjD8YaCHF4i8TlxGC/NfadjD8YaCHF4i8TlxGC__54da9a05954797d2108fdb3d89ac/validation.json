@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://sites.rhodes.edu/barret/about-barret-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sites.rhodes.edu/barret/about-barret-library",
+      "error": ""
+    },
+    {
+      "url": "https://sites.rhodes.edu/sites/sites/files/academicsupport/advising%20resources/Copy%20of%20adviser%20room%20%28002%29.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sites.rhodes.edu/sites/sites/files/academicsupport/advising%20resources/Copy%20of%20adviser%20room%20%28002%29.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://sites.rhodes.edu/language/student-services",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sites.rhodes.edu/language/student-services",
+      "error": ""
+    },
+    {
+      "url": "https://sites.rhodes.edu/iss/academic-resources",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sites.rhodes.edu/iss/academic-resources",
+      "error": ""
+    },
+    {
+      "url": "https://sites.rhodes.edu/accessibility/testing-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sites.rhodes.edu/accessibility/testing-room",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

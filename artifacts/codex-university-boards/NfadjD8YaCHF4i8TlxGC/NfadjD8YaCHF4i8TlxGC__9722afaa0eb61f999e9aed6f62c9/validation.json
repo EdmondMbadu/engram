@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.chicohistorymuseum.org/page-18241",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.chicohistorymuseum.org/page-18241",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.downtownchico.com/museums_national-yo-yo-museum-278.htm?os=fno_journeystrueno_journeystrue0",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.downtownchico.com/museums_national-yo-yo-museum-278.htm?os=fno_journeystrueno_journeystrue0",
+      "error": ""
+    },
+    {
+      "url": "https://www.chicochildrensmuseum.org/faqs",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.chicochildrensmuseum.org/faqs",
+      "error": ""
+    },
+    {
+      "url": "https://chicoca.gov/documents/Departments/Community-Development/Planning-Division/General-Plan--Other-Planning-Documents/1_west_numbered_streets_pp1-96.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://chicoca.gov/documents/Departments/Community-Development/Planning-Division/General-Plan--Other-Planning-Documents/1_west_numbered_streets_pp1-96.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://chicofarmersmarket.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://chicofarmersmarket.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.travelchico.com/places/pageant-theatre",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.travelchico.com/places/pageant-theatre",
+      "error": ""
+    },
+    {
+      "url": "https://www.chiconaturalfoods.coop/location",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.chiconaturalfoods.coop/location",
+      "error": ""
+    },
+    {
+      "url": "https://chicoartcenter.com/contact/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://chicoartcenter.com/contact/",
+      "error": ""
+    },
+    {
+      "url": "https://monca.org/pages/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://monca.org/pages/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.1078gallery.org/contact.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.1078gallery.org/contact.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

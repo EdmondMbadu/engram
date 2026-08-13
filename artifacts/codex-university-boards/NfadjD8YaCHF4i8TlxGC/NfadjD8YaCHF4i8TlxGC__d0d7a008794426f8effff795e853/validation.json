@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://railroadpark.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://railroadpark.org/",
+      "error": ""
+    },
+    {
+      "url": "https://www.milb.com/birmingham/ballpark/regions-field",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.milb.com/birmingham/ballpark/regions-field",
+      "error": ""
+    },
+    {
+      "url": "https://www.birminghamnslm.org/government/city-departments/negro-southern-league-museum",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.birminghamnslm.org/government/city-departments/negro-southern-league-museum",
+      "error": ""
+    },
+    {
+      "url": "https://redmountaintheatre.org/about-us/venues/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://redmountaintheatre.org/about-us/venues/",
+      "error": ""
+    },
+    {
+      "url": "https://alabamatheatre.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://alabamatheatre.com/",
+      "error": ""
+    },
+    {
+      "url": "https://mcwane.org/explore/plan-your-visit/directions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mcwane.org/explore/plan-your-visit/directions/",
+      "error": ""
+    },
+    {
+      "url": "https://www.bcri.org/groups/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bcri.org/groups/",
+      "error": ""
+    },
+    {
+      "url": "https://www.16thstreetbaptist.org/contact/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.16thstreetbaptist.org/contact/",
+      "error": ""
+    },
+    {
+      "url": "https://www.birminghamal.gov/landmarks",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.birminghamal.gov/landmarks",
+      "error": ""
+    },
+    {
+      "url": "https://www.cobpl.org/locations/central/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cobpl.org/locations/central/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Railroad Park"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

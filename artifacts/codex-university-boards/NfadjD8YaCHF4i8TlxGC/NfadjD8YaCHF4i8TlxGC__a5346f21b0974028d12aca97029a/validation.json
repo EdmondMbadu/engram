@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.visitcolumbiamo.com/directory/shakespeares-downtown/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitcolumbiamo.com/directory/shakespeares-downtown/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitcolumbiamo.com/directory/columbia-art-league-gallery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitcolumbiamo.com/directory/columbia-art-league-gallery/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitcolumbiamo.com/directory/ragtag-cinema/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitcolumbiamo.com/directory/ragtag-cinema/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitcolumbiamo.com/directory/columbia-public-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitcolumbiamo.com/directory/columbia-public-library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitcolumbiamo.com/directory/sparkys-homemade-ice-cream/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitcolumbiamo.com/directory/sparkys-homemade-ice-cream/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitcolumbiamo.com/directory/bluestem-missouri-crafts/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitcolumbiamo.com/directory/bluestem-missouri-crafts/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitcolumbiamo.com/directory/shortwave-coffee/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitcolumbiamo.com/directory/shortwave-coffee/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitcolumbiamo.com/directory/broadway-diner/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitcolumbiamo.com/directory/broadway-diner/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitcolumbiamo.com/directory/pizza-tree/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitcolumbiamo.com/directory/pizza-tree/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitcolumbiamo.com/neighborhoods/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitcolumbiamo.com/neighborhoods/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

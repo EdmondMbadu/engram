@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://georgesdc.com/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://georgesdc.com/about/",
+      "error": ""
+    },
+    {
+      "url": "https://www.eatandyspizza.com/location/georgetown/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.eatandyspizza.com/location/georgetown/",
+      "error": ""
+    },
+    {
+      "url": "https://www.90secondpizza.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.90secondpizza.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.mannyandolgas.com/location/manny-olgas-pizza-georgetown/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mannyandolgas.com/location/manny-olgas-pizza-georgetown/",
+      "error": ""
+    },
+    {
+      "url": "https://billyhicks.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://billyhicks.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.pinstripes.com/georgetown",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pinstripes.com/georgetown",
+      "error": ""
+    },
+    {
+      "url": "https://www.dcmasala.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.dcmasala.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hanpalacedc.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hanpalacedc.com/",
+      "error": ""
+    },
+    {
+      "url": "https://guaposrestaurant.com/page/locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://guaposrestaurant.com/page/locations",
+      "error": ""
+    },
+    {
+      "url": "https://www.jinyaramenbar.com/locations/georgetown/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jinyaramenbar.com/locations/georgetown/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

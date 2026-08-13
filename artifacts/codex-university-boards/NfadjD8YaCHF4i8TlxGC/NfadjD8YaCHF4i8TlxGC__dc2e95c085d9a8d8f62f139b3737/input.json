@@ -1,0 +1,60 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "pMwdggHqmSFImBagTES9",
+    "schoolName": "Saint Mary's College of California",
+    "shortSchoolName": "Saint Mary's College of California",
+    "townName": "Moraga",
+    "state": "CA",
+    "countryCode": "US",
+    "unitId": "123554",
+    "website": "https://www.stmarys-ca.edu/",
+    "latitude": 37.840731,
+    "longitude": -122.109031,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/9/92/Saint_Mary%27s_College_of_California_seal.svg/120px-Saint_Mary%27s_College_of_California_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=stmarys-ca.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "Power Plant Drop-In Space",
+    "Power Plant Silent Study Zone",
+    "Power Plant Sensory Room",
+    "Power Plant Reservable Study Rooms",
+    "Marie Curie STEM Center Main Study Room",
+    "Marie Curie STEM Center Small-Group Study Rooms",
+    "Psychology Center Central Lounge",
+    "Galileo Hall Student Study Spaces",
+    "Math Pedagogy Center",
+    "Aquinas Hall Study Lounge",
+    "Oliver Hall",
+    "Café Louis",
+    "JustBaked machine at De La Salle Hall",
+    "Nation's Giant Hamburgers — Moraga",
+    "Round Table Pizza — Moraga",
+    "Nation's Giant Hamburgers — Orinda",
+    "Casa Orinda Restaurant",
+    "Metro Lafayette",
+    "Fourth Bore",
+    "Rancho Cantina"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

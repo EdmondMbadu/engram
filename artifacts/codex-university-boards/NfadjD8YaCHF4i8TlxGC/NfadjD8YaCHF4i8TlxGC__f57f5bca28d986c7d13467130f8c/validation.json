@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://calendar.library.duq.edu/reserve/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calendar.library.duq.edu/reserve/",
+      "error": ""
+    },
+    {
+      "url": "https://www.duq.edu/academics/university-catalogs/2025-2026-catalog/undergraduate/about-duquesne/gumberg-library.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.duq.edu/academics/university-catalogs/2025-2026-catalog/undergraduate/about-duquesne/gumberg-library.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.duq.edu/admission-and-aid/how-to-apply/graduate/accepted-students/discover-duquesne.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.duq.edu/admission-and-aid/how-to-apply/graduate/accepted-students/discover-duquesne.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.duq.edu/academics/university-catalogs/2025-2026-catalog/graduate/about-duquesne/physical-facilities.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.duq.edu/academics/university-catalogs/2025-2026-catalog/graduate/about-duquesne/physical-facilities.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.duq.edu/life-at-duquesne/our-campus/commuting-to-duquesne.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.duq.edu/life-at-duquesne/our-campus/commuting-to-duquesne.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.duq.edu/life-at-duquesne/housing-and-dining/housing/assumpton-hall.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.duq.edu/life-at-duquesne/housing-and-dining/housing/assumpton-hall.php",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

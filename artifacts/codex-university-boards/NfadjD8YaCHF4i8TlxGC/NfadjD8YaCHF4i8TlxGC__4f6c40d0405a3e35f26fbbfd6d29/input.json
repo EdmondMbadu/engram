@@ -1,0 +1,70 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "vjhjHU8awOJNYgwCZPrH",
+    "schoolName": "Saint Norbert College",
+    "shortSchoolName": "Saint Norbert College",
+    "townName": "De Pere",
+    "state": "WI",
+    "countryCode": "US",
+    "unitId": "239716",
+    "website": "https://www.snc.edu/",
+    "latitude": 44.44483,
+    "longitude": -88.067812,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=snc.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=snc.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "Taco Bell, 1010 S Broadway",
+    "Taco Bell, 1610 Lawrence Drive",
+    "Taco Bell, 1501 Main Avenue",
+    "McDonald's, 1373 S Broadway",
+    "DQ Grill & Chill, 1500 Scheuring Road",
+    "Toppers Pizza Green Bay East",
+    "Toppers Pizza Green Bay West",
+    "Glass Nickel Pizza Green Bay",
+    "Kwik Trip #594",
+    "Kwik Trip #127",
+    "Miriam B. & James J. Mulva Library",
+    "Mulva Studio",
+    "Writing Center",
+    "Ed’s Coffee Shop",
+    "Michels Commons",
+    "Ray Van Den Heuvel Family Campus Center",
+    "Gehl-Mulva Science Center",
+    "Bush Art Center",
+    "Cassandra Voss Center",
+    "Old St. Joseph Church",
+    "Mulva Library",
+    "Baer Gallery",
+    "Wilson Park",
+    "Voyageur Park",
+    "Braisher Park",
+    "Legion Park",
+    "Optimist Park",
+    "Jim Martin Park",
+    "Kelly Danen Park",
+    "East River Trail"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

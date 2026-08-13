@@ -1,0 +1,52 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "gUaHoPhySsUqMOhSs1SG",
+    "schoolName": "University of Maryland-Baltimore County",
+    "shortSchoolName": "University of Maryland-Baltimore County",
+    "townName": "Baltimore",
+    "state": "MD",
+    "countryCode": "US",
+    "unitId": "163268",
+    "website": "https://umbc.edu/",
+    "latitude": 39.256686,
+    "longitude": -76.711607,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/0/01/University_of_Maryland%2C_Baltimore_County_seal.svg/330px-University_of_Maryland%2C_Baltimore_County_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=umbc.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at University of Maryland-Baltimore County, Shared as Cards",
+  "excluded_subjects": [
+    "Free Hour",
+    "Rubbing True Grit’s Nose",
+    "UMBC Homecoming",
+    "Homecoming Bonfire",
+    "Quadmania",
+    "Pangea: UMBC Cultural Showcase",
+    "UMBC Alma Mater",
+    "Midnight Breakfast",
+    "Election Night Extravaganza",
+    "Homecoming Puppy Parade"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

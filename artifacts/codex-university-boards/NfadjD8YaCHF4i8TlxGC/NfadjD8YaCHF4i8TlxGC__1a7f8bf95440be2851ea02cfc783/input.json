@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "AnebHPozV9yNEkhdUuZJ",
+    "schoolName": "University of North Carolina Wilmington",
+    "shortSchoolName": "University of North Carolina Wilmington",
+    "townName": "Wilmington",
+    "state": "NC",
+    "countryCode": "US",
+    "unitId": "199218",
+    "website": "https://www.uncw.edu/",
+    "latitude": 34.225223,
+    "longitude": -77.875527,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/7/77/UNC_Wilmington_seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=uncw.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "Buffaloe's",
+    "Taco Bell — 630 S College Rd",
+    "Taco Bell — 2600 N College Rd",
+    "Wendy's University Center",
+    "Papa Johns Pizza — 5814 Oleander Dr",
+    "Domino's Pizza — 4714 College Acres Dr",
+    "Insomnia Cookies",
+    "Taqueria La Tapatia",
+    "Yoshi Sushi",
+    "Mobil — 425 N College Road"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

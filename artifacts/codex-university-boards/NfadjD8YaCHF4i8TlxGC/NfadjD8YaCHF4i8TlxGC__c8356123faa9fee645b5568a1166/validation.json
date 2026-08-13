@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.nyit.edu/library/campus-libraries/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nyit.edu/library/campus-libraries/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nyit.edu/events/reading-room-grand-opening-ceremony/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.nyit.edu/event/reading-room-grand-opening-ceremony",
+      "error": ""
+    },
+    {
+      "url": "https://www.nyit.edu/about/offices/capital-planning-and-facilities/campus-projects/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nyit.edu/about/offices/capital-planning-and-facilities/campus-projects/",
+      "error": ""
+    },
+    {
+      "url": "https://catalog.nyit.edu/medicine/facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.nyit.edu/medicine/facilities",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

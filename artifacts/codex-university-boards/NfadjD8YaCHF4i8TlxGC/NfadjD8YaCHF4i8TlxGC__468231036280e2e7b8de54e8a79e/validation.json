@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.fsu.edu/seminole-tribe/partnership.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fsu.edu/seminole-tribe/partnership.html",
+      "error": ""
+    },
+    {
+      "url": "https://seminoles.com/sports/2017/7/5/the-war-chant",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://seminoles.com/sports/2017/7/5/the-war-chant",
+      "error": ""
+    },
+    {
+      "url": "https://seminoles.com/the-sod-cemetery",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://seminoles.com/sports/2017/7/5/the-sod-cemetery",
+      "error": ""
+    },
+    {
+      "url": "https://alumni.fsu.edu/fsu-class-rings",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://alumni.fsu.edu/fsu-class-rings",
+      "error": ""
+    },
+    {
+      "url": "https://www.fsu.edu/seminole-tribe/presence.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fsu.edu/seminole-tribe/presence.html",
+      "error": ""
+    },
+    {
+      "url": "https://registrar.fsu.edu/bulletin/undergraduate-information/honors-office-honor-societies",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://registrar.fsu.edu/bulletin/undergraduate-information/honors-office-honor-societies",
+      "error": ""
+    },
+    {
+      "url": "https://familyweekend.fsu.edu/footballtickets",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://familyweekend.fsu.edu/footballtickets",
+      "error": ""
+    },
+    {
+      "url": "https://homecoming.fsu.edu/node/121",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://homecoming.fsu.edu/news/light-your-legacy-fsu-celebrates-75th-anniversary-homecoming",
+      "error": ""
+    },
+    {
+      "url": "https://welcome.fsu.edu/resources/fsu-song-lyrics",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://welcome.fsu.edu/resources/fsu-song-lyrics",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 100,
+  "generationGrade": "A"
+}

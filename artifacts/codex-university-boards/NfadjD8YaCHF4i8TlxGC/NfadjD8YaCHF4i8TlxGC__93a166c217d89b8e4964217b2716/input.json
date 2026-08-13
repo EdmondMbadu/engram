@@ -1,0 +1,40 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "t78rP1AKSA5rZ50h5CIJ",
+    "schoolName": "Loyola Marymount University",
+    "shortSchoolName": "Loyola Marymount University",
+    "townName": "Los Angeles",
+    "state": "CA",
+    "countryCode": "US",
+    "unitId": "117946",
+    "website": "https://www.lmu.edu/",
+    "latitude": 33.97085,
+    "longitude": -118.415744,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/7/72/Loyola_Marymount_University_%28LMU%29_ceremonial_mark.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=lmu.edu&sz=256"
+  },
+  "template": {
+    "id": "college-campus-tour-skips",
+    "version": "1.0",
+    "titlePattern": "What the Campus Tour Skips: {count} Places Students Share With Each Other",
+    "editorialBrief": "Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.",
+    "researchQueries": [
+      "student favorite campus places",
+      "campus map student spaces",
+      "student newspaper campus places"
+    ],
+    "count": 10,
+    "icon": "style",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place",
+      "study_space"
+    ],
+    "freshnessDays": 365
+  },
+  "exact_title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+  "excluded_subjects": [],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

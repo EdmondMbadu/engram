@@ -1,0 +1,70 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "Ypz8p1NiwXxty0Cpcojx",
+    "schoolName": "Harvey Mudd College",
+    "shortSchoolName": "Harvey Mudd College",
+    "townName": "Claremont",
+    "state": "CA",
+    "countryCode": "US",
+    "unitId": "115409",
+    "website": "https://www.hmc.edu/",
+    "latitude": 34.106515,
+    "longitude": -117.709837,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/5/5e/Harvey_Mudd_College_seal.svg/250px-Harvey_Mudd_College_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=hmc.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Harvey Mudd Makerspace",
+    "Scott A. McGregor Computer Science Center",
+    "Ronald and Maxine Linde Activities Center",
+    "Platt Campus Center Living Room",
+    "Kingston Courtyard",
+    "Riggs Plaza",
+    "Caryll Mudd and Norman F. Sprague Jr. Gallery",
+    "Ronald and Maxine Linde Residence Hall",
+    "North Hall Courtyard",
+    "Wayne ’73 and Julie Drinkward Residence Hall",
+    "Harvey Mudd College Self-Guided Tour",
+    "R. Michael Shanahan Center for Teaching and Learning",
+    "Platt Campus Center",
+    "Hoch-Shanahan Dining Commons",
+    "Honnold/Mudd Library",
+    "Benton Museum of Art at Pomona College",
+    "Claremont Village",
+    "Memorial Park",
+    "California Botanic Garden",
+    "Sprague Computer Lab",
+    "Foo Lab",
+    "Pair Programming Lab",
+    "McGregor 339",
+    "Collaborative Commons",
+    "Glass Bridge & Treadmill Desks",
+    "Digital Scholarship Collaboratory",
+    "Study Cubes",
+    "Honnold Fourth-Floor Quiet Study Spaces",
+    "Study Room 403"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

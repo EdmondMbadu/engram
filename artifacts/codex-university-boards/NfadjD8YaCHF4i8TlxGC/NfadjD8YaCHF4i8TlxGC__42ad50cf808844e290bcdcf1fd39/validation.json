@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.visitmilledgeville.org/listings/campus-black-box-theatre/41809/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitmilledgeville.org/listings/campus-black-box-theatre/41809/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitmilledgeville.org/blog/post/2-day-itinerary-in-downtown-milledgeville-ga/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitmilledgeville.org/blog/post/2-day-itinerary-in-downtown-milledgeville-ga/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitmilledgeville.org/listings/the-floyd-l-griffin-jr-black-heritage-plaza/41804/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitmilledgeville.org/listings/the-floyd-l-griffin-jr-black-heritage-plaza/41804/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitmilledgeville.org/listings/john-marlor-art-center/8/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitmilledgeville.org/listings/john-marlor-art-center/8/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitmilledgeville.org/listings/oconee-outfitters/41748/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitmilledgeville.org/listings/oconee-outfitters/41748/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitmilledgeville.org/listings/wax-galaxy-records/42154/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitmilledgeville.org/listings/wax-galaxy-records/42154/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitmilledgeville.org/listings/georgias-old-capitol-building/41823/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitmilledgeville.org/listings/georgias-old-capitol-building/41823/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitmilledgeville.org/listings/georgias-old-governors-mansion/1/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitmilledgeville.org/listings/georgias-old-governors-mansion/1/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitmilledgeville.org/blog/post/reasons-to-visit-the-sallie-ellis-davis-house/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitmilledgeville.org/blog/post/reasons-to-visit-the-sallie-ellis-davis-house/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitmilledgeville.org/blog/post/the-eddy-neighborhood/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitmilledgeville.org/blog/post/the-eddy-neighborhood/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

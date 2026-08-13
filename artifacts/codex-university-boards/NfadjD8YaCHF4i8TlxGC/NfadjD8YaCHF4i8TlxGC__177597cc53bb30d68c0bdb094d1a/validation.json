@@ -1,0 +1,77 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.duq.edu/life-at-duquesne/health-recreation-wellness/recreation-services.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.duq.edu/life-at-duquesne/health-recreation-wellness/recreation-services.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.pa.gov/agencies/dcnr/recreation/where-to-go/state-parks/find-a-park/point-state-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pa.gov/agencies/dcnr/recreation/where-to-go/state-parks/find-a-park/point-state-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.fortpittblockhouse.com/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.fortpittblockhouse.com/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://trustarts.org/pct_home/visual-arts/wood-street-galleries",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://trustarts.org/pct_home/visual-arts",
+      "error": ""
+    },
+    {
+      "url": "https://trustarts.org/pct_home/visual-arts/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://trustarts.org/pct_home/visual-arts/about",
+      "error": ""
+    },
+    {
+      "url": "https://www.trustarts.org/pct_home/visual-arts/current",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.trustarts.org/pct_home/visual-arts/current",
+      "error": ""
+    },
+    {
+      "url": "https://www.thefrickpittsburgh.org/Files/Admin/Museum-Guidelines-for-Self-Guided-Groups-evergreen-2025.pdf?d=20254493238",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.thefrickpittsburgh.org/Files/Admin/Museum-Guidelines-for-Self-Guided-Groups-evergreen-2025.pdf?d=20254493238",
+      "error": ""
+    },
+    {
+      "url": "https://www.observatory.pitt.edu/events/public-tours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.observatory.pitt.edu/events/public-tours",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

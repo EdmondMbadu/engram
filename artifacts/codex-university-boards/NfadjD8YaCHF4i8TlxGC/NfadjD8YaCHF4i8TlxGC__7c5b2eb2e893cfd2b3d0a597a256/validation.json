@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://library.stkate.edu/about/library-policies/library-use-policies",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.stkate.edu/about/library-policies/library-use-policies",
+      "error": ""
+    },
+    {
+      "url": "https://library.stkate.edu/services/accessibility",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.stkate.edu/services/accessibility",
+      "error": ""
+    },
+    {
+      "url": "https://library.stkate.edu/about/library-policies/library-reservable-space-policy",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.stkate.edu/about/library-policies/library-reservable-space-policy",
+      "error": ""
+    },
+    {
+      "url": "https://www.stkate.edu/about/visit-campus/cdc",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stkate.edu/about/visit-campus/cdc",
+      "error": ""
+    },
+    {
+      "url": "https://www.stkate.edu/life/student-assistance/tutoring",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stkate.edu/life/student-assistance/tutoring",
+      "error": ""
+    },
+    {
+      "url": "https://www.stkate.edu/about/visit-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stkate.edu/about/visit-campus",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

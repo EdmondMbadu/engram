@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://calendar.uab.edu/campus_green_456",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calendar.uab.edu/campus_green_456",
+      "error": ""
+    },
+    {
+      "url": "https://www.uab.edu/students/studentcenter/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uab.edu/students/studentcenter/",
+      "error": ""
+    },
+    {
+      "url": "https://www.uab.edu/students/dining/locations-hours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uab.edu/students/dining/locations-hours",
+      "error": ""
+    },
+    {
+      "url": "https://catalog.uab.edu/undergraduate/studentservicesfacilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.uab.edu/undergraduate/studentservicesfacilities/",
+      "error": ""
+    },
+    {
+      "url": "https://library.uab.edu/about/policies/access-guidelines",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.uab.edu/about/policies/access-guidelines",
+      "error": ""
+    },
+    {
+      "url": "https://railroadpark.org/about/faqs/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://railroadpark.org/about/faqs/",
+      "error": ""
+    },
+    {
+      "url": "https://www.birminghamrotary.org/rotary-trail",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.birminghamrotary.org/rotary-trail",
+      "error": ""
+    },
+    {
+      "url": "https://www.slossfurnaces.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.slossfurnaces.org/",
+      "error": ""
+    },
+    {
+      "url": "https://www.artsbma.org/plan-your-visit-2/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.artsbma.org/plan-your-visit-2/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.jcu.edu/student-experience/learning-here/libraries",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jcu.edu/student-experience/learning-here/libraries",
+      "error": ""
+    },
+    {
+      "url": "https://www.jcu.edu/academics/centers/academic-success-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jcu.edu/academics/centers/academic-success-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.jcu.edu/news/2025/04/alan-r-miciak-phd-president-of-john-carroll-university-announces-plans-for-retirement-in-may-2026",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jcu.edu/news/2025/04/alan-r-miciak-phd-president-of-john-carroll-university-announces-plans-for-retirement-in-may-2026",
+      "error": ""
+    },
+    {
+      "url": "https://www.jcu.edu/academics/centers/sabo-center-for-languages-and-cultures/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jcu.edu/academics/centers/sabo-center-for-languages-and-cultures/",
+      "error": ""
+    },
+    {
+      "url": "https://www.jcu.edu/_audience/alumni/events/reunion",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jcu.edu/_audience/alumni/events/reunion",
+      "error": ""
+    },
+    {
+      "url": "https://www.jcu.edu/academics/centers/tuohy-center-for-interreligious-understanding/events/breaking-bread",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jcu.edu/academics/centers/tuohy-center-for-interreligious-understanding/events/breaking-bread",
+      "error": ""
+    },
+    {
+      "url": "https://www.jcu.edu/news/2025/07/john-carroll-university-hosted-first-ever-summer-in-the-heights-pre-college-program",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jcu.edu/news/2025/07/john-carroll-university-hosted-first-ever-summer-in-the-heights-pre-college-program",
+      "error": ""
+    },
+    {
+      "url": "https://carrollnews.org/156429/campus/156429/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://carrollnews.org/156429/campus/156429/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

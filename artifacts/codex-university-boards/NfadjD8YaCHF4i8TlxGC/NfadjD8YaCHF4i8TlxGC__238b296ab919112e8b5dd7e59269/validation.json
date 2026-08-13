@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.seattleu.edu/academics/lemieux-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.seattleu.edu/academics/lemieux-library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.seattleu.edu/mosaic-center/the-links/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.seattleu.edu/mosaic-center/the-links/",
+      "error": ""
+    },
+    {
+      "url": "https://law.seattleu.edu/library/policies/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://law.seattleu.edu/library/policies/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

@@ -1,0 +1,71 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Exact coordinates for interior spaces were not published on the supporting pages, so latitude and longitude are null.",
+    "The campus-map URL identifies the parent destinations but does not provide stable direct URLs for each interior study space.",
+    "Residence-hall study nooks are subject to residential access controls; the Tutoring & Writing Center requires an active tutoring session."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.endicott.edu/academics/academic-resources-support/academic-technology/technology-labs",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.endicott.edu/academics/academic-resources-support/academic-technology/technology-labs",
+      "error": ""
+    },
+    {
+      "url": "https://www.endicott.edu/news-events/news/news-articles/2023/08/a-refreshed-halle-library-invites-students-to-study-read-and-relax",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.endicott.edu/news-events/news/news-articles/2023/08/a-refreshed-halle-library-invites-students-to-study-read-and-relax",
+      "error": ""
+    },
+    {
+      "url": "https://www.endicott.edu/academics/academic-resources-support/division-of-academic-success/tutoring-and-writing-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.endicott.edu/academics/academic-resources-support/division-of-academic-success/tutoring-and-writing-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.endicott.edu/student-life/callahan-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.endicott.edu/student-life/callahan-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.endicott.edu/academics/schools/sport-science/facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.endicott.edu/academics/schools/sport-science/facilities",
+      "error": ""
+    },
+    {
+      "url": "https://www.endicott.edu/about/arts-culture/manninen-center-for-the-arts",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.endicott.edu/about/arts-culture/manninen-center-for-the-arts",
+      "error": ""
+    },
+    {
+      "url": "https://www.endicott.edu/student-life/housing-residence-life/housing-options",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.endicott.edu/student-life/housing-residence-life/housing-options",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

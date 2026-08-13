@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://udallas.edu/offices-services/development-university-relations/communitas.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://udallas.edu/offices-services/development-university-relations/communitas.php",
+      "error": ""
+    },
+    {
+      "url": "https://udallas.edu/life-at-ud/student-activities/charity-week/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://udallas.edu/life-at-ud/student-activities/charity-week/index.php",
+      "error": ""
+    },
+    {
+      "url": "https://udallas.edu/life-at-ud/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://udallas.edu/life-at-ud/index.php",
+      "error": ""
+    },
+    {
+      "url": "https://udallas.smartcatalogiq.com/en/2022-2023/academic-catalog/campus-life/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://udallas.smartcatalogiq.com/en/2022-2023/academic-catalog/campus-life/",
+      "error": ""
+    },
+    {
+      "url": "https://udallas.edu/admissions-aid/glossary.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://udallas.edu/admissions-aid/glossary.php",
+      "error": ""
+    },
+    {
+      "url": "https://udallas.edu/life-at-ud/student-activities/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://udallas.edu/life-at-ud/student-activities/index.php",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

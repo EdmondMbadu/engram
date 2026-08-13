@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.immaculata.edu/campus-life/living-on-campus/dining-services/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.immaculata.edu/campus-life/living-on-campus/dining-services/",
+      "error": ""
+    },
+    {
+      "url": "https://www.malvernpizza.com/location/malvern-pizzeria/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.malvernpizza.com/location/malvern-pizzeria/",
+      "error": ""
+    },
+    {
+      "url": "https://www.wegmans.com/stores/malvern-pa",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.wegmans.com/stores/malvern-pa",
+      "error": ""
+    },
+    {
+      "url": "https://maps.apple.com/place?place-id=I6A39138F015F586B",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://maps.apple.com/place?place-id=I6A39138F015F586B",
+      "error": ""
+    },
+    {
+      "url": "https://www.wawa.com/locations/0236",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.wawa.com/locations/0236",
+      "error": ""
+    },
+    {
+      "url": "https://www.wawa.com/locations/0205",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.wawa.com/locations/0205",
+      "error": ""
+    },
+    {
+      "url": "https://www.riggtownoven.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.riggtownoven.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.shawarmakebabwc.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.shawarmakebabwc.com/",
+      "error": ""
+    },
+    {
+      "url": "https://wcdiner.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wcdiner.com/",
+      "error": ""
+    },
+    {
+      "url": "https://insomniacookies.com/storelocator",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://insomniacookies.com/storelocator",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

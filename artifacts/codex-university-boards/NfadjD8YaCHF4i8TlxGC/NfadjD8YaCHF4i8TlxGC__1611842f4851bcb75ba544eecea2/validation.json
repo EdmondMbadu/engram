@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://arboretum.ucf.edu/about/visit-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arboretum.ucf.edu/about/visit-us/",
+      "error": ""
+    },
+    {
+      "url": "https://cah.ucf.edu/gallery/gallery-info/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cah.ucf.edu/gallery/gallery-info/",
+      "error": ""
+    },
+    {
+      "url": "https://cah.ucf.edu/events/ticketing/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cah.ucf.edu/events/ticketing/",
+      "error": ""
+    },
+    {
+      "url": "https://rwc.sswb.ucf.edu/faq/students/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://rwc.sswb.ucf.edu/faq/students/",
+      "error": ""
+    },
+    {
+      "url": "https://rwc.sswb.ucf.edu/facilities/lake-claire/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://rwc.sswb.ucf.edu/facilities/lake-claire/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

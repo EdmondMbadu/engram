@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://kc.edu/campus-resources/student-success/studentaffairs/studentlife/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://kc.edu/campus-resources/student-success/studentaffairs/studentlife/",
+      "error": ""
+    },
+    {
+      "url": "https://kc.edu/library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://kc.edu/library/",
+      "error": ""
+    },
+    {
+      "url": "https://kc.edu/campus-resources/student-success/studentaffairs/campus-ministries/christ/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://kc.edu/campus-resources/student-success/studentaffairs/campus-ministries/christ/",
+      "error": ""
+    },
+    {
+      "url": "https://www.dorothylane.com/locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.dorothylane.com/locations",
+      "error": ""
+    },
+    {
+      "url": "https://www.ketteringadventist.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ketteringadventist.org/",
+      "error": ""
+    },
+    {
+      "url": "https://www.metroparks.org/wp-content/uploads/2016/04/metroparks-Hills-Dales-map-08-2015.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.metroparks.org/wp-content/uploads/2016/04/metroparks-Hills-Dales-map-08-2015.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.playkettering.org/rosewood-arts-center-home/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.playkettering.org/rosewood-arts-center-home/",
+      "error": ""
+    },
+    {
+      "url": "https://www.playkettering.org/lincoln-park-civic-commons/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.playkettering.org/lincoln-park-civic-commons/",
+      "error": ""
+    },
+    {
+      "url": "https://www.daytonmetrolibrary.org/locations/24/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.daytonmetrolibrary.org/locations/24/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nationalmuseum.af.mil/Visit/HoursandAdmission.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nationalmuseum.af.mil/Visit/Hours-and-Admission/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

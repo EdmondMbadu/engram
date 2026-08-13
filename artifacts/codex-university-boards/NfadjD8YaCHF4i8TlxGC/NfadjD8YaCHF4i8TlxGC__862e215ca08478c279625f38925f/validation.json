@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.maryville.edu/student-experience/orientation-main",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.maryville.edu/student-experience/orientation-main",
+      "error": ""
+    },
+    {
+      "url": "https://www.maryville.edu/student-experience/orientation-transfer/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.maryville.edu/student-experience/orientation-transfer/",
+      "error": ""
+    },
+    {
+      "url": "https://www.maryville.edu/studentlife/whats-to-eat/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.maryville.edu/studentlife/whats-to-eat/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

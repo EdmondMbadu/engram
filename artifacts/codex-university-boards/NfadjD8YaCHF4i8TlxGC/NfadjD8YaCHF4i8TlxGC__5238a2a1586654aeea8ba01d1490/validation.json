@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://turkishkebabhouseaz.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://turkishkebabhouseaz.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.arabicexpress.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.arabicexpress.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.geronimotucson.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.geronimotucson.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fukuaz.com/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.fukuaz.com/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://sharksgrillaz.com/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sharksgrillaz.com/about",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jackinthebox.com/us/az/tucson/1055-n-park-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jackinthebox.com/us/az/tucson/1055-n-park-ave",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/az/tucson/1005-n-campbell-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/az/tucson/1005-n-campbell-ave",
+      "error": ""
+    },
+    {
+      "url": "https://locations.deltaco.com/us/az/tucson/840-e-broadway-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.deltaco.com/us/az/tucson/840-e-broadway-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://www.tacoplusmexican.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.tacoplusmexican.com/",
+      "error": ""
+    },
+    {
+      "url": "https://elpotosinotucson.com/menu/tacos/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://elpotosinotucson.com/menu/tacos/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "HeQkGeheAtxuFLmENtyt",
+    "schoolName": "The Cooper Union for the Advancement of Science and Art",
+    "shortSchoolName": "The Cooper Union for the Advancement of Science and Art",
+    "townName": "New York",
+    "state": "NY",
+    "countryCode": "US",
+    "unitId": "190372",
+    "website": "https://www.cooper.edu/",
+    "latitude": 40.728148,
+    "longitude": -73.991609,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/7/75/The_Cooper_Union%27s_Foundation_Building_-_North_Side_%2848072759802%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=cooper.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "Cooper Union Makerspace",
+    "The Cooper Union Library",
+    "Great Hall",
+    "41 Cooper Gallery",
+    "Media Lab",
+    "Herb Lubalin Study Center of Design and Typography",
+    "AACE Lab",
+    "Frederick P. Rose Auditorium",
+    "Foundation Building Student Studios",
+    "Foundation Building"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

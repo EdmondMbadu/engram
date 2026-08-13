@@ -1,0 +1,48 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://stockton.edu/campus-center/operations/services.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stockton.edu/campus-center/operations/services.html",
+      "error": ""
+    },
+    {
+      "url": "https://stockton.edu/art-gallery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stockton.edu/art-gallery/",
+      "error": ""
+    },
+    {
+      "url": "https://stockton.edu/campus-center/operations/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stockton.edu/campus-center/operations/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://stockton.edu/policy-procedure/documents/procedures/4109.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stockton.edu/policy-procedure/documents/procedures/4109.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Give a Book, Take a Book Lounge",
+    "Stockton University Art Gallery"
+  ],
+  "sourceCount": 4,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

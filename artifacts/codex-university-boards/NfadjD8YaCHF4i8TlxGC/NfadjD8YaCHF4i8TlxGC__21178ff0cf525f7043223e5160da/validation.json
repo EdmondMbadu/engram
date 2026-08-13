@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.francis.edu/blog/history-mock-conventions-saint-francis-university",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.francis.edu/blog/history-mock-conventions-saint-francis-university",
+      "error": ""
+    },
+    {
+      "url": "https://troubadour.francis.edu/5973/news/mr-and-ms-frankie-awards-have-rich-history/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://troubadour.francis.edu/5973/news/mr-and-ms-frankie-awards-have-rich-history/",
+      "error": ""
+    },
+    {
+      "url": "https://www.francis.edu/blog/mass-holy-spirit-2025",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.francis.edu/blog/mass-holy-spirit-2025",
+      "error": ""
+    },
+    {
+      "url": "https://forever.francis.edu/s/1679/bp23/home.aspx?cc=1&gid=2&pgid=2051",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://forever.francis.edu/s/1679/bp23/home.aspx?cc=1&gid=2&pgid=2051",
+      "error": ""
+    },
+    {
+      "url": "https://events.francis.edu/event/presidents-award-convocation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.francis.edu/event/presidents-award-convocation",
+      "error": ""
+    },
+    {
+      "url": "https://forever.francis.edu/s/1679/bp23/project.aspx?gid=2&pgid=2051&sid=1679",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://forever.francis.edu/s/1679/bp23/project.aspx?gid=2&pgid=2051&sid=1679",
+      "error": ""
+    },
+    {
+      "url": "https://www.francis.edu/blog/steam-day-2024-tradition-career-exploration-continues",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.francis.edu/blog/steam-day-2024-tradition-career-exploration-continues",
+      "error": ""
+    },
+    {
+      "url": "https://www.francis.edu/blog/celebrating-law-day-2026-rule-law-and-american-dream",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.francis.edu/blog/celebrating-law-day-2026-rule-law-and-american-dream",
+      "error": ""
+    },
+    {
+      "url": "https://www.francis.edu/advancement-division/alumni/alumni-weekend",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.francis.edu/advancement-division/alumni/alumni-weekend",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 100,
+  "generationGrade": "A"
+}

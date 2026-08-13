@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.transy.edu/campus/campus-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.transy.edu/campus/campus-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.transy.edu/campus/living-on-campus/dining-services/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.transy.edu/campus/living-on-campus/dining-services/",
+      "error": ""
+    },
+    {
+      "url": "https://www.transy.edu/campus/campus-center/policies/game-room-policies/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.transy.edu/campus/campus-center/policies/game-room-policies/",
+      "error": ""
+    },
+    {
+      "url": "https://www.transy.edu/academics/academic-services/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.transy.edu/academics/academic-services/",
+      "error": ""
+    },
+    {
+      "url": "https://www.transy.edu/alumni/make-a-gift/special-giving-opportunities/alumni-plaza/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.transy.edu/alumni/make-a-gift/special-giving-opportunities/alumni-plaza/",
+      "error": ""
+    },
+    {
+      "url": "https://www.transy.edu/campus/living-on-campus/sustainability/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.transy.edu/campus/living-on-campus/sustainability/",
+      "error": ""
+    },
+    {
+      "url": "https://www.transy.edu/about/facility/old-morrison-chapel/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.transy.edu/about/facility/old-morrison-chapel/",
+      "error": ""
+    },
+    {
+      "url": "https://www.transy.edu/campus/living-on-campus/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.transy.edu/campus/living-on-campus/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

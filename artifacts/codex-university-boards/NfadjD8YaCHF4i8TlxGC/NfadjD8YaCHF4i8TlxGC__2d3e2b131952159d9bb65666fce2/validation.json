@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.stonehill.edu/offices-and-services/dining-services/dining-venues/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stonehill.edu/offices-and-services/dining-services/dining-venues/",
+      "error": ""
+    },
+    {
+      "url": "https://www.stonehill.edu/offices-and-services/student-engagement/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stonehill.edu/offices-and-services/student-engagement/",
+      "error": ""
+    },
+    {
+      "url": "https://www.stonehill.edu/news/details/stonehill-college-from-a-to-z/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stonehill.edu/news/details/stonehill-college-from-a-to-z/",
+      "error": ""
+    },
+    {
+      "url": "https://www.stonehill.edu/offices-and-services/recreational-sports-department/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stonehill.edu/offices-and-services/recreational-sports-department/",
+      "error": ""
+    },
+    {
+      "url": "https://www.stonehill.edu/connect-with-community/clubs-organizations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stonehill.edu/connect-with-community/clubs-organizations/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

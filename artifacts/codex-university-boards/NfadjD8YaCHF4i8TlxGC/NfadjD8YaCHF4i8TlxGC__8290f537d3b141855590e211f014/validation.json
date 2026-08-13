@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.macalester.edu/gallery/home/hours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.macalester.edu/gallery/home/hours/",
+      "error": ""
+    },
+    {
+      "url": "https://sppl.org/spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sppl.org/spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://new.artsmia.org/visit?directory=0.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 429,
+      "finalUrl": "https://new.artsmia.org/visit?directory=0.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.walkerart.org/minneapolis-sculpture-garden/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.walkerart.org/minneapolis-sculpture-garden/",
+      "error": ""
+    },
+    {
+      "url": "https://comozooconservatory.org/visitors/visitor-map-hours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://comozooconservatory.org/visitors/visitor-map-hours/",
+      "error": ""
+    },
+    {
+      "url": "https://www.stpaul.gov/departments/parks-and-recreation/aquatics/phalen-regional-park-beach",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stpaul.gov/departments/parks-and-recreation/aquatics/phalen-regional-park-beach",
+      "error": ""
+    },
+    {
+      "url": "https://mmaa.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mmaa.org/",
+      "error": ""
+    },
+    {
+      "url": "https://www.smallestmuseumstpaul.com/about-the-smsp",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smallestmuseumstpaul.com/about-the-smsp",
+      "error": ""
+    },
+    {
+      "url": "https://www.mnhs.org/historycenter",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mnhs.org/historycenter",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

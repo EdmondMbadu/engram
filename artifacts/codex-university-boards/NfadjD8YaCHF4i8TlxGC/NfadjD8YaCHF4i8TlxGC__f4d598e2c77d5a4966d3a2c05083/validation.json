@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://farmingdalelibrary.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://farmingdalelibrary.org/",
+      "error": ""
+    },
+    {
+      "url": "https://farmingdalevillage.gov/visitors/bars_restaurants_food_establishments.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://farmingdalevillage.gov/visitors/bars_restaurants_food_establishments.php",
+      "error": ""
+    },
+    {
+      "url": "https://farmingdalebid.com/business-directory",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://farmingdalebid.com/business-directory",
+      "error": ""
+    },
+    {
+      "url": "https://www.americanairpowermuseum.com/visit-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.americanairpowermuseum.com/visit-us/",
+      "error": ""
+    },
+    {
+      "url": "https://nassaucountytourism.com/adventureland/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://nassaucountytourism.com/adventureland/",
+      "error": ""
+    },
+    {
+      "url": "https://www.rpmraceway.com/locations/long-island-ny",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rpmraceway.com/locations/long-island-ny",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "American Airpower Museum"
+  ],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

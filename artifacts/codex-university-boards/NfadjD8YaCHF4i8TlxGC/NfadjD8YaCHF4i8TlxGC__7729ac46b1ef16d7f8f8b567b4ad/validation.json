@@ -1,0 +1,77 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Several campus entries are event-based rather than daily late-night destinations; use their direct UCF pages to confirm a current date and access details before travel."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.sswb.ucf.edu/faq/the-student-union/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sswb.ucf.edu/faq/the-student-union/",
+      "error": ""
+    },
+    {
+      "url": "https://osi.ucf.edu/programming-agencies/late-knights/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://osi.ucf.edu/programming-agencies/late-knights/",
+      "error": ""
+    },
+    {
+      "url": "https://events.ucf.edu/event/4105510/bingo-breakfast-late-night/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.ucf.edu/event/4105510/bingo-breakfast-late-night/",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.ihop.com/en-us/fl/orlando/breakfast-11571-university-blvd.-360211",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.ihop.com/en-us/fl/orlando/breakfast-11571-university-blvd.-360211",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/fl/winter-park/3162-university-blvd/11958.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/fl/winter-park/3162-university-blvd/11958.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.deltaco.com/us/fl/orlando/3105-e-colonial-dr",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.deltaco.com/us/fl/orlando/3105-e-colonial-dr",
+      "error": ""
+    },
+    {
+      "url": "https://locations.deltaco.com/us/fl/orlando/6855-grand-national-drive",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.deltaco.com/us/fl/orlando/6855-grand-national-drive",
+      "error": ""
+    },
+    {
+      "url": "https://www.ucf.edu/news/conquering-spring-2026-finals-week-with-the-right-resources/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ucf.edu/news/conquering-spring-2026-finals-week-with-the-right-resources/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

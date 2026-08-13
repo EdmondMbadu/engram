@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://lits.mtholyoke.edu/places/study-spaces/reading-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lits.mtholyoke.edu/places/study-spaces/reading-room",
+      "error": ""
+    },
+    {
+      "url": "https://lits.mtholyoke.edu/places/study-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lits.mtholyoke.edu/places/study-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://lits.mtholyoke.edu/about-lits/service-desks/pratt-music-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lits.mtholyoke.edu/about-lits/service-desks/pratt-music-library",
+      "error": ""
+    },
+    {
+      "url": "https://www.mtholyoke.edu/academics/centers-and-facilities/science-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mtholyoke.edu/academics/centers-and-facilities/science-center",
+      "error": ""
+    },
+    {
+      "url": "https://embark.mtholyoke.edu/communitycenter/blanchard/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://embark.mtholyoke.edu/communitycenter/blanchard/",
+      "error": ""
+    },
+    {
+      "url": "https://www.mtholyoke.edu/student-experience/community-and-belonging/cultural-centers/unity-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mtholyoke.edu/student-experience/community-and-belonging/cultural-centers/unity-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.mtholyoke.edu/academics/centers-and-facilities/fimbel-maker-innovation-lab",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mtholyoke.edu/academics/centers-and-facilities/fimbel-maker-innovation-lab",
+      "error": ""
+    },
+    {
+      "url": "https://www.mtholyoke.edu/directory/departments-offices-centers/botanic-garden/talcott-greenhouse",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mtholyoke.edu/directory/departments-offices-centers/botanic-garden/talcott-greenhouse",
+      "error": ""
+    },
+    {
+      "url": "https://www.mtholyoke.edu/student-experience/campus-experience/traditions-and-annual-events/convocation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mtholyoke.edu/student-experience/campus-experience/traditions-and-annual-events/convocation",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

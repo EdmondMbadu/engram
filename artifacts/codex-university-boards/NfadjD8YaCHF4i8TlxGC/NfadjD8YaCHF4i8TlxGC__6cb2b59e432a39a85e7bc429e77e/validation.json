@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Reiman Gardens is free specifically for Iowa State University students; general public admission is normally paid.",
+    "Indoor museum and campus-building access varies by current operating schedule.",
+    "Coordinates and map URLs are null because exact values were not independently verified from the cited direct pages."
+  ],
+  "reachability": [
+    {
+      "url": "https://discoverames.com/wp-content/uploads/2026/01/2026-AmesVisitorsGuide-final-web.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://discoverames.com/wp-content/uploads/2026/01/2026-AmesVisitorsGuide-final-web.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://reimangardens.com/admission-and-hours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://reimangardens.com/admission-and-hours",
+      "error": ""
+    },
+    {
+      "url": "https://www.cityofames.org/My-Government/Departments/Parks-and-Recreation/Parks/Ada-Hayden-Heritage-Park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cityofames.org/My-Government/Departments/Parks-and-Recreation/Parks/Ada-Hayden-Heritage-Park",
+      "error": ""
+    },
+    {
+      "url": "https://www.cityofames.org/My-Government/Departments/Parks-and-Recreation/Parks/Lloyd-Kurtz-Park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cityofames.org/My-Government/Departments/Parks-and-Recreation/Parks/Lloyd-Kurtz-Park",
+      "error": ""
+    },
+    {
+      "url": "https://www.cityofames.org/My-Government/Departments/Parks-and-Recreation/Parks/Franklin-Park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cityofames.org/My-Government/Departments/Parks-and-Recreation/Parks/Franklin-Park",
+      "error": ""
+    },
+    {
+      "url": "https://www.amespubliclibrary.org/using-the-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.amespubliclibrary.org/using-the-library",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 90,
+  "generationGrade": "A"
+}

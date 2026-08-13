@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.linfield.edu/library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.linfield.edu/library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.linfield.edu/glossary/academics.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.linfield.edu/glossary/academics.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.linfield.edu/academics/business/AIAI-initiative.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.linfield.edu/academics/business/AIAI-initiative.html",
+      "error": ""
+    },
+    {
+      "url": "https://linfield.edu/glossary/campus-life.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://linfield.edu/glossary/campus-life.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.linfield.edu/assets/files/admission/mcminnville-campus-map.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.linfield.edu/assets/files/admission/mcminnville-campus-map.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

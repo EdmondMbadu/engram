@@ -1,0 +1,79 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://locations.tacobell.com/mo/kirksville/1217-s-baltimore/fast-food.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mo/kirksville/1217-s-baltimore/fast-food.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/mo/kirksville/2321-n-baltimore-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/mo/kirksville/2321-n-baltimore-street",
+      "error": ""
+    },
+    {
+      "url": "https://www.dairyqueen.com/en-us/locations/mo/kirksville/1407-s-baltimore-st/11289/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.dairyqueen.com/en-us/locations/mo/kirksville/1407-s-baltimore-st/11289/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.kfc.com/mo/kirksville",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.kfc.com/mo/kirksville",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/mo/kirksville/1610-n-baltimore-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/mo/kirksville/1610-n-baltimore-st",
+      "error": ""
+    },
+    {
+      "url": "https://www.lapamexicanbarandgrill.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lapamexicanbarandgrill.com/",
+      "error": ""
+    },
+    {
+      "url": "https://recreation.truman.edu/general/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recreation.truman.edu/general/",
+      "error": ""
+    },
+    {
+      "url": "https://police.truman.edu/files/2025/09/ASR2025.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://police.truman.edu/files/2025/09/ASR2025.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Student Recreation Center"
+  ],
+  "sourceCount": 8,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

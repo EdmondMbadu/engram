@@ -1,0 +1,97 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Event availability, venue access, and campus schedules can change; verify the direct source before attending.",
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.macalester.edu/religious-spiritual-life/our-spaces-2/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.macalester.edu/religious-spiritual-life/our-spaces-2/",
+      "error": ""
+    },
+    {
+      "url": "https://www.macalester.edu/admissions/video-viewbook/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.macalester.edu/admissions/video-viewbook/",
+      "error": ""
+    },
+    {
+      "url": "https://www.macalester.edu/residential-life/dining/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.macalester.edu/residential-life/dining/",
+      "error": ""
+    },
+    {
+      "url": "https://www.macalester.edu/leadership-engagement/student-organizations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.macalester.edu/leadership-engagement/student-organizations/",
+      "error": ""
+    },
+    {
+      "url": "https://www.macalester.edu/calendar/search/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.macalester.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://www.macalester.edu/wham/classes-and-programs/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.macalester.edu/wham/classes-and-programs/",
+      "error": ""
+    },
+    {
+      "url": "https://www.macalester.edu/art/majorsminors/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.macalester.edu/art/majorsminors/",
+      "error": ""
+    },
+    {
+      "url": "https://www.macalester.edu/arts-at-mac/mairs-concert-hall/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.macalester.edu/arts-at-mac/mairs-concert-hall/",
+      "error": ""
+    },
+    {
+      "url": "https://www.stpaul.gov/departments/parks-and-recreation/como-regional-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stpaul.gov/departments/parks-and-recreation/como-regional-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.macalester.edu/library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.macalester.edu/library/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Weyerhaeuser Memorial Chapel",
+    "DeWitt Wallace Library"
+  ],
+  "sourceCount": 10,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

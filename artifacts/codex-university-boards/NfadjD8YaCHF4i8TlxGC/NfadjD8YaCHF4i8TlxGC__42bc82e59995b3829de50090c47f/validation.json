@@ -1,0 +1,87 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.scu.edu/students/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scu.edu/students/",
+      "error": ""
+    },
+    {
+      "url": "https://www.scu.edu/benson/latenightprogramming/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scu.edu/benson/latenightprogramming/",
+      "error": ""
+    },
+    {
+      "url": "https://daebaksantaclara.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://daebaksantaclara.com/",
+      "error": ""
+    },
+    {
+      "url": "https://giwasantaclara.com/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://giwasantaclara.com/about/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ca/santa-clara/2555-the-alameda.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ca/santa-clara/2555-the-alameda.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ca/santa-clara/1680-el-camino-real/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ca/santa-clara/1680-el-camino-real/restaurant.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ca/santa-clara/2600-homestead-rd/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ca/santa-clara/2600-homestead-rd/restaurant.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dennys.com/ca/santa-clara/246917",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dennys.com/ca/santa-clara/246917",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jackinthebox.com/us/ca/santa-clara/3465-homestead-rd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jackinthebox.com/us/ca/santa-clara/3465-homestead-rd",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Pat Malley Fitness and Recreation Center"
+  ],
+  "sourceCount": 9,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

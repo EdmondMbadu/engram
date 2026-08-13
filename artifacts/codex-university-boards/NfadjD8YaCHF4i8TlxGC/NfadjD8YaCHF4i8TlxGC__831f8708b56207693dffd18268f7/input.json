@@ -1,0 +1,52 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "FhMXnNH4Xd6BDgY67kfJ",
+    "schoolName": "St. John's University-New York",
+    "shortSchoolName": "St. John's University-New York",
+    "townName": "Queens",
+    "state": "NY",
+    "countryCode": "US",
+    "unitId": "195809",
+    "website": "https://www.stjohns.edu/",
+    "latitude": 40.722523,
+    "longitude": -73.796104,
+    "heroUrl": "https://www.stjohns.edu/sites/default/files/2022-12/20220928_sju_fall-425.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=stjohns.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at St. John's University-New York, Shared as Cards",
+  "excluded_subjects": [
+    "Red Storm Welcome",
+    "Fall Fest",
+    "Winter Carnival",
+    "Ice Skating in New York",
+    "Central Park Christmas",
+    "Winter Carnival Dessert Party",
+    "Spring Month",
+    "Senior Week",
+    "Stormin’ Loud",
+    "Relay For Life"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

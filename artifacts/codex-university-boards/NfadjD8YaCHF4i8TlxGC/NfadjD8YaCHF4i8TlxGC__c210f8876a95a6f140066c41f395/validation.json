@@ -1,0 +1,90 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "4 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://catalog.nmt.edu/campuslife/academic-help/library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.nmt.edu/campuslife/academic-help/library",
+      "error": ""
+    },
+    {
+      "url": "https://www.nmt.edu/osl/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nmt.edu/osl/index.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.nmt.edu/library/faq.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nmt.edu/library/faq.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.nmt.edu/itc/itclabs.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nmt.edu/itc/itclabs.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.nmt.edu/fidel/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nmt.edu/fidel/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nmt.edu/fidel/gameroom.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nmt.edu/fidel/gameroom.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.nmt.edu/studentlife/Fillable_SAC%20Form%202021%20.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nmt.edu/studentlife/Fillable_SAC%20Form%202021%20.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.nmt.edu/macey/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nmt.edu/macey/",
+      "error": ""
+    },
+    {
+      "url": "https://geoinfo.nmt.edu/museum/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://geoinfo.nmt.edu/museum/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Joseph R. Skeen Library",
+    "Joseph A. Fidel Student Services Center",
+    "NMT Game Room",
+    "New Mexico Mineral Museum"
+  ],
+  "sourceCount": 9,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

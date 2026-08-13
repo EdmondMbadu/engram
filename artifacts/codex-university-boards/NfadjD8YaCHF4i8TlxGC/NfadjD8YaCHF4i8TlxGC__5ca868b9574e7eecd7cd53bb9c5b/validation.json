@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.marquette.edu/alumni-memorial-union/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marquette.edu/alumni-memorial-union/",
+      "error": ""
+    },
+    {
+      "url": "https://www.marquette.edu/alumni-memorial-union/facilities-overview.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marquette.edu/alumni-memorial-union/facilities-overview.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.marquette.edu/campus-map/location.php?id=Raynor+Memorial+Libraries%2C+R320",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marquette.edu/campus-map/location.php?id=Raynor+Memorial+Libraries%2C+R320",
+      "error": ""
+    },
+    {
+      "url": "https://www.marquette.edu/st-joan-of-arc-chapel/visitor-information.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marquette.edu/st-joan-of-arc-chapel/visitor-information.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.marquette.edu/haggerty-museum/hours.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marquette.edu/haggerty-museum/hours.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.marquette.edu/employee-wellness/outdoor-workout-stations.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marquette.edu/employee-wellness/outdoor-workout-stations.php",
+      "error": ""
+    },
+    {
+      "url": "https://admissions.marquette.edu/portal/mumap",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://admissions.marquette.edu/portal/mumap",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

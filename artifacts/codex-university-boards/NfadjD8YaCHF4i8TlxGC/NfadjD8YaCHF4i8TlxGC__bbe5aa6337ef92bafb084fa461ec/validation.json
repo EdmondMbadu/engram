@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://smileysdiner.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://smileysdiner.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.papajohns.com/united-states/de/19711/newark/181-e-main-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.papajohns.com/united-states/de/19711/newark/181-e-main-st",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/de/bear/1501-governors-place/dinner.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/de/bear/1501-governors-place/dinner.html",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/delaware/newark/60-n-college-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/delaware/newark/60-n-college-ave",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/delaware/newark/20-salem-village-square",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/delaware/newark/20-salem-village-square",
+      "error": ""
+    },
+    {
+      "url": "https://www.klondikekates.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.klondikekates.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.homegrowncafe.com/location/home-grown-cafe/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.homegrowncafe.com/location/home-grown-cafe/",
+      "error": ""
+    },
+    {
+      "url": "https://meetatgrain.com/newark",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://meetatgrain.com/newark",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.applebees.com/en-us/de/newark/2480-pulaski-hwy.-97071",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.applebees.com/en-us/de/newark/2480-pulaski-hwy.-97071",
+      "error": ""
+    },
+    {
+      "url": "https://dandhjamaican.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dandhjamaican.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

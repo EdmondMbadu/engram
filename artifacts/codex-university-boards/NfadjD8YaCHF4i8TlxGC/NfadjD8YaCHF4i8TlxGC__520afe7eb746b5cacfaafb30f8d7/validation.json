@@ -1,0 +1,99 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Late availability can change for holidays, academic breaks, construction, and special events; verify the cited operator or university page before traveling.",
+    "1 source URL check(s) were inconclusive and need editorial confirmation.",
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://locations.tacobell.com/il/champaign/512-e--green-street/takeout.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/il/champaign/512-e--green-street/takeout.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/il/urbana/1003-university/takeout.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/il/urbana/1003-university/takeout.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/il/champaign/2003-w--springfield.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/il/champaign/2003-w--springfield.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/il/champaign/10-east-anthony-drive/fast-food.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/il/champaign/10-east-anthony-drive/fast-food.html",
+      "error": ""
+    },
+    {
+      "url": "https://ambarchampaign.com/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://ambarchampaign.com/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://union.illinois.edu/food",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://union.illinois.edu/food",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.illinois.edu/using-library-spaces/study-space-directory/grainger-library-1-west-design-space/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.illinois.edu/using-library-spaces/study-space-directory/grainger-library-1-west-design-space/",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.illinois.edu/librarytransformation/2025/08/25/construction-of-archives-and-special-collections-building-underway/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.illinois.edu/librarytransformation/2025/08/25/construction-of-archives-and-special-collections-building-underway/",
+      "error": ""
+    },
+    {
+      "url": "https://campusrec.illinois.edu/facilities/hours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusrec.illinois.edu/facilities/hours",
+      "error": ""
+    },
+    {
+      "url": "https://www.union.illinois.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.union.illinois.edu/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Funk ACES Library",
+    "Activities and Recreation Center (ARC)",
+    "Illini Union"
+  ],
+  "sourceCount": 10,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

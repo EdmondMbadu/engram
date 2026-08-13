@@ -1,0 +1,71 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "yKy8givbZA3PElz90e2z",
+    "schoolName": "California State University-Sacramento",
+    "shortSchoolName": "California State University-Sacramento",
+    "townName": "Sacramento",
+    "state": "CA",
+    "countryCode": "US",
+    "unitId": "110617",
+    "website": "https://www.csus.edu/",
+    "latitude": 38.559415,
+    "longitude": -121.423549,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/California_State_University%2C_Sacramento_seal.svg/250px-California_State_University%2C_Sacramento_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=csus.edu&sz=256"
+  },
+  "template": {
+    "id": "college-campus-tour-skips",
+    "version": "1.0",
+    "titlePattern": "What the Campus Tour Skips: {count} Places Students Share With Each Other",
+    "editorialBrief": "Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.",
+    "researchQueries": [
+      "student favorite campus places",
+      "campus map student spaces",
+      "student newspaper campus places"
+    ],
+    "count": 10,
+    "icon": "style",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place",
+      "study_space"
+    ],
+    "freshnessDays": 365
+  },
+  "exact_title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+  "excluded_subjects": [
+    "Academic Information Resource Center",
+    "IRT Computer Lab — AIRC 2004",
+    "Library Computer Lab — LIB 2000",
+    "University Library Group Study Rooms",
+    "Family Study Room — Library 2003",
+    "Library Presentation Practice Room",
+    "University Library Zoom Rooms",
+    "Tsakopoulos Hellenic Collection — Room 3034",
+    "Tsakopoulos Reference Collection — Room 3024",
+    "Fourth-Floor Individual Study Rooms",
+    "Hornet Pinning Ceremony",
+    "Homecoming Golf Cart Parade",
+    "Hornet Walk",
+    "Causeway Classic",
+    "Causeway Classic Blood Drive",
+    "Stingers Up Gesture",
+    "Phlagleblast",
+    "Swarm Day Campus Photo",
+    "Herky Day",
+    "Green & Gold Spirit Day",
+    "Glenn Hall Park",
+    "The UV",
+    "Menchie's Frozen Yogurt",
+    "Safeway",
+    "Trader Joe's Sacramento Store 175",
+    "Corti Brothers",
+    "Kru Contemporary Japanese Cuisine",
+    "Selland's Neighborhood Cafe",
+    "East Portal Park",
+    "William McKinley Park"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

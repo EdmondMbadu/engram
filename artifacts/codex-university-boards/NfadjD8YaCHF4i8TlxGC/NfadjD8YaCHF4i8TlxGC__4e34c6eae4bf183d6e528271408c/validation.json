@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://library.pratt.edu/libraries/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.pratt.edu/libraries/",
+      "error": ""
+    },
+    {
+      "url": "https://www.pratt.edu/administrative-departments/student-affairs/student-involvement/student-union/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pratt.edu/administrative-departments/student-affairs/student-involvement/student-union/",
+      "error": ""
+    },
+    {
+      "url": "https://www.pratt.edu/architecture/the-william-bill-menking-book-collection/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pratt.edu/architecture/the-william-bill-menking-book-collection/",
+      "error": ""
+    },
+    {
+      "url": "https://www.pratt.edu/services/engineering-computer-lab/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pratt.edu/services/engineering-computer-lab/",
+      "error": ""
+    },
+    {
+      "url": "https://www.pratt.edu/services/machinery-computer-lab/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pratt.edu/services/machinery-computer-lab/",
+      "error": ""
+    },
+    {
+      "url": "https://www.pratt.edu/services/foundation-media-lab/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pratt.edu/services/foundation-media-lab/",
+      "error": ""
+    },
+    {
+      "url": "https://www.pratt.edu/services/higgins-hall-labs/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pratt.edu/services/higgins-hall-labs/",
+      "error": ""
+    },
+    {
+      "url": "https://www.pratt.edu/services/2d-printing-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pratt.edu/services/2d-printing-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.pratt.edu/services/3d-printing-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pratt.edu/services/3d-printing-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.pratt.edu/administrative-departments/print-services/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pratt.edu/administrative-departments/print-services/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

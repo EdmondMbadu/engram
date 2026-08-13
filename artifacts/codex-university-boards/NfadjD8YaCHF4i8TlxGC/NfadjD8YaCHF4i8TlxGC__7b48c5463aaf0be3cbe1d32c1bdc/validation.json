@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.scu.edu/technology/learning-commons-computing-and-media-facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scu.edu/technology/learning-commons-computing-and-media-facilities/",
+      "error": ""
+    },
+    {
+      "url": "https://www.scu.edu/training/locations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scu.edu/training/locations/",
+      "error": ""
+    },
+    {
+      "url": "https://www.scu.edu/is/lctcl/group-study-rooms/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scu.edu/is/lctcl/group-study-rooms/",
+      "error": ""
+    },
+    {
+      "url": "https://www.scu.edu/technology/quick-start-guide-for-students/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scu.edu/technology/quick-start-guide-for-students/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

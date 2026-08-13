@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.latech.edu/news/new-sensory-space-opens-in-prescott-memorial-library.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latech.edu/news/new-sensory-space-opens-in-prescott-memorial-library.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.latech.edu/academics/library/about/floor-directory-by-floor.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latech.edu/academics/library/about/floor-directory-by-floor.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.latech.edu/academics/library/services/building-facilities.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latech.edu/academics/library/services/building-facilities.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.latech.edu/academics/library/special-collections/about.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latech.edu/academics/library/special-collections/about.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.latech.edu/business/about/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latech.edu/business/about/index.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.latech.edu/engineering-science/future-students/prospective-students.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latech.edu/engineering-science/future-students/prospective-students.php",
+      "error": ""
+    },
+    {
+      "url": "https://business.latech.edu/llc/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latech.edu/business/future-students/entrepreneurship-llc.php",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

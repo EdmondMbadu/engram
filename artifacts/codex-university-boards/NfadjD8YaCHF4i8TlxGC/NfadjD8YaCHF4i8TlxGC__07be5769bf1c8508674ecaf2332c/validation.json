@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.lawrence.edu/offices/warch-campus-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://inside.lawrence.edu/offices/warch-campus-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.lawrence.edu/life-lawrence/dining",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lawrence.edu/campus-life/dining/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lawrence.edu/about/getting-lawrence/campus-maps",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lawrence.edu/about/campus-location/directions/campus-map/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lawrence.edu/library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://inside.lawrence.edu/library",
+      "error": ""
+    },
+    {
+      "url": "https://www.lawrence.edu/academics/galleries-art/wriston-art-galleries",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://inside.lawrence.edu/academics/galleries-art/wriston-art-galleries",
+      "error": ""
+    },
+    {
+      "url": "https://myhistorymuseum.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://myhistorymuseum.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://apl.org/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://apl.org/about/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lawrence.edu/conservatory/music-arts/box-office/venues",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://inside.lawrence.edu/conservatory/music-arts/box-office/venues",
+      "error": ""
+    },
+    {
+      "url": "https://www.lawrence.edu/offices/wellness-services",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://inside.lawrence.edu/offices/wellness-services",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

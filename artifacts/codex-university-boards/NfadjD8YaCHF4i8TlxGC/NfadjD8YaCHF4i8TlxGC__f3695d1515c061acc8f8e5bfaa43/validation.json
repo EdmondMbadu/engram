@@ -1,0 +1,81 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation.",
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://utgardens.tennessee.edu/locations/knoxville/visit-us-knoxville/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://utgardens.tennessee.edu/locations/knoxville/visit-us-knoxville/",
+      "error": ""
+    },
+    {
+      "url": "https://mcclungmuseum.utk.edu/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mcclungmuseum.utk.edu/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://downtown.utk.edu/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://downtown.utk.edu/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://knoxart.org/plan-your-visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://knoxart.org/plan-your-visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.knoxalliance.com/visit-the-emporium/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.knoxalliance.com/visit-the-emporium/",
+      "error": ""
+    },
+    {
+      "url": "https://www.knoxgarden.org/faqs",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.knoxgarden.org/faqs",
+      "error": ""
+    },
+    {
+      "url": "https://wdvx.com/program/blue-plate-special/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wdvx.com/program/blue-plate-special/",
+      "error": ""
+    },
+    {
+      "url": "https://knoxvillehistoryproject.org/self-guided-walking-tours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://knoxvillehistoryproject.org/self-guided-walking-tours/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "UT Gardens, Knoxville",
+    "McClung Museum of Natural History & Culture"
+  ],
+  "sourceCount": 8,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

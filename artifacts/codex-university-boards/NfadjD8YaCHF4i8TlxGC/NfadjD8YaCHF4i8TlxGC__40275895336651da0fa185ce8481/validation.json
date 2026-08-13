@@ -1,0 +1,53 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://arboretum.ua.edu/visit-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arboretum.ua.edu/visit-us/",
+      "error": ""
+    },
+    {
+      "url": "https://art.ua.edu/uncategorized/2025-bfa-graphic-design-students-present-thesis-exhibition-in-sella-granata/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://art.ua.edu/uncategorized/2025-bfa-graphic-design-students-present-thesis-exhibition-in-sella-granata/",
+      "error": ""
+    },
+    {
+      "url": "https://museums.ua.edu/swimming-together/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://museums.ua.edu/swimming-together/",
+      "error": ""
+    },
+    {
+      "url": "https://acs.ua.edu/hallowed-grounds-tours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://acs.ua.edu/hallowed-grounds-tours/",
+      "error": ""
+    },
+    {
+      "url": "https://urec.sl.ua.edu/visit/membership/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://urec.sl.ua.edu/visit/membership/",
+      "error": "fetch failed"
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

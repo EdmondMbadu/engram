@@ -1,0 +1,284 @@
+Reading additional input from stdin...
+2026-08-13T07:42:52.996020Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:42:53.012545Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa12-f028-78f0-9edb-ded157079443
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"wfMhfBfAyqC7YOfTnVIh","schoolName":"Indiana Wesleyan University-Marion","shortSchoolName":"Indiana Wesleyan University-Marion","townName":"Marion","state":"IN","countryCode":"US","website":"https://www.indwes.edu/","latitude":40.517937,"longitude":-85.667503},"templates":[{"id":"college-campus-tour-skips","version":"1.0","titlePattern":"What the Campus Tour Skips: {count} Places Students Share With Each Other","editorialBrief":"Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.","researchQueries":["student favorite campus places","campus map student spaces","student newspaper campus places"],"count":10,"icon":"style","primarySubjectType":"place","allowedSubjectTypes":["place","study_space"],"freshnessDays":365,"exactTitle":"What the Campus Tour Skips: 10 Places Students Share With Each Other"}]}
+codex
+{
+  "complete": false,
+  "school_name": "Indiana Wesleyan University-Marion",
+  "town_name": "Marion",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Indiana Wesleyan University-Marion",
+      "town_name": "Marion",
+      "template_id": "college-campus-tour-skips",
+      "title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+      "description": "",
+      "icon": "style",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     
+      ,
+           {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+      ],
+      "warnings": [
+        "I’m researching current official campus sources before completing the board."
+      ]
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:indwes.edu Marion campus map student center library recreation center chapel ...
+web search: 
+web search: site:indwes.edu "Jackson Library" Marion study spaces ...
+codex
+{"complete":true,"school_name":"Indiana Wesleyan University-Marion","town_name":"Marion","boards":[{"complete":true,"school_name":"Indiana Wesleyan University-Marion","town_name":"Marion","template_id":"college-campus-tour-skips","title":"What the Campus Tour Skips: 10 Places Students Share With Each Other","description":"Ten documented Marion-campus spaces for studying, creating, exercising, reflecting, meeting, and exploring between scheduled stops.","icon":"style","cards":[{"subject_id":"iwu-marion-jackson-library","subject_type":"study_space","entity_name":"Jackson Library","title":"Set Up for a Research Session","subtitle":"Study, meeting, and research space at the center of campus","notes":"Bring a research task or group agenda; the library provides workstations, wireless access, research help, and spaces designed for focused work.","short_summary":"A practical base for research help, computer access, and individual or collaborative study.","evidence_claim":"IWU identifies Jackson Library on its Marion campus and says it provides spaces for studying, meeting, and research, plus workstations and research assistance.","source_url":"https://www.indwes.edu/academics/library.html","source_title":"University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Library access and service availability may vary by academic calendar; check university information before visiting.","cost_status":"unknown","under21_safe":true},{"subject_id":"iwu-marion-jackson-library-24-hour-study-lounge","subject_type":"study_space","entity_name":"Jackson Library 24-Hour Study Lounge","title":"Keep Working After the Main Library Closes","subtitle":"A specifically documented round-the-clock study area","notes":"Use the lounge when coursework extends beyond regular library service hours; confirm entry rules and bring the campus credentials required for access.","short_summary":"The library’s designated option for study outside its standard staffed schedule.","evidence_claim":"IWU’s library page explicitly lists a 24-hour study lounge among Jackson Library’s spaces for studying, meeting, and research.","source_url":"https://www.indwes.edu/academics/library.html","source_title":"University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page identifies this as a 24-hour study lounge; campus credential and holiday or break restrictions are not stated publicly.","cost_status":"unknown","under21_safe":true},{"subject_id":"iwu-marion-one-button-studio","subject_type":"place","entity_name":"One Button Studio","title":"Record a Presentation Without a Full Production Setup","subtitle":"Reservable media studio on Jackson Library’s lower level","notes":"Reserve the studio for a video essay, presentation rehearsal, interview, or podcast; bring a thumb drive and do not book it for ordinary group study.","short_summary":"A student-accessible recording room built to simplify polished video and audio projects.","evidence_claim":"IWU says the lower-level Jackson Library studio is available by reservation to all IWU students, faculty, and staff for production uses including presentations and podcasts.","source_url":"https://kb.indwes.edu/Classroom_Technology/One_Button_Studio/About_the_One_Button_Studio","source_title":"About the One Button Studio","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Reservation and IWU affiliation are required; the university states that the studio is for production rather than individual or group study.","cost_status":"unknown","under21_safe":true},{"subject_id":"iwu-marion-world-changers-hall-of-honor","subject_type":"place","entity_name":"Society of World Changers Hall of Honor","title":"Read the Stories Behind the Library Rotunda","subtitle":"Permanent bronze-bust display inside Jackson Library","notes":"Walk the rotunda slowly and use the displayed inductees as prompts for conversation, reflection, or follow-up research in the library.","short_summary":"A permanent campus collection that turns the library rotunda into a biographical gallery.","evidence_claim":"IWU states that a life-size bronze bust of each Society of World Changers inductee is permanently displayed in the Hall of Honor in Jackson Library’s rotunda.","source_url":"https://www.indwes.edu/about/community-impact/sowc","source_title":"Society of World Changers","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located inside Jackson Library; visit during building access hours and follow current university visitor policies.","cost_status":"unknown","under21_safe":true},{"subject_id":"iwu-marion-barnes-student-center","subject_type":"place","entity_name":"Barnes Student Center","title":"Handle Several Campus Tasks in One Stop","subtitle":"Student-life hub with services, gathering areas, and dining","notes":"Use the building as a between-class waypoint for student services, the post office, bookstore, health center, academic support, or a planned meetup.","short_summary":"A shared campus hub where everyday errands and informal connection overlap.","evidence_claim":"The IWU catalog calls Barnes Student Center the Marion campus’s central hub and lists student services, gathering amenities, dining, a theater, post office, health center, and academic support.","source_url":"https://catalog.indwes.edu/collegeofartsandsciencesoncampus/casinstructionalfacilities","source_title":"CAS - Instructional Facilities","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Individual offices, venues, and dining operations maintain their own schedules and access requirements.","cost_status":"unknown","under21_safe":true},{"subject_id":"iwu-marion-learning-center","subject_type":"study_space","entity_name":"The Learning Center","title":"Turn a Difficult Assignment Into a Work Plan","subtitle":"Academic-support space in Barnes Student Center","notes":"Arrive with a specific course question and ask about peer tutoring, academic coaching, structured study, writing help, or research support.","short_summary":"A collaborative academic-support setting for building skills and getting targeted help.","evidence_claim":"IWU describes The Learning Center as a central hub offering peer tutoring, academic coaching, structured study opportunities, and additional writing, research, and subject support.","source_url":"https://www.indwes.edu/about/centers-institutes/academic-thriving/","source_title":"Center for Academic Thriving","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The Center for Academic Thriving is listed in Barnes Student Center, Suite 260; confirm appointments and current service hours directly.","cost_status":"unknown","under21_safe":true},{"subject_id":"iwu-marion-thriving-lounge","subject_type":"study_space","entity_name":"The Thriving Lounge","title":"Switch Between Solo Work and Peer Connection","subtitle":"Study-and-connect space within the Center for Academic Thriving","notes":"Choose this lounge when you want room to work independently but still stay near peers and academic-support staff in Barnes Student Center.","short_summary":"A flexible lounge intended for both independent study and working alongside others.","evidence_claim":"IWU describes The Thriving Lounge as a welcoming space where students can study, connect, and work either independently or alongside peers.","source_url":"https://www.indwes.edu/about/centers-institutes/academic-thriving/","source_title":"Center for Academic Thriving","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located with the Center for Academic Thriving in Barnes Student Center, Suite 260; current open hours are not published on the cited page.","cost_status":"unknown","under21_safe":true},{"subject_id":"iwu-marion-recreation-wellness-center","subject_type":"place","entity_name":"Recreation and Wellness Center","title":"Build Movement Into the Academic Day","subtitle":"Campus facility for recreation, training, and fitness","notes":"Check the activity areas and current schedule before going; student access covers recreational and training equipment, with some area-specific closures.","short_summary":"The Marion campus’s primary shared facility for exercise, recreation, and health education.","evidence_claim":"IWU identifies the Recreation and Wellness Center as its primary campus site for health education and fitness and says its recreational and training equipment is accessible to IWU students.","source_url":"https://www.indwes.edu/about/life-at-iwu/campus-rec/recreation-and-wellness-center","source_title":"Rec and Wellness Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Academic-year hours are Monday–Friday 6:00 a.m.–10:30 p.m., Saturday 8:00 a.m.–7:00 p.m., and Sunday 5:00–10:00 p.m.; area closures apply.","cost_status":"unknown","under21_safe":true},{"subject_id":"iwu-marion-williams-prayer-chapel","subject_type":"place","entity_name":"Williams Prayer Chapel","title":"Take a Quiet Pause Between Commitments","subtitle":"Campus sanctuary for prayer, reflection, and meditation","notes":"Step inside for a brief quiet reset, personal prayer, journaling, or reflection; respect the contemplative purpose and any posted use guidance.","short_summary":"A dedicated small-scale retreat from the pace of classes and campus activities.","evidence_claim":"IWU describes Williams Prayer Chapel as a sanctuary intended for personal prayer, reflection, and meditation on the Marion campus.","source_url":"https://www.indwes.edu/about/profile/","source_title":"University Profile","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited university page does not publish current opening hours; observe posted access rules and scheduled uses.","cost_status":"unknown","under21_safe":true},{"subject_id":"iwu-marion-beard-art-center-galleries","subject_type":"place","entity_name":"Beard Art Center Galleries","title":"Use a Changing Exhibition as a Creative Reset","subtitle":"Gallery spaces located off Beard Art Center’s main lobby","notes":"Check for a current exhibition or artist visit, then bring a classmate to compare observations and discuss how the work was presented.","short_summary":"Rotating exhibitions create a recurring reason to step into Beard Art Center beyond class time.","evidence_claim":"IWU says Beard Art Center’s galleries are off the main lobby and host shifting exhibitions, visiting artists, lectures, and openings where students can meet professionals.","source_url":"https://www.indwes.edu/academics/cas/school-of-arts-and-humanities/division-of-art-and-design/","source_title":"Division of Art+Design","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Exhibition and event schedules vary; verify current gallery access and any event-specific requirements before visiting.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:44:37.744101Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa12-f028-78f0-9edb-ded157079443.1786606972968602000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+27,022
+
+{"complete":true,"school_name":"Indiana Wesleyan University-Marion","town_name":"Marion","boards":[{"complete":true,"school_name":"Indiana Wesleyan University-Marion","town_name":"Marion","template_id":"college-campus-tour-skips","title":"What the Campus Tour Skips: 10 Places Students Share With Each Other","description":"Ten documented Marion-campus spaces for studying, creating, exercising, reflecting, meeting, and exploring between scheduled stops.","icon":"style","cards":[{"subject_id":"iwu-marion-jackson-library","subject_type":"study_space","entity_name":"Jackson Library","title":"Set Up for a Research Session","subtitle":"Study, meeting, and research space at the center of campus","notes":"Bring a research task or group agenda; the library provides workstations, wireless access, research help, and spaces designed for focused work.","short_summary":"A practical base for research help, computer access, and individual or collaborative study.","evidence_claim":"IWU identifies Jackson Library on its Marion campus and says it provides spaces for studying, meeting, and research, plus workstations and research assistance.","source_url":"https://www.indwes.edu/academics/library.html","source_title":"University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Library access and service availability may vary by academic calendar; check university information before visiting.","cost_status":"unknown","under21_safe":true},{"subject_id":"iwu-marion-jackson-library-24-hour-study-lounge","subject_type":"study_space","entity_name":"Jackson Library 24-Hour Study Lounge","title":"Keep Working After the Main Library Closes","subtitle":"A specifically documented round-the-clock study area","notes":"Use the lounge when coursework extends beyond regular library service hours; confirm entry rules and bring the campus credentials required for access.","short_summary":"The library’s designated option for study outside its standard staffed schedule.","evidence_claim":"IWU’s library page explicitly lists a 24-hour study lounge among Jackson Library’s spaces for studying, meeting, and research.","source_url":"https://www.indwes.edu/academics/library.html","source_title":"University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page identifies this as a 24-hour study lounge; campus credential and holiday or break restrictions are not stated publicly.","cost_status":"unknown","under21_safe":true},{"subject_id":"iwu-marion-one-button-studio","subject_type":"place","entity_name":"One Button Studio","title":"Record a Presentation Without a Full Production Setup","subtitle":"Reservable media studio on Jackson Library’s lower level","notes":"Reserve the studio for a video essay, presentation rehearsal, interview, or podcast; bring a thumb drive and do not book it for ordinary group study.","short_summary":"A student-accessible recording room built to simplify polished video and audio projects.","evidence_claim":"IWU says the lower-level Jackson Library studio is available by reservation to all IWU students, faculty, and staff for production uses including presentations and podcasts.","source_url":"https://kb.indwes.edu/Classroom_Technology/One_Button_Studio/About_the_One_Button_Studio","source_title":"About the One Button Studio","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Reservation and IWU affiliation are required; the university states that the studio is for production rather than individual or group study.","cost_status":"unknown","under21_safe":true},{"subject_id":"iwu-marion-world-changers-hall-of-honor","subject_type":"place","entity_name":"Society of World Changers Hall of Honor","title":"Read the Stories Behind the Library Rotunda","subtitle":"Permanent bronze-bust display inside Jackson Library","notes":"Walk the rotunda slowly and use the displayed inductees as prompts for conversation, reflection, or follow-up research in the library.","short_summary":"A permanent campus collection that turns the library rotunda into a biographical gallery.","evidence_claim":"IWU states that a life-size bronze bust of each Society of World Changers inductee is permanently displayed in the Hall of Honor in Jackson Library’s rotunda.","source_url":"https://www.indwes.edu/about/community-impact/sowc","source_title":"Society of World Changers","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located inside Jackson Library; visit during building access hours and follow current university visitor policies.","cost_status":"unknown","under21_safe":true},{"subject_id":"iwu-marion-barnes-student-center","subject_type":"place","entity_name":"Barnes Student Center","title":"Handle Several Campus Tasks in One Stop","subtitle":"Student-life hub with services, gathering areas, and dining","notes":"Use the building as a between-class waypoint for student services, the post office, bookstore, health center, academic support, or a planned meetup.","short_summary":"A shared campus hub where everyday errands and informal connection overlap.","evidence_claim":"The IWU catalog calls Barnes Student Center the Marion campus’s central hub and lists student services, gathering amenities, dining, a theater, post office, health center, and academic support.","source_url":"https://catalog.indwes.edu/collegeofartsandsciencesoncampus/casinstructionalfacilities","source_title":"CAS - Instructional Facilities","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Individual offices, venues, and dining operations maintain their own schedules and access requirements.","cost_status":"unknown","under21_safe":true},{"subject_id":"iwu-marion-learning-center","subject_type":"study_space","entity_name":"The Learning Center","title":"Turn a Difficult Assignment Into a Work Plan","subtitle":"Academic-support space in Barnes Student Center","notes":"Arrive with a specific course question and ask about peer tutoring, academic coaching, structured study, writing help, or research support.","short_summary":"A collaborative academic-support setting for building skills and getting targeted help.","evidence_claim":"IWU describes The Learning Center as a central hub offering peer tutoring, academic coaching, structured study opportunities, and additional writing, research, and subject support.","source_url":"https://www.indwes.edu/about/centers-institutes/academic-thriving/","source_title":"Center for Academic Thriving","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The Center for Academic Thriving is listed in Barnes Student Center, Suite 260; confirm appointments and current service hours directly.","cost_status":"unknown","under21_safe":true},{"subject_id":"iwu-marion-thriving-lounge","subject_type":"study_space","entity_name":"The Thriving Lounge","title":"Switch Between Solo Work and Peer Connection","subtitle":"Study-and-connect space within the Center for Academic Thriving","notes":"Choose this lounge when you want room to work independently but still stay near peers and academic-support staff in Barnes Student Center.","short_summary":"A flexible lounge intended for both independent study and working alongside others.","evidence_claim":"IWU describes The Thriving Lounge as a welcoming space where students can study, connect, and work either independently or alongside peers.","source_url":"https://www.indwes.edu/about/centers-institutes/academic-thriving/","source_title":"Center for Academic Thriving","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located with the Center for Academic Thriving in Barnes Student Center, Suite 260; current open hours are not published on the cited page.","cost_status":"unknown","under21_safe":true},{"subject_id":"iwu-marion-recreation-wellness-center","subject_type":"place","entity_name":"Recreation and Wellness Center","title":"Build Movement Into the Academic Day","subtitle":"Campus facility for recreation, training, and fitness","notes":"Check the activity areas and current schedule before going; student access covers recreational and training equipment, with some area-specific closures.","short_summary":"The Marion campus’s primary shared facility for exercise, recreation, and health education.","evidence_claim":"IWU identifies the Recreation and Wellness Center as its primary campus site for health education and fitness and says its recreational and training equipment is accessible to IWU students.","source_url":"https://www.indwes.edu/about/life-at-iwu/campus-rec/recreation-and-wellness-center","source_title":"Rec and Wellness Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Academic-year hours are Monday–Friday 6:00 a.m.–10:30 p.m., Saturday 8:00 a.m.–7:00 p.m., and Sunday 5:00–10:00 p.m.; area closures apply.","cost_status":"unknown","under21_safe":true},{"subject_id":"iwu-marion-williams-prayer-chapel","subject_type":"place","entity_name":"Williams Prayer Chapel","title":"Take a Quiet Pause Between Commitments","subtitle":"Campus sanctuary for prayer, reflection, and meditation","notes":"Step inside for a brief quiet reset, personal prayer, journaling, or reflection; respect the contemplative purpose and any posted use guidance.","short_summary":"A dedicated small-scale retreat from the pace of classes and campus activities.","evidence_claim":"IWU describes Williams Prayer Chapel as a sanctuary intended for personal prayer, reflection, and meditation on the Marion campus.","source_url":"https://www.indwes.edu/about/profile/","source_title":"University Profile","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited university page does not publish current opening hours; observe posted access rules and scheduled uses.","cost_status":"unknown","under21_safe":true},{"subject_id":"iwu-marion-beard-art-center-galleries","subject_type":"place","entity_name":"Beard Art Center Galleries","title":"Use a Changing Exhibition as a Creative Reset","subtitle":"Gallery spaces located off Beard Art Center’s main lobby","notes":"Check for a current exhibition or artist visit, then bring a classmate to compare observations and discuss how the work was presented.","short_summary":"Rotating exhibitions create a recurring reason to step into Beard Art Center beyond class time.","evidence_claim":"IWU says Beard Art Center’s galleries are off the main lobby and host shifting exhibitions, visiting artists, lectures, and openings where students can meet professionals.","source_url":"https://www.indwes.edu/academics/cas/school-of-arts-and-humanities/division-of-art-and-design/","source_title":"Division of Art+Design","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Exhibition and event schedules vary; verify current gallery access and any event-specific requirements before visiting.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}

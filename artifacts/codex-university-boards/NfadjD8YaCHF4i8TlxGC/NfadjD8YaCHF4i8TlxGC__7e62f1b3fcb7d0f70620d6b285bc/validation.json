@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.loyola.edu/department/first-generation-student-success/faqs.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loyola.edu/department/first-generation-student-success/faqs.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.loyola.edu/department/thrive-center/identity-formation/community-spaces/center-intercultural-engagement.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loyola.edu/department/thrive-center/about/community-spaces/center-intercultural-engagement.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.loyola.edu/department/thrive-center/about/community-spaces/commuter-student-spaces.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loyola.edu/department/thrive-center/about/community-spaces/commuter-student-spaces.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.loyola.edu/department/student-athletes/support/enrichment/study.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loyola.edu/department/student-athletes/support/enrichment/study.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.loyola.edu/department/recreation-wellness/facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loyola.edu/department/recreation-wellness/facilities/",
+      "error": ""
+    },
+    {
+      "url": "https://www.loyola.edu/department/recreation-wellness/outdoor/basecamp.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loyola.edu/department/recreation-wellness/outdoor/basecamp.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

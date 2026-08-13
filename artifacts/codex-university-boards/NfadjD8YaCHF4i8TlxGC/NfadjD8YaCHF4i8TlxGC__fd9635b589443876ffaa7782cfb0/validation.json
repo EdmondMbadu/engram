@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://library.csusm.edu/node/111",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csusm.edu/node/111",
+      "error": ""
+    },
+    {
+      "url": "https://library.csusm.edu/study-rooms",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csusm.edu/study-rooms",
+      "error": ""
+    },
+    {
+      "url": "https://www.csusm.edu/iits/iitsforyou/studentservicesguidefinal.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusm.edu/iits/iitsforyou/studentservicesguidefinal.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://news.csusm.edu/at-age-20-kellogg-library-keeps-reinventing-itself-to-serve-students/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.csusm.edu/at-age-20-kellogg-library-keeps-reinventing-itself-to-serve-students/",
+      "error": ""
+    },
+    {
+      "url": "https://library.csusm.edu/makery-general-information",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csusm.edu/makery-general-information",
+      "error": ""
+    },
+    {
+      "url": "https://news.csusm.edu/academic-success-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.csusm.edu/academic-success-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.csusm.edu/dos/documents/academic_support_resources_flyer_2023.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusm.edu/dos/documents/academic_support_resources_flyer_2023.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

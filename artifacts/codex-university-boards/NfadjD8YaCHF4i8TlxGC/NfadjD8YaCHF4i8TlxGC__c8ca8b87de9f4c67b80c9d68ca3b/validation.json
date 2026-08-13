@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.wendys.com/united-states/ny/geneseo/4158-lakeville-road",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/ny/geneseo/4158-lakeville-road",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ny/geneseo/4200-lakeville-road.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ny/geneseo/4200-lakeville-road.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/ny/geneseo/4162-lakeville-rd/3204.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/ny/geneseo/4162-lakeville-rd/3204.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.wegmans.com/stores/geneseo-ny?cid=GMB_Wegmans_2024%3Aaw%3Aow%3Agb%3Agb%3Aao%3A%3A",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.wegmans.com/stores/geneseo-ny?cid=GMB_Wegmans_2024%3Aaw%3Aow%3Agb%3Agb%3Aao%3A%3A",
+      "error": ""
+    },
+    {
+      "url": "https://www.7-eleven.com/locations/ny/geneseo/137-main-st-35124?yext=35124",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.7-eleven.com/locations/ny/geneseo/137-main-st-35124?yext=35124",
+      "error": ""
+    },
+    {
+      "url": "https://www.pizzapauls.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pizzapauls.com/",
+      "error": ""
+    },
+    {
+      "url": "https://miasgeneseo.com/contact/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://miasgeneseo.com/contact/",
+      "error": ""
+    },
+    {
+      "url": "https://webapps.geneseo.edu/cas-menus/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://webapps.geneseo.edu/cas-menus/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

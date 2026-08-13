@@ -1,0 +1,61 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "WjSQR4GxpjavFUAKkw4F",
+    "schoolName": "Calvin University",
+    "shortSchoolName": "Calvin University",
+    "townName": "Grand Rapids",
+    "state": "MI",
+    "countryCode": "US",
+    "unitId": "169080",
+    "website": "https://www.calvin.edu/",
+    "latitude": 42.929916,
+    "longitude": -85.587548,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/0/01/Calvin_College_seal.svg/330px-Calvin_College_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=calvin.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Hekman Library Third-Floor Lobby",
+    "Historical Studies Library",
+    "Science Building Main-Level Lobby",
+    "Covenant Fine Arts Center Practice Rooms",
+    "School of Business–DeVos Connector Lobby",
+    "Spoelhof University Center Lobby",
+    "Spoelhof Fieldhouse Complex Lobby",
+    "North Hall Glass Lobby",
+    "Hekman Library Basement Lobby",
+    "Commons Union Study Area",
+    "Hekman Library",
+    "Commons Union",
+    "H. Henry Meeter Center for Calvin Studies",
+    "Calvin Ecosystem Preserve",
+    "Bunker Interpretive Center",
+    "Venema Plaza & Gardens",
+    "Bruce Dice Mineralogical Museum",
+    "Center Art Gallery",
+    "Calvin Observatory",
+    "Calvin Climbing Center"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

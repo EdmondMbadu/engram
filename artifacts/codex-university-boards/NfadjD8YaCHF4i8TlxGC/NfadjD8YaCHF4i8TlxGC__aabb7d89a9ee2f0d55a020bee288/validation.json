@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.coralgables.com/attractions/shops-merrick-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.coralgables.com/attractions/shops-merrick-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.booksandbooks.com/contact-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.booksandbooks.com/contact-us/",
+      "error": ""
+    },
+    {
+      "url": "https://gablescinema.com/location-and-parking/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gablescinema.com/location-and-parking/",
+      "error": ""
+    },
+    {
+      "url": "https://www.coralgables.com/attractions/coral-gables-museum",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.coralgables.com/attractions/coral-gables-museum",
+      "error": ""
+    },
+    {
+      "url": "https://actorsplayhouse.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://actorsplayhouse.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.coralgables.com/attractions/giralda-plaza",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.coralgables.com/attractions/giralda-plaza",
+      "error": ""
+    },
+    {
+      "url": "https://www.coralgables.com/attractions/venetian-pool",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.coralgables.com/attractions/venetian-pool",
+      "error": ""
+    },
+    {
+      "url": "https://www.coralgables.com/attractions/biltmore-hotel",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.coralgables.com/attractions/biltmore-hotel",
+      "error": ""
+    },
+    {
+      "url": "https://www.coralgables.com/attractions/matheson-hammock-park-marina",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.coralgables.com/attractions/matheson-hammock-park-marina",
+      "error": ""
+    },
+    {
+      "url": "https://fairchildgarden.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fairchildgarden.org/visit/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

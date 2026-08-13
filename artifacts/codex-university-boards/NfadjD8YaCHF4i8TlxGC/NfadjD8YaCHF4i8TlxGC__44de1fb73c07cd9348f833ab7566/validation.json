@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://roadhousecafegf.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://roadhousecafegf.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/nd/grand-forks/1301-s-washington-st.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/nd/grand-forks/1301-s-washington-st.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/nd/grand-forks/1503-s-washington",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/nd/grand-forks/1503-s-washington",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/nd/grand-forks/1125-s-washington-st/1149.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/nd/grand-forks/1125-s-washington-st/1149.html",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/north-dakota/grand-forks/2705-s-washington",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/north-dakota/grand-forks/2705-s-washington",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/nd/grand-forks",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/nd/grand-forks",
+      "error": ""
+    },
+    {
+      "url": "https://www.culvers.com/restaurants/grand-forks",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.culvers.com/restaurants/grand-forks",
+      "error": ""
+    },
+    {
+      "url": "https://www.perkinsrestaurants.com/locations/us/nd/grand-forks/1305-s-columbia-road/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.perkinsrestaurants.com/locations/us/nd/grand-forks/1305-s-columbia-road/",
+      "error": ""
+    },
+    {
+      "url": "https://www.skies322.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.skies322.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitgrandforks.com/directory/dennys/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitgrandforks.com/directory/dennys/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

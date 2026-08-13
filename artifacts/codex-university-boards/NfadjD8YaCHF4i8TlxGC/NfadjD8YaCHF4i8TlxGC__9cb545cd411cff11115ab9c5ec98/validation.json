@@ -1,0 +1,97 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://traditions.illinoisstate.edu/spots/quad/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://traditions.illinoisstate.edu/spots/quad/",
+      "error": ""
+    },
+    {
+      "url": "https://bonestudentcenter.illinoisstate.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bonestudentcenter.illinoisstate.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://library.illinoisstate.edu/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.illinoisstate.edu/about/",
+      "error": ""
+    },
+    {
+      "url": "https://library.illinoisstate.edu/about/spaces/study/group-study/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.illinoisstate.edu/about/spaces/study/group-study/",
+      "error": ""
+    },
+    {
+      "url": "https://library.illinoisstate.edu/services/technology/drop-in-office/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.illinoisstate.edu/services/technology/drop-in-office/",
+      "error": ""
+    },
+    {
+      "url": "https://library.illinoisstate.edu/services/technology/make-it-space/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.illinoisstate.edu/services/technology/make-it-space/",
+      "error": ""
+    },
+    {
+      "url": "https://multiculturalcenter.illinoisstate.edu/spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://multiculturalcenter.illinoisstate.edu/spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://galleries.illinoisstate.edu/about/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://galleries.illinoisstate.edu/about/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://campusrecreation.illinoisstate.edu/facilities/center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusrecreation.illinoisstate.edu/facilities/center/",
+      "error": ""
+    },
+    {
+      "url": "https://campusrecreation.illinoisstate.edu/facilities/adventure-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusrecreation.illinoisstate.edu/facilities/adventure-center/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Bone Student Center",
+    "Milner Library",
+    "Student Fitness Center and McCormick Hall"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

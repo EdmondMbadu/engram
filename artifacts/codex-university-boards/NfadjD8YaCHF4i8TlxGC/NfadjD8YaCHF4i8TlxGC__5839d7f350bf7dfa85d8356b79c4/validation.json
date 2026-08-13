@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://dennys.com/location/denny-s-6150-490150/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://dennys.com/location/denny-s-6150-490150/",
+      "error": ""
+    },
+    {
+      "url": "https://www.castillopizzeriarestaurant.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.castillopizzeriarestaurant.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hoonkingchinese.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hoonkingchinese.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.harbordiner.com/info-contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.harbordiner.com/info-contact",
+      "error": ""
+    },
+    {
+      "url": "https://kingphoenixnj.com/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://kingphoenixnj.com/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.flavorsofaroma.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flavorsofaroma.com/",
+      "error": ""
+    },
+    {
+      "url": "https://gourmetitaliancuisine.com/madisonroom/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gourmetitaliancuisine.com/madisonroom/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hyatt.com/destination-by-hyatt/en-US/unj11-seaview-hotel/dining",
+      "ok": true,
+      "conclusive": true,
+      "status": 429,
+      "finalUrl": "https://www.hyatt.com/destination-by-hyatt/en-US/unj11-seaview-hotel/dining",
+      "error": ""
+    },
+    {
+      "url": "https://www.smithvilleinn.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smithvilleinn.com/",
+      "error": ""
+    },
+    {
+      "url": "https://jasmineac.com/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://jasmineac.com/",
+      "error": "fetch failed"
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

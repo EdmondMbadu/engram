@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.raisingcanes.com/ca/northridge/19310-business-center-drive",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.raisingcanes.com/ca/northridge/19310-business-center-drive",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ca/northridge/18100-parthenia-st.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ca/northridge/18100-parthenia-st.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dennys.com/ca/northridge/248723-bd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dennys.com/ca/northridge",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.ihop.com/en-us/ca/northridge/breakfast-9012-tampa-ave-3527/late-night-food",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.ihop.com/en-us/ca/northridge/breakfast-9012-tampa-ave-3527/late-night-food",
+      "error": ""
+    },
+    {
+      "url": "https://locations.in-n-out.com/208-Northridge",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.in-n-out.com/208-Northridge",
+      "error": ""
+    },
+    {
+      "url": "https://www.lum-ka-naad.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lum-ka-naad.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/ca/northridge/18507-devonshire-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/ca/northridge/18507-devonshire-street",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jackinthebox.com/us/ca/northridge/11216-tampa-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jackinthebox.com/us/ca/northridge/11216-tampa-ave",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/ca/northridge/17700-w-roscoe-blvd/36268.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/ca/northridge/17700-w-roscoe-blvd/36268.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.deltaco.com/us/ca/northridge/8941-corbin-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.deltaco.com/us/ca/northridge/8941-corbin-ave",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

@@ -1,0 +1,62 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "zJH1mWjcd36USFinOZSH",
+    "schoolName": "University of Missouri-Kansas City",
+    "shortSchoolName": "University of Missouri-Kansas City",
+    "townName": "Kansas City",
+    "state": "MO",
+    "countryCode": "US",
+    "unitId": "178402",
+    "website": "https://www.umkc.edu/",
+    "latitude": 39.034179,
+    "longitude": -94.582141,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=umkc.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=umkc.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at University of Missouri-Kansas City, Shared as Cards",
+  "excluded_subjects": [
+    "The Nelson-Atkins Museum of Art",
+    "Donald J. Hall Sculpture Park",
+    "Kemper Museum of Contemporary Art",
+    "Emily & Todd Voth Artspace at KCAI",
+    "Community Christian Church",
+    "Plaza Branch, Kansas City Public Library",
+    "Ewing and Muriel Kauffman Memorial Garden",
+    "Linda Hall Library",
+    "Linda Hall Library Arboretum",
+    "The National Museum of Toys and Miniatures",
+    "UMKC Fight Song",
+    "Roo Up Hand Sign",
+    "UMKC Alma Mater",
+    "Old Gold and Royal Blue",
+    "Roo Blue Fridays",
+    "KC Roo",
+    "Blue and Gold Week",
+    "Annual Regalia Run",
+    "Traditions Challenge",
+    "Traditions Keeper Ceremony"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

@@ -1,0 +1,60 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "WvBumfqEfTmDF11olILs",
+    "schoolName": "Thomas Jefferson University",
+    "shortSchoolName": "Thomas Jefferson University",
+    "townName": "Philadelphia",
+    "state": "PA",
+    "countryCode": "US",
+    "unitId": "216366",
+    "website": "https://www.jefferson.edu/",
+    "latitude": 39.948274,
+    "longitude": -75.158266,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/2/2a/Thomas_Jefferson_University_seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=jefferson.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Scott Memorial Library",
+    "Scott Memorial Library Second-Floor Group Study Rooms",
+    "Scott Memorial Library Third-Floor Individual Study Rooms",
+    "Scott Memorial Library Fourth-Floor Quiet Study",
+    "Paul J. Gutman Library",
+    "Gutman Library Study Room 101",
+    "Rena Rowan Reading Room",
+    "Kanbar Campus Center",
+    "Jefferson Alumni Hall Northwest Student Lounge",
+    "Curtis Building Second Floor Lobby",
+    "Reading Room (First Floor)",
+    "Group Study Rooms (Second Floor)",
+    "Casual Reading Area (Second Floor)",
+    "Group Study Tables (Second Floor)",
+    "Study Carrels (Third Floor)",
+    "Study Carrels (Fourth Floor)",
+    "Study Room 101",
+    "Second-Floor Study Rooms",
+    "Ground Floor Quiet Study Space"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

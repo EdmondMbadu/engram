@@ -1,0 +1,57 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "YGHdWPQurb7yOn0WnqqQ",
+    "schoolName": "University of Kansas",
+    "shortSchoolName": "University of Kansas",
+    "townName": "Lawrence",
+    "state": "KS",
+    "countryCode": "US",
+    "unitId": "155317",
+    "website": "https://ku.edu/",
+    "latitude": 38.958549,
+    "longitude": -95.247567,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/0/0b/University_of_Kansas_seal.svg/120px-University_of_Kansas_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=ku.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain University of Kansas",
+  "excluded_subjects": [
+    "Watson Library Third Floor Study Space",
+    "Watson Library Fourth Floor Study Space",
+    "Watson Library Fifth Floor Study Space",
+    "Studio K",
+    "Anschutz Library Second Floor Quiet Study",
+    "Anschutz Library Third Floor Group Study Space",
+    "David Beaham Reading Room",
+    "Murphy Art & Architecture Library Study Rooms",
+    "Joe and Joyce Hale Media Center",
+    "Spahr Engineering Library Study Spaces",
+    "Watson Library",
+    "Anschutz Library",
+    "Anschutz Library Makerspace",
+    "Anschutz Library Reflection Room",
+    "Spahr Engineering Library",
+    "Murphy Art & Architecture Library",
+    "Marilyn Stokstad Reading Room"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

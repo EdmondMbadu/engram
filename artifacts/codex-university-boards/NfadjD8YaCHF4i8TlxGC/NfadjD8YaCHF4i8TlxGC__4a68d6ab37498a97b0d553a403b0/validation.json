@@ -1,0 +1,69 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Event schedules, ticketing, and facility access can change; verify directly with Luther before each visit."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.luther.edu/offices/programming/conferences-facility-rental",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.luther.edu/offices/programming/conferences-facility-rental",
+      "error": ""
+    },
+    {
+      "url": "https://www.luther.edu/library/about/services",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.luther.edu/library/about/services",
+      "error": ""
+    },
+    {
+      "url": "https://www.luther.edu/academics/innovative-facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.luther.edu/academics/innovative-facilities",
+      "error": ""
+    },
+    {
+      "url": "https://www.luther.edu/admission-aid/online-campus-tour/cfl",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.luther.edu/admission-aid/online-campus-tour/cfl",
+      "error": ""
+    },
+    {
+      "url": "https://www.luther.edu/admission-aid/online-campus-tour/jenson-noble",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.luther.edu/admission-aid/online-campus-tour/jenson-noble",
+      "error": ""
+    },
+    {
+      "url": "https://www.luther.edu/departments/biology/facilities-natural-areas",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.luther.edu/departments/biology/facilities-natural-areas",
+      "error": ""
+    },
+    {
+      "url": "https://www.luther.edu/offices/residence-life/new-student-information",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.luther.edu/offices/residence-life/new-student-information",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

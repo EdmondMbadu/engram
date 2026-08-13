@@ -1,0 +1,79 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://studentlife.tcnj.edu/about/brower-student-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://studentlife.tcnj.edu/about/brower-student-center/",
+      "error": ""
+    },
+    {
+      "url": "https://studentlife.tcnj.edu/about/brower-student-center/information-desk/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://studentlife.tcnj.edu/about/brower-student-center/information-desk/",
+      "error": ""
+    },
+    {
+      "url": "https://library.tcnj.edu/about-the-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://library.tcnj.edu/about-the-library/",
+      "error": ""
+    },
+    {
+      "url": "https://tcnjartgallery.tcnj.edu/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://tcnjartgallery.tcnj.edu/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://studentlife.tcnj.edu/about/recreation-and-wellness/recreation-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://studentlife.tcnj.edu/about/recreation-and-wellness/recreation-center/",
+      "error": ""
+    },
+    {
+      "url": "https://tcnjcenterforthearts.tcnj.edu/wp-content/uploads/sites/31/2013/10/D182B-CFTA-Map-Update-CMYK-printres.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://tcnjcenterforthearts.tcnj.edu/wp-content/uploads/sites/31/2013/10/D182B-CFTA-Map-Update-CMYK-printres.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://campuslife.tcnj.edu/housing-dining/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://campuslife.tcnj.edu/housing-dining/",
+      "error": ""
+    },
+    {
+      "url": "https://housing.tcnj.edu/first-year-exemption/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://housing.tcnj.edu/first-year-exemption/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Brower Student Center"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.du.edu/about/history-traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.du.edu/about/history-traditions",
+      "error": ""
+    },
+    {
+      "url": "https://studentaffairs.du.edu/stay-involved",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentaffairs.du.edu/stay-involved",
+      "error": ""
+    },
+    {
+      "url": "https://www.du.edu/news/history-homecoming-du",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.du.edu/news/history-homecoming-du",
+      "error": ""
+    },
+    {
+      "url": "https://crimsonconnect.du.edu/dupb/about-dupb/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://crimsonconnect.du.edu/dupb/about-dupb/",
+      "error": ""
+    },
+    {
+      "url": "https://www.du.edu/news/your-guide-du-traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.du.edu/news/your-guide-du-traditions",
+      "error": ""
+    },
+    {
+      "url": "https://studentaffairs.du.edu/stay-involved/campus-traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentaffairs.du.edu/stay-involved/campus-traditions",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

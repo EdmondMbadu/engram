@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://library.uab.edu/about/policies",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.uab.edu/about/policies",
+      "error": ""
+    },
+    {
+      "url": "https://library.uab.edu/about/news-and-events/announcements/changes-to-sterne-library-quiet-zone",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.uab.edu/about/news-and-events/announcements/changes-to-sterne-library-quiet-zone",
+      "error": ""
+    },
+    {
+      "url": "https://library.uab.edu/reserve-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.uab.edu/reserve-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://library.uab.edu/reserve-spaces/sterne-library-room-policies",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.uab.edu/reserve-spaces/sterne-library-room-policies",
+      "error": ""
+    },
+    {
+      "url": "https://library.uab.edu/about/news-and-events/announcements/see-inside-sternes-new-sensory-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.uab.edu/about/news-and-events/announcements/see-inside-sternes-new-sensory-room",
+      "error": ""
+    },
+    {
+      "url": "https://library.uab.edu/about/news-and-events/announcements/use-this-new-interactive-map-feature-to-book-study-rooms-seminar-rooms-and-other-uab-libraries-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.uab.edu/about/news-and-events/announcements/use-this-new-interactive-map-feature-to-book-study-rooms-seminar-rooms-and-other-uab-libraries-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://catalog.uab.edu/undergraduate/libraries/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.uab.edu/undergraduate/libraries/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.csulb.edu/student-affairs/student-life-development/pow-wow",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/student-affairs/student-life-development/pow-wow",
+      "error": ""
+    },
+    {
+      "url": "https://www.csulb.edu/article/round-n-round-n-down",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/article/round-n-round-n-down",
+      "error": ""
+    },
+    {
+      "url": "https://www.csulb.edu/news/article/sailing-to-science-week-of-welcome-opens-doors-for-students-at-the-beach",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/news/article/sailing-to-science-week-of-welcome-opens-doors-for-students-at-the-beach",
+      "error": ""
+    },
+    {
+      "url": "https://www.csulb.edu/news/article/admitted-to-committed-why-these-students-chose-csulb",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/news/article/admitted-to-committed-why-these-students-chose-csulb",
+      "error": ""
+    },
+    {
+      "url": "https://www.csulb.edu/news/article/best-places-to-snap-a-picture",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/news/article/best-places-to-snap-a-picture",
+      "error": ""
+    },
+    {
+      "url": "https://www.csulb.edu/commencement/what-to-expect",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.csulb.edu/commencement/what-to-expect",
+      "error": ""
+    },
+    {
+      "url": "https://www.csulb.edu/news/article/csulbs-cultural-celebrations-honor-graduates-identities-and-heritages-0",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/news/article/csulbs-cultural-celebrations-honor-graduates-identities-and-heritages-0",
+      "error": ""
+    },
+    {
+      "url": "https://longbeachstate.com/sports/2018/8/1/_trads_traditions_html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://longbeachstate.com/sports/2018/8/1/_trads_traditions_html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

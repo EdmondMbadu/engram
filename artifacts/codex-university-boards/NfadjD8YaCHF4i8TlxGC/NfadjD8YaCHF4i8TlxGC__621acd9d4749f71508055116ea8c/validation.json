@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.endicott.edu/student-life/callahan-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.endicott.edu/student-life/callahan-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.endicott.edu/student-life/student-services/campus-transportation---shuttle-services",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.endicott.edu/student-life/student-services/campus-transportation---shuttle-services",
+      "error": ""
+    },
+    {
+      "url": "https://www.endicott.edu/news-events/news/news-articles/2025/08/the-ultimate-guide-to-endicotts-beaches",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.endicott.edu/news-events/news/news-articles/2025/08/the-ultimate-guide-to-endicotts-beaches",
+      "error": ""
+    },
+    {
+      "url": "https://www.endicott.edu/about/arts-culture/manninen-center-for-the-arts/visitor-information-for-the-center-for-the-arts",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.endicott.edu/about/arts-culture/manninen-center-for-the-arts/visitor-information-for-the-center-for-the-arts",
+      "error": ""
+    },
+    {
+      "url": "https://www.endicott.edu/news-events/news/news-articles/2025/03/whats-fun-to-do-off-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.endicott.edu/news-events/news/news-articles/2025/03/whats-fun-to-do-off-campus",
+      "error": ""
+    },
+    {
+      "url": "https://www.endicott.edu/academics/academic-resources-support/academic-technology/technology-labs",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.endicott.edu/academics/academic-resources-support/academic-technology/technology-labs",
+      "error": ""
+    },
+    {
+      "url": "https://www.endicott.edu/admission/plan-a-visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.endicott.edu/admission/plan-a-visit",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

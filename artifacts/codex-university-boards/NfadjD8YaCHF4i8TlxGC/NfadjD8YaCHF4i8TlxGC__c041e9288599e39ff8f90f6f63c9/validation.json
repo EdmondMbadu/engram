@@ -1,0 +1,66 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "4 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.risd.edu/about/visiting-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.risd.edu/about/visiting-campus",
+      "error": ""
+    },
+    {
+      "url": "https://www.risd.edu/academics/campus-resources/fleet-library-risd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.risd.edu/academics/campus-resources/fleet-library-risd",
+      "error": ""
+    },
+    {
+      "url": "https://www.risd.edu/about/directory/edna-w-lawrence-nature-lab",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.risd.edu/about/directory/edna-w-lawrence-nature-lab",
+      "error": ""
+    },
+    {
+      "url": "https://risdmuseum.org/hours-admission",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://risdmuseum.org/hours-admission",
+      "error": ""
+    },
+    {
+      "url": "https://www.risd.edu/academics/campus-resources/gelman-student-exhibitions-gallery",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.risd.edu/academics/campus-resources/gelman-student-exhibitions-gallery",
+      "error": ""
+    },
+    {
+      "url": "https://www.risd.edu/sites/default/files/2025-09/risd-campus-map-directory-2025.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.risd.edu/sites/default/files/2025-09/risd-campus-map-directory-2025.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Fleet Library at RISD",
+    "Edna W. Lawrence Nature Lab",
+    "RISD Museum",
+    "Gelman Student Exhibitions Gallery"
+  ],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

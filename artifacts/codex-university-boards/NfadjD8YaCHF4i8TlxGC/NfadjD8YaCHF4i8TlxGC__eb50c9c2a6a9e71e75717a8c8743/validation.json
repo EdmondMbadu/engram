@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://arts.mit.edu/opportunities/arts-access/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arts.mit.edu/opportunities/arts-access/",
+      "error": ""
+    },
+    {
+      "url": "https://arts.mit.edu/start/wiesner-student-art-gallery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arts.mit.edu/start/wiesner-student-art-gallery/",
+      "error": ""
+    },
+    {
+      "url": "https://listart.mit.edu/exhibitions/2026-student-lending-art-program-exhibition-lottery",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://listart.mit.edu/exhibitions/2026-student-lending-art-program-exhibition-lottery",
+      "error": ""
+    },
+    {
+      "url": "https://arts.mit.edu/opportunities/for-students/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arts.mit.edu/opportunities/for-students/",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.mit.edu/about/firstyear/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.mit.edu/about/firstyear/",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.mit.edu/distinctive-collections/reading-room-policies/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.mit.edu/distinctive-collections/reading-room-policies/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "MIT List Visual Arts Center"
+  ],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

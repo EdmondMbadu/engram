@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.sxu.edu/student-life/get-involved/traditions.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sxu.edu/student-life/get-involved/traditions.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.sxu.edu/about/history-traditions/traditions.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sxu.edu/about/history-traditions/traditions.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.sxu.edu/news/articles/2025/sxu-to-host-2025-homecoming.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sxu.edu/news/articles/2025/sxu-to-host-2025-homecoming.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.sxu.edu/about/history-traditions/mission-day/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sxu.edu/about/history-traditions/mission-day/index.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

@@ -1,0 +1,72 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.kzoo.edu/about/location/lodging/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.kzoo.edu/about/location/lodging/",
+      "error": ""
+    },
+    {
+      "url": "https://homecoming.kzoo.edu/general-info/local-restaurants-and-bars/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://homecoming.kzoo.edu/general-info/local-restaurants-and-bars/",
+      "error": ""
+    },
+    {
+      "url": "https://www.kiarts.org/connect-visit/plan-your-visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.kiarts.org/connect-visit/plan-your-visit/",
+      "error": ""
+    },
+    {
+      "url": "https://kazoocivic.com/about-us/venues/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://kazoocivic.com/about-us/venues/",
+      "error": ""
+    },
+    {
+      "url": "https://www.kalamazoocity.org/files/assets/public/v/1/purchasing/bid-documents/2022/88011-001.0/88011.001.0-specifications.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.kalamazoocity.org/files/assets/public/v/1/purchasing/bid-documents/2022/88011-001.0/88011.001.0-specifications.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.kpl.gov/central/getting-here/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.kpl.gov/central/getting-here/",
+      "error": ""
+    },
+    {
+      "url": "https://kalamazoomuseum.org/visit/downtown-kalamazoo",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://kalamazoomuseum.org/visit/downtown-kalamazoo",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Kalamazoo Institute of Arts",
+    "Kalamazoo Valley Museum"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

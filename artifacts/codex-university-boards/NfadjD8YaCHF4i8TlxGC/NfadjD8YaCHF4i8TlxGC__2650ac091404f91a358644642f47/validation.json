@@ -1,0 +1,85 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.westpoint.edu/cadet-journey/cadet-life/day-in-the-life",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.westpoint.edu/cadet-journey/day-in-the-life",
+      "error": ""
+    },
+    {
+      "url": "https://www.haciendahighlandfalls.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.haciendahighlandfalls.com/",
+      "error": ""
+    },
+    {
+      "url": "https://parkrestauranthighlandfalls.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://parkrestauranthighlandfalls.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.wppizza.net/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.wppizza.net/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://deliziapizzahighlandfalls.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://deliziapizzahighlandfalls.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/ny/highland-falls/104-w-point-hwy/7121.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/ny/highland-falls/104-w-point-hwy/7121.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.toscospizza.com/new-windsor",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.toscospizza.com/new-windsor",
+      "error": ""
+    },
+    {
+      "url": "https://www.abcpizza.net/visit-abc-pizza-restaurant-location-local-food-new-windsor-ny",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.abcpizza.net/visit-abc-pizza-restaurant-location-local-food-new-windsor-ny",
+      "error": ""
+    },
+    {
+      "url": "https://www.farmersdelingrill.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://slicelife.com/?display_disabled_shop_notice=true&disabled_shop_name=www.farmersdelingrill.com",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

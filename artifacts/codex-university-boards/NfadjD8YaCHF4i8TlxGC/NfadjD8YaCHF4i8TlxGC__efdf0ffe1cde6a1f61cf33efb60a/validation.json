@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://garden.smith.edu/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://garden.smith.edu/visit",
+      "error": ""
+    },
+    {
+      "url": "https://garden.smith.edu/explore/outdoor-gardens",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://garden.smith.edu/explore/outdoor-gardens",
+      "error": ""
+    },
+    {
+      "url": "https://scma.smith.edu/accessing-collection",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://scma.smith.edu/accessing-collection",
+      "error": ""
+    },
+    {
+      "url": "https://www.smith.edu/about-smith/performing-arts/plan-your-visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smith.edu/about-smith/performing-arts/plan-your-visit",
+      "error": ""
+    },
+    {
+      "url": "https://forbeslibrary.org/blog/2025/08/27/grand-opening-of-new-stage/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://forbeslibrary.org/blog/2025/08/27/grand-opening-of-new-stage/",
+      "error": ""
+    },
+    {
+      "url": "https://forbeslibrary.org/help/neighborhood-free-book-boxes/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://forbeslibrary.org/help/neighborhood-free-book-boxes/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

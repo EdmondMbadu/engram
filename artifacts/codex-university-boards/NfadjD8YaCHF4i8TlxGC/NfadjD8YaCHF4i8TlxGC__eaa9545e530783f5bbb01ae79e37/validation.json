@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://library.sdsu.edu/spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.sdsu.edu/spaces",
+      "error": ""
+    },
+    {
+      "url": "https://library.sdsu.edu/spaces/after-hours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.sdsu.edu/spaces/after-hours",
+      "error": ""
+    },
+    {
+      "url": "https://library.sdsu.edu/spaces/reserve-study-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.sdsu.edu/spaces/reserve-study-room",
+      "error": ""
+    },
+    {
+      "url": "https://library.sdsu.edu/collections/africana-studies",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.sdsu.edu/collections/africana-studies",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.hws.edu/offices/campus-life/community-standards/administrative-policies.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hws.edu/offices/campus-life/community-standards/administrative-policies.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.hws.edu/offices/facilities/hours.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hws.edu/offices/facilities/hours.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.hws.edu/centers/lgbtq-plus/default.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hws.edu/centers/lgbtq-plus/default.aspx",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

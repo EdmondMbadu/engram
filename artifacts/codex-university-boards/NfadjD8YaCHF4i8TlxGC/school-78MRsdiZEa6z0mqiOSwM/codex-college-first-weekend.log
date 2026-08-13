@@ -1,0 +1,218 @@
+Reading additional input from stdin...
+2026-08-13T09:20:32.022491Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T09:20:32.037001Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T09:20:32.102017Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa6c-3116-7230-94f2-d5868e7a05e6.1786612822294566000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-terra
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa6c-56e3-7490-942f-909f1a331d9d
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"78MRsdiZEa6z0mqiOSwM","schoolName":"Tufts University","shortSchoolName":"Tufts University","townName":"Medford","state":"MA","countryCode":"US","website":"https://www.tufts.edu/","latitude":42.40855,"longitude":-71.118293},"templates":[{"id":"college-first-weekend","version":"1.0","titlePattern":"Your First Weekend at {school}, Shared as Cards","editorialBrief":"Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.","researchQueries":["new student orientation campus guide","first year student campus activities","weekend near campus students"],"count":10,"icon":"schedule","primarySubjectType":"sequence_stop","allowedSubjectTypes":["sequence_stop","place","activity"],"freshnessDays":180,"exactTitle":"Your First Weekend at Tufts University, Shared as Cards"}]}
+codex
+{"complete":false,"school_name":"Tufts University","town_name":"Medford","boards":[{"complete":false,"school_name":"Tufts University","town_name":"Medford","template_id":"college-first-weekend","title":"Your First Weekend at Tufts University, Shared as Cards","description":"I’m verifying ten distinct, under-21-safe weekend stops with direct sources and current access details.","icon":"schedule","cards":  
+ 
+
+  
+ 
+  [  
+   
+  
+ 
+  {"subject_id":"researching","subject_type":"sequence_stop","entity_name":"Research in progress","title":"Research in progress","subtitle":"Tufts University","notes":"I’m checking direct university and local sources before returning the completed board.","short_summary":"Collecting evidence for ten distinct, evergreen weekend stops.","evidence_claim":"Research is in progress.","source_url":"https://www.tufts.edu/","source_title":"Tufts University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  
+ 
+  
+ 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    
+ 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+   
+ 
+  
+  
+  
+  
+    
+ 
+  
+ 
+    
+  
+ 
+  
+ 			
+  
+ 			
+  
+ 			
+  
+ 			
+   
+ 
+  
+ 			            
+ 			
+  
+ 			            
+ 			
+  
+ 			
+ 
+  
+  
+  
+  
+  
+  
+   
+ 
+  
+  
+  
+  
+  
+   
+ 
+  
+  
+  
+  
+  
+   
+  
+ 
+  
+  
+  
+  ,{"subject_id":"researching-2","subject_type":"sequence_stop","entity_name":"Research in progress","title":"Research in progress","subtitle":"Tufts University","notes":"I’m checking direct university and local sources before returning the completed board.","short_summary":"Collecting evidence for ten distinct, evergreen weekend stops.","evidence_claim":"Research is in progress.","source_url":"https://www.tufts.edu/","source_title":"Tufts University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  
+ 
+  
+  
+  
+  
+  ,{"subject_id":"researching-3","subject_type":"sequence_stop","entity_name":"Research in progress","title":"Research in progress","subtitle":"Tufts University","notes":"I’m checking direct university and local sources before returning the completed board.","short_summary":"Collecting evidence for ten distinct, evergreen weekend stops.","evidence_claim":"Research is in progress.","source_url":"https://www.tufts.edu/","source_title":"Tufts University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  
+ 
+  
+  
+  
+  ,{"subject_id":"researching-4","subject_type":"sequence_stop","entity_name":"Research in progress","title":"Research in progress","subtitle":"Tufts University","notes":"I’m checking direct university and local sources before returning the completed board.","short_summary":"Collecting evidence for ten distinct, evergreen weekend stops.","evidence_claim":"Research is in progress.","source_url":"https://www.tufts.edu/","source_title":"Tufts University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  
+ 
+  
+  
+  
+  ,{"subject_id":"researching-5","subject_type":"sequence_stop","entity_name":"Research in progress","title":"Research in progress","subtitle":"Tufts University","notes":"I’m checking direct university and local sources before returning the completed board.","short_summary":"Collecting evidence for ten distinct, evergreen weekend stops.","evidence_claim":"Research is in progress.","source_url":"https://www.tufts.edu/","source_title":"Tufts University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  
+ 
+  
+  
+ 
+
+  ,{"subject_id":"researching-6","subject_type":"sequence_stop","entity_name":"Research in progress","title":"Research in progress","subtitle":"Tufts University","notes":"I’m checking direct university and local sources before returning the completed board.","short_summary":"Collecting evidence for ten distinct, evergreen weekend stops.","evidence_claim":"Research is in progress.","source_url":"https://www.tufts.edu/","source_title":"Tufts University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  
+ 
+  
+  
+  
+  ,{"subject_id":"researching-7","subject_type":"sequence_stop","entity_name":"Research in progress","title":"Research in progress","subtitle":"Tufts University","notes":"I’m checking direct university and local sources before returning the completed board.","short_summary":"Collecting evidence for ten distinct, evergreen weekend stops.","evidence_claim":"Research is in progress.","source_url":"https://www.tufts.edu/","source_title":"Tufts University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  
+ 
+   
+    
+ 
+  
+  
+  
+  ,{"subject_id":"researching-8","subject_type":"sequence_stop","entity_name":"Research in progress","title":"Research in progress","subtitle":"Tufts University","notes":"I’m checking direct university and local sources before returning the completed board.","short_summary":"Collecting evidence for ten distinct, evergreen weekend stops.","evidence_claim":"Research is in progress.","source_url":"https://www.tufts.edu/","source_title":"Tufts University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  
+ 
+  
+  
+  
+  ,{"subject_id":"researching-9","subject_type":"sequence_stop","entity_name":"Research in progress","title":"Research in progress","subtitle":"Tufts University","notes":"I’m checking direct university and local sources before returning the completed board.","short_summary":"Collecting evidence for ten distinct, evergreen weekend stops.","evidence_claim":"Research is in progress.","source_url":"https://www.tufts.edu/","source_title":"Tufts University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  
+ 
+  
+  
+  
+  ,{"subject_id":"researching-10","subject_type":"sequence_stop","entity_name":"Research in progress","title":"Research in progress","subtitle":"Tufts University","notes":"I’m checking direct university and local sources before returning the completed board.","short_summary":"Collecting evidence for ten distinct, evergreen weekend stops.","evidence_claim":"Research is in progress.","source_url":"https://www.tufts.edu/","source_title":"Tufts University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  
+ 
+  
+  
+  
+  ]  
+ 
+  
+  
+  
+  ,"warnings":["Research is in progress."]}],"warnings":["Research is in progress."]}
+web search: 
+web search: site:tufts.edu Medford campus attractions Tisch Library art gallery campus map ...
+codex
+{"complete":true,"school_name":"Tufts University","town_name":"Medford","boards":[{"complete":true,"school_name":"Tufts University","town_name":"Medford","template_id":"college-first-weekend","title":"Your First Weekend at Tufts University, Shared as Cards","description":"A low-key, under-21-safe first-weekend sequence built around campus gathering spots, recurring programs, food, arts, and a nearby square.","icon":"schedule","cards":[{"subject_id":"tufts-prez-lawn","subject_type":"sequence_stop","entity_name":"Prez Lawn","title":"Start on Prez Lawn","subtitle":"Friday afternoon · central campus","notes":"Meet your group on the lawn, settle in with a campus map, and decide which evening program or performance fits everyone’s energy.","short_summary":"An outdoor pause to make a simple shared plan before the weekend begins.","evidence_claim":"A Tufts Admissions weekend account describes students gathering with friends on Prez Lawn on Friday morning.","source_url":"https://admissions.tufts.edu/blogs/jumbo-talk/post/spend-a-weekend-at-tufts/","source_title":"Spend A Weekend At Tufts","source_kind":"university_official","source_published_at":"2026-03-27","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor campus lawn; check weather and follow posted campus guidance.","cost_status":"free","under21_safe":true},{"subject_id":"tufts-tisch-library","subject_type":"sequence_stop","entity_name":"Tisch Library","title":"Get Oriented at Tisch Library","subtitle":"Friday afternoon · 35 Professors Row","notes":"Use the library as a landmark and regrouping point; review its visitor information before you go, especially if you are not a Tufts affiliate.","short_summary":"A named campus landmark for a quiet reset and navigation check.","evidence_claim":"Tufts identifies Tisch Library at 35 Professors Row in Medford and provides directions from campus and Davis Square.","source_url":"https://tischlibrary.tufts.edu/about-library/visit/directions-and-parking","source_title":"Directions & parking | Tisch Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Consult the library’s visitor and building-access information before arrival.","cost_status":"unknown","under21_safe":true},{"subject_id":"tufts-aidekman-arts-center","subject_type":"sequence_stop","entity_name":"Aidekman Arts Center","title":"Look for an Aidekman Gallery Visit","subtitle":"Friday afternoon · arts district","notes":"Check the Tufts University Art Galleries schedule, then make the Aidekman Arts Center your visual-art stop if an exhibition is open.","short_summary":"A campus arts stop anchored by a named exhibition venue.","evidence_claim":"Tufts Admissions lists visiting the Tufts University Art Galleries as a campus activity; the Medford/Somerville map lists Aidekman Arts Center.","source_url":"https://admissions.tufts.edu/choose-your-adventure/","source_title":"Choose Your Adventure | Tufts Admissions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Exhibition availability and gallery access vary; confirm the current gallery schedule.","cost_status":"unknown","under21_safe":true},{"subject_id":"tufts-granoff-music-center","subject_type":"sequence_stop","entity_name":"Granoff Music Center","title":"Check Granoff for a Performance","subtitle":"Friday evening · campus arts district","notes":"See whether the music calendar has an open concert or recital, and choose it only if its date, ticketing, and access information work for your group.","short_summary":"A named music venue to check for a scheduled campus performance.","evidence_claim":"The Medford/Somerville campus map lists Granoff Music Center among Tufts university buildings.","source_url":"https://campusmaps.tufts.edu/docs/Tufts_Medford-Som_Map.pdf","source_title":"Tufts Medford/Somerville Campus Map","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Programming is event-specific; verify performance details and entry requirements in advance.","cost_status":"unknown","under21_safe":true},{"subject_id":"tufts-mayer-campus-center","subject_type":"sequence_stop","entity_name":"Elizabeth Van Huysen Mayer Campus Center","title":"Regroup at Mayer Campus Center","subtitle":"Friday evening · 44 Professors Row","notes":"Use the center to meet up, browse campus options, or get food; its directory includes student organization space, dining, and the bookstore.","short_summary":"A practical indoor gathering point with campus services and student life offices.","evidence_claim":"Tufts says Mayer Campus Center provides meeting space, student organization offices, dining options, a bookstore, and wireless internet.","source_url":"https://students.tufts.edu/office-campus-life/campus-center/about-center","source_title":"Campus Center Directory and Hours | AS&E Students","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Semester building hours list Friday until 1 a.m.; hours can change on holidays.","cost_status":"unknown","under21_safe":true},{"subject_id":"tufts-film-series","subject_type":"activity","entity_name":"TUSC Film Series","title":"Choose a TUSC Film Series Screening","subtitle":"Friday or Saturday night · campus program","notes":"Check the current screening listing, then bring friends for a 35mm film night instead of planning around alcohol-centered entertainment.","short_summary":"A recurring campus movie option specifically identified as alcohol-free.","evidence_claim":"Tufts’ alcohol-free-events page says TUSC Film Series shows 35mm big-screen movies on Friday and Saturday nights and is free to Tufts community members.","source_url":"https://students.tufts.edu/health-wellness/health-promotion/substances-and-recovery/sofree-sober-and-alcohol-free-events","source_title":"Another Option | AS&E Students","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Friday and Saturday nights; confirm the current screening, venue, and Tufts-community eligibility.","cost_status":"free","under21_safe":true},{"subject_id":"tufts-carmichael-dining-hall","subject_type":"sequence_stop","entity_name":"Carmichael Dining Hall","title":"Have a Saturday Brunch Check-In","subtitle":"Saturday morning · Carmichael Hall","notes":"Meet for a meal, compare weekend plans, and verify current dining access before entering; do not assume a specific menu item will be available.","short_summary":"A named dining hall for a flexible Saturday-morning regroup.","evidence_claim":"A Tufts Admissions weekend account describes students going to Carmichael Dining Hall on Saturday morning.","source_url":"https://admissions.tufts.edu/blogs/jumbo-talk/post/spend-a-weekend-at-tufts/","source_title":"Spend A Weekend At Tufts","source_kind":"university_official","source_published_at":"2026-03-27","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Dining access, meal plans, and service times vary; check Tufts Dining before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"tufts-athletics-facilities","subject_type":"activity","entity_name":"Tufts Athletics Recreation","title":"Move or Watch the Jumbos","subtitle":"Saturday afternoon · Tufts athletic facilities","notes":"Choose a scheduled game or a campus recreation option, then verify facility access or event details before heading over with your group.","short_summary":"A flexible active stop that can be spectator-focused or recreational.","evidence_claim":"Tufts describes varsity, club, and intramural sports plus group and independent exercise in its athletic facilities.","source_url":"https://www.tufts.edu/student-experience","source_title":"Student Life | Tufts University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Facility use and game admission vary; consult current Athletics information before arrival.","cost_status":"unknown","under21_safe":true},{"subject_id":"tufts-dewick-macphie-dining","subject_type":"sequence_stop","entity_name":"Dewick-MacPhie Dining Hall","title":"Pause for Saturday Dinner at Dewick","subtitle":"Saturday evening · lower campus","notes":"Make Dewick-MacPhie a dinner waypoint before an evening program, and check the live dining schedule and access requirements before you go.","short_summary":"A named lower-campus dining stop before the evening’s plans.","evidence_claim":"Tufts’ Medford/Somerville campus map lists Dewick-MacPhie Dining Hall as a university building.","source_url":"https://campusmaps.tufts.edu/docs/Tufts_Medford-Som_Map.pdf","source_title":"Tufts Medford/Somerville Campus Map","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Dining access, payment, and service times vary; verify them with Tufts Dining.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"davis-square","subject_type":"sequence_stop","entity_name":"Davis Square","title":"End with a Davis Square Walk","subtitle":"Sunday afternoon · Somerville","notes":"Take the Tufts shuttle or public transit only after confirming current service, then choose a daytime café, shop, or public-space walk that suits the group.","short_summary":"A nearby square for an easy final outing before the Sunday reset.","evidence_claim":"Tisch Library’s directions page identifies the Davis Square MBTA bus stop and says the Tufts shuttle stops there and at Mayer Campus Center.","source_url":"https://tischlibrary.tufts.edu/about-library/visit/directions-and-parking","source_title":"Directions & parking | Tisch Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Check current shuttle and MBTA service before traveling; individual businesses have separate access and costs.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T09:22:04.646930Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa6c-56e3-7490-942f-909f1a331d9d.1786612831972187000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+17,364
+
+{"complete":true,"school_name":"Tufts University","town_name":"Medford","boards":[{"complete":true,"school_name":"Tufts University","town_name":"Medford","template_id":"college-first-weekend","title":"Your First Weekend at Tufts University, Shared as Cards","description":"A low-key, under-21-safe first-weekend sequence built around campus gathering spots, recurring programs, food, arts, and a nearby square.","icon":"schedule","cards":[{"subject_id":"tufts-prez-lawn","subject_type":"sequence_stop","entity_name":"Prez Lawn","title":"Start on Prez Lawn","subtitle":"Friday afternoon · central campus","notes":"Meet your group on the lawn, settle in with a campus map, and decide which evening program or performance fits everyone’s energy.","short_summary":"An outdoor pause to make a simple shared plan before the weekend begins.","evidence_claim":"A Tufts Admissions weekend account describes students gathering with friends on Prez Lawn on Friday morning.","source_url":"https://admissions.tufts.edu/blogs/jumbo-talk/post/spend-a-weekend-at-tufts/","source_title":"Spend A Weekend At Tufts","source_kind":"university_official","source_published_at":"2026-03-27","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor campus lawn; check weather and follow posted campus guidance.","cost_status":"free","under21_safe":true},{"subject_id":"tufts-tisch-library","subject_type":"sequence_stop","entity_name":"Tisch Library","title":"Get Oriented at Tisch Library","subtitle":"Friday afternoon · 35 Professors Row","notes":"Use the library as a landmark and regrouping point; review its visitor information before you go, especially if you are not a Tufts affiliate.","short_summary":"A named campus landmark for a quiet reset and navigation check.","evidence_claim":"Tufts identifies Tisch Library at 35 Professors Row in Medford and provides directions from campus and Davis Square.","source_url":"https://tischlibrary.tufts.edu/about-library/visit/directions-and-parking","source_title":"Directions & parking | Tisch Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Consult the library’s visitor and building-access information before arrival.","cost_status":"unknown","under21_safe":true},{"subject_id":"tufts-aidekman-arts-center","subject_type":"sequence_stop","entity_name":"Aidekman Arts Center","title":"Look for an Aidekman Gallery Visit","subtitle":"Friday afternoon · arts district","notes":"Check the Tufts University Art Galleries schedule, then make the Aidekman Arts Center your visual-art stop if an exhibition is open.","short_summary":"A campus arts stop anchored by a named exhibition venue.","evidence_claim":"Tufts Admissions lists visiting the Tufts University Art Galleries as a campus activity; the Medford/Somerville map lists Aidekman Arts Center.","source_url":"https://admissions.tufts.edu/choose-your-adventure/","source_title":"Choose Your Adventure | Tufts Admissions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Exhibition availability and gallery access vary; confirm the current gallery schedule.","cost_status":"unknown","under21_safe":true},{"subject_id":"tufts-granoff-music-center","subject_type":"sequence_stop","entity_name":"Granoff Music Center","title":"Check Granoff for a Performance","subtitle":"Friday evening · campus arts district","notes":"See whether the music calendar has an open concert or recital, and choose it only if its date, ticketing, and access information work for your group.","short_summary":"A named music venue to check for a scheduled campus performance.","evidence_claim":"The Medford/Somerville campus map lists Granoff Music Center among Tufts university buildings.","source_url":"https://campusmaps.tufts.edu/docs/Tufts_Medford-Som_Map.pdf","source_title":"Tufts Medford/Somerville Campus Map","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Programming is event-specific; verify performance details and entry requirements in advance.","cost_status":"unknown","under21_safe":true},{"subject_id":"tufts-mayer-campus-center","subject_type":"sequence_stop","entity_name":"Elizabeth Van Huysen Mayer Campus Center","title":"Regroup at Mayer Campus Center","subtitle":"Friday evening · 44 Professors Row","notes":"Use the center to meet up, browse campus options, or get food; its directory includes student organization space, dining, and the bookstore.","short_summary":"A practical indoor gathering point with campus services and student life offices.","evidence_claim":"Tufts says Mayer Campus Center provides meeting space, student organization offices, dining options, a bookstore, and wireless internet.","source_url":"https://students.tufts.edu/office-campus-life/campus-center/about-center","source_title":"Campus Center Directory and Hours | AS&E Students","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Semester building hours list Friday until 1 a.m.; hours can change on holidays.","cost_status":"unknown","under21_safe":true},{"subject_id":"tufts-film-series","subject_type":"activity","entity_name":"TUSC Film Series","title":"Choose a TUSC Film Series Screening","subtitle":"Friday or Saturday night · campus program","notes":"Check the current screening listing, then bring friends for a 35mm film night instead of planning around alcohol-centered entertainment.","short_summary":"A recurring campus movie option specifically identified as alcohol-free.","evidence_claim":"Tufts’ alcohol-free-events page says TUSC Film Series shows 35mm big-screen movies on Friday and Saturday nights and is free to Tufts community members.","source_url":"https://students.tufts.edu/health-wellness/health-promotion/substances-and-recovery/sofree-sober-and-alcohol-free-events","source_title":"Another Option | AS&E Students","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Friday and Saturday nights; confirm the current screening, venue, and Tufts-community eligibility.","cost_status":"free","under21_safe":true},{"subject_id":"tufts-carmichael-dining-hall","subject_type":"sequence_stop","entity_name":"Carmichael Dining Hall","title":"Have a Saturday Brunch Check-In","subtitle":"Saturday morning · Carmichael Hall","notes":"Meet for a meal, compare weekend plans, and verify current dining access before entering; do not assume a specific menu item will be available.","short_summary":"A named dining hall for a flexible Saturday-morning regroup.","evidence_claim":"A Tufts Admissions weekend account describes students going to Carmichael Dining Hall on Saturday morning.","source_url":"https://admissions.tufts.edu/blogs/jumbo-talk/post/spend-a-weekend-at-tufts/","source_title":"Spend A Weekend At Tufts","source_kind":"university_official","source_published_at":"2026-03-27","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Dining access, meal plans, and service times vary; check Tufts Dining before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"tufts-athletics-facilities","subject_type":"activity","entity_name":"Tufts Athletics Recreation","title":"Move or Watch the Jumbos","subtitle":"Saturday afternoon · Tufts athletic facilities","notes":"Choose a scheduled game or a campus recreation option, then verify facility access or event details before heading over with your group.","short_summary":"A flexible active stop that can be spectator-focused or recreational.","evidence_claim":"Tufts describes varsity, club, and intramural sports plus group and independent exercise in its athletic facilities.","source_url":"https://www.tufts.edu/student-experience","source_title":"Student Life | Tufts University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Facility use and game admission vary; consult current Athletics information before arrival.","cost_status":"unknown","under21_safe":true},{"subject_id":"tufts-dewick-macphie-dining","subject_type":"sequence_stop","entity_name":"Dewick-MacPhie Dining Hall","title":"Pause for Saturday Dinner at Dewick","subtitle":"Saturday evening · lower campus","notes":"Make Dewick-MacPhie a dinner waypoint before an evening program, and check the live dining schedule and access requirements before you go.","short_summary":"A named lower-campus dining stop before the evening’s plans.","evidence_claim":"Tufts’ Medford/Somerville campus map lists Dewick-MacPhie Dining Hall as a university building.","source_url":"https://campusmaps.tufts.edu/docs/Tufts_Medford-Som_Map.pdf","source_title":"Tufts Medford/Somerville Campus Map","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Dining access, payment, and service times vary; verify them with Tufts Dining.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"davis-square","subject_type":"sequence_stop","entity_name":"Davis Square","title":"End with a Davis Square Walk","subtitle":"Sunday afternoon · Somerville","notes":"Take the Tufts shuttle or public transit only after confirming current service, then choose a daytime café, shop, or public-space walk that suits the group.","short_summary":"A nearby square for an easy final outing before the Sunday reset.","evidence_claim":"Tisch Library’s directions page identifies the Davis Square MBTA bus stop and says the Tufts shuttle stops there and at Mayer Campus Center.","source_url":"https://tischlibrary.tufts.edu/about-library/visit/directions-and-parking","source_title":"Directions & parking | Tisch Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Check current shuttle and MBTA service before traveling; individual businesses have separate access and costs.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}

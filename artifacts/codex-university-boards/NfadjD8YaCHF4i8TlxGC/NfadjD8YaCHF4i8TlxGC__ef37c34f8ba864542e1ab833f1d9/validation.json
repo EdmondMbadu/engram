@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://udallas.edu/offices-services/art-gallery/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://udallas.edu/offices-services/art-gallery/index.php",
+      "error": ""
+    },
+    {
+      "url": "https://udallas.edu/life-at-ud/health-wellness/fitness-center.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://udallas.edu/life-at-ud/health-wellness/fitness-center.php",
+      "error": ""
+    },
+    {
+      "url": "https://udallas.edu/library/policies/guest-policy.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://udallas.edu/library/policies/guest-policy.php",
+      "error": ""
+    },
+    {
+      "url": "https://udallas.edu/library/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://udallas.edu/library/index.php",
+      "error": ""
+    },
+    {
+      "url": "https://udallas.edu/life-at-ud/campus-ministry/programs.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://udallas.edu/life-at-ud/campus-ministry/programs.php",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

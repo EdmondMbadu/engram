@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://gcsu.libcal.com/space/9687",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gcsu.libcal.com/space/9687",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcsu.edu/learningcenter",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcsu.edu/learningcenter",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcsu.edu/writingcenter/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcsu.edu/writingcenter/about",
+      "error": ""
+    },
+    {
+      "url": "https://frontpage.gcsu.edu/node/13526",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://frontpage.gcsu.edu/node/13526",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcsu.edu/sites/default/files/documents/2024-08/2025-2025%20Undergraduate%20Music%20Student%20Handbook.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcsu.edu/sites/default/files/documents/2024-08/2025-2025%20Undergraduate%20Music%20Student%20Handbook.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcsu.edu/library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcsu.edu/library",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

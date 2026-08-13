@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://prairielights.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://prairielights.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.icpl.org/about/hours-location",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.icpl.org/about/hours-location",
+      "error": ""
+    },
+    {
+      "url": "https://icfilmscene.org/visit-contact/the-ped-mall/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://icfilmscene.org/visit-contact/the-ped-mall/",
+      "error": ""
+    },
+    {
+      "url": "https://riversidetheatre.org/planyourvisit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://riversidetheatre.org/planyourvisit/",
+      "error": ""
+    },
+    {
+      "url": "https://englert.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://englert.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://iowaartisansgallery.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://iowaartisansgallery.com/",
+      "error": ""
+    },
+    {
+      "url": "https://recordcollector.co/index.php/history/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recordcollector.co/index.php/history/",
+      "error": ""
+    },
+    {
+      "url": "https://www.publicspaceone.com/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.publicspaceone.com/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.icgov.org/government/departments-and-divisions/parks-and-recreation/farmers-market",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.icgov.org/government/departments-and-divisions/parks-and-recreation/farmers-market",
+      "error": ""
+    },
+    {
+      "url": "https://studentlife.uiowa.edu/news/2025/10/fall-highlights-and-around-iowa-city",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentlife.uiowa.edu/news/2025/10/fall-highlights-and-around-iowa-city",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

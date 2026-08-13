@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.marist.edu/student-life/family-weekend",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marist.edu/student-life/family-weekend",
+      "error": ""
+    },
+    {
+      "url": "https://www.marist.edu/w/fox-fest-upgrade-2026",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marist.edu/w/fox-fest-upgrade-2026",
+      "error": ""
+    },
+    {
+      "url": "https://www.marist.edu/student-life/involvement",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marist.edu/student-life/involvement",
+      "error": ""
+    },
+    {
+      "url": "https://www.marist.edu/w/holiday-season-2024",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marist.edu/w/holiday-season-2024",
+      "error": ""
+    },
+    {
+      "url": "https://www.marist.edu/web/guest/-/around-campus-feb-24-2026",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marist.edu/w/around-campus-feb-24-2026",
+      "error": ""
+    },
+    {
+      "url": "https://www.marist.edu/documents/d/guest/2023-fall-transfer-orientation-schedule-1",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marist.edu/documents/d/guest/2023-fall-transfer-orientation-schedule-1",
+      "error": ""
+    },
+    {
+      "url": "https://www.marist.edu/student-life/community/ministry/activities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marist.edu/student-life/community/ministry/activities",
+      "error": ""
+    },
+    {
+      "url": "https://www.marist.edu/student-life/first-year-experience",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marist.edu/student-life/first-year-experience",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

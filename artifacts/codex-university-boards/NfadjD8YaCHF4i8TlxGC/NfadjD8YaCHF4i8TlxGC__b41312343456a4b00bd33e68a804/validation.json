@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.alsbreakfastmpls.com/pages/directions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.alsbreakfastmpls.com/pages/directions",
+      "error": ""
+    },
+    {
+      "url": "https://www.bookhouseindinkytown.com/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bookhouseindinkytown.com/contact",
+      "error": ""
+    },
+    {
+      "url": "https://www.hclib.org/about/locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hclib.org/about/locations",
+      "error": ""
+    },
+    {
+      "url": "https://www.wallysfalafelandhummus.com/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.wallysfalafelandhummus.com/about/",
+      "error": ""
+    },
+    {
+      "url": "https://dinkytownmpls.com/directory.php",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://dinkytownmpls.com/directory.php",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://dillasethiopianmn.com/details.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dillasethiopianmn.com/details.php",
+      "error": ""
+    },
+    {
+      "url": "https://mnlimspublic.datanetusa.com/RCA/24971",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://mnlimspublic.datanetusa.com/RCA/24971",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.thecedar.org/home",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.thecedar.org/home",
+      "error": ""
+    },
+    {
+      "url": "https://www.theatreintheround.org/home/your-visit/plan-visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.theatreintheround.org/home/your-visit/plan-visit/",
+      "error": ""
+    },
+    {
+      "url": "https://mixedblood.com/contact/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mixedblood.com/contact/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

@@ -1,0 +1,297 @@
+Reading additional input from stdin...
+2026-08-13T07:14:30.243411Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f8-530a-7252-901c-4f01b758f8bd.1786605228811566000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9f8-f479-7823-8408-22ae7830f813
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"pO7Neb8XAeXt37UIZ3ax","schoolName":"Gannon University","shortSchoolName":"Gannon University","townName":"Erie","state":"PA","countryCode":"US","website":"https://www.gannon.edu/","latitude":42.128403,"longitude":-80.087166},"templates":[{"id":"college-late-night-runs","version":"1.0","titlePattern":"{count} Late-Night Runs That Explain {school}","editorialBrief":"Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.","researchQueries":["late night dining students","campus dining late hours","restaurants open late near campus"],"count":10,"icon":"nightlife","primarySubjectType":"place","allowedSubjectTypes":["place"],"freshnessDays":120,"exactTitle":"10 Late-Night Runs That Explain Gannon University"}]}
+2026-08-13T07:14:30.295579Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f8-5308-70e1-9fff-818dcfcc50a2.1786605228808436000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:14:30.518189Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f8-530f-7903-b773-67dc981897a5.1786605228815875000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:14:30.572800Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f8-530f-76c3-9264-563e0d5e143d.1786605228816469000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:14:30.679852Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f8-5336-70e2-9215-2a19caba8ea4.1786605228855280000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:14:30.710775Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:14:30.715779Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:14:30.911854Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f8-5309-7333-98d7-f60827b488d6.1786605228809403000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:14:31.064696Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f8-532d-7203-8df6-5355ee61d2ce.1786605228846838000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Gannon University",
+  "town_name": "Erie",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Gannon University",
+      "town_name": "Erie",
+      "template_id": "college-late-night-runs",
+      "title": "10 Late-Night Runs That Explain Gannon University",
+      "description": "",
+      "icon": "nightlife",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+    ],
+      "warnings": [
+        "Research in progress."
+      ]
+    }
+  ],
+  "warnings": [
+    "Research in progress."
+  ]
+}
+web search: 
+web search: site:gannon.campusdish.com hours Gannon late night ...
+web search: 
+web search: site:mcdonalds.com/us/en-us/location/pa/erie 1115 Sassafras hours ...
+web search: 
+web search: site:sheetz.com/store-locator Erie PA Sheetz 24 hours ...
+web search: 
+web search: Erie PA official restaurant hours midnight "State Street" food ...
+codex
+{"complete":true,"school_name":"Gannon University","town_name":"Erie","boards":[{"complete":true,"school_name":"Gannon University","town_name":"Erie","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Gannon University","description":"Ten under-21-safe food runs anchored by Gannon’s own late counter and Erie restaurants with directly verified late hours. Check holiday and academic-break schedules before leaving.","icon":"nightlife","cards":[{"subject_id":"gannon-docs-landing","subject_type":"place","entity_name":"Doc’s Landing","title":"Stay on Campus at Doc’s Landing","subtitle":"Waldron Campus Center counter serving until midnight on several nights","notes":"Use mobile ordering when available, and confirm the academic calendar before relying on midnight service during breaks or holidays.","short_summary":"Gannon’s on-campus option pairs broad counter-service choices with documented midnight hours five nights each week.","evidence_claim":"Gannon’s 2025 meal-plan guide identifies Doc’s Landing in the Waldron Campus Center and lists service until midnight Tuesday through Saturday.","source_url":"https://www.metzgannon.com/uploads/1/3/6/4/136485265/gannon_mealplanguide_firstyear_apr2025.pdf","source_title":"Your Guide to Gannon Dining","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Listed hours: Monday 7:15 a.m.–10 p.m.; Tuesday–Friday 7:15 a.m.–midnight; Saturday 4 p.m.–midnight; Sunday 10 a.m.–10 p.m. Academic-break hours may differ.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"mcdonalds-1115-sassafras-erie","subject_type":"place","entity_name":"McDonald’s — 1115 Sassafras Street","title":"Use the Sassafras Street All-Nighter","subtitle":"A downtown counter and 24-hour drive-through south of Gannon","notes":"Check the lobby schedule before walking over; after-hours service can shift to the drive-through even when ordering remains available.","short_summary":"This nearby McDonald’s separates late lobby access from a drive-through that the location page lists around the clock.","evidence_claim":"McDonald’s identifies its restaurant at 1115 Sassafras Street and lists late lobby hours plus a drive-through open 24 hours daily.","source_url":"https://www.mcdonalds.com/us/en-us/location/pa/erie/1115-sassafras-st/1897.html","source_title":"Fast Food in Erie, PA at 1115 Sassafras St | McDonald’s","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Lobby closes at 3 a.m. Monday, Tuesday and Sunday, 4 a.m. Wednesday, and is listed 24 hours Thursday–Saturday. Drive-through is listed 24 hours daily.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wendys-105-east-12th-erie","subject_type":"place","entity_name":"Wendy’s — 105 East 12th Street","title":"Head to Wendy’s Before 3","subtitle":"A downtown dining room and drive-through with the same late schedule","notes":"Aim for this address when the group needs indoor ordering late; verify holiday hours before leaving because the official page flags changes.","short_summary":"The East 12th Street Wendy’s documents a consistent 3 a.m. close for both restaurant and drive-through service.","evidence_claim":"Wendy’s lists its 105 East 12th Street restaurant and drive-through as open from 6:30 a.m. until 3 a.m. every day.","source_url":"https://locations.wendys.com/united-states/pa/erie/105-e-12th-st","source_title":"Wendy’s at 105 E. 12th St. in Erie, PA","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Restaurant and drive-through hours are listed as 6:30 a.m.–3 a.m. Monday through Sunday. The location warns that holiday hours may vary.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-118-east-12th-erie","subject_type":"place","entity_name":"Taco Bell — 118 East 12th Street","title":"Take the East 12th Street Taco Run","subtitle":"A downtown drive-through serving well beyond midnight","notes":"Plan transportation before choosing the post-midnight window: the official page documents extended drive-through hours, not matching late dine-in access.","short_summary":"This East 12th Street Taco Bell supplies one of downtown Erie’s latest directly documented food-service windows.","evidence_claim":"Taco Bell identifies its restaurant at 118 East 12th Street and lists drive-through service until 5 a.m. most days and 5:30 a.m. Friday.","source_url":"https://locations.tacobell.com/pa/erie/118-e-12th-st.html","source_title":"Taco Bell in Erie, PA — 118 E 12th St","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-through closes at 5 a.m. Sunday–Thursday, 5:30 a.m. Friday, and is effectively continuous Saturday. Dine-in access is not documented for the same full span.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dominos-51-west-14th-erie","subject_type":"place","entity_name":"Domino’s — 51 West 14th Street","title":"Order from West 14th Street","subtitle":"A downtown pizza carryout and delivery point near Gannon","notes":"Open the official store page immediately before ordering; its live status supplies the current closing time and the available fulfillment methods.","short_summary":"The closest named Domino’s to campus offers a directly documented downtown address, online ordering, carryout and delivery.","evidence_claim":"Domino’s identifies its Erie store at 51 West 14th Street, provides online ordering and describes the location as offering takeout and delivery with live store hours.","source_url":"https://pizza.dominos.com/pennsylvania/erie/51-w-14th-st","source_title":"Domino’s Pizza at 51 W 14th St | Domino’s in Erie","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page publishes a live open/closed status and current closing time rather than a static weekly table; check it before departure because hours vary by day.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wendys-5901-peach-erie","subject_type":"place","entity_name":"Wendy’s — 5901 Peach Street","title":"Make the Peach Street 1 A.M. Run","subtitle":"A longer southbound drive with nightly late service","notes":"Treat this as a vehicle trip rather than a campus walk, and use the official location page to recheck service before committing to the drive.","short_summary":"The Peach Street Wendy’s extends the board beyond downtown with a uniform, officially posted 1 a.m. schedule.","evidence_claim":"Wendy’s lists both restaurant and drive-through service at 5901 Peach Street from 10 a.m. until 1 a.m. every day.","source_url":"https://locations.wendys.com/united-states/pa/erie/5901-peach-street","source_title":"Wendy’s at 5901 Peach Street in Erie, PA","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Restaurant and drive-through are listed as open 10 a.m.–1 a.m. Monday through Sunday. This destination requires a substantial trip south from campus.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-4305-peach-erie","subject_type":"place","entity_name":"Taco Bell — 4305 Peach Street","title":"Push the Peach Street Run Later","subtitle":"Extended drive-through service with a 24-hour Saturday listing","notes":"Bring a designated driver and confirm dine-in status separately; the unusually late official schedule is specifically for the drive-through lane.","short_summary":"This Peach Street Taco Bell documents service to 4 or 5 a.m., with continuous Saturday drive-through operation.","evidence_claim":"Taco Bell identifies its 4305 Peach Street location and lists drive-through hours until 4 a.m. or 5 a.m., plus 24-hour Saturday service.","source_url":"https://locations.tacobell.com/pa/erie/4305-peach-street.html","source_title":"Taco Bell in Erie, PA — 4305 Peach Street","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-through closes at 4 a.m. Monday–Wednesday and Sunday, 5 a.m. Thursday–Friday, and is listed open 24 hours Saturday. Verify dine-in separately.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-2007-east-38th-erie","subject_type":"place","entity_name":"Taco Bell — 2007 East 38th Street","title":"Use East 38th for a 4 A.M. Option","subtitle":"An east-side restaurant with uniform late hours","notes":"Choose this location only when the east-side drive makes sense, and confirm the official hours before setting out from downtown Erie.","short_summary":"The East 38th Street location stands out for publishing the same 4 a.m. closing time across the entire week.","evidence_claim":"Taco Bell identifies its restaurant at 2007 East 38th Street and lists both drive-through and dine-in hours through 4 a.m. daily.","source_url":"https://locations.tacobell.com/pa/erie/2007-e-38th-street/dinner.html","source_title":"Taco Bell Dinner Near Me — 2007 E 38th Street, Erie","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official location page lists 9 a.m.–4 a.m. Monday through Sunday for the drive-through and displays the same span for dine-in service.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-8056-perry-highway-erie","subject_type":"place","entity_name":"Taco Bell — 8056 Perry Highway","title":"Pair Perry Highway with a 3 A.M. Stop","subtitle":"A far-south Erie drive-through near the interstate","notes":"Reserve this for trips already heading toward the interstate; it is far from campus, so verify hours and transportation before departure.","short_summary":"The Perry Highway Taco Bell offers a predictable 3 a.m. endpoint for late drives on Erie’s southern edge.","evidence_claim":"Taco Bell identifies its restaurant at 8056 Perry Highway and lists drive-through service from 9 a.m. until 3 a.m. every day.","source_url":"https://locations.tacobell.com/pa/erie/8056-perry-highway/restaurant.html","source_title":"Taco Bell Restaurant Near Me — 8056 Perry Highway, Erie","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-through hours are listed as 9 a.m.–3 a.m. Monday through Sunday. This is a vehicle-oriented destination well south of Gannon’s downtown campus.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"subway-8035-perry-highway-erie","subject_type":"place","entity_name":"Subway — 8035 Perry Highway","title":"Use the 24-Hour Perry Highway Counter","subtitle":"A round-the-clock sandwich shop inside Pilot Travel Center #311","notes":"Combine this stop with an interstate-area trip rather than a special campus walk; confirm any holiday or maintenance disruption before leaving.","short_summary":"This Pilot Travel Center Subway supplies a documented 24-hour food counter when most conventional dining rooms are closed.","evidence_claim":"Subway identifies its shop inside Pilot Travel Center #311 at 8035 Perry Highway and lists store hours as open 24 hours every day.","source_url":"https://restaurants.subway.com/united-states/pa/erie/8035-perry-hwy","source_title":"Subway at 8035 Perry Hwy, Erie, PA","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official Subway location page lists the store as open 24 hours Monday through Sunday. It is a substantial drive south from Gannon’s campus.","cost_status":"purchase_required","under21_safe":true}],"warnings":["Late-night access is frequently limited to drive-through service; cards distinguish that constraint where the official source does.","Academic breaks, holidays and live store conditions may alter posted hours, so users should recheck the linked direct source before departure."]}],"warnings":[]}
+2026-08-13T07:16:26.022908Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9f8-f479-7823-8408-22ae7830f813.1786605270138055000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+55,990
+
+{"complete":true,"school_name":"Gannon University","town_name":"Erie","boards":[{"complete":true,"school_name":"Gannon University","town_name":"Erie","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Gannon University","description":"Ten under-21-safe food runs anchored by Gannon’s own late counter and Erie restaurants with directly verified late hours. Check holiday and academic-break schedules before leaving.","icon":"nightlife","cards":[{"subject_id":"gannon-docs-landing","subject_type":"place","entity_name":"Doc’s Landing","title":"Stay on Campus at Doc’s Landing","subtitle":"Waldron Campus Center counter serving until midnight on several nights","notes":"Use mobile ordering when available, and confirm the academic calendar before relying on midnight service during breaks or holidays.","short_summary":"Gannon’s on-campus option pairs broad counter-service choices with documented midnight hours five nights each week.","evidence_claim":"Gannon’s 2025 meal-plan guide identifies Doc’s Landing in the Waldron Campus Center and lists service until midnight Tuesday through Saturday.","source_url":"https://www.metzgannon.com/uploads/1/3/6/4/136485265/gannon_mealplanguide_firstyear_apr2025.pdf","source_title":"Your Guide to Gannon Dining","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Listed hours: Monday 7:15 a.m.–10 p.m.; Tuesday–Friday 7:15 a.m.–midnight; Saturday 4 p.m.–midnight; Sunday 10 a.m.–10 p.m. Academic-break hours may differ.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"mcdonalds-1115-sassafras-erie","subject_type":"place","entity_name":"McDonald’s — 1115 Sassafras Street","title":"Use the Sassafras Street All-Nighter","subtitle":"A downtown counter and 24-hour drive-through south of Gannon","notes":"Check the lobby schedule before walking over; after-hours service can shift to the drive-through even when ordering remains available.","short_summary":"This nearby McDonald’s separates late lobby access from a drive-through that the location page lists around the clock.","evidence_claim":"McDonald’s identifies its restaurant at 1115 Sassafras Street and lists late lobby hours plus a drive-through open 24 hours daily.","source_url":"https://www.mcdonalds.com/us/en-us/location/pa/erie/1115-sassafras-st/1897.html","source_title":"Fast Food in Erie, PA at 1115 Sassafras St | McDonald’s","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Lobby closes at 3 a.m. Monday, Tuesday and Sunday, 4 a.m. Wednesday, and is listed 24 hours Thursday–Saturday. Drive-through is listed 24 hours daily.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wendys-105-east-12th-erie","subject_type":"place","entity_name":"Wendy’s — 105 East 12th Street","title":"Head to Wendy’s Before 3","subtitle":"A downtown dining room and drive-through with the same late schedule","notes":"Aim for this address when the group needs indoor ordering late; verify holiday hours before leaving because the official page flags changes.","short_summary":"The East 12th Street Wendy’s documents a consistent 3 a.m. close for both restaurant and drive-through service.","evidence_claim":"Wendy’s lists its 105 East 12th Street restaurant and drive-through as open from 6:30 a.m. until 3 a.m. every day.","source_url":"https://locations.wendys.com/united-states/pa/erie/105-e-12th-st","source_title":"Wendy’s at 105 E. 12th St. in Erie, PA","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Restaurant and drive-through hours are listed as 6:30 a.m.–3 a.m. Monday through Sunday. The location warns that holiday hours may vary.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-118-east-12th-erie","subject_type":"place","entity_name":"Taco Bell — 118 East 12th Street","title":"Take the East 12th Street Taco Run","subtitle":"A downtown drive-through serving well beyond midnight","notes":"Plan transportation before choosing the post-midnight window: the official page documents extended drive-through hours, not matching late dine-in access.","short_summary":"This East 12th Street Taco Bell supplies one of downtown Erie’s latest directly documented food-service windows.","evidence_claim":"Taco Bell identifies its restaurant at 118 East 12th Street and lists drive-through service until 5 a.m. most days and 5:30 a.m. Friday.","source_url":"https://locations.tacobell.com/pa/erie/118-e-12th-st.html","source_title":"Taco Bell in Erie, PA — 118 E 12th St","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-through closes at 5 a.m. Sunday–Thursday, 5:30 a.m. Friday, and is effectively continuous Saturday. Dine-in access is not documented for the same full span.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dominos-51-west-14th-erie","subject_type":"place","entity_name":"Domino’s — 51 West 14th Street","title":"Order from West 14th Street","subtitle":"A downtown pizza carryout and delivery point near Gannon","notes":"Open the official store page immediately before ordering; its live status supplies the current closing time and the available fulfillment methods.","short_summary":"The closest named Domino’s to campus offers a directly documented downtown address, online ordering, carryout and delivery.","evidence_claim":"Domino’s identifies its Erie store at 51 West 14th Street, provides online ordering and describes the location as offering takeout and delivery with live store hours.","source_url":"https://pizza.dominos.com/pennsylvania/erie/51-w-14th-st","source_title":"Domino’s Pizza at 51 W 14th St | Domino’s in Erie","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page publishes a live open/closed status and current closing time rather than a static weekly table; check it before departure because hours vary by day.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wendys-5901-peach-erie","subject_type":"place","entity_name":"Wendy’s — 5901 Peach Street","title":"Make the Peach Street 1 A.M. Run","subtitle":"A longer southbound drive with nightly late service","notes":"Treat this as a vehicle trip rather than a campus walk, and use the official location page to recheck service before committing to the drive.","short_summary":"The Peach Street Wendy’s extends the board beyond downtown with a uniform, officially posted 1 a.m. schedule.","evidence_claim":"Wendy’s lists both restaurant and drive-through service at 5901 Peach Street from 10 a.m. until 1 a.m. every day.","source_url":"https://locations.wendys.com/united-states/pa/erie/5901-peach-street","source_title":"Wendy’s at 5901 Peach Street in Erie, PA","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Restaurant and drive-through are listed as open 10 a.m.–1 a.m. Monday through Sunday. This destination requires a substantial trip south from campus.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-4305-peach-erie","subject_type":"place","entity_name":"Taco Bell — 4305 Peach Street","title":"Push the Peach Street Run Later","subtitle":"Extended drive-through service with a 24-hour Saturday listing","notes":"Bring a designated driver and confirm dine-in status separately; the unusually late official schedule is specifically for the drive-through lane.","short_summary":"This Peach Street Taco Bell documents service to 4 or 5 a.m., with continuous Saturday drive-through operation.","evidence_claim":"Taco Bell identifies its 4305 Peach Street location and lists drive-through hours until 4 a.m. or 5 a.m., plus 24-hour Saturday service.","source_url":"https://locations.tacobell.com/pa/erie/4305-peach-street.html","source_title":"Taco Bell in Erie, PA — 4305 Peach Street","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-through closes at 4 a.m. Monday–Wednesday and Sunday, 5 a.m. Thursday–Friday, and is listed open 24 hours Saturday. Verify dine-in separately.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-2007-east-38th-erie","subject_type":"place","entity_name":"Taco Bell — 2007 East 38th Street","title":"Use East 38th for a 4 A.M. Option","subtitle":"An east-side restaurant with uniform late hours","notes":"Choose this location only when the east-side drive makes sense, and confirm the official hours before setting out from downtown Erie.","short_summary":"The East 38th Street location stands out for publishing the same 4 a.m. closing time across the entire week.","evidence_claim":"Taco Bell identifies its restaurant at 2007 East 38th Street and lists both drive-through and dine-in hours through 4 a.m. daily.","source_url":"https://locations.tacobell.com/pa/erie/2007-e-38th-street/dinner.html","source_title":"Taco Bell Dinner Near Me — 2007 E 38th Street, Erie","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official location page lists 9 a.m.–4 a.m. Monday through Sunday for the drive-through and displays the same span for dine-in service.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-8056-perry-highway-erie","subject_type":"place","entity_name":"Taco Bell — 8056 Perry Highway","title":"Pair Perry Highway with a 3 A.M. Stop","subtitle":"A far-south Erie drive-through near the interstate","notes":"Reserve this for trips already heading toward the interstate; it is far from campus, so verify hours and transportation before departure.","short_summary":"The Perry Highway Taco Bell offers a predictable 3 a.m. endpoint for late drives on Erie’s southern edge.","evidence_claim":"Taco Bell identifies its restaurant at 8056 Perry Highway and lists drive-through service from 9 a.m. until 3 a.m. every day.","source_url":"https://locations.tacobell.com/pa/erie/8056-perry-highway/restaurant.html","source_title":"Taco Bell Restaurant Near Me — 8056 Perry Highway, Erie","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-through hours are listed as 9 a.m.–3 a.m. Monday through Sunday. This is a vehicle-oriented destination well south of Gannon’s downtown campus.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"subway-8035-perry-highway-erie","subject_type":"place","entity_name":"Subway — 8035 Perry Highway","title":"Use the 24-Hour Perry Highway Counter","subtitle":"A round-the-clock sandwich shop inside Pilot Travel Center #311","notes":"Combine this stop with an interstate-area trip rather than a special campus walk; confirm any holiday or maintenance disruption before leaving.","short_summary":"This Pilot Travel Center Subway supplies a documented 24-hour food counter when most conventional dining rooms are closed.","evidence_claim":"Subway identifies its shop inside Pilot Travel Center #311 at 8035 Perry Highway and lists store hours as open 24 hours every day.","source_url":"https://restaurants.subway.com/united-states/pa/erie/8035-perry-hwy","source_title":"Subway at 8035 Perry Hwy, Erie, PA","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official Subway location page lists the store as open 24 hours Monday through Sunday. It is a substantial drive south from Gannon’s campus.","cost_status":"purchase_required","under21_safe":true}],"warnings":["Late-night access is frequently limited to drive-through service; cards distinguish that constraint where the official source does.","Academic breaks, holidays and live store conditions may alter posted hours, so users should recheck the linked direct source before departure."]}],"warnings":[]}

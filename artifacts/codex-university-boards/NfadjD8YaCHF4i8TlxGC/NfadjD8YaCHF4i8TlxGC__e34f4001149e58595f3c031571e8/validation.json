@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://alumni.fresnostate.edu/about/traditions.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://alumni.fresnostate.edu/about/traditions.html",
+      "error": ""
+    },
+    {
+      "url": "https://campusnews.fresnostate.edu/april-17-2023/victor-e-bulldog-iv-becomes-acting-mascot-after-passing-of-the-collar",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusnews.fresnostate.edu/april-17-2023/victor-e-bulldog-iv-becomes-acting-mascot-after-passing-of-the-collar",
+      "error": ""
+    },
+    {
+      "url": "https://today.fresnostate.edu/how-the-red-wave-was-born/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://today.fresnostate.edu/how-the-red-wave-was-born/",
+      "error": ""
+    },
+    {
+      "url": "https://gobulldogs.com/sports/2024/7/21/the-meaning-of-the-green-v",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gobulldogs.com/sports/2024/7/21/the-meaning-of-the-green-v",
+      "error": ""
+    },
+    {
+      "url": "https://fscollegian.com/2023/08/precision-in-practice-a-sneak-peek-into-the-bulldog-marching-bands-preseason-rehearsals/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fscollegian.com/2023/08/precision-in-practice-a-sneak-peek-into-the-bulldog-marching-bands-preseason-rehearsals/",
+      "error": ""
+    },
+    {
+      "url": "https://campusnews.fresnostate.edu/april-6-2026/vintage-days-2026",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusnews.fresnostate.edu/april-6-2026/vintage-days-2026",
+      "error": ""
+    },
+    {
+      "url": "https://studentaffairs.fresnostate.edu/studentinvolvement/traditions/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentaffairs.fresnostate.edu/studentinvolvement/traditions/index.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

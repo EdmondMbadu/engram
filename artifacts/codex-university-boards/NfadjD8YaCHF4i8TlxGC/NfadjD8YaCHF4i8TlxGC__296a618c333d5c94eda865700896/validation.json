@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.dennys.com/ca/sacramento/248026",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dennys.com/ca/sacramento/248026",
+      "error": ""
+    },
+    {
+      "url": "https://www.themelt.com/locations/sacramento/2070-fair-oaks-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.themelt.com/locations/sacramento/2070-fair-oaks-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://chicknguys.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://chicknguys.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nygyrosphillys.com/locations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nygyrosphillys.com/locations/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jackinthebox.com/us/ca/sacramento/8750-la-riviera-dr",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jackinthebox.com/us/ca/sacramento/8750-la-riviera-dr",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ca/sacramento/7590-la-riviera-drive/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ca/sacramento/7590-la-riviera-drive/restaurant.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ca/sacramento/5625-folsom-blvd/fast-food.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ca/sacramento/5625-folsom-blvd/fast-food.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ca/sacramento/1300-howe-ave.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ca/sacramento/1300-howe-ave.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ca/sacramento/4318-marconi-ave/fast-food.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ca/sacramento/4318-marconi-ave/fast-food.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.carlsjr.com/ca/sacramento/8397-folsom-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.carlsjr.com/ca/sacramento/8397-folsom-blvd",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

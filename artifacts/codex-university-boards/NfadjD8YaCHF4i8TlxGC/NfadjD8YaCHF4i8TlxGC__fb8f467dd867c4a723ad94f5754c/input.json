@@ -1,0 +1,59 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "UZleLt6KwJZlcSQ1IOCe",
+    "schoolName": "Farmingdale State College",
+    "shortSchoolName": "Farmingdale State College",
+    "townName": "Farmingdale",
+    "state": "NY",
+    "countryCode": "US",
+    "unitId": "196042",
+    "website": "https://www.farmingdale.edu/",
+    "latitude": 40.754224,
+    "longitude": -73.42832,
+    "heroUrl": "https://fsc-main.b-cdn.net/images/fsc-social-link-share.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=farmingdale.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain Farmingdale State College",
+  "excluded_subjects": [
+    "Thomas D. Greenley Library",
+    "School of Business Lounge Areas",
+    "Ralph Bunche Plaza",
+    "Campus Center Open Lounges",
+    "Gleeson Hall Lounge Areas",
+    "Hale Hall Lounge Areas",
+    "Lupton Hall Lounge Areas",
+    "Roosevelt Hall Lobby",
+    "Sinclair Hall Pit Lounge",
+    "Whitman Hall First-Floor Lounge",
+    "Greenley Library",
+    "School of Business",
+    "Campus Center",
+    "Quintyne Hall Meditation and Prayer Space",
+    "Gleeson Hall",
+    "Hale Hall",
+    "Lupton Hall",
+    "Nold Athletic Complex",
+    "Giving Garden"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

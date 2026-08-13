@@ -1,0 +1,292 @@
+Reading additional input from stdin...
+2026-08-13T07:54:47.837214Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1d-4080-7831-88d0-654ad3431951.1786607648896914000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:54:47.843224Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:54:47.889501Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1d-4079-78f3-b9ea-2ac78a3279ae.1786607648890699000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa1d-d82f-7153-a262-79580a9cdcf6
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"DOBP7cPYoq34aTk4o5HU","schoolName":"Lafayette College","shortSchoolName":"Lafayette College","townName":"Easton","state":"PA","countryCode":"US","website":"https://www.lafayette.edu/","latitude":40.69956,"longitude":-75.209786},"templates":[{"id":"college-late-night-runs","version":"1.0","titlePattern":"{count} Late-Night Runs That Explain {school}","editorialBrief":"Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.","researchQueries":["late night dining students","campus dining late hours","restaurants open late near campus"],"count":10,"icon":"nightlife","primarySubjectType":"place","allowedSubjectTypes":["place"],"freshnessDays":120,"exactTitle":"10 Late-Night Runs That Explain Lafayette College"}]}
+2026-08-13T07:54:47.953871Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1d-4079-7cf2-94f8-08d25b1ffd21.1786607648890151000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:54:47.992986Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:54:48.043065Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1d-4079-7772-9ac3-a4511f8fe74d.1786607648890161000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:54:48.107671Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1d-407a-7253-88da-97d04655d9ba.1786607648890605000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:54:48.150315Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1d-4082-7e33-8e6d-c040602980e5.1786607648898881000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Lafayette College",
+  "town_name": "Easton",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Lafayette College",
+      "town_name": "Easton",
+      "template_id": "college-late-night-runs",
+      "title": "10 Late-Night Runs That Explain Lafayette College",
+      "description": "",
+      "icon": "nightlife",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "I’m verifying ten distinct under-21 destinations against direct, current late-hours pages, with campus proximity and access details checked conservatively.",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     
+      ,
+      {
+        "subject_id": "research-pending-2",
+        "subject_type": "place",
+        "entity_name": "Research pending",
+        "title": "Research pending",
+        "subtitle": "Easton",
+        "notes": "Additional verified destinations are being researched.",
+        "short_summary": "Pending verification.",
+        "evidence_claim": "Pending verification.",
+        "source_url": "https://www.lafayette.edu/",
+        "source_title": "Lafayette College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "Pending verification.",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "research-pending-3",
+        "subject_type": "place",
+        "entity_name": "Research pending",
+        "title": "Research pending",
+        "subtitle": "Easton",
+        "notes": "Additional verified destinations are being researched.",
+        "short_summary": "Pending verification.",
+        "evidence_claim": "Pending verification.",
+        "source_url": "https://www.lafayette.edu/",
+        "source_title": "Lafayette College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "Pending verification.",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "research-pending-4",
+        "subject_type": "place",
+        "entity_name": "Research pending",
+        "title": "Research pending",
+        "subtitle": "Easton",
+        "notes": "Additional verified destinations are being researched.",
+        "short_summary": "Pending verification.",
+        "evidence_claim": "Pending verification.",
+        "source_url": "https://www.lafayette.edu/",
+        "source_title": "Lafayette College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "Pending verification.",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "research-pending-5",
+        "subject_type": "place",
+        "entity_name": "Research pending",
+        "title": "Research pending",
+        "subtitle": "Easton",
+        "notes": "Additional verified destinations are being researched.",
+        "short_summary": "Pending verification.",
+        "evidence_claim": "Pending verification.",
+        "source_url": "https://www.lafayette.edu/",
+        "source_title": "Lafayette College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "Pending verification.",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "research-pending-6",
+        "subject_type": "place",
+        "entity_name": "Research pending",
+        "title": "Research pending",
+        "subtitle": "Easton",
+        "notes": "Additional verified destinations are being researched.",
+        "short_summary": "Pending verification.",
+        "evidence_claim": "Pending verification.",
+        "source_url": "https://www.lafayette.edu/",
+        "source_title": "Lafayette College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "Pending verification.",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "research-pending-7",
+        "subject_type": "place",
+        "entity_name": "Research pending",
+        "title": "Research pending",
+        "subtitle": "Easton",
+        "notes": "Additional verified destinations are being researched.",
+        "short_summary": "Pending verification.",
+        "evidence_claim": "Pending verification.",
+        "source_url": "https://www.lafayette.edu/",
+        "source_title": "Lafayette College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "Pending verification.",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "research-pending-8",
+        "subject_type": "place",
+        "entity_name": "Research pending",
+        "title": "Research pending",
+        "subtitle": "Easton",
+        "notes": "Additional verified destinations are being researched.",
+        "short_summary": "Pending verification.",
+        "evidence_claim": "Pending verification.",
+        "source_url": "https://www.lafayette.edu/",
+        "source_title": "Lafayette College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "Pending verification.",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "research-pending-9",
+        "subject_type": "place",
+        "entity_name": "Research pending",
+        "title": "Research pending",
+        "subtitle": "Easton",
+        "notes": "Additional verified destinations are being researched.",
+        "short_summary": "Pending verification.",
+        "evidence_claim": "Pending verification.",
+        "source_url": "https://www.lafayette.edu/",
+        "source_title": "Lafayette College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "Pending verification.",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "research-pending-10",
+        "subject_type": "place",
+        "entity_name": "Research pending",
+        "title": "Research pending",
+        "subtitle": "Easton",
+        "notes": "Additional verified destinations are being researched.",
+        "short_summary": "Pending verification.",
+        "evidence_claim": "Pending verification.",
+        "source_url": "https://www.lafayette.edu/",
+        "source_title": "Lafayette College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "Pending verification.",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+    ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:lafayette.campusdish.com Lafayette dining hours late night ...
+web search: 
+web search: site:mcdonalds.com/us/en-us/location/pa/easton Easton PA hours ...
+web search: 
+web search: Easton PA "Open until" midnight restaurant official ...
+web search: 
+web search: https://www.wawa.com/locations/0101
+codex
+{"complete":true,"school_name":"Lafayette College","town_name":"Easton","boards":[{"complete":true,"school_name":"Lafayette College","town_name":"Easton","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Lafayette College","description":"Ten under-21-safe food and snack stops with directly documented service at 11 p.m. or later, ranging from College Hill walks to Easton destinations that require a ride.","icon":"nightlife","cards":[{"subject_id":"campus-corner-pizzeria-easton","subject_type":"place","entity_name":"Campus Corner Pizzeria","title":"Campus Corner Pizzeria","subtitle":"Pizza until 1 a.m. beside College Hill","notes":"Walk to Cattell Street, check the posted full-hours panel, and order before the listed 1 a.m. closing time.","short_summary":"A late-closing pizzeria immediately beside Lafayette's College Hill neighborhood.","evidence_claim":"The restaurant's ordering page identifies Campus Corner Pizzeria at 208 Cattell Street and lists service from 1 p.m. to 1 a.m.","source_url":"https://www.campuscornerpizzeria.com/","source_title":"Campus Corner Pizzeria - Easton, PA","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The current page lists 1:00 p.m.–1:00 a.m.; consult its Full Hours panel before departing because daily schedules may vary.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wawa-225-cattell-st-easton","subject_type":"place","entity_name":"Wawa #0101","title":"Wawa on Cattell Street","subtitle":"A 24-hour College Hill convenience stop","notes":"Use the Cattell Street entrance for an all-night snack run, and confirm prepared-food availability after midnight.","short_summary":"The closest documented round-the-clock convenience option to Lafayette's main campus.","evidence_claim":"The map listing identifies Wawa at 225 Cattell Street in Easton and states that it is open 24 hours every day.","source_url":"https://maps.apple.com/place?place-id=IC62F24504C54E0A1","source_title":"Wawa, 225 Cattell St, Easton","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Listed open 24 hours every day. Individual prepared-food stations or services may follow narrower schedules.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wawa-631-s-25th-st-easton","subject_type":"place","entity_name":"Wawa #8032","title":"Wawa on South 25th Street","subtitle":"Round-the-clock snacks in Palmer Township","notes":"Plan a ride to South 25th Street, use the 24-hour store for supplies, and verify any made-to-order counter options.","short_summary":"A second all-night Wawa serving the eastern Easton and Palmer area.","evidence_claim":"The map listing identifies Wawa at 631 South 25th Street in Easton and states that it is open 24 hours every day.","source_url":"https://maps.apple.com/place?place-id=IAEE644BC88918F84","source_title":"Wawa, 631 S 25th St, Easton","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Listed open 24 hours every day. This destination requires a ride from campus; food counters may have separate availability.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"sunoco-201-s-wood-st-easton","subject_type":"place","entity_name":"Sunoco #0654832500","title":"Sunoco on South Wood Street","subtitle":"A 24-hour convenience-store fallback","notes":"Travel with a planned ride, stop inside for packaged snacks or essentials, and keep the official location page handy.","short_summary":"A documented 24-hour South Side Easton stop with a convenience store.","evidence_claim":"Sunoco's official page identifies the station at 201 South Wood Street, lists it as open 24 hours, and confirms an on-site convenience store with snacks.","source_url":"https://www.sunoco.com/locations/store/201-s-wood-st-easton-pa-0654832500","source_title":"Sunoco Gas Station #0654832500, Easton","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Officially listed open 24 hours. The page confirms convenience-store snacks; individual services may be unavailable overnight.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"sunoco-3337-freemansburg-ave-easton","subject_type":"place","entity_name":"Sunoco #0363441702","title":"Sunoco on Freemansburg Avenue","subtitle":"Prepared food at a 24-hour station","notes":"Arrange transportation to Freemansburg Avenue and check the prepared-food selection before counting on a full meal.","short_summary":"An all-night Easton station whose official listing specifically includes prepared food.","evidence_claim":"Sunoco's official page identifies the station at 3337-41 Freemansburg Avenue, lists 24-hour operation, and names prepared food as an amenity.","source_url":"https://www.sunoco.com/locations/store/3337-41-freemansburg-ave-easton-pa-0363441702","source_title":"Sunoco Gas Station #0363441702, Easton","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Officially listed open 24 hours with prepared food. This is a ride from campus, and overnight food selection may be limited.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-2420-northampton-st-easton","subject_type":"place","entity_name":"Taco Bell at 2420 Northampton Street","title":"Taco Bell on Northampton Street","subtitle":"Drive-through service into the early morning","notes":"Check the day-specific schedule and plan vehicle access, since the drive-through remains open later than the dining room.","short_summary":"A late drive-through whose closing time extends well past midnight on most nights.","evidence_claim":"Taco Bell's official location page lists drive-through hours as late as 2:30 a.m. on most nights and 3:30 a.m. Friday and Saturday; dine-in closes earlier.","source_url":"https://locations.tacobell.com/pa/easton/2420-northampton-st.html","source_title":"Taco Bell in Easton, PA - 2420 Northampton St","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-through: midnight Wednesday, 2:30 a.m. most other nights, and 3:30 a.m. Friday–Saturday. Dine-in is listed only until 1 a.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"pizza-bolis-1534-butler-st-easton","subject_type":"place","entity_name":"Pizza Boli's of Easton","title":"Pizza Boli's of Easton","subtitle":"Pizza service until 12:30 a.m. nightly","notes":"Order ahead from Butler Street, choose pickup or delivery, and submit the order comfortably before the 12:30 a.m. close.","short_summary":"A nightly post-midnight pizza option with both pickup and delivery ordering.","evidence_claim":"Pizza Boli's official Easton page gives the address as 1534 Butler Street and lists hours of 10 a.m. to 12:30 a.m. Monday through Sunday.","source_url":"https://www.pizzabolis.com/locations/easton/","source_title":"Easton, PA | Pizza Delivery or Carry-Out | Pizza Boli's","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official hours are 10:00 a.m.–12:30 a.m. daily. Confirm whether the final ordering cutoff precedes closing.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"pizza-hut-2527-freemansburg-ave-easton","subject_type":"place","entity_name":"Pizza Hut at 2527 Freemansburg Avenue","title":"Pizza Hut on Freemansburg Avenue","subtitle":"Delivery and carryout until midnight","notes":"Enter the campus delivery address before ordering, verify the service area, and allow time before the midnight close.","short_summary":"A midnight pizza option with official delivery and carryout service information.","evidence_claim":"Pizza Hut's official Easton page lists the restaurant at 2527 Freemansburg Avenue and currently labels it open until midnight.","source_url":"https://locations.pizzahut.com/pa/easton","source_title":"Pizza Delivery & Carryout in Easton, PA | Pizza Hut","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official location page lists closing at midnight. Delivery range and last-order cutoff should be checked when ordering.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"papa-johns-754-s-25th-st-easton","subject_type":"place","entity_name":"Papa Johns at 754 South 25th Street","title":"Papa Johns on South 25th Street","subtitle":"Carryout and delivery past midnight","notes":"Choose delivery or arrange a ride for carryout, then check the weekday schedule before placing a late order.","short_summary":"A post-midnight pizza counter with equally late listed delivery and carryout hours.","evidence_claim":"Papa Johns' official location page lists delivery and carryout until 12:45 a.m. Sunday through Thursday and 1:45 a.m. Friday and Saturday.","source_url":"https://locations.papajohns.com/united-states/pa/18042/easton/754-south-25th-street/pizza-near-me","source_title":"Pizza in Easton, PA | Papa Johns South 25th Street","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Delivery and carryout run until 12:45 a.m. Sunday–Thursday and 1:45 a.m. Friday–Saturday, according to the official page.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"applebees-3702-easton-nazareth-hwy","subject_type":"place","entity_name":"Applebee's Easton","title":"Applebee's on Easton-Nazareth Highway","subtitle":"A sit-down option serving until 11 p.m.","notes":"Arrange a ride to the Easton-Nazareth corridor and arrive early enough to order before the listed 11 p.m. close.","short_summary":"A late sit-down meal option for groups needing an all-ages dining room.","evidence_claim":"Applebee's official Easton page identifies the restaurant at 3702 Easton-Nazareth Highway and currently lists it as open until 11 p.m.","source_url":"https://restaurants.applebees.com/en-us/pa/easton/3702-easton-nazareth-hwy.-97091","source_title":"Applebee's Grill + Bar in Easton, PA","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page lists service until 11 p.m. Check the live page before traveling because day-specific closing times can change.","cost_status":"purchase_required","under21_safe":true}],"warnings":["Late hours can change during holidays, academic breaks, or staffing disruptions; recheck each linked page before departure.","Eight destinations require a ride or delivery from Lafayette's main campus; only the Cattell Street locations are immediately beside College Hill."]}],"warnings":[]}
+2026-08-13T07:56:58.783897Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa1d-d82f-7153-a262-79580a9cdcf6.1786607687727988000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+42,433
+
+{"complete":true,"school_name":"Lafayette College","town_name":"Easton","boards":[{"complete":true,"school_name":"Lafayette College","town_name":"Easton","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Lafayette College","description":"Ten under-21-safe food and snack stops with directly documented service at 11 p.m. or later, ranging from College Hill walks to Easton destinations that require a ride.","icon":"nightlife","cards":[{"subject_id":"campus-corner-pizzeria-easton","subject_type":"place","entity_name":"Campus Corner Pizzeria","title":"Campus Corner Pizzeria","subtitle":"Pizza until 1 a.m. beside College Hill","notes":"Walk to Cattell Street, check the posted full-hours panel, and order before the listed 1 a.m. closing time.","short_summary":"A late-closing pizzeria immediately beside Lafayette's College Hill neighborhood.","evidence_claim":"The restaurant's ordering page identifies Campus Corner Pizzeria at 208 Cattell Street and lists service from 1 p.m. to 1 a.m.","source_url":"https://www.campuscornerpizzeria.com/","source_title":"Campus Corner Pizzeria - Easton, PA","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The current page lists 1:00 p.m.–1:00 a.m.; consult its Full Hours panel before departing because daily schedules may vary.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wawa-225-cattell-st-easton","subject_type":"place","entity_name":"Wawa #0101","title":"Wawa on Cattell Street","subtitle":"A 24-hour College Hill convenience stop","notes":"Use the Cattell Street entrance for an all-night snack run, and confirm prepared-food availability after midnight.","short_summary":"The closest documented round-the-clock convenience option to Lafayette's main campus.","evidence_claim":"The map listing identifies Wawa at 225 Cattell Street in Easton and states that it is open 24 hours every day.","source_url":"https://maps.apple.com/place?place-id=IC62F24504C54E0A1","source_title":"Wawa, 225 Cattell St, Easton","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Listed open 24 hours every day. Individual prepared-food stations or services may follow narrower schedules.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wawa-631-s-25th-st-easton","subject_type":"place","entity_name":"Wawa #8032","title":"Wawa on South 25th Street","subtitle":"Round-the-clock snacks in Palmer Township","notes":"Plan a ride to South 25th Street, use the 24-hour store for supplies, and verify any made-to-order counter options.","short_summary":"A second all-night Wawa serving the eastern Easton and Palmer area.","evidence_claim":"The map listing identifies Wawa at 631 South 25th Street in Easton and states that it is open 24 hours every day.","source_url":"https://maps.apple.com/place?place-id=IAEE644BC88918F84","source_title":"Wawa, 631 S 25th St, Easton","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Listed open 24 hours every day. This destination requires a ride from campus; food counters may have separate availability.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"sunoco-201-s-wood-st-easton","subject_type":"place","entity_name":"Sunoco #0654832500","title":"Sunoco on South Wood Street","subtitle":"A 24-hour convenience-store fallback","notes":"Travel with a planned ride, stop inside for packaged snacks or essentials, and keep the official location page handy.","short_summary":"A documented 24-hour South Side Easton stop with a convenience store.","evidence_claim":"Sunoco's official page identifies the station at 201 South Wood Street, lists it as open 24 hours, and confirms an on-site convenience store with snacks.","source_url":"https://www.sunoco.com/locations/store/201-s-wood-st-easton-pa-0654832500","source_title":"Sunoco Gas Station #0654832500, Easton","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Officially listed open 24 hours. The page confirms convenience-store snacks; individual services may be unavailable overnight.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"sunoco-3337-freemansburg-ave-easton","subject_type":"place","entity_name":"Sunoco #0363441702","title":"Sunoco on Freemansburg Avenue","subtitle":"Prepared food at a 24-hour station","notes":"Arrange transportation to Freemansburg Avenue and check the prepared-food selection before counting on a full meal.","short_summary":"An all-night Easton station whose official listing specifically includes prepared food.","evidence_claim":"Sunoco's official page identifies the station at 3337-41 Freemansburg Avenue, lists 24-hour operation, and names prepared food as an amenity.","source_url":"https://www.sunoco.com/locations/store/3337-41-freemansburg-ave-easton-pa-0363441702","source_title":"Sunoco Gas Station #0363441702, Easton","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Officially listed open 24 hours with prepared food. This is a ride from campus, and overnight food selection may be limited.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-2420-northampton-st-easton","subject_type":"place","entity_name":"Taco Bell at 2420 Northampton Street","title":"Taco Bell on Northampton Street","subtitle":"Drive-through service into the early morning","notes":"Check the day-specific schedule and plan vehicle access, since the drive-through remains open later than the dining room.","short_summary":"A late drive-through whose closing time extends well past midnight on most nights.","evidence_claim":"Taco Bell's official location page lists drive-through hours as late as 2:30 a.m. on most nights and 3:30 a.m. Friday and Saturday; dine-in closes earlier.","source_url":"https://locations.tacobell.com/pa/easton/2420-northampton-st.html","source_title":"Taco Bell in Easton, PA - 2420 Northampton St","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-through: midnight Wednesday, 2:30 a.m. most other nights, and 3:30 a.m. Friday–Saturday. Dine-in is listed only until 1 a.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"pizza-bolis-1534-butler-st-easton","subject_type":"place","entity_name":"Pizza Boli's of Easton","title":"Pizza Boli's of Easton","subtitle":"Pizza service until 12:30 a.m. nightly","notes":"Order ahead from Butler Street, choose pickup or delivery, and submit the order comfortably before the 12:30 a.m. close.","short_summary":"A nightly post-midnight pizza option with both pickup and delivery ordering.","evidence_claim":"Pizza Boli's official Easton page gives the address as 1534 Butler Street and lists hours of 10 a.m. to 12:30 a.m. Monday through Sunday.","source_url":"https://www.pizzabolis.com/locations/easton/","source_title":"Easton, PA | Pizza Delivery or Carry-Out | Pizza Boli's","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official hours are 10:00 a.m.–12:30 a.m. daily. Confirm whether the final ordering cutoff precedes closing.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"pizza-hut-2527-freemansburg-ave-easton","subject_type":"place","entity_name":"Pizza Hut at 2527 Freemansburg Avenue","title":"Pizza Hut on Freemansburg Avenue","subtitle":"Delivery and carryout until midnight","notes":"Enter the campus delivery address before ordering, verify the service area, and allow time before the midnight close.","short_summary":"A midnight pizza option with official delivery and carryout service information.","evidence_claim":"Pizza Hut's official Easton page lists the restaurant at 2527 Freemansburg Avenue and currently labels it open until midnight.","source_url":"https://locations.pizzahut.com/pa/easton","source_title":"Pizza Delivery & Carryout in Easton, PA | Pizza Hut","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official location page lists closing at midnight. Delivery range and last-order cutoff should be checked when ordering.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"papa-johns-754-s-25th-st-easton","subject_type":"place","entity_name":"Papa Johns at 754 South 25th Street","title":"Papa Johns on South 25th Street","subtitle":"Carryout and delivery past midnight","notes":"Choose delivery or arrange a ride for carryout, then check the weekday schedule before placing a late order.","short_summary":"A post-midnight pizza counter with equally late listed delivery and carryout hours.","evidence_claim":"Papa Johns' official location page lists delivery and carryout until 12:45 a.m. Sunday through Thursday and 1:45 a.m. Friday and Saturday.","source_url":"https://locations.papajohns.com/united-states/pa/18042/easton/754-south-25th-street/pizza-near-me","source_title":"Pizza in Easton, PA | Papa Johns South 25th Street","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Delivery and carryout run until 12:45 a.m. Sunday–Thursday and 1:45 a.m. Friday–Saturday, according to the official page.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"applebees-3702-easton-nazareth-hwy","subject_type":"place","entity_name":"Applebee's Easton","title":"Applebee's on Easton-Nazareth Highway","subtitle":"A sit-down option serving until 11 p.m.","notes":"Arrange a ride to the Easton-Nazareth corridor and arrive early enough to order before the listed 11 p.m. close.","short_summary":"A late sit-down meal option for groups needing an all-ages dining room.","evidence_claim":"Applebee's official Easton page identifies the restaurant at 3702 Easton-Nazareth Highway and currently lists it as open until 11 p.m.","source_url":"https://restaurants.applebees.com/en-us/pa/easton/3702-easton-nazareth-hwy.-97091","source_title":"Applebee's Grill + Bar in Easton, PA","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page lists service until 11 p.m. Check the live page before traveling because day-specific closing times can change.","cost_status":"purchase_required","under21_safe":true}],"warnings":["Late hours can change during holidays, academic breaks, or staffing disruptions; recheck each linked page before departure.","Eight destinations require a ride or delivery from Lafayette's main campus; only the Cattell Street locations are immediately beside College Hill."]}],"warnings":[]}

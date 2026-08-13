@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://cooper.edu/about/news/spite-obstacles-peter-cooper-gets-his-birthday-wreath",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cooper.edu/about/news/spite-obstacles-peter-cooper-gets-his-birthday-wreath",
+      "error": ""
+    },
+    {
+      "url": "https://cooper.edu/about/news/founders-day-award-reception-honors-alumni-leaders",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cooper.edu/about/news/founders-day-award-reception-honors-alumni-leaders",
+      "error": ""
+    },
+    {
+      "url": "https://cooper.edu/gallery/2026-end-year-show-photos-opening-night",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cooper.edu/gallery/2026-end-year-show-photos-opening-night",
+      "error": ""
+    },
+    {
+      "url": "https://cooper.edu/academics/research-fellowships/benjamin-menschel-fellowship-program/menschel-project-archive",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cooper.edu/academics/research-fellowships/benjamin-menschel-fellowship-program/menschel-project-archive",
+      "error": ""
+    },
+    {
+      "url": "https://cooper.edu/students/commencement/tradition",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cooper.edu/students/commencement/tradition",
+      "error": ""
+    },
+    {
+      "url": "https://cooper.edu/welcome",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cooper.edu/welcome",
+      "error": ""
+    },
+    {
+      "url": "https://cooper.edu/engineering/extracurricular/clubs-teams",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cooper.edu/engineering/extracurricular/clubs-teams",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

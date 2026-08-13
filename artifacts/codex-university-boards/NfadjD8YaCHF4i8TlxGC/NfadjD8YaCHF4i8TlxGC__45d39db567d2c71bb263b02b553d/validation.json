@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://cfa.lmu.edu/labandgallery/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cfa.lmu.edu/labandgallery/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.getty.edu/visit/center/faqs/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.getty.edu/visit/center/faqs/",
+      "error": ""
+    },
+    {
+      "url": "https://www.getty.edu/visit/villa/faqs/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.getty.edu/visit/villa/faqs/",
+      "error": ""
+    },
+    {
+      "url": "https://hammer.ucla.edu/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://hammer.ucla.edu/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.thebroad.org/about/broad",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.thebroad.org/about/broad",
+      "error": ""
+    },
+    {
+      "url": "https://caamuseum.org/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://caamuseum.org/visit",
+      "error": ""
+    },
+    {
+      "url": "https://expositionpark.ca.gov/about-us/venues/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://expositionpark.ca.gov/about-us/venues/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lapl.org/km/node/50029",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lapl.org/km/node/50029",
+      "error": ""
+    },
+    {
+      "url": "https://fowler.ucla.edu/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fowler.ucla.edu/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.moca-la.org/visit/hours-tickets-admission",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.moca-la.org/visit/hours-tickets-admission",
+      "error": "fetch failed"
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

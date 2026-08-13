@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "qv9KEt5j5qxWr7wpV7uN",
+    "schoolName": "Occidental College",
+    "shortSchoolName": "Occidental College",
+    "townName": "Los Angeles",
+    "state": "CA",
+    "countryCode": "US",
+    "unitId": "120254",
+    "website": "https://www.oxy.edu/",
+    "latitude": 34.127124,
+    "longitude": -118.210908,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/f/f1/Occidental_College_Seal.svg/330px-Occidental_College_Seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=oxy.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain Occidental College",
+  "excluded_subjects": [
+    "OXY ARTS gallery visit",
+    "OXY ARTS public program",
+    "OXY ARTS performance",
+    "OXY ARTS film screening",
+    "OXY ARTS workshop",
+    "Ahmanson Reading Room",
+    "Jeffers Room",
+    "L.A. Reading Room",
+    "Academic Commons group study",
+    "Academic Commons Special Collections exhibits"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

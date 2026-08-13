@@ -1,0 +1,88 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Library hours change by academic term and date; check the live library calendar before following the Saturday sequence.",
+    "SRC entry is restricted to members or people with approved special access; enrolled-student access depends on current eligibility.",
+    "Outdoor campus sources do not publish formal visitor hours for the Orange Grove, public artworks or pond, so daylight visits are advised.",
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.csun.edu/usu",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csun.edu/usu",
+      "error": ""
+    },
+    {
+      "url": "https://www.csun.edu/src/games-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csun.edu/src/games-room",
+      "error": ""
+    },
+    {
+      "url": "https://www.csun.edu/FPDC/about-our-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csun.edu/FPDC/about-our-campus",
+      "error": ""
+    },
+    {
+      "url": "https://www.csun.edu/src",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csun.edu/src",
+      "error": ""
+    },
+    {
+      "url": "https://www2.laparks.org/recreation-center/northridge-recreation-center",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www2.laparks.org/recreation-center/northridge-recreation-center",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://library.csun.edu/about/transformation/lc-faq",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csun.edu/about/transformation/lc-faq",
+      "error": ""
+    },
+    {
+      "url": "https://themuseumsfvnow.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://themuseumsfvnow.org/",
+      "error": ""
+    },
+    {
+      "url": "https://newsroom.csun.edu/2023/08/17/safe-summer-sculpture-gallery-outdoors-explore-the-public-art-around-csuns-parklike-campus/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://newsroom.csun.edu/2023/08/17/safe-summer-sculpture-gallery-outdoors-explore-the-public-art-around-csuns-parklike-campus/",
+      "error": ""
+    },
+    {
+      "url": "https://www.csun.edu/node/195321",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csun.edu/node/195321",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

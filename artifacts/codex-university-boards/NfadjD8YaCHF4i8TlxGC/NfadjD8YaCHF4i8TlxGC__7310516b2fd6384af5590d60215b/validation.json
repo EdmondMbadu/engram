@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.reed.edu/strategic-communications-and-marketing/guidelines/style-guide-docs/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.reed.edu/strategic-communications-and-marketing/guidelines/style-guide-docs/",
+      "error": ""
+    },
+    {
+      "url": "https://www.reed.edu/canyon/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.reed.edu/canyon/",
+      "error": ""
+    },
+    {
+      "url": "https://www.reed.edu/guidebook/coll_resource/library.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://idp.reed.edu/idp/profile/SAML2/Redirect/SSO?execution=e1s1",
+      "error": ""
+    },
+    {
+      "url": "https://www.reed.edu/academics/facilities.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.reed.edu/academics/facilities.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.reed.edu/campus-life/housing-dining/dining-food-services/bon-appetit.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.reed.edu/campus-life/housing-dining/dining-food-services/bon-appetit.html",
+      "error": ""
+    },
+    {
+      "url": "https://bookstore.reed.edu/site_about_us.asp",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bookstore.reed.edu/site_about_us.asp",
+      "error": ""
+    },
+    {
+      "url": "https://www.reed.edu/athletics-fitness-and-outdoor-programs/rope/roc/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.reed.edu/athletics-fitness-and-outdoor-programs/rope/roc/",
+      "error": ""
+    },
+    {
+      "url": "https://www.portland.gov/parks/crystal-springs-rhododendron-garden",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.portland.gov/parks/crystal-springs-rhododendron-garden",
+      "error": ""
+    },
+    {
+      "url": "https://www.portland.gov/parks/sellwood-riverfront-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.portland.gov/parks/sellwood-riverfront-park",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

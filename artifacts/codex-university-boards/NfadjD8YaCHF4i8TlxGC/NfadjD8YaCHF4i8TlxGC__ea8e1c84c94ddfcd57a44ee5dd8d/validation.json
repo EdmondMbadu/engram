@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://calvin.edu/news-stories/12-study-spaces-students-love-calvin-university",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calvin.edu/news-stories/12-study-spaces-students-love-calvin-university",
+      "error": ""
+    },
+    {
+      "url": "https://calvin.edu/construction/hekman-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calvin.edu/construction/hekman-library",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 2,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

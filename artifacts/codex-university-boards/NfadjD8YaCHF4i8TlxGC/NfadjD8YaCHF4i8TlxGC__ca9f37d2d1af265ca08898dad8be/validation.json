@@ -1,0 +1,57 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://wooster.edu/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wooster.edu/visit",
+      "error": ""
+    },
+    {
+      "url": "https://wooster.edu/new-students",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wooster.edu/new-students",
+      "error": ""
+    },
+    {
+      "url": "https://wooster.edu/living-on-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wooster.edu/living-on-campus",
+      "error": ""
+    },
+    {
+      "url": "https://wooster.edu/museum",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wooster.edu/museum",
+      "error": ""
+    },
+    {
+      "url": "https://wooster.edu/events",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wooster.edu/events",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Kauke Hall Steps",
+    "The College of Wooster Art Museum",
+    "Scot Center"
+  ],
+  "sourceCount": 5,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://uagameday.com/tailgating/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://uagameday.com/tailgating/",
+      "error": ""
+    },
+    {
+      "url": "https://abook.sa.ua.edu/ua-traditions/history/million-dollar-band/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://abook.sa.ua.edu/ua-traditions/history/million-dollar-band/",
+      "error": ""
+    },
+    {
+      "url": "https://stories.ua.edu/profile-of-excellence-2025-2026/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stories.ua.edu/profile-of-excellence-2025-2026/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://news.ua.edu/2026/03/april-events-in-bloom-at-ua/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.ua.edu/2026/03/april-events-in-bloom-at-ua/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

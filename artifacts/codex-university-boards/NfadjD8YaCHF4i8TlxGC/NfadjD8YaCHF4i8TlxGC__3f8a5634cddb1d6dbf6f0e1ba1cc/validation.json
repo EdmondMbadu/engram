@@ -1,0 +1,97 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Coordinates are null unless a precise value was verified from an authoritative government or established reference source; map URLs are null where no direct destination URL was verified.",
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.shopmarketsquare.com/about.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.shopmarketsquare.com/about.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.lakeforestlibrary.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakeforestlibrary.org/",
+      "error": ""
+    },
+    {
+      "url": "https://gortoncenter.org/about-10250141/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gortoncenter.org/about-10250141/",
+      "error": ""
+    },
+    {
+      "url": "https://lflbhistory.org/plan-your-visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lflbhistory.org/plan-your-visit/",
+      "error": ""
+    },
+    {
+      "url": "https://lfparksandrec.com/forest-park-beach",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lfparksandrec.com/forest-park-beach",
+      "error": ""
+    },
+    {
+      "url": "https://www.lakeforest.edu/student-life/commuter-students",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakeforest.edu/student-life/commuter-students",
+      "error": ""
+    },
+    {
+      "url": "https://business.lflbchamber.com/list/member/lake-forest-book-store-inc-250",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://business.lflbchamber.com/list/member/lake-forest-book-store-inc-250",
+      "error": ""
+    },
+    {
+      "url": "https://www.gerhardsdesserts.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gerhardsdesserts.com/",
+      "error": ""
+    },
+    {
+      "url": "https://hometowncoffeejuice.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://hometowncoffeejuice.com/",
+      "error": ""
+    },
+    {
+      "url": "https://kiddlessports.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://kiddlessports.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Market Square",
+    "Lake Forest Library"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

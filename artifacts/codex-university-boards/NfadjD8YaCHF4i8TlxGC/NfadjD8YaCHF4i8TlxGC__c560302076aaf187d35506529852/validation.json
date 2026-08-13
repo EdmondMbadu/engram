@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.uc.edu/campus-life/housing/where-to-live/communities/apartment/u-square.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uc.edu/campus-life/housing/where-to-live/communities/apartment/u-square.html",
+      "error": ""
+    },
+    {
+      "url": "https://magazine.uc.edu/editors_picks/recent_features/bearcat_statue.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://magazine.uc.edu/editors_picks/recent_features/bearcat_statue.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.uc.edu/about/maps.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uc.edu/about/maps.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.uc.edu/news/articles/2025/04/uc-student-leaders-seek-better-student-neighbor-relations-and-to-make-campus-more-welcoming.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uc.edu/news/articles/2025/04/uc-student-leaders-seek-better-student-neighbor-relations-and-to-make-campus-more-welcoming.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.uc.edu/campus-life/student-affairs/vote/campus-addresses.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uc.edu/campus-life/student-affairs/get-involved/vote.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.uc.edu/content/dam/common/docs/maps/campus_map_west_color.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uc.edu/content/dam/common/docs/maps/campus_map_west_color.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

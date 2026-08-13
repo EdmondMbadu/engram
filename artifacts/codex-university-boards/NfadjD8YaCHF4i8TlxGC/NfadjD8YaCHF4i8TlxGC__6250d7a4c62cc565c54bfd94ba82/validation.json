@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.scenichudson.org/explore-the-valley/scenic-hudson-parks/black-creek-preserve/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scenichudson.org/explore-the-valley/scenic-hudson-parks/black-creek-preserve/",
+      "error": ""
+    },
+    {
+      "url": "https://www.scenichudson.org/explore-the-valley/scenic-hudson-parks/peach-hill-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scenichudson.org/explore-the-valley/scenic-hudson-parks/peach-hill-park/",
+      "error": ""
+    },
+    {
+      "url": "https://www.scenichudson.org/explore-the-valley/scenic-hudson-parks/esopus-meadows-preserve/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scenichudson.org/explore-the-valley/scenic-hudson-parks/esopus-meadows-preserve/",
+      "error": ""
+    },
+    {
+      "url": "https://www.scenichudson.org/explore-the-valley/scenic-hudson-parks/lighthouse-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scenichudson.org/explore-the-valley/scenic-hudson-parks/lighthouse-park/",
+      "error": ""
+    },
+    {
+      "url": "https://www.scenichudson.org/explore-the-valley/scenic-hudson-parks/franny-reese-state-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scenichudson.org/explore-the-valley/scenic-hudson-parks/franny-reese-state-park/",
+      "error": ""
+    },
+    {
+      "url": "https://www.scenichudson.org/explore-the-valley/scenic-hudson-parks/shaupeneak-ridge/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scenichudson.org/explore-the-valley/scenic-hudson-parks/shaupeneak-ridge/",
+      "error": ""
+    },
+    {
+      "url": "https://www.scenichudson.org/explore-the-valley/scenic-hudson-parks/poets-walk-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scenichudson.org/explore-the-valley/scenic-hudson-parks/poets-walk-park/",
+      "error": ""
+    },
+    {
+      "url": "https://www.scenichudson.org/explore-the-valley/scenic-hudson-parks/scenic-hudsons-long-dock-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scenichudson.org/explore-the-valley/scenic-hudson-parks/scenic-hudsons-long-dock-park/",
+      "error": ""
+    },
+    {
+      "url": "https://www.scenichudson.org/explore-the-valley/scenic-hudson-parks/madam-brett-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scenichudson.org/explore-the-valley/scenic-hudson-parks/madam-brett-park/",
+      "error": ""
+    },
+    {
+      "url": "https://www.scenichudson.org/explore-the-valley/scenic-hudson-parks/mount-beacon-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scenichudson.org/explore-the-valley/scenic-hudson-parks/mount-beacon-park/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

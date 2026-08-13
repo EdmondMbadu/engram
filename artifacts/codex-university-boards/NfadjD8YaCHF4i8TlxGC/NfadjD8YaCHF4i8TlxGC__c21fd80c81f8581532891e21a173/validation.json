@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.truman.edu/academics/school-of-arts-and-humanities/about-the-art-and-design-department/art-gallery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.truman.edu/academics/school-of-arts-and-humanities/about-the-art-and-design-department/art-gallery/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitmo.com/things-to-do/ruth-towne-museum",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitmo.com/things-to-do/ruth-towne-museum",
+      "error": ""
+    },
+    {
+      "url": "https://www.kirksvillecity.com/p/kac",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.kirksvillecity.com/p/kac",
+      "error": ""
+    },
+    {
+      "url": "https://recreation.truman.edu/fitness-home/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recreation.truman.edu/fitness-home/",
+      "error": ""
+    },
+    {
+      "url": "https://recreation.truman.edu/intramurals-home/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recreation.truman.edu/intramurals-home/",
+      "error": ""
+    },
+    {
+      "url": "https://library.truman.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.truman.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://sustainability.truman.edu/get-involved/sustainability-organizations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sustainability.truman.edu/get-involved/sustainability-organizations/",
+      "error": ""
+    },
+    {
+      "url": "https://www.truman.edu/about/our-campus/facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.truman.edu/about/our-campus/facilities/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

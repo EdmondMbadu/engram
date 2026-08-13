@@ -1,0 +1,70 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "RxnkKKBEHxZUMuIiabQk",
+    "schoolName": "Ohio University-Main Campus",
+    "shortSchoolName": "Ohio University",
+    "townName": "Athens",
+    "state": "OH",
+    "countryCode": "US",
+    "unitId": "204857",
+    "website": "https://www.ohio.edu/",
+    "latitude": 39.326798,
+    "longitude": -82.100985,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=ohio.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=ohio.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "Alden Library First Floor",
+    "Alden Library Learning Commons",
+    "Alden Library Hushpods",
+    "CoLab",
+    "Alden Library Third Floor",
+    "Class of 1951 Lounge",
+    "Very Quiet Study Area",
+    "Alden Library Fifth Floor",
+    "Alden Library Sixth Floor",
+    "Alden Library Seventh Floor",
+    "Earl's Coop on East Green",
+    "Maggie Davis Market Express",
+    "Courtside Pizza",
+    "Shively Commons",
+    "The Hungry Cat Food Truck",
+    "Brick City Deli On The Go",
+    "Jefferson Marketplace",
+    "Boyd Market",
+    "Nelson Market",
+    "Latitude 39",
+    "College Green",
+    "Baker University Center",
+    "Calendar of University Events",
+    "Vernon R. Alden Library",
+    "Charles J. Ping Student Recreation Center",
+    "Athens Farmers Market",
+    "CATS Purple Loop",
+    "The Ridges Hiking Trails",
+    "Ohio University Observatory",
+    "Center for Student Engagement & Leadership"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

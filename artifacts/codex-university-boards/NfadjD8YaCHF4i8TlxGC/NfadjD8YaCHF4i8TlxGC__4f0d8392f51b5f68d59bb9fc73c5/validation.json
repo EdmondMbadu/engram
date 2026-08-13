@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.simmons.edu/student-life/experience-boston/official-simmons-guide-boston",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.simmons.edu/student-experience/experience-boston/official-simmons-guide-boston",
+      "error": ""
+    },
+    {
+      "url": "https://www.bpl.org/about-the-bpl/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bpl.org/about-the-bpl/",
+      "error": ""
+    },
+    {
+      "url": "https://www.harvard.edu/campus/museums/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.harvard.edu/campus/museums/",
+      "error": ""
+    },
+    {
+      "url": "https://listart.mit.edu/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://listart.mit.edu/about",
+      "error": ""
+    },
+    {
+      "url": "https://www.emeraldnecklace.org/about-us/shattuck-visitor-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.emeraldnecklace.org/about-us/shattuck-visitor-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.emeraldnecklace.org/about-us/shattuck-visitor-center/guided-tours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.emeraldnecklace.org/about-us/shattuck-visitor-center/guided-tours/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

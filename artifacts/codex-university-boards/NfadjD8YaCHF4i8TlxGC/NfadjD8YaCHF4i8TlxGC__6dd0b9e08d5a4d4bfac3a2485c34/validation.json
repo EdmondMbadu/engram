@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.allentownpa.gov/Health-Bureau/Million-Clicks-for-Million-Hearts",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.allentownpa.gov/en-us/Government/Departments/Community-Economic-Development/Health-Bureau/Nutrition-and-Physical-Activity-Program/Million-Clicks-Walking-Program",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 1,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

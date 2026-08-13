@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://households.franciscan.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://households.franciscan.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://chapel.franciscan.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://chapel.franciscan.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://households.franciscan.edu/household-awards/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://households.franciscan.edu/household-awards/",
+      "error": ""
+    },
+    {
+      "url": "https://chapel.franciscan.edu/campus-evangelization/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://chapel.franciscan.edu/campus-evangelization/",
+      "error": ""
+    },
+    {
+      "url": "https://franciscan.edu/franciscan-university-homecoming-weekend-2025/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://franciscan.edu/franciscan-university-homecoming-weekend-2025/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

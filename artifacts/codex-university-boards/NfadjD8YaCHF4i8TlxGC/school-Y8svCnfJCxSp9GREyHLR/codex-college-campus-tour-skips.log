@@ -1,0 +1,289 @@
+Reading additional input from stdin...
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9ec-0fe8-72b1-a732-0243ec50c362
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"Y8svCnfJCxSp9GREyHLR","schoolName":"Emerson College","shortSchoolName":"Emerson College","townName":"Boston","state":"MA","countryCode":"US","website":"https://www.emerson.edu/","latitude":42.352202,"longitude":-71.065384},"templates":[{"id":"college-campus-tour-skips","version":"1.0","titlePattern":"What the Campus Tour Skips: {count} Places Students Share With Each Other","editorialBrief":"Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.","researchQueries":["student favorite campus places","campus map student spaces","student newspaper campus places"],"count":10,"icon":"style","primarySubjectType":"place","allowedSubjectTypes":["place","study_space"],"freshnessDays":365,"exactTitle":"What the Campus Tour Skips: 10 Places Students Share With Each Other"}]}
+2026-08-13T07:00:25.566269Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9eb-aff6-75f2-ab75-d4ea89b827d4.1786604400630598000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:00:25.627884Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:00:25.642996Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:00:25.736024Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9eb-afe4-7670-8384-225e17244e87.1786604400613451000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:00:25.946067Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9eb-afe3-70b3-9485-8be417bf4df5.1786604400612674000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:00:26.212745Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9eb-afed-7f23-b592-f3efee5644b4.1786604400621982000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Emerson College",
+  "town_name": "Boston",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Emerson College",
+      "town_name": "Boston",
+      "template_id": "college-campus-tour-skips",
+      "title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+      "description": "I’m researching ten distinct Emerson spaces against direct, current campus sources and verifying location and access details.",
+      "icon": "style",
+      "cards": [
+        {
+          "subject_id": "research-in-progress",
+          "subject_type": "place",
+          "entity_name": "Research in progress",
+          "title": "Research in progress",
+          "subtitle": "Emerson College",
+          "notes": "Checking direct university pages for specific shared uses, access limits, and stable location details before completing the board.",
+          "short_summary": "Source verification underway.",
+          "evidence_claim": "Research is underway.",
+          "source_url": "https://www.emerson.edu/",
+          "source_title": "Emerson College",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "To be verified.",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+     ,
+      {
+        "subject_id": "placeholder-2",
+        "subject_type": "place",
+        "entity_name": "Placeholder 2",
+        "title": "Placeholder 2",
+        "subtitle": "Research placeholder",
+        "notes": "Temporary research placeholder while direct university sources are checked for a distinct Emerson campus destination.",
+        "short_summary": "Pending verification.",
+        "evidence_claim": "Pending verification.",
+        "source_url": "https://www.emerson.edu/",
+        "source_title": "Emerson College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "To be verified.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "placeholder-3",
+        "subject_type": "place",
+        "entity_name": "Placeholder 3",
+        "title": "Placeholder 3",
+        "subtitle": "Research placeholder",
+        "notes": "Temporary research placeholder while direct university sources are checked for a distinct Emerson campus destination.",
+        "short_summary": "Pending verification.",
+        "evidence_claim": "Pending verification.",
+        "source_url": "https://www.emerson.edu/",
+        "source_title": "Emerson College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "To be verified.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "placeholder-4",
+        "subject_type": "place",
+        "entity_name": "Placeholder 4",
+        "title": "Placeholder 4",
+        "subtitle": "Research placeholder",
+        "notes": "Temporary research placeholder while direct university sources are checked for a distinct Emerson campus destination.",
+        "short_summary": "Pending verification.",
+        "evidence_claim": "Pending verification.",
+        "source_url": "https://www.emerson.edu/",
+        "source_title": "Emerson College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "To be verified.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "placeholder-5",
+        "subject_type": "place",
+        "entity_name": "Placeholder 5",
+        "title": "Placeholder 5",
+        "subtitle": "Research placeholder",
+        "notes": "Temporary research placeholder while direct university sources are checked for a distinct Emerson campus destination.",
+        "short_summary": "Pending verification.",
+        "evidence_claim": "Pending verification.",
+        "source_url": "https://www.emerson.edu/",
+        "source_title": "Emerson College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "To be verified.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "placeholder-6",
+        "subject_type": "place",
+        "entity_name": "Placeholder 6",
+        "title": "Placeholder 6",
+        "subtitle": "Research placeholder",
+        "notes": "Temporary research placeholder while direct university sources are checked for a distinct Emerson campus destination.",
+        "short_summary": "Pending verification.",
+        "evidence_claim": "Pending verification.",
+        "source_url": "https://www.emerson.edu/",
+        "source_title": "Emerson College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "To be verified.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "placeholder-7",
+        "subject_type": "place",
+        "entity_name": "Placeholder 7",
+        "title": "Placeholder 7",
+        "subtitle": "Research placeholder",
+        "notes": "Temporary research placeholder while direct university sources are checked for a distinct Emerson campus destination.",
+        "short_summary": "Pending verification.",
+        "evidence_claim": "Pending verification.",
+        "source_url": "https://www.emerson.edu/",
+        "source_title": "Emerson College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "To be verified.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "placeholder-8",
+        "subject_type": "place",
+        "entity_name": "Placeholder 8",
+        "title": "Placeholder 8",
+        "subtitle": "Research placeholder",
+        "notes": "Temporary research placeholder while direct university sources are checked for a distinct Emerson campus destination.",
+        "short_summary": "Pending verification.",
+        "evidence_claim": "Pending verification.",
+        "source_url": "https://www.emerson.edu/",
+        "source_title": "Emerson College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "To be verified.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "placeholder-9",
+        "subject_type": "place",
+        "entity_name": "Placeholder 9",
+        "title": "Placeholder 9",
+        "subtitle": "Research placeholder",
+        "notes": "Temporary research placeholder while direct university sources are checked for a distinct Emerson campus destination.",
+        "short_summary": "Pending verification.",
+        "evidence_claim": "Pending verification.",
+        "source_url": "https://www.emerson.edu/",
+        "source_title": "Emerson College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "To be verified.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "placeholder-10",
+        "subject_type": "place",
+        "entity_name": "Placeholder 10",
+        "title": "Placeholder 10",
+        "subtitle": "Research placeholder",
+        "notes": "Temporary research placeholder while direct university sources are checked for a distinct Emerson campus destination.",
+        "short_summary": "Pending verification.",
+        "evidence_claim": "Pending verification.",
+        "source_url": "https://www.emerson.edu/",
+        "source_title": "Emerson College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "To be verified.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ],
+      "warnings": [
+        "Research in progress; final response will replace this status object."
+      ]
+    }
+  ],
+  "warnings": [
+    "Research in progress."
+  ]
+}
+web search: 
+web search: site:emerson.edu Emerson College campus spaces library student center labs facilities Boston ...
+web search: 
+web search: site:emerson.edu/departments/campus-centers "172 Tremont" "Community Kitchen" ...
+codex
+{"complete":true,"school_name":"Emerson College","town_name":"Boston","boards":[{"complete":true,"school_name":"Emerson College","town_name":"Boston","template_id":"college-campus-tour-skips","title":"What the Campus Tour Skips: 10 Places Students Share With Each Other","description":"Ten Emerson spaces for studying, meeting, creating, playing, reflecting, and exercising, with uses and access conditions verified through current college sources.","icon":"style","cards":[{"subject_id":"emerson-griffs-game-room","subject_type":"place","entity_name":"Griff’s Game Room","title":"Reset Between Classes at Griff’s","subtitle":"Games and soft seating on Little Building’s second floor","notes":"Bring friends for pool, air hockey, foosball, arcade, Switch, or tabletop games; keep food and drinks at the room’s regular tables.","short_summary":"A nonreservable campus third space dedicated to casual play and downtime.","evidence_claim":"Emerson identifies Griff’s Game Room as a second-floor Little Building space where students can play games, relax, and connect during operating hours.","source_url":"https://emerson.edu/departments/campus-centers/griffs-game-room","source_title":"Griff’s Game Room","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open to Emerson students and community members during posted operational hours. Outside guests need an active Emerson sponsor and visitor registration.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emerson-the-hub-172-tremont","subject_type":"study_space","entity_name":"The Hub","title":"Take a Common-Facing Work Break","subtitle":"The main-level community lounge at 172 Tremont","notes":"Use The Hub for an informal study session or meetup, then ask the nearby Campus Centers service desk if you need reservable space.","short_summary":"A community lounge for low-setup studying and conversation.","evidence_claim":"Emerson lists The Hub as the main-level community lounge within 172 Tremont, a building offering student meeting and social spaces.","source_url":"https://emerson.edu/departments/campus-centers/172-tremont","source_title":"172 Tremont","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"For Emerson community use; room reservations and access assistance are available through the 172 Tremont service desk.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emerson-community-kitchen-172-tremont","subject_type":"place","entity_name":"Community Kitchen at 172 Tremont","title":"Prep a Meal While You Meet","subtitle":"A shared kitchen for casual gathering at 172 Tremont","notes":"Plan a small meal-prep meetup here and check with Campus Centers before treating the kitchen as event space or assuming exclusive use.","short_summary":"A practical shared kitchen that doubles as a casual gathering place.","evidence_claim":"Emerson describes the Community Kitchen at 172 Tremont as a space for casual gathering, meal preparation, and limited events.","source_url":"https://emerson.edu/departments/campus-centers/172-tremont","source_title":"172 Tremont","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located inside 172 Tremont for the Emerson community. Limited events or reserved uses should be coordinated with Campus Centers.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emerson-owens-multipurpose-room","subject_type":"place","entity_name":"Owens Multipurpose Room","title":"Give the Group a Formal Home Base","subtitle":"A presentation and workshop room at 172 Tremont","notes":"Request this room when your group needs a defined setting for a presentation, workshop, event, or structured meeting rather than a lounge.","short_summary":"A reservable multipurpose setting for organized group work.","evidence_claim":"Emerson identifies the Owens Multipurpose Room at 172 Tremont as a space for formal meetings, presentations, workshops, and events.","source_url":"https://emerson.edu/departments/campus-centers/172-tremont","source_title":"172 Tremont","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Campus Center spaces can be requested through Spacebook; the 172 Tremont service desk can assist with booking and access.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emerson-cultural-engagement-center","subject_type":"place","entity_name":"Cultural Engagement Center","title":"Find the Fourth-Floor Cultural Hub","subtitle":"Community space inside 172 Tremont","notes":"Go to the fourth floor for the Cultural Engagement Center, and consult its staff or posted programming before planning a group visit.","short_summary":"A specifically named cultural-engagement space within a central student building.","evidence_claim":"Emerson’s current 172 Tremont page locates the Cultural Engagement Center on the building’s fourth floor.","source_url":"https://emerson.edu/departments/campus-centers/172-tremont","source_title":"172 Tremont","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on the fourth floor of 172 Tremont. Program participation and room access may depend on the Center’s current schedule.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emerson-center-for-spiritual-life","subject_type":"place","entity_name":"Center for Spiritual Life","title":"Make Room for Reflection","subtitle":"Emerson’s multifaith hub at 172 Tremont","notes":"Use the Center’s fourth-floor setting for spiritual support or reflection; respect prayer areas and check current programming before arriving.","short_summary":"An inclusive multifaith campus hub with dedicated reflection facilities.","evidence_claim":"Emerson identifies the Center for Spiritual Life as its inclusive multifaith hub and locates it on 172 Tremont’s fourth floor with prayer and ablution space.","source_url":"https://emerson.edu/departments/student-affairs/student-handbook/campus-resources","source_title":"Campus Resources","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Campus resource for Emerson students; specific programs, support, and prayer-space use may follow posted schedules or Center guidance.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emerson-quiet-lounge","subject_type":"study_space","entity_name":"Quiet Lounge","title":"Switch to a Quieter Setting","subtitle":"A focused lounge inside the Max Mutchnick Campus Center","notes":"Head to Piano Row’s second-floor campus center when conversation-heavy lounges are not working, and preserve the room’s quiet purpose.","short_summary":"A named campus-center lounge intended for quieter use.","evidence_claim":"Emerson states that the second-floor Max Mutchnick Campus Center in Piano Row houses the Quiet Lounge.","source_url":"https://emerson.edu/departments/campus-centers/max-mutchnick-campus-center","source_title":"Max Mutchnick Campus Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located within the Max Mutchnick Campus Center on Piano Row’s second floor; access follows campus-building operations.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emerson-beard-room","subject_type":"place","entity_name":"Beard Room","title":"Reserve a Room Beyond the Classroom","subtitle":"A managed gathering space in Piano Row","notes":"Consider the Beard Room for an organized meeting or event, then request it through Spacebook instead of assuming walk-in availability.","short_summary":"A named campus-center room available through Emerson’s reservation system.","evidence_claim":"Emerson lists the Beard Room inside the Max Mutchnick Campus Center and identifies it as a campus space managed by Business Services.","source_url":"https://emerson.edu/departments/business-services/events-and-meetings","source_title":"Events and Meetings","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The Emerson community may request campus rooms through Spacebook. A reservation does not imply unrestricted public access.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emerson-iwasaki-library-study-rooms","subject_type":"study_space","entity_name":"Iwasaki Library Study Rooms","title":"Book the Library Room Before the Meeting","subtitle":"Reservable study rooms managed by Iwasaki Library","notes":"Request a study room for focused individual or group work, and arrive on time so the space can serve the reservation as planned.","short_summary":"Library-managed rooms that give collaborative work a defined boundary.","evidence_claim":"Emerson’s current space-management directory specifically lists Library Study Rooms and CoLab as spaces managed by Iwasaki Library.","source_url":"https://emerson.edu/departments/business-services/events-and-meetings","source_title":"Events and Meetings","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Study-room use is managed by Iwasaki Library; confirm current availability and reservation requirements with the Library.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emerson-sbl-open-access-lab","subject_type":"study_space","entity_name":"SBL Open-Access Lab","title":"Use the Lab That Stays Class-Free","subtitle":"Mac workstations and printers in Little Building 230","notes":"Bring computer-based work to Little Building 230 when you need a Mac or printer; verify current lab hours before making the trip.","short_summary":"An open-access computer lab designed for work outside scheduled classes.","evidence_claim":"Emerson Technology lists SBL in Little Building 230 as an open-access lab for students, faculty, and staff, with 15 Mac workstations and printers.","source_url":"https://support.emerson.edu/hc/en-us/articles/207162373-Lab-and-kiosk-locations-and-resources","source_title":"Lab and kiosk locations and resources","source_kind":"university_official","source_published_at":"2024-06-06","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Available to Emerson students, faculty, and staff during lab operating hours. Check the current technology schedule before visiting.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:02:13.069248Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9ec-0fe8-72b1-a732-0243ec50c362.1786604425192576000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+41,811
+
+{"complete":true,"school_name":"Emerson College","town_name":"Boston","boards":[{"complete":true,"school_name":"Emerson College","town_name":"Boston","template_id":"college-campus-tour-skips","title":"What the Campus Tour Skips: 10 Places Students Share With Each Other","description":"Ten Emerson spaces for studying, meeting, creating, playing, reflecting, and exercising, with uses and access conditions verified through current college sources.","icon":"style","cards":[{"subject_id":"emerson-griffs-game-room","subject_type":"place","entity_name":"Griff’s Game Room","title":"Reset Between Classes at Griff’s","subtitle":"Games and soft seating on Little Building’s second floor","notes":"Bring friends for pool, air hockey, foosball, arcade, Switch, or tabletop games; keep food and drinks at the room’s regular tables.","short_summary":"A nonreservable campus third space dedicated to casual play and downtime.","evidence_claim":"Emerson identifies Griff’s Game Room as a second-floor Little Building space where students can play games, relax, and connect during operating hours.","source_url":"https://emerson.edu/departments/campus-centers/griffs-game-room","source_title":"Griff’s Game Room","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open to Emerson students and community members during posted operational hours. Outside guests need an active Emerson sponsor and visitor registration.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emerson-the-hub-172-tremont","subject_type":"study_space","entity_name":"The Hub","title":"Take a Common-Facing Work Break","subtitle":"The main-level community lounge at 172 Tremont","notes":"Use The Hub for an informal study session or meetup, then ask the nearby Campus Centers service desk if you need reservable space.","short_summary":"A community lounge for low-setup studying and conversation.","evidence_claim":"Emerson lists The Hub as the main-level community lounge within 172 Tremont, a building offering student meeting and social spaces.","source_url":"https://emerson.edu/departments/campus-centers/172-tremont","source_title":"172 Tremont","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"For Emerson community use; room reservations and access assistance are available through the 172 Tremont service desk.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emerson-community-kitchen-172-tremont","subject_type":"place","entity_name":"Community Kitchen at 172 Tremont","title":"Prep a Meal While You Meet","subtitle":"A shared kitchen for casual gathering at 172 Tremont","notes":"Plan a small meal-prep meetup here and check with Campus Centers before treating the kitchen as event space or assuming exclusive use.","short_summary":"A practical shared kitchen that doubles as a casual gathering place.","evidence_claim":"Emerson describes the Community Kitchen at 172 Tremont as a space for casual gathering, meal preparation, and limited events.","source_url":"https://emerson.edu/departments/campus-centers/172-tremont","source_title":"172 Tremont","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located inside 172 Tremont for the Emerson community. Limited events or reserved uses should be coordinated with Campus Centers.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emerson-owens-multipurpose-room","subject_type":"place","entity_name":"Owens Multipurpose Room","title":"Give the Group a Formal Home Base","subtitle":"A presentation and workshop room at 172 Tremont","notes":"Request this room when your group needs a defined setting for a presentation, workshop, event, or structured meeting rather than a lounge.","short_summary":"A reservable multipurpose setting for organized group work.","evidence_claim":"Emerson identifies the Owens Multipurpose Room at 172 Tremont as a space for formal meetings, presentations, workshops, and events.","source_url":"https://emerson.edu/departments/campus-centers/172-tremont","source_title":"172 Tremont","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Campus Center spaces can be requested through Spacebook; the 172 Tremont service desk can assist with booking and access.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emerson-cultural-engagement-center","subject_type":"place","entity_name":"Cultural Engagement Center","title":"Find the Fourth-Floor Cultural Hub","subtitle":"Community space inside 172 Tremont","notes":"Go to the fourth floor for the Cultural Engagement Center, and consult its staff or posted programming before planning a group visit.","short_summary":"A specifically named cultural-engagement space within a central student building.","evidence_claim":"Emerson’s current 172 Tremont page locates the Cultural Engagement Center on the building’s fourth floor.","source_url":"https://emerson.edu/departments/campus-centers/172-tremont","source_title":"172 Tremont","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on the fourth floor of 172 Tremont. Program participation and room access may depend on the Center’s current schedule.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emerson-center-for-spiritual-life","subject_type":"place","entity_name":"Center for Spiritual Life","title":"Make Room for Reflection","subtitle":"Emerson’s multifaith hub at 172 Tremont","notes":"Use the Center’s fourth-floor setting for spiritual support or reflection; respect prayer areas and check current programming before arriving.","short_summary":"An inclusive multifaith campus hub with dedicated reflection facilities.","evidence_claim":"Emerson identifies the Center for Spiritual Life as its inclusive multifaith hub and locates it on 172 Tremont’s fourth floor with prayer and ablution space.","source_url":"https://emerson.edu/departments/student-affairs/student-handbook/campus-resources","source_title":"Campus Resources","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Campus resource for Emerson students; specific programs, support, and prayer-space use may follow posted schedules or Center guidance.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emerson-quiet-lounge","subject_type":"study_space","entity_name":"Quiet Lounge","title":"Switch to a Quieter Setting","subtitle":"A focused lounge inside the Max Mutchnick Campus Center","notes":"Head to Piano Row’s second-floor campus center when conversation-heavy lounges are not working, and preserve the room’s quiet purpose.","short_summary":"A named campus-center lounge intended for quieter use.","evidence_claim":"Emerson states that the second-floor Max Mutchnick Campus Center in Piano Row houses the Quiet Lounge.","source_url":"https://emerson.edu/departments/campus-centers/max-mutchnick-campus-center","source_title":"Max Mutchnick Campus Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located within the Max Mutchnick Campus Center on Piano Row’s second floor; access follows campus-building operations.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emerson-beard-room","subject_type":"place","entity_name":"Beard Room","title":"Reserve a Room Beyond the Classroom","subtitle":"A managed gathering space in Piano Row","notes":"Consider the Beard Room for an organized meeting or event, then request it through Spacebook instead of assuming walk-in availability.","short_summary":"A named campus-center room available through Emerson’s reservation system.","evidence_claim":"Emerson lists the Beard Room inside the Max Mutchnick Campus Center and identifies it as a campus space managed by Business Services.","source_url":"https://emerson.edu/departments/business-services/events-and-meetings","source_title":"Events and Meetings","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The Emerson community may request campus rooms through Spacebook. A reservation does not imply unrestricted public access.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emerson-iwasaki-library-study-rooms","subject_type":"study_space","entity_name":"Iwasaki Library Study Rooms","title":"Book the Library Room Before the Meeting","subtitle":"Reservable study rooms managed by Iwasaki Library","notes":"Request a study room for focused individual or group work, and arrive on time so the space can serve the reservation as planned.","short_summary":"Library-managed rooms that give collaborative work a defined boundary.","evidence_claim":"Emerson’s current space-management directory specifically lists Library Study Rooms and CoLab as spaces managed by Iwasaki Library.","source_url":"https://emerson.edu/departments/business-services/events-and-meetings","source_title":"Events and Meetings","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Study-room use is managed by Iwasaki Library; confirm current availability and reservation requirements with the Library.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"emerson-sbl-open-access-lab","subject_type":"study_space","entity_name":"SBL Open-Access Lab","title":"Use the Lab That Stays Class-Free","subtitle":"Mac workstations and printers in Little Building 230","notes":"Bring computer-based work to Little Building 230 when you need a Mac or printer; verify current lab hours before making the trip.","short_summary":"An open-access computer lab designed for work outside scheduled classes.","evidence_claim":"Emerson Technology lists SBL in Little Building 230 as an open-access lab for students, faculty, and staff, with 15 Mac workstations and printers.","source_url":"https://support.emerson.edu/hc/en-us/articles/207162373-Lab-and-kiosk-locations-and-resources","source_title":"Lab and kiosk locations and resources","source_kind":"university_official","source_published_at":"2024-06-06","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Available to Emerson students, faculty, and staff during lab operating hours. Check the current technology schedule before visiting.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

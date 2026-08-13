@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.tacobell.com/va/fairfax/12811-federal-systems-park-dr.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/va/fairfax/12811-federal-systems-park-dr.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/va/fairfax/10695a-braddock-road",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/va/fairfax/10695a-braddock-road",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/va/fairfax/4040-jermantown-rd/15436.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/va/fairfax/4040-jermantown-rd/15436.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/va/fairfax/13003-lee-jackson-memorial-highway/4243.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/va/fairfax/13003-lee-jackson-memorial-highway/4243.html",
+      "error": ""
+    },
+    {
+      "url": "https://dennys.com/location/denny-s-7411-94456/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://dennys.com/location/denny-s-7411-94456/",
+      "error": ""
+    },
+    {
+      "url": "https://cafekva.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cafekva.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.panamrestaurantfairfax.com/location",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.panamrestaurantfairfax.com/location",
+      "error": ""
+    },
+    {
+      "url": "https://www.hopsfrog.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hopsfrog.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.papajohns.com/united-states/va/22031/fairfax/9929-main-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.papajohns.com/united-states/va/22031/fairfax/9929-main-st",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/va/fairfax-station/8902-village-shops-drive",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/va/fairfax-station/8902-village-shops-drive",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

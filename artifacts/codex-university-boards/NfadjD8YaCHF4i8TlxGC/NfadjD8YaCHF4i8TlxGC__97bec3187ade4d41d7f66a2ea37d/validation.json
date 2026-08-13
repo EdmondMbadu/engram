@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://plts.callutheran.edu/library/room-reservations.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://plts.callutheran.edu/library/room-reservations.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.callutheran.edu/students/writing-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.callutheran.edu/students/writing-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.callutheran.edu/student-life/student-union",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.callutheran.edu/student-life/student-union/",
+      "error": ""
+    },
+    {
+      "url": "https://www.callutheran.edu/students/cultural-engagement/ccei-spaces/cceilounge.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.callutheran.edu/students/cultural-engagement/ccei-spaces/cceilounge.html",
+      "error": ""
+    },
+    {
+      "url": "https://plts.callutheran.edu/students/wellness/wellness-lounge.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://plts.callutheran.edu/students/wellness/wellness-lounge.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.callutheran.edu/student-life/student-union/amenities.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.callutheran.edu/student-life/student-union/amenities.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.callutheran.edu/students/garden/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.callutheran.edu/students/garden/",
+      "error": ""
+    },
+    {
+      "url": "https://www.callutheran.edu/offices/campus-services/venue-detail.html?id=25",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.callutheran.edu/offices/campus-services/venue-detail.html?id=25",
+      "error": ""
+    },
+    {
+      "url": "https://www.callutheran.edu/students/cultural-engagement/ccei-spaces/alexandertwilight.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.callutheran.edu/students/cultural-engagement/ccei-spaces/alexandertwilight.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.callutheran.edu/students/cultural-engagement/ccei-spaces/cceipatio.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.callutheran.edu/students/cultural-engagement/ccei-spaces/cceipatio.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

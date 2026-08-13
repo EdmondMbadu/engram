@@ -1,0 +1,93 @@
+{
+  "ok": false,
+  "problems": [
+    "Card entities are not unique."
+  ],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://visit.cstx.gov/directory/fuego-tortilla-grill/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visit.cstx.gov/directory/fuego-tortilla-grill/",
+      "error": ""
+    },
+    {
+      "url": "https://dennys.com/location/-728782",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://dennys.com/location/-728782",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.subway.com/united-states/tx/college-station/601-w-university-dr",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.subway.com/united-states/tx/college-station/601-w-university-dr",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/tx/college-station/731-university-dr.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/tx/college-station/731-university-dr.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/tx/college-station/310-n-harvey-road.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/tx/college-station/310-n-harvey-road.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.whataburger.com/tx/college-station.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.whataburger.com/tx/college-station.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.whataburger.com/tx/college-station/1451-wellborn-rd/curbside.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.whataburger.com/tx/college-station/1451-wellborn-rd/curbside.html",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/texas/college-station/409-a-university-dr",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/texas/college-station/409-a-university-dr",
+      "error": ""
+    },
+    {
+      "url": "https://www.cookiedelivery.com/locations/college-station/college-station.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cookiedelivery.com/locations/college-station/college-station.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/tx/college-station/1750-rock-prairie-rd/21658.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/tx/college-station/1750-rock-prairie-rd/21658.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": null,
+  "generationGrade": null
+}

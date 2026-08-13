@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.emmanuel.edu/beyond-campus/our-neighborhood-and-neighbors/explore-our-neighborhood",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.emmanuel.edu/beyond-campus/our-neighborhood-and-neighbors/explore-our-neighborhood",
+      "error": ""
+    },
+    {
+      "url": "https://www.emmanuel.edu/information/why-emmanuel/community",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.emmanuel.edu/information/why-emmanuel/community",
+      "error": ""
+    },
+    {
+      "url": "https://maam.massart.edu/alwaysfree",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://maam.massart.edu/alwaysfree",
+      "error": ""
+    },
+    {
+      "url": "https://www.bpl.org/art-tours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bpl.org/art-tours/",
+      "error": ""
+    },
+    {
+      "url": "https://www.harvard.edu/campus/museums/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.harvard.edu/campus/museums/",
+      "error": ""
+    },
+    {
+      "url": "https://hmsc.harvard.edu/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://hmsc.harvard.edu/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://listart.mit.edu/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://listart.mit.edu/visit",
+      "error": ""
+    },
+    {
+      "url": "https://mcmullenmuseum.bc.edu/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mcmullenmuseum.bc.edu/about/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

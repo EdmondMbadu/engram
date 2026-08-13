@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.francis.edu/campus-life/explore-campus/jfk-student-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.francis.edu/campus-life/explore-campus/jfk-student-center",
+      "error": ""
+    },
+    {
+      "url": "https://sfuprojects.francis.edu/apps/sfu_policies/policy_detail.asp?handbook_category=STFBK&policiy_id=538&type=handbook&user_id=",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sfuprojects.francis.edu/apps/sfu_policies/policy_detail.asp?handbook_category=STFBK&policiy_id=538&type=handbook&user_id=",
+      "error": ""
+    },
+    {
+      "url": "https://www.francis.edu/academics/school-of-health-sciences/disepio",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.francis.edu/academics/school-of-health-sciences/disepio",
+      "error": ""
+    },
+    {
+      "url": "https://sfuprojects.francis.edu/apps/sfu_POLICIES/policy_detail_print.asp?policiy_id=320",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sfuprojects.francis.edu/apps/sfu_POLICIES/policy_detail_print.asp?policiy_id=320",
+      "error": ""
+    },
+    {
+      "url": "https://www.francis.edu/campus-ministry",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.francis.edu/campus-ministry",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

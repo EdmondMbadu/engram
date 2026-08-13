@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://exploregeorgia.org/milledgeville/general/historic-sites-trails-tours/heritage-hall-at-georgia-college",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://exploregeorgia.org/milledgeville/general/historic-sites-trails-tours/heritage-hall-at-georgia-college",
+      "error": ""
+    },
+    {
+      "url": "https://lockerly.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lockerly.org/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitmilledgeville.org/listings/oconee-river-greenway/41728/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitmilledgeville.org/listings/oconee-river-greenway/41728/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitmilledgeville.org/blog/post/free-things-to-do/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitmilledgeville.org/blog/post/free-things-to-do/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitmilledgeville.org/plan-your-trip/while-in-town/visitor-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitmilledgeville.org/plan-your-trip/while-in-town/visitor-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitmilledgeville.org/blog/post/sites-to-visit-on-georgia-colleges-campus/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitmilledgeville.org/blog/post/sites-to-visit-on-georgia-colleges-campus/",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcsu.edu/andalusia",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcsu.edu/andalusia",
+      "error": ""
+    },
+    {
+      "url": "https://www.gcsu.edu/sallieellisdavis/tours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gcsu.edu/sallieellisdavis/tours",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitmilledgeville.org/blog/post/fantastic-ways-to-get-outside-in-milledgeville-ga/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitmilledgeville.org/blog/post/fantastic-ways-to-get-outside-in-milledgeville-ga/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

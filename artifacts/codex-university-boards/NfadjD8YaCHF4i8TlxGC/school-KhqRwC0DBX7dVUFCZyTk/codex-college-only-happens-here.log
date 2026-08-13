@@ -1,0 +1,291 @@
+Reading additional input from stdin...
+2026-08-13T07:38:13.783630Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0e-5bae-7560-9f38-2926ca581bb2.1786606672815741000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa0e-ad23-7250-94eb-e9953978a556
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"KhqRwC0DBX7dVUFCZyTk","schoolName":"Illinois Institute of Technology","shortSchoolName":"Illinois Institute of Technology","townName":"Chicago","state":"IL","countryCode":"US","website":"https://www.iit.edu/","latitude":41.8313,"longitude":-87.627321},"templates":[{"id":"college-only-happens-here","version":"1.0","titlePattern":"Only Happens Here: {count} Traditions That Make No Sense Anywhere Else","editorialBrief":"Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.","researchQueries":["university traditions alumni","campus traditions student newspaper","school rituals history"],"count":10,"icon":"fingerprint","primarySubjectType":"tradition","allowedSubjectTypes":["tradition"],"freshnessDays":1095,"exactTitle":"Only Happens Here: 10 Traditions That Make No Sense Anywhere Else"}]}
+2026-08-13T07:38:13.830985Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0e-5baf-7282-b492-0fbc0ce8d25c.1786606672816618000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:38:13.911918Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0e-5ba8-7c71-8976-7a13196c026e.1786606672809297000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:38:13.917870Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:38:13.923270Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:38:13.974104Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0e-5b9c-7bd3-8893-b659bb543f9c.1786606672797221000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:38:14.059339Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0e-5ba9-7d73-98c1-263bd57bc46d.1786606672809874000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:38:14.119298Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0e-5b93-7162-a35f-fd38589f799e.1786606672788652000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:38:14.180323Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0e-5bab-77c1-93b5-0cf9216a4492.1786606672811902000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Illinois Institute of Technology",
+  "town_name": "Chicago",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Illinois Institute of Technology",
+      "town_name": "Chicago",
+      "template_id": "college-only-happens-here",
+      "title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+      "description": "",
+      "icon": "fingerprint",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "tradition",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "tradition",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "tradition",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "tradition",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "tradition",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "tradition",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "tradition",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "tradition",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "tradition",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ],
+      "warnings": [
+        "I’m researching ten independently documented Illinois Tech traditions and will only mark the board complete if each has a direct supporting page."
+      ]
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:iit.edu Illinois Tech traditions Pumpkin Launch Homecoming Scarlet Fever ...
+web search: 
+web search: 
+codex
+{"complete":true,"school_name":"Illinois Institute of Technology","town_name":"Chicago","boards":[{"complete":true,"school_name":"Illinois Institute of Technology","town_name":"Chicago","template_id":"college-only-happens-here","title":"Only Happens Here: 10 Traditions That Make No Sense Anywhere Else","description":"Ten documented Illinois Tech rituals and recurring events, from trebuchet engineering and Pi Day spirit to campus-wide cultural showcases and ceremonial regalia.","icon":"fingerprint","cards":[{"subject_id":"iit-pumpkin-launch","subject_type":"tradition","entity_name":"Pumpkin Launch","title":"Build a Trebuchet, Launch a Pumpkin","subtitle":"Illinois Tech’s engineering-heavy fall ritual","notes":"Watch student teams send pumpkins across Ed Glancy Field with custom-built trebuchets, or follow the posted link to enter a team.","short_summary":"An annual contest turns medieval mechanics into a distinctly Illinois Tech spectacle.","evidence_claim":"Illinois Tech describes Pumpkin Launch as an annual event in which as many as 10 teams compete to launch pumpkins the farthest using custom-built trebuchets.","source_url":"https://www.iit.edu/homecoming","source_title":"Homecoming and Family Weekend | Illinois Institute of Technology","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited 2025 program placed the 19th annual launch at Ed Glancy Field and provided a team-entry link; check the current event schedule before attending.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iit-spirit-week-pi-day","subject_type":"tradition","entity_name":"Spirit Week","title":"Kick Off Spirit Week with Pi Day","subtitle":"Scarlet Hawk spirit starts with 3.14","notes":"Look for the Pi Day kickoff, then join the week’s Scarlet Hawk activities with your most unabashedly technical campus spirit.","short_summary":"Illinois Tech begins its official Spirit Week by celebrating the mathematical constant pi.","evidence_claim":"The university’s Spirits and Traditions page says Spirit Week kicks off with Pi Day and celebrates being a Scarlet Hawk.","source_url":"https://www.iit.edu/student-life/get-involved/spirits-and-traditions","source_title":"Spirits and Traditions | Illinois Institute of Technology","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The tradition page does not provide a current date or participation requirements; consult Student Life announcements for the next schedule.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iit-taste-of-iit","subject_type":"tradition","entity_name":"Taste of IIT","title":"Share a Hometown Through Food","subtitle":"Campus traditions meet at one multicultural table","notes":"Come ready to sample thoughtfully and ask participants about the hometown traditions represented through each dish and display.","short_summary":"A recurring interactive event uses food to share traditions from Illinois Tech’s international community.","evidence_claim":"Illinois Tech identifies Taste of IIT as a tradition where attendees experience foods from different countries and learn about the university’s international community.","source_url":"https://www.iit.edu/student-life/get-involved/spirits-and-traditions","source_title":"Spirits and Traditions | Illinois Institute of Technology","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"No current date, menu, price, or attendance policy appears on the cited tradition page; verify event details with Student Life.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iit-mtcc-late-niite","subject_type":"tradition","entity_name":"MTCC Late Niite","title":"See MTCC Taken Over After Dark","subtitle":"Union Board’s annual all-night-style campus-center event","notes":"Plan for games and high-energy attractions throughout MTCC, and confirm the year’s start and finish times before heading over.","short_summary":"Once each year, Union Board transforms the campus center with games, food, freebies, and attractions such as bumper cars.","evidence_claim":"Illinois Tech says Union Board takes over the McCormick Tribune Campus Center once a year for MTCC Late Niite, featuring games, food, freebies, neon lights, and bumper cars.","source_url":"https://www.iit.edu/student-life/get-involved/spirits-and-traditions","source_title":"Spirits and Traditions | Illinois Institute of Technology","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official tradition page calls it an annual late-night event but lists no current date or exact hours; verify the active Union Board schedule.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iit-spring-formal","subject_type":"tradition","entity_name":"Spring Formal","title":"Trade Lab Wear for Formalwear","subtitle":"Illinois Tech’s dress-up-and-dance tradition","notes":"Dress formally enough to enjoy the contrast with an ordinary tech-campus day, then check Student Life for tickets and guest rules.","short_summary":"The university’s spring dance gives the technical campus an annual formal-night change of pace.","evidence_claim":"Illinois Tech lists Spring Formal among its timeless traditions and describes it as an occasion to dress up and dance through the evening.","source_url":"https://www.iit.edu/student-life/get-involved/spirits-and-traditions","source_title":"Spirits and Traditions | Illinois Institute of Technology","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited page provides no current date, venue, ticket information, dress code, or guest policy; confirm all details before attending.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iit-talon-t-show","subject_type":"tradition","entity_name":"Talon-t Show","title":"Vote for the Crowd Favorite","subtitle":"A Scarlet Hawk talent show with a talon-sized pun","notes":"Support student performers across music, dance, poetry, comedy, and more, then cast a vote for the Crowd Favorite prize.","short_summary":"The Homecoming talent showcase combines student performances, audience voting, and an Illinois Tech bird pun.","evidence_claim":"Illinois Tech’s 2025 Homecoming program invited everyone to its “Talon-t” Show, where students performed and attendees voted for a Crowd Favorite grand prize.","source_url":"https://www.iit.edu/homecoming","source_title":"Homecoming and Family Weekend | Illinois Institute of Technology","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited 2025 edition was scheduled at The Bog; use the current Homecoming program to confirm whether and where it returns.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iit-homecoming-carnival","subject_type":"tradition","entity_name":"Homecoming Carnival","title":"Turn Gunsaulus Field into a Carnival","subtitle":"Union Board’s annual Homecoming field day","notes":"Head to the field for games and giveaways, and bring a payment method if you plan to buy from participating food trucks.","short_summary":"Illinois Tech’s Homecoming includes an annual outdoor carnival organized by Union Board and Student Life.","evidence_claim":"The university’s 2025 Homecoming page describes an annual carnival with food trucks, games, and giveaways, hosted by Union Board and the Office of Student Life.","source_url":"https://www.iit.edu/homecoming","source_title":"Homecoming and Family Weekend | Illinois Institute of Technology","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited edition took place at Gunsaulus Field; attractions and food arrangements may change, so consult the current Homecoming schedule.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iit-fall-fest","subject_type":"tradition","entity_name":"Fall Fest","title":"Decorate Pumpkins Beside the Launch","subtitle":"Student organizations stage a fall tradition on the field","notes":"Pair pumpkin decorating and fall activities with the nearby Pumpkin Launch, using the current program to time both events.","short_summary":"Fall Fest gathers student organizations, alumni, students, and families for seasonal activities alongside Pumpkin Launch.","evidence_claim":"Illinois Tech’s Homecoming page calls Fall Fest an annual tradition featuring pumpkin decorating and fall-themed activities open to students, alumni, and families.","source_url":"https://www.iit.edu/homecoming","source_title":"Homecoming and Family Weekend | Illinois Institute of Technology","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited 2025 edition was at Ed Glancy Field; verify the next date, location, and participation details in the current program.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iit-alphawood-tree-planting","subject_type":"tradition","entity_name":"Alphawood Arboretum Tree Planting Ceremony","title":"Add a Tree to the Mies Campus Landscape","subtitle":"Homecoming grows the campus collection one ceremony at a time","notes":"Attend the annual planting and use it as a starting point for noticing native species across the Alphawood Arboretum.","short_summary":"An annual Homecoming ceremony adds attention—and a tree—to Illinois Tech’s architecturally significant landscape.","evidence_claim":"Illinois Tech’s 2025 Homecoming program invited the community to its annual Alphawood Arboretum tree planting ceremony on Mies Campus.","source_url":"https://www.iit.edu/homecoming","source_title":"Homecoming and Family Weekend | Illinois Institute of Technology","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited ceremony was located along 33rd Street between Galvin Library and Hermann Hall; confirm the next planting site and time.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iit-university-mace","subject_type":"tradition","entity_name":"Illinois Tech University Mace","title":"Carry Campus History into Ceremony","subtitle":"A ceremonial staff made from historic university relics","notes":"At a formal university ceremony, watch for the mace and identify the flame, tree, and book retained in Illinois Tech’s seal.","short_summary":"Illinois Tech’s ceremonial mace physically joins historic campus relics with symbols of its founding institutions.","evidence_claim":"Illinois Tech states that its mace is crafted from historic campus relics, depicts the university seal, and follows a tradition introduced at President John L. Anderson’s inauguration.","source_url":"https://www.iit.edu/commencement/graduates/about-regalia","source_title":"About Regalia | Illinois Institute of Technology","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The mace appears in formal ceremonial contexts; the cited page does not identify a standing public display or guarantee viewing access.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:39:54.356849Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa0e-ad23-7250-94eb-e9953978a556.1786606693667606000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+26,481
+
+{"complete":true,"school_name":"Illinois Institute of Technology","town_name":"Chicago","boards":[{"complete":true,"school_name":"Illinois Institute of Technology","town_name":"Chicago","template_id":"college-only-happens-here","title":"Only Happens Here: 10 Traditions That Make No Sense Anywhere Else","description":"Ten documented Illinois Tech rituals and recurring events, from trebuchet engineering and Pi Day spirit to campus-wide cultural showcases and ceremonial regalia.","icon":"fingerprint","cards":[{"subject_id":"iit-pumpkin-launch","subject_type":"tradition","entity_name":"Pumpkin Launch","title":"Build a Trebuchet, Launch a Pumpkin","subtitle":"Illinois Tech’s engineering-heavy fall ritual","notes":"Watch student teams send pumpkins across Ed Glancy Field with custom-built trebuchets, or follow the posted link to enter a team.","short_summary":"An annual contest turns medieval mechanics into a distinctly Illinois Tech spectacle.","evidence_claim":"Illinois Tech describes Pumpkin Launch as an annual event in which as many as 10 teams compete to launch pumpkins the farthest using custom-built trebuchets.","source_url":"https://www.iit.edu/homecoming","source_title":"Homecoming and Family Weekend | Illinois Institute of Technology","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited 2025 program placed the 19th annual launch at Ed Glancy Field and provided a team-entry link; check the current event schedule before attending.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iit-spirit-week-pi-day","subject_type":"tradition","entity_name":"Spirit Week","title":"Kick Off Spirit Week with Pi Day","subtitle":"Scarlet Hawk spirit starts with 3.14","notes":"Look for the Pi Day kickoff, then join the week’s Scarlet Hawk activities with your most unabashedly technical campus spirit.","short_summary":"Illinois Tech begins its official Spirit Week by celebrating the mathematical constant pi.","evidence_claim":"The university’s Spirits and Traditions page says Spirit Week kicks off with Pi Day and celebrates being a Scarlet Hawk.","source_url":"https://www.iit.edu/student-life/get-involved/spirits-and-traditions","source_title":"Spirits and Traditions | Illinois Institute of Technology","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The tradition page does not provide a current date or participation requirements; consult Student Life announcements for the next schedule.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iit-taste-of-iit","subject_type":"tradition","entity_name":"Taste of IIT","title":"Share a Hometown Through Food","subtitle":"Campus traditions meet at one multicultural table","notes":"Come ready to sample thoughtfully and ask participants about the hometown traditions represented through each dish and display.","short_summary":"A recurring interactive event uses food to share traditions from Illinois Tech’s international community.","evidence_claim":"Illinois Tech identifies Taste of IIT as a tradition where attendees experience foods from different countries and learn about the university’s international community.","source_url":"https://www.iit.edu/student-life/get-involved/spirits-and-traditions","source_title":"Spirits and Traditions | Illinois Institute of Technology","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"No current date, menu, price, or attendance policy appears on the cited tradition page; verify event details with Student Life.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iit-mtcc-late-niite","subject_type":"tradition","entity_name":"MTCC Late Niite","title":"See MTCC Taken Over After Dark","subtitle":"Union Board’s annual all-night-style campus-center event","notes":"Plan for games and high-energy attractions throughout MTCC, and confirm the year’s start and finish times before heading over.","short_summary":"Once each year, Union Board transforms the campus center with games, food, freebies, and attractions such as bumper cars.","evidence_claim":"Illinois Tech says Union Board takes over the McCormick Tribune Campus Center once a year for MTCC Late Niite, featuring games, food, freebies, neon lights, and bumper cars.","source_url":"https://www.iit.edu/student-life/get-involved/spirits-and-traditions","source_title":"Spirits and Traditions | Illinois Institute of Technology","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official tradition page calls it an annual late-night event but lists no current date or exact hours; verify the active Union Board schedule.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iit-spring-formal","subject_type":"tradition","entity_name":"Spring Formal","title":"Trade Lab Wear for Formalwear","subtitle":"Illinois Tech’s dress-up-and-dance tradition","notes":"Dress formally enough to enjoy the contrast with an ordinary tech-campus day, then check Student Life for tickets and guest rules.","short_summary":"The university’s spring dance gives the technical campus an annual formal-night change of pace.","evidence_claim":"Illinois Tech lists Spring Formal among its timeless traditions and describes it as an occasion to dress up and dance through the evening.","source_url":"https://www.iit.edu/student-life/get-involved/spirits-and-traditions","source_title":"Spirits and Traditions | Illinois Institute of Technology","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited page provides no current date, venue, ticket information, dress code, or guest policy; confirm all details before attending.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iit-talon-t-show","subject_type":"tradition","entity_name":"Talon-t Show","title":"Vote for the Crowd Favorite","subtitle":"A Scarlet Hawk talent show with a talon-sized pun","notes":"Support student performers across music, dance, poetry, comedy, and more, then cast a vote for the Crowd Favorite prize.","short_summary":"The Homecoming talent showcase combines student performances, audience voting, and an Illinois Tech bird pun.","evidence_claim":"Illinois Tech’s 2025 Homecoming program invited everyone to its “Talon-t” Show, where students performed and attendees voted for a Crowd Favorite grand prize.","source_url":"https://www.iit.edu/homecoming","source_title":"Homecoming and Family Weekend | Illinois Institute of Technology","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited 2025 edition was scheduled at The Bog; use the current Homecoming program to confirm whether and where it returns.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iit-homecoming-carnival","subject_type":"tradition","entity_name":"Homecoming Carnival","title":"Turn Gunsaulus Field into a Carnival","subtitle":"Union Board’s annual Homecoming field day","notes":"Head to the field for games and giveaways, and bring a payment method if you plan to buy from participating food trucks.","short_summary":"Illinois Tech’s Homecoming includes an annual outdoor carnival organized by Union Board and Student Life.","evidence_claim":"The university’s 2025 Homecoming page describes an annual carnival with food trucks, games, and giveaways, hosted by Union Board and the Office of Student Life.","source_url":"https://www.iit.edu/homecoming","source_title":"Homecoming and Family Weekend | Illinois Institute of Technology","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited edition took place at Gunsaulus Field; attractions and food arrangements may change, so consult the current Homecoming schedule.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iit-fall-fest","subject_type":"tradition","entity_name":"Fall Fest","title":"Decorate Pumpkins Beside the Launch","subtitle":"Student organizations stage a fall tradition on the field","notes":"Pair pumpkin decorating and fall activities with the nearby Pumpkin Launch, using the current program to time both events.","short_summary":"Fall Fest gathers student organizations, alumni, students, and families for seasonal activities alongside Pumpkin Launch.","evidence_claim":"Illinois Tech’s Homecoming page calls Fall Fest an annual tradition featuring pumpkin decorating and fall-themed activities open to students, alumni, and families.","source_url":"https://www.iit.edu/homecoming","source_title":"Homecoming and Family Weekend | Illinois Institute of Technology","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited 2025 edition was at Ed Glancy Field; verify the next date, location, and participation details in the current program.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iit-alphawood-tree-planting","subject_type":"tradition","entity_name":"Alphawood Arboretum Tree Planting Ceremony","title":"Add a Tree to the Mies Campus Landscape","subtitle":"Homecoming grows the campus collection one ceremony at a time","notes":"Attend the annual planting and use it as a starting point for noticing native species across the Alphawood Arboretum.","short_summary":"An annual Homecoming ceremony adds attention—and a tree—to Illinois Tech’s architecturally significant landscape.","evidence_claim":"Illinois Tech’s 2025 Homecoming program invited the community to its annual Alphawood Arboretum tree planting ceremony on Mies Campus.","source_url":"https://www.iit.edu/homecoming","source_title":"Homecoming and Family Weekend | Illinois Institute of Technology","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited ceremony was located along 33rd Street between Galvin Library and Hermann Hall; confirm the next planting site and time.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iit-university-mace","subject_type":"tradition","entity_name":"Illinois Tech University Mace","title":"Carry Campus History into Ceremony","subtitle":"A ceremonial staff made from historic university relics","notes":"At a formal university ceremony, watch for the mace and identify the flame, tree, and book retained in Illinois Tech’s seal.","short_summary":"Illinois Tech’s ceremonial mace physically joins historic campus relics with symbols of its founding institutions.","evidence_claim":"Illinois Tech states that its mace is crafted from historic campus relics, depicts the university seal, and follows a tradition introduced at President John L. Anderson’s inauguration.","source_url":"https://www.iit.edu/commencement/graduates/about-regalia","source_title":"About Regalia | Illinois Institute of Technology","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The mace appears in formal ceremonial contexts; the cited page does not identify a standing public display or guarantee viewing access.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

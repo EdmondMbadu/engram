@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.immaculata.edu/academics/library/general-information/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.immaculata.edu/academics/library/general-information/",
+      "error": ""
+    },
+    {
+      "url": "https://www.immaculata.edu/campus-life/student-services/ihm-student-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.immaculata.edu/campus-life/student-services/ihm-student-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.immaculata.edu/campus-life/new-student-orientation/orientation-schedule/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.immaculata.edu/campus-life/new-student-orientation/orientation-schedule/",
+      "error": ""
+    },
+    {
+      "url": "https://www.immaculata.edu/contact-us/university-communications/brand-guide/writing-style/academics-campus-locations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.immaculata.edu/contact-us/university-communications/brand-guide/writing-style/academics-campus-locations/",
+      "error": ""
+    },
+    {
+      "url": "https://www.immaculata.edu/campus-life/new-student-orientation/transfer-student-orientation/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.immaculata.edu/campus-life/new-student-orientation/transfer-student-orientation/",
+      "error": ""
+    },
+    {
+      "url": "https://www.immaculata.edu/campus-life/living-on-campus/dining-services/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.immaculata.edu/campus-life/living-on-campus/dining-services/",
+      "error": ""
+    },
+    {
+      "url": "https://www.immaculata.edu/campus-life/living-on-campus/residential-communities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.immaculata.edu/campus-life/living-on-campus/residential-communities/",
+      "error": ""
+    },
+    {
+      "url": "https://www.immaculata.edu/academics/library/archives/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.immaculata.edu/academics/library/archives/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

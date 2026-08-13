@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.visitgreenvillenc.com/listing/greenville-town-common/303/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitgreenvillenc.com/listing/greenville-town-common/303/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitgreenvillenc.com/listing/greenville-museum-of-art/285/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitgreenvillenc.com/listing/greenville-museum-of-art/285/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitgreenvillenc.com/listing/emerge-gallery-and-art-center/284/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitgreenvillenc.com/listing/emerge-gallery-and-art-center/284/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitgreenvillenc.com/listing/the-scullery-coffee-house-%26-creamery/465/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitgreenvillenc.com/listing/the-scullery-coffee-house-%26-creamery/465/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitgreenvillenc.com/listing/emerald-city-collective/513/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitgreenvillenc.com/listing/emerald-city-collective/513/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitgreenvillenc.com/plan/visitor-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitgreenvillenc.com/plan/visitor-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitgreenvillenc.com/listing/the-martinsborough/608/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitgreenvillenc.com/listing/the-martinsborough/608/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitgreenvillenc.com/listing/dickinson-avenue-farmers-%26-makers-market/259/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitgreenvillenc.com/listing/dickinson-avenue-farmers-%26-makers-market/259/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitgreenvillenc.com/listing/the-greenville-metal-zoo/387/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitgreenvillenc.com/listing/the-greenville-metal-zoo/387/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitgreenvillenc.com/listing/native-fine-diner/532/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitgreenvillenc.com/listing/native-fine-diner/532/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Native Fine Diner"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

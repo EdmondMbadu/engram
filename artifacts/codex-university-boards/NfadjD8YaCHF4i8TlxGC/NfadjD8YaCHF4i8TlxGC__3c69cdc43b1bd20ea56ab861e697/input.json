@@ -1,0 +1,60 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "pwBLNuFjKdQn7c6E6k2b",
+    "schoolName": "United States Coast Guard Academy",
+    "shortSchoolName": "United States Coast Guard Academy",
+    "townName": "New London",
+    "state": "CT",
+    "countryCode": "US",
+    "unitId": "130624",
+    "website": "https://www.uscga.edu/",
+    "latitude": 41.375823,
+    "longitude": -72.101583,
+    "heroUrl": "https://uscga.edu/wp-content/uploads/2026/06/washington-parade-field.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=uscga.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Library Large Tables",
+    "Library Collaboration Workstations",
+    "Library Study Rooms",
+    "Library Small Group Tables",
+    "Library Individual Carrels",
+    "Hewitt Writing and Reading Center",
+    "Library Research Assistance",
+    "Library Quiet Study Space",
+    "Library Comfortable Chairs",
+    "Library Coffee and Tea Seating",
+    "Library at Waesche Hall",
+    "Chase Hall",
+    "Leamy Hall",
+    "Roland Hall Gym",
+    "Cadet Memorial Field",
+    "Sailing Center",
+    "Rowing Center",
+    "Barque Eagle",
+    "Bear Plaza"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

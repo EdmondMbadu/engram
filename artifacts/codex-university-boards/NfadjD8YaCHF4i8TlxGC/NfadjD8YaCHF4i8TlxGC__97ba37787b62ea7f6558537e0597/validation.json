@@ -1,0 +1,55 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.uah.edu/library/spaces/study-rooms",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uah.edu/library/spaces/study-rooms",
+      "error": ""
+    },
+    {
+      "url": "https://www.uah.edu/library/spaces/sensory-space",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uah.edu/library/spaces/sensory-space",
+      "error": ""
+    },
+    {
+      "url": "https://www.uah.edu/ssc",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uah.edu/ssc",
+      "error": ""
+    },
+    {
+      "url": "https://www.uah.edu/ctc",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uah.edu/ctc",
+      "error": ""
+    },
+    {
+      "url": "https://www.uah.edu/cu/explore-the-cu",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uah.edu/cu/explore-the-cu",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Student Success Center"
+  ],
+  "sourceCount": 5,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

@@ -1,0 +1,59 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "wRajIyjv6awjYt5ruAR2",
+    "schoolName": "Truman State University",
+    "shortSchoolName": "Truman State University",
+    "townName": "Kirksville",
+    "state": "MO",
+    "countryCode": "US",
+    "unitId": "178615",
+    "website": "https://www.truman.edu/",
+    "latitude": 40.188267,
+    "longitude": -92.581658,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/7/70/Truman_State_University_seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=truman.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain Truman State University",
+  "excluded_subjects": [
+    "Ruth W. Towne Museum & Visitors Center",
+    "Quadrangle",
+    "Pickler Memorial Library",
+    "Student Union Building",
+    "Student Activities Board program",
+    "Student Recreation Center",
+    "University Art Gallery",
+    "Pershing Natatorium",
+    "University Farm",
+    "Truman State University Observatory",
+    "Ruth Towne Museum and Visitors Center",
+    "P. C. Mills Park Splash Pad",
+    "Campus Recreation Drop-In Fitness Classes",
+    "TruStrength Weight Room Orientation",
+    "Truman Intramural and Competitive Sports",
+    "Pickler Memorial Library New York Times Membership",
+    "Kirksville Bike Co-op",
+    "Truman Natatorium",
+    "PML 107 Open Student Study Lounge"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

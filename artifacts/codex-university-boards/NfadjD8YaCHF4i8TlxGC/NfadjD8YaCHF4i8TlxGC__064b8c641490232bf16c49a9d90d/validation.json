@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.visitphilly.com/things-to-do/food-drink/reading-terminal-market/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitphilly.com/things-to-do/food-drink/reading-terminal-market/",
+      "error": ""
+    },
+    {
+      "url": "https://www.paconvention.com/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.paconvention.com/about",
+      "error": ""
+    },
+    {
+      "url": "https://www.phlvisitorcenter.com/FashionDistrict",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.phlvisitorcenter.com/FashionDistrict",
+      "error": ""
+    },
+    {
+      "url": "https://pamasonictemple.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pamasonictemple.org/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitphilly.com/things-to-do/attractions/dilworth-park-at-city-hall/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitphilly.com/things-to-do/attractions/dilworth-park-at-city-hall/",
+      "error": ""
+    },
+    {
+      "url": "https://www.phila.gov/services/birth-marriage-life-events/marriage-and-divorce/get-married-in-love-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.phila.gov/services/birth-marriage-life-events/marriage-and-divorce/get-married-in-love-park/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitphilly.com/things-to-do/attractions/the-african-american-museum-in-philadelphia/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitphilly.com/things-to-do/attractions/the-african-american-museum-in-philadelphia/",
+      "error": ""
+    },
+    {
+      "url": "https://constitutioncenter.org/about/about-faqs",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://constitutioncenter.org/about/about-faqs",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitphilly.com/things-to-do/attractions/mutter-museum/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitphilly.com/things-to-do/attractions/mutter-museum/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitphilly.com/articles/philadelphia/best-parks-in-philadelphia/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitphilly.com/articles/philadelphia/best-parks-in-philadelphia/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

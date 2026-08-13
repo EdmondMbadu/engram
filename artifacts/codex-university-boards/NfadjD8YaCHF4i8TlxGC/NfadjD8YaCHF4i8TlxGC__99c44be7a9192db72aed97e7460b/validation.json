@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.rutgers.edu/about/traditional-songs",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rutgers.edu/about/traditional-songs",
+      "error": ""
+    },
+    {
+      "url": "https://commencement.rutgers.edu/node/99",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://commencement.rutgers.edu/node/99",
+      "error": ""
+    },
+    {
+      "url": "https://www.rutgers.edu/experience/campus-landmarks",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rutgers.edu/experience/campus-landmarks",
+      "error": ""
+    },
+    {
+      "url": "https://www.rutgers.edu/news/rutgers-passion-puddle-among-americas-most-romantic-college-spots",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rutgers.edu/news/rutgers-passion-puddle-among-americas-most-romantic-college-spots",
+      "error": ""
+    },
+    {
+      "url": "https://animalsciences.rutgers.edu/agfieldday",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://animalsciences.rutgers.edu/agfieldday",
+      "error": ""
+    },
+    {
+      "url": "https://sca.rutgers.edu/scarlet-day-service",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sca.rutgers.edu/scarlet-day-service",
+      "error": ""
+    },
+    {
+      "url": "https://www.rutgers.edu/event/34th-annual-rites-passage-ceremony",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rutgers.edu/event/34th-annual-rites-passage-ceremony",
+      "error": ""
+    },
+    {
+      "url": "https://sca.rutgers.edu/campus-involvement/traditions-and-signature-programs/senior-days",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sca.rutgers.edu/campus-involvement/traditions-and-signature-programs/senior-days",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

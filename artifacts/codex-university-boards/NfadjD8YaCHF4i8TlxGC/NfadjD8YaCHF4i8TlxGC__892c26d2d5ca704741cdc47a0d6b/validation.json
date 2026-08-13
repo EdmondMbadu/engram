@@ -1,0 +1,72 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.csueastbay.edu/news-center/2023/10/the-core-building-shows-how-east-bay-leeds-the-way-in-campus-sustainability.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csueastbay.edu/news-center/2023/10/the-core-building-shows-how-east-bay-leeds-the-way-in-campus-sustainability.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.csueastbay.edu/scaa/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csueastbay.edu/scaa/",
+      "error": ""
+    },
+    {
+      "url": "https://www.csueastbay.edu/uu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csueastbay.edu/uu/",
+      "error": ""
+    },
+    {
+      "url": "https://www.csueastbay.edu/raw/files/docs/student-assistant-position-descriptions/gamezone-agent-position-description-2024.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csueastbay.edu/raw/files/docs/student-assistant-position-descriptions/gamezone-agent-position-description-2024.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.csueastbay.edu/museum/current-exhibit.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csueastbay.edu/museum/current-exhibit.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.csueastbay.edu/wellbeing/basic-needs-support/food-pantry.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csueastbay.edu/wellbeing/basic-needs-support/food-pantry.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.csueastbay.edu/parking/files/docs/alt-trans/ac-transit-campus-stop-map-aug-2025.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csueastbay.edu/parking/files/docs/alt-trans/ac-transit-campus-stop-map-aug-2025.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "CORE Library",
+    "Recreation and Wellness Center"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

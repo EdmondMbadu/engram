@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.swarthmorepa.org/DocumentCenter/View/3617/town-center-merchant-map-2026",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.swarthmorepa.org/DocumentCenter/View/3617/town-center-merchant-map-2026",
+      "error": ""
+    },
+    {
+      "url": "https://swarthmorepa.org/DocumentCenter/View/1174/Town-Center-Highlights",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://swarthmorepa.org/DocumentCenter/View/1174/Town-Center-Highlights",
+      "error": ""
+    },
+    {
+      "url": "https://swarthmoretowncenter.com/farmers-market-info",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://swarthmoretowncenter.com/farmers-market-info",
+      "error": ""
+    },
+    {
+      "url": "https://www.swarthmorepa.org/926/Where-to-Eat",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.swarthmorepa.org/926/Where-to-Eat",
+      "error": ""
+    },
+    {
+      "url": "https://www.swarthmore.edu/visit-swarthmore/local-dining",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.swarthmore.edu/visit-swarthmore/local-dining",
+      "error": ""
+    },
+    {
+      "url": "https://stcwebsite.squarespace.com/business-directory",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stcwebsite.squarespace.com/business-directory",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

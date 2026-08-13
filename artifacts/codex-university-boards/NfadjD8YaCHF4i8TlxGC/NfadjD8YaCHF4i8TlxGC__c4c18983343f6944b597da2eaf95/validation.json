@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://missouri.edu/about/traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://missouri.edu/about/traditions",
+      "error": ""
+    },
+    {
+      "url": "https://business.missouri.edu/sites/default/files/2024-07/2024-undergraduate-viewbook.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://business.missouri.edu/sites/default/files/2024-07/2024-undergraduate-viewbook.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://library.missouri.edu/inthelibrary/studyspaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.missouri.edu/inthelibrary/studyspaces/",
+      "error": ""
+    },
+    {
+      "url": "https://library.missouri.edu/news/resources-and-services/finding-the-best-study-space-6",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.missouri.edu/news/resources-and-services/finding-the-best-study-space-6",
+      "error": ""
+    },
+    {
+      "url": "https://library.missouri.edu/journalism/about/maps",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.missouri.edu/journalism/about/maps",
+      "error": ""
+    },
+    {
+      "url": "https://mizzourec.missouri.edu/mizzourec-trail/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mizzourec.missouri.edu/mizzourec-trail/",
+      "error": ""
+    },
+    {
+      "url": "https://mizzourec.missouri.edu/facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mizzourec.missouri.edu/facilities/",
+      "error": ""
+    },
+    {
+      "url": "https://cafnr.missouri.edu/stories/a-jungle-in-the-rec-tiger-garden-brings-nature-indoors/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cafnr.missouri.edu/stories/a-jungle-in-the-rec-tiger-garden-brings-nature-indoors/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

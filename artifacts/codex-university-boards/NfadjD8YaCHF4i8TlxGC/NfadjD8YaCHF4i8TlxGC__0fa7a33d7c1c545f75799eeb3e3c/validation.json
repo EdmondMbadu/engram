@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://lipscomb.edu/library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lipscomb.edu/library",
+      "error": ""
+    },
+    {
+      "url": "https://lipscomb.edu/parents-main/parent-resources",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lipscomb.edu/parents-main/parent-resources",
+      "error": ""
+    },
+    {
+      "url": "https://lipscomb.edu/visiting-lipscomb",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lipscomb.edu/visiting-lipscomb",
+      "error": ""
+    },
+    {
+      "url": "https://lipscomb.edu/news/honors-colleges-new-home-debuts-campus-august",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lipscomb.edu/news/honors-colleges-new-home-debuts-campus-august",
+      "error": ""
+    },
+    {
+      "url": "https://lipscomb.edu/veteran-services",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lipscomb.edu/veteran-services",
+      "error": ""
+    },
+    {
+      "url": "https://lipscomb.edu/news/moon-landing-future-space-exploration-shaped-engineering",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lipscomb.edu/news/moon-landing-future-space-exploration-shaped-engineering",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

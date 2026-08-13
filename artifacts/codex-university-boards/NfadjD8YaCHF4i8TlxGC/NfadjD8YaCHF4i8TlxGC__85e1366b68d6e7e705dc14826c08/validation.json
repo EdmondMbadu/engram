@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://hub.salisbury.edu/theseagull/2026/02/04/100-sea-gull-stories/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://hub.salisbury.edu/theseagull/2026/02/04/100-sea-gull-stories/",
+      "error": ""
+    },
+    {
+      "url": "https://www.salisbury.edu/experience-campus/athletics/discover-sammy.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.salisbury.edu/experience-campus/athletics/discover-sammy.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://hub.salisbury.edu/theseagull/2025/08/07/salisbury-forever-a-legacy-in-motion/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://hub.salisbury.edu/theseagull/2025/08/07/salisbury-forever-a-legacy-in-motion/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

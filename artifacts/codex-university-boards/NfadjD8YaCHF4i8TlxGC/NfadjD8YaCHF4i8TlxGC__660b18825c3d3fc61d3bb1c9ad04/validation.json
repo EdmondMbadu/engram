@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.loyola.edu/_media/files/campus-map.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loyola.edu/_media/files/campus-map.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.loyola.edu/about/campus/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loyola.edu/about/campus/",
+      "error": ""
+    },
+    {
+      "url": "https://www.loyola.edu/explore/photo-gallery/?cat=campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loyola.edu/explore/photo-gallery/?cat=campus",
+      "error": ""
+    },
+    {
+      "url": "https://www.loyola.edu/academics/visual-performing-arts/gallery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loyola.edu/academics/visual-performing-arts/gallery/",
+      "error": ""
+    },
+    {
+      "url": "https://www.loyola.edu/department/campus-ministry/worship/sacred-spaces-worship-prayer.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loyola.edu/department/campus-ministry/worship/sacred-spaces-worship-prayer.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.loyola.edu/department/dining/locations/boulder-garden-cafe/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loyola.edu/department/dining/locations/boulder-garden-cafe/",
+      "error": ""
+    },
+    {
+      "url": "https://www.loyola.edu/admission/undergraduate/connect-visit/coaches/facilities.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loyola.edu/admission/undergraduate/connect-visit/coaches/facilities.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.loyola.edu/department/recreation-wellness/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loyola.edu/department/recreation-wellness/",
+      "error": ""
+    },
+    {
+      "url": "https://www.loyola.edu/department/international-student-services/resources/campus-resources.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loyola.edu/department/international-student-services/resources/campus-resources.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

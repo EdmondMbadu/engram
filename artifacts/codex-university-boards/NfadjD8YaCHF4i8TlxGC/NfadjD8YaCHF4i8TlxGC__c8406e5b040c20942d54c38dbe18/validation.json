@@ -1,0 +1,96 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.smu.edu/academic-ceremonies/events/spring-rotunda",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smu.edu/academic-ceremonies/events/spring-rotunda",
+      "error": ""
+    },
+    {
+      "url": "https://www.smu.edu/libraries/visit/spaces/study",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smu.edu/libraries/visit/spaces/study",
+      "error": ""
+    },
+    {
+      "url": "https://www.smu.edu/studentaffairs/hughes-trigg/about-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smu.edu/studentaffairs/hughes-trigg/about-us",
+      "error": ""
+    },
+    {
+      "url": "https://www.smu.edu/admission/experience/dining",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smu.edu/admission/experience/dining",
+      "error": ""
+    },
+    {
+      "url": "https://meadowsmuseumdallas.org/about-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://meadowsmuseumdallas.org/about-us/",
+      "error": ""
+    },
+    {
+      "url": "https://www.smu.edu/studentaffairs/campus-recreation/facilities/dedman-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smu.edu/studentaffairs/campus-recreation/facilities/dedman-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.smu.edu/businessfinance/facilities/events/for-external/venues/fordstadium",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smu.edu/businessfinance/facilities/events/for-external/venues/fordstadium",
+      "error": ""
+    },
+    {
+      "url": "https://www.smu.edu/perkins/about/chapel",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smu.edu/perkins/about/chapel",
+      "error": ""
+    },
+    {
+      "url": "https://www.smu.edu/businessfinance/campusservices/mcfarlin",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smu.edu/businessfinance/campusservices/mcfarlin",
+      "error": ""
+    },
+    {
+      "url": "https://www.smu.edu/meadows/about/facilities/owenartscenter",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smu.edu/meadows/about/facilities/owenartscenter",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Meadows Museum",
+    "Dedman Center for Lifetime Sports"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

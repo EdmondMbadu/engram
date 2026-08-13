@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.tacobell.com/mn/northfield/410-s-hwy-3/dinner.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mn/northfield/410-s-hwy-3/dinner.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.carbones.com/locations/northfield/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.carbones.com/locations/northfield/",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.applebees.com/en-us/mn/northfield/2433-hwy.-3-south-82042",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.applebees.com/en-us/mn/northfield/2433-hwy.-3-south-82042",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/mn/northfield/1101-s-hwy-3/5093.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/mn/northfield/1101-s-hwy-3/5093.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.culvers.com/restaurants/northfield",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.culvers.com/restaurants/northfield",
+      "error": ""
+    },
+    {
+      "url": "https://www.eltequilamexican.com/northfield",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.eltequilamexican.com/northfield",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/mn/northfield/1500-clinton-lane/delivery",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/mn/northfield/1500-clinton-lane/delivery",
+      "error": ""
+    },
+    {
+      "url": "https://tokyogrillmn.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://tokyogrillmn.com/",
+      "error": ""
+    },
+    {
+      "url": "https://tacoterco.com/menu",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://tacoterco.com/menu",
+      "error": ""
+    },
+    {
+      "url": "https://cdn.serc.carleton.edu/files/eddie/events/workshops/sept2022/cafes_grocery_stores_restaurants_northfield.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cdn.serc.carleton.edu/files/eddie/events/workshops/sept2022/cafes_grocery_stores_restaurants_northfield.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

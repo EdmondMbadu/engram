@@ -1,0 +1,99 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Hours, event schedules, recreation eligibility, and access conditions can change; confirm them on the linked official pages before visiting.",
+    "4 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://gsc.uky.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gsc.uky.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://studentsuccess.uky.edu/index.php/student-organizations-and-activities/cats-den-and-worsham-cinema-programming",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentsuccess.uky.edu/student-organizations-and-activities/cats-den-and-worsham-cinema-programming",
+      "error": ""
+    },
+    {
+      "url": "https://visit.uky.edu/sites/default/files/2023-03/23-031002%20Walking%20Tour%20Update%20Revised.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visit.uky.edu/sites/default/files/2023-03/23-031002%20Walking%20Tour%20Update%20Revised.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.uky.edu/locations/william-t-young-library/young-library-spaces-technology",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.uky.edu/locations/william-t-young-library/young-library-spaces-technology",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.uky.edu/spaces-technology/find-dining-wellness/exploring-library-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.uky.edu/spaces-technology/find-dining-wellness/exploring-library-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://finearts.uky.edu/art-museum/facilities/uk-art-museum",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://finearts.uky.edu/art-museum/facilities/uk-art-museum",
+      "error": ""
+    },
+    {
+      "url": "https://finearts.uky.edu/singletary-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://finearts.uky.edu/singletary-center",
+      "error": ""
+    },
+    {
+      "url": "https://pa.as.uky.edu/dr-keith-macadam%E2%80%99s-legacy/macadam-student-observatory",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pa.as.uky.edu/dr-keith-macadam%E2%80%99s-legacy/macadam-student-observatory",
+      "error": ""
+    },
+    {
+      "url": "https://studentsuccess.uky.edu/campus-recreation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentsuccess.uky.edu/campus-recreation",
+      "error": ""
+    },
+    {
+      "url": "https://arboretum.mgcafe.uky.edu/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arboretum.mgcafe.uky.edu/visit",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Cats Den",
+    "William T. Young Library",
+    "UK Art Museum",
+    "Walk Across Kentucky"
+  ],
+  "sourceCount": 10,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

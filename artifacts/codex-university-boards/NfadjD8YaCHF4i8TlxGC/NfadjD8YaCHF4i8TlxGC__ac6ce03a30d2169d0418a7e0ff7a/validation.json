@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.csusb.edu/its/support/technology-support/computer-labs",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusb.edu/its/support/technology-support/computer-labs",
+      "error": ""
+    },
+    {
+      "url": "https://faq.lib.csusb.edu/questions/6670",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://faq.lib.csusb.edu/questions/6670",
+      "error": ""
+    },
+    {
+      "url": "https://www.csusb.edu/sites/default/files/upload/file/library_group_study.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusb.edu/sites/default/files/upload/file/library_group_study.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.csusb.edu/guided-tour/john-m-pfau-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusb.edu/guided-tour/john-m-pfau-library",
+      "error": ""
+    },
+    {
+      "url": "https://www.csusb.edu/retreat/faq",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusb.edu/retreat/faq",
+      "error": ""
+    },
+    {
+      "url": "https://www.csusb.edu/smsu/resources/esports-arena",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusb.edu/smsu/resources/esports-arena",
+      "error": ""
+    },
+    {
+      "url": "https://www.csusb.edu/smsu/resources/coyote-lanes",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusb.edu/smsu/resources/coyote-lanes",
+      "error": ""
+    },
+    {
+      "url": "https://www.csusb.edu/smsu/resources/graduate-student-success-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusb.edu/smsu/resources/graduate-student-success-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.csusb.edu/graduate-studies/current-students/graduate-student-outreach-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusb.edu/graduate-studies/current-students/graduate-student-outreach-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.csusb.edu/join-the-pack/future-students/campus-life/student-recreation-wellness-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusb.edu/join-the-pack/future-students/campus-life/student-recreation-wellness-center",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

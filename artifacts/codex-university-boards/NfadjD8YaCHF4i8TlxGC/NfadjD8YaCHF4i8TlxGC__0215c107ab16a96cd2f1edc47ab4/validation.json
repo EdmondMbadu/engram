@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.plu.edu/parkland-tour/the-parkland-mural/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.plu.edu/parkland-tour/the-parkland-mural/",
+      "error": ""
+    },
+    {
+      "url": "https://www.plu.edu/hospitality/venturing-out/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.plu.edu/hospitality/venturing-out/",
+      "error": ""
+    },
+    {
+      "url": "https://farrellispizza.com/locations/farrellis-parkland-wa/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://farrellispizza.com/locations/farrellis-parkland-wa/",
+      "error": ""
+    },
+    {
+      "url": "https://www.dinemarzano.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.dinemarzano.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.plu.edu/news/archive/2018/12/07/notes-coffee-company/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.plu.edu/news/archive/2018/12/07/notes-coffee-company/",
+      "error": ""
+    },
+    {
+      "url": "https://mastmedia.plu.edu/2024/local-business-thrives-years-after-covid/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mastmedia.plu.edu/2024/local-business-thrives-years-after-covid/",
+      "error": ""
+    },
+    {
+      "url": "https://mastmedia.plu.edu/2024/garfields-welcoming-new-boudoir-studio/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mastmedia.plu.edu/2024/garfields-welcoming-new-boudoir-studio/",
+      "error": ""
+    },
+    {
+      "url": "https://mastmedia.plu.edu/2021/garfield-street-gets-tasty-new-addition/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mastmedia.plu.edu/2021/garfield-street-gets-tasty-new-addition/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

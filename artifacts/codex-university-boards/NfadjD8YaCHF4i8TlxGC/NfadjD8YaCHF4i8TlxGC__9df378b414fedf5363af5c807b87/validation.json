@@ -1,0 +1,77 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Museum and transit schedules can change; check the linked official pages before heading out."
+  ],
+  "reachability": [
+    {
+      "url": "https://stanleymuseum.uiowa.edu/visit/plan-your-visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stanleymuseum.uiowa.edu/visit/plan-your-visit",
+      "error": ""
+    },
+    {
+      "url": "https://stanleymuseum.uiowa.edu/visit/accessibility",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stanleymuseum.uiowa.edu/visit/accessibility",
+      "error": ""
+    },
+    {
+      "url": "https://oldcap.uiowa.edu/visit/group-visits-tours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://oldcap.uiowa.edu/visit/group-visits-tours",
+      "error": ""
+    },
+    {
+      "url": "https://mnh.uiowa.edu/visit/group-visits-tours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mnh.uiowa.edu/visit/group-visits-tours",
+      "error": ""
+    },
+    {
+      "url": "https://mnh.uiowa.edu/learn/treksacks",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mnh.uiowa.edu/learn/treksacks",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.uiowa.edu/gallery/plan-your-visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.uiowa.edu/gallery/plan-your-visit/",
+      "error": ""
+    },
+    {
+      "url": "https://biology.uiowa.edu/news/2022/10/three-things-you-need-experience-university-iowa-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://biology.uiowa.edu/news/2022/10/three-things-you-need-experience-university-iowa-campus",
+      "error": ""
+    },
+    {
+      "url": "https://www.icgov.org/government/departments-and-divisions/transportation/transit/fares-and-passes",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.icgov.org/government/departments-and-divisions/transportation/transit/fares-and-passes",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

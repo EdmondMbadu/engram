@@ -1,0 +1,86 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Exact coordinates and direct map URLs for individual interior spaces were not verified, so those fields are null.",
+    "Five selections are residence-hall spaces with sex-specific or resident-controlled access; restrictions are stated in each card."
+  ],
+  "reachability": [
+    {
+      "url": "https://franciscan.edu/franciscan-university-students-furbish-new-totus-tuus-group-study-room/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://franciscan.edu/franciscan-university-students-furbish-new-totus-tuus-group-study-room/",
+      "error": ""
+    },
+    {
+      "url": "https://library.franciscan.edu/about-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.franciscan.edu/about-us/",
+      "error": ""
+    },
+    {
+      "url": "https://library.franciscan.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.franciscan.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://library.franciscan.edu/archives-and-special-collections/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.franciscan.edu/archives-and-special-collections/",
+      "error": ""
+    },
+    {
+      "url": "https://reslife.franciscan.edu/project/st-francis-hall/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://reslife.franciscan.edu/project/st-francis-hall/",
+      "error": ""
+    },
+    {
+      "url": "https://reslife.franciscan.edu/project/st-thomas-more-hall/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://reslife.franciscan.edu/project/st-thomas-more-hall/",
+      "error": ""
+    },
+    {
+      "url": "https://reslife.franciscan.edu/project/bl-solanus-casey-hall/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://reslife.franciscan.edu/project/bl-solanus-casey-hall/",
+      "error": ""
+    },
+    {
+      "url": "https://reslife.franciscan.edu/project/st-junipero-serra-hall/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://reslife.franciscan.edu/project/st-junipero-serra-hall/",
+      "error": ""
+    },
+    {
+      "url": "https://reslife.franciscan.edu/project/st-anthony-of-padua-hall/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://reslife.franciscan.edu/project/st-anthony-of-padua-hall/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

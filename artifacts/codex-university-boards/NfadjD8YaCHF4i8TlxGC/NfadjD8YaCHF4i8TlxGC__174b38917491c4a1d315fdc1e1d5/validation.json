@@ -1,0 +1,57 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.linfield.edu/library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.linfield.edu/library/",
+      "error": ""
+    },
+    {
+      "url": "https://linfield.edu/glossary/campus-life.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://linfield.edu/glossary/campus-life.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.linfield.edu/art/gallery.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.linfield.edu/art/gallery.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.linfield.edu/soan/linfield-anthropology-museum.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.linfield.edu/soan/linfield-anthropology-museum.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.linfield.edu/assets/files/admission/Linfield-Campus-Map.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.linfield.edu/assets/files/admission/Linfield-Campus-Map.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Jereld R. Nicholson Library",
+    "Fred Meyer Lounge",
+    "Linfield Anthropology Museum"
+  ],
+  "sourceCount": 5,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

@@ -1,0 +1,50 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "4 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://library.unh.edu/services/spaces-study-work",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.unh.edu/services/spaces-study-work",
+      "error": ""
+    },
+    {
+      "url": "https://library.unh.edu/locations/dimond-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.unh.edu/locations/dimond-library",
+      "error": ""
+    },
+    {
+      "url": "https://www.unh.edu/mub/venues-services",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.unh.edu/mub/venues-services",
+      "error": ""
+    },
+    {
+      "url": "https://www.unh.edu/offcampus/campus-engagement/commuter-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.unh.edu/offcampus/campus-engagement/commuter-spaces",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Hubbard Reading Room",
+    "Addison Reading Room",
+    "Studio 235",
+    "Games Room"
+  ],
+  "sourceCount": 4,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

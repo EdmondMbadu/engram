@@ -1,0 +1,64 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://library.csuchico.edu/sites/default/files/self_guided.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csuchico.edu/sites/default/files/self_guided.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://library.csuchico.edu/floor-maps",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csuchico.edu/floor-maps",
+      "error": ""
+    },
+    {
+      "url": "https://library.csuchico.edu/spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csuchico.edu/spaces",
+      "error": ""
+    },
+    {
+      "url": "https://library.csuchico.edu/wildcat-family-friendly-study-space",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csuchico.edu/wildcat-family-friendly-study-space",
+      "error": ""
+    },
+    {
+      "url": "https://www.csuchico.edu/academics/college/behavioral-social-sciences/resources/student-success-center.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csuchico.edu/academics/college/behavioral-social-sciences/resources/student-success-center.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.csuchico.edu/academics/college/natural-sciences/about/facilities.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csuchico.edu/academics/college/natural-sciences/about/facilities.shtml",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "The Grove",
+    "Research Commons"
+  ],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

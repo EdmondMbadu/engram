@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Coordinates and maps URLs are null because exact values were not independently verified from direct map records.",
+    "Several destination pages are maintained by the Ruston Lincoln Convention and Visitors Bureau; source_kind is classified as government.",
+    "Purchase-required marks commercial transactions or ticketed programming, not a claim that merely viewing an exterior requires payment."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.rustonlincoln.com/directory/railroad-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rustonlincoln.com/directory/railroad-park/",
+      "error": ""
+    },
+    {
+      "url": "https://www.rustonlincoln.com/directory/the-fashion-of-ruston/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rustonlincoln.com/directory/the-fashion-of-ruston/",
+      "error": ""
+    },
+    {
+      "url": "https://www.rustonlincoln.com/directory/the-depot-coffee-house/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rustonlincoln.com/directory/the-depot-coffee-house/",
+      "error": ""
+    },
+    {
+      "url": "https://www.rustonlincoln.com/directory/creative-exchange/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rustonlincoln.com/directory/creative-exchange/",
+      "error": ""
+    },
+    {
+      "url": "https://www.rustonlincoln.com/directory/lincoln-parish-museum/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rustonlincoln.com/directory/lincoln-parish-museum/",
+      "error": ""
+    },
+    {
+      "url": "https://www.rustonlincoln.com/directory/dixie-center-for-the-arts/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rustonlincoln.com/directory/dixie-center-for-the-arts/",
+      "error": ""
+    },
+    {
+      "url": "https://www.rustonlincoln.com/directory/butterfly-garden/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rustonlincoln.com/directory/butterfly-garden/",
+      "error": ""
+    },
+    {
+      "url": "https://www.rustonlincoln.com/directory/ruston-farmers-market/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rustonlincoln.com/directory/ruston-farmers-market/",
+      "error": ""
+    },
+    {
+      "url": "https://www.rustonlincoln.com/directory/norton-building/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rustonlincoln.com/directory/norton-building/",
+      "error": ""
+    },
+    {
+      "url": "https://www.rustonlincoln.com/directory/roberts-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rustonlincoln.com/directory/roberts-park/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://lib.trinity.edu/for-students/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.trinity.edu/for-students/",
+      "error": ""
+    },
+    {
+      "url": "https://trinity.edu/news/introducing-2025-26-stieren-arts-enrichment-series",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://trinity.edu/news/introducing-2025-26-stieren-arts-enrichment-series",
+      "error": ""
+    },
+    {
+      "url": "https://events.trinity.edu/event/sacmscmslc-presentation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.trinity.edu/event/sacmscmslc-presentation",
+      "error": ""
+    },
+    {
+      "url": "https://trinity.edu/news/distinguished-academic-and-former-ambassador-headline-2025-maverick-lecture",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://trinity.edu/news/distinguished-academic-and-former-ambassador-headline-2025-maverick-lecture",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

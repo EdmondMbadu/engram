@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.fordham.edu/commencement/events/university-commencement/commencement-traditions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fordham.edu/commencement/events/university-commencement/commencement-traditions/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fordham.edu/commencement/events/university-commencement/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fordham.edu/commencement/events/university-commencement/",
+      "error": ""
+    },
+    {
+      "url": "https://thefordhamram.com/culture/traditions-at-fordham/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thefordhamram.com/culture/traditions-at-fordham/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fordham.edu/student-life/commuter-student-services/rose-hill-commuter-student-services/events-and-activities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fordham.edu/student-life/commuter-student-services/rose-hill-commuter-student-services/events-and-activities/",
+      "error": ""
+    },
+    {
+      "url": "https://now.fordham.edu/university-news/fordham-veterans-association-welcomes-new-students/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://now.fordham.edu/university-news/fordham-veterans-association-welcomes-new-students/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fordham.edu/about/living-the-mission/campus-ministry/festival-of-lessons-and-carols/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fordham.edu/about/living-the-mission/campus-ministry/festival-of-lessons-and-carols/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fordham.edu/fordham-college-at-rose-hill/honors-programs-societies-and-awards/honors-program/events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fordham.edu/fordham-college-at-rose-hill/honors-programs-societies-and-awards/honors-program/events/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

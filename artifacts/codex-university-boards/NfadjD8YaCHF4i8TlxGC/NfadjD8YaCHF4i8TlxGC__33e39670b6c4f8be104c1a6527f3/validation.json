@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://sites.rowan.edu/scca/WhatWeOffer/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sites.rowan.edu/scca/WhatWeOffer/",
+      "error": ""
+    },
+    {
+      "url": "https://sites.rowan.edu/scca/aboutus/signature_events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sites.rowan.edu/scca/aboutus/signature_events/",
+      "error": ""
+    },
+    {
+      "url": "https://sites.rowan.edu/scca/SUP/FAQ.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sites.rowan.edu/scca/SUP/FAQ.html",
+      "error": ""
+    },
+    {
+      "url": "https://sites.rowan.edu/university-college/success_summit.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sites.rowan.edu/university-college/success_summit.html",
+      "error": ""
+    },
+    {
+      "url": "https://sites.rowan.edu/student-success/profcents/library.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sites.rowan.edu/student-success/profcents/library.html",
+      "error": ""
+    },
+    {
+      "url": "https://today.rowan.edu/news/2025/08/ca-artgallery-2526.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://today.rowan.edu/news/2025/08/ca-artgallery-2526.html",
+      "error": ""
+    },
+    {
+      "url": "https://sites.rowan.edu/hollybush/preserving.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sites.rowan.edu/hollybush/preserving.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.rowan.edu/forging-forward/areas-to-support/centers-institutes-museums/centers-institutes-museums.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rowan.edu/forging-forward/areas-to-support/centers-institutes-museums/centers-institutes-museums.html",
+      "error": ""
+    },
+    {
+      "url": "https://sites.rowan.edu/rec/facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sites.rowan.edu/rec/facilities/",
+      "error": ""
+    },
+    {
+      "url": "https://sites.rowan.edu/planetarium/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sites.rowan.edu/planetarium/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

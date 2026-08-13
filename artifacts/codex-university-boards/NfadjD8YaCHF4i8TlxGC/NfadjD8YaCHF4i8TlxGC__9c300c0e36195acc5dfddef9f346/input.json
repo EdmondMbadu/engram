@@ -1,0 +1,71 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "0q9cJHHcMVEhoukFSbjL",
+    "schoolName": "University of Denver",
+    "shortSchoolName": "University of Denver",
+    "townName": "Denver",
+    "state": "CO",
+    "countryCode": "US",
+    "unitId": "127060",
+    "website": "https://www.du.edu/",
+    "latitude": 39.678005,
+    "longitude": -104.963259,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/a/a9/University_of_Denver_seal.svg/250px-University_of_Denver_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=du.edu&sz=256"
+  },
+  "template": {
+    "id": "college-campus-tour-skips",
+    "version": "1.0",
+    "titlePattern": "What the Campus Tour Skips: {count} Places Students Share With Each Other",
+    "editorialBrief": "Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.",
+    "researchQueries": [
+      "student favorite campus places",
+      "campus map student spaces",
+      "student newspaper campus places"
+    ],
+    "count": 10,
+    "icon": "style",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place",
+      "study_space"
+    ],
+    "freshnessDays": 365
+  },
+  "exact_title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+  "excluded_subjects": [
+    "Community Commons",
+    "Rebecca Chopp Grand Central Market",
+    "Evans Pedestrian Bridge",
+    "Anderson Academic Commons",
+    "Buchtel Memorial Tower",
+    "Evans Chapel",
+    "Coors Fitness Center",
+    "Robert and Judi Newman Center for the Performing Arts",
+    "Chamberlin Observatory",
+    "Driscoll Commons",
+    "Jerusalem Restaurant",
+    "Pita Fresh & Catering",
+    "Birdcall Evans",
+    "Domino's Pizza — 2101 S Downing St",
+    "Domino's Pizza — 1136 S Colorado Blvd",
+    "Sexy Pizza — South Pearl",
+    "Sexy Pizza — Uptown",
+    "Pete's Kitchen",
+    "Donuts Town",
+    "Big Daddy's Pizza — West Colfax",
+    "Fogel Reading Room",
+    "Gottesfeld Reading Room",
+    "Quinette Family Reading Room",
+    "Faculty Reading Room",
+    "Frank Study Area",
+    "The Loft",
+    "Viewing Area",
+    "Large Group Study Room 182",
+    "Small Group Study Room 108A",
+    "Research Carrel Room"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

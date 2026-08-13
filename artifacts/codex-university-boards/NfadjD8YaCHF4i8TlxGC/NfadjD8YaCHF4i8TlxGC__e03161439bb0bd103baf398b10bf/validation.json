@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.museum.ucsb.edu/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.museum.ucsb.edu/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.museum.ucsb.edu/event/fall-2026-exhibition-public-reception/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.museum.ucsb.edu/event/fall-2026-exhibition-public-reception/",
+      "error": ""
+    },
+    {
+      "url": "https://wellbeing.ucsb.edu/wellbeing-resources",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wellbeing.ucsb.edu/wellbeing-resources",
+      "error": ""
+    },
+    {
+      "url": "https://copr.nrs.ucsb.edu/visiting/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://copr.nrs.ucsb.edu/visiting/",
+      "error": ""
+    },
+    {
+      "url": "https://copr.nrs.ucsb.edu/get-involved/volunteer/become-a-tour-guide/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://copr.nrs.ucsb.edu/get-involved/volunteer/become-a-tour-guide/",
+      "error": ""
+    },
+    {
+      "url": "https://news.ucsb.edu/news-bites",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.ucsb.edu/news-bites",
+      "error": ""
+    },
+    {
+      "url": "https://music.ucsb.edu/events",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://music.ucsb.edu/events",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.ucsb.edu/computer-use-policy",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.ucsb.edu/computer-use-policy",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

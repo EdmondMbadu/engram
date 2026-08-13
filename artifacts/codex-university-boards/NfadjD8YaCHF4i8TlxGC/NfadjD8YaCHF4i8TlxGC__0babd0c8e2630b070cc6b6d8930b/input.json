@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "0jyAjWD7QGL5lvZWmrDW",
+    "schoolName": "Northern Arizona University",
+    "shortSchoolName": "Northern Arizona University",
+    "townName": "Flagstaff",
+    "state": "AZ",
+    "countryCode": "US",
+    "unitId": "105330",
+    "website": "https://nau.edu/",
+    "latitude": 35.188449,
+    "longitude": -111.653724,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=nau.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=nau.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain Northern Arizona University",
+  "excluded_subjects": [
+    "Cline Library",
+    "MakerLab",
+    "Virtual Reality Studio",
+    "One Button Studio",
+    "Photography Studio",
+    "Production Studios",
+    "University Union",
+    "Health and Learning Center",
+    "Native American Cultural Center",
+    "Observatory Field Complex"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://catalog.umw.edu/academic-resources/simpson-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.umw.edu/academic-resources/simpson-library/",
+      "error": ""
+    },
+    {
+      "url": "https://students.umw.edu/commuters/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://students.umw.edu/commuters/",
+      "error": ""
+    },
+    {
+      "url": "https://www.umw.edu/uc/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.umw.edu/uc/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

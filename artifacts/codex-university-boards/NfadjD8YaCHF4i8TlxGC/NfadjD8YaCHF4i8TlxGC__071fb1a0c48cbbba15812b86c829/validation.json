@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.reed.edu/cooley/about.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.reed.edu/cooley/about.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.reed.edu/dance/community-dance/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.reed.edu/dance/community-dance/",
+      "error": ""
+    },
+    {
+      "url": "https://www.reed.edu/ppls/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.reed.edu/ppls/",
+      "error": ""
+    },
+    {
+      "url": "https://www.reed.edu/academics/experiential-learning/presidents-student-showcase.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.reed.edu/academics/experiential-learning/presidents-student-showcase.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.reed.edu/campus-life/clubs-activities/student-engagement/student-spaces.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.reed.edu/campus-life/clubs-activities/student-engagement/student-spaces.html",
+      "error": ""
+    },
+    {
+      "url": "https://library.reed.edu/get-books.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.reed.edu/get-books.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.reed.edu/seeds/initiatives/food-security/pantry.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.reed.edu/seeds/initiatives/food-security/pantry.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.reed.edu/international-student-services/incoming-students/international-student-orientation.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.reed.edu/international-student-services/incoming-students/international-student-orientation.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.reed.edu/multicultural-resource-center/pmp.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.reed.edu/multicultural-resource-center/pmp.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.reed.edu/canyon/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.reed.edu/canyon/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

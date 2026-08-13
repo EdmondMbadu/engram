@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://home.nps.gov/places/boston-common-ma.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://home.nps.gov/places/boston-common-ma.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.cityofboston.gov/parks/TTD/frogpond_winter.asp",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cityofboston.gov/parks/TTD/frogpond_winter.asp",
+      "error": ""
+    },
+    {
+      "url": "https://www.cityofboston.gov/parks/HBGI/hbginfo.asp?ID=16",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cityofboston.gov/parks/HBGI/hbginfo.asp?ID=16",
+      "error": ""
+    },
+    {
+      "url": "https://www.parkstreet.org/about-us/freedom-trail/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.parkstreet.org/about-us/freedom-trail/",
+      "error": ""
+    },
+    {
+      "url": "https://www.cityofboston.gov/parks/HBGI/hbginfo.asp?ID=18",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cityofboston.gov/parks/HBGI/hbginfo.asp?ID=18",
+      "error": ""
+    },
+    {
+      "url": "https://www.mass.gov/orgs/bureau-of-the-state-house",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mass.gov/orgs/bureau-of-the-state-house",
+      "error": ""
+    },
+    {
+      "url": "https://bostonathenaeum.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bostonathenaeum.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/places/boston-public-garden.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/places/boston-public-garden.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.osmh.org/node/91",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.osmh.org/node/91",
+      "error": ""
+    },
+    {
+      "url": "https://www.bostonhistory.org/s-osh",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bostonhistory.org/s-osh",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

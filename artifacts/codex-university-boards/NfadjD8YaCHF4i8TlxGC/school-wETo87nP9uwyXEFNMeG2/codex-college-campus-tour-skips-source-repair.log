@@ -1,0 +1,289 @@
+Reading additional input from stdin...
+2026-08-13T07:32:51.368703Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:32:51.369803Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa09-c201-7aa2-8d38-7129f37dfbd0
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+Do not cite these URLs because the live validator found them broken: https://www.haverford.edu/sites/default/files/Office/Arboretum/Arboretum_VisitorsGuideTrifold23_FRO.pdf
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"wETo87nP9uwyXEFNMeG2","schoolName":"Haverford College","shortSchoolName":"Haverford College","townName":"Haverford","state":"PA","countryCode":"US","website":"https://www.haverford.edu/","latitude":40.007452,"longitude":-75.305207},"templates":[{"id":"college-campus-tour-skips","version":"1.0","titlePattern":"What the Campus Tour Skips: {count} Places Students Share With Each Other","editorialBrief":"Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.","researchQueries":["student favorite campus places","campus map student spaces","student newspaper campus places"],"count":10,"icon":"style","primarySubjectType":"place","allowedSubjectTypes":["place","study_space"],"freshnessDays":365,"exactTitle":"What the Campus Tour Skips: 10 Places Students Share With Each Other","excludedSourceUrls":["https://www.haverford.edu/sites/default/files/Office/Arboretum/Arboretum_VisitorsGuideTrifold23_FRO.pdf"]}]}
+codex
+{
+  "complete": false,
+  "school_name": "Haverford College",
+  "town_name": "Haverford",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Haverford College",
+      "town_name": "Haverford",
+      "template_id": "college-campus-tour-skips",
+      "title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+      "description": "",
+      "icon": "style",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+     ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:haverford.edu campus student spaces Haverford College library Lutnick VCAM KINSC ...
+web search: 
+web search: site:haverford.edu "Zubrow Commons" Haverford ...
+codex
+{"complete":true,"school_name":"Haverford College","town_name":"Haverford","boards":[{"complete":true,"school_name":"Haverford College","town_name":"Haverford","template_id":"college-campus-tour-skips","title":"What the Campus Tour Skips: 10 Places Students Share With Each Other","description":"A practical field guide to Haverford’s reservable study rooms, creative workspaces, lounges, gathering areas, and student-run growing space.","icon":"style","cards":[{"subject_id":"haverford-lutnick-library-group-study-rooms","subject_type":"study_space","entity_name":"Lutnick Library Group Study Rooms","title":"Bring the Group Project to Lutnick","subtitle":"Reservable collaboration rooms inside Allison and Howard Lutnick Library","notes":"Reserve through the College room system, then choose a room size that fits your group and the display or conferencing equipment you need.","short_summary":"Nine rooms provide purpose-built settings for small discussions, six-person collaborations, or larger meetings.","evidence_claim":"Haverford Libraries lists six small, two medium, and one large group study room in Lutnick Library, with shared displays and collaboration equipment.","source_url":"https://www.haverford.edu/libraries/places-hours/study-spaces","source_title":"Study Spaces | Haverford College Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Group study rooms are reservable through the College room reservation system; follow the reservation holder’s assigned time.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"haverford-white-science-library-study-rooms","subject_type":"study_space","entity_name":"White Science Library Group Study Rooms","title":"Work It Out on a Whiteboard","subtitle":"Four shared study rooms on the third floor of KINSC-Hilles","notes":"Use a medium room when the group needs ten seats and a large monitor; select a small room for a four-person chalkboard or whiteboard session.","short_summary":"Science Library rooms pair writable surfaces with configurations sized for four or ten people.","evidence_claim":"Haverford Libraries documents two ten-seat medium rooms with whiteboards and monitors and two four-seat small rooms with whiteboards or chalkboards.","source_url":"https://www.haverford.edu/libraries/places-hours/study-spaces","source_title":"Study Spaces | Haverford College Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Rooms are in the White Science Library on KINSC-Hilles’s third floor and are reservable through the College room system.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"haverford-vcam-maker-arts-space","subject_type":"place","entity_name":"VCAM Maker Arts Space","title":"Prototype With People Nearby","subtitle":"A supervised fabrication and craft lab in VCAM Room 005","notes":"Visit during posted Open Studio hours, sign in, and ask a student worker which tools require training before beginning a fabrication project.","short_summary":"The lab supports collaborative digital fabrication, craft, prototyping, and cross-disciplinary experimentation.","evidence_claim":"The official Maker Arts Space page says the lab serves students through coursework, workshops, and studio hours and documents students collaborating there.","source_url":"https://www.haverford.edu/vcam/maker-arts-space","source_title":"Maker Arts Space | Visual Culture, Arts, and Media VCAM","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Academic-year Open Studio hours are posted on the source page. Walk-ins are welcome, but machine-specific training and material restrictions apply.","cost_status":"unknown","under21_safe":true},{"subject_id":"haverford-vcam-presentation-lounge-community-kitchen","subject_type":"place","entity_name":"VCAM Presentation Lounge and Community Kitchen","title":"Gather at VCAM’s Shared Center","subtitle":"A central lounge and community kitchen anchoring VCAM’s creative rooms","notes":"Use the lounge as a meeting point before a screening, workshop, or exhibition, and check program requirements before planning kitchen activity.","short_summary":"This central pair of spaces connects VCAM’s teaching, production, exhibition, and making facilities.","evidence_claim":"Haverford’s official VCAM description identifies a central Presentation Lounge and Community Kitchen as the anchor for the facility’s flexible spaces.","source_url":"https://www.haverford.edu/vcam/about","source_title":"About | Visual Culture, Arts, and Media VCAM","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"VCAM is described as a 24/7 creative hub, but individual rooms may be scheduled for teaching, projects, or events; observe posted restrictions.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"haverford-haverfarm","subject_type":"place","entity_name":"Haverfarm","title":"Join a Working Campus Farm","subtitle":"A year-round educational growing space near the greenhouse","notes":"Look for a scheduled student activity or workshop before heading over, then arrive ready to learn how the farm connects food, agriculture, and community.","short_summary":"The farm links hands-on growing with food justice, coursework, extracurricular learning, and community distribution.","evidence_claim":"Haverford describes Haverfarm as a year-round farming and educational space integrated into students’ academic and extracurricular lives.","source_url":"https://www.haverford.edu/arboretum/revitalization","source_title":"Revitalization | Arboretum | Haverford College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Participate through announced farm activities or workshops and follow staff guidance around active beds, tools, and greenhouse areas.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"haverford-dining-center-basement-study-area","subject_type":"study_space","entity_name":"Dining Center Basement Study Area","title":"Head Below the Dining Center to Study","subtitle":"A large open work area beside student organization spaces","notes":"Try the basement when you need an open study setting near club and affinity-group offices, while yielding to any scheduled gathering or performance.","short_summary":"The Dining Center’s lower level combines an open study area with student organizations and a black-box theater.","evidence_claim":"Haverford’s campus map description states that the Dining Center basement contains affinity-group offices, club spaces, and a large open study area.","source_url":"https://www1.haverford.edu/campus-map","source_title":"Campus Map | Haverford College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The study area shares a level with organization offices and performance space; respect scheduled uses and any posted building-access rules.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"haverford-dining-center-sunken-lounge","subject_type":"place","entity_name":"Dining Center Sunken Lounge","title":"Settle Into the Sunken Lounge","subtitle":"The Dining Center’s shared lounge, with a seasonal fireplace","notes":"Use the lounge for a conversation or pause between commitments, and keep circulation clear when the Dining Center is hosting a larger event.","short_summary":"This lounge gives the Dining Center a gathering area separate from its meal-service seating.","evidence_claim":"The official campus map says the Dining Center opens into a Sunken Lounge, where a fire often burns in colder months, and hosts larger gatherings and events.","source_url":"https://www1.haverford.edu/campus-map","source_title":"Campus Map | Haverford College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Access follows Dining Center building hours and event arrangements; food service may require a meal plan or purchase, but lounge use is distinct.","cost_status":"unknown","under21_safe":true},{"subject_id":"haverford-union-building-student-lounge","subject_type":"place","entity_name":"Union Building Student Lounge","title":"Meet in the Union Building Lounge","subtitle":"A student lounge inside an interdisciplinary academic building","notes":"Use the lounge for a small meetup around classes in Union, keeping noise appropriate for the classrooms and academic offices elsewhere in the building.","short_summary":"A dedicated lounge adds informal student space to Union’s classrooms and interdisciplinary programs.","evidence_claim":"Haverford’s campus map states that Union Building includes classrooms, a student lounge, and a listening room.","source_url":"https://www1.haverford.edu/campus-map","source_title":"Campus Map | Haverford College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use is subject to normal academic-building access and any room reservations or posted program restrictions.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"haverford-tritton-hall-study-lounges","subject_type":"study_space","entity_name":"Tritton Hall Study Lounges","title":"Use the Lounge Built Into the Floor","subtitle":"Residential study space shared by Tritton Hall neighbors","notes":"For residents and their invited guests, use the floor lounge for collaborative work while following quiet hours and keeping the common area available to others.","short_summary":"Each residential floor pairs two common areas with a dedicated study lounge.","evidence_claim":"Haverford’s campus map says Tritton Hall provides two common areas and one study lounge on every floor.","source_url":"https://www1.haverford.edu/campus-map","source_title":"Campus Map | Haverford College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Tritton is a residence hall; access is for residents and authorized guests under current Residential Life policies.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"haverford-whitehead-campus-center","subject_type":"place","entity_name":"Whitehead Campus Center","title":"Combine Errands, Art, and a Meetup","subtitle":"A campus center containing the Coop, bookstore, and Cantor Fitzgerald Gallery","notes":"Coordinate a meetup around the gallery or campus errands, and check each destination’s current hours because services inside operate independently.","short_summary":"Whitehead brings student-facing services, a café, retail, and an exhibition venue into one recognizable stop.","evidence_claim":"Haverford’s official campus map says Whitehead Campus Center contains the Coop, Bookstore, Cantor Fitzgerald Gallery, Admission, and Financial Aid.","source_url":"https://www1.haverford.edu/campus-map","source_title":"Campus Map | Haverford College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public restrooms are available on the ground floor during normal business hours; individual services and the gallery maintain their own access schedules.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:34:41.152785Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa09-c201-7aa2-8d38-7129f37dfbd0.1786606371329860000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+38,758
+
+{"complete":true,"school_name":"Haverford College","town_name":"Haverford","boards":[{"complete":true,"school_name":"Haverford College","town_name":"Haverford","template_id":"college-campus-tour-skips","title":"What the Campus Tour Skips: 10 Places Students Share With Each Other","description":"A practical field guide to Haverford’s reservable study rooms, creative workspaces, lounges, gathering areas, and student-run growing space.","icon":"style","cards":[{"subject_id":"haverford-lutnick-library-group-study-rooms","subject_type":"study_space","entity_name":"Lutnick Library Group Study Rooms","title":"Bring the Group Project to Lutnick","subtitle":"Reservable collaboration rooms inside Allison and Howard Lutnick Library","notes":"Reserve through the College room system, then choose a room size that fits your group and the display or conferencing equipment you need.","short_summary":"Nine rooms provide purpose-built settings for small discussions, six-person collaborations, or larger meetings.","evidence_claim":"Haverford Libraries lists six small, two medium, and one large group study room in Lutnick Library, with shared displays and collaboration equipment.","source_url":"https://www.haverford.edu/libraries/places-hours/study-spaces","source_title":"Study Spaces | Haverford College Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Group study rooms are reservable through the College room reservation system; follow the reservation holder’s assigned time.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"haverford-white-science-library-study-rooms","subject_type":"study_space","entity_name":"White Science Library Group Study Rooms","title":"Work It Out on a Whiteboard","subtitle":"Four shared study rooms on the third floor of KINSC-Hilles","notes":"Use a medium room when the group needs ten seats and a large monitor; select a small room for a four-person chalkboard or whiteboard session.","short_summary":"Science Library rooms pair writable surfaces with configurations sized for four or ten people.","evidence_claim":"Haverford Libraries documents two ten-seat medium rooms with whiteboards and monitors and two four-seat small rooms with whiteboards or chalkboards.","source_url":"https://www.haverford.edu/libraries/places-hours/study-spaces","source_title":"Study Spaces | Haverford College Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Rooms are in the White Science Library on KINSC-Hilles’s third floor and are reservable through the College room system.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"haverford-vcam-maker-arts-space","subject_type":"place","entity_name":"VCAM Maker Arts Space","title":"Prototype With People Nearby","subtitle":"A supervised fabrication and craft lab in VCAM Room 005","notes":"Visit during posted Open Studio hours, sign in, and ask a student worker which tools require training before beginning a fabrication project.","short_summary":"The lab supports collaborative digital fabrication, craft, prototyping, and cross-disciplinary experimentation.","evidence_claim":"The official Maker Arts Space page says the lab serves students through coursework, workshops, and studio hours and documents students collaborating there.","source_url":"https://www.haverford.edu/vcam/maker-arts-space","source_title":"Maker Arts Space | Visual Culture, Arts, and Media VCAM","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Academic-year Open Studio hours are posted on the source page. Walk-ins are welcome, but machine-specific training and material restrictions apply.","cost_status":"unknown","under21_safe":true},{"subject_id":"haverford-vcam-presentation-lounge-community-kitchen","subject_type":"place","entity_name":"VCAM Presentation Lounge and Community Kitchen","title":"Gather at VCAM’s Shared Center","subtitle":"A central lounge and community kitchen anchoring VCAM’s creative rooms","notes":"Use the lounge as a meeting point before a screening, workshop, or exhibition, and check program requirements before planning kitchen activity.","short_summary":"This central pair of spaces connects VCAM’s teaching, production, exhibition, and making facilities.","evidence_claim":"Haverford’s official VCAM description identifies a central Presentation Lounge and Community Kitchen as the anchor for the facility’s flexible spaces.","source_url":"https://www.haverford.edu/vcam/about","source_title":"About | Visual Culture, Arts, and Media VCAM","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"VCAM is described as a 24/7 creative hub, but individual rooms may be scheduled for teaching, projects, or events; observe posted restrictions.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"haverford-haverfarm","subject_type":"place","entity_name":"Haverfarm","title":"Join a Working Campus Farm","subtitle":"A year-round educational growing space near the greenhouse","notes":"Look for a scheduled student activity or workshop before heading over, then arrive ready to learn how the farm connects food, agriculture, and community.","short_summary":"The farm links hands-on growing with food justice, coursework, extracurricular learning, and community distribution.","evidence_claim":"Haverford describes Haverfarm as a year-round farming and educational space integrated into students’ academic and extracurricular lives.","source_url":"https://www.haverford.edu/arboretum/revitalization","source_title":"Revitalization | Arboretum | Haverford College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Participate through announced farm activities or workshops and follow staff guidance around active beds, tools, and greenhouse areas.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"haverford-dining-center-basement-study-area","subject_type":"study_space","entity_name":"Dining Center Basement Study Area","title":"Head Below the Dining Center to Study","subtitle":"A large open work area beside student organization spaces","notes":"Try the basement when you need an open study setting near club and affinity-group offices, while yielding to any scheduled gathering or performance.","short_summary":"The Dining Center’s lower level combines an open study area with student organizations and a black-box theater.","evidence_claim":"Haverford’s campus map description states that the Dining Center basement contains affinity-group offices, club spaces, and a large open study area.","source_url":"https://www1.haverford.edu/campus-map","source_title":"Campus Map | Haverford College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The study area shares a level with organization offices and performance space; respect scheduled uses and any posted building-access rules.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"haverford-dining-center-sunken-lounge","subject_type":"place","entity_name":"Dining Center Sunken Lounge","title":"Settle Into the Sunken Lounge","subtitle":"The Dining Center’s shared lounge, with a seasonal fireplace","notes":"Use the lounge for a conversation or pause between commitments, and keep circulation clear when the Dining Center is hosting a larger event.","short_summary":"This lounge gives the Dining Center a gathering area separate from its meal-service seating.","evidence_claim":"The official campus map says the Dining Center opens into a Sunken Lounge, where a fire often burns in colder months, and hosts larger gatherings and events.","source_url":"https://www1.haverford.edu/campus-map","source_title":"Campus Map | Haverford College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Access follows Dining Center building hours and event arrangements; food service may require a meal plan or purchase, but lounge use is distinct.","cost_status":"unknown","under21_safe":true},{"subject_id":"haverford-union-building-student-lounge","subject_type":"place","entity_name":"Union Building Student Lounge","title":"Meet in the Union Building Lounge","subtitle":"A student lounge inside an interdisciplinary academic building","notes":"Use the lounge for a small meetup around classes in Union, keeping noise appropriate for the classrooms and academic offices elsewhere in the building.","short_summary":"A dedicated lounge adds informal student space to Union’s classrooms and interdisciplinary programs.","evidence_claim":"Haverford’s campus map states that Union Building includes classrooms, a student lounge, and a listening room.","source_url":"https://www1.haverford.edu/campus-map","source_title":"Campus Map | Haverford College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use is subject to normal academic-building access and any room reservations or posted program restrictions.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"haverford-tritton-hall-study-lounges","subject_type":"study_space","entity_name":"Tritton Hall Study Lounges","title":"Use the Lounge Built Into the Floor","subtitle":"Residential study space shared by Tritton Hall neighbors","notes":"For residents and their invited guests, use the floor lounge for collaborative work while following quiet hours and keeping the common area available to others.","short_summary":"Each residential floor pairs two common areas with a dedicated study lounge.","evidence_claim":"Haverford’s campus map says Tritton Hall provides two common areas and one study lounge on every floor.","source_url":"https://www1.haverford.edu/campus-map","source_title":"Campus Map | Haverford College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Tritton is a residence hall; access is for residents and authorized guests under current Residential Life policies.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"haverford-whitehead-campus-center","subject_type":"place","entity_name":"Whitehead Campus Center","title":"Combine Errands, Art, and a Meetup","subtitle":"A campus center containing the Coop, bookstore, and Cantor Fitzgerald Gallery","notes":"Coordinate a meetup around the gallery or campus errands, and check each destination’s current hours because services inside operate independently.","short_summary":"Whitehead brings student-facing services, a café, retail, and an exhibition venue into one recognizable stop.","evidence_claim":"Haverford’s official campus map says Whitehead Campus Center contains the Coop, Bookstore, Cantor Fitzgerald Gallery, Admission, and Financial Aid.","source_url":"https://www1.haverford.edu/campus-map","source_title":"Campus Map | Haverford College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public restrooms are available on the ground floor during normal business hours; individual services and the gallery maintain their own access schedules.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}

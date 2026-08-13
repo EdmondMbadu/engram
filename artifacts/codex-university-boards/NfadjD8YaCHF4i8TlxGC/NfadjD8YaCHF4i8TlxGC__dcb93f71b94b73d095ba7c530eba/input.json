@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "oCM9TKaO7IrrWjk5c4jP",
+    "schoolName": "Texas Christian University",
+    "shortSchoolName": "Texas Christian University",
+    "townName": "Fort Worth",
+    "state": "TX",
+    "countryCode": "US",
+    "unitId": "228875",
+    "website": "https://www.tcu.edu/",
+    "latitude": 32.70961,
+    "longitude": -97.364758,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/7/72/Texas_Christian_University_seal.svg/250px-Texas_Christian_University_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=tcu.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "Kimbell Art Museum",
+    "Amon Carter Museum of American Art",
+    "Mary Couts Burnett Library",
+    "TCU athletic events",
+    "Botanical Research Institute of Texas (BRIT)",
+    "Trinity Park",
+    "Tandy Hills Natural Area",
+    "Fort Worth Botanic Garden MusePass",
+    "Fort Worth Nature Center & Refuge pass",
+    "Log Cabin Village pass"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

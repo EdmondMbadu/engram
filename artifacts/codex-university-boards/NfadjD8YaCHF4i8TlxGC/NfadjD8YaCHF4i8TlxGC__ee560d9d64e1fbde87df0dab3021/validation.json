@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.dennys.com/ca/claremont/247811",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dennys.com/ca/claremont/247811",
+      "error": ""
+    },
+    {
+      "url": "https://locations.chipotle.com/ca/claremont/885-s-indian-hill-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.chipotle.com/ca/claremont/885-s-indian-hill-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://corkyskitchenandbakery.com/corkys-claremont/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://corkyskitchenandbakery.com/corkys-claremont/",
+      "error": ""
+    },
+    {
+      "url": "https://elvirasmexicangrill.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://elvirasmexicangrill.com/",
+      "error": ""
+    },
+    {
+      "url": "https://pizzansuchclaremont.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizzansuchclaremont.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.claremontvillageeatery.com/home",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.claremontvillageeatery.com/home",
+      "error": ""
+    },
+    {
+      "url": "https://eddieseatery.com/contact/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://eddieseatery.com/contact/",
+      "error": ""
+    },
+    {
+      "url": "https://tuttimangia.com/booking/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://tuttimangia.com/booking/",
+      "error": ""
+    },
+    {
+      "url": "https://menkoiyaramen.com/restaurant-info",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://menkoiyaramen.com/restaurant-info",
+      "error": ""
+    },
+    {
+      "url": "https://www.hop-claremont.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hop-claremont.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

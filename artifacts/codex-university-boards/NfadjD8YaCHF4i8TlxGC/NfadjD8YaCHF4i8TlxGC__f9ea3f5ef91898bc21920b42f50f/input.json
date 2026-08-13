@@ -1,0 +1,52 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "9hdO8p9iKWmiZcVWQLtp",
+    "schoolName": "Misericordia University",
+    "shortSchoolName": "Misericordia University",
+    "townName": "Dallas",
+    "state": "PA",
+    "countryCode": "US",
+    "unitId": "214069",
+    "website": "https://www.misericordia.edu/",
+    "latitude": 41.345277,
+    "longitude": -75.971541,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=misericordia.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=misericordia.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at Misericordia University, Shared as Cards",
+  "excluded_subjects": [
+    "Welcome Week",
+    "Convocation",
+    "Homecoming",
+    "Annual Homecoming Talent Show",
+    "Annual David A. Evans Memorial Color Run",
+    "Family Weekend",
+    "Fall Fest",
+    "5 Days of Give-a-ways",
+    "Midnight Breakfast",
+    "Chocolate Week"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

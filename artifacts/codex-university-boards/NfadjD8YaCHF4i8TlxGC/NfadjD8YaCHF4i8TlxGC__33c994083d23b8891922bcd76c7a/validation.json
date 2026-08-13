@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://lib.hillsdale.edu/about/policies/heritage-room-use/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.hillsdale.edu/about/policies/heritage-room-use/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hillsdale.edu/about/facilities/mossey-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsdale.edu/about/facilities/mossey-library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hillsdale.edu/hillsdale-blog/student-life/the-fishpolls/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsdale.edu/hillsdale-blog/student-life/the-fishpolls/",
+      "error": ""
+    },
+    {
+      "url": "https://lib.hillsdale.edu/about/policies/quiet-study/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.hillsdale.edu/about/policies/quiet-study/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hillsdale.edu/about/facilities/lane-hall/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsdale.edu/about/facilities/lane-hall/",
+      "error": ""
+    },
+    {
+      "url": "https://hillsdalecollegian.com/2024/04/study-inspiration-students-share-their-favorite-study-spots-on-campus/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://hillsdalecollegian.com/2024/04/study-inspiration-students-share-their-favorite-study-spots-on-campus/",
+      "error": ""
+    },
+    {
+      "url": "https://hillsdalecollegian.com/2016/09/9-best-places-study-campus/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://hillsdalecollegian.com/2016/09/9-best-places-study-campus/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hillsdale.edu/about/facilities/grewcock-student-union/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsdale.edu/about/facilities/grewcock-student-union/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

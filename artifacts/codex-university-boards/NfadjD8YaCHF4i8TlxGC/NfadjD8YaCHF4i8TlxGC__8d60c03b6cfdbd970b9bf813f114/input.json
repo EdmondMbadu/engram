@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "pMwdggHqmSFImBagTES9",
+    "schoolName": "Saint Mary's College of California",
+    "shortSchoolName": "Saint Mary's College of California",
+    "townName": "Moraga",
+    "state": "CA",
+    "countryCode": "US",
+    "unitId": "123554",
+    "website": "https://www.stmarys-ca.edu/",
+    "latitude": 37.840731,
+    "longitude": -122.109031,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/9/92/Saint_Mary%27s_College_of_California_seal.svg/120px-Saint_Mary%27s_College_of_California_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=stmarys-ca.edu&sz=256"
+  },
+  "template": {
+    "id": "college-campus-tour-skips",
+    "version": "1.0",
+    "titlePattern": "What the Campus Tour Skips: {count} Places Students Share With Each Other",
+    "editorialBrief": "Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.",
+    "researchQueries": [
+      "student favorite campus places",
+      "campus map student spaces",
+      "student newspaper campus places"
+    ],
+    "count": 10,
+    "icon": "style",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place",
+      "study_space"
+    ],
+    "freshnessDays": 365
+  },
+  "exact_title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+  "excluded_subjects": [
+    "Power Plant Drop-In Space",
+    "Power Plant Silent Study Zone",
+    "Power Plant Sensory Room",
+    "Power Plant Reservable Study Rooms",
+    "Marie Curie STEM Center Main Study Room",
+    "Marie Curie STEM Center Small-Group Study Rooms",
+    "Psychology Center Central Lounge",
+    "Galileo Hall Student Study Spaces",
+    "Math Pedagogy Center",
+    "Aquinas Hall Study Lounge"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

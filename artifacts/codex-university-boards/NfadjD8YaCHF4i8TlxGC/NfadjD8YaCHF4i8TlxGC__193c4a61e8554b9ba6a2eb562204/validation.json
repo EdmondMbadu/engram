@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://saparks.org/japanese-tea-garden/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://saparks.org/japanese-tea-garden/",
+      "error": ""
+    },
+    {
+      "url": "https://sazoo.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sazoo.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.kiddiepark.com/history/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.kiddiepark.com/history/",
+      "error": ""
+    },
+    {
+      "url": "https://www.brackenridgepark.org/visit-the-park/things-to-see-and-do",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://brackenridgepark.org/things-to-do/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitsanantonio.com/listing/brackenridge-park/1460/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitsanantonio.com/listing/brackenridge-park/1460/",
+      "error": ""
+    },
+    {
+      "url": "https://www.wittemuseum.org/plan-your-visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.wittemuseum.org/plan-your-visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.brackenridgepark.org/visit-the-park/historic-sites",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://brackenridgepark.org/historic-sites/",
+      "error": ""
+    },
+    {
+      "url": "https://www.volunteersanantonio.org/agency/detail/?agency_id=16043",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.volunteersanantonio.org/agency/detail/?agency_id=16043",
+      "error": ""
+    },
+    {
+      "url": "https://sabgtx.org/directions-parking/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sabgtx.org/directions-parking/",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcnayart.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcnayart.org/visit/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

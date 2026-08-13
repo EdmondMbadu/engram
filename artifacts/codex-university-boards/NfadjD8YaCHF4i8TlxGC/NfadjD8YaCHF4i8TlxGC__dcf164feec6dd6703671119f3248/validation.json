@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://library.syracuse.edu/spaces/carnegie-library-reading-room/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.syracuse.edu/spaces/carnegie-library-reading-room/",
+      "error": ""
+    },
+    {
+      "url": "https://library.syracuse.edu/spaces/bird-library-1st-floor/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.syracuse.edu/spaces/bird-library-1st-floor/",
+      "error": ""
+    },
+    {
+      "url": "https://library.syracuse.edu/spaces/2nd-floor-bird-library-open-study-area/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.syracuse.edu/spaces/2nd-floor-bird-library-open-study-area/",
+      "error": ""
+    },
+    {
+      "url": "https://library.syracuse.edu/spaces/bird-library-3rd-through-5th-floors/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.syracuse.edu/spaces/bird-library-3rd-through-5th-floors/",
+      "error": ""
+    },
+    {
+      "url": "https://library.syracuse.edu/spaces/quiet-computing-area/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.syracuse.edu/spaces/quiet-computing-area/",
+      "error": ""
+    },
+    {
+      "url": "https://library.syracuse.edu/spaces/map-room/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.syracuse.edu/spaces/map-room/",
+      "error": ""
+    },
+    {
+      "url": "https://library.syracuse.edu/spaces/safire-room/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.syracuse.edu/spaces/safire-room/",
+      "error": ""
+    },
+    {
+      "url": "https://library.syracuse.edu/spaces/plastics-pioneers-reading-room-gallery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.syracuse.edu/spaces/plastics-pioneers-reading-room-gallery/",
+      "error": ""
+    },
+    {
+      "url": "https://library.syracuse.edu/spaces/sensory-friendly-reservable-individual-study-rooms-bird-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.syracuse.edu/spaces/sensory-friendly-reservable-individual-study-rooms-bird-library/",
+      "error": ""
+    },
+    {
+      "url": "https://library.syracuse.edu/spaces/bird-library-team-room/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.syracuse.edu/spaces/bird-library-team-room/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

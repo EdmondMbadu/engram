@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "1onrKej104FrnuyClAts",
+    "schoolName": "Nazareth University",
+    "shortSchoolName": "Nazareth University",
+    "townName": "Rochester",
+    "state": "NY",
+    "countryCode": "US",
+    "unitId": "193584",
+    "website": "https://www2.naz.edu/",
+    "latitude": 43.101576,
+    "longitude": -77.518579,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=www2.naz.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=www2.naz.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "Pool Overlook",
+    "Commuter & Transfer Lounge",
+    "Reading Lounge",
+    "1924 Room",
+    "Porthole Lounge",
+    "Lorette Wilmot Library Reading Room",
+    "Lorette Wilmot Library Makerspace",
+    "The Zen Den",
+    "Meditation Room",
+    "School of Education Student Lounge"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

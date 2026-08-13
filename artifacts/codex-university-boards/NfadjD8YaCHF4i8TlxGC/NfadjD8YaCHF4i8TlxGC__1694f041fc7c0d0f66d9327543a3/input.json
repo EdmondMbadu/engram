@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "0e9lqJUuWPf18WgT3mOz",
+    "schoolName": "Maryville University of Saint Louis",
+    "shortSchoolName": "Maryville University of Saint Louis",
+    "townName": "Saint Louis",
+    "state": "MO",
+    "countryCode": "US",
+    "unitId": "178059",
+    "website": "https://www.maryville.edu/",
+    "latitude": 38.644774,
+    "longitude": -90.505998,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/f/fa/Maryville_university_seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=maryville.edu&sz=256"
+  },
+  "template": {
+    "id": "college-study-spots",
+    "version": "1.0",
+    "titlePattern": "Claimed by 9am: {count} Study Spots Worth Showing Up Early For",
+    "editorialBrief": "Choose ten distinct study environments. Verify access rules, room or reservation constraints, and the physical affordance that makes each useful. Treat “Claimed by 9am” as editorial framing; never assert crowding or student behavior without evidence.",
+    "researchQueries": [
+      "campus study spaces",
+      "library study rooms students",
+      "quiet study campus"
+    ],
+    "count": 10,
+    "icon": "menu_book",
+    "primarySubjectType": "study_space",
+    "allowedSubjectTypes": [
+      "study_space",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Claimed by 9am: 10 Study Spots Worth Showing Up Early For",
+  "excluded_subjects": [
+    "New Student Move-In Day",
+    "Resource Fair & Community Meet & Greet",
+    "My First Friday Event",
+    "Gander Dining Hall",
+    "Women’s Soccer Game",
+    "2026 M Photo Tradition",
+    "LEARN. SERVE. LEAD. Community Service Experience",
+    "Men’s Soccer Game & Food Truck Tailgate",
+    "Movie on the Quad",
+    "UWOW Kickoff Event"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

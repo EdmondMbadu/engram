@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.fandm.edu/library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fandm.edu/library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fandm.edu/housing/on-campus-residential-facilities.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fandm.edu/housing/on-campus-residential-facilities.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.fandm.edu/centers-institutes-and-initiatives/writers-house/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fandm.edu/centers-institutes-and-initiatives/writers-house/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fandm.edu/fields-of-study/astrophysics/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fandm.edu/fields-of-study/astrophysics/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fandm.edu/centers-institutes-and-initiatives/klehr-center-for-jewish-life/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fandm.edu/centers-institutes-and-initiatives/klehr-center-for-jewish-life/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://stores.giantfoodstores.com/pa/philadelphia/2550-grant-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stores.giantfoodstores.com/pa/philadelphia/2550-grant-ave",
+      "error": ""
+    },
+    {
+      "url": "https://thehalalguys.com/locations/2550-grant-ave-philadelphia/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thehalalguys.com/locations/2550-grant-ave-philadelphia/",
+      "error": ""
+    },
+    {
+      "url": "https://vincespizzeria.godaddysites.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://vincespizzeria.godaddysites.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.jeffersonhealth.org/clinical-specialties/imaging-radiology/locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jeffersonhealth.org/clinical-specialties/imaging-radiology/locations",
+      "error": ""
+    },
+    {
+      "url": "https://www.donpanchitomexicangrill.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.donpanchitomexicangrill.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dunkindonuts.com/en/pa/philadelphia/3320-grant-ave/337488",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dunkindonuts.com/en/pa/philadelphia/3320-grant-ave/337488",
+      "error": ""
+    },
+    {
+      "url": "https://www.pffcu.org/locations/grant-and-academy/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pffcu.org/locations/grant-and-academy/",
+      "error": ""
+    },
+    {
+      "url": "https://www.thedenphilly.com/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.thedenphilly.com/about",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dollartree.com/pa/philadelphia/3366-grant-avenue",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dollartree.com/pa/philadelphia/3366-grant-avenue",
+      "error": ""
+    },
+    {
+      "url": "https://www.glenfoerd.org/directions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.glenfoerd.org/directions",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://uncw.edu/about/know-us/history/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncw.edu/about/know-us/history/",
+      "error": ""
+    },
+    {
+      "url": "https://uncw.edu/seahawk-life/get-involved/community/family-programs/resources",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncw.edu/seahawk-life/get-involved/community/family-programs/resources",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 2,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

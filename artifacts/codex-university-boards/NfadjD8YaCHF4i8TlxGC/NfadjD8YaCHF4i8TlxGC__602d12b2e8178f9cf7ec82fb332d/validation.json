@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://gregg.arts.ncsu.edu/about/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gregg.arts.ncsu.edu/about/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://raleighnc.gov/parks-and-recreation/places/pullen-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://raleighnc.gov/parks-and-recreation/places/pullen-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.jubalacoffee.com/menu",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jubalacoffee.com/menu",
+      "error": ""
+    },
+    {
+      "url": "https://www.hillsboroughstreet.org/directory/food-and-drink/coffee-shops",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsboroughstreet.org/directory/food-and-drink/coffee-shops",
+      "error": ""
+    },
+    {
+      "url": "https://www.hillsboroughstreet.org/go/insomnia-cookies",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsboroughstreet.org/go/insomnia-cookies",
+      "error": ""
+    },
+    {
+      "url": "https://www.hillsboroughstreet.org/directory/food-and-drink/food-on-the-go",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsboroughstreet.org/directory/food-and-drink/food-on-the-go",
+      "error": ""
+    },
+    {
+      "url": "https://www.hillsboroughstreet.org/directory/shopping/convenience-and-grocery",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsboroughstreet.org/directory/shopping/convenience-and-grocery",
+      "error": ""
+    },
+    {
+      "url": "https://nicepriceboo.com/pages/faq",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://nicepriceboo.com/pages/faq",
+      "error": ""
+    },
+    {
+      "url": "https://cupajoe.com/contact/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cupajoe.com/contact/",
+      "error": ""
+    },
+    {
+      "url": "https://jcra.ncsu.edu/visit/visitor-information/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://jcra.ncsu.edu/visit/visitor-information/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

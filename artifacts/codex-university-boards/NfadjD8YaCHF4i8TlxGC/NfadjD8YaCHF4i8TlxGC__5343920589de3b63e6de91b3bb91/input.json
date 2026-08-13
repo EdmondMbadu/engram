@@ -1,0 +1,60 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "RApJwElZAD5rDcmMYTvp",
+    "schoolName": "The University of Alabama",
+    "shortSchoolName": "The University of Alabama",
+    "townName": "Tuscaloosa",
+    "state": "AL",
+    "countryCode": "US",
+    "unitId": "100751",
+    "website": "https://www.ua.edu/",
+    "latitude": 33.211875,
+    "longitude": -87.545978,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/9/9a/University_of_Alabama_Seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=ua.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "Strange Brew Coffeehouse",
+    "The Standard",
+    "Thai Basil Sushi",
+    "Ajian Sushi",
+    "Moe’s Original BBQ",
+    "Taco Mama",
+    "Comfort Grounds Coffee Shop",
+    "DePalma’s Italian Cafe",
+    "Cravings Specialty Grocery",
+    "Quick Grill",
+    "Taco Bell — 236 15th Street",
+    "Taco Bell — 2610 Stillman Boulevard",
+    "Taco Bell — 815 Skyland Boulevard",
+    "Taco Bell — 9050 Highway 69 South",
+    "Taco Bell — 1211 University Boulevard",
+    "Taco Bell — 4900 Doris Pate Drive",
+    "Whataburger #1140 — McFarland & 13th",
+    "McDonald's — 2502 12th Street",
+    "Subway — Pilot Travel Center #76",
+    "SEC Market"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

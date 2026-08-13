@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.towsonrow.com/directory/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.towsonrow.com/directory/",
+      "error": ""
+    },
+    {
+      "url": "https://www.wholefoodsmarket.com/stores/towson",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.wholefoodsmarket.com/stores/towson",
+      "error": ""
+    },
+    {
+      "url": "https://locations.raisingcanes.com/md/towson/4-west-towsontown-boulevard",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.raisingcanes.com/md/towson/4-west-towsontown-boulevard",
+      "error": ""
+    },
+    {
+      "url": "https://www.thecharmery.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.thecharmery.com/",
+      "error": ""
+    },
+    {
+      "url": "https://bcpl.info/locations/towson",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bcpl.info/locations/towson",
+      "error": ""
+    },
+    {
+      "url": "https://www.towsontowncenter.com/en/directory/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.towsontowncenter.com/en/directory/",
+      "error": ""
+    },
+    {
+      "url": "https://www.round1usa.com/locations/038ttc",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.round1usa.com/locations/038ttc",
+      "error": ""
+    },
+    {
+      "url": "https://www.cinemark.com/theatres/md-towson/cinemark-towson-and-xd",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.cinemark.com/theatres/md-towson/cinemark-towson-and-xd",
+      "error": ""
+    },
+    {
+      "url": "https://www.dulaneyplaza.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.dulaneyplaza.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.theshopsatkenilworth.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.theshopsatkenilworth.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

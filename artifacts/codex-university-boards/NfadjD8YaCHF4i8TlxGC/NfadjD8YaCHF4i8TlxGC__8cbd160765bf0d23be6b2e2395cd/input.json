@@ -1,0 +1,39 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "hOl5QLtdjcQ3nT43sJ1g",
+    "schoolName": "Illinois Wesleyan University",
+    "shortSchoolName": "Illinois Wesleyan University",
+    "townName": "Bloomington",
+    "state": "IL",
+    "countryCode": "US",
+    "unitId": "145646",
+    "website": "https://www.iwu.edu/",
+    "latitude": 40.489901,
+    "longitude": -88.992014,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/8/80/Illinois_wesleyan_univ_seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=iwu.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain Illinois Wesleyan University",
+  "excluded_subjects": [],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

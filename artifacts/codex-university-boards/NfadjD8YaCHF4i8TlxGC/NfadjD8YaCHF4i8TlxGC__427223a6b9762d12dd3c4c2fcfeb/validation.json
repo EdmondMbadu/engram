@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.campuscalendar.ucsb.edu/storke_tower",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.campuscalendar.ucsb.edu/storke_tower",
+      "error": ""
+    },
+    {
+      "url": "https://www.campuscalendar.ucsb.edu/university_center_ucen",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.campuscalendar.ucsb.edu/university_center_ucen",
+      "error": ""
+    },
+    {
+      "url": "https://www.campuscalendar.ucsb.edu/campus_lagoon",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.campuscalendar.ucsb.edu/campus_lagoon",
+      "error": ""
+    },
+    {
+      "url": "https://www.campuscalendar.ucsb.edu/art_design_architecture_museum_343",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.campuscalendar.ucsb.edu/art_design_architecture_museum_343",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.ucsb.edu/visitors",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.library.ucsb.edu/visitors",
+      "error": ""
+    },
+    {
+      "url": "https://recreation.ucsb.edu/facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recreation.ucsb.edu/facilities",
+      "error": ""
+    },
+    {
+      "url": "https://www.campuscalendar.ucsb.edu/campus_point_711",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.campuscalendar.ucsb.edu/campus_point_711",
+      "error": ""
+    },
+    {
+      "url": "https://evpla.as.ucsb.edu/beach-maps/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://evpla.as.ucsb.edu/beach-maps/",
+      "error": ""
+    },
+    {
+      "url": "https://aait.ucsb.edu/event-av-services/isla-vista-theaters",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://aait.ucsb.edu/event-av-services/isla-vista-theaters",
+      "error": ""
+    },
+    {
+      "url": "https://ivarts.ihc.ucsb.edu/magic-lantern-films/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ivarts.ihc.ucsb.edu/magic-lantern-films/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

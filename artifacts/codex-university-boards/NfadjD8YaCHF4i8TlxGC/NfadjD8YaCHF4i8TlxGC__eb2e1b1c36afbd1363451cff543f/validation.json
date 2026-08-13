@@ -1,0 +1,70 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "The University explicitly presents the Bulldog origin as a legend and acknowledges that the burial location and students’ identities are unknown.",
+    "The Ring Tradition source dates to 2018; current ceremony dates, eligibility, and viewing arrangements should be reconfirmed with Alumni Engagement."
+  ],
+  "reachability": [
+    {
+      "url": "https://1894.latech.edu/2018/09/27/student-volunteers-encourage-giving-through-student-advancement-team/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://1894.latech.edu/2018/09/27/student-volunteers-encourage-giving-through-student-advancement-team/",
+      "error": ""
+    },
+    {
+      "url": "https://www.latechalumni.org/s/810/rd/interior.aspx?cc=1&content_id=2379&gid=1&pgid=2900&sessionid=69a84c36-9f4c-497a-9b66-d7dddd2f7c5c&sid=810",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.latechalumni.org/s/810/rd/interior.aspx?cc=1&content_id=2379&gid=1&pgid=2900&sessionid=69a84c36-9f4c-497a-9b66-d7dddd2f7c5c&sid=810",
+      "error": ""
+    },
+    {
+      "url": "https://www.latech.edu/about/traditions.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latech.edu/about/traditions.php",
+      "error": ""
+    },
+    {
+      "url": "https://1894.latech.edu/2018/09/28/ring-true/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://1894.latech.edu/2018/09/28/ring-true/",
+      "error": ""
+    },
+    {
+      "url": "https://www.latech.edu/academics/graduation/guidelines-for-graduates.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latech.edu/academics/graduation/guidelines-for-graduates.php",
+      "error": ""
+    },
+    {
+      "url": "https://1894.latech.edu/documents/2026/03/tech-xxii-episode-146.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://1894.latech.edu/documents/2026/03/tech-xxii-episode-146.pdf/",
+      "error": ""
+    },
+    {
+      "url": "https://1894.latech.edu/homecoming/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://1894.latech.edu/homecoming/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "zudqLSJZQDmfELPijPGw",
+    "schoolName": "Immaculata University",
+    "shortSchoolName": "Immaculata University",
+    "townName": "Immaculata",
+    "state": "PA",
+    "countryCode": "US",
+    "unitId": "213011",
+    "website": "https://www.immaculata.edu/",
+    "latitude": 40.027981,
+    "longitude": -75.570711,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/3/36/Immaculata_univ_seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=immaculata.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Gabriele Library",
+    "IHM Student Center",
+    "Back Campus",
+    "Loyola Quad",
+    "Villa Maria Rotunda",
+    "Great Hall",
+    "Alumnae Hall Theater",
+    "ImmacuLatté Café",
+    "Gillet Hall Study Room",
+    "Heritage Room"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

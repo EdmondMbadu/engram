@@ -1,0 +1,96 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "City nature-park pages document public access, amenities, and hours but may not enumerate a separate admission line. Parking or transportation can have separate costs; this board covers the hang itself.",
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://librarywest.uflib.ufl.edu/services-resources/vistors/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://librarywest.uflib.ufl.edu/services-resources/vistors/",
+      "error": ""
+    },
+    {
+      "url": "https://www.floridamuseum.ufl.edu/bats/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.floridamuseum.ufl.edu/bats/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://harn.ufl.edu/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://harn.ufl.edu/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.gainesvillefl.gov/Parks/Depot-Park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gainesvillefl.gov/Parks/Depot-Park",
+      "error": ""
+    },
+    {
+      "url": "https://www.gainesvillefl.gov/Parks/Loblolly-Woods-Nature-Park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gainesvillefl.gov/Parks/Loblolly-Woods-Nature-Park",
+      "error": ""
+    },
+    {
+      "url": "https://www.gainesvillefl.gov/Parks/Cofrin-Nature-Park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gainesvillefl.gov/Parks/Cofrin-Nature-Park",
+      "error": ""
+    },
+    {
+      "url": "https://www.gainesvillefl.gov/Parks/Alfred-A.-Ring-Nature-Park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gainesvillefl.gov/Parks/Alfred-A.-Ring-Nature-Park",
+      "error": ""
+    },
+    {
+      "url": "https://www.gainesvillefl.gov/Parks/29th-Road-Nature-Park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gainesvillefl.gov/Parks/29th-Road-Nature-Park",
+      "error": ""
+    },
+    {
+      "url": "https://www.gainesvillefl.gov/Parks/Boulware-Springs-Nature-Park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gainesvillefl.gov/Parks/Boulware-Springs-Nature-Park",
+      "error": ""
+    },
+    {
+      "url": "https://www.gainesvillefl.gov/files/assets/public/v/1/parks-recreation-amp-cultural-affairs/documents/prca-guide-fall-winter-2024.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gainesvillefl.gov/files/assets/public/v/1/parks-recreation-amp-cultural-affairs/documents/prca-guide-fall-winter-2024.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Depot Park"
+  ],
+  "sourceCount": 10,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

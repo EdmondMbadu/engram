@@ -1,0 +1,293 @@
+Reading additional input from stdin...
+2026-08-13T06:37:16.687223Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:37:16.709252Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9d6-deaf-7303-8605-4e57f125649f
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"Yl4ysX9EsZhFDhWjRwyg","schoolName":"California Institute of Technology","shortSchoolName":"California Institute of Technology","townName":"Pasadena","state":"CA","countryCode":"US","website":"https://www.caltech.edu/","latitude":34.137349,"longitude":-118.125878},"templates":[{"id":"college-zero-dollar-hangs","version":"1.0","titlePattern":"Zero Dollars: {count} Hangs That Cost Nothing","editorialBrief":"Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.","researchQueries":["free student activities campus","free campus spaces students","free public places near campus"],"count":10,"icon":"money_off","primarySubjectType":"activity","allowedSubjectTypes":["activity","place"],"freshnessDays":180,"exactTitle":"Zero Dollars: 10 Hangs That Cost Nothing"}]}
+2026-08-13T06:37:26.355747Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for zsh: Snapshot command timed out for zsh
+codex
+{
+  "complete": false,
+  "school_name": "California Institute of Technology",
+  "town_name": "Pasadena",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "California Institute of Technology",
+      "town_name": "Pasadena",
+      "template_id": "college-zero-dollar-hangs",
+      "title": "Zero Dollars: 10 Hangs That Cost Nothing",
+      "description": "",
+      "icon": "money_off",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+     		,
+        {
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+     		,
+        {
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+     		,
+        {
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+     		,
+        {
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+     		,
+        {
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+     		,
+        {
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+     		,
+        {
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+     		,
+        {
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+     		,
+        {
+          "subject_id": "",
+          "subject_type": "activity",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+      ],
+      "warnings": [
+        "I’m verifying ten distinct, genuinely no-cost activities against direct official pages, including access conditions and exact named locations."
+      ]
+    }
+  ],
+  "warnings": [
+    "Research in progress."
+  ]
+}
+web search: 
+web search: site:caltech.edu campus public free visit gardens Caltech Pasadena ...
+web search: 
+web search: site:caltech.edu "free" "Outdoor Movie Night" Caltech 2026 ...
+codex
+{"complete":true,"school_name":"California Institute of Technology","town_name":"Pasadena","boards":[{"complete":true,"school_name":"California Institute of Technology","town_name":"Pasadena","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"Ten documented Caltech activities that are free to attend or watch, spanning public science programs, films, astronomy, mathematics, and author conversations.","icon":"money_off","cards":[{"subject_id":"caltech-watson-lectures","subject_type":"activity","entity_name":"Earnest C. Watson Lecture Series","title":"Catch a Watson Lecture","subtitle":"Free public science talks at Beckman Auditorium","notes":"Arrive before the talk to explore the interactive displays, then stay afterward for the audience question-and-answer session.","short_summary":"Hear Caltech researchers explain current discoveries in an approachable public program.","evidence_claim":"Caltech states that the Earnest C. Watson Lecture Series is free and open to the public.","source_url":"https://events.caltech.edu/series/watson","source_title":"The Watson Lectures - Public Events","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to the public; consult the series page for the current schedule and any registration instructions.","cost_status":"free","under21_safe":true},{"subject_id":"caltech-stargazing-lectures","subject_type":"activity","entity_name":"Caltech Stargazing Lectures","title":"Look Through Caltech’s Telescopes","subtitle":"A free public lecture followed by guided stargazing","notes":"Check the outreach calendar, bring a friend, and remain after the monthly lecture for telescope viewing with astronomy guides.","short_summary":"Pair an astronomy talk with a guided look at the night sky through telescopes.","evidence_claim":"Caltech identifies its monthly Stargazing Lectures and guided telescope viewing as frequent, free public outreach events.","source_url":"https://local.caltech.edu/outreach","source_title":"Learn from Caltech - Local","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free public outreach; dates and locations vary, so confirm the current listing before attending.","cost_status":"free","under21_safe":true},{"subject_id":"caltech-sidewalk-astronomy","subject_type":"activity","entity_name":"Caltech Sidewalk Astronomy","title":"Join a Sidewalk Astronomy Session","subtitle":"Free telescope viewing with Caltech Astro","notes":"Watch Caltech Astro’s event listings, meet at the announced viewing site, and take turns observing with the provided telescopes.","short_summary":"Gather around telescopes for an informal, no-admission astronomy outing.","evidence_claim":"Caltech lists sidewalk astronomy among Caltech Astro’s frequent, free public outreach events.","source_url":"https://local.caltech.edu/outreach","source_title":"Learn from Caltech - Local","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and public when scheduled; the venue changes by event, and attendance details should be checked in advance.","cost_status":"free","under21_safe":true},{"subject_id":"caltech-explore-caltech","subject_type":"activity","entity_name":"Explore Caltech","title":"Spend the Day at Explore Caltech","subtitle":"An annual free public science-and-engineering event","notes":"Plan a group visit when the annual date is announced and rotate through hands-on activities presented by Caltech researchers.","short_summary":"Explore multiple fields of campus research through family-friendly demonstrations and activities.","evidence_claim":"Caltech describes Explore Caltech as a free public annual event featuring science and engineering activities.","source_url":"https://local.caltech.edu/outreach","source_title":"Learn from Caltech - Local","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to the public when offered annually; verify the announced date and registration details.","cost_status":"free","under21_safe":true},{"subject_id":"caltech-aim-summer-math-fair","subject_type":"activity","entity_name":"AIM Summer Math Fair","title":"Play Through the AIM Math Fair","subtitle":"Free games and puzzles beside Caltech Hall Pond","notes":"RSVP if requested, gather by Caltech Hall Pond, and work through the all-ages puzzle and mathematics stations together.","short_summary":"Turn collaborative puzzles, games, and mathematical challenges into a social afternoon.","evidence_claim":"Caltech’s 2026 AIM 32nd Birthday Celebration Fair page states that the event is free and open to the public.","source_url":"https://www.caltech.edu/campus-life-events/calendar/aim-32nd-birthday-celebration-fair-1","source_title":"AIM 32nd Birthday Celebration Fair","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The June 27, 2026 event was free and public with an RSVP link; check for the next annual fair before making plans.","cost_status":"free","under21_safe":true},{"subject_id":"caltech-behind-the-book","subject_type":"activity","entity_name":"Behind the Book","title":"Join a Behind the Book Conversation","subtitle":"Free Caltech author talks with audience questions","notes":"Choose an online or campus conversation, read the speaker description beforehand, and bring a question for the closing Q&A.","short_summary":"Discuss how authors connect personal histories with arts, science, and society.","evidence_claim":"Caltech places Behind the Book among its free online and in-person public event series and says each conversation includes audience Q&A.","source_url":"https://events.caltech.edu/series","source_title":"Series - Public Events","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free series with online and in-person offerings; use the event listing to confirm format and registration.","cost_status":"free","under21_safe":true},{"subject_id":"caltech-science-exchange-conversations","subject_type":"activity","entity_name":"Caltech Science Exchange Conversations","title":"Tune In to a Science Exchange Conversation","subtitle":"Primarily online discussions with Caltech researchers","notes":"Pick a topic your group wants to unpack, join the announced stream together, and compare takeaways after the conversation.","short_summary":"Use a researcher-led discussion as a launch point for a low-key science hang.","evidence_claim":"Caltech lists Science Exchange Conversations among its free public series and describes them as primarily online researcher conversations.","source_url":"https://events.caltech.edu/series","source_title":"Series - Public Events","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and primarily online; check the individual program page for the live link, date, and registration requirements.","cost_status":"free","under21_safe":true},{"subject_id":"caltech-movies-that-matter","subject_type":"activity","entity_name":"Movies That Matter","title":"Meet Up for Movies That Matter","subtitle":"A free Caltech film series focused on science and social justice","notes":"Review the current film listing, invite friends interested in its theme, and leave time afterward to talk through the issues raised.","short_summary":"Watch a curated film and continue the evening with a thoughtful group discussion.","evidence_claim":"Caltech lists Movies That Matter among its free event series and says its films address science and social-justice issues.","source_url":"https://events.caltech.edu/series","source_title":"Series - Public Events","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free series; screening dates, formats, audience access, and any registration are provided on individual listings.","cost_status":"free","under21_safe":true},{"subject_id":"caltech-von-karman-lecture-watch","subject_type":"activity","entity_name":"Theodore von Kármán Lectures","title":"Stream a von Kármán Lecture Together","subtitle":"Archived JPL mission talks available through Caltech’s series page","notes":"Choose a mission from the linked archive, set up a group screening, and pause afterward to compare questions and favorite details.","short_summary":"Make a shared watch session from JPL’s archived mission and exploration lectures.","evidence_claim":"Caltech’s free-series page links to a YouTube playlist of past Theodore von Kármán Lectures after noting that the series ended in 2024.","source_url":"https://events.caltech.edu/series","source_title":"Series - Public Events","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The archived lecture playlist is available online without admission; internet access and a viewing device are needed.","cost_status":"free","under21_safe":true},{"subject_id":"caltech-jpl-public-tour","subject_type":"activity","entity_name":"Jet Propulsion Laboratory Public Tour","title":"Reserve a Free JPL Tour","subtitle":"A limited public visit to the Caltech-managed laboratory","notes":"Watch for a reservation opening, book the group together, and review JPL’s identification and security requirements before arrival.","short_summary":"See the JPL visitor center and learn about spacecraft missions during a reserved visit.","evidence_claim":"Caltech states that JPL offers a limited number of free tours for public and educational groups by reservation.","source_url":"https://local.caltech.edu/outreach","source_title":"Learn from Caltech - Local","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free but reservation-only and capacity-limited; follow the linked JPL tour rules, identification requirements, and availability.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}
+tokens used
+37,684
+
+{"complete":true,"school_name":"California Institute of Technology","town_name":"Pasadena","boards":[{"complete":true,"school_name":"California Institute of Technology","town_name":"Pasadena","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"Ten documented Caltech activities that are free to attend or watch, spanning public science programs, films, astronomy, mathematics, and author conversations.","icon":"money_off","cards":[{"subject_id":"caltech-watson-lectures","subject_type":"activity","entity_name":"Earnest C. Watson Lecture Series","title":"Catch a Watson Lecture","subtitle":"Free public science talks at Beckman Auditorium","notes":"Arrive before the talk to explore the interactive displays, then stay afterward for the audience question-and-answer session.","short_summary":"Hear Caltech researchers explain current discoveries in an approachable public program.","evidence_claim":"Caltech states that the Earnest C. Watson Lecture Series is free and open to the public.","source_url":"https://events.caltech.edu/series/watson","source_title":"The Watson Lectures - Public Events","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to the public; consult the series page for the current schedule and any registration instructions.","cost_status":"free","under21_safe":true},{"subject_id":"caltech-stargazing-lectures","subject_type":"activity","entity_name":"Caltech Stargazing Lectures","title":"Look Through Caltech’s Telescopes","subtitle":"A free public lecture followed by guided stargazing","notes":"Check the outreach calendar, bring a friend, and remain after the monthly lecture for telescope viewing with astronomy guides.","short_summary":"Pair an astronomy talk with a guided look at the night sky through telescopes.","evidence_claim":"Caltech identifies its monthly Stargazing Lectures and guided telescope viewing as frequent, free public outreach events.","source_url":"https://local.caltech.edu/outreach","source_title":"Learn from Caltech - Local","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free public outreach; dates and locations vary, so confirm the current listing before attending.","cost_status":"free","under21_safe":true},{"subject_id":"caltech-sidewalk-astronomy","subject_type":"activity","entity_name":"Caltech Sidewalk Astronomy","title":"Join a Sidewalk Astronomy Session","subtitle":"Free telescope viewing with Caltech Astro","notes":"Watch Caltech Astro’s event listings, meet at the announced viewing site, and take turns observing with the provided telescopes.","short_summary":"Gather around telescopes for an informal, no-admission astronomy outing.","evidence_claim":"Caltech lists sidewalk astronomy among Caltech Astro’s frequent, free public outreach events.","source_url":"https://local.caltech.edu/outreach","source_title":"Learn from Caltech - Local","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and public when scheduled; the venue changes by event, and attendance details should be checked in advance.","cost_status":"free","under21_safe":true},{"subject_id":"caltech-explore-caltech","subject_type":"activity","entity_name":"Explore Caltech","title":"Spend the Day at Explore Caltech","subtitle":"An annual free public science-and-engineering event","notes":"Plan a group visit when the annual date is announced and rotate through hands-on activities presented by Caltech researchers.","short_summary":"Explore multiple fields of campus research through family-friendly demonstrations and activities.","evidence_claim":"Caltech describes Explore Caltech as a free public annual event featuring science and engineering activities.","source_url":"https://local.caltech.edu/outreach","source_title":"Learn from Caltech - Local","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to the public when offered annually; verify the announced date and registration details.","cost_status":"free","under21_safe":true},{"subject_id":"caltech-aim-summer-math-fair","subject_type":"activity","entity_name":"AIM Summer Math Fair","title":"Play Through the AIM Math Fair","subtitle":"Free games and puzzles beside Caltech Hall Pond","notes":"RSVP if requested, gather by Caltech Hall Pond, and work through the all-ages puzzle and mathematics stations together.","short_summary":"Turn collaborative puzzles, games, and mathematical challenges into a social afternoon.","evidence_claim":"Caltech’s 2026 AIM 32nd Birthday Celebration Fair page states that the event is free and open to the public.","source_url":"https://www.caltech.edu/campus-life-events/calendar/aim-32nd-birthday-celebration-fair-1","source_title":"AIM 32nd Birthday Celebration Fair","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The June 27, 2026 event was free and public with an RSVP link; check for the next annual fair before making plans.","cost_status":"free","under21_safe":true},{"subject_id":"caltech-behind-the-book","subject_type":"activity","entity_name":"Behind the Book","title":"Join a Behind the Book Conversation","subtitle":"Free Caltech author talks with audience questions","notes":"Choose an online or campus conversation, read the speaker description beforehand, and bring a question for the closing Q&A.","short_summary":"Discuss how authors connect personal histories with arts, science, and society.","evidence_claim":"Caltech places Behind the Book among its free online and in-person public event series and says each conversation includes audience Q&A.","source_url":"https://events.caltech.edu/series","source_title":"Series - Public Events","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free series with online and in-person offerings; use the event listing to confirm format and registration.","cost_status":"free","under21_safe":true},{"subject_id":"caltech-science-exchange-conversations","subject_type":"activity","entity_name":"Caltech Science Exchange Conversations","title":"Tune In to a Science Exchange Conversation","subtitle":"Primarily online discussions with Caltech researchers","notes":"Pick a topic your group wants to unpack, join the announced stream together, and compare takeaways after the conversation.","short_summary":"Use a researcher-led discussion as a launch point for a low-key science hang.","evidence_claim":"Caltech lists Science Exchange Conversations among its free public series and describes them as primarily online researcher conversations.","source_url":"https://events.caltech.edu/series","source_title":"Series - Public Events","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and primarily online; check the individual program page for the live link, date, and registration requirements.","cost_status":"free","under21_safe":true},{"subject_id":"caltech-movies-that-matter","subject_type":"activity","entity_name":"Movies That Matter","title":"Meet Up for Movies That Matter","subtitle":"A free Caltech film series focused on science and social justice","notes":"Review the current film listing, invite friends interested in its theme, and leave time afterward to talk through the issues raised.","short_summary":"Watch a curated film and continue the evening with a thoughtful group discussion.","evidence_claim":"Caltech lists Movies That Matter among its free event series and says its films address science and social-justice issues.","source_url":"https://events.caltech.edu/series","source_title":"Series - Public Events","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free series; screening dates, formats, audience access, and any registration are provided on individual listings.","cost_status":"free","under21_safe":true},{"subject_id":"caltech-von-karman-lecture-watch","subject_type":"activity","entity_name":"Theodore von Kármán Lectures","title":"Stream a von Kármán Lecture Together","subtitle":"Archived JPL mission talks available through Caltech’s series page","notes":"Choose a mission from the linked archive, set up a group screening, and pause afterward to compare questions and favorite details.","short_summary":"Make a shared watch session from JPL’s archived mission and exploration lectures.","evidence_claim":"Caltech’s free-series page links to a YouTube playlist of past Theodore von Kármán Lectures after noting that the series ended in 2024.","source_url":"https://events.caltech.edu/series","source_title":"Series - Public Events","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The archived lecture playlist is available online without admission; internet access and a viewing device are needed.","cost_status":"free","under21_safe":true},{"subject_id":"caltech-jpl-public-tour","subject_type":"activity","entity_name":"Jet Propulsion Laboratory Public Tour","title":"Reserve a Free JPL Tour","subtitle":"A limited public visit to the Caltech-managed laboratory","notes":"Watch for a reservation opening, book the group together, and review JPL’s identification and security requirements before arrival.","short_summary":"See the JPL visitor center and learn about spacecraft missions during a reserved visit.","evidence_claim":"Caltech states that JPL offers a limited number of free tours for public and educational groups by reservation.","source_url":"https://local.caltech.edu/outreach","source_title":"Learn from Caltech - Local","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free but reservation-only and capacity-limited; follow the linked JPL tour rules, identification requirements, and availability.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}

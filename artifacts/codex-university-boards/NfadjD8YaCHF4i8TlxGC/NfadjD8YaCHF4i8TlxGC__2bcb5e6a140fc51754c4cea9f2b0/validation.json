@@ -1,0 +1,96 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation.",
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.oxy.edu/student-life/campus-dining/where-eat",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oxy.edu/student-life/campus-dining/where-eat",
+      "error": ""
+    },
+    {
+      "url": "https://www.seasideburritosandtacos.com/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.seasideburritosandtacos.com/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://locations.deltaco.com/us/ca/los-angeles/4903-n-eagle-rock-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.deltaco.com/us/ca/los-angeles/4903-n-eagle-rock-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jackinthebox.com/us/ca/eagle-rock/4470-eagle-rock-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jackinthebox.com/us/ca/eagle-rock/4470-eagle-rock-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ca/los-angeles/1734-w-colorado-blvd.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ca/los-angeles/1734-w-colorado-blvd.html",
+      "error": ""
+    },
+    {
+      "url": "https://originalave26.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://originalave26.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.7-eleven.com/locations/ca/eagle-rock/1910-colorado-blvd-17497",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.7-eleven.com/locations/ca/eagle-rock/1910-colorado-blvd-17497",
+      "error": ""
+    },
+    {
+      "url": "https://www.7-eleven.com/locations/ca/los-angeles/5138-n-figueroa-st-22381",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.7-eleven.com/locations/ca/los-angeles/5138-n-figueroa-st-22381",
+      "error": ""
+    },
+    {
+      "url": "https://www.7-eleven.com/locations/ca/los-angeles/2205-n-san-fernando-rd-37706",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.7-eleven.com/locations/ca/los-angeles/2205-n-san-fernando-rd-37706",
+      "error": ""
+    },
+    {
+      "url": "https://find.shell.com/us/fuel/10059012-4236-eagle-rock-blvd/en_US",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://find.shell.com/us/fuel/10059012-4236-eagle-rock-blvd/en_US",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Tiger Cooler"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.simmons.edu/undergraduate/admission-and-financial-aid/undergraduate-visit-options/campus-tours-and-information",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.simmons.edu/admission-aid/visit/undergraduate-visit-options/campus-tours-and-information-sessions",
+      "error": ""
+    },
+    {
+      "url": "https://www.simmons.edu/student-life/campus-dining",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.simmons.edu/student-experience/campus-dining",
+      "error": ""
+    },
+    {
+      "url": "https://www.simmons.edu/library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.simmons.edu/library",
+      "error": ""
+    },
+    {
+      "url": "https://trustman.simmons.edu/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://trustman.simmons.edu/about/",
+      "error": ""
+    },
+    {
+      "url": "https://www.simmons.edu/sites/default/files/2026-03/map-one-palace-road.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.simmons.edu/sites/default/files/2026-03/map-one-palace-road.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.simmons.edu/student-experience/our-campus/student-spaces-resources",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.simmons.edu/student-experience/our-campus/student-spaces-resources",
+      "error": ""
+    },
+    {
+      "url": "https://www.simmons.edu/student-life/experience-boston/official-simmons-guide-boston",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.simmons.edu/student-experience/experience-boston/official-simmons-guide-boston",
+      "error": ""
+    },
+    {
+      "url": "https://maam.massart.edu/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://maam.massart.edu/visit",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://und.edu/student-life/union/amenities-services.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://und.edu/student-life/union/amenities-services.html",
+      "error": ""
+    },
+    {
+      "url": "https://library.und.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.und.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://und.edu/student-life/union/mu-art-gallery.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://und.edu/student-life/union/mu-art-gallery.html",
+      "error": ""
+    },
+    {
+      "url": "https://und.edu/student-life/wellness-center/programs/rock-wall.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://und.edu/student-life/wellness-center/programs/rock-wall.html",
+      "error": ""
+    },
+    {
+      "url": "https://und.edu/student-life/wellness-center/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://und.edu/student-life/wellness-center/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://und.edu/student-life/wellness-center/facility/features.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://und.edu/student-life/wellness-center/facility/features.html",
+      "error": ""
+    },
+    {
+      "url": "https://blogs.und.edu/uletter/2024/08/ndmoa-opening-stories-of-place-select-recent-acquisitions-exhibition-sept-5/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://blogs.und.edu/uletter/2024/08/ndmoa-opening-stories-of-place-select-recent-acquisitions-exhibition-sept-5/",
+      "error": ""
+    },
+    {
+      "url": "https://www.grandforksgov.com/government/city-departments/public-works/public-works-stormwater/greenway",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.grandforksgov.com/government/city-departments/public-works/public-works-stormwater/greenway",
+      "error": ""
+    },
+    {
+      "url": "https://calendar.und.edu/university-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calendar.und.edu/university-park",
+      "error": ""
+    },
+    {
+      "url": "https://und.edu/chester-fritz-performing-arts-center/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://und.edu/chester-fritz-performing-arts-center/index.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

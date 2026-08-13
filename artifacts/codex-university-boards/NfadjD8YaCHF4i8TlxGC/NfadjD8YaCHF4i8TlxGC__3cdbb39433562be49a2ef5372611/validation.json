@@ -1,0 +1,31 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://wooster.edu/wp-content/uploads/2025/02/carrel-policies.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wooster.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://wooster.edu/current-students",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wooster.edu/current-students",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Timken Science Library"
+  ],
+  "sourceCount": 2,
+  "generationScore": 90,
+  "generationGrade": "A"
+}

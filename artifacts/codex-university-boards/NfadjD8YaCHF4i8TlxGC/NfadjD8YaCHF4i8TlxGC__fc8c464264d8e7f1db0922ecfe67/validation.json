@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://catalog.nobts.edu/generalinfo/campuses/map",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.nobts.edu/generalinfo/campuses/map",
+      "error": ""
+    },
+    {
+      "url": "https://www.nobts.edu/Directory/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nobts.edu/Directory/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nobts.edu/plc/dining-options.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nobts.edu/plc/dining-options.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.nobts.edu/library/locating-items.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nobts.edu/library/locating-items.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.nobts.edu/student-services/counseling-services.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nobts.edu/student-services/counseling-services.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

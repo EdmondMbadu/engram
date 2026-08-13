@@ -1,0 +1,55 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.reed.edu/campus-life/clubs-activities/student-engagement/student-spaces.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.reed.edu/campus-life/clubs-activities/student-engagement/student-spaces.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.reed.edu/campus-life/student-groups.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.reed.edu/campus-life/student-groups.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.reed.edu/theatre/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.reed.edu/theatre/",
+      "error": ""
+    },
+    {
+      "url": "https://www.reed.edu/music/facilities.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.reed.edu/music/facilities.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.reed.edu/map/reed-campus-map.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.reed.edu/map/reed-campus-map.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Reed Bike Co-op"
+  ],
+  "sourceCount": 5,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

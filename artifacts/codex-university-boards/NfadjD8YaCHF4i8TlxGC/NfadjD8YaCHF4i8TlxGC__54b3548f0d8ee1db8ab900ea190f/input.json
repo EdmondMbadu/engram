@@ -1,0 +1,59 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "YGHdWPQurb7yOn0WnqqQ",
+    "schoolName": "University of Kansas",
+    "shortSchoolName": "University of Kansas",
+    "townName": "Lawrence",
+    "state": "KS",
+    "countryCode": "US",
+    "unitId": "155317",
+    "website": "https://ku.edu/",
+    "latitude": 38.958549,
+    "longitude": -95.247567,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/0/0b/University_of_Kansas_seal.svg/120px-University_of_Kansas_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=ku.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at University of Kansas, Shared as Cards",
+  "excluded_subjects": [
+    "Watson Library Third Floor Study Space",
+    "Watson Library Fourth Floor Study Space",
+    "Watson Library Fifth Floor Study Space",
+    "Studio K",
+    "Anschutz Library Second Floor Quiet Study",
+    "Anschutz Library Third Floor Group Study Space",
+    "David Beaham Reading Room",
+    "Murphy Art & Architecture Library Study Rooms",
+    "Joe and Joyce Hale Media Center",
+    "Spahr Engineering Library Study Spaces",
+    "Watson Library",
+    "Anschutz Library",
+    "Anschutz Library Makerspace",
+    "Anschutz Library Reflection Room",
+    "Spahr Engineering Library",
+    "Murphy Art & Architecture Library",
+    "Marilyn Stokstad Reading Room"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

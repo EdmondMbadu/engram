@@ -1,0 +1,312 @@
+Reading additional input from stdin...
+2026-08-13T07:59:36.508836Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa21-b3da-7323-91bf-dd9eca481faa.1786607940571303000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:59:36.552649Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa21-b3d3-7581-90be-449099d3f79f.1786607940564549000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa22-3fc0-7c83-9086-55e9e66a0ee6
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"SbF1F6fCWw9T4esdmZbV","schoolName":"Lewis University","shortSchoolName":"Lewis University","townName":"Romeoville","state":"IL","countryCode":"US","website":"https://www.lewisu.edu/","latitude":41.605432,"longitude":-88.079032},"templates":[{"id":"college-study-spots","version":"1.0","titlePattern":"Claimed by 9am: {count} Study Spots Worth Showing Up Early For","editorialBrief":"Choose ten distinct study environments. Verify access rules, room or reservation constraints, and the physical affordance that makes each useful. Treat “Claimed by 9am” as editorial framing; never assert crowding or student behavior without evidence.","researchQueries":["campus study spaces","library study rooms students","quiet study campus"],"count":10,"icon":"menu_book","primarySubjectType":"study_space","allowedSubjectTypes":["study_space","place"],"freshnessDays":180,"exactTitle":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For"}]}
+2026-08-13T07:59:36.662454Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa21-b402-7f91-8cff-c9f88a548b57.1786607940610852000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:59:36.671533Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:59:36.762544Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa21-b3ff-7612-b909-1325cdf1fade.1786607940608326000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:59:36.802831Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa21-b400-70c0-adb2-7b68a4cca1a6.1786607940608506000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:59:36.804620Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:59:36.849204Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa21-b3db-7e33-8201-a2b086cbe9b2.1786607940572100000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:59:36.884378Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa21-b3d5-7e72-a50c-8365dc0ec83e.1786607940566298000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Lewis University",
+  "town_name": "Romeoville",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Lewis University",
+      "town_name": "Romeoville",
+      "template_id": "college-study-spots",
+      "title": "Claimed by 9am: 10 Study Spots Worth Showing Up Early For",
+      "description": "",
+      "icon": "menu_book",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     
+    ],
+      "warnings": [
+        "Research in progress."
+      ]
+    }
+  ],
+  "warnings": [
+    "Researching current official sources and access constraints."
+  ]
+}
+web search: 
+web search: site:lewisu.edu library study rooms Lewis University Romeoville study ...
+web search: 
+web search: 
+web search: 
+web search: 
+codex
+{"complete":true,"school_name":"Lewis University","town_name":"Romeoville","boards":[{"complete":true,"school_name":"Lewis University","town_name":"Romeoville","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten documented Romeoville campus settings for solo work, group sessions, computer-based assignments, writing support, and outdoor reading.","icon":"menu_book","cards":[{"subject_id":"lewis-library","subject_type":"study_space","entity_name":"Lewis University Library","title":"Settle In at the Library","subtitle":"Individual and group study across two LRC floors","notes":"Start here for a long work block; bring a device or use the public computers, scanners and printers documented by the university.","short_summary":"A flexible academic base with individual seating, group space and shared technology.","evidence_claim":"Lewis University states that its library occupies the first and second floors of the Learning Resource Center and provides individual and group study spaces, more than 50 public computers, scanners and printers.","source_url":"https://catalog.lewisu.edu/graduate/general-information/academic-resources/academic-resources.pdf","source_title":"Academic Resources — The Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current summer hours through August 16 are Monday–Thursday 8:30 a.m.–9 p.m. and Friday 8:30 a.m.–noon; weekends are closed. Regular hours differ.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lewis-library-group-study-rooms","subject_type":"study_space","entity_name":"Lewis University Library Group Study Rooms","title":"Reserve a Group Study Room","subtitle":"Bookable rooms for current Lewis students","notes":"Reserve before meeting your group, then bring a Lewis photo ID to the Circulation Desk to check out the room key.","short_summary":"A reservable, enclosed option for collaborative academic work lasting up to three hours.","evidence_claim":"The library says current Lewis students may reserve or check out group study rooms for academic purposes for up to three hours per day; a Lewis photo ID is required for the key.","source_url":"https://www.lewisu.edu/academics/library/services.htm","source_title":"Library — Services for Students","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Available from library opening until 30 minutes before closing. Reserve online or call 815-836-5300; current students need a Lewis photo ID for the key.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lewis-library-computer-lab","subject_type":"study_space","entity_name":"Library Computer Lab","title":"Work at the Library Computer Lab","subtitle":"Campus computers inside the library","notes":"Use this stop for software or web-based work, but keep a backup location ready because scheduled classes can limit lab availability.","short_summary":"A staffed-hours computer option suited to assignments that need a campus workstation.","evidence_claim":"Lewis University lists a Library Computer Lab and states that computer labs may be unavailable during classroom use; the library also confirms computers are available to students during library hours.","source_url":"https://www.lewisu.edu/welcome/offices/infoservices/All_PublicLabsLocationsHours.htm","source_title":"Public Labs: Locations and Hours","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The posted fall schedule lists Monday–Thursday 7:30 a.m.–10 p.m., Friday 7:30 a.m.–5 p.m., Saturday 9 a.m.–5 p.m. and Sunday 10 a.m.–10 p.m.; classroom use can override availability.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lewis-writing-center","subject_type":"study_space","entity_name":"Lewis University Writing Center","title":"Workshop a Draft at the Writing Center","subtitle":"First-floor library support for writing projects","notes":"Schedule a mentor session and bring one active draft or assignment; use the conversation to choose concrete revision steps.","short_summary":"A collaborative workspace for developing, revising and formatting academic writing.","evidence_claim":"Lewis University locates the Writing Center on the library's first floor and says mentors support writers at any stage through face-to-face, phone and video appointments.","source_url":"https://www.lewisu.edu/writingcenter/writinglab.htm","source_title":"Center for Academic Success & Enrichment — Writing Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Appointments are directed through the Writing Center's Appointments page. The center discusses one piece of writing per session and does not provide drop-off proofreading.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lewis-case-commons","subject_type":"study_space","entity_name":"CASE Commons","title":"Spread Out in CASE Commons","subtitle":"Third floor of the Learning Resource Center","notes":"Head to the LRC's third floor when you want a named indoor alternative to the library's first- and second-floor seating.","short_summary":"An upstairs commons identified by Lewis as an indoor campus hangout location.","evidence_claim":"Lewis University's student resource guide identifies CASE Commons as an indoor location on the third floor of the Learning Resource Center.","source_url":"https://www.lewisu.edu/beresourceful/","source_title":"Resource Guide for Students — Hang Out Map","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official guide identifies the location but does not publish dedicated hours or unrestricted-access terms; follow current LRC building access and posted notices.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lewis-case-computer-lab","subject_type":"study_space","entity_name":"CASE Computer Lab","title":"Take Computer Work to CASE","subtitle":"Third-floor lab in the Learning Resource Center","notes":"Choose this third-floor lab for computer-centered coursework, and check posted availability before settling into a long session.","short_summary":"A named LRC computer lab separate from the library-floor workstation area.","evidence_claim":"Lewis University's student resource guide lists the CASE Computer Lab on the third floor of the Learning Resource Center.","source_url":"https://www.lewisu.edu/beresourceful/","source_title":"Resource Guide for Students — Hang Out Map","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official guide identifies the lab but does not provide dedicated hours; computer labs can also be subject to scheduled use, so check posted access on arrival.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lewis-aviation-library","subject_type":"study_space","entity_name":"Aviation Library","title":"Study in the Aviation Library","subtitle":"Harold E. White Aviation Center","notes":"Use this named aviation setting when your day already takes you to the White Aviation Center; verify building access before heading over.","short_summary":"A specialized study destination within Lewis University's aviation facilities.","evidence_claim":"Lewis University's student resource guide identifies the Aviation Library inside the Harold E. White Aviation Center.","source_url":"https://www.lewisu.edu/beresourceful/","source_title":"Resource Guide for Students — Hang Out Map","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official guide names the space but publishes no dedicated hours or visitor-access terms; confirm current Aviation Center access before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lewis-cordano-lounge","subject_type":"study_space","entity_name":"Cordano Lounge","title":"Set Up in Cordano Lounge","subtitle":"St. Charles Borromeo North Campus","notes":"Pair this lounge with classes or errands at St. Charles Borromeo, and confirm the building schedule before planning an extended block.","short_summary":"A named indoor lounge serving the university's north-campus complex.","evidence_claim":"Lewis University's student resource guide lists Cordano Lounge as an indoor location at the St. Charles Borromeo North Campus.","source_url":"https://www.lewisu.edu/beresourceful/","source_title":"Resource Guide for Students — Hang Out Map","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located at the St. Charles Borromeo North Campus, accessed from 101 Airport Road. The guide does not state dedicated lounge hours or unrestricted access.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lewis-flight-deck","subject_type":"study_space","entity_name":"Flight Deck","title":"Land at the Flight Deck","subtitle":"Indoor seating at St. Charles Borromeo","notes":"Bring a compact assignment to this named north-campus space, especially when your schedule already includes the College of Business complex.","short_summary":"An indoor St. Charles Borromeo destination documented on the student hangout map.","evidence_claim":"Lewis University's student resource guide lists the Flight Deck as an indoor location at St. Charles Borromeo; the current campus map also places it in the St. Charles Borromeo building.","source_url":"https://www.lewisu.edu/campuses/romeoville/maincampusmap.htm","source_title":"Campus Map — Romeoville","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The current campus map places the Flight Deck at St. Charles Borromeo, accessed via 101 Airport Road. Dedicated hours and open-access terms are not published.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lewis-library-veranda","subject_type":"study_space","entity_name":"Library Veranda","title":"Read Outside on the Library Veranda","subtitle":"Outdoor seating beside the Learning Resource Center","notes":"Take reading or low-tech review outside when conditions cooperate; keep the library nearby as a weather-ready fallback.","short_summary":"An outdoor library-side option for coursework that travels well beyond a desk.","evidence_claim":"Lewis University's student resource guide identifies the Library Veranda as a named outdoor location on its Romeoville campus hangout map.","source_url":"https://www.lewisu.edu/beresourceful/","source_title":"Resource Guide for Students — Hang Out Map","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor access is weather-dependent. The university guide does not publish dedicated veranda hours; observe current campus and adjacent-library access notices.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T08:01:20.191497Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa22-3fc0-7c83-9086-55e9e66a0ee6.1786607976385319000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+35,354
+
+{"complete":true,"school_name":"Lewis University","town_name":"Romeoville","boards":[{"complete":true,"school_name":"Lewis University","town_name":"Romeoville","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten documented Romeoville campus settings for solo work, group sessions, computer-based assignments, writing support, and outdoor reading.","icon":"menu_book","cards":[{"subject_id":"lewis-library","subject_type":"study_space","entity_name":"Lewis University Library","title":"Settle In at the Library","subtitle":"Individual and group study across two LRC floors","notes":"Start here for a long work block; bring a device or use the public computers, scanners and printers documented by the university.","short_summary":"A flexible academic base with individual seating, group space and shared technology.","evidence_claim":"Lewis University states that its library occupies the first and second floors of the Learning Resource Center and provides individual and group study spaces, more than 50 public computers, scanners and printers.","source_url":"https://catalog.lewisu.edu/graduate/general-information/academic-resources/academic-resources.pdf","source_title":"Academic Resources — The Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current summer hours through August 16 are Monday–Thursday 8:30 a.m.–9 p.m. and Friday 8:30 a.m.–noon; weekends are closed. Regular hours differ.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lewis-library-group-study-rooms","subject_type":"study_space","entity_name":"Lewis University Library Group Study Rooms","title":"Reserve a Group Study Room","subtitle":"Bookable rooms for current Lewis students","notes":"Reserve before meeting your group, then bring a Lewis photo ID to the Circulation Desk to check out the room key.","short_summary":"A reservable, enclosed option for collaborative academic work lasting up to three hours.","evidence_claim":"The library says current Lewis students may reserve or check out group study rooms for academic purposes for up to three hours per day; a Lewis photo ID is required for the key.","source_url":"https://www.lewisu.edu/academics/library/services.htm","source_title":"Library — Services for Students","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Available from library opening until 30 minutes before closing. Reserve online or call 815-836-5300; current students need a Lewis photo ID for the key.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lewis-library-computer-lab","subject_type":"study_space","entity_name":"Library Computer Lab","title":"Work at the Library Computer Lab","subtitle":"Campus computers inside the library","notes":"Use this stop for software or web-based work, but keep a backup location ready because scheduled classes can limit lab availability.","short_summary":"A staffed-hours computer option suited to assignments that need a campus workstation.","evidence_claim":"Lewis University lists a Library Computer Lab and states that computer labs may be unavailable during classroom use; the library also confirms computers are available to students during library hours.","source_url":"https://www.lewisu.edu/welcome/offices/infoservices/All_PublicLabsLocationsHours.htm","source_title":"Public Labs: Locations and Hours","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The posted fall schedule lists Monday–Thursday 7:30 a.m.–10 p.m., Friday 7:30 a.m.–5 p.m., Saturday 9 a.m.–5 p.m. and Sunday 10 a.m.–10 p.m.; classroom use can override availability.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lewis-writing-center","subject_type":"study_space","entity_name":"Lewis University Writing Center","title":"Workshop a Draft at the Writing Center","subtitle":"First-floor library support for writing projects","notes":"Schedule a mentor session and bring one active draft or assignment; use the conversation to choose concrete revision steps.","short_summary":"A collaborative workspace for developing, revising and formatting academic writing.","evidence_claim":"Lewis University locates the Writing Center on the library's first floor and says mentors support writers at any stage through face-to-face, phone and video appointments.","source_url":"https://www.lewisu.edu/writingcenter/writinglab.htm","source_title":"Center for Academic Success & Enrichment — Writing Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Appointments are directed through the Writing Center's Appointments page. The center discusses one piece of writing per session and does not provide drop-off proofreading.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lewis-case-commons","subject_type":"study_space","entity_name":"CASE Commons","title":"Spread Out in CASE Commons","subtitle":"Third floor of the Learning Resource Center","notes":"Head to the LRC's third floor when you want a named indoor alternative to the library's first- and second-floor seating.","short_summary":"An upstairs commons identified by Lewis as an indoor campus hangout location.","evidence_claim":"Lewis University's student resource guide identifies CASE Commons as an indoor location on the third floor of the Learning Resource Center.","source_url":"https://www.lewisu.edu/beresourceful/","source_title":"Resource Guide for Students — Hang Out Map","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official guide identifies the location but does not publish dedicated hours or unrestricted-access terms; follow current LRC building access and posted notices.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lewis-case-computer-lab","subject_type":"study_space","entity_name":"CASE Computer Lab","title":"Take Computer Work to CASE","subtitle":"Third-floor lab in the Learning Resource Center","notes":"Choose this third-floor lab for computer-centered coursework, and check posted availability before settling into a long session.","short_summary":"A named LRC computer lab separate from the library-floor workstation area.","evidence_claim":"Lewis University's student resource guide lists the CASE Computer Lab on the third floor of the Learning Resource Center.","source_url":"https://www.lewisu.edu/beresourceful/","source_title":"Resource Guide for Students — Hang Out Map","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official guide identifies the lab but does not provide dedicated hours; computer labs can also be subject to scheduled use, so check posted access on arrival.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lewis-aviation-library","subject_type":"study_space","entity_name":"Aviation Library","title":"Study in the Aviation Library","subtitle":"Harold E. White Aviation Center","notes":"Use this named aviation setting when your day already takes you to the White Aviation Center; verify building access before heading over.","short_summary":"A specialized study destination within Lewis University's aviation facilities.","evidence_claim":"Lewis University's student resource guide identifies the Aviation Library inside the Harold E. White Aviation Center.","source_url":"https://www.lewisu.edu/beresourceful/","source_title":"Resource Guide for Students — Hang Out Map","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official guide names the space but publishes no dedicated hours or visitor-access terms; confirm current Aviation Center access before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lewis-cordano-lounge","subject_type":"study_space","entity_name":"Cordano Lounge","title":"Set Up in Cordano Lounge","subtitle":"St. Charles Borromeo North Campus","notes":"Pair this lounge with classes or errands at St. Charles Borromeo, and confirm the building schedule before planning an extended block.","short_summary":"A named indoor lounge serving the university's north-campus complex.","evidence_claim":"Lewis University's student resource guide lists Cordano Lounge as an indoor location at the St. Charles Borromeo North Campus.","source_url":"https://www.lewisu.edu/beresourceful/","source_title":"Resource Guide for Students — Hang Out Map","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located at the St. Charles Borromeo North Campus, accessed from 101 Airport Road. The guide does not state dedicated lounge hours or unrestricted access.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lewis-flight-deck","subject_type":"study_space","entity_name":"Flight Deck","title":"Land at the Flight Deck","subtitle":"Indoor seating at St. Charles Borromeo","notes":"Bring a compact assignment to this named north-campus space, especially when your schedule already includes the College of Business complex.","short_summary":"An indoor St. Charles Borromeo destination documented on the student hangout map.","evidence_claim":"Lewis University's student resource guide lists the Flight Deck as an indoor location at St. Charles Borromeo; the current campus map also places it in the St. Charles Borromeo building.","source_url":"https://www.lewisu.edu/campuses/romeoville/maincampusmap.htm","source_title":"Campus Map — Romeoville","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The current campus map places the Flight Deck at St. Charles Borromeo, accessed via 101 Airport Road. Dedicated hours and open-access terms are not published.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lewis-library-veranda","subject_type":"study_space","entity_name":"Library Veranda","title":"Read Outside on the Library Veranda","subtitle":"Outdoor seating beside the Learning Resource Center","notes":"Take reading or low-tech review outside when conditions cooperate; keep the library nearby as a weather-ready fallback.","short_summary":"An outdoor library-side option for coursework that travels well beyond a desk.","evidence_claim":"Lewis University's student resource guide identifies the Library Veranda as a named outdoor location on its Romeoville campus hangout map.","source_url":"https://www.lewisu.edu/beresourceful/","source_title":"Resource Guide for Students — Hang Out Map","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor access is weather-dependent. The university guide does not publish dedicated veranda hours; observe current campus and adjacent-library access notices.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

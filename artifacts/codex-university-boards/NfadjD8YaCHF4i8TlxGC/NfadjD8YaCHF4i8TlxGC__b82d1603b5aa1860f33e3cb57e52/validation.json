@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.jefferson.edu/news/2019/08/part-of-the-family.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jefferson.edu/news/2019/08/part-of-the-family.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.jefferson.edu/news/2023/07/on-a-path-with-purpose-med-students-receive-their-white-coats.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jefferson.edu/news/2023/07/on-a-path-with-purpose-med-students-receive-their-white-coats.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.jefferson.edu/academics/colleges-schools-institutes/pharmacy/about/news-events/2023/jcp-white-coat-ceremony-2023.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jefferson.edu/academics/colleges-schools-institutes/pharmacy/about/news-events/2023/jcp-white-coat-ceremony-2023.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.jefferson.edu/academics/areas-of-interest/fashion-and-textiles.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jefferson.edu/academics/areas-of-interest/fashion-and-textiles.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.jefferson.edu/academics/colleges-schools-institutes/fashion-textiles/academic-programs/fashion-design.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jefferson.edu/academics/colleges-schools-institutes/fashion-textiles/academic-programs/fashion-design.html",
+      "error": ""
+    },
+    {
+      "url": "https://magazine.jefferson.edu/issues/summer-2022/pitch-please.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://magazine.jefferson.edu/issues/summer-2022/pitch-please.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.jefferson.edu/news/2026/03/match-day-marks-defining-moment-for-jefferson-medical-students.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jefferson.edu/news/2026/03/match-day-marks-defining-moment-for-jefferson-medical-students.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

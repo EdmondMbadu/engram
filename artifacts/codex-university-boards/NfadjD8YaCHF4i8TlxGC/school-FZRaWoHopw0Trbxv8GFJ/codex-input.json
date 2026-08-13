@@ -1,0 +1,75 @@
+{
+  "target": {
+    "atlasId": "FZRaWoHopw0Trbxv8GFJ",
+    "schoolName": "Harding University",
+    "shortSchoolName": "Harding University",
+    "townName": "Searcy",
+    "state": "AR",
+    "countryCode": "US",
+    "website": "https://www.harding.edu/",
+    "latitude": 35.247386,
+    "longitude": -91.726143
+  },
+  "templates": [
+    {
+      "id": "college-zero-dollar-hangs",
+      "version": "1.0",
+      "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+      "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+      "researchQueries": [
+        "free student activities campus",
+        "free campus spaces students",
+        "free public places near campus"
+      ],
+      "count": 10,
+      "icon": "money_off",
+      "primarySubjectType": "activity",
+      "allowedSubjectTypes": [
+        "activity",
+        "place"
+      ],
+      "freshnessDays": 180,
+      "exactTitle": "Zero Dollars: 10 Hangs That Cost Nothing"
+    },
+    {
+      "id": "college-only-happens-here",
+      "version": "1.0",
+      "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+      "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+      "researchQueries": [
+        "university traditions alumni",
+        "campus traditions student newspaper",
+        "school rituals history"
+      ],
+      "count": 10,
+      "icon": "fingerprint",
+      "primarySubjectType": "tradition",
+      "allowedSubjectTypes": [
+        "tradition"
+      ],
+      "freshnessDays": 1095,
+      "exactTitle": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else"
+    },
+    {
+      "id": "college-first-weekend",
+      "version": "1.0",
+      "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+      "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+      "researchQueries": [
+        "new student orientation campus guide",
+        "first year student campus activities",
+        "weekend near campus students"
+      ],
+      "count": 10,
+      "icon": "schedule",
+      "primarySubjectType": "sequence_stop",
+      "allowedSubjectTypes": [
+        "sequence_stop",
+        "place",
+        "activity"
+      ],
+      "freshnessDays": 180,
+      "exactTitle": "Your First Weekend at Harding University, Shared as Cards"
+    }
+  ]
+}

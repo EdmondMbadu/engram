@@ -1,0 +1,85 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Coordinates and Google Maps links are omitted because they were not independently verified from a primary map source."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.librarypoint.org/locations/fredericksburg/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.librarypoint.org/locations/fredericksburg/",
+      "error": ""
+    },
+    {
+      "url": "https://www.famva.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.famva.org/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fredericksburgva.gov/facilities/facility/details/Visitor-Center-20",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fredericksburgva.gov/facilities/facility/details/Visitor-Center-20",
+      "error": ""
+    },
+    {
+      "url": "https://www.fredericksburgva.gov/1552/Hurkamp-Park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fredericksburgva.gov/1552/Hurkamp-Park",
+      "error": ""
+    },
+    {
+      "url": "https://jamesmonroemuseum.umw.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://jamesmonroemuseum.umw.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://www.washingtonheritagemuseums.org/event-space-rental",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.washingtonheritagemuseums.org/event-space-rental",
+      "error": ""
+    },
+    {
+      "url": "https://www.americanheritage.com/content/hugh-mercer-apothecary",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.americanheritage.com/content/hugh-mercer-apothecary",
+      "error": ""
+    },
+    {
+      "url": "https://gcvirginia.org/wp-content/uploads/2025/02/HGW-2025-RETAIL-OUTLETS-WITH-GUIDEBOOKS-1.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://gcvirginia.org/wp-content/uploads/2025/02/HGW-2025-RETAIL-OUTLETS-WITH-GUIDEBOOKS-1.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/frsp/planyourvisit/visitorcenters.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/frsp/planyourvisit/visitorcenters.htm",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

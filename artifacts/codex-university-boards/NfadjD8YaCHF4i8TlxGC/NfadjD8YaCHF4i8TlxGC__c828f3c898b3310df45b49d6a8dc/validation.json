@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://map.hsc.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://map.hsc.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hsc.edu/museum",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hsc.edu/museum",
+      "error": ""
+    },
+    {
+      "url": "https://www.hsc.edu/Documents/StudentLife/TheKey2025%E2%80%9326.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hsc.edu/Documents/StudentLife/TheKey2025%E2%80%9326.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.hsc.edu/brown-student-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hsc.edu/brown-student-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.hsc.edu/student-life/what-to-do/outdoor-experience/wilson-trail",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hsc.edu/student-life/what-to-do/outdoor-experience/wilson-trail",
+      "error": ""
+    },
+    {
+      "url": "https://www.hsc.edu/student-life/what-to-do/outdoor-experience",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hsc.edu/student-life/what-to-do/outdoor-experience",
+      "error": ""
+    },
+    {
+      "url": "https://www.hsc.edu/student-life/what-to-do",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hsc.edu/student-life/what-to-do",
+      "error": ""
+    },
+    {
+      "url": "https://www.hsc.edu/student-life/campus-living",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hsc.edu/student-life/campus-living",
+      "error": ""
+    },
+    {
+      "url": "https://www.hsc.edu/academics/majors-and-minors/physics-and-astronomy/observatory",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hsc.edu/academics/majors-and-minors/physics-and-astronomy/observatory",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

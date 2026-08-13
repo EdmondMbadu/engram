@@ -1,0 +1,41 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "3hxvlM6gZ1efVcyuk83N",
+    "schoolName": "Massachusetts Institute of Technology",
+    "shortSchoolName": "Massachusetts Institute of Technology",
+    "townName": "Cambridge",
+    "state": "MA",
+    "countryCode": "US",
+    "unitId": "166683",
+    "website": "https://web.mit.edu/",
+    "latitude": 42.359243,
+    "longitude": -71.093226,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/4/44/MIT_Seal.svg/330px-MIT_Seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=web.mit.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at Massachusetts Institute of Technology, Shared as Cards",
+  "excluded_subjects": [],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

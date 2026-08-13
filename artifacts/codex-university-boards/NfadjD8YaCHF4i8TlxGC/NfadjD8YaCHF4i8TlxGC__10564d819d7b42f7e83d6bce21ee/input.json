@@ -1,0 +1,60 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "9hbuZymR4S3ruKFBcFOq",
+    "schoolName": "San Francisco State University",
+    "shortSchoolName": "San Francisco State University",
+    "townName": "San Francisco",
+    "state": "CA",
+    "countryCode": "US",
+    "unitId": "122597",
+    "website": "https://www.sfsu.edu/",
+    "latitude": 37.721224,
+    "longitude": -122.476799,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=sfsu.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=sfsu.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain San Francisco State University",
+  "excluded_subjects": [
+    "Quiet Study (LIB 42)",
+    "Silent Study Room (LIB 41)",
+    "Ground-Floor Study Rooms (LIB 40 A–M)",
+    "Collaboration Studio (LIB 124)",
+    "The Living Room (LIB 124 C)",
+    "First-Floor Study Rooms (LIB 124 E–K)",
+    "Team Collaboration Spaces 1 & 2",
+    "Study Area (LIB 287)",
+    "Study Area (LIB 360)",
+    "Quiet Study (LIB 485)",
+    "GatorFest!",
+    "Entering Year Pinning Ceremony",
+    "Entering Class Photo",
+    "Rec the Night",
+    "Costume Dodgeball Tournament",
+    "5K Walk, Run and Roll",
+    "SF State Earth Week",
+    "Film Finals",
+    "BECAfest",
+    "Commencement Academic Hood Representatives"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

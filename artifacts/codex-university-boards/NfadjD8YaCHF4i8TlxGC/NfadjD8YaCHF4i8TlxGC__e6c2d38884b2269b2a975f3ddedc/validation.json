@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.depts.ttu.edu/museumttu/exhibitions/long-term-exhibitions.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depts.ttu.edu/museumttu/exhibitions/long-term-exhibitions.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.depts.ttu.edu/museumttu/lll/trails.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depts.ttu.edu/museumttu/lll/trails.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.depts.ttu.edu/international/intlopr/exhibits/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.depts.ttu.edu/international/intlopr/exhibits/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

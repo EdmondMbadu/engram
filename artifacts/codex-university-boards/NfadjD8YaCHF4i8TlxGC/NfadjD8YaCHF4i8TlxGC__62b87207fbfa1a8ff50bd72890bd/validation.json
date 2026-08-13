@@ -1,0 +1,55 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.salisbury.edu/administration/student-affairs/guerrieri-student-union/art-space/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.salisbury.edu/administration/student-affairs/guerrieri-student-union/art-space/",
+      "error": ""
+    },
+    {
+      "url": "https://salisburyzoo.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://salisburyzoo.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitmaryland.org/listing/attraction/harriet-tubman-statue-and-historic-marker",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.visitmaryland.org/listing/attraction/harriet-tubman-statue-and-historic-marker",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitmaryland.org/listing/general-attractions/poplar-hill-mansion",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.visitmaryland.org/listing/general-attractions/poplar-hill-mansion",
+      "error": ""
+    },
+    {
+      "url": "https://www.salisbury.edu/admissions/junior-achievement/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.salisbury.edu/admissions/junior-achievement/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Salisbury Zoo"
+  ],
+  "sourceCount": 5,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

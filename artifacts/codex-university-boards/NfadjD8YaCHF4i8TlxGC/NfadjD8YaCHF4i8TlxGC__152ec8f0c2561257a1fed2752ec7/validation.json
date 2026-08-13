@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://cola.unh.edu/art-art-history/gallery-art",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cola.unh.edu/art-art-history/arts/gallery-art",
+      "error": ""
+    },
+    {
+      "url": "https://cola.unh.edu/sites/default/files/media/2021/09/for_immediate_release_museum_of_art_neh_preservation_assistance_grant_award.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cola.unh.edu/sites/default/files/media/2021/09/for_immediate_release_museum_of_art_neh_preservation_assistance_grant_award.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://ceps.unh.edu/physics-astronomy/unh-observatory",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ceps.unh.edu/physics-astronomy/unh-observatory",
+      "error": ""
+    },
+    {
+      "url": "https://extension.unh.edu/new-england-fall-astronomy-festival-nefaf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://extension.unh.edu/new-england-fall-astronomy-festival-nefaf",
+      "error": ""
+    },
+    {
+      "url": "https://marine.unh.edu/outreach-events/ocean-discovery-day/public-open-house",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://marine.unh.edu/outreach-events/ocean-discovery-day/public-open-house",
+      "error": ""
+    },
+    {
+      "url": "https://www.unh.edu/mub/events/unh-makers-expo",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.unh.edu/mub/events/unh-makers-expo",
+      "error": ""
+    },
+    {
+      "url": "https://www.unh.edu/undergrad-research/urc",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.unh.edu/undergrad-research/urc",
+      "error": ""
+    },
+    {
+      "url": "https://cola.unh.edu/center-humanities/events-programs/sidore-lecture-series",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cola.unh.edu/center-humanities/events-programs/sidore-lecture-series",
+      "error": ""
+    },
+    {
+      "url": "https://cola.unh.edu/music/calendar/arlene-kies-piano-recital-master-class-series",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cola.unh.edu/music/calendar/arlene-kies-piano-recital-master-class-series",
+      "error": ""
+    },
+    {
+      "url": "https://www.unh.edu/sustainability/transportation",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.unh.edu/sustainability/transportation",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

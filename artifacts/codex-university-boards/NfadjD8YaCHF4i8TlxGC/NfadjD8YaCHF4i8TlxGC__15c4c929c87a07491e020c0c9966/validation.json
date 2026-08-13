@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://bbgardens.org/gardens/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://bbgardens.org/gardens/",
+      "error": ""
+    },
+    {
+      "url": "https://bbgardens.org/gardens/southern-living-garden/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://bbgardens.org/gardens/southern-living-garden/",
+      "error": ""
+    },
+    {
+      "url": "https://bbgardens.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://bbgardens.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://bbgardens.org/gardens/curry-rhododendron-garden/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://bbgardens.org/gardens/curry-rhododendron-garden/",
+      "error": ""
+    },
+    {
+      "url": "https://www.artsbma.org/plan-your-visit-2/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.artsbma.org/plan-your-visit-2/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

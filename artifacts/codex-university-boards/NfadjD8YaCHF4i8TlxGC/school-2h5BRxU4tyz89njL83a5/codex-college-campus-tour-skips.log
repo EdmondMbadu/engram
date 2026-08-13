@@ -1,0 +1,282 @@
+Reading additional input from stdin...
+2026-08-13T07:22:00.740933Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9ff-bb8a-73e0-9335-cfee06b0df15.1786605714314472000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:22:00.770375Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9ff-bb7a-7513-9e5f-6cef81634a3e.1786605714299221000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:22:00.774220Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:22:00.776779Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9ff-d42b-72c0-8b10-e097d0ced1f6
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"2h5BRxU4tyz89njL83a5","schoolName":"Grand Valley State University","shortSchoolName":"Grand Valley State University","townName":"Allendale","state":"MI","countryCode":"US","website":"https://www.gvsu.edu/","latitude":42.963001,"longitude":-85.889826},"templates":[{"id":"college-campus-tour-skips","version":"1.0","titlePattern":"What the Campus Tour Skips: {count} Places Students Share With Each Other","editorialBrief":"Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.","researchQueries":["student favorite campus places","campus map student spaces","student newspaper campus places"],"count":10,"icon":"style","primarySubjectType":"place","allowedSubjectTypes":["place","study_space"],"freshnessDays":365,"exactTitle":"What the Campus Tour Skips: 10 Places Students Share With Each Other"}]}
+codex
+{
+  "complete": false,
+  "school_name": "Grand Valley State University",
+  "town_name": "Allendale",
+  "boards": [{
+    "complete": false,
+    "school_name": "Grand Valley State University",
+    "town_name": "Allendale",
+    "template_id": "college-campus-tour-skips",
+    "title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+    "description": "I’m verifying ten distinct, named GVSU places against direct university or student-media pages, including access details and map coordinates where available.",
+    "icon": "style",
+    "cards": [{
+      "subject_id": "research-in-progress",
+      "subject_type": "place",
+      "entity_name": "Research in progress",
+      "title": "Research in progress",
+      "subtitle": "Verifying direct sources",
+      "notes": "Checking GVSU maps, library, student-affairs, and department pages for concrete shared uses.",
+      "short_summary": "Current-source verification is underway.",
+      "evidence_claim": "This temporary progress card will not appear in the completed board.",
+      "source_url": "https://www.gvsu.edu/",
+      "source_title": "Grand Valley State University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Verification underway.",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    }
+    ,
+    {
+      "subject_id": "research-in-progress-2",
+      "subject_type": "study_space",
+      "entity_name": "Source verification",
+      "title": "Source verification",
+      "subtitle": "Direct pages only",
+      "notes": "Rejecting search snippets and collecting direct pages that support each card’s specific shared use.",
+      "short_summary": "Evidence is being checked card by card.",
+      "evidence_claim": "This temporary progress card will not appear in the completed board.",
+      "source_url": "https://www.gvsu.edu/library/",
+      "source_title": "University Libraries",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Verification underway.",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "research-in-progress-3",
+      "subject_type": "place",
+      "entity_name": "Campus map review",
+      "title": "Campus map review",
+      "subtitle": "Named destinations",
+      "notes": "Confirming that each choice is a named, visually documentable destination with a supported student use.",
+      "short_summary": "Map-listed destinations are being validated.",
+      "evidence_claim": "This temporary progress card will not appear in the completed board.",
+      "source_url": "https://www.gvsu.edu/maps/",
+      "source_title": "Grand Valley State University Maps",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Verification underway.",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "research-in-progress-4",
+      "subject_type": "place",
+      "entity_name": "Student space review",
+      "title": "Student space review",
+      "subtitle": "Concrete shared uses",
+      "notes": "Looking for explicit uses such as studying, rehearsing, creating, gathering, exercising, or getting support.",
+      "short_summary": "Useful student behaviors are being sourced.",
+      "evidence_claim": "This temporary progress card will not appear in the completed board.",
+      "source_url": "https://www.gvsu.edu/studentaffairs/",
+      "source_title": "Division of Student Affairs",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Verification underway.",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "research-in-progress-5",
+      "subject_type": "study_space",
+      "entity_name": "Library space review",
+      "title": "Library space review",
+      "subtitle": "Study options",
+      "notes": "Reviewing official descriptions of reservable rooms, quiet areas, collaborative spaces, and specialized facilities.",
+      "short_summary": "Library study settings are being compared.",
+      "evidence_claim": "This temporary progress card will not appear in the completed board.",
+      "source_url": "https://www.gvsu.edu/library/",
+      "source_title": "University Libraries",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Verification underway.",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "research-in-progress-6",
+      "subject_type": "place",
+      "entity_name": "Recreation review",
+      "title": "Recreation review",
+      "subtitle": "Under-21-safe activities",
+      "notes": "Checking official recreation pages for named facilities and specific activities available to the campus community.",
+      "short_summary": "Active-use destinations are being verified.",
+      "evidence_claim": "This temporary progress card will not appear in the completed board.",
+      "source_url": "https://www.gvsu.edu/rec/",
+      "source_title": "Recreation & Wellness",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Verification underway.",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "research-in-progress-7",
+      "subject_type": "place",
+      "entity_name": "Arts space review",
+      "title": "Arts space review",
+      "subtitle": "Named creative facilities",
+      "notes": "Confirming galleries, performance rooms, studios, or collections through direct GVSU department pages.",
+      "short_summary": "Creative destinations are being sourced.",
+      "evidence_claim": "This temporary progress card will not appear in the completed board.",
+      "source_url": "https://www.gvsu.edu/vma/",
+      "source_title": "Department of Visual & Media Arts",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Verification underway.",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "research-in-progress-8",
+      "subject_type": "place",
+      "entity_name": "Outdoor space review",
+      "title": "Outdoor space review",
+      "subtitle": "Mapped campus landscapes",
+      "notes": "Validating named outdoor destinations and the activities their official pages explicitly invite or support.",
+      "short_summary": "Outdoor shared spaces are being checked.",
+      "evidence_claim": "This temporary progress card will not appear in the completed board.",
+      "source_url": "https://www.gvsu.edu/maps/",
+      "source_title": "Grand Valley State University Maps",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Verification underway.",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "research-in-progress-9",
+      "subject_type": "place",
+      "entity_name": "Support space review",
+      "title": "Support space review",
+      "subtitle": "Practical campus resources",
+      "notes": "Checking named locations where students can access documented services, community space, or hands-on resources.",
+      "short_summary": "Resource-oriented destinations are being verified.",
+      "evidence_claim": "This temporary progress card will not appear in the completed board.",
+      "source_url": "https://www.gvsu.edu/studentaffairs/",
+      "source_title": "Division of Student Affairs",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Verification underway.",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "research-in-progress-10",
+      "subject_type": "study_space",
+      "entity_name": "Final evidence audit",
+      "title": "Final evidence audit",
+      "subtitle": "Ten distinct subjects",
+      "notes": "Auditing uniqueness, direct-source support, action-oriented copy, access language, and coordinate confidence.",
+      "short_summary": "The final ten-card set is being quality-checked.",
+      "evidence_claim": "This temporary progress card will not appear in the completed board.",
+      "source_url": "https://www.gvsu.edu/",
+      "source_title": "Grand Valley State University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Verification underway.",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    }],
+    "warnings": ["Temporary progress payload; final researched JSON will replace it."]
+  }],
+  "warnings": ["Research in progress."]
+}
+web search: 
+web search: site:gvsu.edu Allendale student spaces Kirkhof Mary Idema Pew Library study rooms arboretum ...
+web search: 
+web search: site:gvsu.edu "Seidman House" Allendale quiet space ...
+web search: 
+web search: site:gvsu.edu "Laker Esports Center" official hours ...
+web search: 
+web search: GVSU Laker Esports Center official ...
+codex
+{"complete":true,"school_name":"Grand Valley State University","town_name":"Allendale","boards":[{"complete":true,"school_name":"Grand Valley State University","town_name":"Allendale","template_id":"college-campus-tour-skips","title":"What the Campus Tour Skips: 10 Places Students Share With Each Other","description":"Ten named Allendale Campus spaces for quiet work, group projects, creative production, recreation, gaming, and hands-on exploration.","icon":"style","cards":[{"subject_id":"gvsu-seidman-house","subject_type":"study_space","entity_name":"Seidman House","title":"Settle In Above the Ravines","subtitle":"Quiet study space with a landscape view","notes":"Bring focused reading or solo work and use the quiet seating overlooking the ravines when the building is accessible.","short_summary":"A separate study setting for students who want quiet space beyond the main library floors.","evidence_claim":"GVSU University Libraries identifies Seidman House as a quiet study space overlooking the ravines on the Allendale Campus.","source_url":"https://www.gvsu.edu/library/quiet-study-spaces-134.htm","source_title":"Quiet Study Spaces - University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use depends on Seidman House building access; the cited page does not publish standalone hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-kirkhof-center","subject_type":"place","entity_name":"Russell H. Kirkhof Center","title":"Use the Student Center Between Commitments","subtitle":"Study lounges, events, games, and campus information","notes":"Check the event calendar, meet a group in a study lounge, or stop at the 2020 Information Desk for practical campus help.","short_summary":"Kirkhof combines informal work areas and student activities in one central campus building.","evidence_claim":"GVSU states that Kirkhof Center offers study lounges, event spaces, a game room with a movie theater, dining, vending, and the 2020 Information Desk.","source_url":"https://calendar.gvsu.edu/kirkhof","source_title":"Russell H. Kirkhof Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Enter during current Kirkhof Center hours; individual rooms and events may have separate availability.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-mipl-reading-garden","subject_type":"study_space","entity_name":"Mary Idema Pew Library Reading Garden","title":"Take Study Notes Outdoors","subtitle":"Seasonal open-air space inside the library","notes":"Use the third-floor garden for reading or a short reset in suitable weather, then move indoors if conditions change.","short_summary":"An outdoor study option located within the footprint of Mary Idema Pew Library.","evidence_claim":"The library describes its third-floor Reading Garden as a seasonal outdoor place in the center of the building.","source_url":"https://www.gvsu.edu/library/mary-idema-pew-library-21.htm","source_title":"Mary Idema Pew Library - University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Seasonal and weather-dependent; available only while Mary Idema Pew Library is open and the garden is accessible.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-mipl-roof-terrace","subject_type":"study_space","entity_name":"Mary Idema Pew Library Roof Terrace","title":"Move a Work Session to the Roof","subtitle":"Good-weather study seating above the library","notes":"Bring portable work to the rooftop terrace on a clear day, keeping a backup indoor spot ready for changing weather.","short_summary":"A weather-dependent rooftop alternative to the library’s indoor seating areas.","evidence_claim":"GVSU University Libraries identifies a rooftop terrace at Mary Idema Pew Library with good-weather study spots and campus views.","source_url":"https://www.gvsu.edu/library/mary-idema-pew-library-21.htm","source_title":"Mary Idema Pew Library - University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Weather-dependent and accessible only during library hours when the terrace is open.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-mipl-reading-rooms","subject_type":"study_space","entity_name":"Mary Idema Pew Library Reading Rooms","title":"Find the Quiet Floors","subtitle":"Dedicated reading rooms on floors three and four","notes":"Head to the third- or fourth-floor reading room for quiet work; choose tables or cubicles according to the task.","short_summary":"Two designated quiet rooms offer structured seating away from collaborative library zones.","evidence_claim":"The library says its quiet Reading Rooms on floors three and four provide work tables, comfortable cubicles, and campus views.","source_url":"https://www.gvsu.edu/library/mary-idema-pew-library-21.htm","source_title":"Mary Idema Pew Library - University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Available whenever Mary Idema Pew Library is open; users should respect the rooms’ quiet-study designation.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-mipl-innovation-zone","subject_type":"study_space","entity_name":"Mary Idema Pew Library Innovation Zone","title":"Map Out a Complicated Project","subtitle":"Flexible seating and writable walls on the third floor","notes":"Bring a team or a problem to untangle, then use the flexible seats and whiteboard walls to organize ideas visibly.","short_summary":"A third-floor workspace designed for active brainstorming and adaptable collaboration.","evidence_claim":"GVSU describes the third-floor Innovation Zone as having flexible seating, whiteboard walls, and manipulatives intended to spark creativity.","source_url":"https://www.gvsu.edu/library/mary-idema-pew-library-21.htm","source_title":"Mary Idema Pew Library - University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use during Mary Idema Pew Library hours; seating is shared and availability is not guaranteed.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-atomic-object-technology-showcase","subject_type":"place","entity_name":"Atomic Object Technology Showcase","title":"Experiment With Emerging Technology","subtitle":"Drop-in technology space in the library atrium","notes":"Stop in individually to explore available technology; contact staff before bringing an organized group larger than ten.","short_summary":"A staffed, hands-on setting where campus users can investigate technology beyond standard computer labs.","evidence_claim":"GVSU says the Showcase welcomes drop-in visitors, operates year-round, and occupies rooms 012 and 040 of the Mary Idema Pew Library Atrium.","source_url":"https://www.gvsu.edu/techshowcase/visit-10.htm","source_title":"Visit - Atomic Object Technology Showcase","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drop-ins are welcome during posted Showcase hours; groups larger than 10 should contact staff before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-digital-creator-lab","subject_type":"place","entity_name":"Digital Creator Lab","title":"Build the Media Part of a Project","subtitle":"Podcast booths, editing computers, and peer support","notes":"Bring a defined podcast, video, or software question; use a booth or meet a consultant when that service is staffed.","short_summary":"Students can combine media-production equipment with practical guidance from trained peer consultants.","evidence_claim":"The Digital Creator Lab provides audio and video editing computers, podcast booths, study pods, equipment checkout, and digital-literacy consultations.","source_url":"https://www.gvsu.edu/library/km/digital-creator-lab-14.htm","source_title":"Digital Creator Lab - Knowledge Market","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Booths may be used during library hours; consulting is currently closed for summer, and equipment checkout is first come, first served.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-climbing-center","subject_type":"place","entity_name":"GVSU Climbing Center","title":"Learn the Wall With Staff Nearby","subtitle":"Indoor climbing in the Fieldhouse complex","notes":"Check the semester schedule before going, bring required paperwork, and complete the staff safety check before belaying.","short_summary":"The Fieldhouse climbing wall supports open climbing, instruction, workshops, and group sessions.","evidence_claim":"GVSU locates the Climbing Center in the Fieldhouse complex and documents open climbing, skill workshops, recurring events, and group reservations.","source_url":"https://www.gvsu.edu/outdoors/climbing-center-44","source_title":"Climbing Center - Recreation & Wellness | Outdoor Adventures","source_kind":"university_official","source_published_at":"2026-07-16","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Follow the current fall, winter, or summer schedule. Trained belayers new to this facility must pass a staff safety check.","cost_status":"unknown","under21_safe":true},{"subject_id":"gvsu-laker-esports-center","subject_type":"place","entity_name":"Laker Esports Center","title":"Drop In for a Gaming Session","subtitle":"Twenty-three gaming setups on Kirkhof’s lower level","notes":"Bring a GVSU ID for drop-in gaming, check current availability, and return any station to its original setup before leaving.","short_summary":"A shared campus gaming room for casual play, organized competition, and esports community activities.","evidence_claim":"GVSU states that the Laker Esports Center is on Kirkhof Center’s bottom floor, offers 23 gaming setups, and is available to students, faculty, and staff during drop-in hours.","source_url":"https://www.gvsu.edu/esports/","source_title":"Esports - Grand Valley State University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Access is for GVSU students, faculty, and staff during posted drop-in hours; bring university identification.","cost_status":"unknown","under21_safe":true}],"warnings":["Exact coordinates and authoritative destination-specific map URLs were not available on the cited pages, so latitude, longitude, and maps_url are null."]}],"warnings":[]}
+tokens used
+58,948
+
+{"complete":true,"school_name":"Grand Valley State University","town_name":"Allendale","boards":[{"complete":true,"school_name":"Grand Valley State University","town_name":"Allendale","template_id":"college-campus-tour-skips","title":"What the Campus Tour Skips: 10 Places Students Share With Each Other","description":"Ten named Allendale Campus spaces for quiet work, group projects, creative production, recreation, gaming, and hands-on exploration.","icon":"style","cards":[{"subject_id":"gvsu-seidman-house","subject_type":"study_space","entity_name":"Seidman House","title":"Settle In Above the Ravines","subtitle":"Quiet study space with a landscape view","notes":"Bring focused reading or solo work and use the quiet seating overlooking the ravines when the building is accessible.","short_summary":"A separate study setting for students who want quiet space beyond the main library floors.","evidence_claim":"GVSU University Libraries identifies Seidman House as a quiet study space overlooking the ravines on the Allendale Campus.","source_url":"https://www.gvsu.edu/library/quiet-study-spaces-134.htm","source_title":"Quiet Study Spaces - University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use depends on Seidman House building access; the cited page does not publish standalone hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-kirkhof-center","subject_type":"place","entity_name":"Russell H. Kirkhof Center","title":"Use the Student Center Between Commitments","subtitle":"Study lounges, events, games, and campus information","notes":"Check the event calendar, meet a group in a study lounge, or stop at the 2020 Information Desk for practical campus help.","short_summary":"Kirkhof combines informal work areas and student activities in one central campus building.","evidence_claim":"GVSU states that Kirkhof Center offers study lounges, event spaces, a game room with a movie theater, dining, vending, and the 2020 Information Desk.","source_url":"https://calendar.gvsu.edu/kirkhof","source_title":"Russell H. Kirkhof Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Enter during current Kirkhof Center hours; individual rooms and events may have separate availability.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-mipl-reading-garden","subject_type":"study_space","entity_name":"Mary Idema Pew Library Reading Garden","title":"Take Study Notes Outdoors","subtitle":"Seasonal open-air space inside the library","notes":"Use the third-floor garden for reading or a short reset in suitable weather, then move indoors if conditions change.","short_summary":"An outdoor study option located within the footprint of Mary Idema Pew Library.","evidence_claim":"The library describes its third-floor Reading Garden as a seasonal outdoor place in the center of the building.","source_url":"https://www.gvsu.edu/library/mary-idema-pew-library-21.htm","source_title":"Mary Idema Pew Library - University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Seasonal and weather-dependent; available only while Mary Idema Pew Library is open and the garden is accessible.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-mipl-roof-terrace","subject_type":"study_space","entity_name":"Mary Idema Pew Library Roof Terrace","title":"Move a Work Session to the Roof","subtitle":"Good-weather study seating above the library","notes":"Bring portable work to the rooftop terrace on a clear day, keeping a backup indoor spot ready for changing weather.","short_summary":"A weather-dependent rooftop alternative to the library’s indoor seating areas.","evidence_claim":"GVSU University Libraries identifies a rooftop terrace at Mary Idema Pew Library with good-weather study spots and campus views.","source_url":"https://www.gvsu.edu/library/mary-idema-pew-library-21.htm","source_title":"Mary Idema Pew Library - University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Weather-dependent and accessible only during library hours when the terrace is open.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-mipl-reading-rooms","subject_type":"study_space","entity_name":"Mary Idema Pew Library Reading Rooms","title":"Find the Quiet Floors","subtitle":"Dedicated reading rooms on floors three and four","notes":"Head to the third- or fourth-floor reading room for quiet work; choose tables or cubicles according to the task.","short_summary":"Two designated quiet rooms offer structured seating away from collaborative library zones.","evidence_claim":"The library says its quiet Reading Rooms on floors three and four provide work tables, comfortable cubicles, and campus views.","source_url":"https://www.gvsu.edu/library/mary-idema-pew-library-21.htm","source_title":"Mary Idema Pew Library - University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Available whenever Mary Idema Pew Library is open; users should respect the rooms’ quiet-study designation.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-mipl-innovation-zone","subject_type":"study_space","entity_name":"Mary Idema Pew Library Innovation Zone","title":"Map Out a Complicated Project","subtitle":"Flexible seating and writable walls on the third floor","notes":"Bring a team or a problem to untangle, then use the flexible seats and whiteboard walls to organize ideas visibly.","short_summary":"A third-floor workspace designed for active brainstorming and adaptable collaboration.","evidence_claim":"GVSU describes the third-floor Innovation Zone as having flexible seating, whiteboard walls, and manipulatives intended to spark creativity.","source_url":"https://www.gvsu.edu/library/mary-idema-pew-library-21.htm","source_title":"Mary Idema Pew Library - University Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use during Mary Idema Pew Library hours; seating is shared and availability is not guaranteed.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-atomic-object-technology-showcase","subject_type":"place","entity_name":"Atomic Object Technology Showcase","title":"Experiment With Emerging Technology","subtitle":"Drop-in technology space in the library atrium","notes":"Stop in individually to explore available technology; contact staff before bringing an organized group larger than ten.","short_summary":"A staffed, hands-on setting where campus users can investigate technology beyond standard computer labs.","evidence_claim":"GVSU says the Showcase welcomes drop-in visitors, operates year-round, and occupies rooms 012 and 040 of the Mary Idema Pew Library Atrium.","source_url":"https://www.gvsu.edu/techshowcase/visit-10.htm","source_title":"Visit - Atomic Object Technology Showcase","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drop-ins are welcome during posted Showcase hours; groups larger than 10 should contact staff before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-digital-creator-lab","subject_type":"place","entity_name":"Digital Creator Lab","title":"Build the Media Part of a Project","subtitle":"Podcast booths, editing computers, and peer support","notes":"Bring a defined podcast, video, or software question; use a booth or meet a consultant when that service is staffed.","short_summary":"Students can combine media-production equipment with practical guidance from trained peer consultants.","evidence_claim":"The Digital Creator Lab provides audio and video editing computers, podcast booths, study pods, equipment checkout, and digital-literacy consultations.","source_url":"https://www.gvsu.edu/library/km/digital-creator-lab-14.htm","source_title":"Digital Creator Lab - Knowledge Market","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Booths may be used during library hours; consulting is currently closed for summer, and equipment checkout is first come, first served.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"gvsu-climbing-center","subject_type":"place","entity_name":"GVSU Climbing Center","title":"Learn the Wall With Staff Nearby","subtitle":"Indoor climbing in the Fieldhouse complex","notes":"Check the semester schedule before going, bring required paperwork, and complete the staff safety check before belaying.","short_summary":"The Fieldhouse climbing wall supports open climbing, instruction, workshops, and group sessions.","evidence_claim":"GVSU locates the Climbing Center in the Fieldhouse complex and documents open climbing, skill workshops, recurring events, and group reservations.","source_url":"https://www.gvsu.edu/outdoors/climbing-center-44","source_title":"Climbing Center - Recreation & Wellness | Outdoor Adventures","source_kind":"university_official","source_published_at":"2026-07-16","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Follow the current fall, winter, or summer schedule. Trained belayers new to this facility must pass a staff safety check.","cost_status":"unknown","under21_safe":true},{"subject_id":"gvsu-laker-esports-center","subject_type":"place","entity_name":"Laker Esports Center","title":"Drop In for a Gaming Session","subtitle":"Twenty-three gaming setups on Kirkhof’s lower level","notes":"Bring a GVSU ID for drop-in gaming, check current availability, and return any station to its original setup before leaving.","short_summary":"A shared campus gaming room for casual play, organized competition, and esports community activities.","evidence_claim":"GVSU states that the Laker Esports Center is on Kirkhof Center’s bottom floor, offers 23 gaming setups, and is available to students, faculty, and staff during drop-in hours.","source_url":"https://www.gvsu.edu/esports/","source_title":"Esports - Grand Valley State University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Access is for GVSU students, faculty, and staff during posted drop-in hours; bring university identification.","cost_status":"unknown","under21_safe":true}],"warnings":["Exact coordinates and authoritative destination-specific map URLs were not available on the cited pages, so latitude, longitude, and maps_url are null."]}],"warnings":[]}

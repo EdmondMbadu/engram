@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.tacobell.com/or/portland/4933-se-powell-blvd.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/or/portland/4933-se-powell-blvd.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/or/portland.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/or/portland.html",
+      "error": ""
+    },
+    {
+      "url": "https://site.krispykreme.com/or/portland/9950-se-82nd-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://site.krispykreme.com/or/portland/9950-se-82nd-ave",
+      "error": ""
+    },
+    {
+      "url": "https://babydollpizza.com/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://babydollpizza.com/contact",
+      "error": ""
+    },
+    {
+      "url": "https://sizzlepie.com/locations/portland-downtown",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sizzlepie.com/locations/portland-downtown",
+      "error": ""
+    },
+    {
+      "url": "https://luclackitchen.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://luclackitchen.com/",
+      "error": ""
+    },
+    {
+      "url": "https://voodoodoughnut.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://voodoodoughnut.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.wincofoods.com/customer-service/faqs/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.wincofoods.com/customer-service/faqs/",
+      "error": ""
+    },
+    {
+      "url": "https://www.plaidpantry.com/store/se-82nd-ave-duke/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.plaidpantry.com/store/se-82nd-ave-duke/",
+      "error": ""
+    },
+    {
+      "url": "https://www.banningsrestaurant.com/directions",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.banningsrestaurant.com/directions",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

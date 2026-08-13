@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.loyola.edu/department/dining/locations/iggys-market.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loyola.edu/department/dining/locations/iggys-market.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.loyola.edu/department/dining/locations/fresh-west.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loyola.edu/department/dining/locations/fresh-west.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.loyola.edu/department/dining/locations/boulder-garden-cafe/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loyola.edu/department/dining/locations/boulder-garden-cafe/",
+      "error": ""
+    },
+    {
+      "url": "https://www.loyola.edu/department/dining/locations/just-walk-out-express-stores.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loyola.edu/department/dining/locations/just-walk-out-express-stores.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.loyola.edu/department/dining/locations/boulder2.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loyola.edu/department/dining/locations/boulder2.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.loyola.edu/department/dining/locations/choolaah.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loyola.edu/department/dining/locations/choolaah.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.loyola.edu/department/dining/locations/humanities-cafe.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loyola.edu/department/dining/locations/humanities-cafe.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.loyola.edu/department/dining/locations/starbucks.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loyola.edu/department/dining/locations/starbucks.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

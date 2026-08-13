@@ -1,0 +1,71 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "5qIELHy7139zbyRAU8Lx",
+    "schoolName": "California State University-Long Beach",
+    "shortSchoolName": "California State University-Long Beach",
+    "townName": "Long Beach",
+    "state": "CA",
+    "countryCode": "US",
+    "unitId": "110583",
+    "website": "https://www.csulb.edu/",
+    "latitude": 33.782818,
+    "longitude": -118.11204,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/f/f5/CSU-Longbeach_seal.svg/330px-CSU-Longbeach_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=csulb.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "CSULB Pow Wow at Puvungna",
+    "Smorgasport",
+    "Week of Welcome",
+    "Day at The Beach",
+    "Lyman Lough Fountain Graduation Photo",
+    "CSULB Commencement Tassel Turning",
+    "CSULB Cultural Graduation Celebrations",
+    "Long Beach State Dirtbags Nickname",
+    "Long Beach State First-Basket Standing Tradition",
+    "Long Beach State Black and Gold School Colors",
+    "University Library",
+    "Steve and Nini Horn Center",
+    "Graduate Center",
+    "Earl Burns Miller Japanese Garden",
+    "Carolyn Campagna Kleefeld Contemporary Art Museum",
+    "Student Recreation and Wellness Center",
+    "Dream Success Center",
+    "Asian, Pacific Islander, & Desi Resource Center",
+    "Black Resource Center",
+    "Shakarian Student Success Center",
+    "University Library Lower Level Reading Room",
+    "University Library 2nd Floor Reading Room",
+    "University Library Children's Collection",
+    "University Library 3rd Floor Reading Room",
+    "University Library 4th Floor Reading Room",
+    "University Library 5th Floor Reading Room",
+    "Spidell Technology Center",
+    "Horn Center Open Computer Lab",
+    "BMAC Study Room",
+    "College of Business Open Access Lab Group Study Cubicle"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

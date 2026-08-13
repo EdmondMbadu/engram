@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://locations.wendys.com/united-states/va/harrisonburg/1694-east-market-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/va/harrisonburg/1694-east-market-st",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/va/harrisonburg.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/va/harrisonburg.html",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.ihop.com/en-us/va/harrisonburg/breakfast-109-university-blvd-587/late-night-food",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.ihop.com/en-us/va/harrisonburg/breakfast-109-university-blvd-587/late-night-food",
+      "error": ""
+    },
+    {
+      "url": "https://www.bennysva.com/locations/benny-sorrentinos/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bennysva.com/locations/benny-sorrentinos/",
+      "error": ""
+    },
+    {
+      "url": "https://www.littleitalypizzava.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.littleitalypizzava.com/",
+      "error": ""
+    },
+    {
+      "url": "https://chanellospizza.com/locations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://chanellospizza.com/locations/",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/virginia/harrisonburg/41-burgess-rd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/virginia/harrisonburg/41-burgess-rd",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/va/harrisonburg/1091-port-republic-rd/27512.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/va/harrisonburg/1091-port-republic-rd/27512.html",
+      "error": ""
+    },
+    {
+      "url": "https://crumblcookies.ca/stores/va/vaharrisonburg",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://crumblcookies.ca/stores/va/vaharrisonburg",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://locations.pizzahut.com/va/harrisonburg",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/va/harrisonburg",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

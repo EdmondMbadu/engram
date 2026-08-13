@@ -1,0 +1,291 @@
+Reading additional input from stdin...
+2026-08-13T07:19:08.133376Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:19:08.138118Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9fd-3201-7b62-8acf-8dc9a9bf94a6
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"SLjas3RrXagqPr1eL3qX","schoolName":"Georgia College & State University","shortSchoolName":"Georgia College & State University","townName":"Milledgeville","state":"GA","countryCode":"US","website":"https://www.gcsu.edu/","latitude":33.082787,"longitude":-83.231962},"templates":[{"id":"college-late-night-runs","version":"1.0","titlePattern":"{count} Late-Night Runs That Explain {school}","editorialBrief":"Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.","researchQueries":["late night dining students","campus dining late hours","restaurants open late near campus"],"count":10,"icon":"nightlife","primarySubjectType":"place","allowedSubjectTypes":["place"],"freshnessDays":120,"exactTitle":"10 Late-Night Runs That Explain Georgia College & State University"}]}
+codex
+{
+  "complete": false,
+  "school_name": "Georgia College & State University",
+  "town_name": "Milledgeville",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Georgia College & State University",
+      "town_name": "Milledgeville",
+      "template_id": "college-late-night-runs",
+      "title": "10 Late-Night Runs That Explain Georgia College & State University",
+      "description": "",
+      "icon": "nightlife",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+       ,
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ],
+      "warnings": [
+        "Research in progress."
+      ]
+    }
+  ],
+  "warnings": [
+    "Research in progress."
+  ]
+}
+web search: 
+web search: site:gcsu.edu dining hours late Milledgeville Georgia College ...
+web search: 
+web search: Milledgeville GA Waffle House official location hours ...
+web search: 
+web search: site:locations.wendys.com Milledgeville GA hours ...
+web search: 
+web search: Taco Bell 1700 N Columbia St Milledgeville official ...
+web search: 
+web search: Milledgeville GA Zaxby's official location hours ...
+codex
+{"complete":true,"school_name":"Georgia College & State University","town_name":"Milledgeville","boards":[{"complete":true,"school_name":"Georgia College & State University","town_name":"Milledgeville","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Georgia College & State University","description":"Ten under-21-safe Milledgeville food stops with officially documented service at 10 p.m. or later. Confirm same-day hours before leaving campus because schedules can change.","icon":"nightlife","cards":[{"subject_id":"waffle-house-1473-milledgeville","subject_type":"place","entity_name":"Waffle House #1473","title":"The Anytime Breakfast Run","subtitle":"A 24-hour option on North Columbia Street","notes":"Use this round-the-clock stop when the other kitchens have closed; arrange a safe ride from campus and verify ordering options before leaving.","short_summary":"A continuously open diner for meals at hours when scheduled closing times are not enough.","evidence_claim":"Waffle House’s official location page identifies store #1473 at 3059 N Columbia Street and lists it as open 24 hours Monday through Sunday.","source_url":"https://locations.wafflehouse.com/milledgeville-ga-1473","source_title":"Waffle House #1473 - Milledgeville, GA","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Waffle+House+1473%2C+3059+N+Columbia+St%2C+Milledgeville%2C+GA+31061","access_notes":"The official location page lists 24-hour service every day. This destination requires a drive from the main GCSU campus.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-2495-n-columbia","subject_type":"place","entity_name":"Taco Bell","title":"The 3 A.M. Drive-Thru","subtitle":"Late service at 2495 North Columbia Street","notes":"Choose the drive-thru for the advertised late window; the dining room closes earlier, so confirm transportation and order access before departing.","short_summary":"A clearly documented drive-thru window extending well beyond midnight every night.","evidence_claim":"Taco Bell’s official Milledgeville location page lists drive-thru service from 9 a.m. to 3 a.m. seven days a week.","source_url":"https://locations.tacobell.com/ga/milledgeville/2495-n-columbia-st/restaurant.html","source_title":"Taco Bell Restaurant Near Me in Milledgeville, GA","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Taco+Bell%2C+2495+N+Columbia+St%2C+Milledgeville%2C+GA+31061","access_notes":"The drive-thru is officially listed until 3 a.m. daily; the page lists Saturday dine-in only until 10 p.m., so do not assume late lobby access.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wendys-2341-n-columbia","subject_type":"place","entity_name":"Wendy's Milledgeville","title":"The After-Midnight Drive-Thru","subtitle":"A North Columbia Street kitchen open until 2 or 3 a.m.","notes":"Check the official daily schedule before heading north; the listed closing time reaches 2 a.m. most nights and 3 a.m. Friday and Saturday.","short_summary":"One of the town’s longest officially posted nightly fast-food schedules.","evidence_claim":"Wendy’s official location page lists restaurant and drive-thru hours until 2 a.m. Sunday through Thursday and 3 a.m. Friday and Saturday.","source_url":"https://locations.wendys.com/united-states/ga/milledgeville/2341-n-columbia-drive","source_title":"Wendy's 2341 N. Columbia Drive, Milledgeville, GA","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Wendy%27s%2C+2341+N+Columbia+Dr%2C+Milledgeville%2C+GA+31061","access_notes":"Official hours run until 2 a.m. Monday–Thursday and Sunday, and until 3 a.m. Friday–Saturday, for both the restaurant and drive-thru.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wingstop-milledgeville-3162","subject_type":"place","entity_name":"Wingstop Milledgeville","title":"The Midnight Wing Pickup","subtitle":"Carryout and delivery until midnight on North Columbia Street","notes":"Place the order before the midnight cutoff and check whether delivery reaches your address; the official page documents both carryout and delivery.","short_summary":"A seven-night midnight option with two explicitly listed fulfillment methods.","evidence_claim":"Wingstop’s official Milledgeville page lists carryout and delivery from 10:30 a.m. until midnight every day.","source_url":"https://locations.wingstop.com/ga/milledgeville/wingstop-3162-milledgeville-ga-31061","source_title":"Wingstop Milledgeville","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Wingstop%2C+2775+N+Columbia+St%2C+Milledgeville%2C+GA+31061","access_notes":"The official page lists carryout and delivery until 12 a.m. Sunday through Saturday; submit orders early enough for preparation before closing.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"papa-johns-columbia-street","subject_type":"place","entity_name":"Papa Johns Pizza Columbia Street","title":"The Weekend Midnight Pizza Run","subtitle":"Delivery and carryout at 1960 Columbia Street","notes":"Save this for Friday or Saturday if you need the midnight window; on other nights, both advertised ordering methods stop at 11 p.m.","short_summary":"A pizza option whose official schedule distinguishes weekend midnight service from weekday closing.","evidence_claim":"Papa Johns’ official store page lists delivery and carryout until midnight Friday and Saturday and until 11 p.m. Sunday through Thursday.","source_url":"https://locations.papajohns.com/united-states/ga/31061/milledgeville/1960-columbia-street","source_title":"Papa Johns Pizza Columbia Street","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Papa+Johns%2C+1960+Columbia+St%2C+Milledgeville%2C+GA+31061","access_notes":"Delivery and carryout are officially listed until midnight Friday–Saturday and 11 p.m. Sunday–Thursday.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dominos-1909-n-columbia","subject_type":"place","entity_name":"Domino's Pizza","title":"The North Columbia Midnight Order","subtitle":"Pizza delivery or carryout from 1909 North Columbia Street","notes":"Open the store page before ordering to confirm that day’s closing time and whether your address is inside the delivery area; carryout is also advertised.","short_summary":"A late pizza counter with a location-specific page showing midnight availability when researched.","evidence_claim":"Domino’s official Milledgeville store page identifies the 1909 N Columbia Street location and displayed a closing time of midnight when fetched.","source_url":"https://pizza.dominos.com/georgia/milledgeville/1909-n-columbia-st","source_title":"Domino's Pizza at 1909 N. Columbia St. in Milledgeville","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Domino%27s+Pizza%2C+1909+N+Columbia+St%2C+Milledgeville%2C+GA+31061","access_notes":"The official location page displayed “Today Until 12:00 AM” when fetched. Because the page presents a day-specific status, recheck it immediately before ordering.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"mcdonalds-611-s-wayne","subject_type":"place","entity_name":"McDonald's","title":"The South Wayne Late Drive-Thru","subtitle":"An 11 p.m. nightly stop with weekend drive-thru extension","notes":"Use the drive-thru for the Friday or Saturday midnight window; the official schedule lists the dining room and other nights ending at 11 p.m.","short_summary":"A South Wayne Street option with a modest but clearly documented weekend extension.","evidence_claim":"McDonald’s official page for 611 South Wayne Street lists restaurant hours until 11 p.m. daily and drive-thru hours until midnight Friday and Saturday.","source_url":"https://www.mcdonalds.com/us/es-us/location/ga/milledgeville/611-south-wayne-st/11443.html","source_title":"McDonald's at 611 South Wayne St, Milledgeville, GA","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=McDonald%27s%2C+611+S+Wayne+St%2C+Milledgeville%2C+GA+31061","access_notes":"Restaurant service is listed until 11 p.m. daily. Drive-thru service extends to midnight Friday–Saturday and ends at 11 p.m. other nights.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"chick-fil-a-milledgeville","subject_type":"place","entity_name":"Chick-fil-A Milledgeville","title":"The 10 P.M. Drive-Thru Cutoff","subtitle":"A Monday-through-Saturday option at 1730 North Columbia Street","notes":"Arrive well before 10 p.m. if using the drive-thru; dine-in and carryout end at 9 p.m., and the restaurant is officially closed Sundays.","short_summary":"An early late-night run where service mode and day matter more than the menu.","evidence_claim":"Chick-fil-A’s official Milledgeville page lists the drive-thru until 10 p.m. Monday through Saturday, with dine-in and carryout ending at 9 p.m.","source_url":"https://www.chick-fil-a.com/locations/ga/milledgeville","source_title":"Milledgeville – Chick-fil-A","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Chick-fil-A%2C+1730+N+Columbia+St%2C+Milledgeville%2C+GA+31061","access_notes":"Drive-thru service is officially listed until 10 p.m. Monday–Saturday; dine-in and carryout close at 9 p.m., and Sunday is closed.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dq-grill-chill-milledgeville","subject_type":"place","entity_name":"DQ Grill & Chill Milledgeville","title":"The 10 P.M. Dessert Stop","subtitle":"A South Wayne Street drive-thru closing at 10 p.m.","notes":"Treat this as an early late-night run and arrive before the posted cutoff; confirm the location page still shows 10 p.m. service that evening.","short_summary":"A dessert-and-fast-food stop on the south side of town with a documented 10 p.m. endpoint.","evidence_claim":"Dairy Queen’s official location directory identifies its Milledgeville restaurant; its location information lists restaurant and drive-thru service until 10 p.m.","source_url":"https://www.dairyqueen.com/en-us/locations/ga/milledgeville/","source_title":"Dairy Queen Locations in Milledgeville, Georgia","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=DQ+Grill+%26+Chill%2C+1105+S+Wayne+St%2C+Milledgeville%2C+GA+31061","access_notes":"The location information lists restaurant and drive-thru service until 10 p.m.; curbside pickup ends at 9 p.m. Confirm current hours before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"zaxbys-1692-n-columbia","subject_type":"place","entity_name":"Zaxby's Milledgeville","title":"The 10 P.M. Chicken Run","subtitle":"Pickup, delivery, and curbside service on North Columbia Street","notes":"Order before the 10 p.m. closing time and verify which service modes remain available near cutoff; the official page lists three ordering options.","short_summary":"A North Columbia Street chicken stop marking the early edge of Milledgeville’s late-night window.","evidence_claim":"Zaxby’s official Milledgeville location page identifies the restaurant at 1692 N Columbia Street, lists pickup, delivery, and curbside pickup, and shows a 10 p.m. close.","source_url":"https://www.zaxbys.com/locations/ga/milledgeville","source_title":"Chicken Restaurant in Milledgeville, Georgia | Zaxby's","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Zaxby%27s%2C+1692+N+Columbia+St%2C+Milledgeville%2C+GA+31061","access_notes":"The official location page showed a 10 p.m. closing time when fetched. Recheck the page for the selected day and submit pickup or delivery orders before cutoff.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:21:07.105844Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9fd-3201-7b62-8acf-8dc9a9bf94a6.1786605548033879000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+52,773
+
+{"complete":true,"school_name":"Georgia College & State University","town_name":"Milledgeville","boards":[{"complete":true,"school_name":"Georgia College & State University","town_name":"Milledgeville","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Georgia College & State University","description":"Ten under-21-safe Milledgeville food stops with officially documented service at 10 p.m. or later. Confirm same-day hours before leaving campus because schedules can change.","icon":"nightlife","cards":[{"subject_id":"waffle-house-1473-milledgeville","subject_type":"place","entity_name":"Waffle House #1473","title":"The Anytime Breakfast Run","subtitle":"A 24-hour option on North Columbia Street","notes":"Use this round-the-clock stop when the other kitchens have closed; arrange a safe ride from campus and verify ordering options before leaving.","short_summary":"A continuously open diner for meals at hours when scheduled closing times are not enough.","evidence_claim":"Waffle House’s official location page identifies store #1473 at 3059 N Columbia Street and lists it as open 24 hours Monday through Sunday.","source_url":"https://locations.wafflehouse.com/milledgeville-ga-1473","source_title":"Waffle House #1473 - Milledgeville, GA","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Waffle+House+1473%2C+3059+N+Columbia+St%2C+Milledgeville%2C+GA+31061","access_notes":"The official location page lists 24-hour service every day. This destination requires a drive from the main GCSU campus.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-2495-n-columbia","subject_type":"place","entity_name":"Taco Bell","title":"The 3 A.M. Drive-Thru","subtitle":"Late service at 2495 North Columbia Street","notes":"Choose the drive-thru for the advertised late window; the dining room closes earlier, so confirm transportation and order access before departing.","short_summary":"A clearly documented drive-thru window extending well beyond midnight every night.","evidence_claim":"Taco Bell’s official Milledgeville location page lists drive-thru service from 9 a.m. to 3 a.m. seven days a week.","source_url":"https://locations.tacobell.com/ga/milledgeville/2495-n-columbia-st/restaurant.html","source_title":"Taco Bell Restaurant Near Me in Milledgeville, GA","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Taco+Bell%2C+2495+N+Columbia+St%2C+Milledgeville%2C+GA+31061","access_notes":"The drive-thru is officially listed until 3 a.m. daily; the page lists Saturday dine-in only until 10 p.m., so do not assume late lobby access.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wendys-2341-n-columbia","subject_type":"place","entity_name":"Wendy's Milledgeville","title":"The After-Midnight Drive-Thru","subtitle":"A North Columbia Street kitchen open until 2 or 3 a.m.","notes":"Check the official daily schedule before heading north; the listed closing time reaches 2 a.m. most nights and 3 a.m. Friday and Saturday.","short_summary":"One of the town’s longest officially posted nightly fast-food schedules.","evidence_claim":"Wendy’s official location page lists restaurant and drive-thru hours until 2 a.m. Sunday through Thursday and 3 a.m. Friday and Saturday.","source_url":"https://locations.wendys.com/united-states/ga/milledgeville/2341-n-columbia-drive","source_title":"Wendy's 2341 N. Columbia Drive, Milledgeville, GA","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Wendy%27s%2C+2341+N+Columbia+Dr%2C+Milledgeville%2C+GA+31061","access_notes":"Official hours run until 2 a.m. Monday–Thursday and Sunday, and until 3 a.m. Friday–Saturday, for both the restaurant and drive-thru.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wingstop-milledgeville-3162","subject_type":"place","entity_name":"Wingstop Milledgeville","title":"The Midnight Wing Pickup","subtitle":"Carryout and delivery until midnight on North Columbia Street","notes":"Place the order before the midnight cutoff and check whether delivery reaches your address; the official page documents both carryout and delivery.","short_summary":"A seven-night midnight option with two explicitly listed fulfillment methods.","evidence_claim":"Wingstop’s official Milledgeville page lists carryout and delivery from 10:30 a.m. until midnight every day.","source_url":"https://locations.wingstop.com/ga/milledgeville/wingstop-3162-milledgeville-ga-31061","source_title":"Wingstop Milledgeville","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Wingstop%2C+2775+N+Columbia+St%2C+Milledgeville%2C+GA+31061","access_notes":"The official page lists carryout and delivery until 12 a.m. Sunday through Saturday; submit orders early enough for preparation before closing.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"papa-johns-columbia-street","subject_type":"place","entity_name":"Papa Johns Pizza Columbia Street","title":"The Weekend Midnight Pizza Run","subtitle":"Delivery and carryout at 1960 Columbia Street","notes":"Save this for Friday or Saturday if you need the midnight window; on other nights, both advertised ordering methods stop at 11 p.m.","short_summary":"A pizza option whose official schedule distinguishes weekend midnight service from weekday closing.","evidence_claim":"Papa Johns’ official store page lists delivery and carryout until midnight Friday and Saturday and until 11 p.m. Sunday through Thursday.","source_url":"https://locations.papajohns.com/united-states/ga/31061/milledgeville/1960-columbia-street","source_title":"Papa Johns Pizza Columbia Street","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Papa+Johns%2C+1960+Columbia+St%2C+Milledgeville%2C+GA+31061","access_notes":"Delivery and carryout are officially listed until midnight Friday–Saturday and 11 p.m. Sunday–Thursday.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dominos-1909-n-columbia","subject_type":"place","entity_name":"Domino's Pizza","title":"The North Columbia Midnight Order","subtitle":"Pizza delivery or carryout from 1909 North Columbia Street","notes":"Open the store page before ordering to confirm that day’s closing time and whether your address is inside the delivery area; carryout is also advertised.","short_summary":"A late pizza counter with a location-specific page showing midnight availability when researched.","evidence_claim":"Domino’s official Milledgeville store page identifies the 1909 N Columbia Street location and displayed a closing time of midnight when fetched.","source_url":"https://pizza.dominos.com/georgia/milledgeville/1909-n-columbia-st","source_title":"Domino's Pizza at 1909 N. Columbia St. in Milledgeville","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Domino%27s+Pizza%2C+1909+N+Columbia+St%2C+Milledgeville%2C+GA+31061","access_notes":"The official location page displayed “Today Until 12:00 AM” when fetched. Because the page presents a day-specific status, recheck it immediately before ordering.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"mcdonalds-611-s-wayne","subject_type":"place","entity_name":"McDonald's","title":"The South Wayne Late Drive-Thru","subtitle":"An 11 p.m. nightly stop with weekend drive-thru extension","notes":"Use the drive-thru for the Friday or Saturday midnight window; the official schedule lists the dining room and other nights ending at 11 p.m.","short_summary":"A South Wayne Street option with a modest but clearly documented weekend extension.","evidence_claim":"McDonald’s official page for 611 South Wayne Street lists restaurant hours until 11 p.m. daily and drive-thru hours until midnight Friday and Saturday.","source_url":"https://www.mcdonalds.com/us/es-us/location/ga/milledgeville/611-south-wayne-st/11443.html","source_title":"McDonald's at 611 South Wayne St, Milledgeville, GA","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=McDonald%27s%2C+611+S+Wayne+St%2C+Milledgeville%2C+GA+31061","access_notes":"Restaurant service is listed until 11 p.m. daily. Drive-thru service extends to midnight Friday–Saturday and ends at 11 p.m. other nights.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"chick-fil-a-milledgeville","subject_type":"place","entity_name":"Chick-fil-A Milledgeville","title":"The 10 P.M. Drive-Thru Cutoff","subtitle":"A Monday-through-Saturday option at 1730 North Columbia Street","notes":"Arrive well before 10 p.m. if using the drive-thru; dine-in and carryout end at 9 p.m., and the restaurant is officially closed Sundays.","short_summary":"An early late-night run where service mode and day matter more than the menu.","evidence_claim":"Chick-fil-A’s official Milledgeville page lists the drive-thru until 10 p.m. Monday through Saturday, with dine-in and carryout ending at 9 p.m.","source_url":"https://www.chick-fil-a.com/locations/ga/milledgeville","source_title":"Milledgeville – Chick-fil-A","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Chick-fil-A%2C+1730+N+Columbia+St%2C+Milledgeville%2C+GA+31061","access_notes":"Drive-thru service is officially listed until 10 p.m. Monday–Saturday; dine-in and carryout close at 9 p.m., and Sunday is closed.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dq-grill-chill-milledgeville","subject_type":"place","entity_name":"DQ Grill & Chill Milledgeville","title":"The 10 P.M. Dessert Stop","subtitle":"A South Wayne Street drive-thru closing at 10 p.m.","notes":"Treat this as an early late-night run and arrive before the posted cutoff; confirm the location page still shows 10 p.m. service that evening.","short_summary":"A dessert-and-fast-food stop on the south side of town with a documented 10 p.m. endpoint.","evidence_claim":"Dairy Queen’s official location directory identifies its Milledgeville restaurant; its location information lists restaurant and drive-thru service until 10 p.m.","source_url":"https://www.dairyqueen.com/en-us/locations/ga/milledgeville/","source_title":"Dairy Queen Locations in Milledgeville, Georgia","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=DQ+Grill+%26+Chill%2C+1105+S+Wayne+St%2C+Milledgeville%2C+GA+31061","access_notes":"The location information lists restaurant and drive-thru service until 10 p.m.; curbside pickup ends at 9 p.m. Confirm current hours before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"zaxbys-1692-n-columbia","subject_type":"place","entity_name":"Zaxby's Milledgeville","title":"The 10 P.M. Chicken Run","subtitle":"Pickup, delivery, and curbside service on North Columbia Street","notes":"Order before the 10 p.m. closing time and verify which service modes remain available near cutoff; the official page lists three ordering options.","short_summary":"A North Columbia Street chicken stop marking the early edge of Milledgeville’s late-night window.","evidence_claim":"Zaxby’s official Milledgeville location page identifies the restaurant at 1692 N Columbia Street, lists pickup, delivery, and curbside pickup, and shows a 10 p.m. close.","source_url":"https://www.zaxbys.com/locations/ga/milledgeville","source_title":"Chicken Restaurant in Milledgeville, Georgia | Zaxby's","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Zaxby%27s%2C+1692+N+Columbia+St%2C+Milledgeville%2C+GA+31061","access_notes":"The official location page showed a 10 p.m. closing time when fetched. Recheck the page for the selected day and submit pickup or delivery orders before cutoff.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}

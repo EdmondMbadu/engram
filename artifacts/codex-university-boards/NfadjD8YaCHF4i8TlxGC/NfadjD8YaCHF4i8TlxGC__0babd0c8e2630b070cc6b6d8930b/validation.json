@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.tacobell.com/az/flagstaff/1255-s-milton-rd.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/az/flagstaff/1255-s-milton-rd.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/az/flagstaff/1601-s-milton-road",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/az/flagstaff/1601-s-milton-road",
+      "error": ""
+    },
+    {
+      "url": "https://losgordosmexicanfoodaz.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://losgordosmexicanfoodaz.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.chick-fil-a.com/locations/az/flagstaff",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.chick-fil-a.com/locations/az/flagstaff",
+      "error": ""
+    },
+    {
+      "url": "https://www.sosobaflg.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sosobaflg.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/az/flagstaff/1801-e-butler-ave.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/az/flagstaff/1801-e-butler-ave.html",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/arizona/flagstaff/2577-e-7th-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/arizona/flagstaff/2577-e-7th-ave",
+      "error": ""
+    },
+    {
+      "url": "https://www.azfuji.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.azfuji.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jackinthebox.com/us/az/flagstaff/3620-e-route-66",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jackinthebox.com/us/az/flagstaff/3620-e-route-66",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/az/flagstaff/3460-e-route-66.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/az/flagstaff/3460-e-route-66.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

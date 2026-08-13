@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.tacobell.com/or/newberg/3420-portland-road.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/or/newberg/3420-portland-road.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.burgerville.com/burgerville-810f3172935c",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.burgerville.com/burgerville-810f3172935c",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.subway.com/united-states/or/newberg/100-s-harrison-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.subway.com/united-states/or/newberg/100-s-harrison-st",
+      "error": ""
+    },
+    {
+      "url": "https://www.dairyqueen.com/en-us/locations/or/newberg/404-w-1st-st/16102/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.dairyqueen.com/en-us/locations/or/newberg/404-w-1st-st/16102/",
+      "error": ""
+    },
+    {
+      "url": "https://www.eduardotacoshop.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.eduardotacoshop.com/",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.fiveguys.com/4205-east-crestview-dr",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.fiveguys.com/4205-east-crestview-dr",
+      "error": ""
+    },
+    {
+      "url": "https://locations.modpizza.com/usa/or/newberg/4105-e.-crestview-dr.",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.modpizza.com/usa/or/newberg/4105-e.-crestview-dr.",
+      "error": ""
+    },
+    {
+      "url": "https://visitclementine.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visitclementine.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.chipotle.com/or/newberg/3105-e-portland-rd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.chipotle.com/or/newberg/3105-e-portland-rd",
+      "error": ""
+    },
+    {
+      "url": "https://www.lasierranewberg.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lasierranewberg.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.luther.edu/library/about/facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.luther.edu/library/about/facilities",
+      "error": ""
+    },
+    {
+      "url": "https://www.luther.edu/library/about/services/circulation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.luther.edu/library/about/services/circulation",
+      "error": ""
+    },
+    {
+      "url": "https://www.luther.edu/admission-aid/online-campus-tour/preus-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.luther.edu/admission-aid/online-campus-tour/preus-library",
+      "error": ""
+    },
+    {
+      "url": "https://www.luther.edu/wp-content/uploads/2022/08/ITS_Annual_Report_2017_2018.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.luther.edu/wp-content/uploads/2022/08/ITS_Annual_Report_2017_2018.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.luther.edu/departments/modern-languages-cultures/language-learning-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.luther.edu/departments/modern-languages-cultures/language-learning-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.luther.edu/admission-aid/online-campus-tour/koren",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.luther.edu/admission-aid/online-campus-tour/koren",
+      "error": ""
+    },
+    {
+      "url": "https://www.luther.edu/offices/residence-life/upper-class-housing/miller-and-dieseth-halls-towers",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.luther.edu/offices/residence-life/upper-class-housing/miller-and-dieseth-halls-towers",
+      "error": ""
+    },
+    {
+      "url": "https://www.luther.edu/offices/residence-life/upper-class-housing/farwell-hall",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.luther.edu/offices/residence-life/upper-class-housing/farwell-hall",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

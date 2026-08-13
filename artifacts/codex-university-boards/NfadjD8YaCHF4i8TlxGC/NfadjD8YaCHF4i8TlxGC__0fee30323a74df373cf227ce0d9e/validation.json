@@ -1,0 +1,79 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://risdmuseum.org/accessibility-amenities",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://risdmuseum.org/accessibility-amenities",
+      "error": ""
+    },
+    {
+      "url": "https://providenceathenaeum.org/visit/plan-your-visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://providenceathenaeum.org/visit/plan-your-visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.rihs.org/locations/the-john-brown-house-museum/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rihs.org/locations/the-john-brown-house-museum/",
+      "error": ""
+    },
+    {
+      "url": "https://as220.org/home",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://as220.org/home",
+      "error": ""
+    },
+    {
+      "url": "https://waterfire.org/contact/performer-inquiry/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://waterfire.org/contact/performer-inquiry/",
+      "error": ""
+    },
+    {
+      "url": "https://waterfire.org/visit/parking-and-directions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://waterfire.org/visit/parking-and-directions/",
+      "error": ""
+    },
+    {
+      "url": "https://waterfire.org/schedule/the-waterfire-ballroom/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://waterfire.org/schedule/the-waterfire-ballroom/",
+      "error": ""
+    },
+    {
+      "url": "https://www.thevetsri.com/plan-your-visit/direction-parking",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.thevetsri.com/plan-your-visit/direction-parking",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "RISD Museum"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

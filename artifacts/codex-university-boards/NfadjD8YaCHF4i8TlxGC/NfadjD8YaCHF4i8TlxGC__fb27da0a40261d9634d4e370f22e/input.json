@@ -1,0 +1,69 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "CNZXPoG7HBzvRXfbMB0q",
+    "schoolName": "Stockton University",
+    "shortSchoolName": "Stockton University",
+    "townName": "Galloway",
+    "state": "NJ",
+    "countryCode": "US",
+    "unitId": "186876",
+    "website": "https://www.stockton.edu/",
+    "latitude": 39.492036,
+    "longitude": -74.531087,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=stockton.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=stockton.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Campus Center",
+    "Campus Center Food Court",
+    "Campus Center Coffee House",
+    "Campus Center Game Room",
+    "Lake Fred",
+    "Give a Book, Take a Book Lounge",
+    "Campus Center Theatre",
+    "Stockton University Art Gallery",
+    "Stockton Performing Arts Center",
+    "OspreyHub Events",
+    "Ospreys on Parade at Commencement",
+    "Golden Ospreys Lead the Way",
+    "University Weekend",
+    "University Weekend Float Decorating Party",
+    "University Weekend Street Fair",
+    "Stockton Coast Day",
+    "Fred Fest",
+    "Welcome Week Spirit Walk",
+    "G. Larry James Touchstone",
+    "Kappa Sigma Annual Polar Bear Plunge",
+    "WGSC Lounge",
+    "Northeast Campus Forest Interpretive Trail",
+    "Stockton Performing Arts Center Theatre",
+    "The Lodge at Lakeside",
+    "I-Wing Gymnasium",
+    "Sports Center",
+    "Campus Center Event Room",
+    "Veterans Park"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "qHq2MZxQLvUrCRkUDvUO",
+    "schoolName": "Lewis & Clark College",
+    "shortSchoolName": "Lewis & Clark College",
+    "townName": "Portland",
+    "state": "OR",
+    "countryCode": "US",
+    "unitId": "209056",
+    "website": "https://www.lclark.edu/",
+    "latitude": 45.450882,
+    "longitude": -122.669137,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/c/ce/Lewis_and_clark_college_seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=lclark.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "Frank Manor House",
+    "Sacagawea and Jean Baptiste Sculpture",
+    "Fields Dining Room",
+    "Aubrey R. Watzek Library",
+    "Edna Holmes Gardens",
+    "Ronna and Eric Hoffman Gallery of Contemporary Art",
+    "Experimental Art Research Forest",
+    "Stephanie Fowler Student Center",
+    "Agnes Flanagan Chapel",
+    "Tryon Creek State Natural Area"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

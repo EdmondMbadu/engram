@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.tastyburger.com/location/fenway/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.tastyburger.com/location/fenway/",
+      "error": ""
+    },
+    {
+      "url": "https://www.eljefestaqueria.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.eljefestaqueria.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.raisingcanes.com/ma/boston/755-boylston-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.raisingcanes.com/ma/boston/755-boylston-street",
+      "error": ""
+    },
+    {
+      "url": "https://locations.raisingcanes.com/ma/boston/949-commonwealth-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.raisingcanes.com/ma/boston/949-commonwealth-ave",
+      "error": ""
+    },
+    {
+      "url": "https://www.fenwaygrillbar.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fenwaygrillbar.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.backdoordonuts.com/location/back-door-donuts-boston-pop-up/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.backdoordonuts.com/location/back-door-donuts-boston-pop-up/",
+      "error": ""
+    },
+    {
+      "url": "https://bovabakeryboston.net/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bovabakeryboston.net/about/",
+      "error": ""
+    },
+    {
+      "url": "https://southstreetdiner.com/late-night-eats.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://southstreetdiner.com/late-night-eats.php",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

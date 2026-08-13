@@ -1,0 +1,71 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.duq.edu/admission-and-aid/visit-us/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.duq.edu/admission-and-aid/visit-us/index.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.duq.edu/life-at-duquesne/our-campus/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.duq.edu/life-at-duquesne/our-campus/index.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.duq.edu/academics/university-catalogs/2025-2026-catalog/graduate/about-duquesne/physical-facilities.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.duq.edu/academics/university-catalogs/2025-2026-catalog/graduate/about-duquesne/physical-facilities.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.duq.edu/academics/university-catalogs/2025-2026-catalog/undergraduate/about-duquesne/gumberg-library.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.duq.edu/academics/university-catalogs/2025-2026-catalog/undergraduate/about-duquesne/gumberg-library.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.duq.edu/social-impact/mission-and-spiritan-values/spiritan-campus-ministry/worship.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.duq.edu/social-impact/mission-and-spiritan-values/spiritan-campus-ministry/worship.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.duq.edu/life-at-duquesne/student-life.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.duq.edu/life-at-duquesne/student-life.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.duq.edu/life-at-duquesne/health-recreation-wellness/recreation-services.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.duq.edu/life-at-duquesne/health-recreation-wellness/recreation-services.php",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Our Lady of Lourdes Grotto"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

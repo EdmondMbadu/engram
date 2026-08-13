@@ -1,0 +1,53 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Some study-location details come from St. Olaf’s currently hosted Academic Support PDF; confirm room access and availability before visiting."
+  ],
+  "reachability": [
+    {
+      "url": "https://wp.stolaf.edu/admissions/beyond-the-campus-tour/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wp.stolaf.edu/admissions/beyond-the-campus-tour/",
+      "error": ""
+    },
+    {
+      "url": "https://wp.stolaf.edu/disco/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wp.stolaf.edu/disco/",
+      "error": ""
+    },
+    {
+      "url": "https://wp.stolaf.edu/academic-support/files/2015/01/Places-to-Study-at-St.-Olaf.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wp.stolaf.edu/academic-support/files/2015/01/Places-to-Study-at-St.-Olaf.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://wp.stolaf.edu/library/music-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wp.stolaf.edu/library/music-library/",
+      "error": ""
+    },
+    {
+      "url": "https://wp.stolaf.edu/kierkegaard/collection/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wp.stolaf.edu/kierkegaard/collection/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

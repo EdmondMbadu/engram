@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://maps.apple.com/place?auid=15053431471065649206&lsp=9902",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://maps.apple.com/place?place-id=ID0E8882A9B8DD036&_provider=9902",
+      "error": ""
+    },
+    {
+      "url": "https://www.toasttab.com/local/order/over-the-cuse-pizza-wings-399-south-crouse-avenue",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.toasttab.com/local/order/over-the-cuse-pizza-wings-399-south-crouse-avenue",
+      "error": ""
+    },
+    {
+      "url": "https://www.overthecusedelingrill.com/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.overthecusedelingrill.com/contact",
+      "error": ""
+    },
+    {
+      "url": "https://westcottsyr.com/business/westcott-grocery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://westcottsyr.com/business/westcott-grocery/",
+      "error": ""
+    },
+    {
+      "url": "https://francospizzeriaanddeli.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://francospizzeriaanddeli.com/",
+      "error": ""
+    },
+    {
+      "url": "https://tazzasyr.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://tazzasyr.com/",
+      "error": ""
+    },
+    {
+      "url": "https://funknwaffles.com/location-hours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://funknwaffles.com/location-hours/",
+      "error": ""
+    },
+    {
+      "url": "https://www.oishisyracuseny.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oishisyracuseny.com/",
+      "error": ""
+    },
+    {
+      "url": "https://campusdining.syr.edu/retail-dining/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusdining.syr.edu/retail-dining/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

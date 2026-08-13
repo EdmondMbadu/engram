@@ -1,0 +1,92 @@
+{
+  "target": "1wwkqmQZYB5cl8TodTVG",
+  "schoolName": "Gonzaga University",
+  "generatedAt": "2026-08-13T07:27:06.414Z",
+  "mode": "free-related-campus-limited-reuse",
+  "images": [
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2F1wwkqmQZYB5cl8TodTVG%2F01-4fa137bb4ce914dd.jpg?alt=media&token=61dffadc-a1bb-4161-a397-5279b10da95c",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Desmet_Avenue_Warehouse_HD_NRHP_97000450_Spokane_County,_WA.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 4.0",
+      "imageLicense": "CC BY-SA 4.0",
+      "imageTitle": "Desmet Avenue Warehouse HD NRHP 97000450 Spokane County, WA.jpg",
+      "imageFingerprint": "4fa137bb4ce914dde08eb4c08ef5f283e633717c4a8eddea767a73b7284cea44",
+      "imageWidth": 1824,
+      "imageHeight": 1368,
+      "imageResolvedAt": "2026-08-13T07:27:06.198Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2F1wwkqmQZYB5cl8TodTVG%2F02-849b661a1c29a190.jpg?alt=media&token=a4d04e0b-2819-4df5-b4dd-1760f2d814f0",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:GU_Law_School.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · Public domain",
+      "imageLicense": "Public domain",
+      "imageTitle": "GU Law School.jpg",
+      "imageFingerprint": "849b661a1c29a190abfaec4135805b21732274e71f32b98dd277a268c8cb5d0f",
+      "imageWidth": 1800,
+      "imageHeight": 1350,
+      "imageResolvedAt": "2026-08-13T07:27:06.171Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2F1wwkqmQZYB5cl8TodTVG%2F03-01a97a9b90eb3ceb.jpg?alt=media&token=3389fb25-d080-4a83-b9cd-2027a5a535b4",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:GU_ad_circle.JPG",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · Public domain",
+      "imageLicense": "Public domain",
+      "imageTitle": "GU ad circle.JPG",
+      "imageFingerprint": "01a97a9b90eb3cebf26fd312b5cd0c824a81f59727f89f6575dbeb5ef1f16891",
+      "imageWidth": 1280,
+      "imageHeight": 960,
+      "imageResolvedAt": "2026-08-13T07:27:06.149Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2F1wwkqmQZYB5cl8TodTVG%2F04-974aa855f1cb7077.jpg?alt=media&token=f32273b1-7f7c-4abf-a70e-faf6d9879985",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Gonzaga_University_Entrance.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 3.0",
+      "imageLicense": "CC BY-SA 3.0",
+      "imageTitle": "Gonzaga University Entrance.jpg",
+      "imageFingerprint": "974aa855f1cb7077c637d85b26c8d2355ea9dfb00beb4a31a56778c6805dc577",
+      "imageWidth": 1920,
+      "imageHeight": 2868,
+      "imageResolvedAt": "2026-08-13T07:27:06.312Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2F1wwkqmQZYB5cl8TodTVG%2F05-b87bcb8bfd8c0cb3.jpg?alt=media&token=743ba9af-559a-4999-aaa8-e38abdad17f6",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Gonzaga_University_Academic_Hall.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 3.0",
+      "imageLicense": "CC BY-SA 3.0",
+      "imageTitle": "Gonzaga University Academic Hall.jpg",
+      "imageFingerprint": "b87bcb8bfd8c0cb31624c3cabfbeeaebfbda46e276ea66e7c768f0b98ba21748",
+      "imageWidth": 1920,
+      "imageHeight": 2868,
+      "imageResolvedAt": "2026-08-13T07:27:06.414Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2F1wwkqmQZYB5cl8TodTVG%2F06-4f5b63f2ed51311f.jpg?alt=media&token=d1b49746-af28-40c3-af10-f616ef5f62f0",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Gonzaga_University_Library.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 3.0",
+      "imageLicense": "CC BY-SA 3.0",
+      "imageTitle": "Gonzaga University Library.jpg",
+      "imageFingerprint": "4f5b63f2ed51311fc346df9700d65cfc46c8deab77ec37fb7d700e60a5735517",
+      "imageWidth": 1920,
+      "imageHeight": 1285,
+      "imageResolvedAt": "2026-08-13T07:27:06.230Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2F1wwkqmQZYB5cl8TodTVG%2F07-55d24671c5a83602.jpg?alt=media&token=6fa535fb-34f6-40ff-b5a4-06355b2a403e",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Gonzaga_Fine_Art_Center_and_Museum.JPG",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 3.0",
+      "imageLicense": "CC BY-SA 3.0",
+      "imageTitle": "Gonzaga Fine Art Center and Museum.JPG",
+      "imageFingerprint": "55d24671c5a8360277b9fe4886e4c5f2a43a3a777de9dbfbe375ec73de8ad19a",
+      "imageWidth": 1920,
+      "imageHeight": 1285,
+      "imageResolvedAt": "2026-08-13T07:27:06.376Z"
+    }
+  ]
+}

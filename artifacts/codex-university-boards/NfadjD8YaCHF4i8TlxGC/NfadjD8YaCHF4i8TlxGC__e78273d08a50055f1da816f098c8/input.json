@@ -1,0 +1,71 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "LdKQFqNePYMockAvXUtD",
+    "schoolName": "North Carolina State University at Raleigh",
+    "shortSchoolName": "North Carolina State University at Raleigh",
+    "townName": "Raleigh",
+    "state": "NC",
+    "countryCode": "US",
+    "unitId": "199193",
+    "website": "https://www.ncsu.edu/",
+    "latitude": 35.785111,
+    "longitude": -78.674517,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/2/24/North_Carolina_State_University_seal.svg/250px-North_Carolina_State_University_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=ncsu.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at North Carolina State University at Raleigh, Shared as Cards",
+  "excluded_subjects": [
+    "JC Raulston Arboretum",
+    "JC Raulston Arboretum Sunday Tour",
+    "People’s Collection at NCMA",
+    "Ann and Jim Goodnight Museum Park",
+    "NCMA Guided Park Tours",
+    "North Carolina Museum of Natural Sciences",
+    "Pullen Park Summer Concert Series",
+    "Pullen Park Movie Series",
+    "D. H. Hill Jr. Library Exhibit Gallery",
+    "James B. Hunt Jr. Library",
+    "Gregg Museum of Art & Design",
+    "Pullen Park",
+    "Jubala Coffee — NCSU Belltower",
+    "Global Village Organic Coffee",
+    "Insomnia Cookies",
+    "Guasaca",
+    "Target",
+    "Nice Price Books & Records",
+    "Cup A Joe — Hillsborough Street",
+    "Painting the Free Expression Tunnel",
+    "Respect the Pack Handprint Mural",
+    "Light It Red",
+    "NC State Class Ring Turning",
+    "Fellowship of the Ring at the Belltower",
+    "Red and White Week",
+    "The Red and White Song",
+    "NC State Alma Mater",
+    "Tuffy III Live Mascot",
+    "Howling Cow Ice Cream at the North Carolina State Fair"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

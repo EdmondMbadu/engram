@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www2.naz.edu/golisano-training-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.naz.edu/golisano-training-center",
+      "error": ""
+    },
+    {
+      "url": "https://www2.naz.edu/golisano-training-center/intramurals-and-recreation/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.naz.edu/golisano-training-center/intramurals-and-recreation/",
+      "error": ""
+    },
+    {
+      "url": "https://www2.naz.edu/student-experience/sports-fitness-recreation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.naz.edu/student-experience/sports-fitness-recreation",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

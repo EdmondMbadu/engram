@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://library.lmu.edu/aboutthelibrary/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.lmu.edu/aboutthelibrary/",
+      "error": ""
+    },
+    {
+      "url": "https://studentaffairs.lmu.edu/lionwellness/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentaffairs.lmu.edu/lionwellness/",
+      "error": ""
+    },
+    {
+      "url": "https://newsroom.lmu.edu/campusnews/ten-peaceful-places-at-lmu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://newsroom.lmu.edu/campusnews/ten-peaceful-places-at-lmu/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

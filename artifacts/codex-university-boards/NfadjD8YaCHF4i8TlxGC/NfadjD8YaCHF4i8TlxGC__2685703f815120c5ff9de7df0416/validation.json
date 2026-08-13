@@ -1,0 +1,80 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation.",
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.marist.edu/academics/library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marist.edu/academics/library",
+      "error": ""
+    },
+    {
+      "url": "https://www.marist.edu/documents/d/guest/parent-family-handbook-2024",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marist.edu/documents/d/guest/parent-family-handbook-2024",
+      "error": ""
+    },
+    {
+      "url": "https://exhibits.archives.marist.edu/s/marist-heritage-project/media/13450",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://exhibits.archives.marist.edu/s/marist-heritage-project/media/13450",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.marist.edu/documents/d/guest/marist-app-for-reserving-space-pdf-pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marist.edu/documents/d/guest/marist-app-for-reserving-space-pdf-pdf",
+      "error": ""
+    },
+    {
+      "url": "https://library.marist.edu/map",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.marist.edu/map",
+      "error": ""
+    },
+    {
+      "url": "https://www.marist.edu/student-life/community/commuter/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marist.edu/student-life/community/commuter/",
+      "error": ""
+    },
+    {
+      "url": "https://library.marist.edu/web/guest/student-life/campus/housing/residence/marian-hall",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.marist.edu/web/guest/student-life/campus/housing/residence/marian-hall",
+      "error": ""
+    },
+    {
+      "url": "https://library.marist.edu/web/guest/academic-resources/alc",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.marist.edu/web/guest/academic-resources/alc",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "James A. Cannavino Library"
+  ],
+  "sourceCount": 8,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

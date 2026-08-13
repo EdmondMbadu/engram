@@ -1,0 +1,280 @@
+Reading additional input from stdin...
+2026-08-13T07:28:15.790881Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:28:15.815625Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:28:15.869937Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa05-4087-7172-b27b-135049e0dfc8.1786606076039478000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa05-8d78-7573-9944-7e978180dc8f
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"Bz6HHcxLFX31zZJi6amo","schoolName":"Harvard University","shortSchoolName":"Harvard University","townName":"Cambridge","state":"MA","countryCode":"US","website":"https://www.harvard.edu/","latitude":42.374471,"longitude":-71.118313},"templates":[{"id":"college-only-happens-here","version":"1.0","titlePattern":"Only Happens Here: {count} Traditions That Make No Sense Anywhere Else","editorialBrief":"Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.","researchQueries":["university traditions alumni","campus traditions student newspaper","school rituals history"],"count":10,"icon":"fingerprint","primarySubjectType":"tradition","allowedSubjectTypes":["tradition"],"freshnessDays":1095,"exactTitle":"Only Happens Here: 10 Traditions That Make No Sense Anywhere Else"}]}
+codex
+{
+  "complete": false,
+  "school_name": "Harvard University",
+  "town_name": "Cambridge",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Harvard University",
+      "town_name": "Cambridge",
+      "template_id": "college-only-happens-here",
+      "title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+      "description": "",
+      "icon": "fingerprint",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "tradition",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "I’m researching ten documented Harvard-specific traditions and checking each claim against a direct source.",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "https://www.harvard.edu/",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+             	,
+     			{
+      "subject_id": "placeholder-2",
+      "subject_type": "tradition",
+      "entity_name": "Research in progress",
+      "title": "Research in progress",
+      "subtitle": "Source verification underway",
+      "notes": "I’m verifying this candidate against a direct university, archive, alumni, or established student-media page.",
+      "short_summary": "Pending source verification.",
+      "evidence_claim": "Pending source verification.",
+      "source_url": "https://www.harvard.edu/",
+      "source_title": "Harvard University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending verification.",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+      },
+      {
+      "subject_id": "placeholder-3",
+      "subject_type": "tradition",
+      "entity_name": "Research in progress",
+      "title": "Research in progress",
+      "subtitle": "Source verification underway",
+      "notes": "I’m verifying this candidate against a direct university, archive, alumni, or established student-media page.",
+      "short_summary": "Pending source verification.",
+      "evidence_claim": "Pending source verification.",
+      "source_url": "https://www.harvard.edu/",
+      "source_title": "Harvard University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending verification.",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+      },
+      {
+      "subject_id": "placeholder-4",
+      "subject_type": "tradition",
+      "entity_name": "Research in progress",
+      "title": "Research in progress",
+      "subtitle": "Source verification underway",
+      "notes": "I’m verifying this candidate against a direct university, archive, alumni, or established student-media page.",
+      "short_summary": "Pending source verification.",
+      "evidence_claim": "Pending source verification.",
+      "source_url": "https://www.harvard.edu/",
+      "source_title": "Harvard University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending verification.",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+      },
+      {
+      "subject_id": "placeholder-5",
+      "subject_type": "tradition",
+      "entity_name": "Research in progress",
+      "title": "Research in progress",
+      "subtitle": "Source verification underway",
+      "notes": "I’m verifying this candidate against a direct university, archive, alumni, or established student-media page.",
+      "short_summary": "Pending source verification.",
+      "evidence_claim": "Pending source verification.",
+      "source_url": "https://www.harvard.edu/",
+      "source_title": "Harvard University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending verification.",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+      },
+      {
+      "subject_id": "placeholder-6",
+      "subject_type": "tradition",
+      "entity_name": "Research in progress",
+      "title": "Research in progress",
+      "subtitle": "Source verification underway",
+      "notes": "I’m verifying this candidate against a direct university, archive, alumni, or established student-media page.",
+      "short_summary": "Pending source verification.",
+      "evidence_claim": "Pending source verification.",
+      "source_url": "https://www.harvard.edu/",
+      "source_title": "Harvard University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending verification.",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+      },
+      {
+      "subject_id": "placeholder-7",
+      "subject_type": "tradition",
+      "entity_name": "Research in progress",
+      "title": "Research in progress",
+      "subtitle": "Source verification underway",
+      "notes": "I’m verifying this candidate against a direct university, archive, alumni, or established student-media page.",
+      "short_summary": "Pending source verification.",
+      "evidence_claim": "Pending source verification.",
+      "source_url": "https://www.harvard.edu/",
+      "source_title": "Harvard University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending verification.",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+      },
+      {
+      "subject_id": "placeholder-8",
+      "subject_type": "tradition",
+      "entity_name": "Research in progress",
+      "title": "Research in progress",
+      "subtitle": "Source verification underway",
+      "notes": "I’m verifying this candidate against a direct university, archive, alumni, or established student-media page.",
+      "short_summary": "Pending source verification.",
+      "evidence_claim": "Pending source verification.",
+      "source_url": "https://www.harvard.edu/",
+      "source_title": "Harvard University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending verification.",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+      },
+      {
+      "subject_id": "placeholder-9",
+      "subject_type": "tradition",
+      "entity_name": "Research in progress",
+      "title": "Research in progress",
+      "subtitle": "Source verification underway",
+      "notes": "I’m verifying this candidate against a direct university, archive, alumni, or established student-media page.",
+      "short_summary": "Pending source verification.",
+      "evidence_claim": "Pending source verification.",
+      "source_url": "https://www.harvard.edu/",
+      "source_title": "Harvard University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending verification.",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+      },
+      {
+      "subject_id": "placeholder-10",
+      "subject_type": "tradition",
+      "entity_name": "Research in progress",
+      "title": "Research in progress",
+      "subtitle": "Source verification underway",
+      "notes": "I’m verifying this candidate against a direct university, archive, alumni, or established student-media page.",
+      "short_summary": "Pending source verification.",
+      "evidence_claim": "Pending source verification.",
+      "source_url": "https://www.harvard.edu/",
+      "source_title": "Harvard University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "Pending verification.",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+      }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:harvard.edu Harvard traditions Housing Day Primal Scream Head of the Charles ...
+codex
+{"complete":true,"school_name":"Harvard University","town_name":"Cambridge","boards":[{"complete":true,"school_name":"Harvard University","town_name":"Cambridge","template_id":"college-only-happens-here","title":"Only Happens Here: 10 Traditions That Make No Sense Anywhere Else","description":"Ten documented Harvard rituals spanning Housing Day celebrations, House customs, convocations, and centuries-old Commencement practices.","icon":"fingerprint","cards":[{"subject_id":"harvard-housing-day","subject_type":"tradition","entity_name":"Housing Day","title":"Meet Your House on Housing Day","subtitle":"First-years receive their upper-level House assignments before spring break","notes":"Watch for costumed House teams in Harvard Yard, then follow your assigned House’s official instructions for its welcome events.","short_summary":"A spirited reveal turns Harvard’s residential assignment process into a campus-wide celebration.","evidence_claim":"Harvard identifies Housing Day as a notable College tradition when first-years learn their housing assignments for subsequent years during the week before spring break.","source_url":"https://college.harvard.edu/student-life/student-activities/traditions","source_title":"Traditions | Harvard College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The tradition centers on current Harvard College first-years receiving House assignments; consult College announcements for current arrangements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"harvard-yardfest","subject_type":"tradition","entity_name":"Yardfest","title":"Gather in the Yard for Yardfest","subtitle":"Harvard College’s April cookout and festival-style concert","notes":"Check the Dean of Students calendar for the date and entry rules, then look for the cookout and concert setup in Tercentenary Theatre.","short_summary":"An annual spring gathering brings the Harvard College community together for food and live music.","evidence_claim":"Harvard’s Dean of Students Office says the entire Harvard College community gathers each April in Tercentenary Theatre for Yardfest, a giant cookout and festival-style concert.","source_url":"https://dso.college.harvard.edu/harvard-traditions","source_title":"Harvard College Traditions | Harvard College Dean of Students Office","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Described by Harvard as an event for the Harvard College community; verify the current date and access requirements with the Dean of Students Office.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"harvard-first-year-convocation","subject_type":"tradition","entity_name":"First-Year Convocation","title":"Process into First-Year Convocation","subtitle":"Class pins and a formal welcome before fall classes begin","notes":"Follow Opening Days instructions for the procession, keep your class pin, and listen for the history and values introduced during the ceremony.","short_summary":"Harvard welcomes each incoming class with alumni, a procession, and class pins.","evidence_claim":"Harvard Alumni says First-Year Convocation began in 2009, continues annually, occurs the day before fall classes, and includes a procession and class-pin presentation.","source_url":"https://alumni.harvard.edu/college/undergraduates/first-year-convocation","source_title":"Student-Alumni Engagement Events | Harvard Alumni","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Convocation is for incoming Harvard College first-years and participating alumni; follow official Opening Days guidance.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"harvard-the-game","subject_type":"tradition","entity_name":"The Game","title":"Call Harvard–Yale Simply “The Game”","subtitle":"The Crimson and Bulldogs’ rivalry meeting, played since 1875","notes":"Confirm the year’s host campus and ticket policy before attending, then look for the event identified in Harvard materials simply as “The Game.”","short_summary":"Harvard’s long-running football rivalry with Yale carries a deliberately spare name.","evidence_claim":"Harvard College documents that the Harvard Crimson and Yale Bulldogs have met since 1875 in an event known simply as “The Game.”","source_url":"https://college.harvard.edu/student-life/student-activities/traditions","source_title":"Traditions | Harvard College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Attendance and location vary by year; consult Harvard Athletics for the current schedule and ticket requirements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"harvard-pforzheimer-polar-bear-day","subject_type":"tradition","entity_name":"Pforzheimer House International Polar Bear Day","title":"Mark Polar Bear Day at Pfoho","subtitle":"A House observance that includes adopting a wild polar bear","notes":"Look for Pforzheimer House’s official event notice before participating and use the documented conservation activity as the focal point.","short_summary":"Pforzheimer House gives an international observance a distinctly Harvard House expression.","evidence_claim":"Harvard College lists Pforzheimer House’s annual International Polar Bear Day celebration as a House tradition and says it includes adopting a real polar bear in the wild.","source_url":"https://college.harvard.edu/student-life/student-activities/traditions","source_title":"Traditions | Harvard College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This is a Pforzheimer House tradition; participation details are determined by the House and should be checked with its staff.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"harvard-lowell-tea","subject_type":"tradition","entity_name":"Lowell Tea","title":"Pause for Lowell Tea","subtitle":"A recurring custom named among Harvard’s House traditions","notes":"Consult Lowell House’s current calendar before going, and follow any resident or guest-access instructions attached to the gathering.","short_summary":"A named tea gathering represents the smaller traditions cultivated inside Harvard’s House system.","evidence_claim":"Harvard College specifically identifies the much-anticipated Lowell Tea as one of the traditions embraced by students in the Houses.","source_url":"https://college.harvard.edu/student-life/student-activities/traditions","source_title":"Traditions | Harvard College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Harvard’s overview does not specify a current schedule or public access; check directly with Lowell House.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"harvard-first-year-formal","subject_type":"tradition","entity_name":"First-Year Formal","title":"Dress for the First-Year Formal","subtitle":"A class-specific event in Harvard College’s tradition cycle","notes":"Wait for official first-year programming details before making plans, then follow the announced attire, location, and access guidance.","short_summary":"The incoming class gets a formal gathering of its own within Harvard’s annual student traditions.","evidence_claim":"Harvard College names the First-Year Formal alongside Housing Day and Yardfest as an experience that immerses students in College history and campus life.","source_url":"https://college.harvard.edu/student-life/student-activities/traditions","source_title":"Traditions | Harvard College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official traditions overview does not provide current scheduling or eligibility details; follow Harvard College first-year announcements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"harvard-commencement","subject_type":"tradition","entity_name":"Harvard Commencement","title":"Join Harvard’s Oldest Tradition","subtitle":"A University ceremony traced to nine graduates in September 1642","notes":"Use the Commencement Office schedule to distinguish the University exercises from the later House and School diploma ceremonies.","short_summary":"Harvard’s oldest tradition joins a University-wide ceremony with smaller diploma presentations.","evidence_claim":"Harvard College dates its first Commencement to September 1642 with nine seniors and describes the modern sequence of morning exercises followed by House and School diploma ceremonies.","source_url":"https://college.harvard.edu/student-life/student-activities/traditions","source_title":"Traditions | Harvard College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Harvard Yard admission on Commencement morning is controlled, and guests require tickets; consult the Commencement Office for current policies.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"harvard-latin-salutatory","subject_type":"tradition","entity_name":"Commencement Latin Salutatory","title":"Open Commencement in Latin","subtitle":"A graduating senior delivers the first student oration from memory","notes":"Listen at the opening of the University exercises for the Latin address, one of three speeches selected through Harvard’s competition.","short_summary":"A memorized Latin greeting preserves an unusually old component of Harvard Commencement.","evidence_claim":"Harvard’s Commencement Office calls the Student Orations Competition one of its oldest traditions and states that its first oration is delivered in Latin by a graduating College senior.","source_url":"https://commencement.harvard.edu/student-orations-competition","source_title":"Student Orations Competition | Commencement Office","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The oration is part of the ticketed Commencement exercises; competition eligibility and submission rules apply to prospective speakers.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"harvard-psalm-78-st-martins","subject_type":"tradition","entity_name":"Psalm 78 at Harvard Baccalaureate","title":"Sing Psalm 78 to St. Martin’s","subtitle":"A Harvard ceremonial pairing documented since at least 1806","notes":"Use the current Baccalaureate program to follow the service and listen for Psalm 78 set to the historic St. Martin’s tune.","short_summary":"One specific psalm-and-tune pairing links today’s senior ceremony to two centuries of Harvard observance.","evidence_claim":"The Memorial Church says Psalm 78 set to St. Martin’s has been sung at Harvard Commencement and Baccalaureate since at least 1806 and remains a symbol of continuity.","source_url":"https://memorialchurch.harvard.edu/event/harvard-college-baccalaureate-2026?occ_id=0","source_title":"Harvard College Baccalaureate 2026 | The Memorial Church","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Baccalaureate arrangements and audience access are set annually; consult the current Memorial Church and Commencement guidance.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:29:54.787133Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa05-8d78-7573-9944-7e978180dc8f.1786606095737602000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+16,635
+
+{"complete":true,"school_name":"Harvard University","town_name":"Cambridge","boards":[{"complete":true,"school_name":"Harvard University","town_name":"Cambridge","template_id":"college-only-happens-here","title":"Only Happens Here: 10 Traditions That Make No Sense Anywhere Else","description":"Ten documented Harvard rituals spanning Housing Day celebrations, House customs, convocations, and centuries-old Commencement practices.","icon":"fingerprint","cards":[{"subject_id":"harvard-housing-day","subject_type":"tradition","entity_name":"Housing Day","title":"Meet Your House on Housing Day","subtitle":"First-years receive their upper-level House assignments before spring break","notes":"Watch for costumed House teams in Harvard Yard, then follow your assigned House’s official instructions for its welcome events.","short_summary":"A spirited reveal turns Harvard’s residential assignment process into a campus-wide celebration.","evidence_claim":"Harvard identifies Housing Day as a notable College tradition when first-years learn their housing assignments for subsequent years during the week before spring break.","source_url":"https://college.harvard.edu/student-life/student-activities/traditions","source_title":"Traditions | Harvard College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The tradition centers on current Harvard College first-years receiving House assignments; consult College announcements for current arrangements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"harvard-yardfest","subject_type":"tradition","entity_name":"Yardfest","title":"Gather in the Yard for Yardfest","subtitle":"Harvard College’s April cookout and festival-style concert","notes":"Check the Dean of Students calendar for the date and entry rules, then look for the cookout and concert setup in Tercentenary Theatre.","short_summary":"An annual spring gathering brings the Harvard College community together for food and live music.","evidence_claim":"Harvard’s Dean of Students Office says the entire Harvard College community gathers each April in Tercentenary Theatre for Yardfest, a giant cookout and festival-style concert.","source_url":"https://dso.college.harvard.edu/harvard-traditions","source_title":"Harvard College Traditions | Harvard College Dean of Students Office","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Described by Harvard as an event for the Harvard College community; verify the current date and access requirements with the Dean of Students Office.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"harvard-first-year-convocation","subject_type":"tradition","entity_name":"First-Year Convocation","title":"Process into First-Year Convocation","subtitle":"Class pins and a formal welcome before fall classes begin","notes":"Follow Opening Days instructions for the procession, keep your class pin, and listen for the history and values introduced during the ceremony.","short_summary":"Harvard welcomes each incoming class with alumni, a procession, and class pins.","evidence_claim":"Harvard Alumni says First-Year Convocation began in 2009, continues annually, occurs the day before fall classes, and includes a procession and class-pin presentation.","source_url":"https://alumni.harvard.edu/college/undergraduates/first-year-convocation","source_title":"Student-Alumni Engagement Events | Harvard Alumni","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Convocation is for incoming Harvard College first-years and participating alumni; follow official Opening Days guidance.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"harvard-the-game","subject_type":"tradition","entity_name":"The Game","title":"Call Harvard–Yale Simply “The Game”","subtitle":"The Crimson and Bulldogs’ rivalry meeting, played since 1875","notes":"Confirm the year’s host campus and ticket policy before attending, then look for the event identified in Harvard materials simply as “The Game.”","short_summary":"Harvard’s long-running football rivalry with Yale carries a deliberately spare name.","evidence_claim":"Harvard College documents that the Harvard Crimson and Yale Bulldogs have met since 1875 in an event known simply as “The Game.”","source_url":"https://college.harvard.edu/student-life/student-activities/traditions","source_title":"Traditions | Harvard College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Attendance and location vary by year; consult Harvard Athletics for the current schedule and ticket requirements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"harvard-pforzheimer-polar-bear-day","subject_type":"tradition","entity_name":"Pforzheimer House International Polar Bear Day","title":"Mark Polar Bear Day at Pfoho","subtitle":"A House observance that includes adopting a wild polar bear","notes":"Look for Pforzheimer House’s official event notice before participating and use the documented conservation activity as the focal point.","short_summary":"Pforzheimer House gives an international observance a distinctly Harvard House expression.","evidence_claim":"Harvard College lists Pforzheimer House’s annual International Polar Bear Day celebration as a House tradition and says it includes adopting a real polar bear in the wild.","source_url":"https://college.harvard.edu/student-life/student-activities/traditions","source_title":"Traditions | Harvard College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This is a Pforzheimer House tradition; participation details are determined by the House and should be checked with its staff.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"harvard-lowell-tea","subject_type":"tradition","entity_name":"Lowell Tea","title":"Pause for Lowell Tea","subtitle":"A recurring custom named among Harvard’s House traditions","notes":"Consult Lowell House’s current calendar before going, and follow any resident or guest-access instructions attached to the gathering.","short_summary":"A named tea gathering represents the smaller traditions cultivated inside Harvard’s House system.","evidence_claim":"Harvard College specifically identifies the much-anticipated Lowell Tea as one of the traditions embraced by students in the Houses.","source_url":"https://college.harvard.edu/student-life/student-activities/traditions","source_title":"Traditions | Harvard College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Harvard’s overview does not specify a current schedule or public access; check directly with Lowell House.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"harvard-first-year-formal","subject_type":"tradition","entity_name":"First-Year Formal","title":"Dress for the First-Year Formal","subtitle":"A class-specific event in Harvard College’s tradition cycle","notes":"Wait for official first-year programming details before making plans, then follow the announced attire, location, and access guidance.","short_summary":"The incoming class gets a formal gathering of its own within Harvard’s annual student traditions.","evidence_claim":"Harvard College names the First-Year Formal alongside Housing Day and Yardfest as an experience that immerses students in College history and campus life.","source_url":"https://college.harvard.edu/student-life/student-activities/traditions","source_title":"Traditions | Harvard College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official traditions overview does not provide current scheduling or eligibility details; follow Harvard College first-year announcements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"harvard-commencement","subject_type":"tradition","entity_name":"Harvard Commencement","title":"Join Harvard’s Oldest Tradition","subtitle":"A University ceremony traced to nine graduates in September 1642","notes":"Use the Commencement Office schedule to distinguish the University exercises from the later House and School diploma ceremonies.","short_summary":"Harvard’s oldest tradition joins a University-wide ceremony with smaller diploma presentations.","evidence_claim":"Harvard College dates its first Commencement to September 1642 with nine seniors and describes the modern sequence of morning exercises followed by House and School diploma ceremonies.","source_url":"https://college.harvard.edu/student-life/student-activities/traditions","source_title":"Traditions | Harvard College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Harvard Yard admission on Commencement morning is controlled, and guests require tickets; consult the Commencement Office for current policies.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"harvard-latin-salutatory","subject_type":"tradition","entity_name":"Commencement Latin Salutatory","title":"Open Commencement in Latin","subtitle":"A graduating senior delivers the first student oration from memory","notes":"Listen at the opening of the University exercises for the Latin address, one of three speeches selected through Harvard’s competition.","short_summary":"A memorized Latin greeting preserves an unusually old component of Harvard Commencement.","evidence_claim":"Harvard’s Commencement Office calls the Student Orations Competition one of its oldest traditions and states that its first oration is delivered in Latin by a graduating College senior.","source_url":"https://commencement.harvard.edu/student-orations-competition","source_title":"Student Orations Competition | Commencement Office","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The oration is part of the ticketed Commencement exercises; competition eligibility and submission rules apply to prospective speakers.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"harvard-psalm-78-st-martins","subject_type":"tradition","entity_name":"Psalm 78 at Harvard Baccalaureate","title":"Sing Psalm 78 to St. Martin’s","subtitle":"A Harvard ceremonial pairing documented since at least 1806","notes":"Use the current Baccalaureate program to follow the service and listen for Psalm 78 set to the historic St. Martin’s tune.","short_summary":"One specific psalm-and-tune pairing links today’s senior ceremony to two centuries of Harvard observance.","evidence_claim":"The Memorial Church says Psalm 78 set to St. Martin’s has been sung at Harvard Commencement and Baccalaureate since at least 1806 and remains a symbol of continuity.","source_url":"https://memorialchurch.harvard.edu/event/harvard-college-baccalaureate-2026?occ_id=0","source_title":"Harvard College Baccalaureate 2026 | The Memorial Church","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Baccalaureate arrangements and audience access are set annually; consult the current Memorial Church and Commencement guidance.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

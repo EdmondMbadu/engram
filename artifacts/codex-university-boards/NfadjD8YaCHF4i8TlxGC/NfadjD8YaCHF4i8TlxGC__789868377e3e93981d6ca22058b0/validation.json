@@ -1,0 +1,79 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://uparkdenver.com/visit-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://uparkdenver.com/visit-us/",
+      "error": ""
+    },
+    {
+      "url": "https://schedule-pdfs.rtd-denver.com/api/file/current/24/Northbound/1?lang=vi",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://schedule-pdfs.rtd-denver.com/api/file/current/24/Northbound/1?lang=vi",
+      "error": ""
+    },
+    {
+      "url": "https://app.rtd-denver.com/facilities/colorado-station",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://app.rtd-denver.com/facilities/colorado-station",
+      "error": ""
+    },
+    {
+      "url": "https://www.uhplaza.com/contact/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uhplaza.com/contact/",
+      "error": ""
+    },
+    {
+      "url": "https://www.cityofdenvergolf.com/harvard-gulch/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cityofdenvergolf.com/harvard-gulch/",
+      "error": ""
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/0/05/Final_integrated_feasibility_report_and_environmental_impact_statement-_Adams_and_Denver_Counties%2C_Colorado%2C_general_investigation_study-_Appendix_N%2C_recreation_-_USACE-p16021coll7-11221.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://upload.wikimedia.org/wikipedia/commons/0/05/Final_integrated_feasibility_report_and_environmental_impact_statement-_Adams_and_Denver_Counties%2C_Colorado%2C_general_investigation_study-_Appendix_N%2C_recreation_-_USACE-p16021coll7-11221.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.illegalpetes.com/locations/du",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.illegalpetes.com/locations/du",
+      "error": ""
+    },
+    {
+      "url": "https://jerusalemrestaurant.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://jerusalemrestaurant.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Jerusalem Restaurant"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

@@ -1,0 +1,39 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "UHP2iKnJaUr8qnyzpzvG",
+    "schoolName": "University of Kentucky",
+    "shortSchoolName": "University of Kentucky",
+    "townName": "Lexington",
+    "state": "KY",
+    "countryCode": "US",
+    "unitId": "157085",
+    "website": "https://www.uky.edu/",
+    "latitude": 38.038911,
+    "longitude": -84.504747,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/2/2d/University_of_Kentucky_seal.svg/250px-University_of_Kentucky_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=uky.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain University of Kentucky",
+  "excluded_subjects": [],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

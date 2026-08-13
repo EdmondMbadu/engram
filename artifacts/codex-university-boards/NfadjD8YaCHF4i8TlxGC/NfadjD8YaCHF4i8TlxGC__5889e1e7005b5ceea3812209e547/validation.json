@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.butler.edu/map/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.butler.edu/about-butler/maps-directions/",
+      "error": ""
+    },
+    {
+      "url": "https://www.butler.edu/student-life/student-involvement/about-atherton/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.butler.edu/student-life/student-involvement/about-atherton/",
+      "error": ""
+    },
+    {
+      "url": "https://www.butler.edu/library/spaces/irwin/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.butler.edu/library/spaces/irwin/",
+      "error": ""
+    },
+    {
+      "url": "https://www.butler.edu/holcomb-gardens/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.butler.edu/holcomb-gardens/",
+      "error": ""
+    },
+    {
+      "url": "https://www.butler.edu/student-life/parents-families/butler-glossary-of-terms/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.butler.edu/student-life/parents-families/butler-glossary-of-terms/",
+      "error": ""
+    },
+    {
+      "url": "https://www.butler.edu/butlerblue/bulldog-memorial/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.butler.edu/butlerblue/bulldog-memorial/",
+      "error": ""
+    },
+    {
+      "url": "https://www.butler.edu/library/spaces/science/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.butler.edu/library/spaces/science/",
+      "error": ""
+    },
+    {
+      "url": "https://www.butler.edu/student-life/orientation/orientation-schedule/full-schedule/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.butler.edu/student-life/orientation/orientation-schedule/full-schedule/",
+      "error": ""
+    },
+    {
+      "url": "https://www.butler.edu/arts-sciences/holcomb-observatory/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.butler.edu/arts-sciences/holcomb-observatory/",
+      "error": ""
+    },
+    {
+      "url": "https://stories.butler.edu/midtown-provisions-opens-a-new-chapter-in-butler-dining/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stories.butler.edu/midtown-provisions-opens-a-new-chapter-in-butler-dining/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "The Compass Center"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

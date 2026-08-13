@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.ufl.edu/about/visiting-campus/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ufl.edu/about/visiting-campus/",
+      "error": ""
+    },
+    {
+      "url": "https://exhibits.uflib.ufl.edu/UFplaza/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://exhibits.uflib.ufl.edu/UFplaza/",
+      "error": ""
+    },
+    {
+      "url": "https://brandcenter.ufl.edu/other-marks/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://brandcenter.ufl.edu/other-marks/",
+      "error": ""
+    },
+    {
+      "url": "https://librarywest.uflib.ufl.edu/services-resources/vistors/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://librarywest.uflib.ufl.edu/services-resources/vistors/",
+      "error": ""
+    },
+    {
+      "url": "https://businessservices.ufl.edu/services/commemorative-cards/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://businessservices.ufl.edu/services/commemorative-cards/",
+      "error": ""
+    },
+    {
+      "url": "https://ufl-public.courseleaf.com/UGRD/student-life/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://ufl-public.courseleaf.com/UGRD/student-life/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://harn.ufl.edu/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://harn.ufl.edu/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://recsports.ufl.edu/about/memberships/access-lake-wauburg/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recsports.ufl.edu/about/memberships/access-lake-wauburg/",
+      "error": ""
+    },
+    {
+      "url": "https://bats.p01.wp.it.ufl.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bats.p01.wp.it.ufl.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://studentengagement.ufl.edu/gatornights/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentengagement.ufl.edu/gatornights/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

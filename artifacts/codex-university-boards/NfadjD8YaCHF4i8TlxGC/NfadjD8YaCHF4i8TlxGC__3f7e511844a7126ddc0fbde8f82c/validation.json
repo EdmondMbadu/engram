@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.hws.edu/photography/2025/Favorite-Places-on-Campus.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hws.edu/photography/2025/Favorite-Places-on-Campus.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.hws.edu/offices/provenzano-gallery/default.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hws.edu/offices/provenzano-gallery/default.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.hws.edu/together/student-experience.aspx?id=3",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hws.edu/together/student-experience.aspx?id=3",
+      "error": ""
+    },
+    {
+      "url": "https://www.hws.edu/offices/student-engagement/hws-student-government.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hws.edu/offices/student-engagement/hws-student-government.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.hws.edu/alum/pss-summer23/a-grand-opening.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hws.edu/alum/pss-summer23/a-grand-opening.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.hws.edu/offices/davis-gallery/default.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hws.edu/offices/davis-gallery/default.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.hws.edu/offices/recreation/default.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hws.edu/offices/recreation/default.aspx",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

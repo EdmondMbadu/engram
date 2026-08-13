@@ -1,0 +1,200 @@
+Reading additional input from stdin...
+2026-08-13T09:42:57.865592Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T09:42:57.891821Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-terra
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa80-e02a-7152-9bb5-6bd666ff79bc
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"liQz7xb9fmYUexsDpm0I","schoolName":"University of San Francisco","shortSchoolName":"University of San Francisco","townName":"San Francisco","state":"CA","countryCode":"US","website":"https://www.usfca.edu/","latitude":37.776618,"longitude":-122.450477},"templates":[{"id":"college-study-spots","version":"1.0","titlePattern":"Claimed by 9am: {count} Study Spots Worth Showing Up Early For","editorialBrief":"Choose ten distinct study environments. Verify access rules, room or reservation constraints, and the physical affordance that makes each useful. Treat “Claimed by 9am” as editorial framing; never assert crowding or student behavior without evidence.","researchQueries":["campus study spaces","library study rooms students","quiet study campus"],"count":10,"icon":"menu_book","primarySubjectType":"study_space","allowedSubjectTypes":["study_space","place"],"freshnessDays":180,"exactTitle":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For"}]}
+codex
+{"complete":false,"school_name":"University of San Francisco","town_name":"San Francisco","boards":[{"complete":false,"school_name":"University of San Francisco","town_name":"San Francisco","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"I’m verifying ten distinct, access-appropriate USF study environments from direct sources now.","icon":"menu_book","cards":       
+    [
+      {
+        "subject_id":"research-in-progress",
+        "subject_type":"study_space",
+        "entity_name":"Research in progress",
+        "title":"Research in progress",
+        "subtitle":"University of San Francisco",
+        "notes":"I’m checking official library and campus sources for distinct spaces, access details, and verifiable locations.",
+        "short_summary":"Research in progress.",
+        "evidence_claim":"Research in progress.",
+        "source_url":"https://www.usfca.edu/",
+        "source_title":"University of San Francisco",
+        "source_kind":"university_official",
+        "source_published_at":null,
+        "source_fetched_at":"2026-08-13",
+        "latitude":null,
+        "longitude":null,
+        "maps_url":null,
+        "access_notes":"Pending verification.",
+        "cost_status":"unknown",
+        "under21_safe":true
+      }
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     ,{"subject_id":"research-in-progress-2","subject_type":"study_space","entity_name":"Research in progress","title":"Research in progress","subtitle":"University of San Francisco","notes":"I’m checking official library and campus sources for distinct spaces, access details, and verifiable locations.","short_summary":"Research in progress.","evidence_claim":"Research in progress.","source_url":"https://www.usfca.edu/","source_title":"University of San Francisco","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+    ,{"subject_id":"research-in-progress-3","subject_type":"study_space","entity_name":"Research in progress","title":"Research in progress","subtitle":"University of San Francisco","notes":"I’m checking official library and campus sources for distinct spaces, access details, and verifiable locations.","short_summary":"Research in progress.","evidence_claim":"Research in progress.","source_url":"https://www.usfca.edu/","source_title":"University of San Francisco","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  
+     
+     
+     
+     
+     
+     
+    ,{"subject_id":"research-in-progress-4","subject_type":"study_space","entity_name":"Research in progress","title":"Research in progress","subtitle":"University of San Francisco","notes":"I’m checking official library and campus sources for distinct spaces, access details, and verifiable locations.","short_summary":"Research in progress.","evidence_claim":"Research in progress.","source_url":"https://www.usfca.edu/","source_title":"University of San Francisco","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  
+     
+     
+     
+    ,{"subject_id":"research-in-progress-5","subject_type":"study_space","entity_name":"Research in progress","title":"Research in progress","subtitle":"University of San Francisco","notes":"I’m checking official library and campus sources for distinct spaces, access details, and verifiable locations.","short_summary":"Research in progress.","evidence_claim":"Research in progress.","source_url":"https://www.usfca.edu/","source_title":"University of San Francisco","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  
+     
+     
+     
+    ,{"subject_id":"research-in-progress-6","subject_type":"study_space","entity_name":"Research in progress","title":"Research in progress","subtitle":"University of San Francisco","notes":"I’m checking official library and campus sources for distinct spaces, access details, and verifiable locations.","short_summary":"Research in progress.","evidence_claim":"Research in progress.","source_url":"https://www.usfca.edu/","source_title":"University of San Francisco","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  
+     
+     
+    ,{"subject_id":"research-in-progress-7","subject_type":"study_space","entity_name":"Research in progress","title":"Research in progress","subtitle":"University of San Francisco","notes":"I’m checking official library and campus sources for distinct spaces, access details, and verifiable locations.","short_summary":"Research in progress.","evidence_claim":"Research in progress.","source_url":"https://www.usfca.edu/","source_title":"University of San Francisco","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  
+     
+    ,{"subject_id":"research-in-progress-8","subject_type":"study_space","entity_name":"Research in progress","title":"Research in progress","subtitle":"University of San Francisco","notes":"I’m checking official library and campus sources for distinct spaces, access details, and verifiable locations.","short_summary":"Research in progress.","evidence_claim":"Research in progress.","source_url":"https://www.usfca.edu/","source_title":"University of San Francisco","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  
+    ,{"subject_id":"research-in-progress-9","subject_type":"study_space","entity_name":"Research in progress","title":"Research in progress","subtitle":"University of San Francisco","notes":"I’m checking official library and campus sources for distinct spaces, access details, and verifiable locations.","short_summary":"Research in progress.","evidence_claim":"Research in progress.","source_url":"https://www.usfca.edu/","source_title":"University of San Francisco","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  
+    ,{"subject_id":"research-in-progress-10","subject_type":"study_space","entity_name":"Research in progress","title":"Research in progress","subtitle":"University of San Francisco","notes":"I’m checking official library and campus sources for distinct spaces, access details, and verifiable locations.","short_summary":"Research in progress.","evidence_claim":"Research in progress.","source_url":"https://www.usfca.edu/","source_title":"University of San Francisco","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"unknown","under21_safe":true}  
+     
+    ],
+    "warnings":["Research underway; this interim object is not the final board."]
+  }],"warnings":["Searching direct USF sources."]}
+web search: 
+web search: site:usfca.edu library study spaces University of San Francisco Gleeson Library ...
+web search: 
+web search: 
+codex
+{"complete":true,"school_name":"University of San Francisco","town_name":"San Francisco","boards":[{"complete":true,"school_name":"University of San Francisco","town_name":"San Francisco","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten named USF campus study environments, including officially identified quiet places and Gleeson Library study zones.","icon":"menu_book","cards":[{"subject_id":"usf-casa-cozy-nook-uc3","subject_type":"study_space","entity_name":"Cozy Nook outside the CASA Office","title":"CASA’s UC 3 Cozy Nook","subtitle":"University Center, third floor","notes":"Bring independent work to the nook outside the Center for Academic and Student Achievement office, identified by USF as a quiet place on campus.","short_summary":"A named quiet nook on University Center’s third floor.","evidence_claim":"USF’s Quiet Places on Campus page identifies a “Cozy nook outside the CASA Office on UC 3.”","source_url":"https://myusf.usfca.edu/casa/neurodiversityconnections/quietplacesoncampus","source_title":"Quiet Places on Campus | University of San Francisco","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.usfca.edu/campus-map","access_notes":"Located in the University Center; follow current campus building-access rules.","cost_status":"unknown","under21_safe":true},{"subject_id":"usf-university-center-5-lounge","subject_type":"study_space","entity_name":"Lounge Area on UC 5","title":"University Center 5 Lounge","subtitle":"University Center, fifth floor","notes":"Set up in the fifth-floor lounge when a designated quiet campus location suits your reading, drafting, or laptop work.","short_summary":"A quiet lounge area on UC 5.","evidence_claim":"USF’s Quiet Places on Campus page identifies a “Lounge area on UC 5.”","source_url":"https://myusf.usfca.edu/casa/neurodiversityconnections/quietplacesoncampus","source_title":"Quiet Places on Campus | University of San Francisco","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.usfca.edu/campus-map","access_notes":"Located in the University Center; follow current campus building-access rules.","cost_status":"unknown","under21_safe":true},{"subject_id":"usf-lo-schiavo-basement-lounge","subject_type":"study_space","entity_name":"Lo Schiavo Basement Lounge","title":"Lo Schiavo Basement Lounge","subtitle":"John Lo Schiavo Center for Science and Innovation","notes":"Use this named basement lounge for a change of setting between classes; USF includes it in its campus quiet-places guide.","short_summary":"A listed quiet lounge in Lo Schiavo’s basement.","evidence_claim":"USF’s Quiet Places on Campus page identifies the “Lo Schiavo Basement Lounge.”","source_url":"https://myusf.usfca.edu/casa/neurodiversityconnections/quietplacesoncampus","source_title":"Quiet Places on Campus | University of San Francisco","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.usfca.edu/campus-map","access_notes":"Located in the Lo Schiavo Center for Science and Innovation; follow current building-access rules.","cost_status":"unknown","under21_safe":true},{"subject_id":"usf-kalmanovitz-atrium","subject_type":"study_space","entity_name":"Kalmanovitz Atrium","title":"Kalmanovitz Atrium","subtitle":"Kalmanovitz Hall","notes":"Choose the atrium for independent work in a named quiet-place location, and keep the setting usable for others sharing the space.","short_summary":"A named quiet-study setting in Kalmanovitz Hall.","evidence_claim":"USF’s Quiet Places on Campus page identifies the “Kalmanovitz Atrium.”","source_url":"https://myusf.usfca.edu/casa/neurodiversityconnections/quietplacesoncampus","source_title":"Quiet Places on Campus | University of San Francisco","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.usfca.edu/campus-map","access_notes":"Located in Kalmanovitz Hall; follow current building-access rules.","cost_status":"unknown","under21_safe":true},{"subject_id":"usf-kalmanovitz-annex","subject_type":"study_space","entity_name":"Kalmanovitz Annex","title":"Kalmanovitz Annex","subtitle":"Kalmanovitz Hall","notes":"Head to the Kalmanovitz Annex for a quiet-place option distinct from the building’s atrium when you need to focus on coursework.","short_summary":"A second named quiet-study setting in Kalmanovitz Hall.","evidence_claim":"USF’s Quiet Places on Campus page identifies the “Kalmanovitz Annex.”","source_url":"https://myusf.usfca.edu/casa/neurodiversityconnections/quietplacesoncampus","source_title":"Quiet Places on Campus | University of San Francisco","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.usfca.edu/campus-map","access_notes":"Located in Kalmanovitz Hall; follow current building-access rules.","cost_status":"unknown","under21_safe":true},{"subject_id":"usf-malloy-entrance-lounge","subject_type":"study_space","entity_name":"Malloy Hall Entrance Lounge","title":"Malloy Hall Entrance Lounge","subtitle":"Malloy Hall","notes":"Use the entrance lounge as a named quiet-place option for a reading session or focused laptop task inside Malloy Hall.","short_summary":"A quiet lounge at the Malloy Hall entrance.","evidence_claim":"USF’s Quiet Places on Campus page identifies the “Malloy Hall Entrance Lounge.”","source_url":"https://myusf.usfca.edu/casa/neurodiversityconnections/quietplacesoncampus","source_title":"Quiet Places on Campus | University of San Francisco","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.usfca.edu/campus-map","access_notes":"Located in Malloy Hall; follow current building-access rules.","cost_status":"unknown","under21_safe":true},{"subject_id":"usf-malloy-hall-courtyard","subject_type":"study_space","entity_name":"Malloy Hall Courtyard","title":"Malloy Hall Courtyard","subtitle":"Malloy Hall","notes":"Take materials to the Malloy Hall Courtyard for an outdoor quiet-place option, weather and any posted access guidance permitting.","short_summary":"An outdoor quiet-study option at Malloy Hall.","evidence_claim":"USF’s Quiet Places on Campus page identifies the “Malloy Hall Courtyard.”","source_url":"https://myusf.usfca.edu/casa/neurodiversityconnections/quietplacesoncampus","source_title":"Quiet Places on Campus | University of San Francisco","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.usfca.edu/campus-map","access_notes":"Outdoor campus location; follow current building and courtyard access guidance.","cost_status":"unknown","under21_safe":true},{"subject_id":"usf-gleeson-library-atrium","subject_type":"study_space","entity_name":"Gleeson Library Atrium","title":"Gleeson Library Atrium","subtitle":"Gleeson Library | Geschke Center, first floor","notes":"Use the Atrium for quiet solo work; USF’s library study-zone guidance specifically classifies the first-floor Atrium as quiet study.","short_summary":"A first-floor quiet-study zone in Gleeson Library.","evidence_claim":"USF identifies the Gleeson Library Atrium as a quiet place, and library guidance classifies the first-floor Atrium as a quiet study zone.","source_url":"https://usfblogs.usfca.edu/gleeson-gleanings/2018/01/23/updated-study-zones/","source_title":"Updated Study Zones | Gleeson Gleanings","source_kind":"university_official","source_published_at":"2018-01-23","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.usfca.edu/campus-map","access_notes":"USF states that students need a valid USF ID to access the library building.","cost_status":"unknown","under21_safe":true},{"subject_id":"usf-gleeson-library-fourth-floor","subject_type":"study_space","entity_name":"Gleeson Library 4th Floor","title":"Gleeson Library Fourth Floor","subtitle":"Gleeson Library | Geschke Center","notes":"Work collaboratively on the fourth floor, which USF’s study-zone guidance classifies for conversation study and its quiet-places guide photographs.","short_summary":"A documented conversation-study floor in Gleeson Library.","evidence_claim":"USF’s Quiet Places on Campus page identifies “Gleeson Library 4th Floor,” and library guidance classifies the fourth floor as a conversation study zone.","source_url":"https://myusf.usfca.edu/casa/neurodiversityconnections/quietplacesoncampus","source_title":"Quiet Places on Campus | University of San Francisco","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.usfca.edu/campus-map","access_notes":"USF states that students need a valid USF ID to access the library building.","cost_status":"unknown","under21_safe":true},{"subject_id":"usf-gleeson-library-third-floor-south","subject_type":"study_space","entity_name":"Gleeson Library Third Floor South","title":"Gleeson’s Silent South Floor","subtitle":"Gleeson Library | Geschke Center, third floor south","notes":"Choose the front half of Gleeson’s third-floor south area when you need a library zone explicitly designated for silent study.","short_summary":"A designated silent-study zone on Gleeson’s third floor.","evidence_claim":"USF library guidance designates the front half of Gleeson Library’s third-floor south area as a silent study zone.","source_url":"https://usfblogs.usfca.edu/gleeson-gleanings/2018/01/23/updated-study-zones/","source_title":"Updated Study Zones | Gleeson Gleanings","source_kind":"university_official","source_published_at":"2018-01-23","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.usfca.edu/campus-map","access_notes":"USF states that students need a valid USF ID to access the library building.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T09:44:40.381805Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa80-e02a-7152-9bb5-6bd666ff79bc.1786614177835240000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+29,437
+
+{"complete":true,"school_name":"University of San Francisco","town_name":"San Francisco","boards":[{"complete":true,"school_name":"University of San Francisco","town_name":"San Francisco","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten named USF campus study environments, including officially identified quiet places and Gleeson Library study zones.","icon":"menu_book","cards":[{"subject_id":"usf-casa-cozy-nook-uc3","subject_type":"study_space","entity_name":"Cozy Nook outside the CASA Office","title":"CASA’s UC 3 Cozy Nook","subtitle":"University Center, third floor","notes":"Bring independent work to the nook outside the Center for Academic and Student Achievement office, identified by USF as a quiet place on campus.","short_summary":"A named quiet nook on University Center’s third floor.","evidence_claim":"USF’s Quiet Places on Campus page identifies a “Cozy nook outside the CASA Office on UC 3.”","source_url":"https://myusf.usfca.edu/casa/neurodiversityconnections/quietplacesoncampus","source_title":"Quiet Places on Campus | University of San Francisco","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.usfca.edu/campus-map","access_notes":"Located in the University Center; follow current campus building-access rules.","cost_status":"unknown","under21_safe":true},{"subject_id":"usf-university-center-5-lounge","subject_type":"study_space","entity_name":"Lounge Area on UC 5","title":"University Center 5 Lounge","subtitle":"University Center, fifth floor","notes":"Set up in the fifth-floor lounge when a designated quiet campus location suits your reading, drafting, or laptop work.","short_summary":"A quiet lounge area on UC 5.","evidence_claim":"USF’s Quiet Places on Campus page identifies a “Lounge area on UC 5.”","source_url":"https://myusf.usfca.edu/casa/neurodiversityconnections/quietplacesoncampus","source_title":"Quiet Places on Campus | University of San Francisco","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.usfca.edu/campus-map","access_notes":"Located in the University Center; follow current campus building-access rules.","cost_status":"unknown","under21_safe":true},{"subject_id":"usf-lo-schiavo-basement-lounge","subject_type":"study_space","entity_name":"Lo Schiavo Basement Lounge","title":"Lo Schiavo Basement Lounge","subtitle":"John Lo Schiavo Center for Science and Innovation","notes":"Use this named basement lounge for a change of setting between classes; USF includes it in its campus quiet-places guide.","short_summary":"A listed quiet lounge in Lo Schiavo’s basement.","evidence_claim":"USF’s Quiet Places on Campus page identifies the “Lo Schiavo Basement Lounge.”","source_url":"https://myusf.usfca.edu/casa/neurodiversityconnections/quietplacesoncampus","source_title":"Quiet Places on Campus | University of San Francisco","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.usfca.edu/campus-map","access_notes":"Located in the Lo Schiavo Center for Science and Innovation; follow current building-access rules.","cost_status":"unknown","under21_safe":true},{"subject_id":"usf-kalmanovitz-atrium","subject_type":"study_space","entity_name":"Kalmanovitz Atrium","title":"Kalmanovitz Atrium","subtitle":"Kalmanovitz Hall","notes":"Choose the atrium for independent work in a named quiet-place location, and keep the setting usable for others sharing the space.","short_summary":"A named quiet-study setting in Kalmanovitz Hall.","evidence_claim":"USF’s Quiet Places on Campus page identifies the “Kalmanovitz Atrium.”","source_url":"https://myusf.usfca.edu/casa/neurodiversityconnections/quietplacesoncampus","source_title":"Quiet Places on Campus | University of San Francisco","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.usfca.edu/campus-map","access_notes":"Located in Kalmanovitz Hall; follow current building-access rules.","cost_status":"unknown","under21_safe":true},{"subject_id":"usf-kalmanovitz-annex","subject_type":"study_space","entity_name":"Kalmanovitz Annex","title":"Kalmanovitz Annex","subtitle":"Kalmanovitz Hall","notes":"Head to the Kalmanovitz Annex for a quiet-place option distinct from the building’s atrium when you need to focus on coursework.","short_summary":"A second named quiet-study setting in Kalmanovitz Hall.","evidence_claim":"USF’s Quiet Places on Campus page identifies the “Kalmanovitz Annex.”","source_url":"https://myusf.usfca.edu/casa/neurodiversityconnections/quietplacesoncampus","source_title":"Quiet Places on Campus | University of San Francisco","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.usfca.edu/campus-map","access_notes":"Located in Kalmanovitz Hall; follow current building-access rules.","cost_status":"unknown","under21_safe":true},{"subject_id":"usf-malloy-entrance-lounge","subject_type":"study_space","entity_name":"Malloy Hall Entrance Lounge","title":"Malloy Hall Entrance Lounge","subtitle":"Malloy Hall","notes":"Use the entrance lounge as a named quiet-place option for a reading session or focused laptop task inside Malloy Hall.","short_summary":"A quiet lounge at the Malloy Hall entrance.","evidence_claim":"USF’s Quiet Places on Campus page identifies the “Malloy Hall Entrance Lounge.”","source_url":"https://myusf.usfca.edu/casa/neurodiversityconnections/quietplacesoncampus","source_title":"Quiet Places on Campus | University of San Francisco","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.usfca.edu/campus-map","access_notes":"Located in Malloy Hall; follow current building-access rules.","cost_status":"unknown","under21_safe":true},{"subject_id":"usf-malloy-hall-courtyard","subject_type":"study_space","entity_name":"Malloy Hall Courtyard","title":"Malloy Hall Courtyard","subtitle":"Malloy Hall","notes":"Take materials to the Malloy Hall Courtyard for an outdoor quiet-place option, weather and any posted access guidance permitting.","short_summary":"An outdoor quiet-study option at Malloy Hall.","evidence_claim":"USF’s Quiet Places on Campus page identifies the “Malloy Hall Courtyard.”","source_url":"https://myusf.usfca.edu/casa/neurodiversityconnections/quietplacesoncampus","source_title":"Quiet Places on Campus | University of San Francisco","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.usfca.edu/campus-map","access_notes":"Outdoor campus location; follow current building and courtyard access guidance.","cost_status":"unknown","under21_safe":true},{"subject_id":"usf-gleeson-library-atrium","subject_type":"study_space","entity_name":"Gleeson Library Atrium","title":"Gleeson Library Atrium","subtitle":"Gleeson Library | Geschke Center, first floor","notes":"Use the Atrium for quiet solo work; USF’s library study-zone guidance specifically classifies the first-floor Atrium as quiet study.","short_summary":"A first-floor quiet-study zone in Gleeson Library.","evidence_claim":"USF identifies the Gleeson Library Atrium as a quiet place, and library guidance classifies the first-floor Atrium as a quiet study zone.","source_url":"https://usfblogs.usfca.edu/gleeson-gleanings/2018/01/23/updated-study-zones/","source_title":"Updated Study Zones | Gleeson Gleanings","source_kind":"university_official","source_published_at":"2018-01-23","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.usfca.edu/campus-map","access_notes":"USF states that students need a valid USF ID to access the library building.","cost_status":"unknown","under21_safe":true},{"subject_id":"usf-gleeson-library-fourth-floor","subject_type":"study_space","entity_name":"Gleeson Library 4th Floor","title":"Gleeson Library Fourth Floor","subtitle":"Gleeson Library | Geschke Center","notes":"Work collaboratively on the fourth floor, which USF’s study-zone guidance classifies for conversation study and its quiet-places guide photographs.","short_summary":"A documented conversation-study floor in Gleeson Library.","evidence_claim":"USF’s Quiet Places on Campus page identifies “Gleeson Library 4th Floor,” and library guidance classifies the fourth floor as a conversation study zone.","source_url":"https://myusf.usfca.edu/casa/neurodiversityconnections/quietplacesoncampus","source_title":"Quiet Places on Campus | University of San Francisco","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.usfca.edu/campus-map","access_notes":"USF states that students need a valid USF ID to access the library building.","cost_status":"unknown","under21_safe":true},{"subject_id":"usf-gleeson-library-third-floor-south","subject_type":"study_space","entity_name":"Gleeson Library Third Floor South","title":"Gleeson’s Silent South Floor","subtitle":"Gleeson Library | Geschke Center, third floor south","notes":"Choose the front half of Gleeson’s third-floor south area when you need a library zone explicitly designated for silent study.","short_summary":"A designated silent-study zone on Gleeson’s third floor.","evidence_claim":"USF library guidance designates the front half of Gleeson Library’s third-floor south area as a silent study zone.","source_url":"https://usfblogs.usfca.edu/gleeson-gleanings/2018/01/23/updated-study-zones/","source_title":"Updated Study Zones | Gleeson Gleanings","source_kind":"university_official","source_published_at":"2018-01-23","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.usfca.edu/campus-map","access_notes":"USF states that students need a valid USF ID to access the library building.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}

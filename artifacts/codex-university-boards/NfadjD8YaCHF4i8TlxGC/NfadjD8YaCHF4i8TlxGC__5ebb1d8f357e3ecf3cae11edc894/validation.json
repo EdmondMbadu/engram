@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.flagstaffarizona.org/blog/walk-this-talk/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flagstaffarizona.org/blog/walk-this-talk/",
+      "error": ""
+    },
+    {
+      "url": "https://www.heritagesquaretrust.org/events/events.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.heritagesquaretrust.org/events/events.html",
+      "error": ""
+    },
+    {
+      "url": "https://orpheumflagstaff.com/listings/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://orpheumflagstaff.com/listings/",
+      "error": ""
+    },
+    {
+      "url": "https://www.flagstaff.az.gov/1923/Parks",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flagstaff.az.gov/1923/Parks",
+      "error": ""
+    },
+    {
+      "url": "https://www.flagstaffpubliclibrary.org/contact-us/hours-location/flagstaff",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flagstaffpubliclibrary.org/contact-us/hours-location/flagstaff",
+      "error": ""
+    },
+    {
+      "url": "https://theatrikos.com/about-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://theatrikos.com/about/",
+      "error": ""
+    },
+    {
+      "url": "https://flagstaff.az.gov/5158/Downtown-Connection-Center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://flagstaff.az.gov/5158/Downtown-Connection-Center",
+      "error": ""
+    },
+    {
+      "url": "https://www.coconino.az.gov/DocumentCenter/View/1855",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.coconino.az.gov/DocumentCenter/View/1855",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.raisingcanes.com/ny/new-york/1501-broadway",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.raisingcanes.com/ny/new-york/1501-broadway",
+      "error": ""
+    },
+    {
+      "url": "https://www.empanadamama.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.empanadamama.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.2brospizza.com/location/557-8th-ave-new-york-ny-10018/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.2brospizza.com/location/557-8th-ave-new-york-ny-10018/",
+      "error": ""
+    },
+    {
+      "url": "https://www.2brospizza.com/location/542-9th-ave-new-york-ny-10018/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.2brospizza.com/location/542-9th-ave-new-york-ny-10018/",
+      "error": ""
+    },
+    {
+      "url": "https://www.juniorscheesecake.com/blog/restaurants/times-square",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.juniorscheesecake.com/pages/45th-st-nyc",
+      "error": ""
+    },
+    {
+      "url": "https://www.carnegiediner.com/location/carnegie-diner-times-square/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.carnegiediner.com/location/carnegie-diner-times-square/",
+      "error": ""
+    },
+    {
+      "url": "https://glasshousetavern.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://glasshousetavern.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lostacos1.com/location/los-tacos-times-square/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lostacos1.com/location/los-tacos-times-square/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ichiranusa.com/location/times-square/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ichiranusa.com/location/times-square/",
+      "error": ""
+    },
+    {
+      "url": "https://www.timesquaredinerandgrill.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.timesquaredinerandgrill.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

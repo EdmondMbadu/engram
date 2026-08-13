@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "UHP2iKnJaUr8qnyzpzvG",
+    "schoolName": "University of Kentucky",
+    "shortSchoolName": "University of Kentucky",
+    "townName": "Lexington",
+    "state": "KY",
+    "countryCode": "US",
+    "unitId": "157085",
+    "website": "https://www.uky.edu/",
+    "latitude": 38.038911,
+    "longitude": -84.504747,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/2/2d/University_of_Kentucky_seal.svg/250px-University_of_Kentucky_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=uky.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "WOW American Eats",
+    "Naz’s Halal Food – Lexington",
+    "Mad Mushroom Pizza – Lexington",
+    "Raising Cane’s – S Upper St",
+    "Raising Cane’s – Harrodsburg Rd",
+    "Papa Johns Pizza – Avenue of Champions",
+    "Papa Johns Pizza – Southland Drive",
+    "Waffle House #1565",
+    "Waffle House #1408",
+    "Goodfellas Pizzeria – Mill Street"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

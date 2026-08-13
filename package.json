@@ -21,10 +21,14 @@
     "test:firestore-rules": "node scripts/run-firestore-rule-tests.mjs",
     "university-boards:worker": "npm --prefix functions run build && node scripts/run-university-board-worker.mjs",
     "university-boards:set-worker": "npm --prefix functions run build && node scripts/run-university-board-set-worker.mjs",
-    "university-boards:gemini-worker": "npm --prefix functions run build && node scripts/run-university-board-set-worker.mjs",
+    "university-boards:free-worker": "npm --prefix functions run build && node scripts/run-university-board-set-worker.mjs",
     "university-boards:images": "node scripts/enrich-university-board-images.mjs",
     "university-boards:publish": "node scripts/publish-university-boards.mjs",
     "university-boards:catalog": "node scripts/reconcile-university-board-catalog.mjs",
+    "university-boards:promote-recovered": "node scripts/promote-recovered-university-boards.mjs",
+    "university-boards:audit-job": "node scripts/audit-university-board-job.mjs",
+    "university-boards:validate-artifact": "node scripts/validate-university-board-artifact.mjs",
+    "university-boards:resume-free": "node scripts/resume-free-university-board-catalog.mjs",
     "serve:ssr:living-atlast": "node dist/living-atlast/server/server.mjs"
   },
   "prettier": {

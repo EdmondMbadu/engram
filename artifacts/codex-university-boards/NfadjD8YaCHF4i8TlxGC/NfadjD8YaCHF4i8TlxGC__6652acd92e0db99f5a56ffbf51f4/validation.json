@@ -1,0 +1,40 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://calvin.edu/places/ecosystem-preserve",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calvin.edu/places/ecosystem-preserve",
+      "error": ""
+    },
+    {
+      "url": "https://calvin.edu/bruce-dice-mineralogical-museum",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calvin.edu/bruce-dice-mineralogical-museum",
+      "error": ""
+    },
+    {
+      "url": "https://www.grandrapidsmi.gov/departments/parks-recreation/recreation/pools-and-splashpads/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.grandrapidsmi.gov/departments/parks-recreation/recreation/pools-and-splashpads/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Bunker Interpretive Center",
+    "Bruce Dice Mineralogical Museum"
+  ],
+  "sourceCount": 3,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

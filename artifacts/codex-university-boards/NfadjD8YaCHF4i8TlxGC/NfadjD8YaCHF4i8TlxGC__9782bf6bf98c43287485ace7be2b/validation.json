@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.lib.uci.edu/study-rooms",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.uci.edu/study-rooms",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.uci.edu/langson/langson-floor-3",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.uci.edu/langson/langson-floor-3",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.uci.edu/mrc/rooms",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.lib.uci.edu/mrc/rooms",
+      "error": ""
+    },
+    {
+      "url": "https://www.studentcenter.uci.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.studentcenter.uci.edu/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

@@ -1,0 +1,40 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "ZLnlCTOaXMtoONCvH3ik",
+    "schoolName": "Saint Xavier University",
+    "shortSchoolName": "Saint Xavier University",
+    "townName": "Chicago",
+    "state": "IL",
+    "countryCode": "US",
+    "unitId": "148627",
+    "website": "https://www.sxu.edu/",
+    "latitude": 41.707199,
+    "longitude": -87.714749,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=sxu.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=sxu.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

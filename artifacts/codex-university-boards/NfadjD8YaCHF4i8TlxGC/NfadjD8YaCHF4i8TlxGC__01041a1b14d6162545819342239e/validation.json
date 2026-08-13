@@ -1,0 +1,55 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://ias.ucsc.edu/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ias.ucsc.edu/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://sesnongalleries.ucsc.edu/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sesnongalleries.ucsc.edu/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.parks.ca.gov/?page_id=550&sfmc_id=5356872&skey_id=c45500b9fd9e535eaa53b7085a8b33d9fc18b3a1ac97ec76e7e9d1b0e9731b8",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.parks.ca.gov/?page_id=550&sfmc_id=5356872&skey_id=c45500b9fd9e535eaa53b7085a8b33d9fc18b3a1ac97ec76e7e9d1b0e9731b8",
+      "error": ""
+    },
+    {
+      "url": "https://beachboardwalk.com/faqs/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://beachboardwalk.com/faqs/",
+      "error": ""
+    },
+    {
+      "url": "https://www.santacruzpl.org/policy/circulation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.santacruzpl.org/policy/circulation",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Santa Cruz Beach Boardwalk"
+  ],
+  "sourceCount": 5,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

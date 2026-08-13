@@ -1,0 +1,68 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "wRajIyjv6awjYt5ruAR2",
+    "schoolName": "Truman State University",
+    "shortSchoolName": "Truman State University",
+    "townName": "Kirksville",
+    "state": "MO",
+    "countryCode": "US",
+    "unitId": "178615",
+    "website": "https://www.truman.edu/",
+    "latitude": 40.188267,
+    "longitude": -92.581658,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/7/70/Truman_State_University_seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=truman.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "Ruth W. Towne Museum & Visitors Center",
+    "Quadrangle",
+    "Pickler Memorial Library",
+    "Student Union Building",
+    "Student Activities Board program",
+    "Student Recreation Center",
+    "University Art Gallery",
+    "Pershing Natatorium",
+    "University Farm",
+    "Truman State University Observatory",
+    "PML 107 Open Student Study Lounge",
+    "PML 107 Conference Room",
+    "Pickler Memorial Library Study Room A",
+    "Pickler Memorial Library Study Room B",
+    "Pickler Memorial Library Study Room C",
+    "Pickler Memorial Library Study Room D",
+    "Pickler Memorial Library Study Room E",
+    "Pickler Memorial Library Study Room F",
+    "Doug and Diane Villhard Innovation Lab Collaboration Space",
+    "Special Collections Reading Room",
+    "Ruth Towne Museum and Visitors Center",
+    "P. C. Mills Park Splash Pad",
+    "Campus Recreation Drop-In Fitness Classes",
+    "TruStrength Weight Room Orientation",
+    "Truman Intramural and Competitive Sports",
+    "Pickler Memorial Library New York Times Membership",
+    "Kirksville Bike Co-op",
+    "Truman Natatorium"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

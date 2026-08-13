@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.dustybookshelf.com/manhattan-1",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.dustybookshelf.com/manhattan-1",
+      "error": ""
+    },
+    {
+      "url": "https://varsitydonuts.com/pages/about-us-varsity-donuts",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://varsitydonuts.com/pages/about-us-varsity-donuts",
+      "error": ""
+    },
+    {
+      "url": "https://www.sistersofsoundrecords.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sistersofsoundrecords.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.bluestembistro.com/kitchen",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bluestembistro.com/kitchen",
+      "error": ""
+    },
+    {
+      "url": "https://acmegift.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://acmegift.com/",
+      "error": ""
+    },
+    {
+      "url": "https://shopthread.com/pages/about-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://shopthread.com/pages/about-us",
+      "error": ""
+    },
+    {
+      "url": "https://happyhippiestudios.org/contact-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://happyhippiestudios.org/contact-us/",
+      "error": ""
+    },
+    {
+      "url": "https://www.coldstonecreamery.com/stores/20533",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.coldstonecreamery.com/stores/20533",
+      "error": ""
+    },
+    {
+      "url": "https://locations.chipotle.com/ks/manhattan/606-n-manhattan-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.chipotle.com/ks/manhattan/606-n-manhattan-ave",
+      "error": ""
+    },
+    {
+      "url": "https://www.greenteasushikansas.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.greenteasushikansas.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

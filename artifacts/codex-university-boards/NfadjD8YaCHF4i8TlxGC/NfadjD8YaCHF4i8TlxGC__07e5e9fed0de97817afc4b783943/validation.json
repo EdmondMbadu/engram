@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.tacobell.com/md/salisbury/2400-n-salisbury-blvd.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/md/salisbury/2400-n-salisbury-blvd.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/md/salisbury/1101-s-salisbury-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/md/salisbury/1101-s-salisbury-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/md/salisbury/2710-nsalisbury-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/md/salisbury/2710-nsalisbury-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.ihop.com/en-us/md/salisbury/breakfast-2732-n-salisbury-blvd-576/specials",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.ihop.com/en-us/md/salisbury/breakfast-2732-n-salisbury-blvd-576/specials",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dennys.com/md/salisbury/246014",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dennys.com/md/salisbury/246014",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/maryland/salisbury/1121-s-salisbury-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/maryland/salisbury/1121-s-salisbury-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/maryland/salisbury",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/maryland/salisbury",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/md/salisbury",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/md/salisbury",
+      "error": ""
+    },
+    {
+      "url": "https://www.chick-fil-a.com/locations/md/south-salisbury",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.chick-fil-a.com/locations/md/south-salisbury",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

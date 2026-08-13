@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://makerspace.cooper.edu/faq",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://makerspace.cooper.edu/faq",
+      "error": ""
+    },
+    {
+      "url": "https://cooper.edu/art/facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cooper.edu/art/facilities",
+      "error": ""
+    },
+    {
+      "url": "https://cooper.edu/about/news/great-hall-history-comes-alive-new-digital-archive",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cooper.edu/about/news/great-hall-history-comes-alive-new-digital-archive",
+      "error": ""
+    },
+    {
+      "url": "https://cooper.edu/sites/default/files/uploads/assets/student%20affairs/OpenHouse2022.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cooper.edu/sites/default/files/uploads/assets/student%20affairs/OpenHouse2022.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://cooper.edu/students/student-affairs/orientation/2025-2026-welcome-week-and-orientation-schedule",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cooper.edu/students/student-affairs/orientation/2026-2027-welcome-week-and-orientation-schedule",
+      "error": ""
+    },
+    {
+      "url": "https://cooper.edu/about/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cooper.edu/about/contact",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

@@ -1,0 +1,79 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.uah.edu/academics-home/academics-sub-menu/salmon-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uah.edu/academics-home/academics-sub-menu/salmon-library",
+      "error": ""
+    },
+    {
+      "url": "https://www.uah.edu/library/spaces/study-rooms",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uah.edu/library/spaces/study-rooms",
+      "error": ""
+    },
+    {
+      "url": "https://www.uah.edu/library/about/librarypolicies/19477-m-louis-salmon-library-sensory-space",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uah.edu/library/about/librarypolicies/19477-m-louis-salmon-library-sensory-space",
+      "error": ""
+    },
+    {
+      "url": "https://www.uah.edu/library/about/librarypolicies/19469-m-louis-salmon-library-multimaker-lab-policy",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uah.edu/library/about/librarypolicies/19469-m-louis-salmon-library-multimaker-lab-policy",
+      "error": ""
+    },
+    {
+      "url": "https://www.uah.edu/ahs/facilities/salmon-library-gallery",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uah.edu/ahs/facilities/salmon-library-gallery",
+      "error": ""
+    },
+    {
+      "url": "https://www.uah.edu/career-services/news/14124-success-spots-at-uah",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uah.edu/career-services/news/14124-success-spots-at-uah",
+      "error": ""
+    },
+    {
+      "url": "https://www.uah.edu/cu",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uah.edu/cu",
+      "error": ""
+    },
+    {
+      "url": "https://www.uah.edu/ahs/facilities/union-grove-gallery",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uah.edu/ahs/facilities/union-grove-gallery",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "M. Louis Salmon Library"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

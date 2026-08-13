@@ -1,0 +1,39 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "9FkWITiGBCtyOc5b3QQ7",
+    "schoolName": "Rowan University",
+    "shortSchoolName": "Rowan University",
+    "townName": "Glassboro",
+    "state": "NJ",
+    "countryCode": "US",
+    "unitId": "184782",
+    "website": "https://www.rowan.edu/",
+    "latitude": 39.709108,
+    "longitude": -75.119119,
+    "heroUrl": "https://www.rowan.edu/_images/_banners/carousel-images/2026forgingforward-1159x503-1.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=rowan.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

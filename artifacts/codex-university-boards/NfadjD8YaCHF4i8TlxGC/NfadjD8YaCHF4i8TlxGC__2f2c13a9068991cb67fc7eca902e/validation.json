@@ -1,0 +1,57 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.hillsdale.edu/map-detail/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsdale.edu/map-detail/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hillsdale.edu/wp-content/uploads/2024/11/ADM-Illustrated-Map-11-24_digital.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsdale.edu/404-not-found/?request=https://www.hillsdale.edu/wp-content/uploads/2024/11/ADM-Illustrated-Map-11-24_digital.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://studentlife.hillsdale.edu/student-activities-office",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentlife.hillsdale.edu/student-activities-office",
+      "error": ""
+    },
+    {
+      "url": "https://www.hillsdale.edu/about/facilities/slayton-aboretum/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsdale.edu/about/facilities/slayton-aboretum/",
+      "error": ""
+    },
+    {
+      "url": "https://studentlife.hillsdale.edu/campus-rec",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentlife.hillsdale.edu/campus-rec",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Michael Alex Mossey Library",
+    "William L. and Berniece E. Grewcock Student Union",
+    "Slayton Arboretum"
+  ],
+  "sourceCount": 5,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

@@ -1,0 +1,268 @@
+Reading additional input from stdin...
+2026-08-13T07:05:05.344445Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9ee-bb27-7561-8718-92fd99f7e31c.1786604600103441000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:05:05.353134Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:05:05.356882Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9f0-55fb-71c0-9c43-f96633b41fdc
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"0CwHLxhPS5m7gSNlFvWc","schoolName":"Fairfield University","shortSchoolName":"Fairfield University","townName":"Fairfield","state":"CT","countryCode":"US","website":"https://fairfield.edu/","latitude":41.157673,"longitude":-73.255903},"templates":[{"id":"college-only-happens-here","version":"1.0","titlePattern":"Only Happens Here: {count} Traditions That Make No Sense Anywhere Else","editorialBrief":"Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.","researchQueries":["university traditions alumni","campus traditions student newspaper","school rituals history"],"count":10,"icon":"fingerprint","primarySubjectType":"tradition","allowedSubjectTypes":["tradition"],"freshnessDays":1095,"exactTitle":"Only Happens Here: 10 Traditions That Make No Sense Anywhere Else"}]}
+codex
+{"complete":false,"school_name":"Fairfield University","town_name":"Fairfield","boards":[{"complete":false,"school_name":"Fairfield University","town_name":"Fairfield","template_id":"college-only-happens-here","title":"Only Happens Here: 10 Traditions That Make No Sense Anywhere Else","description":"Researching ten documented Fairfield-specific traditions from direct sources.","icon":"fingerprint","cards": 
+  [ 
+    {
+      "subject_id": "status",
+      "subject_type": "tradition",
+      "entity_name": "Research in progress",
+      "title": "Verifying traditions",
+      "subtitle": "Fairfield University",
+      "notes": "I’m checking official, archival, and established student-media pages for ten distinct, school-specific practices.",
+      "short_summary": "Current facts and direct supporting pages are being verified.",
+      "evidence_claim": "Research is underway.",
+      "source_url": "https://www.fairfield.edu/",
+      "source_title": "Fairfield University",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": 41.157673,
+      "longitude": -73.255903,
+      "maps_url": null,
+      "access_notes": "No access details yet.",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    }
+  
+  ,
+  {
+    "subject_id": "status-2",
+    "subject_type": "tradition",
+    "entity_name": "Source verification",
+    "title": "Checking direct evidence",
+    "subtitle": "Official and student-media sources",
+    "notes": "Each final card will cite the direct HTTPS page that supports its specific documented tradition claim.",
+    "short_summary": "Discovery pages and snippets will not be used as final evidence.",
+    "evidence_claim": "Direct-source verification is underway.",
+    "source_url": "https://www.fairfield.edu/",
+    "source_title": "Fairfield University",
+    "source_kind": "university_official",
+    "source_published_at": null,
+    "source_fetched_at": "2026-08-13",
+    "latitude": 41.157673,
+    "longitude": -73.255903,
+    "maps_url": null,
+    "access_notes": "No access details yet.",
+    "cost_status": "not_applicable",
+    "under21_safe": true
+  },
+  {
+    "subject_id": "status-3",
+    "subject_type": "tradition",
+    "entity_name": "Board assembly",
+    "title": "Building the full set",
+    "subtitle": "Exactly ten distinct traditions",
+    "notes": "The finished board will avoid duplicate subjects, unsafe rituals, unsupported origins, and generic campus activities.",
+    "short_summary": "All ten cards will be delivered together after verification.",
+    "evidence_claim": "Board assembly is underway.",
+    "source_url": "https://www.fairfield.edu/",
+    "source_title": "Fairfield University",
+    "source_kind": "university_official",
+    "source_published_at": null,
+    "source_fetched_at": "2026-08-13",
+    "latitude": 41.157673,
+    "longitude": -73.255903,
+    "maps_url": null,
+    "access_notes": "No access details yet.",
+    "cost_status": "not_applicable",
+    "under21_safe": true
+  },
+  {
+    "subject_id": "status-4",
+    "subject_type": "tradition",
+    "entity_name": "Freshness check",
+    "title": "Confirming current documentation",
+    "subtitle": "Sources checked as of August 13, 2026",
+    "notes": "Current recurring events and longstanding rituals will be distinguished from discontinued or historically documented practices.",
+    "short_summary": "Publication dates will be included only when directly verifiable.",
+    "evidence_claim": "Freshness checks are underway.",
+    "source_url": "https://www.fairfield.edu/",
+    "source_title": "Fairfield University",
+    "source_kind": "university_official",
+    "source_published_at": null,
+    "source_fetched_at": "2026-08-13",
+    "latitude": 41.157673,
+    "longitude": -73.255903,
+    "maps_url": null,
+    "access_notes": "No access details yet.",
+    "cost_status": "not_applicable",
+    "under21_safe": true
+  },
+  {
+    "subject_id": "status-5",
+    "subject_type": "tradition",
+    "entity_name": "Safety review",
+    "title": "Keeping the set under-21-safe",
+    "subtitle": "No alcohol, trespass, or unsafe behavior",
+    "notes": "Candidate traditions are being screened for safe participation and accurate access guidance without invented details.",
+    "short_summary": "Unsafe or age-restricted practices will be excluded.",
+    "evidence_claim": "Safety review is underway.",
+    "source_url": "https://www.fairfield.edu/",
+    "source_title": "Fairfield University",
+    "source_kind": "university_official",
+    "source_published_at": null,
+    "source_fetched_at": "2026-08-13",
+    "latitude": 41.157673,
+    "longitude": -73.255903,
+    "maps_url": null,
+    "access_notes": "No access details yet.",
+    "cost_status": "not_applicable",
+    "under21_safe": true
+  },
+  {
+    "subject_id": "status-6",
+    "subject_type": "tradition",
+    "entity_name": "Photo suitability",
+    "title": "Selecting documentable subjects",
+    "subtitle": "Named events, rituals, and objects",
+    "notes": "Selections will favor visually identifiable Fairfield traditions with likely official or credible editorial photography.",
+    "short_summary": "Generic concepts and ambiguous namesakes will be left out.",
+    "evidence_claim": "Photo suitability review is underway.",
+    "source_url": "https://www.fairfield.edu/",
+    "source_title": "Fairfield University",
+    "source_kind": "university_official",
+    "source_published_at": null,
+    "source_fetched_at": "2026-08-13",
+    "latitude": 41.157673,
+    "longitude": -73.255903,
+    "maps_url": null,
+    "access_notes": "No access details yet.",
+    "cost_status": "not_applicable",
+    "under21_safe": true
+  },
+  {
+    "subject_id": "status-7",
+    "subject_type": "tradition",
+    "entity_name": "Copy review",
+    "title": "Writing specific guidance",
+    "subtitle": "Action-oriented notes without hype",
+    "notes": "Final notes will tell readers what to look for or how to engage while avoiding rankings and unsupported student behavior.",
+    "short_summary": "Every summary will be distinct and grounded in its cited evidence.",
+    "evidence_claim": "Editorial review is underway.",
+    "source_url": "https://www.fairfield.edu/",
+    "source_title": "Fairfield University",
+    "source_kind": "university_official",
+    "source_published_at": null,
+    "source_fetched_at": "2026-08-13",
+    "latitude": 41.157673,
+    "longitude": -73.255903,
+    "maps_url": null,
+    "access_notes": "No access details yet.",
+    "cost_status": "not_applicable",
+    "under21_safe": true
+  },
+  {
+    "subject_id": "status-8",
+    "subject_type": "tradition",
+    "entity_name": "Coordinate review",
+    "title": "Mapping only verified locations",
+    "subtitle": "Null where a tradition has no fixed place",
+    "notes": "Coordinates and Maps URLs will appear only for confidently verified, named locations associated with each tradition.",
+    "short_summary": "Event-wide or moving traditions may correctly use null map fields.",
+    "evidence_claim": "Location verification is underway.",
+    "source_url": "https://www.fairfield.edu/",
+    "source_title": "Fairfield University",
+    "source_kind": "university_official",
+    "source_published_at": null,
+    "source_fetched_at": "2026-08-13",
+    "latitude": 41.157673,
+    "longitude": -73.255903,
+    "maps_url": null,
+    "access_notes": "No access details yet.",
+    "cost_status": "not_applicable",
+    "under21_safe": true
+  },
+  {
+    "subject_id": "status-9",
+    "subject_type": "tradition",
+    "entity_name": "Cost review",
+    "title": "Avoiding unsupported fee claims",
+    "subtitle": "Cost marked only from direct evidence",
+    "notes": "Traditions without a verified admission or purchase requirement will not be mislabeled as free or paid.",
+    "short_summary": "Cost status will stay conservative when sources are silent.",
+    "evidence_claim": "Cost verification is underway.",
+    "source_url": "https://www.fairfield.edu/",
+    "source_title": "Fairfield University",
+    "source_kind": "university_official",
+    "source_published_at": null,
+    "source_fetched_at": "2026-08-13",
+    "latitude": 41.157673,
+    "longitude": -73.255903,
+    "maps_url": null,
+    "access_notes": "No access details yet.",
+    "cost_status": "not_applicable",
+    "under21_safe": true
+  },
+  {
+    "subject_id": "status-10",
+    "subject_type": "tradition",
+    "entity_name": "Final validation",
+    "title": "Checking schema and exact count",
+    "subtitle": "One complete board with ten cards",
+    "notes": "The final response will validate the supplied title, template ID, icon, subject type, count, and required card fields.",
+    "short_summary": "The delivered JSON will contain no explanatory text.",
+    "evidence_claim": "Schema validation will follow research.",
+    "source_url": "https://www.fairfield.edu/",
+    "source_title": "Fairfield University",
+    "source_kind": "university_official",
+    "source_published_at": null,
+    "source_fetched_at": "2026-08-13",
+    "latitude": 41.157673,
+    "longitude": -73.255903,
+    "maps_url": null,
+    "access_notes": "No access details yet.",
+    "cost_status": "not_applicable",
+    "under21_safe": true
+  }
+  ],"warnings":[]}],"warnings":[]}
+web search: 
+web search: site:fairfield.edu traditions Fairfield University Stag statue convocation commencement ...
+web search: 
+web search: site:fairfield.edu/news "First Fairfield Friday" ...
+web search: 
+web search: site:fairfield.edu/news Fairfield "Clinical Initiation Ceremony" ...
+codex
+{"complete":true,"school_name":"Fairfield University","town_name":"Fairfield","boards":[{"complete":true,"school_name":"Fairfield University","town_name":"Fairfield","template_id":"college-only-happens-here","title":"Only Happens Here: 10 Traditions That Make No Sense Anywhere Else","description":"Ten documented Fairfield University rituals spanning Stag spirit, seasonal celebrations, service, engineering, and academic milestones.","icon":"fingerprint","cards":[{"subject_id":"fairfield-presidential-ball","subject_type":"tradition","entity_name":"Presidential Ball","title":"Dress Up for Pres Ball","subtitle":"September dancing on Bellarmine Lawn","notes":"Watch the University calendar each September, then dress formally and join the student celebration outside Bellarmine Hall.","short_summary":"The University president hosts Fairfield students for an annual formal lawn celebration known as Pres Ball.","evidence_claim":"Fairfield states that its Presidential Ball began in 2004 and is held each September on the lawn of Bellarmine Hall.","source_url":"https://www.fairfield.edu/news/the-stag-list/fun-facts-tips-for-first-year-stags.html","source_title":"Fun Facts & Tips for First Year Stags!","source_kind":"university_official","source_published_at":"2025-05-16","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"For Fairfield students; consult the current University event calendar for the date, admission rules, and attire guidance.","cost_status":"unknown","under21_safe":true},{"subject_id":"fairfield-red-sea-madness","subject_type":"tradition","entity_name":"Red Sea Madness","title":"Join the Red Sea Madness Pep Rally","subtitle":"Fairfield's basketball-season kickoff","notes":"Wear Fairfield red and follow the athletics or student-life calendar for the annual team introductions, pep rally, and concert.","short_summary":"Basketball introductions and a fall concert merge into Fairfield's red-clad season-opening celebration.","evidence_claim":"Fairfield documents Red Sea Madness as an annual event marking the beginning of basketball season and celebrating the men's and women's teams.","source_url":"https://www.fairfield.edu/news/the-stag-list/fun-facts-tips-for-first-year-stags.html","source_title":"Fun Facts & Tips for First Year Stags!","source_kind":"university_official","source_published_at":"2025-05-16","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Check the current Fairfield athletics or student-life listing for venue, entry requirements, and event timing.","cost_status":"unknown","under21_safe":true},{"subject_id":"fairfield-annual-tree-lighting","subject_type":"tradition","entity_name":"Annual Holiday Marketplace and Tree Lighting","title":"Count Down to the Campus Tree Lighting","subtitle":"Carols, Lucas, and Fairfield's holiday lights","notes":"Meet near the announced campus tree, listen for the student singing groups, and stay for the president-led lighting countdown.","short_summary":"Fairfield opens its holiday season by illuminating the campus tree during a community celebration.","evidence_claim":"Fairfield's 2025 event page identifies the tree lighting as an annual, free, family-friendly tradition featuring the University president, student singers, and Lucas the Stag.","source_url":"https://events.fairfield.edu/event/annual-tree-lighting-ceremony","source_title":"Annual Holiday Marketplace and Tree Lighting","source_kind":"university_official","source_published_at":"2025-12-02","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited 2025 edition was free and open to the community; verify the next edition's date and campus location before visiting.","cost_status":"free","under21_safe":true},{"subject_id":"fairfield-clam-jam","subject_type":"tradition","entity_name":"Clam Jam","title":"Close the Semester at Clam Jam","subtitle":"Fairfield's long-running beach celebration","notes":"Look for the official spring announcement and use University transportation or access instructions for the organized beach event.","short_summary":"Clam Jam brings Fairfield students to the beach for a supervised spring send-off before finals.","evidence_claim":"Fairfield describes Clam Jam as a long-standing, end-of-year tradition where students gather at Fairfield beach for food, friends, sun, and dancing.","source_url":"https://www.fairfield.edu/student-life/stag-traditions/","source_title":"Stag Traditions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Student event; attend only through the University's current registration, transportation, and beach-access arrangements.","cost_status":"unknown","under21_safe":true},{"subject_id":"fairfield-senior-week","subject_type":"tradition","entity_name":"Senior Week","title":"Mark the Final Week as a Stag","subtitle":"Service, reflection, and a Commencement Ball","notes":"Graduating seniors should review the official schedule early and register separately for the week's listed milestone activities.","short_summary":"Fairfield sends off graduating seniors with a week of friendship, reflection, service, and celebratory events.","evidence_claim":"Fairfield documents Senior Week as a week-long spring celebration for seniors that culminates in friendship, service, reflection, and a Commencement Ball.","source_url":"https://www.fairfield.edu/student-life/stag-traditions/","source_title":"Stag Traditions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Limited to eligible graduating seniors and their authorized guests where applicable; consult the current registration materials.","cost_status":"unknown","under21_safe":true},{"subject_id":"fairfield-friday-red","subject_type":"tradition","entity_name":"Fairfield Fridays","title":"Wear Red Every Fairfield Friday","subtitle":"A weekly Stag-spirit dress ritual","notes":"Pull on red or Fairfield gear each Friday; start with First Fairfield Friday's welcome events when the fall schedule is posted.","short_summary":"The campus turns team color into a weekly ritual, beginning with a larger first-Friday celebration.","evidence_claim":"Fairfield's First Fairfield Friday announcement asks community members to show Stag spirit every Friday by wearing red or Fairfield gear.","source_url":"https://www.fairfield.edu/news/2024/august/first-fairfield-friday.html","source_title":"Mark Your Calendars for First Fairfield Friday, Sept. 6","source_kind":"university_official","source_published_at":"2024-08-28","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The clothing custom is campus-wide; individual First Fairfield Friday activities may have separate eligibility or access rules.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fairfield-walk-on-water","subject_type":"tradition","entity_name":"Walk on Water","title":"Engineer a Walk Across the Pool","subtitle":"Buoyant contraptions built by first-year teams","notes":"Watch for student-built devices crossing the RecPlex pool, or join through the designated Fundamentals of Engineering course team.","short_summary":"Engineering students turn classroom principles into a race across the pool on handmade flotation devices.","evidence_claim":"Fairfield's current traditions page says mostly first- and second-year student teams build contraptions using Fundamentals of Engineering skills and attempt to cross the pool.","source_url":"https://www.fairfield.edu/student-life/stag-traditions/","source_title":"Stag Traditions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Building and operating a device is course-based; spectators should follow current RecPlex event and pool-safety directions.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fairfield-stagiving-day","subject_type":"tradition","entity_name":"STAGiving Day","title":"Show Up for STAGiving Day","subtitle":"One Fairfield-wide day of generosity","notes":"Choose a documented Fairfield program to support, or share the official campaign through the listed University social channels.","short_summary":"Fairfield concentrates community giving and Stag stories into one annual 24-hour campaign.","evidence_claim":"Fairfield identifies STAGiving Day as a defining annual tradition and says its 2026 edition was a 24-hour celebration for alumni, parents, students, faculty, staff, and friends.","source_url":"https://www.fairfield.edu/news/2026/february/stagiving-day-returns.html","source_title":"STAGiving Day Returns March 25: A Tradition Carried Forward by Generations","source_kind":"university_official","source_published_at":"2026-02-27","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Participation is community-wide and online options are available; making a financial gift is optional and requires a purchase-like contribution.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"fairfield-clinical-initiation","subject_type":"tradition","entity_name":"Clinical Initiation Ceremony","title":"Receive the Egan Fob Watch","subtitle":"Fairfield nursing's clinical rite of passage","notes":"Egan nursing students should attend with their cohort and look for the procession, timepiece presentation, and professional oath.","short_summary":"A red-scrubbed cohort receives upside-down fob watches before entering Fairfield's clinical-education phase.","evidence_claim":"Fairfield reports that its Clinical Initiation Ceremony marks nursing students' entry into clinical practice and culminates with students receiving fob watches and pledging an oath.","source_url":"https://www.fairfield.edu/news/2024/november/clinical-initiation-ceremony.html","source_title":"Egan Nursing Students Mark Start of Clinical Education","source_kind":"university_official","source_published_at":"2024-11-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Ceremony participation is for the designated Egan nursing cohort; family attendance depends on current invitations and venue capacity.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fairfield-teddy-bears-with-love","subject_type":"tradition","entity_name":"Teddy Bears With Love Drive","title":"Send a Bear Hug Through Fairfield","subtitle":"A holiday drive begun by Alumni Relations in 1999","notes":"Donate only a new, tagged stuffed animal during the announced collection window and follow the current mailing or drop-off directions.","short_summary":"Fairfield's holiday service tradition converts new stuffed animals into 'bear hugs' for children receiving care.","evidence_claim":"Fairfield says Teddy Bears With Love began in December 1999, is now led by the Student Alumni Association, and donates collected stuffed animals to children's hospitals and charities.","source_url":"https://www.fairfield.edu/alumni-and-friends/get-involved/teddy-bears-with-love/","source_title":"Teddy Bears With Love","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The 2026 collection is scheduled to begin November 2; participation requires acquiring a qualifying new, tagged stuffed animal.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:07:26.487711Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9f0-55fb-71c0-9c43-f96633b41fdc.1786604705275962000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+35,616
+
+{"complete":true,"school_name":"Fairfield University","town_name":"Fairfield","boards":[{"complete":true,"school_name":"Fairfield University","town_name":"Fairfield","template_id":"college-only-happens-here","title":"Only Happens Here: 10 Traditions That Make No Sense Anywhere Else","description":"Ten documented Fairfield University rituals spanning Stag spirit, seasonal celebrations, service, engineering, and academic milestones.","icon":"fingerprint","cards":[{"subject_id":"fairfield-presidential-ball","subject_type":"tradition","entity_name":"Presidential Ball","title":"Dress Up for Pres Ball","subtitle":"September dancing on Bellarmine Lawn","notes":"Watch the University calendar each September, then dress formally and join the student celebration outside Bellarmine Hall.","short_summary":"The University president hosts Fairfield students for an annual formal lawn celebration known as Pres Ball.","evidence_claim":"Fairfield states that its Presidential Ball began in 2004 and is held each September on the lawn of Bellarmine Hall.","source_url":"https://www.fairfield.edu/news/the-stag-list/fun-facts-tips-for-first-year-stags.html","source_title":"Fun Facts & Tips for First Year Stags!","source_kind":"university_official","source_published_at":"2025-05-16","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"For Fairfield students; consult the current University event calendar for the date, admission rules, and attire guidance.","cost_status":"unknown","under21_safe":true},{"subject_id":"fairfield-red-sea-madness","subject_type":"tradition","entity_name":"Red Sea Madness","title":"Join the Red Sea Madness Pep Rally","subtitle":"Fairfield's basketball-season kickoff","notes":"Wear Fairfield red and follow the athletics or student-life calendar for the annual team introductions, pep rally, and concert.","short_summary":"Basketball introductions and a fall concert merge into Fairfield's red-clad season-opening celebration.","evidence_claim":"Fairfield documents Red Sea Madness as an annual event marking the beginning of basketball season and celebrating the men's and women's teams.","source_url":"https://www.fairfield.edu/news/the-stag-list/fun-facts-tips-for-first-year-stags.html","source_title":"Fun Facts & Tips for First Year Stags!","source_kind":"university_official","source_published_at":"2025-05-16","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Check the current Fairfield athletics or student-life listing for venue, entry requirements, and event timing.","cost_status":"unknown","under21_safe":true},{"subject_id":"fairfield-annual-tree-lighting","subject_type":"tradition","entity_name":"Annual Holiday Marketplace and Tree Lighting","title":"Count Down to the Campus Tree Lighting","subtitle":"Carols, Lucas, and Fairfield's holiday lights","notes":"Meet near the announced campus tree, listen for the student singing groups, and stay for the president-led lighting countdown.","short_summary":"Fairfield opens its holiday season by illuminating the campus tree during a community celebration.","evidence_claim":"Fairfield's 2025 event page identifies the tree lighting as an annual, free, family-friendly tradition featuring the University president, student singers, and Lucas the Stag.","source_url":"https://events.fairfield.edu/event/annual-tree-lighting-ceremony","source_title":"Annual Holiday Marketplace and Tree Lighting","source_kind":"university_official","source_published_at":"2025-12-02","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited 2025 edition was free and open to the community; verify the next edition's date and campus location before visiting.","cost_status":"free","under21_safe":true},{"subject_id":"fairfield-clam-jam","subject_type":"tradition","entity_name":"Clam Jam","title":"Close the Semester at Clam Jam","subtitle":"Fairfield's long-running beach celebration","notes":"Look for the official spring announcement and use University transportation or access instructions for the organized beach event.","short_summary":"Clam Jam brings Fairfield students to the beach for a supervised spring send-off before finals.","evidence_claim":"Fairfield describes Clam Jam as a long-standing, end-of-year tradition where students gather at Fairfield beach for food, friends, sun, and dancing.","source_url":"https://www.fairfield.edu/student-life/stag-traditions/","source_title":"Stag Traditions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Student event; attend only through the University's current registration, transportation, and beach-access arrangements.","cost_status":"unknown","under21_safe":true},{"subject_id":"fairfield-senior-week","subject_type":"tradition","entity_name":"Senior Week","title":"Mark the Final Week as a Stag","subtitle":"Service, reflection, and a Commencement Ball","notes":"Graduating seniors should review the official schedule early and register separately for the week's listed milestone activities.","short_summary":"Fairfield sends off graduating seniors with a week of friendship, reflection, service, and celebratory events.","evidence_claim":"Fairfield documents Senior Week as a week-long spring celebration for seniors that culminates in friendship, service, reflection, and a Commencement Ball.","source_url":"https://www.fairfield.edu/student-life/stag-traditions/","source_title":"Stag Traditions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Limited to eligible graduating seniors and their authorized guests where applicable; consult the current registration materials.","cost_status":"unknown","under21_safe":true},{"subject_id":"fairfield-friday-red","subject_type":"tradition","entity_name":"Fairfield Fridays","title":"Wear Red Every Fairfield Friday","subtitle":"A weekly Stag-spirit dress ritual","notes":"Pull on red or Fairfield gear each Friday; start with First Fairfield Friday's welcome events when the fall schedule is posted.","short_summary":"The campus turns team color into a weekly ritual, beginning with a larger first-Friday celebration.","evidence_claim":"Fairfield's First Fairfield Friday announcement asks community members to show Stag spirit every Friday by wearing red or Fairfield gear.","source_url":"https://www.fairfield.edu/news/2024/august/first-fairfield-friday.html","source_title":"Mark Your Calendars for First Fairfield Friday, Sept. 6","source_kind":"university_official","source_published_at":"2024-08-28","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The clothing custom is campus-wide; individual First Fairfield Friday activities may have separate eligibility or access rules.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fairfield-walk-on-water","subject_type":"tradition","entity_name":"Walk on Water","title":"Engineer a Walk Across the Pool","subtitle":"Buoyant contraptions built by first-year teams","notes":"Watch for student-built devices crossing the RecPlex pool, or join through the designated Fundamentals of Engineering course team.","short_summary":"Engineering students turn classroom principles into a race across the pool on handmade flotation devices.","evidence_claim":"Fairfield's current traditions page says mostly first- and second-year student teams build contraptions using Fundamentals of Engineering skills and attempt to cross the pool.","source_url":"https://www.fairfield.edu/student-life/stag-traditions/","source_title":"Stag Traditions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Building and operating a device is course-based; spectators should follow current RecPlex event and pool-safety directions.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fairfield-stagiving-day","subject_type":"tradition","entity_name":"STAGiving Day","title":"Show Up for STAGiving Day","subtitle":"One Fairfield-wide day of generosity","notes":"Choose a documented Fairfield program to support, or share the official campaign through the listed University social channels.","short_summary":"Fairfield concentrates community giving and Stag stories into one annual 24-hour campaign.","evidence_claim":"Fairfield identifies STAGiving Day as a defining annual tradition and says its 2026 edition was a 24-hour celebration for alumni, parents, students, faculty, staff, and friends.","source_url":"https://www.fairfield.edu/news/2026/february/stagiving-day-returns.html","source_title":"STAGiving Day Returns March 25: A Tradition Carried Forward by Generations","source_kind":"university_official","source_published_at":"2026-02-27","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Participation is community-wide and online options are available; making a financial gift is optional and requires a purchase-like contribution.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"fairfield-clinical-initiation","subject_type":"tradition","entity_name":"Clinical Initiation Ceremony","title":"Receive the Egan Fob Watch","subtitle":"Fairfield nursing's clinical rite of passage","notes":"Egan nursing students should attend with their cohort and look for the procession, timepiece presentation, and professional oath.","short_summary":"A red-scrubbed cohort receives upside-down fob watches before entering Fairfield's clinical-education phase.","evidence_claim":"Fairfield reports that its Clinical Initiation Ceremony marks nursing students' entry into clinical practice and culminates with students receiving fob watches and pledging an oath.","source_url":"https://www.fairfield.edu/news/2024/november/clinical-initiation-ceremony.html","source_title":"Egan Nursing Students Mark Start of Clinical Education","source_kind":"university_official","source_published_at":"2024-11-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Ceremony participation is for the designated Egan nursing cohort; family attendance depends on current invitations and venue capacity.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fairfield-teddy-bears-with-love","subject_type":"tradition","entity_name":"Teddy Bears With Love Drive","title":"Send a Bear Hug Through Fairfield","subtitle":"A holiday drive begun by Alumni Relations in 1999","notes":"Donate only a new, tagged stuffed animal during the announced collection window and follow the current mailing or drop-off directions.","short_summary":"Fairfield's holiday service tradition converts new stuffed animals into 'bear hugs' for children receiving care.","evidence_claim":"Fairfield says Teddy Bears With Love began in December 1999, is now led by the Student Alumni Association, and donates collected stuffed animals to children's hospitals and charities.","source_url":"https://www.fairfield.edu/alumni-and-friends/get-involved/teddy-bears-with-love/","source_title":"Teddy Bears With Love","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The 2026 collection is scheduled to begin November 2; participation requires acquiring a qualifying new, tagged stuffed animal.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}

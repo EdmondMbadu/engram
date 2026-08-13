@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "SLjas3RrXagqPr1eL3qX",
+    "schoolName": "Georgia College & State University",
+    "shortSchoolName": "Georgia College & State University",
+    "townName": "Milledgeville",
+    "state": "GA",
+    "countryCode": "US",
+    "unitId": "139861",
+    "website": "https://www.gcsu.edu/",
+    "latitude": 33.082787,
+    "longitude": -83.231962,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=gcsu.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=gcsu.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain Georgia College & State University",
+  "excluded_subjects": [
+    "Campus Black Box Theatre",
+    "Milledgeville Visitor Information Center",
+    "The Floyd L. Griffin, Jr. Black Heritage Plaza",
+    "John Marlor Art Center",
+    "Oconee Outfitters",
+    "Wax Galaxy Records",
+    "Georgia's Old Capitol Building",
+    "Georgia's Old Governor's Mansion",
+    "Sallie Ellis Davis House",
+    "Bone Cemetery"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

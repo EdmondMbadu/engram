@@ -1,0 +1,59 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "WvBumfqEfTmDF11olILs",
+    "schoolName": "Thomas Jefferson University",
+    "shortSchoolName": "Thomas Jefferson University",
+    "townName": "Philadelphia",
+    "state": "PA",
+    "countryCode": "US",
+    "unitId": "216366",
+    "website": "https://www.jefferson.edu/",
+    "latitude": 39.948274,
+    "longitude": -75.158266,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/2/2a/Thomas_Jefferson_University_seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=jefferson.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "Scott Memorial Library",
+    "Scott Memorial Library Second-Floor Group Study Rooms",
+    "Scott Memorial Library Third-Floor Individual Study Rooms",
+    "Scott Memorial Library Fourth-Floor Quiet Study",
+    "Paul J. Gutman Library",
+    "Gutman Library Study Room 101",
+    "Rena Rowan Reading Room",
+    "Kanbar Campus Center",
+    "Jefferson Alumni Hall Northwest Student Lounge",
+    "Curtis Building Second Floor Lobby",
+    "Reading Room (First Floor)",
+    "Group Study Rooms (Second Floor)",
+    "Casual Reading Area (Second Floor)",
+    "Group Study Tables (Second Floor)",
+    "Study Carrels (Third Floor)",
+    "Study Carrels (Fourth Floor)",
+    "Study Room 101",
+    "Second-Floor Study Rooms",
+    "Ground Floor Quiet Study Space"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

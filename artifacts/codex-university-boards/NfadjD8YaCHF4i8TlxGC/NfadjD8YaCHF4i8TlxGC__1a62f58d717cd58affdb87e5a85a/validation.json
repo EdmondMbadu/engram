@@ -1,0 +1,81 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.duq.edu/news-and-stories/the-times/2025/gumberg-library-celebrates-reopening-of-renovated-fourth-floor.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.duq.edu/news-and-stories/the-times/2025/gumberg-library-celebrates-reopening-of-renovated-fourth-floor.php",
+      "error": ""
+    },
+    {
+      "url": "https://calendar.library.duq.edu/reserve/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calendar.library.duq.edu/reserve/",
+      "error": ""
+    },
+    {
+      "url": "https://www.duq.edu/academics/university-catalogs/2025-2026-catalog/undergraduate/about-duquesne/gumberg-library.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.duq.edu/academics/university-catalogs/2025-2026-catalog/undergraduate/about-duquesne/gumberg-library.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.duq.edu/research/centers-and-institutes/simon-silverman-phenomenology-center/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.duq.edu/research/centers-and-institutes/simon-silverman-phenomenology-center/index.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.duq.edu/life-at-duquesne/our-campus/commuting-to-duquesne.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.duq.edu/life-at-duquesne/our-campus/commuting-to-duquesne.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.duq.edu/life-at-duquesne/health-recreation-wellness/recreation-services.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.duq.edu/life-at-duquesne/health-recreation-wellness/recreation-services.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.duq.edu/about/sustainability/garden.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.duq.edu/about/sustainability/garden.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.duq.edu/social-impact/mission-and-spiritan-values/spiritan-campus-ministry/worship.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.duq.edu/social-impact/mission-and-spiritan-values/spiritan-campus-ministry/worship.php",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Gumberg Library Glass Group Study Rooms",
+    "Gumberg Library FlexTech Classroom",
+    "Maureen P. Sullivan Curriculum Center"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

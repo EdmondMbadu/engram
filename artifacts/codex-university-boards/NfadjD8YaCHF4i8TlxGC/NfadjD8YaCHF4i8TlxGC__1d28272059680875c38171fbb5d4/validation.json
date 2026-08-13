@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://dining.gatech.edu/index.php/location/sankranti",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dining.gatech.edu/index.php/location/sankranti",
+      "error": ""
+    },
+    {
+      "url": "https://dining.gatech.edu/location/conference-dining-room",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dining.gatech.edu/location/conference-dining-room",
+      "error": ""
+    },
+    {
+      "url": "https://dining.gatech.edu/location/tech-square-tavern",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dining.gatech.edu/location/tech-square-tavern",
+      "error": ""
+    },
+    {
+      "url": "https://dining.gatech.edu/dining-locations/hours-operation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dining.gatech.edu/dining-locations/hours-operation",
+      "error": ""
+    },
+    {
+      "url": "https://dining.gatech.edu/location/tin-drum-asian-kitchen",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dining.gatech.edu/location/tin-drum-asian-kitchen",
+      "error": ""
+    },
+    {
+      "url": "https://www.gatech.edu/news/2024/07/18/brittain-dining-hall-closes",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gatech.edu/news/2024/07/18/brittain-dining-hall-closes",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

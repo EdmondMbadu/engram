@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://abbey.cistercian.org/tour/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://abbey.cistercian.org/tour/",
+      "error": ""
+    },
+    {
+      "url": "https://school.cistercian.org/about/our-location/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://school.cistercian.org/about/our-location/",
+      "error": ""
+    },
+    {
+      "url": "https://www.irvingtexas.com/listing/irving-arts-center/373/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.irvingtexas.com/listing/irving-arts-center/373/",
+      "error": ""
+    },
+    {
+      "url": "https://www.irvingtexas.com/listing/irving-golf-club/1513/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.irvingtexas.com/listing/irving-golf-club/1513/",
+      "error": ""
+    },
+    {
+      "url": "https://www.irvingtexas.com/listing/birds-fort-trail-park/971/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.irvingtexas.com/listing/birds-fort-trail-park/971/",
+      "error": ""
+    },
+    {
+      "url": "https://www.irvingtexas.com/things-to-do/museums-the-arts/jackie-townsell-bear-creek-heritage-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.irvingtexas.com/things-to-do/museums-the-arts/jackie-townsell-bear-creek-heritage-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.irvingtexas.com/things-to-do/las-colinas/mustangs-of-las-colinas/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.irvingtexas.com/things-to-do/las-colinas/mustangs-of-las-colinas/",
+      "error": ""
+    },
+    {
+      "url": "https://www.irvingtexas.com/things-to-do/mandalay-canals/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.irvingtexas.com/things-to-do/mandalay-canals/",
+      "error": ""
+    },
+    {
+      "url": "https://www.irvingtexas.com/things-to-do/attractions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.irvingtexas.com/things-to-do/attractions/",
+      "error": ""
+    },
+    {
+      "url": "https://www.irvingtexas.com/events/toyota-music-factory/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.irvingtexas.com/events/toyota-music-factory/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

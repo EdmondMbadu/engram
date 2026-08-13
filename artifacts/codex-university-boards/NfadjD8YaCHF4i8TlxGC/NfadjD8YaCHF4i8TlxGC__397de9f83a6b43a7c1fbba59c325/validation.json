@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://adminfinance.fresnostate.edu/arboretum/peace-garden/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://adminfinance.fresnostate.edu/arboretum/peace-garden/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://campusnews.fresnostate.edu/july-17-2023/12-spaces-on-campus-to-find-serenity",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusnews.fresnostate.edu/july-17-2023/12-spaces-on-campus-to-find-serenity",
+      "error": ""
+    },
+    {
+      "url": "https://studentaffairs.fresnostate.edu/studentinvolvement/usu/study-areas.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentaffairs.fresnostate.edu/studentinvolvement/usu/study-areas.html",
+      "error": ""
+    },
+    {
+      "url": "https://auxiliary.fresnostate.edu/association/src/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://auxiliary.fresnostate.edu/association/src/index.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

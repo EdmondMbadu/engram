@@ -1,0 +1,60 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "58EbJDSj24EFv81hykHl",
+    "schoolName": "Lipscomb University",
+    "shortSchoolName": "Lipscomb University",
+    "townName": "Nashville",
+    "state": "TN",
+    "countryCode": "US",
+    "unitId": "219976",
+    "website": "https://www.lipscomb.edu/",
+    "latitude": 36.106253,
+    "longitude": -86.799791,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=lipscomb.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=lipscomb.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain Lipscomb University",
+  "excluded_subjects": [
+    "Beaman Library Study Rooms",
+    "Bennett Campus Center",
+    "Ezell Center",
+    "Swang Business Center",
+    "McFarland Science Center",
+    "Crisman Administration Building Lower Level",
+    "Bison Square",
+    "Honors House",
+    "Student Veteran Resource Lounge",
+    "Fields Engineering Center",
+    "Painting the Bison",
+    "Singarama",
+    "Tau Phi Cowboy Show",
+    "Halloween Dodgeball Tournament",
+    "Battle of the Boulevard",
+    "Running of the Bison",
+    "Initium Ceremony",
+    "Lighting of the Green",
+    "Bisons Weekend Student Parade",
+    "Savannah’s Boogie 5K"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

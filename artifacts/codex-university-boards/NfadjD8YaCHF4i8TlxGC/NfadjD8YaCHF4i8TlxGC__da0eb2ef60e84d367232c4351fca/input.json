@@ -1,0 +1,62 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "C5iY4jhcry71uWsN26Mq",
+    "schoolName": "University of Notre Dame",
+    "shortSchoolName": "University of Notre Dame",
+    "townName": "Notre Dame",
+    "state": "IN",
+    "countryCode": "US",
+    "unitId": "152080",
+    "website": "https://www.nd.edu/",
+    "latitude": 41.703058,
+    "longitude": -86.238959,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/University_of_Notre_Dame_seal_%282%29.svg/250px-University_of_Notre_Dame_seal_%282%29.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=nd.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at University of Notre Dame, Shared as Cards",
+  "excluded_subjects": [
+    "Raclin Murphy Museum of Art",
+    "Mary, Queen of Families Chapel",
+    "International Modern and Contemporary Art Galleries",
+    "Sculpture Court",
+    "Charles B. Hayes Family Sculpture Park",
+    "Life of Christ / Cycle of Life",
+    "Basilica of the Sacred Heart",
+    "Basilica Museum",
+    "Hesburgh Library",
+    "Notre Dame Public Campus Tour",
+    "Main Building Steps Tradition",
+    "God Quad Grass Superstition",
+    "Golden Dome Gold Leaf Reuse",
+    "South Quad First Snowfall Snowball Fight",
+    "The Last Visit",
+    "Trumpets Under the Dome",
+    "Notre Dame Football Player Walk",
+    "Bengal Bouts",
+    "Pop Farley Week",
+    "Ryan Hall Wheelchair Basketball Tournament"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

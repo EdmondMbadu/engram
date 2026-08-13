@@ -1,0 +1,49 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://docs.lclark.edu/undergraduate/academicservices/academic/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://docs.lclark.edu/undergraduate/academicservices/academic/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lclark.edu/about/facilities_and_resources/dining/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lclark.edu/about/facilities_and_resources/dining/",
+      "error": ""
+    },
+    {
+      "url": "https://college.lclark.edu/student_life/alternative-study-locations-on-campus/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://college.lclark.edu/student_life/alternative-study-locations-on-campus/",
+      "error": ""
+    },
+    {
+      "url": "https://docs.lclark.edu/undergraduate/about/campusbuildings/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://docs.lclark.edu/undergraduate/about/campusbuildings/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Aubrey R. Watzek Library",
+    "Trail Room",
+    "Fields Dining Room"
+  ],
+  "sourceCount": 4,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

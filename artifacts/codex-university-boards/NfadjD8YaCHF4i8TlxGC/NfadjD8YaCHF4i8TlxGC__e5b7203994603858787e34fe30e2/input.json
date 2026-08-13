@@ -1,0 +1,61 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "tUCaKjQbKGlPoWDLR6qZ",
+    "schoolName": "University at Buffalo",
+    "shortSchoolName": "University at Buffalo",
+    "townName": "Buffalo",
+    "state": "NY",
+    "countryCode": "US",
+    "unitId": "196088",
+    "website": "https://www.buffalo.edu/",
+    "latitude": 43.000942,
+    "longitude": -78.789458,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/4/40/University-at-Buffalo-logo-300x300.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=buffalo.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Main Street Market",
+    "Hubies",
+    "Perks",
+    "The Cellar",
+    "Jim's Steakout — Main Street",
+    "Ellicott Food Court",
+    "Lockwood Library",
+    "UB Student Union",
+    "Alumni Arena",
+    "Capen Hall",
+    "Welcome Center",
+    "Student Union Board Game Room",
+    "Lake LaSalle",
+    "Baird Point",
+    "Lockwood Memorial Library",
+    "Abbott Library",
+    "Center for the Arts",
+    "UB CFA Gallery",
+    "The Bronze Bison",
+    "Broadview Arena"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

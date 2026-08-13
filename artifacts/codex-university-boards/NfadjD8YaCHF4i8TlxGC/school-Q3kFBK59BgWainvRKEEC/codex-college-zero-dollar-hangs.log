@@ -1,0 +1,387 @@
+Reading additional input from stdin...
+2026-08-13T08:55:32.161497Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa55-1655-73a2-bf07-4468eabd2318.1786611308117830000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-terra
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa55-7377-7c92-af2b-0a480d851336
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"Q3kFBK59BgWainvRKEEC","schoolName":"Saint Anselm College","shortSchoolName":"Saint Anselm College","townName":"Manchester","state":"NH","countryCode":"US","website":"https://www.anselm.edu/","latitude":42.986889,"longitude":-71.503622},"templates":[{"id":"college-zero-dollar-hangs","version":"1.0","titlePattern":"Zero Dollars: {count} Hangs That Cost Nothing","editorialBrief":"Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.","researchQueries":["free student activities campus","free campus spaces students","free public places near campus"],"count":10,"icon":"money_off","primarySubjectType":"activity","allowedSubjectTypes":["activity","place"],"freshnessDays":180,"exactTitle":"Zero Dollars: 10 Hangs That Cost Nothing"}]}
+2026-08-13T08:55:32.254705Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa55-165c-7ba0-96a5-ecbc666745ff.1786611308125584000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:55:32.339709Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa55-1655-7321-8f46-35c277e55491.1786611308117776000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:55:32.418403Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa55-1661-7181-8b5a-24892225197b.1786611308130271000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:55:32.444433Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T08:55:32.452011Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T08:55:32.493159Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa55-1657-7a53-90a8-301eef2925fc.1786611308119868000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{"complete":false,"school_name":"Saint Anselm College","town_name":"Manchester","boards":[{"complete":false,"school_name":"Saint Anselm College","town_name":"Manchester","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"I’m verifying ten named, no-cost activities with direct sources.","icon":"money_off","cards": [{"subject_id":"research-in-progress","subject_type":"activity","entity_name":"Research in progress","title":"Verifying sources","subtitle":"Saint Anselm College, Manchester, NH","notes":"I’m checking direct official and local sources for current access and no-cost evidence before creating the final cards.","short_summary":"Research in progress.","evidence_claim":"Sources are being verified.","source_url":"https://www.anselm.edu/","source_title":"Saint Anselm College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not yet verified.","cost_status":"unknown","under21_safe":true}  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  
+            ,{"subject_id":"research-in-progress-2","subject_type":"activity","entity_name":"Research in progress","title":"Verifying sources","subtitle":"Saint Anselm College, Manchester, NH","notes":"I’m checking direct official and local sources for current access and no-cost evidence before creating the final cards.","short_summary":"Research in progress.","evidence_claim":"Sources are being verified.","source_url":"https://www.anselm.edu/","source_title":"Saint Anselm College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not yet verified.","cost_status":"unknown","under21_safe":true}  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+    ,{"subject_id":"research-in-progress-3","subject_type":"activity","entity_name":"Research in progress","title":"Verifying sources","subtitle":"Saint Anselm College, Manchester, NH","notes":"I’m checking direct official and local sources for current access and no-cost evidence before creating the final cards.","short_summary":"Research in progress.","evidence_claim":"Sources are being verified.","source_url":"https://www.anselm.edu/","source_title":"Saint Anselm College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not yet verified.","cost_status":"unknown","under21_safe":true} 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+    
+ ,{"subject_id":"research-in-progress-4","subject_type":"activity","entity_name":"Research in progress","title":"Verifying sources","subtitle":"Saint Anselm College, Manchester, NH","notes":"I’m checking direct official and local sources for current access and no-cost evidence before creating the final cards.","short_summary":"Research in progress.","evidence_claim":"Sources are being verified.","source_url":"https://www.anselm.edu/","source_title":"Saint Anselm College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not yet verified.","cost_status":"unknown","under21_safe":true}  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+   
+  ,{"subject_id":"research-in-progress-5","subject_type":"activity","entity_name":"Research in progress","title":"Verifying sources","subtitle":"Saint Anselm College, Manchester, NH","notes":"I’m checking direct official and local sources for current access and no-cost evidence before creating the final cards.","short_summary":"Research in progress.","evidence_claim":"Sources are being verified.","source_url":"https://www.anselm.edu/","source_title":"Saint Anselm College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not yet verified.","cost_status":"unknown","under21_safe":true}  ,{"subject_id":"research-in-progress-6","subject_type":"activity","entity_name":"Research in progress","title":"Verifying sources","subtitle":"Saint Anselm College, Manchester, NH","notes":"I’m checking direct official and local sources for current access and no-cost evidence before creating the final cards.","short_summary":"Research in progress.","evidence_claim":"Sources are being verified.","source_url":"https://www.anselm.edu/","source_title":"Saint Anselm College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not yet verified.","cost_status":"unknown","under21_safe":true}  ,{"subject_id":"research-in-progress-7","subject_type":"activity","entity_name":"Research in progress","title":"Verifying sources","subtitle":"Saint Anselm College, Manchester, NH","notes":"I’m checking direct official and local sources for current access and no-cost evidence before creating the final cards.","short_summary":"Research in progress.","evidence_claim":"Sources are being verified.","source_url":"https://www.anselm.edu/","source_title":"Saint Anselm College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not yet verified.","cost_status":"unknown","under21_safe":true}  ,{"subject_id":"research-in-progress-8","subject_type":"activity","entity_name":"Research in progress","title":"Verifying sources","subtitle":"Saint Anselm College, Manchester, NH","notes":"I’m checking direct official and local sources for current access and no-cost evidence before creating the final cards.","short_summary":"Research in progress.","evidence_claim":"Sources are being verified.","source_url":"https://www.anselm.edu/","source_title":"Saint Anselm College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not yet verified.","cost_status":"unknown","under21_safe":true}  ,{"subject_id":"research-in-progress-9","subject_type":"activity","entity_name":"Research in progress","title":"Verifying sources","subtitle":"Saint Anselm College, Manchester, NH","notes":"I’m checking direct official and local sources for current access and no-cost evidence before creating the final cards.","short_summary":"Research in progress.","evidence_claim":"Sources are being verified.","source_url":"https://www.anselm.edu/","source_title":"Saint Anselm College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not yet verified.","cost_status":"unknown","under21_safe":true}  ,{"subject_id":"research-in-progress-10","subject_type":"activity","entity_name":"Research in progress","title":"Verifying sources","subtitle":"Saint Anselm College, Manchester, NH","notes":"I’m checking direct official and local sources for current access and no-cost evidence before creating the final cards.","short_summary":"Research in progress.","evidence_claim":"Sources are being verified.","source_url":"https://www.anselm.edu/","source_title":"Saint Anselm College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not yet verified.","cost_status":"unknown","under21_safe":true}],"warnings":["Research in progress."]}],"warnings":["Research in progress."]}
+web search: 
+web search: site:anselm.edu free campus Saint Anselm College galleries library trails ...
+web search: 
+web search: site:manchesternh.gov "No charge" park Manchester ...
+web search: 
+web search: site:anselm.edu "free" "students" event "Saint Anselm" ...
+web search: 
+web search: site:anselm.edu "free" "Campus Ministry" Saint Anselm ...
+codex
+{"complete":true,"school_name":"Saint Anselm College","town_name":"Manchester","boards":[{"complete":true,"school_name":"Saint Anselm College","town_name":"Manchester","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"No-cost campus and Manchester activities with access confirmed by Saint Anselm College sources.","icon":"money_off","cards":[{"subject_id":"currier-museum-of-art","subject_type":"place","entity_name":"Currier Museum of Art","title":"See the Currier with your student ID","subtitle":"150 Ash Street, Manchester","notes":"Bring a valid Saint Anselm College ID to the Currier’s guest services desk, then spend time with the galleries at your own pace.","short_summary":"Saint Anselm students receive free Currier admission with a valid college ID.","evidence_claim":"Geisel Library states that Saint Anselm students, faculty, and staff receive free admission to the Currier Museum of Art with a valid college ID.","source_url":"https://www.anselm.edu/about/offices-centers-institutes/geisel-library/services/museum-passes","source_title":"Museum Passes | Geisel Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"For current Saint Anselm students, faculty, and staff; present a valid college ID.","cost_status":"free","under21_safe":true},{"subject_id":"millyard-museum","subject_type":"place","entity_name":"Millyard Museum","title":"Use a library pass for the Millyard Museum","subtitle":"Manchester Historic Association, Manchester","notes":"Ask at Geisel Library’s Circulation Desk about the Manchester Historic Association pass before planning a visit to the Millyard Museum.","short_summary":"A Geisel Library pass includes free admission for up to four people per visit.","evidence_claim":"Saint Anselm’s Museum Passes page says its Manchester Historic Association passes provide free admission for up to four people per visit, including the Millyard Museum.","source_url":"https://www.anselm.edu/about/offices-centers-institutes/geisel-library/services/museum-passes","source_title":"Museum Passes | Geisel Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Ask at the Geisel Library Circulation Desk; pass availability and museum hours should be confirmed before going.","cost_status":"free","under21_safe":true},{"subject_id":"mha-research-center","subject_type":"place","entity_name":"Manchester Historic Association Research Center","title":"Browse Manchester history with a library pass","subtitle":"Manchester Historic Association, Manchester","notes":"Check with Geisel’s Circulation Desk for a Manchester Historic Association pass, then set aside time to explore local-history materials.","short_summary":"The library pass covers free admission for a visit to the MHA Research Center.","evidence_claim":"Saint Anselm’s Museum Passes page says its Manchester Historic Association passes include free admission for up to four people per visit to the MHA Research Center.","source_url":"https://www.anselm.edu/about/offices-centers-institutes/geisel-library/services/museum-passes","source_title":"Museum Passes | Geisel Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Ask at the Geisel Library Circulation Desk; confirm Research Center access before the visit.","cost_status":"free","under21_safe":true},{"subject_id":"campus-dinner-discussions","subject_type":"activity","entity_name":"Campus Dinner Discussions","title":"Join a Campus Dinner Discussion","subtitle":"Center for Ethics, Saint Anselm College","notes":"Email the Center for Ethics about the next discussion, then come ready to listen and contribute a question or perspective.","short_summary":"Student discussions pair a free catered dinner with an informal conversation led by faculty, staff, or monks.","evidence_claim":"The Center for Ethics says Campus Dinner Discussions are on-campus talks for the Saint Anselm community where students eat a free catered dinner and discuss ideas with faculty, staff, and monks.","source_url":"https://www.anselm.edu/about/offices-centers-institutes/centers-institutes/center-ethics-society/programs/student-programs/programs-saint-anselm-students","source_title":"Programs for Saint Anselm Students | Center for Ethics","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":42.986889,"longitude":-71.503622,"maps_url":null,"access_notes":"For the Saint Anselm College community; contact ethics@anselm.edu for upcoming topics.","cost_status":"free","under21_safe":true},{"subject_id":"commuter-appreciation-week","subject_type":"activity","entity_name":"Commuter Appreciation Week","title":"Drop into a commuter event","subtitle":"Intercultural Center, Saint Anselm College","notes":"Watch campus communications for the semester schedule and use the Intercultural Center as a place to meet other commuter students.","short_summary":"Commuter Appreciation Week is part of a free event series for Saint Anselm commuters.","evidence_claim":"Saint Anselm states that its commuter events, including Commuter Appreciation Week, are free of charge and held in the Intercultural Center.","source_url":"https://www.anselm.edu/about/offices-centers-institutes/centers-institutes/father-jonathan-osb-center-intercultural-learning-and-inclusion/commuters","source_title":"Commuters | Saint Anselm College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":42.986889,"longitude":-71.503622,"maps_url":null,"access_notes":"For commuter students; events are held in the Intercultural Center and announced through campus channels.","cost_status":"free","under21_safe":true},{"subject_id":"salsa-madness","subject_type":"activity","entity_name":"Salsa Madness","title":"Try Salsa Madness","subtitle":"Hispanic Heritage Month, Saint Anselm College","notes":"Look for the annual Hispanic Heritage Month schedule, then join the salsa demonstration and Latin dance lesson with classmates.","short_summary":"The annual program combines a salsa demonstration, complimentary snacks, and dance instruction.","evidence_claim":"Saint Anselm describes Salsa Madness as an annual Hispanic Heritage Month event with free salsa and chips and Latin dance lessons.","source_url":"https://www.anselm.edu/about/offices-centers-institutes/diversity-inclusion-office/campus-events","source_title":"Campus Events | Saint Anselm College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":42.986889,"longitude":-71.503622,"maps_url":null,"access_notes":"An annual campus event; consult the campus event calendar for the current date and location.","cost_status":"free","under21_safe":true},{"subject_id":"sonnet-marathon","subject_type":"activity","entity_name":"Annual Celebration of William Shakespeare’s Birthday","title":"Listen in at the Sonnet Marathon","subtitle":"Saint Anselm College","notes":"Check the spring events calendar, then stop by to hear students, faculty, staff, monks, and guests read Shakespeare’s sonnets aloud.","short_summary":"This annual spring celebration invites listeners to the college’s reading of all 154 Shakespeare sonnets.","evidence_claim":"Saint Anselm’s event listing invites people to attend its annual Sonnet Marathon, featuring readings of Shakespeare’s 154 sonnets and free birthday cake.","source_url":"https://www.anselm.edu/about/anselmian-hub/events/121-730-pm-saint-anselm-college-mens-basketball-vs-assumption/january-21st-2026-0730pm","source_title":"Saint Anselm College Events","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":42.986889,"longitude":-71.503622,"maps_url":null,"access_notes":"Annual spring event; verify the current date, location, and participation details through Saint Anselm’s events calendar.","cost_status":"free","under21_safe":true},{"subject_id":"regular-season-home-athletics","subject_type":"activity","entity_name":"Saint Anselm Regular-Season Home Athletics","title":"Cheer at a regular-season home game","subtitle":"Saint Anselm College athletic venues","notes":"Bring your current college ID to a ticketed regular-season home contest and check the athletics schedule before heading to the venue.","short_summary":"Students with a valid college ID are admitted free to ticketed regular-season athletic events.","evidence_claim":"Saint Anselm’s student handbook states that students presenting a valid college-issued ID receive free admission to any ticketed regular-season athletic event.","source_url":"https://www.anselm.edu/sites/default/files/Dean%20of%20Students/Student%20Handbook%202022%20-%202023%208_18_2022.pdf","source_title":"Saint Anselm College Student Handbook","source_kind":"university_official","source_published_at":"2022-08-18","source_fetched_at":"2026-08-13","latitude":42.986889,"longitude":-71.503622,"maps_url":null,"access_notes":"For Saint Anselm students with a valid college-issued ID; applies to ticketed regular-season events, so verify the schedule and event status.","cost_status":"free","under21_safe":true},{"subject_id":"big-thought-series","subject_type":"activity","entity_name":"Big Thought Series","title":"Attend a Big Thought conversation","subtitle":"Gregory J. Grappone Humanities Institute","notes":"Choose a topic from the current series and attend in person or by Zoom; use the companion guide if you want context beforehand.","short_summary":"The Humanities Institute’s Big Thought programs are free public conversations available in person and online.","evidence_claim":"The Gregory J. Grappone Humanities Institute states that all of its programs, including the Big Thought Series, are free and open to the public and may be attended in person or via Zoom.","source_url":"https://www.anselm.edu/about/offices-centers-institutes/centers-institutes/gregory-j-grappone-04-humanities-institute/programs/big-thought-series","source_title":"Big Thought Series | Saint Anselm College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":42.986889,"longitude":-71.503622,"maps_url":null,"access_notes":"Free and open to the public; current program dates and formats are listed by the Humanities Institute.","cost_status":"free","under21_safe":true},{"subject_id":"nhiop-public-events","subject_type":"activity","entity_name":"New Hampshire Institute of Politics Public Events","title":"Catch a public NHIOP talk","subtitle":"New Hampshire Institute of Politics, Saint Anselm College","notes":"Review the Institute’s upcoming speakers, then arrive early for a public talk or discussion at the bottom of Saint Anselm Drive.","short_summary":"NHIOP hosts free public events with authors, lecturers, and political figures.","evidence_claim":"Saint Anselm states that events at the New Hampshire Institute of Politics are free and open to the general public.","source_url":"https://www.anselm.edu/about/offices-centers-institutes/centers-institutes/dana-center-performing-arts/tickets-polices","source_title":"Tickets & Policies | Dana Center for the Performing Arts","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":42.986889,"longitude":-71.503622,"maps_url":null,"access_notes":"Free and open to the general public; confirm the event date, location, and any registration instructions before attending.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T08:57:56.050216Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa55-7377-7c92-af2b-0a480d851336.1786611331960183000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+46,766
+
+{"complete":true,"school_name":"Saint Anselm College","town_name":"Manchester","boards":[{"complete":true,"school_name":"Saint Anselm College","town_name":"Manchester","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"No-cost campus and Manchester activities with access confirmed by Saint Anselm College sources.","icon":"money_off","cards":[{"subject_id":"currier-museum-of-art","subject_type":"place","entity_name":"Currier Museum of Art","title":"See the Currier with your student ID","subtitle":"150 Ash Street, Manchester","notes":"Bring a valid Saint Anselm College ID to the Currier’s guest services desk, then spend time with the galleries at your own pace.","short_summary":"Saint Anselm students receive free Currier admission with a valid college ID.","evidence_claim":"Geisel Library states that Saint Anselm students, faculty, and staff receive free admission to the Currier Museum of Art with a valid college ID.","source_url":"https://www.anselm.edu/about/offices-centers-institutes/geisel-library/services/museum-passes","source_title":"Museum Passes | Geisel Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"For current Saint Anselm students, faculty, and staff; present a valid college ID.","cost_status":"free","under21_safe":true},{"subject_id":"millyard-museum","subject_type":"place","entity_name":"Millyard Museum","title":"Use a library pass for the Millyard Museum","subtitle":"Manchester Historic Association, Manchester","notes":"Ask at Geisel Library’s Circulation Desk about the Manchester Historic Association pass before planning a visit to the Millyard Museum.","short_summary":"A Geisel Library pass includes free admission for up to four people per visit.","evidence_claim":"Saint Anselm’s Museum Passes page says its Manchester Historic Association passes provide free admission for up to four people per visit, including the Millyard Museum.","source_url":"https://www.anselm.edu/about/offices-centers-institutes/geisel-library/services/museum-passes","source_title":"Museum Passes | Geisel Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Ask at the Geisel Library Circulation Desk; pass availability and museum hours should be confirmed before going.","cost_status":"free","under21_safe":true},{"subject_id":"mha-research-center","subject_type":"place","entity_name":"Manchester Historic Association Research Center","title":"Browse Manchester history with a library pass","subtitle":"Manchester Historic Association, Manchester","notes":"Check with Geisel’s Circulation Desk for a Manchester Historic Association pass, then set aside time to explore local-history materials.","short_summary":"The library pass covers free admission for a visit to the MHA Research Center.","evidence_claim":"Saint Anselm’s Museum Passes page says its Manchester Historic Association passes include free admission for up to four people per visit to the MHA Research Center.","source_url":"https://www.anselm.edu/about/offices-centers-institutes/geisel-library/services/museum-passes","source_title":"Museum Passes | Geisel Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Ask at the Geisel Library Circulation Desk; confirm Research Center access before the visit.","cost_status":"free","under21_safe":true},{"subject_id":"campus-dinner-discussions","subject_type":"activity","entity_name":"Campus Dinner Discussions","title":"Join a Campus Dinner Discussion","subtitle":"Center for Ethics, Saint Anselm College","notes":"Email the Center for Ethics about the next discussion, then come ready to listen and contribute a question or perspective.","short_summary":"Student discussions pair a free catered dinner with an informal conversation led by faculty, staff, or monks.","evidence_claim":"The Center for Ethics says Campus Dinner Discussions are on-campus talks for the Saint Anselm community where students eat a free catered dinner and discuss ideas with faculty, staff, and monks.","source_url":"https://www.anselm.edu/about/offices-centers-institutes/centers-institutes/center-ethics-society/programs/student-programs/programs-saint-anselm-students","source_title":"Programs for Saint Anselm Students | Center for Ethics","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":42.986889,"longitude":-71.503622,"maps_url":null,"access_notes":"For the Saint Anselm College community; contact ethics@anselm.edu for upcoming topics.","cost_status":"free","under21_safe":true},{"subject_id":"commuter-appreciation-week","subject_type":"activity","entity_name":"Commuter Appreciation Week","title":"Drop into a commuter event","subtitle":"Intercultural Center, Saint Anselm College","notes":"Watch campus communications for the semester schedule and use the Intercultural Center as a place to meet other commuter students.","short_summary":"Commuter Appreciation Week is part of a free event series for Saint Anselm commuters.","evidence_claim":"Saint Anselm states that its commuter events, including Commuter Appreciation Week, are free of charge and held in the Intercultural Center.","source_url":"https://www.anselm.edu/about/offices-centers-institutes/centers-institutes/father-jonathan-osb-center-intercultural-learning-and-inclusion/commuters","source_title":"Commuters | Saint Anselm College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":42.986889,"longitude":-71.503622,"maps_url":null,"access_notes":"For commuter students; events are held in the Intercultural Center and announced through campus channels.","cost_status":"free","under21_safe":true},{"subject_id":"salsa-madness","subject_type":"activity","entity_name":"Salsa Madness","title":"Try Salsa Madness","subtitle":"Hispanic Heritage Month, Saint Anselm College","notes":"Look for the annual Hispanic Heritage Month schedule, then join the salsa demonstration and Latin dance lesson with classmates.","short_summary":"The annual program combines a salsa demonstration, complimentary snacks, and dance instruction.","evidence_claim":"Saint Anselm describes Salsa Madness as an annual Hispanic Heritage Month event with free salsa and chips and Latin dance lessons.","source_url":"https://www.anselm.edu/about/offices-centers-institutes/diversity-inclusion-office/campus-events","source_title":"Campus Events | Saint Anselm College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":42.986889,"longitude":-71.503622,"maps_url":null,"access_notes":"An annual campus event; consult the campus event calendar for the current date and location.","cost_status":"free","under21_safe":true},{"subject_id":"sonnet-marathon","subject_type":"activity","entity_name":"Annual Celebration of William Shakespeare’s Birthday","title":"Listen in at the Sonnet Marathon","subtitle":"Saint Anselm College","notes":"Check the spring events calendar, then stop by to hear students, faculty, staff, monks, and guests read Shakespeare’s sonnets aloud.","short_summary":"This annual spring celebration invites listeners to the college’s reading of all 154 Shakespeare sonnets.","evidence_claim":"Saint Anselm’s event listing invites people to attend its annual Sonnet Marathon, featuring readings of Shakespeare’s 154 sonnets and free birthday cake.","source_url":"https://www.anselm.edu/about/anselmian-hub/events/121-730-pm-saint-anselm-college-mens-basketball-vs-assumption/january-21st-2026-0730pm","source_title":"Saint Anselm College Events","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":42.986889,"longitude":-71.503622,"maps_url":null,"access_notes":"Annual spring event; verify the current date, location, and participation details through Saint Anselm’s events calendar.","cost_status":"free","under21_safe":true},{"subject_id":"regular-season-home-athletics","subject_type":"activity","entity_name":"Saint Anselm Regular-Season Home Athletics","title":"Cheer at a regular-season home game","subtitle":"Saint Anselm College athletic venues","notes":"Bring your current college ID to a ticketed regular-season home contest and check the athletics schedule before heading to the venue.","short_summary":"Students with a valid college ID are admitted free to ticketed regular-season athletic events.","evidence_claim":"Saint Anselm’s student handbook states that students presenting a valid college-issued ID receive free admission to any ticketed regular-season athletic event.","source_url":"https://www.anselm.edu/sites/default/files/Dean%20of%20Students/Student%20Handbook%202022%20-%202023%208_18_2022.pdf","source_title":"Saint Anselm College Student Handbook","source_kind":"university_official","source_published_at":"2022-08-18","source_fetched_at":"2026-08-13","latitude":42.986889,"longitude":-71.503622,"maps_url":null,"access_notes":"For Saint Anselm students with a valid college-issued ID; applies to ticketed regular-season events, so verify the schedule and event status.","cost_status":"free","under21_safe":true},{"subject_id":"big-thought-series","subject_type":"activity","entity_name":"Big Thought Series","title":"Attend a Big Thought conversation","subtitle":"Gregory J. Grappone Humanities Institute","notes":"Choose a topic from the current series and attend in person or by Zoom; use the companion guide if you want context beforehand.","short_summary":"The Humanities Institute’s Big Thought programs are free public conversations available in person and online.","evidence_claim":"The Gregory J. Grappone Humanities Institute states that all of its programs, including the Big Thought Series, are free and open to the public and may be attended in person or via Zoom.","source_url":"https://www.anselm.edu/about/offices-centers-institutes/centers-institutes/gregory-j-grappone-04-humanities-institute/programs/big-thought-series","source_title":"Big Thought Series | Saint Anselm College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":42.986889,"longitude":-71.503622,"maps_url":null,"access_notes":"Free and open to the public; current program dates and formats are listed by the Humanities Institute.","cost_status":"free","under21_safe":true},{"subject_id":"nhiop-public-events","subject_type":"activity","entity_name":"New Hampshire Institute of Politics Public Events","title":"Catch a public NHIOP talk","subtitle":"New Hampshire Institute of Politics, Saint Anselm College","notes":"Review the Institute’s upcoming speakers, then arrive early for a public talk or discussion at the bottom of Saint Anselm Drive.","short_summary":"NHIOP hosts free public events with authors, lecturers, and political figures.","evidence_claim":"Saint Anselm states that events at the New Hampshire Institute of Politics are free and open to the general public.","source_url":"https://www.anselm.edu/about/offices-centers-institutes/centers-institutes/dana-center-performing-arts/tickets-polices","source_title":"Tickets & Policies | Dana Center for the Performing Arts","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":42.986889,"longitude":-71.503622,"maps_url":null,"access_notes":"Free and open to the general public; confirm the event date, location, and any registration instructions before attending.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}

@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "Yg1KcI70ENpcdwjYvZh7",
+    "schoolName": "University of Northern Iowa",
+    "shortSchoolName": "University of Northern Iowa",
+    "townName": "Cedar Falls",
+    "state": "IA",
+    "countryCode": "US",
+    "unitId": "154095",
+    "website": "https://www.uni.edu/",
+    "latitude": 42.514923,
+    "longitude": -92.459703,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/d/d3/University_of_Northern_Iowa_Seal.svg/120px-University_of_Northern_Iowa_Seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=uni.edu&sz=256"
+  },
+  "template": {
+    "id": "college-study-spots",
+    "version": "1.0",
+    "titlePattern": "Claimed by 9am: {count} Study Spots Worth Showing Up Early For",
+    "editorialBrief": "Choose ten distinct study environments. Verify access rules, room or reservation constraints, and the physical affordance that makes each useful. Treat “Claimed by 9am” as editorial framing; never assert crowding or student behavior without evidence.",
+    "researchQueries": [
+      "campus study spaces",
+      "library study rooms students",
+      "quiet study campus"
+    ],
+    "count": 10,
+    "icon": "menu_book",
+    "primarySubjectType": "study_space",
+    "allowedSubjectTypes": [
+      "study_space",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Claimed by 9am: 10 Study Spots Worth Showing Up Early For",
+  "excluded_subjects": [
+    "Rod Library Study Rooms",
+    "Rod Library Learning Commons",
+    "Rod Library Makerspace",
+    "Rod Library Mindfulness Space",
+    "Anatomy Room (LIB 280)",
+    "ScholarSpace Presentation Room",
+    "Campanile Plaza",
+    "Maucker Union Coffeehouse",
+    "Hemisphere Lounge",
+    "Maucker Union Plaza (Roof)"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

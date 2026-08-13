@@ -1,0 +1,39 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "CNZXPoG7HBzvRXfbMB0q",
+    "schoolName": "Stockton University",
+    "shortSchoolName": "Stockton University",
+    "townName": "Galloway",
+    "state": "NJ",
+    "countryCode": "US",
+    "unitId": "186876",
+    "website": "https://www.stockton.edu/",
+    "latitude": 39.492036,
+    "longitude": -74.531087,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=stockton.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=stockton.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain Stockton University",
+  "excluded_subjects": [],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

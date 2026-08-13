@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.iwu.edu/about/traditions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iwu.edu/about/traditions/",
+      "error": ""
+    },
+    {
+      "url": "https://www.iwu.edu/greek-life/how-to-join/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iwu.edu/greek-life/how-to-join/",
+      "error": ""
+    },
+    {
+      "url": "https://www.iwu.edu/news/2026/upcoming-unity-gala-to-celebrate-the-cultivation-of-community.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iwu.edu/news/2026/upcoming-unity-gala-to-celebrate-the-cultivation-of-community.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.iwu.edu/orientation/titan/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iwu.edu/orientation/titan/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

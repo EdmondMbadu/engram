@@ -1,0 +1,302 @@
+Reading additional input from stdin...
+2026-08-13T07:45:29.438135Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa15-1364-79e2-8b84-28a5d0625dbf.1786607113060792000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:45:29.607328Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa15-1363-7303-a985-ad0a17b193a4.1786607113059656000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:45:29.750386Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa15-137d-7471-9da3-570c918cff59.1786607113086049000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:45:30.013414Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa15-1363-75a0-b2e1-655db24be627.1786607113060285000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:45:30.022965Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:45:30.027656Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:45:30.073890Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa15-1380-75f3-9265-f323d358d95a.1786607113089612000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:45:30.207124Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa15-1375-7fd2-acdc-5407008710bc.1786607113078019000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:45:30.278746Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa15-137f-79e1-9723-2684cdba7c07.1786607113087687000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa15-52fb-7453-84a1-71d05987a26d
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"EVjhvtbqnbYgJxqa17O8","schoolName":"John Brown University","shortSchoolName":"John Brown University","townName":"Siloam Springs","state":"AR","countryCode":"US","website":"https://www.jbu.edu/","latitude":36.189812,"longitude":-94.560283},"templates":[{"id":"college-first-weekend","version":"1.0","titlePattern":"Your First Weekend at {school}, Shared as Cards","editorialBrief":"Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.","researchQueries":["new student orientation campus guide","first year student campus activities","weekend near campus students"],"count":10,"icon":"schedule","primarySubjectType":"sequence_stop","allowedSubjectTypes":["sequence_stop","place","activity"],"freshnessDays":180,"exactTitle":"Your First Weekend at John Brown University, Shared as Cards"}]}
+codex
+{
+  "complete": false,
+  "school_name": "John Brown University",
+  "town_name": "Siloam Springs",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "John Brown University",
+      "town_name": "Siloam Springs",
+      "template_id": "college-first-weekend",
+      "title": "Your First Weekend at John Brown University, Shared as Cards",
+      "description": "I’m researching the official campus, city, and direct venue sources now, then I’ll validate ten distinct, under-21-safe sequence stops.",
+      "icon": "schedule",
+      "cards": [
+        {
+          "subject_id": "research-in-progress",
+          "subject_type": "sequence_stop",
+          "entity_name": "Research in progress",
+          "title": "Verifying the weekend sequence",
+          "subtitle": "John Brown University and Siloam Springs",
+          "notes": "Checking direct sources for access, named destinations, activities, and current public details before assembling the final cards.",
+          "short_summary": "Source verification is underway.",
+          "evidence_claim": "This is a progress update, not a final researched card.",
+          "source_url": "https://www.jbu.edu/",
+          "source_title": "John Brown University",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "Final access notes will be based on direct current sources.",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+       	 		,
+      	 		{
+        "subject_id": "research-queue",
+        "subject_type": "activity",
+        "entity_name": "Source validation",
+        "title": "Building a ten-stop sequence",
+        "subtitle": "Campus and nearby public destinations",
+        "notes": "Prioritizing official university, government, cultural institution, and direct business pages that support each precise claim.",
+        "short_summary": "Ten distinct subjects are being checked.",
+        "evidence_claim": "This is a progress placeholder and will be replaced in the completed board.",
+        "source_url": "https://www.jbu.edu/",
+        "source_title": "John Brown University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "Only verifiable public access details will appear in the final board.",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+      	 		,
+      	 		{
+        "subject_id": "source-check",
+        "subject_type": "place",
+        "entity_name": "John Brown University",
+        "title": "Checking campus sources",
+        "subtitle": "Official facts first",
+        "notes": "Reviewing university pages and linked institutional sources for named places with clear roles in a first-weekend itinerary.",
+        "short_summary": "Campus evidence is being gathered.",
+        "evidence_claim": "The supplied university website identifies John Brown University.",
+        "source_url": "https://www.jbu.edu/",
+        "source_title": "John Brown University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": 36.189812,
+        "longitude": -94.560283,
+        "maps_url": null,
+        "access_notes": "This placeholder will not appear in the final complete board.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      	 		,
+      	 		{
+        "subject_id": "local-check",
+        "subject_type": "place",
+        "entity_name": "Siloam Springs",
+        "title": "Checking nearby destinations",
+        "subtitle": "Public and direct venue sources",
+        "notes": "Confirming nearby named destinations through city, cultural institution, and direct operator pages before writing itinerary copy.",
+        "short_summary": "Local destination checks are underway.",
+        "evidence_claim": "The target data places John Brown University in Siloam Springs, Arkansas.",
+        "source_url": "https://www.jbu.edu/",
+        "source_title": "John Brown University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "The final card will include only directly supported access details.",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+      	 		,
+      	 		{
+        "subject_id": "safety-check",
+        "subject_type": "activity",
+        "entity_name": "Under-21-safe itinerary review",
+        "title": "Screening every stop",
+        "subtitle": "No 21+-only venues or unsafe behavior",
+        "notes": "Reviewing the full candidate set for public access, age suitability, and conservative wording before choosing the final ten.",
+        "short_summary": "Safety constraints are being applied.",
+        "evidence_claim": "This is a workflow update rather than a final destination claim.",
+        "source_url": "https://www.jbu.edu/",
+        "source_title": "John Brown University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "Every final stop will be suitable for people under 21.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      	 		,
+      	 		{
+        "subject_id": "distinctness-check",
+        "subject_type": "activity",
+        "entity_name": "Subject distinctness review",
+        "title": "Removing duplicate subjects",
+        "subtitle": "One named subject per card",
+        "notes": "Comparing entity names and roles so the finished sequence contains ten non-overlapping, visually documentable subjects.",
+        "short_summary": "Duplicate candidates are being removed.",
+        "evidence_claim": "This is a workflow update and not a factual claim about a destination.",
+        "source_url": "https://www.jbu.edu/",
+        "source_title": "John Brown University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "The final board will contain exactly ten distinct subjects.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      	 		,
+      	 		{
+        "subject_id": "copy-check",
+        "subject_type": "activity",
+        "entity_name": "Editorial review",
+        "title": "Writing specific card copy",
+        "subtitle": "Actionable notes and distinct summaries",
+        "notes": "Drafting concise instructions without popularity claims, rankings, invented habits, unsupported timing, or brochure-style language.",
+        "short_summary": "Card language is being constrained to evidence.",
+        "evidence_claim": "This describes the current editorial validation process.",
+        "source_url": "https://www.jbu.edu/",
+        "source_title": "John Brown University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "Final notes will stay within the requested character range.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      	 		,
+      	 		{
+        "subject_id": "access-check",
+        "subject_type": "activity",
+        "entity_name": "Access verification",
+        "title": "Confirming public details",
+        "subtitle": "Hours and eligibility only when sourced",
+        "notes": "Checking whether each stop is public, student-limited, event-dependent, or purchase-based, and recording uncertainty when needed.",
+        "short_summary": "Access language is being verified.",
+        "evidence_claim": "This is a workflow status statement.",
+        "source_url": "https://www.jbu.edu/",
+        "source_title": "John Brown University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "Unsupported hours or access promises will be omitted.",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+      	 		,
+      	 		{
+        "subject_id": "location-check",
+        "subject_type": "activity",
+        "entity_name": "Location verification",
+        "title": "Checking coordinates and maps",
+        "subtitle": "Null unless verifiable",
+        "notes": "Validating destination coordinates and direct Google Maps links, with null retained whenever reliable location data is unavailable.",
+        "short_summary": "Location fields are being checked conservatively.",
+        "evidence_claim": "This describes the location-data validation process.",
+        "source_url": "https://www.jbu.edu/",
+        "source_title": "John Brown University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "No unverified coordinates or map URLs will be supplied.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      	 		,
+      	 		{
+        "subject_id": "final-validation",
+        "subject_type": "sequence_stop",
+        "entity_name": "Board validation",
+        "title": "Preparing the final JSON",
+        "subtitle": "Exactly one board and ten cards",
+        "notes": "Running a final structural check for the required identifiers, exact title, icon, card count, source fields, and completion flags.",
+        "short_summary": "The finished board will be schema-checked.",
+        "evidence_claim": "This is a progress statement describing final validation.",
+        "source_url": "https://www.jbu.edu/",
+        "source_title": "John Brown University",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "The final response will contain JSON only.",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ],
+      "warnings": [
+        "Research in progress; this commentary object is not the final board."
+      ]
+    }
+  ],
+  "warnings": [
+    "Research and source validation are underway."
+  ]
+}
+web search: 
+web search: site:jbu.edu John Brown University campus map Cathedral of the Ozarks Walton Lifetime Health Complex library student center ...
+web search: 
+web search: site:jbu.edu Walton Lifetime Health Complex hours John Brown University ...
+web search: 
+web search: site:siloamsprings.com Parks Recreation City Park Sager Creek Siloam Springs official ...
+codex
+{"complete":true,"school_name":"John Brown University","town_name":"Siloam Springs","boards":[{"complete":true,"school_name":"John Brown University","town_name":"Siloam Springs","template_id":"college-first-weekend","title":"Your First Weekend at John Brown University, Shared as Cards","description":"A practical Friday-to-Sunday sequence for learning JBU’s campus, joining student life, and exploring two under-21-safe Siloam Springs destinations.","icon":"schedule","cards":[{"subject_id":"jbu-walker-student-center","subject_type":"sequence_stop","entity_name":"Walker Student Center","title":"Start at Walker Student Center","subtitle":"Friday arrival · Find the orientation information desk","notes":"Begin at the orientation information desk, then locate Student Development on the first floor so you know where to return with questions.","short_summary":"Use JBU’s designated orientation help point to get situated before exploring campus.","evidence_claim":"JBU states that its Orientation Information Desk and Student Development Office are located in Walker Student Center.","source_url":"https://www.jbu.edu/admissions/on-campus-undergraduate/orientation/","source_title":"Orientation for On-Campus Undergraduates at John Brown University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The information desk is associated with Orientation; Student Development is on the first floor. Confirm event-specific availability in the current schedule.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jbu-the-quad","subject_type":"sequence_stop","entity_name":"The Quad","title":"Join the Group on the Quad","subtitle":"Friday evening · Follow the current Orientation schedule","notes":"Bring water and comfortable shoes, meet your assigned group, and use the Quad gathering to learn faces before the weekend branches out.","short_summary":"Make the central campus lawn your first social waypoint, using the official schedule for the actual program.","evidence_claim":"JBU’s campus map names The Quad, and JBU’s published Orientation materials place recurring group events such as the organizations fair there.","source_url":"https://www.jbu.edu/hubfs/orientation/JBU%20Orientation%20Packet%202023.pdf","source_title":"John Brown University Orientation Packet","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Orientation programming is schedule-dependent; consult the current Fall 2026 schedule rather than relying on the archived packet’s times.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jbu-kresge-dining-hall","subject_type":"sequence_stop","entity_name":"Kresge Dining Hall","title":"Share a First Dinner at Kresge","subtitle":"Friday dinner · Use a meal scan or posted individual pricing","notes":"Meet your hall, floor, commuter, or orientation group for dinner and check the serving window before walking over from your residence area.","short_summary":"Use the main dining hall as a low-planning place to reconnect with your group after arrival tasks.","evidence_claim":"JBU publishes weekend meal periods for Kresge Dining Hall, including Saturday and Sunday meals, and lists meal-scan plans and individual pricing.","source_url":"https://www.jbu.edu/student-services/dining/hours-and-pricing/","source_title":"Dining Hours and Pricing","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Saturday service is listed from 9:30 a.m.–6:30 p.m. with meal breaks; Sunday service is listed from 9:30 a.m.–6:30 p.m. Verify academic-break changes.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jbu-learning-resource-center","subject_type":"sequence_stop","entity_name":"Learning Resource Center","title":"Learn the Library Before You Need It","subtitle":"Saturday morning · Locate study rooms and student support","notes":"Walk both floors, identify the printers and Writing Center, then note how study-room reservations work before your first assignments arrive.","short_summary":"A short library orientation now makes later study sessions easier to plan.","evidence_claim":"JBU identifies the library in the Learning Resource Center and documents study rooms, computers, printers, the Writing Center, and IT Help Desk.","source_url":"https://www.jbu.edu/hubfs/JBU-Library-Information-Sheet.pdf?hsLang=en","source_title":"JBU Library Information Sheet","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"JBU currently lists Saturday library hours as 10 a.m.–6 p.m. and Sunday hours as 2 p.m.–2 a.m. on its commuter-resources page; academic-break hours may differ.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jbu-dogwood-trail","subject_type":"sequence_stop","entity_name":"Dogwood Trail","title":"Trace Dogwood Trail","subtitle":"Saturday midday · Learn the north side of campus","notes":"Follow the named trail only in daylight, keep to established walkways, and use the route to recognize the athletics and residence-side landmarks.","short_summary":"Turn a daylight walk into a low-pressure campus geography lesson.","evidence_claim":"The official JBU campus map labels Dogwood Trail on the north side of campus near Sager Creek and multiple athletics facilities.","source_url":"https://www.jbu.edu/hubfs/20240119_JBU_Map_Letter.pdf?hsLang=en","source_title":"John Brown University Campus Map","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use the official campus map and remain on marked routes. The source does not publish separate trail hours or guarantee conditions.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jbu-walton-lifetime-health-complex","subject_type":"sequence_stop","entity_name":"Walton Lifetime Health Complex","title":"Try a Recreation Session at Walton","subtitle":"Saturday afternoon · Bring your current JBU ID","notes":"Choose one facility activity that matches your experience, bring your student ID, and review posted rules before entering a court, track, or pool area.","short_summary":"Use a first workout to learn the campus recreation facility and its entry routine.","evidence_claim":"JBU describes Walton Lifetime Health Complex as its campus fitness facility, and current facility policy accepts a current student JBU ID for admission.","source_url":"https://www.jbu.edu/hubfs/health-complex/health-complex-files/Member%20Policies%20_%20Procedures.pdf","source_title":"Walton Lifetime Health Complex Policies and Procedures","source_kind":"university_official","source_published_at":"2025-02-05","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current JBU students must present their JBU ID. Facility schedules vary, so check the linked facility-hours information before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"siloam-springs-museum","subject_type":"sequence_stop","entity_name":"Siloam Springs Museum","title":"Put Siloam Springs in Context","subtitle":"Saturday afternoon · 112 North Maxwell Street","notes":"Browse the permanent and rotating exhibits, then connect one display about the springs, local industry, or earlier residents to the town outside.","short_summary":"Add local history to the weekend without requiring an admission purchase.","evidence_claim":"The museum states that it presents permanent and rotating exhibits about Siloam Springs history and that admission is always free.","source_url":"https://www.siloamspringsmuseum.com/fc2a25e8-e254-47fb-98a1-22db4d83cccf","source_title":"Our Museum — Siloam Springs Museum","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Tuesday–Saturday, 10 a.m.–5 p.m., according to the museum. Admission is free; optional donations are accepted.","cost_status":"free","under21_safe":true},{"subject_id":"bob-henry-park","subject_type":"sequence_stop","entity_name":"Bob Henry Park","title":"Take a Park Break at Bob Henry","subtitle":"Saturday late afternoon · 500 West Benton Street","notes":"Walk through the public park, choose a court or open recreation area that is available, and leave reserved pavilions to scheduled groups.","short_summary":"Use a named city park for an unstructured outdoor pause before returning to campus.","evidence_claim":"The City of Siloam Springs lists Bob Henry Park at 500 West Benton Street with basketball, tennis, sand volleyball, playground, skate-park, and restroom amenities.","source_url":"https://www.siloamsprings.com/Facilities/Facility/Details/Bob-Henry-Park-Pavilions-2","source_title":"Bob Henry Park Pavilions","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor amenities are city facilities; pavilion use may require a reservation. Check posted park rules, closures, and court availability on arrival.","cost_status":"unknown","under21_safe":true},{"subject_id":"jbu-cathedral-of-the-ozarks","subject_type":"sequence_stop","entity_name":"Cathedral of the Ozarks","title":"Close Sunday at The Gathering","subtitle":"Sunday evening · Student-led worship in the Cathedral","notes":"Check the current chapel calendar, arrive early enough to choose a seat, and treat attendance as a chance to observe a recurring part of JBU life.","short_summary":"End the first weekend with JBU’s documented Sunday-night, student-led worship gathering.","evidence_claim":"JBU documents The Gathering as a student-led worship experience held every Sunday night in the Cathedral of the Ozarks.","source_url":"https://www.jbu.edu/news/feature-stories/?id=184932277520","source_title":"The Gathering","source_kind":"university_official","source_published_at":"2025-01-15","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The source identifies Sunday-night recurrence but does not provide a current start time. Confirm the time and any calendar exception before attending.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jbu-big-games","subject_type":"sequence_stop","entity_name":"Big Games","title":"Finish Orientation with Big Games","subtitle":"Orientation weekend · Join your assigned team","notes":"Wear clothes suited to warm outdoor activity, follow event leaders, and participate at your comfort level while learning your larger orientation team.","short_summary":"Use JBU’s recurring team activity to close the weekend with the people in your orientation group.","evidence_claim":"JBU states that Big Games occurs at the beginning of fall Orientation and combines orientation groups into larger teams for activities and obstacles.","source_url":"https://www.jbu.edu/student-life/traditions-and-activities/","source_title":"Student Traditions & Activities at John Brown University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Big Games is limited to scheduled fall Orientation programming. Follow the current Orientation schedule and event staff’s safety directions.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:47:31.798241Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa15-52fb-7453-84a1-71d05987a26d.1786607129340584000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+60,574
+
+{"complete":true,"school_name":"John Brown University","town_name":"Siloam Springs","boards":[{"complete":true,"school_name":"John Brown University","town_name":"Siloam Springs","template_id":"college-first-weekend","title":"Your First Weekend at John Brown University, Shared as Cards","description":"A practical Friday-to-Sunday sequence for learning JBU’s campus, joining student life, and exploring two under-21-safe Siloam Springs destinations.","icon":"schedule","cards":[{"subject_id":"jbu-walker-student-center","subject_type":"sequence_stop","entity_name":"Walker Student Center","title":"Start at Walker Student Center","subtitle":"Friday arrival · Find the orientation information desk","notes":"Begin at the orientation information desk, then locate Student Development on the first floor so you know where to return with questions.","short_summary":"Use JBU’s designated orientation help point to get situated before exploring campus.","evidence_claim":"JBU states that its Orientation Information Desk and Student Development Office are located in Walker Student Center.","source_url":"https://www.jbu.edu/admissions/on-campus-undergraduate/orientation/","source_title":"Orientation for On-Campus Undergraduates at John Brown University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The information desk is associated with Orientation; Student Development is on the first floor. Confirm event-specific availability in the current schedule.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jbu-the-quad","subject_type":"sequence_stop","entity_name":"The Quad","title":"Join the Group on the Quad","subtitle":"Friday evening · Follow the current Orientation schedule","notes":"Bring water and comfortable shoes, meet your assigned group, and use the Quad gathering to learn faces before the weekend branches out.","short_summary":"Make the central campus lawn your first social waypoint, using the official schedule for the actual program.","evidence_claim":"JBU’s campus map names The Quad, and JBU’s published Orientation materials place recurring group events such as the organizations fair there.","source_url":"https://www.jbu.edu/hubfs/orientation/JBU%20Orientation%20Packet%202023.pdf","source_title":"John Brown University Orientation Packet","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Orientation programming is schedule-dependent; consult the current Fall 2026 schedule rather than relying on the archived packet’s times.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jbu-kresge-dining-hall","subject_type":"sequence_stop","entity_name":"Kresge Dining Hall","title":"Share a First Dinner at Kresge","subtitle":"Friday dinner · Use a meal scan or posted individual pricing","notes":"Meet your hall, floor, commuter, or orientation group for dinner and check the serving window before walking over from your residence area.","short_summary":"Use the main dining hall as a low-planning place to reconnect with your group after arrival tasks.","evidence_claim":"JBU publishes weekend meal periods for Kresge Dining Hall, including Saturday and Sunday meals, and lists meal-scan plans and individual pricing.","source_url":"https://www.jbu.edu/student-services/dining/hours-and-pricing/","source_title":"Dining Hours and Pricing","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Saturday service is listed from 9:30 a.m.–6:30 p.m. with meal breaks; Sunday service is listed from 9:30 a.m.–6:30 p.m. Verify academic-break changes.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jbu-learning-resource-center","subject_type":"sequence_stop","entity_name":"Learning Resource Center","title":"Learn the Library Before You Need It","subtitle":"Saturday morning · Locate study rooms and student support","notes":"Walk both floors, identify the printers and Writing Center, then note how study-room reservations work before your first assignments arrive.","short_summary":"A short library orientation now makes later study sessions easier to plan.","evidence_claim":"JBU identifies the library in the Learning Resource Center and documents study rooms, computers, printers, the Writing Center, and IT Help Desk.","source_url":"https://www.jbu.edu/hubfs/JBU-Library-Information-Sheet.pdf?hsLang=en","source_title":"JBU Library Information Sheet","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"JBU currently lists Saturday library hours as 10 a.m.–6 p.m. and Sunday hours as 2 p.m.–2 a.m. on its commuter-resources page; academic-break hours may differ.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jbu-dogwood-trail","subject_type":"sequence_stop","entity_name":"Dogwood Trail","title":"Trace Dogwood Trail","subtitle":"Saturday midday · Learn the north side of campus","notes":"Follow the named trail only in daylight, keep to established walkways, and use the route to recognize the athletics and residence-side landmarks.","short_summary":"Turn a daylight walk into a low-pressure campus geography lesson.","evidence_claim":"The official JBU campus map labels Dogwood Trail on the north side of campus near Sager Creek and multiple athletics facilities.","source_url":"https://www.jbu.edu/hubfs/20240119_JBU_Map_Letter.pdf?hsLang=en","source_title":"John Brown University Campus Map","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use the official campus map and remain on marked routes. The source does not publish separate trail hours or guarantee conditions.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jbu-walton-lifetime-health-complex","subject_type":"sequence_stop","entity_name":"Walton Lifetime Health Complex","title":"Try a Recreation Session at Walton","subtitle":"Saturday afternoon · Bring your current JBU ID","notes":"Choose one facility activity that matches your experience, bring your student ID, and review posted rules before entering a court, track, or pool area.","short_summary":"Use a first workout to learn the campus recreation facility and its entry routine.","evidence_claim":"JBU describes Walton Lifetime Health Complex as its campus fitness facility, and current facility policy accepts a current student JBU ID for admission.","source_url":"https://www.jbu.edu/hubfs/health-complex/health-complex-files/Member%20Policies%20_%20Procedures.pdf","source_title":"Walton Lifetime Health Complex Policies and Procedures","source_kind":"university_official","source_published_at":"2025-02-05","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current JBU students must present their JBU ID. Facility schedules vary, so check the linked facility-hours information before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"siloam-springs-museum","subject_type":"sequence_stop","entity_name":"Siloam Springs Museum","title":"Put Siloam Springs in Context","subtitle":"Saturday afternoon · 112 North Maxwell Street","notes":"Browse the permanent and rotating exhibits, then connect one display about the springs, local industry, or earlier residents to the town outside.","short_summary":"Add local history to the weekend without requiring an admission purchase.","evidence_claim":"The museum states that it presents permanent and rotating exhibits about Siloam Springs history and that admission is always free.","source_url":"https://www.siloamspringsmuseum.com/fc2a25e8-e254-47fb-98a1-22db4d83cccf","source_title":"Our Museum — Siloam Springs Museum","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Tuesday–Saturday, 10 a.m.–5 p.m., according to the museum. Admission is free; optional donations are accepted.","cost_status":"free","under21_safe":true},{"subject_id":"bob-henry-park","subject_type":"sequence_stop","entity_name":"Bob Henry Park","title":"Take a Park Break at Bob Henry","subtitle":"Saturday late afternoon · 500 West Benton Street","notes":"Walk through the public park, choose a court or open recreation area that is available, and leave reserved pavilions to scheduled groups.","short_summary":"Use a named city park for an unstructured outdoor pause before returning to campus.","evidence_claim":"The City of Siloam Springs lists Bob Henry Park at 500 West Benton Street with basketball, tennis, sand volleyball, playground, skate-park, and restroom amenities.","source_url":"https://www.siloamsprings.com/Facilities/Facility/Details/Bob-Henry-Park-Pavilions-2","source_title":"Bob Henry Park Pavilions","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor amenities are city facilities; pavilion use may require a reservation. Check posted park rules, closures, and court availability on arrival.","cost_status":"unknown","under21_safe":true},{"subject_id":"jbu-cathedral-of-the-ozarks","subject_type":"sequence_stop","entity_name":"Cathedral of the Ozarks","title":"Close Sunday at The Gathering","subtitle":"Sunday evening · Student-led worship in the Cathedral","notes":"Check the current chapel calendar, arrive early enough to choose a seat, and treat attendance as a chance to observe a recurring part of JBU life.","short_summary":"End the first weekend with JBU’s documented Sunday-night, student-led worship gathering.","evidence_claim":"JBU documents The Gathering as a student-led worship experience held every Sunday night in the Cathedral of the Ozarks.","source_url":"https://www.jbu.edu/news/feature-stories/?id=184932277520","source_title":"The Gathering","source_kind":"university_official","source_published_at":"2025-01-15","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The source identifies Sunday-night recurrence but does not provide a current start time. Confirm the time and any calendar exception before attending.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"jbu-big-games","subject_type":"sequence_stop","entity_name":"Big Games","title":"Finish Orientation with Big Games","subtitle":"Orientation weekend · Join your assigned team","notes":"Wear clothes suited to warm outdoor activity, follow event leaders, and participate at your comfort level while learning your larger orientation team.","short_summary":"Use JBU’s recurring team activity to close the weekend with the people in your orientation group.","evidence_claim":"JBU states that Big Games occurs at the beginning of fall Orientation and combines orientation groups into larger teams for activities and obstacles.","source_url":"https://www.jbu.edu/student-life/traditions-and-activities/","source_title":"Student Traditions & Activities at John Brown University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Big Games is limited to scheduled fall Orientation programming. Follow the current Orientation schedule and event staff’s safety directions.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

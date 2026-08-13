@@ -1,0 +1,310 @@
+Reading additional input from stdin...
+2026-08-13T07:54:09.027196Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1c-c8b7-7a52-80ca-30315f17a28a.1786607618231901000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:54:09.031142Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:54:09.035982Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:54:09.082723Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1c-c8a5-76c1-803c-b674167e0fab.1786607618214429000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:54:09.170625Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1c-c8b0-7653-98ae-b100473fc826.1786607618225148000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa1d-4081-7ad2-b287-978af240aa38
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"IDHxgKrodrGRfe91yjk4","schoolName":"Kettering University","shortSchoolName":"Kettering University","townName":"Flint","state":"MI","countryCode":"US","website":"https://www.kettering.edu/","latitude":43.012468,"longitude":-83.71282},"templates":[{"id":"college-blocks-off-campus","version":"1.0","titlePattern":"{count} Blocks Off Campus, One Reason Each","editorialBrief":"Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.","researchQueries":["off campus streets student district","campus adjacent commercial streets","neighborhood plan near university"],"count":10,"icon":"location_city","primarySubjectType":"street_or_district","allowedSubjectTypes":["street_or_district"],"freshnessDays":730,"exactTitle":"10 Blocks Off Campus, One Reason Each"}]}
+2026-08-13T07:54:09.254668Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1c-c8b2-7282-8290-8a9ed0eacbdb.1786607618226692000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:54:09.314359Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1c-c8b9-7d80-92d3-27cd2b75dd8c.1786607618234086000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:54:09.361771Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1c-c8c6-73f1-a161-9d708dfd35e8.1786607618246866000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:54:09.429286Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa1c-c8bd-7853-8bfc-a8171bb43102.1786607618237781000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Kettering University",
+  "town_name": "Flint",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Kettering University",
+      "town_name": "Flint",
+      "template_id": "college-blocks-off-campus",
+      "title": "10 Blocks Off Campus, One Reason Each",
+      "description": "",
+      "icon": "location_city",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+    
+        ,
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ],
+      "warnings": [
+        "Research could not be completed within this response."
+      ]
+    }
+  ],
+  "warnings": [
+    "Research could not be completed within this response."
+  ]
+}
+codex
+{"complete":false,"school_name":"Kettering University","town_name":"Flint","boards":[{"complete":false,"school_name":"Kettering University","town_name":"Flint","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Researching ten distinct, map-listed destinations and direct supporting pages along Flint corridors near campus.","icon":"location_city","cards":  [{"subject_id":"research-in-progress","subject_type":"street_or_district","entity_name":"Research in progress","title":"Research in progress","subtitle":"Verifying named destinations and corridors","notes":"Checking official and direct sources for one documented reason per destination.","short_summary":"Source verification is underway.","evidence_claim":"Research in progress.","source_url":"https://www.kettering.edu/","source_title":"Kettering University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"not_applicable","under21_safe":true}  ,{"subject_id":"","subject_type":"street_or_district","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"not_applicable","under21_safe":true},{"subject_id":"","subject_type":"street_or_district","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"not_applicable","under21_safe":true},{"subject_id":"","subject_type":"street_or_district","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"not_applicable","under21_safe":true},{"subject_id":"","subject_type":"street_or_district","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"not_applicable","under21_safe":true},{"subject_id":"","subject_type":"street_or_district","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"not_applicable","under21_safe":true},{"subject_id":"","subject_type":"street_or_district","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"not_applicable","under21_safe":true},{"subject_id":"","subject_type":"street_or_district","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"not_applicable","under21_safe":true},{"subject_id":"","subject_type":"street_or_district","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"not_applicable","under21_safe":true},{"subject_id":"","subject_type":"street_or_district","entity_name":"","title":"","subtitle":"","notes":"","short_summary":"","evidence_claim":"","source_url":"","source_title":"","source_kind":"other_reliable","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"","cost_status":"not_applicable","under21_safe":true}],"warnings":["Interim research status; final board will contain ten fully sourced cards."]}],"warnings":["Web verification is in progress."]}
+web search: 
+web search: site:flintarts.org Flint Institute of Arts address ...
+web search: 
+web search: Flint Children's Museum official address University Avenue ...
+web search: 
+web search: FIM Capitol Theatre Flint official address Second Street ...
+web search: 
+web search: Flint Public Library official visit address Kearsley Street ...
+web search: 
+web search: site:flintarts.org/visit Flint Institute of Arts 1120 Kearsley exhibitions ...
+codex
+{"complete":true,"school_name":"Kettering University","town_name":"Flint","boards":[{"complete":true,"school_name":"Kettering University","town_name":"Flint","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named destinations along University Avenue and nearby Flint corridors, each paired with one documented reason to go.","icon":"location_city","cards":[{"subject_id":"flint-childrens-museum-university-avenue","subject_type":"street_or_district","entity_name":"Flint Children's Museum","title":"Hands-On Exhibits for Young Visitors","subtitle":"University Avenue — rotating educational exhibits","notes":"Follow University Avenue to explore over 40 hands-on exhibits; this stop is designed primarily for children ages 2–10.","short_summary":"A family-oriented museum with changing play-and-learning exhibits.","evidence_claim":"The museum at 1602 W. University Avenue offers more than 40 hands-on educational exhibits, with exhibits changing monthly.","source_url":"https://www.exploreflintandgenesee.org/listing/flint-childrens-museum/5/","source_title":"Flint Children's Museum","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Flint%20Children%27s%20Museum%201602%20W%20University%20Ave%20Flint%20MI","access_notes":"Public museum; check the museum’s current calendar and admission details before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"atwood-stadium-university-avenue","subject_type":"street_or_district","entity_name":"Atwood Stadium","title":"Enter by the Flint River Trail","subtitle":"University Avenue — stadium access from the trail","notes":"Approach the University Avenue stadium on foot or bicycle via the Flint River Trail, then use the lower-level ticket gate.","short_summary":"A river-trail approach to Kettering’s historic stadium.","evidence_claim":"Atwood Stadium is at 701 University Avenue, and its policy page says walkers and bicyclists may reach the lower-level ticket gate from the Flint River Trail.","source_url":"https://www.flintcitybucks.com/stadium-policies","source_title":"Stadium Policies","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Atwood%20Stadium%20701%20University%20Ave%20Flint%20MI","access_notes":"Entry depends on the scheduled event and its ticketing; follow posted stadium rules.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"durant-dort-factory-one-water-street","subject_type":"street_or_district","entity_name":"Durant-Dort Factory One","title":"Research Flint’s Automotive Archive","subtitle":"Water Street — Kettering’s public automotive archive","notes":"Continue to Water Street and reserve an archive visit to examine documents, photographs, and artifacts tied to Flint manufacturing.","short_summary":"Kettering’s automotive archive inside a restored carriage factory.","evidence_claim":"Factory One at 303 W. Water Street houses Kettering University’s automotive archive of about 100,000 documents, photographs, and artifacts; public research and tours require reservations.","source_url":"https://www.gmfactoryone.com/site/us/en/factoryone/home/archive-research.html","source_title":"Archive and Research","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Durant-Dort%20Factory%20One%20303%20W%20Water%20St%20Flint%20MI","access_notes":"The archive is available to the public by reservation; contact archives@kettering.edu or 810-762-9690.","cost_status":"free","under21_safe":true},{"subject_id":"flint-farmers-market-first-street","subject_type":"street_or_district","entity_name":"Flint Farmers' Market","title":"Browse a Year-Round Public Market","subtitle":"First Street — indoor vendors and market events","notes":"Turn onto East First Street on Tuesday, Thursday, or Saturday to browse produce, prepared foods, gifts, and scheduled events.","short_summary":"A year-round public market operating three days each week.","evidence_claim":"The Flint Farmers' Market is at 300 E. First Street, operates year-round, and lists produce, food, gift vendors, events, and demonstration kitchens.","source_url":"https://www.flintfarmersmarket.com/","source_title":"Flint Farmers' Market","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Flint%20Farmers%27%20Market%20300%20E%20First%20St%20Flint%20MI","access_notes":"The market lists Tuesday, Thursday, and Saturday hours of 9 a.m.–5 p.m.; purchases are optional.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"fim-capitol-theatre-second-street","subject_type":"street_or_district","entity_name":"FIM Capitol Theatre","title":"See What’s Playing at the Capitol","subtitle":"Second Street — performances in a historic theater","notes":"Walk East Second Street to the Capitol Theatre and consult FIM’s event listings before choosing a film, concert, or stage performance.","short_summary":"A downtown performance venue with an active FIM box office.","evidence_claim":"Flint Institute of Music lists the Capitol Theatre at 140 E. Second Street and provides ticket-center contact information and box-office hours.","source_url":"https://thefim.org/contact-info/","source_title":"Contact Info - Flint Institute of Music","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=FIM%20Capitol%20Theatre%20140%20E%202nd%20St%20Flint%20MI","access_notes":"Access is tied to performances and box-office operations; confirm the event schedule and ticket requirements.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"buckham-gallery-second-street","subject_type":"street_or_district","entity_name":"Buckham Gallery","title":"Drop Into a Free Exhibition","subtitle":"Second Street — contemporary gallery near Saginaw Street","notes":"Pause on West Second Street for the current exhibition; verify installation closures and ArtWalk timing on the gallery’s visit page.","short_summary":"A ground-level contemporary gallery with free admission.","evidence_claim":"Buckham Gallery is at 121 W. Second Street, presents gallery exhibitions, and states that admission is always free for everyone.","source_url":"https://www.buckhamgallery.org/visit.html","source_title":"Visit Buckham Gallery","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Buckham%20Gallery%20121%20W%202nd%20St%20Flint%20MI","access_notes":"Ground-level, ADA-compliant gallery; check the visit page for current hours and exhibition-installation closures.","cost_status":"free","under21_safe":true},{"subject_id":"mw-gallery-saginaw-street","subject_type":"street_or_district","entity_name":"MW Gallery","title":"View Art of the African Diaspora","subtitle":"Saginaw Street — the Mott-Warsh Collection downtown","notes":"Head south on Saginaw Street to view rotating selections from a collection centered on artists of the African diaspora.","short_summary":"The downtown home of the publicly shared Mott-Warsh Collection.","evidence_claim":"MW Gallery is the permanent downtown home of the Mott-Warsh Collection and features work by artists of the African diaspora and artists reflecting on it.","source_url":"https://mottwarsh.com/","source_title":"Mott-Warsh Collection and MW Gallery","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=MW%20Gallery%20815%20S%20Saginaw%20St%20Flint%20MI","access_notes":"Check the gallery’s official site for the current exhibition and public visiting arrangements.","cost_status":"unknown","under21_safe":true},{"subject_id":"greater-flint-arts-council-saginaw-street","subject_type":"street_or_district","entity_name":"Greater Flint Arts Council","title":"Check the Community Gallery","subtitle":"Saginaw Street — exhibitions at the arts council","notes":"Continue along South Saginaw Street and check the council’s current program before entering its community exhibition space.","short_summary":"A downtown arts organization with a gallery and changing exhibitions.","evidence_claim":"The Greater Flint Arts Council operates a gallery at 816 S. Saginaw Street and accepts artists for exhibitions there.","source_url":"https://www.greaterflintartscouncil.org/wp-content/uploads/2024/07/GFAC-Summer-2024-Newsletter.pdf","source_title":"Greater Flint Arts Council Summer 2024 Newsletter","source_kind":"cultural_institution","source_published_at":"2024-07-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Greater%20Flint%20Arts%20Council%20816%20S%20Saginaw%20St%20Flint%20MI","access_notes":"Gallery access varies with exhibitions and programs; consult the council’s current calendar before departure.","cost_status":"unknown","under21_safe":true},{"subject_id":"gloria-coles-flint-public-library-kearsley-street","subject_type":"street_or_district","entity_name":"Gloria Coles Flint Public Library","title":"Settle In for an Evening Study Session","subtitle":"Kearsley Street — library resources and evening hours","notes":"Take East Kearsley Street to read, research, or work; Tuesday through Thursday hours extend into the evening.","short_summary":"Flint’s main public library and a practical off-campus study stop.","evidence_claim":"Gloria Coles Flint Public Library is at 1026 E. Kearsley Street and describes its mission as Flint’s place for lifelong learning.","source_url":"https://www.fpl.info/about/about-the-library","source_title":"About the Library","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Gloria%20Coles%20Flint%20Public%20Library%201026%20E%20Kearsley%20St%20Flint%20MI","access_notes":"The library lists 11 a.m.–8 p.m. Tuesday–Thursday and 9 a.m.–6 p.m. Friday–Saturday; closed Sunday–Monday.","cost_status":"free","under21_safe":true},{"subject_id":"flint-institute-of-arts-kearsley-street","subject_type":"street_or_district","entity_name":"Flint Institute of Arts","title":"Search the Collection Before You Go","subtitle":"Kearsley Street — museum galleries and searchable art","notes":"Continue east on Kearsley Street, preview objects in the online collection, then use the museum address to plan an in-person visit.","short_summary":"An art museum whose collection can be previewed online by object and artist.","evidence_claim":"The Flint Institute of Arts provides an online object-and-artist collection search, and its official contact page places the museum at 1120 E. Kearsley Street.","source_url":"https://collections.flintarts.org/advancedsearch","source_title":"Advanced Search Objects – Flint Institute of Arts","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Flint%20Institute%20of%20Arts%201120%20E%20Kearsley%20St%20Flint%20MI","access_notes":"Check the museum’s official visitor information for current gallery hours, admission, and temporary closures.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:56:21.869548Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa1d-4081-7ad2-b287-978af240aa38.1786607648897617000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+50,176
+
+{"complete":true,"school_name":"Kettering University","town_name":"Flint","boards":[{"complete":true,"school_name":"Kettering University","town_name":"Flint","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named destinations along University Avenue and nearby Flint corridors, each paired with one documented reason to go.","icon":"location_city","cards":[{"subject_id":"flint-childrens-museum-university-avenue","subject_type":"street_or_district","entity_name":"Flint Children's Museum","title":"Hands-On Exhibits for Young Visitors","subtitle":"University Avenue — rotating educational exhibits","notes":"Follow University Avenue to explore over 40 hands-on exhibits; this stop is designed primarily for children ages 2–10.","short_summary":"A family-oriented museum with changing play-and-learning exhibits.","evidence_claim":"The museum at 1602 W. University Avenue offers more than 40 hands-on educational exhibits, with exhibits changing monthly.","source_url":"https://www.exploreflintandgenesee.org/listing/flint-childrens-museum/5/","source_title":"Flint Children's Museum","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Flint%20Children%27s%20Museum%201602%20W%20University%20Ave%20Flint%20MI","access_notes":"Public museum; check the museum’s current calendar and admission details before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"atwood-stadium-university-avenue","subject_type":"street_or_district","entity_name":"Atwood Stadium","title":"Enter by the Flint River Trail","subtitle":"University Avenue — stadium access from the trail","notes":"Approach the University Avenue stadium on foot or bicycle via the Flint River Trail, then use the lower-level ticket gate.","short_summary":"A river-trail approach to Kettering’s historic stadium.","evidence_claim":"Atwood Stadium is at 701 University Avenue, and its policy page says walkers and bicyclists may reach the lower-level ticket gate from the Flint River Trail.","source_url":"https://www.flintcitybucks.com/stadium-policies","source_title":"Stadium Policies","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Atwood%20Stadium%20701%20University%20Ave%20Flint%20MI","access_notes":"Entry depends on the scheduled event and its ticketing; follow posted stadium rules.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"durant-dort-factory-one-water-street","subject_type":"street_or_district","entity_name":"Durant-Dort Factory One","title":"Research Flint’s Automotive Archive","subtitle":"Water Street — Kettering’s public automotive archive","notes":"Continue to Water Street and reserve an archive visit to examine documents, photographs, and artifacts tied to Flint manufacturing.","short_summary":"Kettering’s automotive archive inside a restored carriage factory.","evidence_claim":"Factory One at 303 W. Water Street houses Kettering University’s automotive archive of about 100,000 documents, photographs, and artifacts; public research and tours require reservations.","source_url":"https://www.gmfactoryone.com/site/us/en/factoryone/home/archive-research.html","source_title":"Archive and Research","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Durant-Dort%20Factory%20One%20303%20W%20Water%20St%20Flint%20MI","access_notes":"The archive is available to the public by reservation; contact archives@kettering.edu or 810-762-9690.","cost_status":"free","under21_safe":true},{"subject_id":"flint-farmers-market-first-street","subject_type":"street_or_district","entity_name":"Flint Farmers' Market","title":"Browse a Year-Round Public Market","subtitle":"First Street — indoor vendors and market events","notes":"Turn onto East First Street on Tuesday, Thursday, or Saturday to browse produce, prepared foods, gifts, and scheduled events.","short_summary":"A year-round public market operating three days each week.","evidence_claim":"The Flint Farmers' Market is at 300 E. First Street, operates year-round, and lists produce, food, gift vendors, events, and demonstration kitchens.","source_url":"https://www.flintfarmersmarket.com/","source_title":"Flint Farmers' Market","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Flint%20Farmers%27%20Market%20300%20E%20First%20St%20Flint%20MI","access_notes":"The market lists Tuesday, Thursday, and Saturday hours of 9 a.m.–5 p.m.; purchases are optional.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"fim-capitol-theatre-second-street","subject_type":"street_or_district","entity_name":"FIM Capitol Theatre","title":"See What’s Playing at the Capitol","subtitle":"Second Street — performances in a historic theater","notes":"Walk East Second Street to the Capitol Theatre and consult FIM’s event listings before choosing a film, concert, or stage performance.","short_summary":"A downtown performance venue with an active FIM box office.","evidence_claim":"Flint Institute of Music lists the Capitol Theatre at 140 E. Second Street and provides ticket-center contact information and box-office hours.","source_url":"https://thefim.org/contact-info/","source_title":"Contact Info - Flint Institute of Music","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=FIM%20Capitol%20Theatre%20140%20E%202nd%20St%20Flint%20MI","access_notes":"Access is tied to performances and box-office operations; confirm the event schedule and ticket requirements.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"buckham-gallery-second-street","subject_type":"street_or_district","entity_name":"Buckham Gallery","title":"Drop Into a Free Exhibition","subtitle":"Second Street — contemporary gallery near Saginaw Street","notes":"Pause on West Second Street for the current exhibition; verify installation closures and ArtWalk timing on the gallery’s visit page.","short_summary":"A ground-level contemporary gallery with free admission.","evidence_claim":"Buckham Gallery is at 121 W. Second Street, presents gallery exhibitions, and states that admission is always free for everyone.","source_url":"https://www.buckhamgallery.org/visit.html","source_title":"Visit Buckham Gallery","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Buckham%20Gallery%20121%20W%202nd%20St%20Flint%20MI","access_notes":"Ground-level, ADA-compliant gallery; check the visit page for current hours and exhibition-installation closures.","cost_status":"free","under21_safe":true},{"subject_id":"mw-gallery-saginaw-street","subject_type":"street_or_district","entity_name":"MW Gallery","title":"View Art of the African Diaspora","subtitle":"Saginaw Street — the Mott-Warsh Collection downtown","notes":"Head south on Saginaw Street to view rotating selections from a collection centered on artists of the African diaspora.","short_summary":"The downtown home of the publicly shared Mott-Warsh Collection.","evidence_claim":"MW Gallery is the permanent downtown home of the Mott-Warsh Collection and features work by artists of the African diaspora and artists reflecting on it.","source_url":"https://mottwarsh.com/","source_title":"Mott-Warsh Collection and MW Gallery","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=MW%20Gallery%20815%20S%20Saginaw%20St%20Flint%20MI","access_notes":"Check the gallery’s official site for the current exhibition and public visiting arrangements.","cost_status":"unknown","under21_safe":true},{"subject_id":"greater-flint-arts-council-saginaw-street","subject_type":"street_or_district","entity_name":"Greater Flint Arts Council","title":"Check the Community Gallery","subtitle":"Saginaw Street — exhibitions at the arts council","notes":"Continue along South Saginaw Street and check the council’s current program before entering its community exhibition space.","short_summary":"A downtown arts organization with a gallery and changing exhibitions.","evidence_claim":"The Greater Flint Arts Council operates a gallery at 816 S. Saginaw Street and accepts artists for exhibitions there.","source_url":"https://www.greaterflintartscouncil.org/wp-content/uploads/2024/07/GFAC-Summer-2024-Newsletter.pdf","source_title":"Greater Flint Arts Council Summer 2024 Newsletter","source_kind":"cultural_institution","source_published_at":"2024-07-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Greater%20Flint%20Arts%20Council%20816%20S%20Saginaw%20St%20Flint%20MI","access_notes":"Gallery access varies with exhibitions and programs; consult the council’s current calendar before departure.","cost_status":"unknown","under21_safe":true},{"subject_id":"gloria-coles-flint-public-library-kearsley-street","subject_type":"street_or_district","entity_name":"Gloria Coles Flint Public Library","title":"Settle In for an Evening Study Session","subtitle":"Kearsley Street — library resources and evening hours","notes":"Take East Kearsley Street to read, research, or work; Tuesday through Thursday hours extend into the evening.","short_summary":"Flint’s main public library and a practical off-campus study stop.","evidence_claim":"Gloria Coles Flint Public Library is at 1026 E. Kearsley Street and describes its mission as Flint’s place for lifelong learning.","source_url":"https://www.fpl.info/about/about-the-library","source_title":"About the Library","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Gloria%20Coles%20Flint%20Public%20Library%201026%20E%20Kearsley%20St%20Flint%20MI","access_notes":"The library lists 11 a.m.–8 p.m. Tuesday–Thursday and 9 a.m.–6 p.m. Friday–Saturday; closed Sunday–Monday.","cost_status":"free","under21_safe":true},{"subject_id":"flint-institute-of-arts-kearsley-street","subject_type":"street_or_district","entity_name":"Flint Institute of Arts","title":"Search the Collection Before You Go","subtitle":"Kearsley Street — museum galleries and searchable art","notes":"Continue east on Kearsley Street, preview objects in the online collection, then use the museum address to plan an in-person visit.","short_summary":"An art museum whose collection can be previewed online by object and artist.","evidence_claim":"The Flint Institute of Arts provides an online object-and-artist collection search, and its official contact page places the museum at 1120 E. Kearsley Street.","source_url":"https://collections.flintarts.org/advancedsearch","source_title":"Advanced Search Objects – Flint Institute of Arts","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Flint%20Institute%20of%20Arts%201120%20E%20Kearsley%20St%20Flint%20MI","access_notes":"Check the museum’s official visitor information for current gallery hours, admission, and temporary closures.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}

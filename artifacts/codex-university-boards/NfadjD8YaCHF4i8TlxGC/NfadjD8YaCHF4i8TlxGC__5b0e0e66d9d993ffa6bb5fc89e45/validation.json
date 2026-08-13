@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://twin-cities.umn.edu/gopher-athletics/goldy-gopher",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://twin-cities.umn.edu/gopher-athletics/goldy-gopher",
+      "error": ""
+    },
+    {
+      "url": "https://sua.umn.edu/coffman-memorial-union",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sua.umn.edu/coffman-memorial-union",
+      "error": ""
+    },
+    {
+      "url": "https://bookstores.umn.edu/store/coffman-memorial-union",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bookstores.umn.edu/store/coffman-memorial-union",
+      "error": ""
+    },
+    {
+      "url": "https://admit.umn.edu/portal/campusvisits",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://admit.umn.edu/portal/campusvisits",
+      "error": ""
+    },
+    {
+      "url": "https://www.northrop.umn.edu/umn-students",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.northrop.umn.edu/umn-students",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.umn.edu/spaces/walter/building-history",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.umn.edu/spaces/walter/building-history",
+      "error": ""
+    },
+    {
+      "url": "https://wam.umn.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://wam.umn.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://recwell.umn.edu/welcome/hours-locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recwell.umn.edu/welcome/hours-locations",
+      "error": ""
+    },
+    {
+      "url": "https://www.bellmuseum.umn.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bellmuseum.umn.edu/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "FZRaWoHopw0Trbxv8GFJ",
+    "schoolName": "Harding University",
+    "shortSchoolName": "Harding University",
+    "townName": "Searcy",
+    "state": "AR",
+    "countryCode": "US",
+    "unitId": "107044",
+    "website": "https://www.harding.edu/",
+    "latitude": 35.247386,
+    "longitude": -91.726143,
+    "heroUrl": "https://www.harding.edu/_files/img/16-9_standard/05-02-2023-9885-1.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=harding.edu&sz=256"
+  },
+  "template": {
+    "id": "college-late-night-runs",
+    "version": "1.0",
+    "titlePattern": "{count} Late-Night Runs That Explain {school}",
+    "editorialBrief": "Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.",
+    "researchQueries": [
+      "late night dining students",
+      "campus dining late hours",
+      "restaurants open late near campus"
+    ],
+    "count": 10,
+    "icon": "nightlife",
+    "primarySubjectType": "place",
+    "allowedSubjectTypes": [
+      "place"
+    ],
+    "freshnessDays": 120
+  },
+  "exact_title": "10 Late-Night Runs That Explain Harding University",
+  "excluded_subjects": [
+    "Brackett Library",
+    "Hammon Student Center",
+    "Ganus Activities Complex",
+    "Bison Lane",
+    "Front Lawn",
+    "Stevens Art Gallery",
+    "Benson Auditorium",
+    "Reynolds Center for Music and Communication",
+    "Holland-Waller Center",
+    "First Ladies Garden"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

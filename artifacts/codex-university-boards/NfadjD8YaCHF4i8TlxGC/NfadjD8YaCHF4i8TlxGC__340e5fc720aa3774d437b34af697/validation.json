@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.stjohns.edu/news-media/johnnies-blog/Ten-best-study-spots-near-st-johns-queens-ny-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stjohns.edu/news-media/johnnies-blog/Ten-best-study-spots-near-st-johns-queens-ny-campus",
+      "error": ""
+    },
+    {
+      "url": "https://www.stjohns.edu/office-information-technology/technology-labs-and-resources/computer-access",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stjohns.edu/office-information-technology/technology-labs-and-resources/computer-access",
+      "error": ""
+    },
+    {
+      "url": "https://www.stjohns.edu/life-st-johns/student-success/university-learning-commons",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stjohns.edu/life-st-johns/student-success/university-learning-commons",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

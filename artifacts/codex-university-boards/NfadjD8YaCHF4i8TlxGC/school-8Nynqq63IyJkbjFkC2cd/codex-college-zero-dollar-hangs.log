@@ -1,0 +1,302 @@
+Reading additional input from stdin...
+2026-08-13T07:27:14.147909Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa03-a31f-70c3-b8d2-5dbcd5fc3c6a.1786605970209415000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:27:14.190836Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa03-a33f-7693-8f93-f2663e7108ae.1786605970239592000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa04-9c5f-7f90-bb3a-2876e2119341
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"8Nynqq63IyJkbjFkC2cd","schoolName":"Hampden-Sydney College","shortSchoolName":"Hampden-Sydney College","townName":"Hampden-Sydney","state":"VA","countryCode":"US","website":"https://www.hsc.edu/","latitude":37.240615,"longitude":-78.464216},"templates":[{"id":"college-zero-dollar-hangs","version":"1.0","titlePattern":"Zero Dollars: {count} Hangs That Cost Nothing","editorialBrief":"Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.","researchQueries":["free student activities campus","free campus spaces students","free public places near campus"],"count":10,"icon":"money_off","primarySubjectType":"activity","allowedSubjectTypes":["activity","place"],"freshnessDays":180,"exactTitle":"Zero Dollars: 10 Hangs That Cost Nothing"}]}
+2026-08-13T07:27:14.260199Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa03-a331-7681-af0e-854d7b245c0b.1786605970226576000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:27:14.284316Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:27:14.381888Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa03-a32e-7590-a1e6-7976df38227d.1786605970223314000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:27:14.398163Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:27:14.646010Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa03-a31e-7752-ab06-837331c8b75c.1786605970207348000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:27:14.783073Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa03-a321-7c31-bc92-588412e8f3c0.1786605970209988000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:27:14.878616Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa03-a349-7862-8a4a-d67885ba19fb.1786605970249731000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Hampden-Sydney College",
+  "town_name": "Hampden-Sydney",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Hampden-Sydney College",
+      "town_name": "Hampden-Sydney",
+      "template_id": "college-zero-dollar-hangs",
+      "title": "Zero Dollars: 10 Hangs That Cost Nothing",
+      "description": "",
+      "icon": "money_off",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+      }
+      ],
+      "warnings": [
+        "Research could not be completed because the web-search tool was unavailable in this session; direct current evidence of no-cost access is required for every card."
+      ]
+    }
+  ],
+  "warnings": [
+    "Incomplete: no cards are asserted without verified direct HTTPS sources."
+  ]
+}
+web search: 
+web search: site:hsc.edu Hampden-Sydney College campus recreation trails museum library free events ...
+web search: 
+web search: site:hsc.edu "FREE" Hampden-Sydney students recreation ...
+web search: 
+web search: site:hscathletics.com Hampden-Sydney admission free spectators tennis soccer swimming 2026 ...
+codex
+{"complete":true,"school_name":"Hampden-Sydney College","town_name":"Hampden-Sydney","boards":[{"complete":true,"school_name":"Hampden-Sydney College","town_name":"Hampden-Sydney","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"Ten no-purchase activities at Hampden-Sydney College, including public cultural programs and student-access recreation.","icon":"money_off","cards":[{"subject_id":"hsc-atkinson-museum-visit","subject_type":"place","entity_name":"Esther Thomas Atkinson Museum","title":"Browse the Atkinson Museum","subtitle":"A free campus-history stop on College Road","notes":"Bring a friend and compare the artifacts and photographs that connect Hampden-Sydney’s history with Virginia and the nation.","short_summary":"Explore College history through preserved objects and rotating exhibitions.","evidence_claim":"The museum’s official page states that the Esther Thomas Atkinson Museum is free and open to the public.","source_url":"https://www.hsc.edu/museum","source_title":"Esther Atkinson Museum","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to the public; official hours are Tuesday–Friday, 10 a.m.–noon and 1–5 p.m.","cost_status":"free","under21_safe":true},{"subject_id":"hsc-gallery-exhibition","subject_type":"place","entity_name":"The Gallery at the Viar-Christ Center for the Arts","title":"See an Exhibition at The Gallery","subtitle":"Visiting, faculty, and student art in Brinkley Hall","notes":"Stop in with a classmate, choose one work to study closely, then trade interpretations before leaving the compact gallery.","short_summary":"Share a focused look at the semester’s exhibition in Brinkley Hall.","evidence_claim":"The Gallery hosts exhibitions by visiting artists, faculty, and students; the Fine Arts program states that all visual-arts events are free and open to the public.","source_url":"https://www.hsc.edu/academics/fine-arts/visual-arts/the-gallery","source_title":"The Gallery","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public gallery hours are Monday–Friday, 10 a.m.–4 p.m., and by appointment; check the page for the current exhibition.","cost_status":"free","under21_safe":true},{"subject_id":"hsc-music-series-concert","subject_type":"activity","entity_name":"The Hampden-Sydney Music Series","title":"Catch a Music Series Concert","subtitle":"Free public performances during the academic year","notes":"Check the series page, pick a concert that suits the group, and arrive together early enough to find seats without rushing.","short_summary":"Hear visiting musicians at a ticket-free College concert.","evidence_claim":"The official Music Series page says the College presents free public concerts throughout the academic year and that all series events are free and open to the public.","source_url":"https://www.hsc.edu/academics/fine-arts/music/music-series","source_title":"The Hampden-Sydney Music Series","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to the public; consult the series page for the current program, venue, date, and time.","cost_status":"free","under21_safe":true},{"subject_id":"hsc-main-stage-theatre","subject_type":"activity","entity_name":"Hampden-Sydney Theatre Main-Stage Productions","title":"Watch a Main-Stage Play","subtitle":"Ticket-free theatre presented by the Fine Arts Department","notes":"Invite a friend to a performance, read the production details beforehand, and stay afterward to compare favorite scenes.","short_summary":"Spend an evening with one of the Theatre program’s staged productions.","evidence_claim":"The Theatre program says it produces two main-stage productions each year and that all performances are free and open to the public.","source_url":"https://www7.hsc.edu/academics/fine-arts/theatre","source_title":"Theatre","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to the public; use the Fine Arts calendar to confirm the production date, time, and venue.","cost_status":"free","under21_safe":true},{"subject_id":"hsc-chorus-concert","subject_type":"activity","entity_name":"Hampden-Sydney College Chorus","title":"Listen to the H-SC Chorus","subtitle":"A free campus choral performance","notes":"Bring a classmate, listen for how the program shifts between musical traditions, and compare standout pieces afterward.","short_summary":"Share a choral program spanning varied musical styles and traditions.","evidence_claim":"The Chorus page documents public H-SC Chorus performances and states that all Hampden-Sydney music events are free and open to the public.","source_url":"https://www7.hsc.edu/academics/fine-arts/music/h-sc-chorus","source_title":"Hampden-Sydney College Chorus","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to the public when a Chorus performance is scheduled; verify current details on the Fine Arts calendar.","cost_status":"free","under21_safe":true},{"subject_id":"hsc-visual-arts-event","subject_type":"activity","entity_name":"Hampden-Sydney Visual Arts Events","title":"Join a Visual Arts Event","subtitle":"Free public art programming at H-SC","notes":"Choose a scheduled reception, talk, or exhibition event and meet a friend there for an art-centered break from coursework.","short_summary":"Pair conversation with one of the Visual Arts program’s public events.","evidence_claim":"The Visual Arts program’s official page states that all Hampden-Sydney visual-arts events are free and open to the public.","source_url":"https://www7.hsc.edu/academics/fine-arts/visual-arts","source_title":"Visual Arts","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to the public when an event is scheduled; confirm the current event, venue, and time before going.","cost_status":"free","under21_safe":true},{"subject_id":"hsc-wilson-trail-hike","subject_type":"place","entity_name":"Wilson Trail","title":"Walk the Wilson Trail","subtitle":"Three miles of campus hiking and biking paths","notes":"Pick a comfortable out-and-back distance, bring water, and walk with a friend while staying on the marked trail system.","short_summary":"Trade indoor study time for a shared walk through the campus forests.","evidence_claim":"The College says Hampden-Sydney students need only step outside to use the three-mile Wilson Trail for hiking and biking.","source_url":"https://www.hsc.edu/student-life/what-to-do/outdoor-experience/wilson-trail","source_title":"The Wilson Trail","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"No admission or purchase is identified for student trail use; review the interactive or printable trail map before departing.","cost_status":"free","under21_safe":true},{"subject_id":"hsc-free-equipment-rental","subject_type":"activity","entity_name":"Office of Student Affairs Free Equipment Rental","title":"Borrow Gear for an Outdoor Hang","subtitle":"Student equipment borrowing through Brown Student Center","notes":"Gather a small group, ask Student Affairs what is available, and choose an activity that matches everyone’s experience level.","short_summary":"Plan a group outing without buying or renting your own equipment.","evidence_claim":"The Outdoor Experience page labels the program “FREE Equipment Rental” and tells students to borrow equipment from the Office of Student Affairs.","source_url":"https://www.hsc.edu/student-life/what-to-do/outdoor-experience","source_title":"The Outdoor Experience","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Available to Hampden-Sydney students through the Office of Student Affairs; contact the office to check inventory and borrowing requirements.","cost_status":"free","under21_safe":true},{"subject_id":"hsc-ashtanga-yoga-class","subject_type":"activity","entity_name":"Ashtanga Yoga Classes at Kirby Field House","title":"Try the Free Yoga Class","subtitle":"A mixed-level weekly session in the Fitness Center","notes":"Contact the instructor about space, bring comfortable clothes, and attend with a friend; first-time participants are welcomed.","short_summary":"Share a structured movement session designed for new and continuing students.","evidence_claim":"The instructor’s H-SC page says the introductory Ashtanga yoga classes are free of charge and require no previous experience.","source_url":"https://people.hsc.edu/faculty-staff/edevlin/edsweb01/Personal/yoga/yoga.htm","source_title":"Yoga","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Class size is limited, so contact the instructor about current-semester availability before attending.","cost_status":"free","under21_safe":true},{"subject_id":"hsc-brinkley-practice-room","subject_type":"place","entity_name":"Brinkley Hall Music Practice Rooms","title":"Meet for a Practice-Room Session","subtitle":"Student-access music rooms in Brinkley Hall","notes":"Choose an available room, bring an instrument or vocal idea, and keep the session collaborative while respecting nearby users.","short_summary":"Use a campus practice room for an informal student music session.","evidence_claim":"The Music Program states that any student may use an available practice room while Brinkley Hall is open, with after-hours access available by request.","source_url":"https://www.hsc.edu/academics/fine-arts/music","source_title":"The Music Program at Hampden-Sydney College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Student-only use; available rooms may be used Monday–Friday, 8 a.m.–10 p.m. After-hours access requires a request.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:29:09.160836Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa04-9c5f-7f90-bb3a-2876e2119341.1786606034016100000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+51,238
+
+{"complete":true,"school_name":"Hampden-Sydney College","town_name":"Hampden-Sydney","boards":[{"complete":true,"school_name":"Hampden-Sydney College","town_name":"Hampden-Sydney","template_id":"college-zero-dollar-hangs","title":"Zero Dollars: 10 Hangs That Cost Nothing","description":"Ten no-purchase activities at Hampden-Sydney College, including public cultural programs and student-access recreation.","icon":"money_off","cards":[{"subject_id":"hsc-atkinson-museum-visit","subject_type":"place","entity_name":"Esther Thomas Atkinson Museum","title":"Browse the Atkinson Museum","subtitle":"A free campus-history stop on College Road","notes":"Bring a friend and compare the artifacts and photographs that connect Hampden-Sydney’s history with Virginia and the nation.","short_summary":"Explore College history through preserved objects and rotating exhibitions.","evidence_claim":"The museum’s official page states that the Esther Thomas Atkinson Museum is free and open to the public.","source_url":"https://www.hsc.edu/museum","source_title":"Esther Atkinson Museum","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to the public; official hours are Tuesday–Friday, 10 a.m.–noon and 1–5 p.m.","cost_status":"free","under21_safe":true},{"subject_id":"hsc-gallery-exhibition","subject_type":"place","entity_name":"The Gallery at the Viar-Christ Center for the Arts","title":"See an Exhibition at The Gallery","subtitle":"Visiting, faculty, and student art in Brinkley Hall","notes":"Stop in with a classmate, choose one work to study closely, then trade interpretations before leaving the compact gallery.","short_summary":"Share a focused look at the semester’s exhibition in Brinkley Hall.","evidence_claim":"The Gallery hosts exhibitions by visiting artists, faculty, and students; the Fine Arts program states that all visual-arts events are free and open to the public.","source_url":"https://www.hsc.edu/academics/fine-arts/visual-arts/the-gallery","source_title":"The Gallery","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public gallery hours are Monday–Friday, 10 a.m.–4 p.m., and by appointment; check the page for the current exhibition.","cost_status":"free","under21_safe":true},{"subject_id":"hsc-music-series-concert","subject_type":"activity","entity_name":"The Hampden-Sydney Music Series","title":"Catch a Music Series Concert","subtitle":"Free public performances during the academic year","notes":"Check the series page, pick a concert that suits the group, and arrive together early enough to find seats without rushing.","short_summary":"Hear visiting musicians at a ticket-free College concert.","evidence_claim":"The official Music Series page says the College presents free public concerts throughout the academic year and that all series events are free and open to the public.","source_url":"https://www.hsc.edu/academics/fine-arts/music/music-series","source_title":"The Hampden-Sydney Music Series","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to the public; consult the series page for the current program, venue, date, and time.","cost_status":"free","under21_safe":true},{"subject_id":"hsc-main-stage-theatre","subject_type":"activity","entity_name":"Hampden-Sydney Theatre Main-Stage Productions","title":"Watch a Main-Stage Play","subtitle":"Ticket-free theatre presented by the Fine Arts Department","notes":"Invite a friend to a performance, read the production details beforehand, and stay afterward to compare favorite scenes.","short_summary":"Spend an evening with one of the Theatre program’s staged productions.","evidence_claim":"The Theatre program says it produces two main-stage productions each year and that all performances are free and open to the public.","source_url":"https://www7.hsc.edu/academics/fine-arts/theatre","source_title":"Theatre","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to the public; use the Fine Arts calendar to confirm the production date, time, and venue.","cost_status":"free","under21_safe":true},{"subject_id":"hsc-chorus-concert","subject_type":"activity","entity_name":"Hampden-Sydney College Chorus","title":"Listen to the H-SC Chorus","subtitle":"A free campus choral performance","notes":"Bring a classmate, listen for how the program shifts between musical traditions, and compare standout pieces afterward.","short_summary":"Share a choral program spanning varied musical styles and traditions.","evidence_claim":"The Chorus page documents public H-SC Chorus performances and states that all Hampden-Sydney music events are free and open to the public.","source_url":"https://www7.hsc.edu/academics/fine-arts/music/h-sc-chorus","source_title":"Hampden-Sydney College Chorus","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to the public when a Chorus performance is scheduled; verify current details on the Fine Arts calendar.","cost_status":"free","under21_safe":true},{"subject_id":"hsc-visual-arts-event","subject_type":"activity","entity_name":"Hampden-Sydney Visual Arts Events","title":"Join a Visual Arts Event","subtitle":"Free public art programming at H-SC","notes":"Choose a scheduled reception, talk, or exhibition event and meet a friend there for an art-centered break from coursework.","short_summary":"Pair conversation with one of the Visual Arts program’s public events.","evidence_claim":"The Visual Arts program’s official page states that all Hampden-Sydney visual-arts events are free and open to the public.","source_url":"https://www7.hsc.edu/academics/fine-arts/visual-arts","source_title":"Visual Arts","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Free and open to the public when an event is scheduled; confirm the current event, venue, and time before going.","cost_status":"free","under21_safe":true},{"subject_id":"hsc-wilson-trail-hike","subject_type":"place","entity_name":"Wilson Trail","title":"Walk the Wilson Trail","subtitle":"Three miles of campus hiking and biking paths","notes":"Pick a comfortable out-and-back distance, bring water, and walk with a friend while staying on the marked trail system.","short_summary":"Trade indoor study time for a shared walk through the campus forests.","evidence_claim":"The College says Hampden-Sydney students need only step outside to use the three-mile Wilson Trail for hiking and biking.","source_url":"https://www.hsc.edu/student-life/what-to-do/outdoor-experience/wilson-trail","source_title":"The Wilson Trail","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"No admission or purchase is identified for student trail use; review the interactive or printable trail map before departing.","cost_status":"free","under21_safe":true},{"subject_id":"hsc-free-equipment-rental","subject_type":"activity","entity_name":"Office of Student Affairs Free Equipment Rental","title":"Borrow Gear for an Outdoor Hang","subtitle":"Student equipment borrowing through Brown Student Center","notes":"Gather a small group, ask Student Affairs what is available, and choose an activity that matches everyone’s experience level.","short_summary":"Plan a group outing without buying or renting your own equipment.","evidence_claim":"The Outdoor Experience page labels the program “FREE Equipment Rental” and tells students to borrow equipment from the Office of Student Affairs.","source_url":"https://www.hsc.edu/student-life/what-to-do/outdoor-experience","source_title":"The Outdoor Experience","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Available to Hampden-Sydney students through the Office of Student Affairs; contact the office to check inventory and borrowing requirements.","cost_status":"free","under21_safe":true},{"subject_id":"hsc-ashtanga-yoga-class","subject_type":"activity","entity_name":"Ashtanga Yoga Classes at Kirby Field House","title":"Try the Free Yoga Class","subtitle":"A mixed-level weekly session in the Fitness Center","notes":"Contact the instructor about space, bring comfortable clothes, and attend with a friend; first-time participants are welcomed.","short_summary":"Share a structured movement session designed for new and continuing students.","evidence_claim":"The instructor’s H-SC page says the introductory Ashtanga yoga classes are free of charge and require no previous experience.","source_url":"https://people.hsc.edu/faculty-staff/edevlin/edsweb01/Personal/yoga/yoga.htm","source_title":"Yoga","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Class size is limited, so contact the instructor about current-semester availability before attending.","cost_status":"free","under21_safe":true},{"subject_id":"hsc-brinkley-practice-room","subject_type":"place","entity_name":"Brinkley Hall Music Practice Rooms","title":"Meet for a Practice-Room Session","subtitle":"Student-access music rooms in Brinkley Hall","notes":"Choose an available room, bring an instrument or vocal idea, and keep the session collaborative while respecting nearby users.","short_summary":"Use a campus practice room for an informal student music session.","evidence_claim":"The Music Program states that any student may use an available practice room while Brinkley Hall is open, with after-hours access available by request.","source_url":"https://www.hsc.edu/academics/fine-arts/music","source_title":"The Music Program at Hampden-Sydney College","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Student-only use; available rooms may be used Monday–Friday, 8 a.m.–10 p.m. After-hours access requires a request.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}

@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://maps.illinoisstate.edu/locations/quad/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://maps.illinoisstate.edu/locations/quad/",
+      "error": ""
+    },
+    {
+      "url": "https://illinoisstate.edu/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://illinoisstate.edu/about/",
+      "error": ""
+    },
+    {
+      "url": "https://arboretum.illinoisstate.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arboretum.illinoisstate.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://library.illinoisstate.edu/about/spaces/floor-maps/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.illinoisstate.edu/about/spaces/floor-maps/",
+      "error": ""
+    },
+    {
+      "url": "https://bonestudentcenter.illinoisstate.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bonestudentcenter.illinoisstate.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://campusrecreation.illinoisstate.edu/facilities/hours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusrecreation.illinoisstate.edu/facilities/hours/",
+      "error": ""
+    },
+    {
+      "url": "https://campusrecreation.illinoisstate.edu/facilities/center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campusrecreation.illinoisstate.edu/facilities/center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.normalil.gov/1121/Constitution-Trail",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.normalil.gov/1121/Constitution-Trail",
+      "error": ""
+    },
+    {
+      "url": "https://galleries.illinoisstate.edu/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://galleries.illinoisstate.edu/about/",
+      "error": ""
+    },
+    {
+      "url": "https://www.normalil.gov/DocumentCenter/View/23558/Uptown-Normal-Visitor-Guide-adapted-for-web",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.normalil.gov/DocumentCenter/View/23558/Uptown-Normal-Visitor-Guide-adapted-for-web",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

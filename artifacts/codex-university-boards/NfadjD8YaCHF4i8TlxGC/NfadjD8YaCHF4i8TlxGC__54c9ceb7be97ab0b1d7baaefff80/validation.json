@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.smumn.edu/student-experience/winona/housing-dining/food-service/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.smumn.edu/student-experience/winona/housing-dining/food-service/",
+      "error": ""
+    },
+    {
+      "url": "https://www.mangosgrill.net/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mangosgrill.net/",
+      "error": ""
+    },
+    {
+      "url": "https://www.culvers.com/restaurants/winona",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.culvers.com/restaurants/winona",
+      "error": ""
+    },
+    {
+      "url": "https://www.perkinsrestaurants.com/locations/us/mn/winona/956-1-2-mankoto-avenue/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.perkinsrestaurants.com/locations/us/mn/winona/956-1-2-mankoto-avenue/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/mn/winona/1630-w-service-dr/takeout",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/mn/winona/1630-w-service-dr/takeout",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/minnesota/winona/1201-gilmore-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/minnesota/winona/1201-gilmore-ave",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/mn/winona/1455-gilmore-ave.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mn/winona/1455-gilmore-ave.html",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.subway.com/united-states/mn/winona",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.subway.com/united-states/mn/winona",
+      "error": ""
+    },
+    {
+      "url": "https://www.hy-vee.com/stores/detail.aspx?s=221",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hy-vee.com/stores/detail.aspx?s=221",
+      "error": ""
+    },
+    {
+      "url": "https://www.walmart.com/store/5397-winona-mn",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.walmart.com/blocked?url=L3N0b3JlLzUzOTctd2lub25hLW1u&uuid=7cf2ee6f-96f5-11f1-b35e-d6a32b9ec2af&vid=&g=b",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.tacobell.com/al/huntsville/4315-university-dr-nw.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/al/huntsville/4315-university-dr-nw.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.whataburger.com/al/huntsville.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.whataburger.com/al/huntsville.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wafflehouse.com/al/huntsville/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wafflehouse.com/al/huntsville/",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/al/huntsville/6100-university-dr-nw/16055.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/al/huntsville/6100-university-dr-nw/16055.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.krystal.com/locations/al/huntsville/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.krystal.com/locations/al/huntsville/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/al/huntsville.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/al/huntsville.html",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.applebees.com/en-us/al/huntsville/3028-memorial-pkwy-sw-86087",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.applebees.com/en-us/al/huntsville/3028-memorial-pkwy-sw-86087",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

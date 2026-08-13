@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://antoniospizza.com/locations/providence-thayer/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://antoniospizza.com/locations/providence-thayer/",
+      "error": ""
+    },
+    {
+      "url": "https://bajasrestaurants.com/rhode-island-wakefield-ri-cranston-ri-baja-s-locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bajasrestaurants.com/rhode-island-wakefield-ri-cranston-ri-baja-s-locations",
+      "error": ""
+    },
+    {
+      "url": "https://mexicangrillcaliente.com/location/thayer-st-providence/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://mexicangrillcaliente.com/location/thayer-st-providence/",
+      "error": ""
+    },
+    {
+      "url": "https://www.toasttab.com/local/order/chinatown-on-thayer/item-beef-tomato-egg-rb_f4dd4c09-8dab-43c7-b628-c0ba60b99e1a",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.toasttab.com/local/order/chinatown-on-thayer/item-beef-tomato-egg-rb_f4dd4c09-8dab-43c7-b628-c0ba60b99e1a",
+      "error": ""
+    },
+    {
+      "url": "https://www.toasttab.com/local/order/cilanter-168-atwells-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.toasttab.com/local/order/cilanter-168-atwells-ave",
+      "error": ""
+    },
+    {
+      "url": "https://havenbrosdiner.com/contact/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://havenbrosdiner.com/contact/",
+      "error": ""
+    },
+    {
+      "url": "https://insomniacookies.com/store/providence",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://insomniacookies.com/store/providence",
+      "error": ""
+    },
+    {
+      "url": "https://www.siciliaspizzaprovidence.com/locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.siciliaspizzaprovidence.com/locations",
+      "error": ""
+    },
+    {
+      "url": "https://www.vasiliospizza.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.vasiliospizza.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

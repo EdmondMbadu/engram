@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.kzoocampuswok.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.kzoocampuswok.com/",
+      "error": ""
+    },
+    {
+      "url": "https://ayasofyarestaurants.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://ayasofyarestaurants.com/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dennys.com/MI/KALAMAZOO/248736.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dennys.com/mi",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/michigan/kalamazoo/2706-w-michigan-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/michigan/kalamazoo/2706-w-michigan-ave",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/michigan/kalamazoo/5585-gull-road-108",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/michigan/kalamazoo/5585-gull-road-108",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/mi/kalamazoo/5013-w-main.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mi/kalamazoo/5013-w-main.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/mi/kalamazoo/3233-s-westnedge-ave.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mi/kalamazoo/3233-s-westnedge-ave.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/mi/kalamazoo/2229-sprinkle-road.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mi/kalamazoo/2229-sprinkle-road.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/mi/kalamazoo/6035-gull-rd.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mi/kalamazoo/6035-gull-rd.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/mi/kalamazoo/5301-portage-road.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mi/kalamazoo/5301-portage-road.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.pomona.edu/museum/support",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pomona.edu/museum/support",
+      "error": ""
+    },
+    {
+      "url": "https://www.pomona.edu/museum/events/2026/05/gallery-talk",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pomona.edu/museum/events/2026/05/gallery-talk",
+      "error": ""
+    },
+    {
+      "url": "https://www.pomona.edu/academics/departments/music/gazette-news/news-releases/posts/spring-2026-concert-season",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pomona.edu/academics/departments/music/gazette-news/news-releases/posts/spring-2026-concert-season",
+      "error": ""
+    },
+    {
+      "url": "https://www.pomona.edu/academics/departments/music/concert-calendar/friday-noon-concert-series",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.pomona.edu/academics/departments/music/concert-calendar/friday-noon-concert-series",
+      "error": ""
+    },
+    {
+      "url": "https://colleges.claremont.edu/jointmusicprogram/choirs/choral-concerts/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://colleges.claremont.edu/jointmusicprogram/choirs/choral-concerts/",
+      "error": ""
+    },
+    {
+      "url": "https://rcwg.scrippscollege.edu/admission-directions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://rcwg.scrippscollege.edu/admission-directions/",
+      "error": ""
+    },
+    {
+      "url": "https://www.scrippscollege.edu/scrippspress/goudy-lecture/structures-of-practice-building-meaning-through-material-and-form",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scrippscollege.edu/scrippspress/goudy-lecture/structures-of-practice-building-meaning-through-material-and-form",
+      "error": ""
+    },
+    {
+      "url": "https://www.scrippscollege.edu/events/scrippspresents/ticketing",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scrippscollege.edu/events/scrippspresents/ticketing",
+      "error": ""
+    },
+    {
+      "url": "https://www.claremontca.gov/files/assets/public/v/1/city-managers-office/documents/press-releases/2026-monday-night-concerts-press-release.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.claremontca.gov/files/assets/public/v/1/city-managers-office/documents/press-releases/2026-monday-night-concerts-press-release.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 100,
+  "generationGrade": "A"
+}

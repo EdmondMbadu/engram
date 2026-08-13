@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.tacobell.com/al/tuscaloosa/236-15th-street.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/al/tuscaloosa/236-15th-street.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/al/tuscaloosa.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/al/tuscaloosa.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/al/tuscaloosa/1211-university-blvd/dinner.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/al/tuscaloosa/1211-university-blvd/dinner.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.whataburger.com/al/tuscaloosa.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.whataburger.com/al/tuscaloosa.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/al/tuscaloosa/2502-12th-st/11133.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/al/tuscaloosa/2502-12th-st/11133.html",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.subway.com/united-states/al/tuscaloosa/4416-skyland-blvd-e",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.subway.com/united-states/al/tuscaloosa/4416-skyland-blvd-e",
+      "error": ""
+    },
+    {
+      "url": "https://ua.campusdish.com/en/locationsandmenus/secmarket/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ua.mydininghub.com/en/locations",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

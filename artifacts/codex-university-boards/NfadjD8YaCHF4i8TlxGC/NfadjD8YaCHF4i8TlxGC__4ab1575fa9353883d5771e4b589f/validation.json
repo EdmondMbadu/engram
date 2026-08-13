@@ -1,0 +1,55 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://kc.edu/convocation-ceremony-returns-to-campus/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://kc.edu/convocation-ceremony-returns-to-campus/",
+      "error": ""
+    },
+    {
+      "url": "https://kc.edu/kettering-college-holds-nursing-dedication-ceremony/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://kc.edu/kettering-college-holds-nursing-dedication-ceremony/",
+      "error": ""
+    },
+    {
+      "url": "https://kc.edu/marketing/request-services/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://kc.edu/marketing/request-services/",
+      "error": ""
+    },
+    {
+      "url": "https://kc.edu/campus-resources/student-success/studentaffairs/campus-ministries/christ/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://kc.edu/campus-resources/student-success/studentaffairs/campus-ministries/christ/",
+      "error": ""
+    },
+    {
+      "url": "https://kc.edu/admissions/admission-requirements/new-student-orientation-days/fall-welcome-events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://kc.edu/admissions/admission-requirements/new-student-orientation-days/fall-welcome-events/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Collective"
+  ],
+  "sourceCount": 5,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.historicbethlehem.org/visit-us/museums-sites/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.historicbethlehem.org/visit-us/museums-sites/",
+      "error": ""
+    },
+    {
+      "url": "https://v2.historicbethlehem.org/visit-us/museums-sites/single-sisters-house",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://v2.historicbethlehem.org/visit-us/museums-sites/single-sisters-house",
+      "error": ""
+    },
+    {
+      "url": "https://www.historicbethlehem.org/shop/product/kemerer-museum-admission/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.historicbethlehem.org/shop/product/kemerer-museum-admission/",
+      "error": ""
+    },
+    {
+      "url": "https://www.historicbethlehem.org/visit-us/museums-sites/1752-apothecary-pharmacy/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.historicbethlehem.org/visit-us/museums-sites/1752-apothecary-pharmacy/",
+      "error": ""
+    },
+    {
+      "url": "https://www.historicbethlehem.org/visit-us/museums-sites/1810-goundie-house/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.historicbethlehem.org/visit-us/museums-sites/1810-goundie-house/",
+      "error": ""
+    },
+    {
+      "url": "https://www.historicbethlehem.org/visit-us/musikfest/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.historicbethlehem.org/visit-us/musikfest/",
+      "error": ""
+    },
+    {
+      "url": "https://www.historicbethlehem.org/itineraries/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.historicbethlehem.org/itineraries/",
+      "error": ""
+    },
+    {
+      "url": "https://www.historicbethlehem.org/learn/collections/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.historicbethlehem.org/learn/collections/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

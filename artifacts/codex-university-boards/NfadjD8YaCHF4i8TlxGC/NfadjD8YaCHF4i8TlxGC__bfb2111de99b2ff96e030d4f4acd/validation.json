@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://amesfreelibrary.org/contact-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://amesfreelibrary.org/contact-us",
+      "error": ""
+    },
+    {
+      "url": "https://s3.amazonaws.com/ai-assets/amesfreelibrary/queset-room-rental-guide_154_orig.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://s3.amazonaws.com/ai-assets/amesfreelibrary/queset-room-rental-guide_154_orig.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/places/memorial-hall.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/places/memorial-hall.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.cmeaston.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cmeaston.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://eastonma.recdesk.com/Community/Membership/Detail?membershipId=13",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://eastonma.recdesk.com/Community/Membership/Detail?membershipId=13",
+      "error": ""
+    },
+    {
+      "url": "https://eastoncat.org/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://eastoncat.org/about/",
+      "error": ""
+    },
+    {
+      "url": "https://www.stonehill.edu/plan-your-visit/easton-surrounding-areas/area-restaurants/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stonehill.edu/plan-your-visit/easton-surrounding-areas/area-restaurants/",
+      "error": ""
+    },
+    {
+      "url": "https://www.simpsonspring.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.simpsonspring.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.mass.gov/locations/borderland-state-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mass.gov/locations/borderland-state-park",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

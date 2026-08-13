@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.union.edu/about/traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.union.edu/about/traditions",
+      "error": ""
+    },
+    {
+      "url": "https://www.union.edu/kenney-center/annual-events",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.union.edu/kenney-center/annual-events",
+      "error": ""
+    },
+    {
+      "url": "https://steinmetz.union.edu/sites/default/files/2025-11/Steinmetz_Program_2025.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://steinmetz.union.edu/sites/default/files/2025-11/Steinmetz_Program_2025.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.union.edu/news/stories/202001/chimes",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.union.edu/news/stories/202001/chimes",
+      "error": ""
+    },
+    {
+      "url": "https://www.union.edu/firstyear/orientation2026",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.union.edu/first-year/orientation2026",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

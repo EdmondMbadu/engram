@@ -1,0 +1,272 @@
+Reading additional input from stdin...
+2026-08-13T07:41:08.789668Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa10-5375-72a3-ae66-7f0acec694fd.1786606801782524000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:41:08.841095Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa10-534f-7320-a3d5-54dc7965a8e5.1786606801744461000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa11-58db-7a22-88ec-ddfa53729753
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"hOl5QLtdjcQ3nT43sJ1g","schoolName":"Illinois Wesleyan University","shortSchoolName":"Illinois Wesleyan University","townName":"Bloomington","state":"IL","countryCode":"US","website":"https://www.iwu.edu/","latitude":40.489901,"longitude":-88.992014},"templates":[{"id":"college-campus-tour-skips","version":"1.0","titlePattern":"What the Campus Tour Skips: {count} Places Students Share With Each Other","editorialBrief":"Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.","researchQueries":["student favorite campus places","campus map student spaces","student newspaper campus places"],"count":10,"icon":"style","primarySubjectType":"place","allowedSubjectTypes":["place","study_space"],"freshnessDays":365,"exactTitle":"What the Campus Tour Skips: 10 Places Students Share With Each Other"}]}
+2026-08-13T07:41:08.882115Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa10-534b-7862-9192-0f530cdc8239.1786606801740438000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:41:08.934483Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:41:08.962582Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:41:09.071697Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa10-539f-71d0-b3a2-06e248384783.1786606801823940000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:41:09.121592Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa10-537b-7f53-8381-49fdef320350.1786606801787972000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Illinois Wesleyan University",
+  "town_name": "Bloomington",
+  "boards": [{
+    "complete": false,
+    "school_name": "Illinois Wesleyan University",
+    "town_name": "Bloomington",
+    "template_id": "college-campus-tour-skips",
+    "title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+    "description": "",
+    "icon": "style",
+    "cards": [{
+      "subject_id": "",
+      "subject_type": "place",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "I’m verifying ten distinct, named campus destinations against direct Illinois Wesleyan pages and the official campus map.",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "place",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "place",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "place",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "place",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "place",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "place",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "place",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "place",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "place",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }],
+    "warnings": []
+  }],
+  "warnings": ["Research in progress; this is not the final board."]
+}
+web search: 
+web search: site:iwu.edu Illinois Wesleyan Ames Library study spaces CNS atrium Hansen Student Center student spaces ...
+web search: 
+web search: site:iwu.edu "Hansen Student Center" "Tommy's" Illinois Wesleyan ...
+codex
+{"complete":true,"school_name":"Illinois Wesleyan University","town_name":"Bloomington","boards":[{"complete":true,"school_name":"Illinois Wesleyan University","town_name":"Bloomington","template_id":"college-campus-tour-skips","title":"What the Campus Tour Skips: 10 Places Students Share With Each Other","description":"Ten named Illinois Wesleyan spaces for collaborative work, quiet study, student meetings, informal conversation, campus events, and time outdoors.","icon":"style","cards":[{"subject_id":"iwu-center-for-engaged-learning","subject_type":"study_space","entity_name":"Center for Engaged Learning","title":"Build a Group Session Around the Furniture","subtitle":"Flexible learning space on the first floor of The Ames Library","notes":"Claim a booth or table for small-group work, then use the stadium seating to bring everyone together for reports or discussion.","short_summary":"A flexible library workspace with booths, tables, movable boards, displays, and tiered seating for switching between group formats.","evidence_claim":"Illinois Wesleyan identifies the Center for Engaged Learning on the east side of The Ames Library’s first floor and welcomes groups of all sizes; its booths, tables, stadium seating, displays, and whiteboards support several collaborative formats.","source_url":"https://www.iwu.edu/center-engaged-learning/using-the-space.html","source_title":"Using the Center for Engaged Learning","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.iwu.edu/map/","access_notes":"Some or all of the space may be reserved through 25Live; scheduled use does not stop traffic to nearby library services.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iwu-ames-roof-garden","subject_type":"place","entity_name":"Ames Roof Garden","title":"Take the Work Outside Without Leaving Ames","subtitle":"Elevated garden accessible from the library’s entry level","notes":"Bring reading or a small conversation outside, and check the reservation calendar before planning a larger organized gathering.","short_summary":"An elevated outdoor library space overlooking the landscaped area south of Ames.","evidence_claim":"The university describes the Ames Roof Garden as an elevated outdoor space, accessible from the library’s entry level, that overlooks the park-like setting south of the building.","source_url":"https://www.iwu.edu/library/collaborate/otherspaces.html","source_title":"Other Library Spaces","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.iwu.edu/map/","access_notes":"The garden can be reserved for special university events; ordinary access remains subject to library operations and scheduled use.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iwu-ames-plaza","subject_type":"place","entity_name":"The Ames Plaza","title":"Use the Plaza for Work That Needs an Audience","subtitle":"Outdoor event space between McPherson Theatre and The Ames Library","notes":"Choose the plaza for a student display or small performance, and arrange a reservation before bringing equipment or programming.","short_summary":"A bookable outdoor space suited to visible student displays, performances, and other organized activities.","evidence_claim":"Illinois Wesleyan locates The Ames Plaza between McPherson Theatre and The Ames Library and says it is available for music performances, student displays, and other activities, with electrical outlets provided.","source_url":"https://www.iwu.edu/library/collaborate/otherspaces.html","source_title":"Other Library Spaces","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.iwu.edu/map/","access_notes":"Reserve the plaza through 25Live or Conference Services for organized events; outdoor conditions and scheduled activities may affect use.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iwu-ames-lower-level-rotunda","subject_type":"study_space","entity_name":"Ames Lower Level Rotunda","title":"Settle Into the Lower-Level Soft Seating","subtitle":"Open study and gathering area in The Ames Library","notes":"Use the tables when materials need to spread out, or take a chair or couch for reading; keep the area suitable for shared use.","short_summary":"An open lower-library rotunda combining study tables with chairs and couches.","evidence_claim":"The university describes the Ames Lower Level Rotunda as an open area containing study tables, comfortable chairs, and couches; it may also be reserved for non-private events.","source_url":"https://www.iwu.edu/library/collaborate/otherspaces.html","source_title":"Other Library Spaces","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.iwu.edu/map/","access_notes":"The area is shared and may be reserved only for non-private events; follow current library access rules and posted expectations.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iwu-ames-information-commons","subject_type":"study_space","entity_name":"Ames Information Commons","title":"Work Side by Side With Campus Software Ready","subtitle":"Computer workspace on the entry level’s west side","notes":"Bring a partner when a project needs shared screen work, printing, scanning, statistics software, Adobe tools, or campus GIS software.","short_summary":"A 24-computer work area with productivity and specialized software plus nearby printing and scanning equipment.","evidence_claim":"Illinois Wesleyan places the Information Commons on the entry-level west side of The Ames Library and lists 24 computers, room for side-by-side work, and two copiers for printing and scanning.","source_url":"https://www.iwu.edu/library/tools/computers.html","source_title":"Computers in the Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.iwu.edu/map/","access_notes":"Computers are primarily for academic use by IWU students, faculty, and staff; specialized applications are installed only on designated machines.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iwu-hansen-student-center","subject_type":"place","entity_name":"Hansen Student Center","title":"Make Hansen the Group’s Coordination Point","subtitle":"Student-center spaces for meeting, studying, relaxing, and campus programs","notes":"Meet near the information desk, use a computer station for a quick print, or reserve an appropriate space well before a planned event.","short_summary":"A multipurpose student center connecting informal gathering areas, student organizations, event spaces, services, and dining.","evidence_claim":"The university says Hansen Student Center includes areas to relax, study, or meet friends, plus an information desk, computer stations, student-organization offices, event support, bookstore, and Tommy’s dining.","source_url":"https://www.iwu.edu/student-involvement/hansen/","source_title":"Hansen Student Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.iwu.edu/map/","access_notes":"Current posted in-session hours are 7:30 a.m.–10 p.m. weekdays and 10 a.m.–10 p.m. weekends; summer hours differ. Reservable spaces use 25Live.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iwu-cns-atrium","subject_type":"place","entity_name":"Center for Natural Sciences Atrium","title":"Catch Up Between Science Classes","subtitle":"Daylit gathering space inside the Center for Natural Sciences","notes":"Use the atrium for a brief conversation between classes, while leaving circulation and any scheduled research displays unobstructed.","short_summary":"A well-lit science-building atrium documented as a gathering point for students and faculty between classes.","evidence_claim":"Illinois Wesleyan’s Chemistry and Biochemistry department states that the well-lit Center for Natural Sciences atrium draws students and faculty between classes for casual conversations.","source_url":"https://www.iwu.edu/chemistry/cns.html","source_title":"The Center For Natural Sciences","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.iwu.edu/map/","access_notes":"Use is subject to academic-building access, class schedules, and scheduled events; the university does not describe the atrium as a private study room.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iwu-state-farm-hall","subject_type":"study_space","entity_name":"State Farm Hall","title":"Look Beyond the Classroom Doors for Study Space","subtitle":"Academic building with flexible teaching and study areas","notes":"Use an available study area for coursework between classes, and request formal room use through the university scheduling process.","short_summary":"A technology-rich academic building whose flexible layout includes spaces for student study alongside classrooms and seminar rooms.","evidence_claim":"Illinois Wesleyan’s 2026 accreditation draft describes State Farm Hall as a four-level, technology-equipped academic facility with flexible teaching and space arrangements; university materials also identify student study areas there.","source_url":"https://www.iwu.edu/accreditation/iwu-hlc-crtrn3-drft.pdf","source_title":"Illinois Wesleyan University Assurance Argument Draft","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.iwu.edu/map/","access_notes":"Academic-room requests go through 25Live and require approval by the building scheduler; ordinary access is subject to building operations.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iwu-eckley-quad","subject_type":"place","entity_name":"Robert S. Eckley Quadrangle","title":"Choose the Quad Zone That Fits the Plan","subtitle":"Main Quad containing several separately identified outdoor event areas","notes":"Match the activity to Commencement Plaza, Joslin Atrium Steps, or McPherson Beach, then submit a space request for organized use.","short_summary":"The central quad links three named outdoor gathering zones that student organizations can request for activities.","evidence_claim":"The current IWU Registered Student Organization Handbook lists the Eckley Quad, also called the Main Quad, as an outdoor space and identifies Commencement Plaza, Joslin Atrium Steps, and McPherson Beach within it.","source_url":"https://www.iwu.edu/student-involvement/rso-handbook.pdf","source_title":"IWU Registered Student Organization Handbook","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.iwu.edu/map/","access_notes":"Registered student organizations must follow university booking and event rules; reservations do not override safety, capacity, or campus-use requirements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iwu-peace-garden","subject_type":"place","entity_name":"IWU Peace Garden","title":"Move a Small Gathering Into the Peace Garden","subtitle":"Named outdoor campus space available through student-organization scheduling","notes":"Pick the garden for a modest outdoor meeting or reflective activity, then check 25Live requirements before organizing a group.","short_summary":"A named outdoor setting included among the campus spaces student organizations may request.","evidence_claim":"The current IWU Registered Student Organization Handbook explicitly lists the IWU Peace Garden among the outdoor spaces available for registered student-organization use.","source_url":"https://www.iwu.edu/student-involvement/rso-handbook.pdf","source_title":"IWU Registered Student Organization Handbook","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.iwu.edu/map/","access_notes":"Organized use is governed by university space-booking policies; confirm approval, weather suitability, and any event requirements in advance.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:43:08.595675Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa11-58db-7a22-88ec-ddfa53729753.1786606868699839000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+35,211
+
+{"complete":true,"school_name":"Illinois Wesleyan University","town_name":"Bloomington","boards":[{"complete":true,"school_name":"Illinois Wesleyan University","town_name":"Bloomington","template_id":"college-campus-tour-skips","title":"What the Campus Tour Skips: 10 Places Students Share With Each Other","description":"Ten named Illinois Wesleyan spaces for collaborative work, quiet study, student meetings, informal conversation, campus events, and time outdoors.","icon":"style","cards":[{"subject_id":"iwu-center-for-engaged-learning","subject_type":"study_space","entity_name":"Center for Engaged Learning","title":"Build a Group Session Around the Furniture","subtitle":"Flexible learning space on the first floor of The Ames Library","notes":"Claim a booth or table for small-group work, then use the stadium seating to bring everyone together for reports or discussion.","short_summary":"A flexible library workspace with booths, tables, movable boards, displays, and tiered seating for switching between group formats.","evidence_claim":"Illinois Wesleyan identifies the Center for Engaged Learning on the east side of The Ames Library’s first floor and welcomes groups of all sizes; its booths, tables, stadium seating, displays, and whiteboards support several collaborative formats.","source_url":"https://www.iwu.edu/center-engaged-learning/using-the-space.html","source_title":"Using the Center for Engaged Learning","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.iwu.edu/map/","access_notes":"Some or all of the space may be reserved through 25Live; scheduled use does not stop traffic to nearby library services.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iwu-ames-roof-garden","subject_type":"place","entity_name":"Ames Roof Garden","title":"Take the Work Outside Without Leaving Ames","subtitle":"Elevated garden accessible from the library’s entry level","notes":"Bring reading or a small conversation outside, and check the reservation calendar before planning a larger organized gathering.","short_summary":"An elevated outdoor library space overlooking the landscaped area south of Ames.","evidence_claim":"The university describes the Ames Roof Garden as an elevated outdoor space, accessible from the library’s entry level, that overlooks the park-like setting south of the building.","source_url":"https://www.iwu.edu/library/collaborate/otherspaces.html","source_title":"Other Library Spaces","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.iwu.edu/map/","access_notes":"The garden can be reserved for special university events; ordinary access remains subject to library operations and scheduled use.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iwu-ames-plaza","subject_type":"place","entity_name":"The Ames Plaza","title":"Use the Plaza for Work That Needs an Audience","subtitle":"Outdoor event space between McPherson Theatre and The Ames Library","notes":"Choose the plaza for a student display or small performance, and arrange a reservation before bringing equipment or programming.","short_summary":"A bookable outdoor space suited to visible student displays, performances, and other organized activities.","evidence_claim":"Illinois Wesleyan locates The Ames Plaza between McPherson Theatre and The Ames Library and says it is available for music performances, student displays, and other activities, with electrical outlets provided.","source_url":"https://www.iwu.edu/library/collaborate/otherspaces.html","source_title":"Other Library Spaces","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.iwu.edu/map/","access_notes":"Reserve the plaza through 25Live or Conference Services for organized events; outdoor conditions and scheduled activities may affect use.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iwu-ames-lower-level-rotunda","subject_type":"study_space","entity_name":"Ames Lower Level Rotunda","title":"Settle Into the Lower-Level Soft Seating","subtitle":"Open study and gathering area in The Ames Library","notes":"Use the tables when materials need to spread out, or take a chair or couch for reading; keep the area suitable for shared use.","short_summary":"An open lower-library rotunda combining study tables with chairs and couches.","evidence_claim":"The university describes the Ames Lower Level Rotunda as an open area containing study tables, comfortable chairs, and couches; it may also be reserved for non-private events.","source_url":"https://www.iwu.edu/library/collaborate/otherspaces.html","source_title":"Other Library Spaces","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.iwu.edu/map/","access_notes":"The area is shared and may be reserved only for non-private events; follow current library access rules and posted expectations.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iwu-ames-information-commons","subject_type":"study_space","entity_name":"Ames Information Commons","title":"Work Side by Side With Campus Software Ready","subtitle":"Computer workspace on the entry level’s west side","notes":"Bring a partner when a project needs shared screen work, printing, scanning, statistics software, Adobe tools, or campus GIS software.","short_summary":"A 24-computer work area with productivity and specialized software plus nearby printing and scanning equipment.","evidence_claim":"Illinois Wesleyan places the Information Commons on the entry-level west side of The Ames Library and lists 24 computers, room for side-by-side work, and two copiers for printing and scanning.","source_url":"https://www.iwu.edu/library/tools/computers.html","source_title":"Computers in the Library","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.iwu.edu/map/","access_notes":"Computers are primarily for academic use by IWU students, faculty, and staff; specialized applications are installed only on designated machines.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iwu-hansen-student-center","subject_type":"place","entity_name":"Hansen Student Center","title":"Make Hansen the Group’s Coordination Point","subtitle":"Student-center spaces for meeting, studying, relaxing, and campus programs","notes":"Meet near the information desk, use a computer station for a quick print, or reserve an appropriate space well before a planned event.","short_summary":"A multipurpose student center connecting informal gathering areas, student organizations, event spaces, services, and dining.","evidence_claim":"The university says Hansen Student Center includes areas to relax, study, or meet friends, plus an information desk, computer stations, student-organization offices, event support, bookstore, and Tommy’s dining.","source_url":"https://www.iwu.edu/student-involvement/hansen/","source_title":"Hansen Student Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.iwu.edu/map/","access_notes":"Current posted in-session hours are 7:30 a.m.–10 p.m. weekdays and 10 a.m.–10 p.m. weekends; summer hours differ. Reservable spaces use 25Live.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iwu-cns-atrium","subject_type":"place","entity_name":"Center for Natural Sciences Atrium","title":"Catch Up Between Science Classes","subtitle":"Daylit gathering space inside the Center for Natural Sciences","notes":"Use the atrium for a brief conversation between classes, while leaving circulation and any scheduled research displays unobstructed.","short_summary":"A well-lit science-building atrium documented as a gathering point for students and faculty between classes.","evidence_claim":"Illinois Wesleyan’s Chemistry and Biochemistry department states that the well-lit Center for Natural Sciences atrium draws students and faculty between classes for casual conversations.","source_url":"https://www.iwu.edu/chemistry/cns.html","source_title":"The Center For Natural Sciences","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.iwu.edu/map/","access_notes":"Use is subject to academic-building access, class schedules, and scheduled events; the university does not describe the atrium as a private study room.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iwu-state-farm-hall","subject_type":"study_space","entity_name":"State Farm Hall","title":"Look Beyond the Classroom Doors for Study Space","subtitle":"Academic building with flexible teaching and study areas","notes":"Use an available study area for coursework between classes, and request formal room use through the university scheduling process.","short_summary":"A technology-rich academic building whose flexible layout includes spaces for student study alongside classrooms and seminar rooms.","evidence_claim":"Illinois Wesleyan’s 2026 accreditation draft describes State Farm Hall as a four-level, technology-equipped academic facility with flexible teaching and space arrangements; university materials also identify student study areas there.","source_url":"https://www.iwu.edu/accreditation/iwu-hlc-crtrn3-drft.pdf","source_title":"Illinois Wesleyan University Assurance Argument Draft","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.iwu.edu/map/","access_notes":"Academic-room requests go through 25Live and require approval by the building scheduler; ordinary access is subject to building operations.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iwu-eckley-quad","subject_type":"place","entity_name":"Robert S. Eckley Quadrangle","title":"Choose the Quad Zone That Fits the Plan","subtitle":"Main Quad containing several separately identified outdoor event areas","notes":"Match the activity to Commencement Plaza, Joslin Atrium Steps, or McPherson Beach, then submit a space request for organized use.","short_summary":"The central quad links three named outdoor gathering zones that student organizations can request for activities.","evidence_claim":"The current IWU Registered Student Organization Handbook lists the Eckley Quad, also called the Main Quad, as an outdoor space and identifies Commencement Plaza, Joslin Atrium Steps, and McPherson Beach within it.","source_url":"https://www.iwu.edu/student-involvement/rso-handbook.pdf","source_title":"IWU Registered Student Organization Handbook","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.iwu.edu/map/","access_notes":"Registered student organizations must follow university booking and event rules; reservations do not override safety, capacity, or campus-use requirements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"iwu-peace-garden","subject_type":"place","entity_name":"IWU Peace Garden","title":"Move a Small Gathering Into the Peace Garden","subtitle":"Named outdoor campus space available through student-organization scheduling","notes":"Pick the garden for a modest outdoor meeting or reflective activity, then check 25Live requirements before organizing a group.","short_summary":"A named outdoor setting included among the campus spaces student organizations may request.","evidence_claim":"The current IWU Registered Student Organization Handbook explicitly lists the IWU Peace Garden among the outdoor spaces available for registered student-organization use.","source_url":"https://www.iwu.edu/student-involvement/rso-handbook.pdf","source_title":"IWU Registered Student Organization Handbook","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.iwu.edu/map/","access_notes":"Organized use is governed by university space-booking policies; confirm approval, weather suitability, and any event requirements in advance.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

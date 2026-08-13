@@ -1,0 +1,77 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Several dorm-specific and historic traditions are documented by older student-media sources; cards explicitly direct users to confirm present-day occurrence."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.hmc.edu/admission/connect/visiting-campus/meet-your-tour-guides/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hmc.edu/admission/connect/visiting-campus/meet-your-tour-guides/",
+      "error": ""
+    },
+    {
+      "url": "https://themuddraker.org/2023/12/17/mudd-fun-facts/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://themuddraker.org/2023/12/17/mudd-fun-facts/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hmc.edu/about/timeline/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hmc.edu/about/timeline/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hmc.edu/alumni/events-and-reunions/alumni-weekend/schedule/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hmc.edu/alumni/events-and-reunions/alumni-weekend/schedule/",
+      "error": ""
+    },
+    {
+      "url": "https://www.linkedin.com/posts/harvey-mudd-college_in-todays-mudd-minute-harvey-mudd-colleges-activity-7180607090166521856-2_2a",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.linkedin.com/posts/harvey-mudd-college_in-todays-mudd-minute-harvey-mudd-colleges-activity-7180607090166521856-2_2a",
+      "error": ""
+    },
+    {
+      "url": "https://themuddraker.org/wp-content/uploads/2022/04/vol-17-issue-1.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://themuddraker.org/wp-content/uploads/2022/04/vol-17-issue-1.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://themuddraker.org/wp-content/uploads/2020/08/muddrakerdecember2018.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://themuddraker.org/wp-content/uploads/2020/08/muddrakerdecember2018.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://themuddraker.org/wp-content/uploads/2020/08/dec2017.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://themuddraker.org/wp-content/uploads/2020/08/dec2017.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

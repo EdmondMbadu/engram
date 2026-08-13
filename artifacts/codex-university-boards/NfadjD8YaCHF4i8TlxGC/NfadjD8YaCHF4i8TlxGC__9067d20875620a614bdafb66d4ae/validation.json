@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://libraries.towson.edu/using-the-libraries/building-directory/study-lounge",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.towson.edu/using-the-libraries/building-directory/study-lounge",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.towson.edu/using-the-libraries/technology/group-study-and-collaborative-areas",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.towson.edu/using-the-libraries/technology/group-study-and-collaborative-areas",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.towson.edu/using-the-libraries/technology/computers-in-the-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.towson.edu/using-the-libraries/technology/computers-in-the-library",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.towson.edu/about/top-10-things-every-student-should-know-about-cook-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.towson.edu/about/top-10-things-every-student-should-know-about-cook-library",
+      "error": ""
+    },
+    {
+      "url": "https://libraries.towson.edu/using-the-libraries/building-directory",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libraries.towson.edu/using-the-libraries/building-directory",
+      "error": ""
+    },
+    {
+      "url": "https://www.towson.edu/campus/landmarks/union.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.towson.edu/campus/landmarks/union.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.towson.edu/studentlife/activities/recreation/campusrec/facilities/fieldcomplex.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.towson.edu/studentlife/activities/recreation/campusrec/facilities/fieldcomplex.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

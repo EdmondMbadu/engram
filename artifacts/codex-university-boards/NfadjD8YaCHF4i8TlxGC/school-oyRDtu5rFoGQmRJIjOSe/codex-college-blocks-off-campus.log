@@ -1,0 +1,499 @@
+Reading additional input from stdin...
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9e6-9565-7460-86f9-41e6dfb46694
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"oyRDtu5rFoGQmRJIjOSe","schoolName":"College of Saint Benedict","shortSchoolName":"College of Saint Benedict","townName":"Saint Joseph","state":"MN","countryCode":"US","website":"https://csbsju.edu/","latitude":45.561792,"longitude":-94.319888},"templates":[{"id":"college-blocks-off-campus","version":"1.0","titlePattern":"{count} Blocks Off Campus, One Reason Each","editorialBrief":"Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.","researchQueries":["off campus streets student district","campus adjacent commercial streets","neighborhood plan near university"],"count":10,"icon":"location_city","primarySubjectType":"street_or_district","allowedSubjectTypes":["street_or_district"],"freshnessDays":730,"exactTitle":"10 Blocks Off Campus, One Reason Each"}]}
+2026-08-13T06:54:26.361843Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:54:26.362960Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+codex
+{
+  "complete": false,
+  "school_name": "College of Saint Benedict",
+  "town_name": "Saint Joseph",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "College of Saint Benedict",
+      "town_name": "Saint Joseph",
+      "template_id": "college-blocks-off-campus",
+      "title": "10 Blocks Off Campus, One Reason Each",
+      "description": "",
+      "icon": "location_city",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+     
+    },
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": [
+    "Unable to complete verified web research within the available response."
+  ]
+}
+codex
+{"complete":false,"school_name":"College of Saint Benedict","town_name":"Saint Joseph","boards":[{"complete":false,"school_name":"College of Saint Benedict","town_name":"Saint Joseph","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Researching ten distinct, corridor-linked destinations using direct public sources.","icon":"location_city","cards":     [{"subject_id":"research-in-progress","subject_type":"street_or_district","entity_name":"Research in progress","title":"Research in progress","subtitle":"Saint Joseph corridor verification","notes":"Checking direct sources, map-listed names, corridor relationships, and under-21 suitability for all ten cards.","short_summary":"Current public facts are being verified.","evidence_claim":"Research is in progress.","source_url":"https://csbsju.edu/","source_title":"College of Saint Benedict and Saint John's University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Pending verification.","cost_status":"not_applicable","under21_safe":true}         
+    
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "free",
+        "under21_safe": true
+     
+    },
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+      ,
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "free",
+          "under21_safe": true
+        }
+      ],
+      "warnings":[] }],"warnings":[]}
+web search: 
+web search: site:cityofstjoseph.com Minnesota downtown businesses College Avenue Saint Joseph ...
+web search: 
+web search: Local Blend Saint Joseph MN official address ...
+web search: 
+web search: Bruno Press Saint Joseph MN official address ...
+web search: 
+web search: site:stjosephmn.gov Facilities Lake Wobegon Trailhead St Joseph MN ...
+codex
+{"complete":true,"school_name":"College of Saint Benedict","town_name":"Saint Joseph","boards":[{"complete":true,"school_name":"College of Saint Benedict","town_name":"Saint Joseph","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named destinations along Saint Joseph corridors near the College of Saint Benedict, each paired with one directly sourced reason to go.","icon":"location_city","cards":[{"subject_id":"local-blend-minnesota-street","subject_type":"street_or_district","entity_name":"The Local Blend","title":"A Kitchen-Baked Coffee Stop","subtitle":"Minnesota Street corridor","notes":"Walk west along Minnesota Street for coffee, then scan the in-house bakery case for breads, muffins, scones, or cookies.","short_summary":"Coffee and an on-site bakery anchor this Minnesota Street stop.","evidence_claim":"The Local Blend’s official site identifies its location as 19 West Minnesota Street and says its in-house kitchen makes baked goods and other food.","source_url":"https://thelocalblend.net/","source_title":"The Local Blend","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official site currently lists daily daytime hours; confirm them before leaving campus.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"minnesota-street-market","subject_type":"street_or_district","entity_name":"Minnesota Street Market","title":"Local Food Meets Local Art","subtitle":"Minnesota Street corridor","notes":"Continue along Minnesota Street to browse locally produced food and work by regional artists inside the historic grocery building.","short_summary":"A downtown cooperative combines groceries, art, and sustainable-living education.","evidence_claim":"The market’s official site describes a community-owned food-and-art cooperative at 27 West Minnesota Street selling local food and local artwork.","source_url":"https://mnstreetmarket.com/","source_title":"Minnesota Street Market","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public retail business; check the official site for current shopping hours.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"church-saint-joseph-minnesota-street","subject_type":"street_or_district","entity_name":"Church of Saint Joseph","title":"A Landmark on Minnesota Street","subtitle":"Minnesota Street corridor","notes":"Pause at 12 West Minnesota Street to view the named parish landmark from the public corridor; contact the church before entering.","short_summary":"The parish building provides a clearly identifiable architectural destination downtown.","evidence_claim":"The Church of Saint Joseph’s official website lists the parish at 12 West Minnesota Street in Saint Joseph.","source_url":"https://www.churchstjoseph.org/acclent2024.html","source_title":"Church of Saint Joseph — St. Joseph, Minnesota","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Exterior viewing is available from the public street; verify church access or service times directly.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"wandering-cow-college-avenue","subject_type":"street_or_district","entity_name":"The Wandering Cow","title":"A Scoop on College Avenue","subtitle":"College Avenue North corridor","notes":"Head north on College Avenue for ice cream, shaved ice, or a shake; use the shop’s current contact page to time your walk.","short_summary":"This College Avenue storefront centers its menu on cold treats.","evidence_claim":"The Wandering Cow’s official pages place its family-friendly ice-cream shop at 14 College Avenue North, Suite B, and list ice cream, shaved ice, and shakes.","source_url":"https://wanderingcowmn.com/contact/","source_title":"Contact | Wandering Cow","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official contact page currently lists service through 9 p.m. Monday–Saturday and 8 p.m. Sunday; recheck before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"flour-flower-college-avenue","subject_type":"street_or_district","entity_name":"Flour & Flower Bakery","title":"Pastries Paired with Flowers","subtitle":"College Avenue North corridor","notes":"Follow College Avenue North to compare the day’s pastries with locally grown bouquets; check the posted schedule before setting out.","short_summary":"A bakery-and-flower shop gives this College Avenue block a two-part browsing stop.","evidence_claim":"Flour & Flower’s official site locates the bakery at 24 North College Avenue and says it offers pastries, artisan baked goods, and locally grown flower bouquets.","source_url":"https://www.flourandflowerbakery.com/","source_title":"Flour & Flower Bakery | Fresh Cut Flowers | St. Joseph, MN","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Hours vary by day, and Monday pizza service follows a separate calendar; verify the official schedule.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"st-joseph-meat-market-first-avenue","subject_type":"street_or_district","entity_name":"St. Joseph Meat Market","title":"A Century-Scale Specialty Counter","subtitle":"First Avenue Northwest corridor","notes":"Turn onto First Avenue Northwest to browse the retail counter’s fresh meats and house-made sausages during posted business hours.","short_summary":"A longstanding specialty meat shop occupies this First Avenue block.","evidence_claim":"The market’s official site says it has served central Minnesota for almost a century, while its contact page lists the retail store at 26 First Avenue Northwest.","source_url":"https://stjosephmeatmarket.com/contact","source_title":"Contact | St. Joseph Meat Market","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page lists 6 a.m.–6 p.m. Monday–Friday, 6 a.m.–5 p.m. Saturday, and no Sunday hours; confirm before travel.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"bruno-press-fifth-avenue","subject_type":"street_or_district","entity_name":"Bruno Press","title":"Letterpress on Fifth Avenue","subtitle":"Fifth Avenue Southeast corridor","notes":"Walk the Fifth Avenue Southeast corridor to the studio address, then consult its events page before planning any interior visit.","short_summary":"A working letterpress studio makes this residential-edge corridor visually distinctive.","evidence_claim":"Bruno Press’s official contact page lists its studio at 154 Fifth Avenue Southeast, and its official site documents letterpress printing and workshops.","source_url":"https://www.mcbrunopress.com/contact","source_title":"Contact — Bruno Press","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This is a working studio; attend only during a posted public event or after arranging access directly.","cost_status":"unknown","under21_safe":true},{"subject_id":"millstream-park-county-road-75","subject_type":"street_or_district","entity_name":"Millstream Park","title":"A Wooded Watab River Walk","subtitle":"County Road 75 West corridor","notes":"Take the County Road 75 West corridor to follow the wooded walking trail by the Watab River and locate the park’s recreation areas.","short_summary":"A 35-acre park adds a river trail and outdoor recreation to the western corridor.","evidence_claim":"The City of St. Joseph identifies Millstream Park at 725 County Road 75 West and describes a wooded walking trail along the Watab River.","source_url":"https://www.stjosephmn.gov/Facilities/Facility/Details/Millstream-Park-6","source_title":"Facilities • Millstream Park","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The city lists multiple public park features; shelter rental has separate hours, fees, and reservation requirements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"klinefelter-park-dale-street","subject_type":"street_or_district","entity_name":"Klinefelter Park","title":"A Destination Play Park","subtitle":"Dale Street East corridor","notes":"Follow Dale Street East to inspect the city’s newly installed playground area and loop through the park’s other public amenities.","short_summary":"A major 2026 playground renewal gives the east-side corridor a concrete destination.","evidence_claim":"The city facilities directory places Klinefelter Park at 1000 Dale Street East, and a May–June 2026 city notice reports new playground equipment installation.","source_url":"https://www.stjosephmn.gov/DocumentCenter/View/2093/050126?bidId=","source_title":"City of St. Joseph May/June 2026 Newsletter","source_kind":"government","source_published_at":"2026-05-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use the park as a public outdoor destination; consult the city for current construction or facility notices.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"centennial-park-birch-street","subject_type":"street_or_district","entity_name":"Centennial Park","title":"Nine Features on Birch Street","subtitle":"Birch Street West corridor","notes":"Walk Birch Street West to connect the playground, benches, drinking fountain, and other city-listed amenities in one park stop.","short_summary":"A compact municipal park creates a recreation break on the north side of downtown.","evidence_claim":"The City of St. Joseph’s official facilities directory lists Centennial Park at 205 Birch Street West and identifies playground equipment, benches, a drinking fountain, and six additional features.","source_url":"https://www.stjosephmn.gov/Facilities","source_title":"Facilities • St. Joseph, MN","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public city park; check posted signs and city notices for current conditions or amenity restrictions.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T06:56:52.979441Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9e6-9565-7460-86f9-41e6dfb46694.1786604066150253000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+54,497
+
+{"complete":true,"school_name":"College of Saint Benedict","town_name":"Saint Joseph","boards":[{"complete":true,"school_name":"College of Saint Benedict","town_name":"Saint Joseph","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named destinations along Saint Joseph corridors near the College of Saint Benedict, each paired with one directly sourced reason to go.","icon":"location_city","cards":[{"subject_id":"local-blend-minnesota-street","subject_type":"street_or_district","entity_name":"The Local Blend","title":"A Kitchen-Baked Coffee Stop","subtitle":"Minnesota Street corridor","notes":"Walk west along Minnesota Street for coffee, then scan the in-house bakery case for breads, muffins, scones, or cookies.","short_summary":"Coffee and an on-site bakery anchor this Minnesota Street stop.","evidence_claim":"The Local Blend’s official site identifies its location as 19 West Minnesota Street and says its in-house kitchen makes baked goods and other food.","source_url":"https://thelocalblend.net/","source_title":"The Local Blend","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official site currently lists daily daytime hours; confirm them before leaving campus.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"minnesota-street-market","subject_type":"street_or_district","entity_name":"Minnesota Street Market","title":"Local Food Meets Local Art","subtitle":"Minnesota Street corridor","notes":"Continue along Minnesota Street to browse locally produced food and work by regional artists inside the historic grocery building.","short_summary":"A downtown cooperative combines groceries, art, and sustainable-living education.","evidence_claim":"The market’s official site describes a community-owned food-and-art cooperative at 27 West Minnesota Street selling local food and local artwork.","source_url":"https://mnstreetmarket.com/","source_title":"Minnesota Street Market","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public retail business; check the official site for current shopping hours.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"church-saint-joseph-minnesota-street","subject_type":"street_or_district","entity_name":"Church of Saint Joseph","title":"A Landmark on Minnesota Street","subtitle":"Minnesota Street corridor","notes":"Pause at 12 West Minnesota Street to view the named parish landmark from the public corridor; contact the church before entering.","short_summary":"The parish building provides a clearly identifiable architectural destination downtown.","evidence_claim":"The Church of Saint Joseph’s official website lists the parish at 12 West Minnesota Street in Saint Joseph.","source_url":"https://www.churchstjoseph.org/acclent2024.html","source_title":"Church of Saint Joseph — St. Joseph, Minnesota","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Exterior viewing is available from the public street; verify church access or service times directly.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"wandering-cow-college-avenue","subject_type":"street_or_district","entity_name":"The Wandering Cow","title":"A Scoop on College Avenue","subtitle":"College Avenue North corridor","notes":"Head north on College Avenue for ice cream, shaved ice, or a shake; use the shop’s current contact page to time your walk.","short_summary":"This College Avenue storefront centers its menu on cold treats.","evidence_claim":"The Wandering Cow’s official pages place its family-friendly ice-cream shop at 14 College Avenue North, Suite B, and list ice cream, shaved ice, and shakes.","source_url":"https://wanderingcowmn.com/contact/","source_title":"Contact | Wandering Cow","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official contact page currently lists service through 9 p.m. Monday–Saturday and 8 p.m. Sunday; recheck before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"flour-flower-college-avenue","subject_type":"street_or_district","entity_name":"Flour & Flower Bakery","title":"Pastries Paired with Flowers","subtitle":"College Avenue North corridor","notes":"Follow College Avenue North to compare the day’s pastries with locally grown bouquets; check the posted schedule before setting out.","short_summary":"A bakery-and-flower shop gives this College Avenue block a two-part browsing stop.","evidence_claim":"Flour & Flower’s official site locates the bakery at 24 North College Avenue and says it offers pastries, artisan baked goods, and locally grown flower bouquets.","source_url":"https://www.flourandflowerbakery.com/","source_title":"Flour & Flower Bakery | Fresh Cut Flowers | St. Joseph, MN","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Hours vary by day, and Monday pizza service follows a separate calendar; verify the official schedule.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"st-joseph-meat-market-first-avenue","subject_type":"street_or_district","entity_name":"St. Joseph Meat Market","title":"A Century-Scale Specialty Counter","subtitle":"First Avenue Northwest corridor","notes":"Turn onto First Avenue Northwest to browse the retail counter’s fresh meats and house-made sausages during posted business hours.","short_summary":"A longstanding specialty meat shop occupies this First Avenue block.","evidence_claim":"The market’s official site says it has served central Minnesota for almost a century, while its contact page lists the retail store at 26 First Avenue Northwest.","source_url":"https://stjosephmeatmarket.com/contact","source_title":"Contact | St. Joseph Meat Market","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page lists 6 a.m.–6 p.m. Monday–Friday, 6 a.m.–5 p.m. Saturday, and no Sunday hours; confirm before travel.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"bruno-press-fifth-avenue","subject_type":"street_or_district","entity_name":"Bruno Press","title":"Letterpress on Fifth Avenue","subtitle":"Fifth Avenue Southeast corridor","notes":"Walk the Fifth Avenue Southeast corridor to the studio address, then consult its events page before planning any interior visit.","short_summary":"A working letterpress studio makes this residential-edge corridor visually distinctive.","evidence_claim":"Bruno Press’s official contact page lists its studio at 154 Fifth Avenue Southeast, and its official site documents letterpress printing and workshops.","source_url":"https://www.mcbrunopress.com/contact","source_title":"Contact — Bruno Press","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This is a working studio; attend only during a posted public event or after arranging access directly.","cost_status":"unknown","under21_safe":true},{"subject_id":"millstream-park-county-road-75","subject_type":"street_or_district","entity_name":"Millstream Park","title":"A Wooded Watab River Walk","subtitle":"County Road 75 West corridor","notes":"Take the County Road 75 West corridor to follow the wooded walking trail by the Watab River and locate the park’s recreation areas.","short_summary":"A 35-acre park adds a river trail and outdoor recreation to the western corridor.","evidence_claim":"The City of St. Joseph identifies Millstream Park at 725 County Road 75 West and describes a wooded walking trail along the Watab River.","source_url":"https://www.stjosephmn.gov/Facilities/Facility/Details/Millstream-Park-6","source_title":"Facilities • Millstream Park","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The city lists multiple public park features; shelter rental has separate hours, fees, and reservation requirements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"klinefelter-park-dale-street","subject_type":"street_or_district","entity_name":"Klinefelter Park","title":"A Destination Play Park","subtitle":"Dale Street East corridor","notes":"Follow Dale Street East to inspect the city’s newly installed playground area and loop through the park’s other public amenities.","short_summary":"A major 2026 playground renewal gives the east-side corridor a concrete destination.","evidence_claim":"The city facilities directory places Klinefelter Park at 1000 Dale Street East, and a May–June 2026 city notice reports new playground equipment installation.","source_url":"https://www.stjosephmn.gov/DocumentCenter/View/2093/050126?bidId=","source_title":"City of St. Joseph May/June 2026 Newsletter","source_kind":"government","source_published_at":"2026-05-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use the park as a public outdoor destination; consult the city for current construction or facility notices.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"centennial-park-birch-street","subject_type":"street_or_district","entity_name":"Centennial Park","title":"Nine Features on Birch Street","subtitle":"Birch Street West corridor","notes":"Walk Birch Street West to connect the playground, benches, drinking fountain, and other city-listed amenities in one park stop.","short_summary":"A compact municipal park creates a recreation break on the north side of downtown.","evidence_claim":"The City of St. Joseph’s official facilities directory lists Centennial Park at 205 Birch Street West and identifies playground equipment, benches, a drinking fountain, and six additional features.","source_url":"https://www.stjosephmn.gov/Facilities","source_title":"Facilities • St. Joseph, MN","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public city park; check posted signs and city notices for current conditions or amenity restrictions.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

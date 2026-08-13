@@ -1,0 +1,79 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "The title is supplied editorial framing; no claim is made that these spaces are routinely occupied by 9:00 a.m.",
+    "Kettering College publishes only a limited number of individually named study environments, so the board includes documented public-library alternatives around Kettering and Dayton.",
+    "Coordinates and maps URLs are null because exact values were not independently verified from authoritative direct pages."
+  ],
+  "reachability": [
+    {
+      "url": "https://kc.edu/library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://kc.edu/library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.daytonmetrolibrary.org/locations/11/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.daytonmetrolibrary.org/locations/11/",
+      "error": ""
+    },
+    {
+      "url": "https://www.daytonmetrolibrary.org/locations/24/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.daytonmetrolibrary.org/locations/24/",
+      "error": ""
+    },
+    {
+      "url": "https://www.daytonmetrolibrary.org/locations/3/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.daytonmetrolibrary.org/locations/3/",
+      "error": ""
+    },
+    {
+      "url": "https://www.daytonmetrolibrary.org/locations/14/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.daytonmetrolibrary.org/locations/14/",
+      "error": ""
+    },
+    {
+      "url": "https://www.daytonmetrolibrary.org/locations/22/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.daytonmetrolibrary.org/locations/22/",
+      "error": ""
+    },
+    {
+      "url": "https://www.daytonmetrolibrary.org/locations/13/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.daytonmetrolibrary.org/locations/13/",
+      "error": ""
+    },
+    {
+      "url": "https://www.daytonmetrolibrary.org/locations/5/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.daytonmetrolibrary.org/locations/5/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

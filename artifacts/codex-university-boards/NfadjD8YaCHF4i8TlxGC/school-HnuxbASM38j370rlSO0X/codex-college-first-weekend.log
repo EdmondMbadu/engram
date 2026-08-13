@@ -1,0 +1,282 @@
+Reading additional input from stdin...
+2026-08-13T06:37:16.673383Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:37:16.710847Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9d6-dee3-74e2-8bec-e021f40d2c01
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"HnuxbASM38j370rlSO0X","schoolName":"California Lutheran University","shortSchoolName":"California Lutheran University","townName":"Thousand Oaks","state":"CA","countryCode":"US","website":"https://www.callutheran.edu/","latitude":34.224566,"longitude":-118.878924},"templates":[{"id":"college-first-weekend","version":"1.0","titlePattern":"Your First Weekend at {school}, Shared as Cards","editorialBrief":"Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.","researchQueries":["new student orientation campus guide","first year student campus activities","weekend near campus students"],"count":10,"icon":"schedule","primarySubjectType":"sequence_stop","allowedSubjectTypes":["sequence_stop","place","activity"],"freshnessDays":180,"exactTitle":"Your First Weekend at California Lutheran University, Shared as Cards"}]}
+2026-08-13T06:37:26.421736Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for zsh: Snapshot command timed out for zsh
+codex
+{
+  "complete": false,
+  "school_name": "California Lutheran University",
+  "town_name": "Thousand Oaks",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "California Lutheran University",
+      "town_name": "Thousand Oaks",
+      "template_id": "college-first-weekend",
+      "title": "Your First Weekend at California Lutheran University, Shared as Cards",
+      "description": "",
+      "icon": "schedule",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     ,
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": ["Research in progress; the final response will contain only validated JSON."]
+}
+web search: 
+web search: site:callutheran.edu California Lutheran University campus places student union library chapel dining recreation ...
+web search: 
+web search: site:callutheran.edu "William Rolland Gallery" ...
+codex
+{"complete":true,"school_name":"California Lutheran University","town_name":"Thousand Oaks","boards":[{"complete":true,"school_name":"California Lutheran University","town_name":"Thousand Oaks","template_id":"college-first-weekend","title":"Your First Weekend at California Lutheran University, Shared as Cards","description":"A Friday-to-Saturday sequence connecting current orientation touchpoints, campus landmarks, student spaces, dining, art, recreation and documented Cal Lutheran traditions.","icon":"schedule","cards":[{"subject_id":"clu-kingsmen-park-check-in","subject_type":"sequence_stop","entity_name":"Kingsmen Park","title":"Start at Kingsmen Park","subtitle":"Friday morning · orientation check-in","notes":"Bring your remaining clearance information and collect your student ID, room key, orientation materials and weekend schedule before moving on.","short_summary":"Use the orientation hub to get your essential first-weekend materials in one stop.","evidence_claim":"Cal Lutheran's current 2026 orientation schedule places residential and commuter student check-in at Kingsmen Park, where students receive IDs, keys, materials and schedules.","source_url":"https://www.callutheran.edu/students/fall-orientation/families/","source_title":"For Families | New Student Orientation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited schedule lists residential check-in from 8–10 a.m. and commuter check-in from 9–10 a.m. on August 21, 2026.","cost_status":"unknown","under21_safe":true},{"subject_id":"clu-enormous-luther-tour","subject_type":"sequence_stop","entity_name":"Enormous Luther","title":"Find Enormous Luther","subtitle":"Friday morning · campus-tour meeting point","notes":"Meet your Peer Adviser at the statue, then use the guided walk to locate classrooms and ask practical navigation questions before classes begin.","short_summary":"Turn a recognizable campus landmark into the starting point for learning your routes.","evidence_claim":"Cal Lutheran's 2026 orientation schedule names Enormous Luther at Falde Plaza as the meeting location for Peer Adviser-led campus tours.","source_url":"https://www.callutheran.edu/students/fall-orientation/families/","source_title":"For Families | New Student Orientation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The guided orientation tour is scheduled from 10 a.m. to noon on August 21, 2026; participation is tied to orientation programming.","cost_status":"unknown","under21_safe":true},{"subject_id":"clu-pearson-library","subject_type":"sequence_stop","entity_name":"Pearson Library","title":"Locate Pearson Library","subtitle":"Friday midday · academic home base","notes":"Enter behind Falde Plaza, learn where the circulation desk is and identify a study area you can return to once coursework starts.","short_summary":"Get acquainted with the main-campus library while nearby landmarks are still fresh.","evidence_claim":"Cal Lutheran identifies Pearson Library on its Thousand Oaks campus, with its main entrance behind Falde Plaza and Enormous Luther; enrolled students have full library access.","source_url":"https://www.callutheran.edu/library/about/visiting-the-library.html","source_title":"Plan Your Visit | Cal Lutheran","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Bring a Cal Lutheran-issued ID card for building and service access; visitors without an ID must sign in at the circulation desk.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"clu-ullman-dining","subject_type":"sequence_stop","entity_name":"Ullman Dining","title":"Pause at Ullman Dining","subtitle":"Friday lunch · learn the dining setup","notes":"Walk through the available stations, note options that fit your dietary needs and learn how your meal plan works before the weekday rush.","short_summary":"Use the first campus meal to understand the all-you-care-to-eat dining layout.","evidence_claim":"Cal Lutheran describes Ullman Dining as an all-you-care-to-eat location with Mongolian grill, pizza, salad, fruit, deli, grill, pasta and bakery stations.","source_url":"https://www.callutheran.edu/student-life/dining/dining-locations.html","source_title":"Dining Locations | Cal Lutheran","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The university says campus dining locations accept meal-plan swipes; check the linked dining-hours service before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"clu-samuelson-chapel","subject_type":"sequence_stop","entity_name":"Samuelson Chapel","title":"Step Inside Samuelson Chapel","subtitle":"Friday afternoon · orientation gathering place","notes":"Mark the chapel on your mental map and use the scheduled session to understand how the university frames its Lutheran liberal-arts education.","short_summary":"Connect a central campus building with one of orientation's academic conversations.","evidence_claim":"The current 2026 orientation schedule places the session on Lutheran liberal-arts education and the Residence Life and Student Life family meeting in Samuelson Chapel.","source_url":"https://www.callutheran.edu/students/fall-orientation/families/","source_title":"For Families | New Student Orientation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Access during orientation follows the published event schedule; the cited page lists sessions at 1:30 p.m. and 2:15 p.m. on August 21, 2026.","cost_status":"unknown","under21_safe":true},{"subject_id":"clu-student-union-drop-in","subject_type":"sequence_stop","entity_name":"Student Union","title":"Reset at the Student Union","subtitle":"Friday afternoon · questions, games and downtime","notes":"Find the Info Desk, look over the games and equipment options, and save this central location as a reliable place for future campus questions.","short_summary":"Learn where to relax and seek practical help between scheduled activities.","evidence_claim":"Cal Lutheran describes the Student Union as a central gathering place with an Info Desk, games, equipment rentals, workstations and student services.","source_url":"https://www.callutheran.edu/student-life/student-union/","source_title":"Student Union | Cal Lutheran","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The Student Union is at 3391 Mountclef Boulevard; consult its current hours link before arriving outside orientation programming.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"clu-gilbert-sports-fitness-center","subject_type":"sequence_stop","entity_name":"Gilbert Sports and Fitness Center","title":"Learn the Gilbert Center","subtitle":"Friday late afternoon · recreation orientation","notes":"Locate the fitness entrance, then complete the required waiver and keep your current student ID ready before planning a later workout.","short_summary":"Handle the access basics for a campus recreation facility you may use throughout the term.","evidence_claim":"Cal Lutheran states that Forrest Fitness Center is inside Gilbert Sports and Fitness Center and is available to students with a current ID and completed liability waiver.","source_url":"https://catalog.callutheran.edu/undergraduate/student-life","source_title":"Student Life - Undergraduate | California Lutheran University Catalog","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Student entry requires a current student ID and completed online liability waiver; athletic facilities are available only during specified hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"clu-mt-clef-ridge-paint-the-rocks","subject_type":"sequence_stop","entity_name":"Mt. Clef Ridge","title":"Join the Mt. Clef Ridge Hike","subtitle":"Saturday morning · Paint the Rocks tradition","notes":"Wear suitable walking shoes, stay with the organized orientation group and bring water for the documented class hike and photo.","short_summary":"Take part in a school-specific ridge tradition with classmates and student leaders.","evidence_claim":"Cal Lutheran documents Paint the Rocks as one of its oldest traditions and schedules new students to hike Mt. Clef Ridge, learn about class identity and take an official class photo.","source_url":"https://www.callutheran.edu/students/fall-orientation/first-year/","source_title":"First-Year Students Schedule of Events | New Student Orientation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Join only through the organized orientation activity and follow university directions; the 2026 schedule lists the hike from 9:30–11 a.m.","cost_status":"unknown","under21_safe":true},{"subject_id":"clu-william-rolland-art-center","subject_type":"sequence_stop","entity_name":"William Rolland Art Center","title":"Browse the Rolland Art Center","subtitle":"Saturday afternoon · student art stop","notes":"Check the exhibition schedule first, then spend a short visit with the student work displayed in the entrance gallery before evening events.","short_summary":"Add a visual-arts pause to the weekend without leaving the main campus.","evidence_claim":"Cal Lutheran identifies the William Rolland Art Center as a modern visual-arts space displaying student work and states that its galleries charge no admission fees.","source_url":"https://www.callutheran.edu/galleries/visit.html","source_title":"Visit | Galleries & Exhibitions at Cal Lutheran","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The Art Center is at 3350 Campus Drive. Check the exhibition schedule because galleries may close between installations.","cost_status":"free","under21_safe":true},{"subject_id":"clu-william-rolland-stadium-playfair","subject_type":"sequence_stop","entity_name":"William Rolland Stadium","title":"Finish at William Rolland Stadium","subtitle":"Saturday evening · Playfair activities","notes":"Meet your assigned orientation group in the stadium and follow the facilitators through the organized games designed for new classmates.","short_summary":"Close the sequence with a structured, school-documented social activity for new students.","evidence_claim":"Cal Lutheran's current first-year orientation schedule places Playfair at William Rolland Stadium and describes it as a tradition featuring interactive games and activities with classmates and student leaders.","source_url":"https://www.callutheran.edu/students/fall-orientation/first-year/","source_title":"First-Year Students Schedule of Events | New Student Orientation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Playfair is an organized orientation event; the 2026 first-year schedule lists it from 7:15–9 p.m. Follow the assigned orientation itinerary.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}
+tokens used
+37,808
+
+{"complete":true,"school_name":"California Lutheran University","town_name":"Thousand Oaks","boards":[{"complete":true,"school_name":"California Lutheran University","town_name":"Thousand Oaks","template_id":"college-first-weekend","title":"Your First Weekend at California Lutheran University, Shared as Cards","description":"A Friday-to-Saturday sequence connecting current orientation touchpoints, campus landmarks, student spaces, dining, art, recreation and documented Cal Lutheran traditions.","icon":"schedule","cards":[{"subject_id":"clu-kingsmen-park-check-in","subject_type":"sequence_stop","entity_name":"Kingsmen Park","title":"Start at Kingsmen Park","subtitle":"Friday morning · orientation check-in","notes":"Bring your remaining clearance information and collect your student ID, room key, orientation materials and weekend schedule before moving on.","short_summary":"Use the orientation hub to get your essential first-weekend materials in one stop.","evidence_claim":"Cal Lutheran's current 2026 orientation schedule places residential and commuter student check-in at Kingsmen Park, where students receive IDs, keys, materials and schedules.","source_url":"https://www.callutheran.edu/students/fall-orientation/families/","source_title":"For Families | New Student Orientation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited schedule lists residential check-in from 8–10 a.m. and commuter check-in from 9–10 a.m. on August 21, 2026.","cost_status":"unknown","under21_safe":true},{"subject_id":"clu-enormous-luther-tour","subject_type":"sequence_stop","entity_name":"Enormous Luther","title":"Find Enormous Luther","subtitle":"Friday morning · campus-tour meeting point","notes":"Meet your Peer Adviser at the statue, then use the guided walk to locate classrooms and ask practical navigation questions before classes begin.","short_summary":"Turn a recognizable campus landmark into the starting point for learning your routes.","evidence_claim":"Cal Lutheran's 2026 orientation schedule names Enormous Luther at Falde Plaza as the meeting location for Peer Adviser-led campus tours.","source_url":"https://www.callutheran.edu/students/fall-orientation/families/","source_title":"For Families | New Student Orientation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The guided orientation tour is scheduled from 10 a.m. to noon on August 21, 2026; participation is tied to orientation programming.","cost_status":"unknown","under21_safe":true},{"subject_id":"clu-pearson-library","subject_type":"sequence_stop","entity_name":"Pearson Library","title":"Locate Pearson Library","subtitle":"Friday midday · academic home base","notes":"Enter behind Falde Plaza, learn where the circulation desk is and identify a study area you can return to once coursework starts.","short_summary":"Get acquainted with the main-campus library while nearby landmarks are still fresh.","evidence_claim":"Cal Lutheran identifies Pearson Library on its Thousand Oaks campus, with its main entrance behind Falde Plaza and Enormous Luther; enrolled students have full library access.","source_url":"https://www.callutheran.edu/library/about/visiting-the-library.html","source_title":"Plan Your Visit | Cal Lutheran","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Bring a Cal Lutheran-issued ID card for building and service access; visitors without an ID must sign in at the circulation desk.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"clu-ullman-dining","subject_type":"sequence_stop","entity_name":"Ullman Dining","title":"Pause at Ullman Dining","subtitle":"Friday lunch · learn the dining setup","notes":"Walk through the available stations, note options that fit your dietary needs and learn how your meal plan works before the weekday rush.","short_summary":"Use the first campus meal to understand the all-you-care-to-eat dining layout.","evidence_claim":"Cal Lutheran describes Ullman Dining as an all-you-care-to-eat location with Mongolian grill, pizza, salad, fruit, deli, grill, pasta and bakery stations.","source_url":"https://www.callutheran.edu/student-life/dining/dining-locations.html","source_title":"Dining Locations | Cal Lutheran","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The university says campus dining locations accept meal-plan swipes; check the linked dining-hours service before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"clu-samuelson-chapel","subject_type":"sequence_stop","entity_name":"Samuelson Chapel","title":"Step Inside Samuelson Chapel","subtitle":"Friday afternoon · orientation gathering place","notes":"Mark the chapel on your mental map and use the scheduled session to understand how the university frames its Lutheran liberal-arts education.","short_summary":"Connect a central campus building with one of orientation's academic conversations.","evidence_claim":"The current 2026 orientation schedule places the session on Lutheran liberal-arts education and the Residence Life and Student Life family meeting in Samuelson Chapel.","source_url":"https://www.callutheran.edu/students/fall-orientation/families/","source_title":"For Families | New Student Orientation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Access during orientation follows the published event schedule; the cited page lists sessions at 1:30 p.m. and 2:15 p.m. on August 21, 2026.","cost_status":"unknown","under21_safe":true},{"subject_id":"clu-student-union-drop-in","subject_type":"sequence_stop","entity_name":"Student Union","title":"Reset at the Student Union","subtitle":"Friday afternoon · questions, games and downtime","notes":"Find the Info Desk, look over the games and equipment options, and save this central location as a reliable place for future campus questions.","short_summary":"Learn where to relax and seek practical help between scheduled activities.","evidence_claim":"Cal Lutheran describes the Student Union as a central gathering place with an Info Desk, games, equipment rentals, workstations and student services.","source_url":"https://www.callutheran.edu/student-life/student-union/","source_title":"Student Union | Cal Lutheran","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The Student Union is at 3391 Mountclef Boulevard; consult its current hours link before arriving outside orientation programming.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"clu-gilbert-sports-fitness-center","subject_type":"sequence_stop","entity_name":"Gilbert Sports and Fitness Center","title":"Learn the Gilbert Center","subtitle":"Friday late afternoon · recreation orientation","notes":"Locate the fitness entrance, then complete the required waiver and keep your current student ID ready before planning a later workout.","short_summary":"Handle the access basics for a campus recreation facility you may use throughout the term.","evidence_claim":"Cal Lutheran states that Forrest Fitness Center is inside Gilbert Sports and Fitness Center and is available to students with a current ID and completed liability waiver.","source_url":"https://catalog.callutheran.edu/undergraduate/student-life","source_title":"Student Life - Undergraduate | California Lutheran University Catalog","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Student entry requires a current student ID and completed online liability waiver; athletic facilities are available only during specified hours.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"clu-mt-clef-ridge-paint-the-rocks","subject_type":"sequence_stop","entity_name":"Mt. Clef Ridge","title":"Join the Mt. Clef Ridge Hike","subtitle":"Saturday morning · Paint the Rocks tradition","notes":"Wear suitable walking shoes, stay with the organized orientation group and bring water for the documented class hike and photo.","short_summary":"Take part in a school-specific ridge tradition with classmates and student leaders.","evidence_claim":"Cal Lutheran documents Paint the Rocks as one of its oldest traditions and schedules new students to hike Mt. Clef Ridge, learn about class identity and take an official class photo.","source_url":"https://www.callutheran.edu/students/fall-orientation/first-year/","source_title":"First-Year Students Schedule of Events | New Student Orientation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Join only through the organized orientation activity and follow university directions; the 2026 schedule lists the hike from 9:30–11 a.m.","cost_status":"unknown","under21_safe":true},{"subject_id":"clu-william-rolland-art-center","subject_type":"sequence_stop","entity_name":"William Rolland Art Center","title":"Browse the Rolland Art Center","subtitle":"Saturday afternoon · student art stop","notes":"Check the exhibition schedule first, then spend a short visit with the student work displayed in the entrance gallery before evening events.","short_summary":"Add a visual-arts pause to the weekend without leaving the main campus.","evidence_claim":"Cal Lutheran identifies the William Rolland Art Center as a modern visual-arts space displaying student work and states that its galleries charge no admission fees.","source_url":"https://www.callutheran.edu/galleries/visit.html","source_title":"Visit | Galleries & Exhibitions at Cal Lutheran","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The Art Center is at 3350 Campus Drive. Check the exhibition schedule because galleries may close between installations.","cost_status":"free","under21_safe":true},{"subject_id":"clu-william-rolland-stadium-playfair","subject_type":"sequence_stop","entity_name":"William Rolland Stadium","title":"Finish at William Rolland Stadium","subtitle":"Saturday evening · Playfair activities","notes":"Meet your assigned orientation group in the stadium and follow the facilitators through the organized games designed for new classmates.","short_summary":"Close the sequence with a structured, school-documented social activity for new students.","evidence_claim":"Cal Lutheran's current first-year orientation schedule places Playfair at William Rolland Stadium and describes it as a tradition featuring interactive games and activities with classmates and student leaders.","source_url":"https://www.callutheran.edu/students/fall-orientation/first-year/","source_title":"First-Year Students Schedule of Events | New Student Orientation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Playfair is an organized orientation event; the 2026 first-year schedule lists it from 7:15–9 p.m. Follow the assigned orientation itinerary.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}

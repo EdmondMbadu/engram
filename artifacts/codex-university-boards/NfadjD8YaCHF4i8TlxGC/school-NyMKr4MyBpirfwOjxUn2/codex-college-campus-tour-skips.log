@@ -1,0 +1,294 @@
+Reading additional input from stdin...
+2026-08-13T06:53:07.477047Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e5-2344-7253-913e-7378c69a154f.1786603971396537000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:53:07.532796Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e5-2348-7002-9ee8-5747ec344af7.1786603971400333000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9e5-618c-7d91-afcf-c441cb59cfaa
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"NyMKr4MyBpirfwOjxUn2","schoolName":"Carleton College","shortSchoolName":"Carleton College","townName":"Northfield","state":"MN","countryCode":"US","website":"https://www.carleton.edu/","latitude":44.462318,"longitude":-93.154666},"templates":[{"id":"college-campus-tour-skips","version":"1.0","titlePattern":"What the Campus Tour Skips: {count} Places Students Share With Each Other","editorialBrief":"Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.","researchQueries":["student favorite campus places","campus map student spaces","student newspaper campus places"],"count":10,"icon":"style","primarySubjectType":"place","allowedSubjectTypes":["place","study_space"],"freshnessDays":365,"exactTitle":"What the Campus Tour Skips: 10 Places Students Share With Each Other"}]}
+2026-08-13T06:53:07.586875Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e5-2348-7de0-afdc-bbac1ab4c017.1786603971401069000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:53:07.718734Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e5-2348-7a60-9a22-8582dfc3632d.1786603971401208000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:53:07.783519Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e5-2343-7593-8d4a-abf7796585a2.1786603971395756000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:53:07.899911Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e5-2347-7571-af40-db89b728f370.1786603971400309000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:53:07.952511Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:53:07.958001Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:53:08.040292Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e5-2343-7430-b9f8-213da961fe83.1786603971396086000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Carleton College",
+  "town_name": "Northfield",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Carleton College",
+      "town_name": "Northfield",
+      "template_id": "college-campus-tour-skips",
+      "title": "What the Campus Tour Skips: 10 Places Students Share With Each Other",
+      "description": "I’m researching ten distinct, map-listed Carleton places and checking each shared use against direct current sources.",
+      "icon": "style",
+      "cards": [
+        {
+          "subject_id": "research-in-progress",
+          "subject_type": "place",
+          "entity_name": "Research in progress",
+          "title": "Verifying sources",
+          "subtitle": "",
+          "notes": "Checking direct Carleton pages for concrete student uses, access details, and named locations.",
+          "short_summary": "Source verification is underway.",
+          "evidence_claim": "",
+          "source_url": "https://www.carleton.edu/",
+          "source_title": "Carleton College",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     ,
+      {
+        "subject_id": "research-placeholder-2",
+        "subject_type": "place",
+        "entity_name": "Research placeholder 2",
+        "title": "Pending verification",
+        "subtitle": "",
+        "notes": "This temporary entry will be replaced after direct-source verification is complete.",
+        "short_summary": "Verification pending.",
+        "evidence_claim": "",
+        "source_url": "https://www.carleton.edu/",
+        "source_title": "Carleton College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "research-placeholder-3",
+        "subject_type": "place",
+        "entity_name": "Research placeholder 3",
+        "title": "Pending verification",
+        "subtitle": "",
+        "notes": "This temporary entry will be replaced after direct-source verification is complete.",
+        "short_summary": "Verification pending.",
+        "evidence_claim": "",
+        "source_url": "https://www.carleton.edu/",
+        "source_title": "Carleton College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "research-placeholder-4",
+        "subject_type": "place",
+        "entity_name": "Research placeholder 4",
+        "title": "Pending verification",
+        "subtitle": "",
+        "notes": "This temporary entry will be replaced after direct-source verification is complete.",
+        "short_summary": "Verification pending.",
+        "evidence_claim": "",
+        "source_url": "https://www.carleton.edu/",
+        "source_title": "Carleton College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "research-placeholder-5",
+        "subject_type": "place",
+        "entity_name": "Research placeholder 5",
+        "title": "Pending verification",
+        "subtitle": "",
+        "notes": "This temporary entry will be replaced after direct-source verification is complete.",
+        "short_summary": "Verification pending.",
+        "evidence_claim": "",
+        "source_url": "https://www.carleton.edu/",
+        "source_title": "Carleton College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "research-placeholder-6",
+        "subject_type": "place",
+        "entity_name": "Research placeholder 6",
+        "title": "Pending verification",
+        "subtitle": "",
+        "notes": "This temporary entry will be replaced after direct-source verification is complete.",
+        "short_summary": "Verification pending.",
+        "evidence_claim": "",
+        "source_url": "https://www.carleton.edu/",
+        "source_title": "Carleton College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "research-placeholder-7",
+        "subject_type": "place",
+        "entity_name": "Research placeholder 7",
+        "title": "Pending verification",
+        "subtitle": "",
+        "notes": "This temporary entry will be replaced after direct-source verification is complete.",
+        "short_summary": "Verification pending.",
+        "evidence_claim": "",
+        "source_url": "https://www.carleton.edu/",
+        "source_title": "Carleton College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "research-placeholder-8",
+        "subject_type": "place",
+        "entity_name": "Research placeholder 8",
+        "title": "Pending verification",
+        "subtitle": "",
+        "notes": "This temporary entry will be replaced after direct-source verification is complete.",
+        "short_summary": "Verification pending.",
+        "evidence_claim": "",
+        "source_url": "https://www.carleton.edu/",
+        "source_title": "Carleton College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "research-placeholder-9",
+        "subject_type": "place",
+        "entity_name": "Research placeholder 9",
+        "title": "Pending verification",
+        "subtitle": "",
+        "notes": "This temporary entry will be replaced after direct-source verification is complete.",
+        "short_summary": "Verification pending.",
+        "evidence_claim": "",
+        "source_url": "https://www.carleton.edu/",
+        "source_title": "Carleton College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "research-placeholder-10",
+        "subject_type": "place",
+        "entity_name": "Research placeholder 10",
+        "title": "Pending verification",
+        "subtitle": "",
+        "notes": "This temporary entry will be replaced after direct-source verification is complete.",
+        "short_summary": "Verification pending.",
+        "evidence_claim": "",
+        "source_url": "https://www.carleton.edu/",
+        "source_title": "Carleton College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:carleton.edu campus student spaces Sayles Hill of Three Oaks Weitz Carleton ...
+web search: 
+web search: site:carleton.edu "Class of 1961 Courtyard" ...
+web search: 
+web search: site:carleton.edu "Bald Spot" students Carleton ...
+web search: 
+web search: Carleton College Goodsell Observatory public open house official ...
+web search: 
+web search: site:carleton.edu/physics-astronomy Goodsell Observatory open house ...
+codex
+{"complete":true,"school_name":"Carleton College","town_name":"Northfield","boards":[{"complete":true,"school_name":"Carleton College","town_name":"Northfield","template_id":"college-campus-tour-skips","title":"What the Campus Tour Skips: 10 Places Students Share With Each Other","description":"Ten named Carleton spaces for studying, gathering, making, recreation, reflection, and student-facing events, each grounded in a direct institutional source.","icon":"style","cards":[{"subject_id":"carleton-gould-library","subject_type":"study_space","entity_name":"Laurence McKinley Gould Library","title":"Use the Open Lab Between Classes","subtitle":"A flexible work stop inside Gould Library","notes":"Check whether Library 306 is between instruction sessions, then use its open computer lab for focused work or printing.","short_summary":"A library classroom doubles as an open computer lab when it is not scheduled for instruction.","evidence_claim":"Carleton’s library tour identifies Room 306 as a library classroom that operates as an open computer lab when it is not in use.","source_url":"https://gouldguides.carleton.edu/c.php?g=147169&p=965873","source_title":"Classrooms and Computer Labs — Library Tour","source_kind":"university_official","source_published_at":"2025-05-29","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Room 306 is available as an open lab only when it is not scheduled for library instruction.","cost_status":"unknown","under21_safe":true},{"subject_id":"carleton-sayles-hill-great-space","subject_type":"place","entity_name":"Great Space","title":"Meet in the Campus Center’s Main Room","subtitle":"The shared interior hub of Sayles-Hill","notes":"Use Great Space as a visible meetup point before checking nearby student activities, mail services, or campus-center events.","short_summary":"Sayles-Hill’s central room connects everyday meetups with several student-facing services.","evidence_claim":"Carleton’s facilities plan identifies Great Space as the core of the Sayles-Hill Campus Center and describes it as welcoming students, faculty, and staff.","source_url":"https://cdn.carleton.edu/uploads/sites/221/2019/10/FacilitiesMasterPlan_May2014.pdf","source_title":"Carleton College Facilities Master Plan","source_kind":"university_official","source_published_at":"2014-05-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Campus-center entry and individual services may follow current college access rules and operating schedules.","cost_status":"unknown","under21_safe":true},{"subject_id":"carleton-bald-spot","subject_type":"place","entity_name":"Bald Spot","title":"Take Reading Outside","subtitle":"The central lawn beside Sayles-Hill","notes":"Bring a book or Frisbee when conditions are dry; the open lawn works for an outdoor study break or informal recreation.","short_summary":"The central lawn supports both quiet reading and casual student activity.","evidence_claim":"Carleton’s official image archive documents students studying on the Bald Spot in fall 2023.","source_url":"https://imagencloud.carleton.edu/record/67495","source_title":"Bald Spot Fall 2023","source_kind":"university_official","source_published_at":"2023-10-16","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor use depends on weather, grounds conditions, and any scheduled campus activity.","cost_status":"unknown","under21_safe":true},{"subject_id":"carleton-recreation-center","subject_type":"place","entity_name":"Recreation Center","title":"Choose Your Own Kind of Movement","subtitle":"Courts, track, climbing, and fitness under one roof","notes":"Check the recreation schedule, then choose an open-use court, the indoor track, a fitness area, or an appropriate climbing option.","short_summary":"One facility accommodates several forms of individual and group recreation.","evidence_claim":"Carleton Athletics states that the Recreation Center supports recreation including basketball, tennis, weightlifting, rock climbing, aerobics, and racquet sports.","source_url":"https://athletics.carleton.edu/sports/2019/7/15/recreation-center.aspx?id=6006","source_title":"Recreation Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Confirm current building hours, eligibility, reservations, supervision, and equipment requirements before participating.","cost_status":"unknown","under21_safe":true},{"subject_id":"carleton-upper-arboretum","subject_type":"place","entity_name":"Upper Arboretum","title":"Pick a Trail That Fits the Day","subtitle":"The campus-side section of Cowling Arboretum","notes":"Consult the trail map before walking, running, skiing, or biking, and keep bicycles only on designated Upper Arb routes.","short_summary":"The Upper Arb offers a denser trail network close to campus for several kinds of recreation.","evidence_claim":"Carleton’s Arboretum trail map says visitors use its trails for hiking, running, limited biking, cross-country skiing, and nature appreciation.","source_url":"https://cdn.carleton.edu/uploads/sites/594/2020/12/2017B_WArbMapWithRules.pdf","source_title":"Cowling Arboretum Trail Map and Visitor Rules","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Stay on trails, leash dogs, do not camp, and observe seasonal archery-hunt restrictions and posted rules.","cost_status":"unknown","under21_safe":true},{"subject_id":"carleton-dacie-moses-house","subject_type":"place","entity_name":"Dacie Moses House","title":"Bake in a House Built Around Hospitality","subtitle":"A small campus house with a student baking culture","notes":"Check the house’s current access guidance before visiting, then leave the kitchen and shared rooms ready for the next group.","short_summary":"A domestic-scale campus space has long brought students together through baking, music, conversation, and study breaks.","evidence_claim":"A Carleton-hosted study of Dacie Moses House documents students baking cookies and muffins, studying, playing music, talking, and gathering there.","source_url":"https://cdn.carleton.edu/uploads/sites/275/2020/01/Sherri_sPaper.pdf","source_title":"A Study of Dacie Moses House","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Historical descriptions do not establish present-day unrestricted access; verify current house guidance before entering or using the kitchen.","cost_status":"unknown","under21_safe":true},{"subject_id":"carleton-daugherty-atrium","subject_type":"study_space","entity_name":"Daugherty Atrium","title":"Work Where the Sciences Intersect","subtitle":"The central shared space in Evelyn M. Anderson Hall","notes":"Use an available workspace between classes, and keep circulation routes clear around the atrium’s connecting stairs and ramps.","short_summary":"The science complex’s central atrium combines circulation, student work areas, and public academic exchange.","evidence_claim":"Carleton’s campus-history project says the Anderson Hall atrium connects three science buildings and contains multiple student workspaces.","source_url":"https://campushistory.sites.carleton.edu/science-essay/","source_title":"A History of Science Facilities at Carleton","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use is subject to current building access, class schedules, posted events, and any reserved portions of the atrium.","cost_status":"unknown","under21_safe":true},{"subject_id":"carleton-goodsell-ents-lounge","subject_type":"study_space","entity_name":"Goodsell Observatory Room 106","title":"Browse the Environmental Studies Lounge","subtitle":"A student-use common room inside Goodsell Observatory","notes":"Drop in to browse reading material, look for internship information, or connect with others when the lounge is open.","short_summary":"Goodsell’s Room 106 provides Environmental Studies students with readings, opportunity information, and a place to meet.","evidence_claim":"Carleton’s Environmental and Technology Studies page identifies Goodsell Observatory Room 106 as a lounge for reading material, internships, and meeting people.","source_url":"https://acad.carleton.edu/curricular/ENTS/curricular/","source_title":"Carleton College — ENTS Concentration","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The source does not provide current hours or unrestricted visitor access; confirm availability with the program before visiting.","cost_status":"unknown","under21_safe":true},{"subject_id":"carleton-skinner-memorial-chapel","subject_type":"place","entity_name":"Skinner Memorial Chapel","title":"Use the Chapel for Reflection and Dialogue","subtitle":"A campus setting for worship, meditation, and discussion","notes":"Review the Chaplain’s Office calendar, choose a suitable gathering, and respect the practices and quiet use of each room.","short_summary":"The Chapel supports religious and interfaith gatherings as well as meditation and discussion.","evidence_claim":"A Carleton advising bulletin says the Chaplain’s Office hosts weekly worship, meditation, and discussion events, including interfaith programs open to everyone.","source_url":"https://cdn.carleton.edu/uploads/sites/557/2020/09/The_Bi_Weekly_Advising_Bulletin__Weeks_5_6_Fall_2019_1.pdf","source_title":"The Bi-Weekly Advising Bulletin — Weeks 5–6, Fall Term 2019","source_kind":"university_official","source_published_at":"2019-10-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Event schedules and room availability change; consult current Chaplain’s Office information before attending.","cost_status":"unknown","under21_safe":true},{"subject_id":"carleton-anderson-atrium-poster-space","subject_type":"place","entity_name":"Anderson Hall Atrium","title":"See Coursework Become Public Conversation","subtitle":"A presentation space inside the science complex","notes":"Look for posted public presentations, give presenters room to explain their work, and avoid interrupting nearby classes.","short_summary":"The atrium can turn a class project into a public exchange with students and passersby.","evidence_claim":"Carleton’s Digital Humanities in Classics site documents a Spring 2024 course holding its final public poster session in Anderson Atrium.","source_url":"https://dh.classics.sites.carleton.edu/race-antiquity-and-its-legacy-spring-2024/","source_title":"Race: Antiquity and Its Legacy — Spring 2024","source_kind":"university_official","source_published_at":"2024-06-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Poster sessions are scheduled events rather than permanent displays; check current event information before going.","cost_status":"unknown","under21_safe":true}],"warnings":["Current public pages did not provide verifiable coordinates or stable map URLs for individual subjects, so those fields are null.","Several official sources document established uses but do not publish current access hours; those limitations are stated in access_notes."]}],"warnings":[]}
+2026-08-13T06:55:08.119144Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9e5-618c-7d91-afcf-c441cb59cfaa.1786603987340813000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+66,697
+
+{"complete":true,"school_name":"Carleton College","town_name":"Northfield","boards":[{"complete":true,"school_name":"Carleton College","town_name":"Northfield","template_id":"college-campus-tour-skips","title":"What the Campus Tour Skips: 10 Places Students Share With Each Other","description":"Ten named Carleton spaces for studying, gathering, making, recreation, reflection, and student-facing events, each grounded in a direct institutional source.","icon":"style","cards":[{"subject_id":"carleton-gould-library","subject_type":"study_space","entity_name":"Laurence McKinley Gould Library","title":"Use the Open Lab Between Classes","subtitle":"A flexible work stop inside Gould Library","notes":"Check whether Library 306 is between instruction sessions, then use its open computer lab for focused work or printing.","short_summary":"A library classroom doubles as an open computer lab when it is not scheduled for instruction.","evidence_claim":"Carleton’s library tour identifies Room 306 as a library classroom that operates as an open computer lab when it is not in use.","source_url":"https://gouldguides.carleton.edu/c.php?g=147169&p=965873","source_title":"Classrooms and Computer Labs — Library Tour","source_kind":"university_official","source_published_at":"2025-05-29","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Room 306 is available as an open lab only when it is not scheduled for library instruction.","cost_status":"unknown","under21_safe":true},{"subject_id":"carleton-sayles-hill-great-space","subject_type":"place","entity_name":"Great Space","title":"Meet in the Campus Center’s Main Room","subtitle":"The shared interior hub of Sayles-Hill","notes":"Use Great Space as a visible meetup point before checking nearby student activities, mail services, or campus-center events.","short_summary":"Sayles-Hill’s central room connects everyday meetups with several student-facing services.","evidence_claim":"Carleton’s facilities plan identifies Great Space as the core of the Sayles-Hill Campus Center and describes it as welcoming students, faculty, and staff.","source_url":"https://cdn.carleton.edu/uploads/sites/221/2019/10/FacilitiesMasterPlan_May2014.pdf","source_title":"Carleton College Facilities Master Plan","source_kind":"university_official","source_published_at":"2014-05-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Campus-center entry and individual services may follow current college access rules and operating schedules.","cost_status":"unknown","under21_safe":true},{"subject_id":"carleton-bald-spot","subject_type":"place","entity_name":"Bald Spot","title":"Take Reading Outside","subtitle":"The central lawn beside Sayles-Hill","notes":"Bring a book or Frisbee when conditions are dry; the open lawn works for an outdoor study break or informal recreation.","short_summary":"The central lawn supports both quiet reading and casual student activity.","evidence_claim":"Carleton’s official image archive documents students studying on the Bald Spot in fall 2023.","source_url":"https://imagencloud.carleton.edu/record/67495","source_title":"Bald Spot Fall 2023","source_kind":"university_official","source_published_at":"2023-10-16","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor use depends on weather, grounds conditions, and any scheduled campus activity.","cost_status":"unknown","under21_safe":true},{"subject_id":"carleton-recreation-center","subject_type":"place","entity_name":"Recreation Center","title":"Choose Your Own Kind of Movement","subtitle":"Courts, track, climbing, and fitness under one roof","notes":"Check the recreation schedule, then choose an open-use court, the indoor track, a fitness area, or an appropriate climbing option.","short_summary":"One facility accommodates several forms of individual and group recreation.","evidence_claim":"Carleton Athletics states that the Recreation Center supports recreation including basketball, tennis, weightlifting, rock climbing, aerobics, and racquet sports.","source_url":"https://athletics.carleton.edu/sports/2019/7/15/recreation-center.aspx?id=6006","source_title":"Recreation Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Confirm current building hours, eligibility, reservations, supervision, and equipment requirements before participating.","cost_status":"unknown","under21_safe":true},{"subject_id":"carleton-upper-arboretum","subject_type":"place","entity_name":"Upper Arboretum","title":"Pick a Trail That Fits the Day","subtitle":"The campus-side section of Cowling Arboretum","notes":"Consult the trail map before walking, running, skiing, or biking, and keep bicycles only on designated Upper Arb routes.","short_summary":"The Upper Arb offers a denser trail network close to campus for several kinds of recreation.","evidence_claim":"Carleton’s Arboretum trail map says visitors use its trails for hiking, running, limited biking, cross-country skiing, and nature appreciation.","source_url":"https://cdn.carleton.edu/uploads/sites/594/2020/12/2017B_WArbMapWithRules.pdf","source_title":"Cowling Arboretum Trail Map and Visitor Rules","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Stay on trails, leash dogs, do not camp, and observe seasonal archery-hunt restrictions and posted rules.","cost_status":"unknown","under21_safe":true},{"subject_id":"carleton-dacie-moses-house","subject_type":"place","entity_name":"Dacie Moses House","title":"Bake in a House Built Around Hospitality","subtitle":"A small campus house with a student baking culture","notes":"Check the house’s current access guidance before visiting, then leave the kitchen and shared rooms ready for the next group.","short_summary":"A domestic-scale campus space has long brought students together through baking, music, conversation, and study breaks.","evidence_claim":"A Carleton-hosted study of Dacie Moses House documents students baking cookies and muffins, studying, playing music, talking, and gathering there.","source_url":"https://cdn.carleton.edu/uploads/sites/275/2020/01/Sherri_sPaper.pdf","source_title":"A Study of Dacie Moses House","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Historical descriptions do not establish present-day unrestricted access; verify current house guidance before entering or using the kitchen.","cost_status":"unknown","under21_safe":true},{"subject_id":"carleton-daugherty-atrium","subject_type":"study_space","entity_name":"Daugherty Atrium","title":"Work Where the Sciences Intersect","subtitle":"The central shared space in Evelyn M. Anderson Hall","notes":"Use an available workspace between classes, and keep circulation routes clear around the atrium’s connecting stairs and ramps.","short_summary":"The science complex’s central atrium combines circulation, student work areas, and public academic exchange.","evidence_claim":"Carleton’s campus-history project says the Anderson Hall atrium connects three science buildings and contains multiple student workspaces.","source_url":"https://campushistory.sites.carleton.edu/science-essay/","source_title":"A History of Science Facilities at Carleton","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use is subject to current building access, class schedules, posted events, and any reserved portions of the atrium.","cost_status":"unknown","under21_safe":true},{"subject_id":"carleton-goodsell-ents-lounge","subject_type":"study_space","entity_name":"Goodsell Observatory Room 106","title":"Browse the Environmental Studies Lounge","subtitle":"A student-use common room inside Goodsell Observatory","notes":"Drop in to browse reading material, look for internship information, or connect with others when the lounge is open.","short_summary":"Goodsell’s Room 106 provides Environmental Studies students with readings, opportunity information, and a place to meet.","evidence_claim":"Carleton’s Environmental and Technology Studies page identifies Goodsell Observatory Room 106 as a lounge for reading material, internships, and meeting people.","source_url":"https://acad.carleton.edu/curricular/ENTS/curricular/","source_title":"Carleton College — ENTS Concentration","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The source does not provide current hours or unrestricted visitor access; confirm availability with the program before visiting.","cost_status":"unknown","under21_safe":true},{"subject_id":"carleton-skinner-memorial-chapel","subject_type":"place","entity_name":"Skinner Memorial Chapel","title":"Use the Chapel for Reflection and Dialogue","subtitle":"A campus setting for worship, meditation, and discussion","notes":"Review the Chaplain’s Office calendar, choose a suitable gathering, and respect the practices and quiet use of each room.","short_summary":"The Chapel supports religious and interfaith gatherings as well as meditation and discussion.","evidence_claim":"A Carleton advising bulletin says the Chaplain’s Office hosts weekly worship, meditation, and discussion events, including interfaith programs open to everyone.","source_url":"https://cdn.carleton.edu/uploads/sites/557/2020/09/The_Bi_Weekly_Advising_Bulletin__Weeks_5_6_Fall_2019_1.pdf","source_title":"The Bi-Weekly Advising Bulletin — Weeks 5–6, Fall Term 2019","source_kind":"university_official","source_published_at":"2019-10-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Event schedules and room availability change; consult current Chaplain’s Office information before attending.","cost_status":"unknown","under21_safe":true},{"subject_id":"carleton-anderson-atrium-poster-space","subject_type":"place","entity_name":"Anderson Hall Atrium","title":"See Coursework Become Public Conversation","subtitle":"A presentation space inside the science complex","notes":"Look for posted public presentations, give presenters room to explain their work, and avoid interrupting nearby classes.","short_summary":"The atrium can turn a class project into a public exchange with students and passersby.","evidence_claim":"Carleton’s Digital Humanities in Classics site documents a Spring 2024 course holding its final public poster session in Anderson Atrium.","source_url":"https://dh.classics.sites.carleton.edu/race-antiquity-and-its-legacy-spring-2024/","source_title":"Race: Antiquity and Its Legacy — Spring 2024","source_kind":"university_official","source_published_at":"2024-06-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Poster sessions are scheduled events rather than permanent displays; check current event information before going.","cost_status":"unknown","under21_safe":true}],"warnings":["Current public pages did not provide verifiable coordinates or stable map URLs for individual subjects, so those fields are null.","Several official sources document established uses but do not publish current access hours; those limitations are stated in access_notes."]}],"warnings":[]}

@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://news.northeastern.edu/2025/12/03/northeastern-final-exams-prep/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.northeastern.edu/2025/12/03/northeastern-final-exams-prep/",
+      "error": ""
+    },
+    {
+      "url": "https://news.northeastern.edu/2021/10/26/royal-history-of-king-husky/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.northeastern.edu/2021/10/26/royal-history-of-king-husky/",
+      "error": ""
+    },
+    {
+      "url": "https://news.northeastern.edu/2018/02/13/at-hockey-games-stacys-mom-has-got-it-goin-on-2/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.northeastern.edu/2018/02/13/at-hockey-games-stacys-mom-has-got-it-goin-on-2/",
+      "error": ""
+    },
+    {
+      "url": "https://studentlife.northeastern.edu/events-traditions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentlife.northeastern.edu/events-traditions/",
+      "error": ""
+    },
+    {
+      "url": "https://huskyhunt.sites.northeastern.edu/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://huskyhunt.sites.northeastern.edu/about/",
+      "error": ""
+    },
+    {
+      "url": "https://csi.studentlife.northeastern.edu/homecoming/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://csi.studentlife.northeastern.edu/homecoming/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

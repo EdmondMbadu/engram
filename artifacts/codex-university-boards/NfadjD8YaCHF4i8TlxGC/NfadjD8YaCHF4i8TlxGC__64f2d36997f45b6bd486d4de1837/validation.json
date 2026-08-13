@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.ramapo.edu/tours/student-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ramapo.edu/tours/student-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ramapo.edu/tours/dining-shopping/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ramapo.edu/tours/dining-shopping/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ramapo.edu/csi/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ramapo.edu/csi/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ramapo.edu/welcome/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ramapo.edu/welcome/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ramapo.edu/retirees/benefits/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ramapo.edu/retirees/benefits/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ramapo.edu/berriecenter/art-galleries/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ramapo.edu/berriecenter/art-galleries/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ramapo.edu/foundation/friends/benefits/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ramapo.edu/foundation/friends/benefits/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ramapo.edu/berriecenter/performance-schedule/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ramapo.edu/berriecenter/performance-schedule/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ramapo.edu/welcome/winter/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ramapo.edu/welcome/winter/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

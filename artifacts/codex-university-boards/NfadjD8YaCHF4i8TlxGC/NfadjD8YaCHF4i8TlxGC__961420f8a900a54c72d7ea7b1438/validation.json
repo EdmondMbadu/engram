@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.tacobamba.com/location/taco-bamba-taqueria-fairfax/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.tacobamba.com/location/taco-bamba-taqueria-fairfax/",
+      "error": ""
+    },
+    {
+      "url": "https://thehalalguys.com/locations/10625-braddock-rd-fairfax/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thehalalguys.com/locations/10625-braddock-rd-fairfax/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tropicalsmoothiecafe.com/va/fairfax",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tropicalsmoothiecafe.com/va/fairfax",
+      "error": ""
+    },
+    {
+      "url": "https://locations.mcalistersdeli.com/va/fairfax/10691-braddock-road",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.mcalistersdeli.com/va/fairfax/10691-braddock-road",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/va/fairfax/10695a-braddock-road",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/va/fairfax/10695a-braddock-road",
+      "error": ""
+    },
+    {
+      "url": "https://shopumall.com/pages/location-and-store-hours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://shopumall.com/pages/location-and-store-hours",
+      "error": ""
+    },
+    {
+      "url": "https://amazingcomicshop.wordpress.com/aboutus/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://amazingcomicshop.wordpress.com/aboutus/",
+      "error": ""
+    },
+    {
+      "url": "https://www.universitymalltheatres.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.universitymalltheatres.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfaxva.gov/Fun-Facilities/Cultural-Arts-and-History/Fairfax-Museum",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfaxva.gov/Fun-Facilities/Cultural-Arts-and-History/Fairfax-Museum",
+      "error": ""
+    },
+    {
+      "url": "https://www.cinemaartstheatre.com/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cinemaartstheatre.com/index.html",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Fairfax Museum and Visitor Center"
+  ],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

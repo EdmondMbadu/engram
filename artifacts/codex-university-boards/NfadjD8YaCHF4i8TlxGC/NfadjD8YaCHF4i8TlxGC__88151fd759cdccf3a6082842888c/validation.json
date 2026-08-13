@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.fordham.edu/student-life/commuter-student-services/rose-hill-commuter-student-services/information-and-services/commuter-campus-hangouts/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fordham.edu/student-life/commuter-student-services/rose-hill-commuter-student-services/information-and-services/commuter-campus-hangouts/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fordham.edu/resources/libraries/library-services/room-reservations/walsh-library-study-room-maps/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fordham.edu/resources/libraries/library-services/room-reservations/walsh-library-study-room-maps/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fordham.edu/resources/libraries/collections/archives-and-special-collections/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fordham.edu/resources/libraries/collections/archives-and-special-collections/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fordham.edu/academics/departments/design-and-technology/facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fordham.edu/academics/departments/design-and-technology/facilities/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fordham.edu/about/campuses/rose-hill-campus/mcshane-campus-center/featured-spaces/relax-and-recharge/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fordham.edu/about/campuses/rose-hill-campus/mcshane-campus-center/featured-spaces/relax-and-recharge/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fordham.edu/gabelli-school-of-business/academic-programs-and-admissions/undergraduate-programs/which-campus/hughes-hall/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fordham.edu/gabelli-school-of-business/academic-programs-and-admissions/undergraduate-programs/which-campus/hughes-hall/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fordham.edu/fordham-college-at-rose-hill/honors-programs-societies-and-awards/honors-program/community/alpha-house/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fordham.edu/fordham-college-at-rose-hill/honors-programs-societies-and-awards/honors-program/community/alpha-house/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

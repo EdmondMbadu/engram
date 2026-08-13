@@ -1,0 +1,87 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://americanart.si.edu/visit/renwick",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://americanart.si.edu/visit/renwick",
+      "error": ""
+    },
+    {
+      "url": "https://naturalhistory.si.edu/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://naturalhistory.si.edu/visit",
+      "error": ""
+    },
+    {
+      "url": "https://americanhistory.si.edu/about/faqs/visiting-museum",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://americanhistory.si.edu/about/faqs/visiting-museum",
+      "error": ""
+    },
+    {
+      "url": "https://asia.si.edu/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://asia.si.edu/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://africa.si.edu/plan-your-visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://africa.si.edu/plan-your-visit",
+      "error": ""
+    },
+    {
+      "url": "https://hirshhorn.si.edu/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://hirshhorn.si.edu/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nga.gov/visit/sculpture-garden-self-guided-tour",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.nga.gov/visit/sculpture-garden-self-guided-tour",
+      "error": ""
+    },
+    {
+      "url": "https://www.nga.gov/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.nga.gov/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.si.edu/visit/museums",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.si.edu/visit/museums",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Renwick Gallery"
+  ],
+  "sourceCount": 9,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

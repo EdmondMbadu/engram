@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://pcpl21.org/contact/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pcpl21.org/contact/",
+      "error": ""
+    },
+    {
+      "url": "https://www.in.gov/counties/putnam-courts/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.in.gov/counties/putnam-courts/about/",
+      "error": ""
+    },
+    {
+      "url": "https://cityofgreencastle.com/188/Downtown-Parking",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cityofgreencastle.com/188/Downtown-Parking",
+      "error": ""
+    },
+    {
+      "url": "https://goputnam.com/things-to-do/music-on-the-square/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://goputnam.com/things-to-do/music-on-the-square/",
+      "error": ""
+    },
+    {
+      "url": "https://goputnam.com/things-to-do/blushing-beaus-boutique/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://goputnam.com/things-to-do/blushing-beaus-boutique/",
+      "error": ""
+    },
+    {
+      "url": "https://goputnam.com/things-to-do/britts-blooming-boutique/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://goputnam.com/things-to-do/britts-blooming-boutique/",
+      "error": ""
+    },
+    {
+      "url": "https://goputnam.com/eat-drink/breadworks-by-bridges/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://goputnam.com/eat-drink/breadworks-by-bridges/",
+      "error": ""
+    },
+    {
+      "url": "https://goputnam.com/things-to-do/burdge-boots-apparel/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://goputnam.com/things-to-do/burdge-boots-apparel/",
+      "error": ""
+    },
+    {
+      "url": "https://cityofgreencastle.com/Facilities/Facility/Details/Robe-Ann-Park-2",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cityofgreencastle.com/Facilities/Facility/Details/Robe-Ann-Park-2",
+      "error": ""
+    },
+    {
+      "url": "https://goputnam.com/things-to-do/putnam-county-museum/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://goputnam.com/things-to-do/putnam-county-museum/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

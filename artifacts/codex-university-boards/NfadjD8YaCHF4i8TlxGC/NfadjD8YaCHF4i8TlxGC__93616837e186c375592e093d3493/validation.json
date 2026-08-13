@@ -1,0 +1,97 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.timessquarenyc.org/explore/accessibility-resources-for-times-square",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.timessquarenyc.org/explore/accessibility-resources-for-times-square",
+      "error": ""
+    },
+    {
+      "url": "https://www.timessquarenyc.org/explore/broadway-tickets",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.timessquarenyc.org/explore/broadway-tickets",
+      "error": ""
+    },
+    {
+      "url": "https://bryantpark.org/activities/the-lawn",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bryantpark.org/activities/the-lawn",
+      "error": ""
+    },
+    {
+      "url": "https://bryantpark.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bryantpark.org/",
+      "error": ""
+    },
+    {
+      "url": "https://bryantpark.org/activities/le-carrousel",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bryantpark.org/activities/le-carrousel",
+      "error": ""
+    },
+    {
+      "url": "https://www.nypl.org/locations/schwarzman",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.nypl.org/locations/schwarzman",
+      "error": ""
+    },
+    {
+      "url": "https://www.nypl.org/locations/snfl",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.nypl.org/locations/snfl",
+      "error": ""
+    },
+    {
+      "url": "https://mobile.grandcentralterminal.com/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://mobile.grandcentralterminal.com/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.esbnyc.com/visit/map-and-directions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.esbnyc.com/visit/map-and-directions",
+      "error": ""
+    },
+    {
+      "url": "https://www.themorgan.org/visit/faq",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.themorgan.org/visit/faq",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Bryant Park Reading Room",
+    "Stephen A. Schwarzman Building",
+    "Grand Central Terminal"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

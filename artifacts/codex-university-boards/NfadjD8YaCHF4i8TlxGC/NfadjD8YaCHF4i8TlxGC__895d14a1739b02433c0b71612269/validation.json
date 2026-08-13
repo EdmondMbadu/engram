@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.collegeparkdiner.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.collegeparkdiner.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.collegeparkmd.gov/404/ITGA-2024",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.collegeparkmd.gov/404/ITGA-2024",
+      "error": ""
+    },
+    {
+      "url": "https://locations.raisingcanes.com/md/college-park/7400-baltimore-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.raisingcanes.com/md/college-park/7400-baltimore-ave",
+      "error": ""
+    },
+    {
+      "url": "https://shakeshack.com/location/college-park-md",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://shakeshack.com/location/college-park-md",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/md/college-park/8428-baltimore-ave-/fast-food.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/md/college-park/8428-baltimore-ave-/fast-food.html",
+      "error": ""
+    },
+    {
+      "url": "https://order.online/store/marathon-deli-250150",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://order.online/store/marathon-deli-250150",
+      "error": ""
+    },
+    {
+      "url": "https://www.toasttab.com/local/order/midnightreats-college-park-4513-college-avenue",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.toasttab.com/local/order/midnightreats-college-park-4513-college-avenue",
+      "error": ""
+    },
+    {
+      "url": "https://theboardandbrew.com/theboardandbrew",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://theboardandbrew.com/theboardandbrew",
+      "error": ""
+    },
+    {
+      "url": "https://www.mymamanjoon.com/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.mymamanjoon.com/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://dining.umd.edu/dining-plans/faculty-staff-dining-plans",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dining.umd.edu/dining-plans/faculty-staff-dining-plans",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

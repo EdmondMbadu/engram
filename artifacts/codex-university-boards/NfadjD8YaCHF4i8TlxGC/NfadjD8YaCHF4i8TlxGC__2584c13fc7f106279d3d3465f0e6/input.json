@@ -1,0 +1,66 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "AEZokngwyCckmcLVD1al",
+    "schoolName": "New Orleans Baptist Theological Seminary",
+    "shortSchoolName": "New Orleans Baptist Theological Seminary",
+    "townName": "New Orleans",
+    "state": "LA",
+    "countryCode": "US",
+    "unitId": "159948",
+    "website": "https://www.nobts.edu/",
+    "latitude": 30.004336,
+    "longitude": -90.043439,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=nobts.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=nobts.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "Reference Room",
+    "Martin Music Library",
+    "Curriculum Lab",
+    "Course Reserves",
+    "Periodicals",
+    "Microforms & Microform Reader",
+    "Book Stacks A–BT",
+    "Book Stacks BT–Z",
+    "Information Technology Center (ITC)",
+    "Writing Center",
+    "Leavell Chapel",
+    "John T. Christian Library",
+    "Luter Student Center",
+    "Cafe New Orleans",
+    "Landrum Leavell Dining Hall",
+    "Martin Chapel",
+    "Bunyan Building",
+    "REC Center",
+    "Doris Kelley Showers of Blessings Building",
+    "Legacy Plaza",
+    "New Orleans Baptist Theological Seminary Campus Map",
+    "Café New Orleans",
+    "Bible Museum",
+    "Caskey Center for Church Excellence",
+    "River City Café",
+    "Leeke Magee Christian Counseling Center"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

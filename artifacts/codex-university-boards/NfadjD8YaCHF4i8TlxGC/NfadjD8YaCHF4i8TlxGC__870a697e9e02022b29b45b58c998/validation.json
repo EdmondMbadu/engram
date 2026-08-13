@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://studentlife.tcnj.edu/about/brower-student-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://studentlife.tcnj.edu/about/brower-student-center/",
+      "error": ""
+    },
+    {
+      "url": "https://library.tcnj.edu/studyrooms/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://library.tcnj.edu/studyrooms/",
+      "error": ""
+    },
+    {
+      "url": "https://campusplanning.tcnj.edu/campus-study-areas-2021/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://campusplanning.tcnj.edu/campus-study-areas-2021/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

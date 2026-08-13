@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.ucf.edu/admissions/undergraduate/get-to-know-ucfs-campus/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ucf.edu/admissions/undergraduate/get-to-know-ucfs-campus/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ucf.edu/admissions/undergraduate/wp-content/uploads/sites/4/2025/03/Admissions-Self-Guided-Campus-Tour-Map.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ucf.edu/admissions/undergraduate/wp-content/uploads/sites/4/2025/03/Admissions-Self-Guided-Campus-Tour-Map.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://studentunion.ucf.edu/outdoor-events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentunion.ucf.edu/outdoor-events/",
+      "error": ""
+    },
+    {
+      "url": "https://cah.ucf.edu/gallery/gallery-info/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cah.ucf.edu/gallery/gallery-info/",
+      "error": ""
+    },
+    {
+      "url": "https://arboretum.ucf.edu/about/visit-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arboretum.ucf.edu/about/visit-us/",
+      "error": ""
+    },
+    {
+      "url": "https://rwc.sswb.ucf.edu/programs/outdoor-adventure/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://rwc.sswb.ucf.edu/programs/outdoor-adventure/",
+      "error": ""
+    },
+    {
+      "url": "https://rwc.sswb.ucf.edu/programs/outdoor-adventure/challenge-course/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://rwc.sswb.ucf.edu/programs/outdoor-adventure/challenge-course/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ucf.edu/location/john-c-hitt-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ucf.edu/location/john-c-hitt-library/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

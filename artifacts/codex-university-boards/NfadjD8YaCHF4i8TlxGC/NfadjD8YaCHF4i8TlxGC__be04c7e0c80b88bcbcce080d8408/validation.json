@@ -1,0 +1,77 @@
+{
+  "ok": false,
+  "problems": [
+    "A card uses a subject type outside the template rubric."
+  ],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://studentsuccess.umd.edu/resources/study-spaces-tools",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentsuccess.umd.edu/resources/study-spaces-tools",
+      "error": ""
+    },
+    {
+      "url": "https://stamp.umd.edu/get_involved/graduate_student_life/terp_traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stamp.umd.edu/get_involved/student_engagement/graduate_student_life/terp_traditions",
+      "error": ""
+    },
+    {
+      "url": "https://studentaffairs.umd.edu/student-life/stamp-student-union",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentaffairs.umd.edu/student-life/stamp-student-union",
+      "error": ""
+    },
+    {
+      "url": "https://stamp.umd.edu/visit/explore_our_spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stamp.umd.edu/visit/explore_our_spaces",
+      "error": ""
+    },
+    {
+      "url": "https://arboretum.umd.edu/jim-henson-statue-and-memorial-garden",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arboretum.umd.edu/jim-henson-statue-and-memorial-garden",
+      "error": ""
+    },
+    {
+      "url": "https://stamp.umd.edu/visit/memorial_chapel/gardens",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stamp.umd.edu/visit/memorial_chapel/gardens",
+      "error": ""
+    },
+    {
+      "url": "https://stamp.umd.edu/get_involved/student_org_resource_center_sorc/resources/rso_event_guidelines",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stamp.umd.edu/get_involved/clubs_activities_organizations/student_org_resource_center_sorc/resources/event",
+      "error": ""
+    },
+    {
+      "url": "https://theclarice.umd.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://theclarice.umd.edu/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": null,
+  "generationGrade": null
+}

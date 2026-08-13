@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://fandmdining.sodexomyway.com/en-us/locations/mein-bowl--steinman-college-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fandmdining.sodexomyway.com/en-us/locations/mein-bowl--steinman-college-center",
+      "error": ""
+    },
+    {
+      "url": "https://fandmdining.sodexomyway.com/en-us/locations/hours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fandmdining.sodexomyway.com/en-us/locations/hours",
+      "error": ""
+    },
+    {
+      "url": "https://www.rosarosapizzeria.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rosarosapizzeria.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.dominionpizza.com/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.dominionpizza.com/about",
+      "error": ""
+    },
+    {
+      "url": "https://www.sunoco.com/locations/store/1204-lititz-pike-lancaster-pa-0364000005",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sunoco.com/locations/store/1204-lititz-pike-lancaster-pa-0364000005",
+      "error": ""
+    },
+    {
+      "url": "https://www.7-eleven.com/locations/pa/lancaster/1954-old-phila-pike-40451",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.7-eleven.com/locations/pa/lancaster/1954-old-phila-pike-40451",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/pa/lancaster/1340-columbia-ave.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/pa/lancaster/1340-columbia-ave.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/pa/lancaster/2040-lincoln-hwy-east.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/pa/lancaster/2040-lincoln-hwy-east.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/pa/lancaster/210-w-king-st/10362.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/pa/lancaster/210-w-king-st/10362.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.wyndhamresortlancaster.com/lancaster-pa-dining",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.wyndhamresortlancaster.com/lancaster-pa-dining",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

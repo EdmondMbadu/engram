@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.lostlakecafe.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lostlakecafe.com/",
+      "error": ""
+    },
+    {
+      "url": "https://ddir.com/locations/broadway",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ddir.com/locations/broadway",
+      "error": ""
+    },
+    {
+      "url": "https://bigmariosnewyorkpizza.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://bigmariosnewyorkpizza.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.olympiapizza3.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.olympiapizza3.com/",
+      "error": ""
+    },
+    {
+      "url": "https://thegenuinepiebar.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thegenuinepiebar.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.momijiseattle.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.momijiseattle.com/",
+      "error": ""
+    },
+    {
+      "url": "https://deluxebarandgrill.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://deluxebarandgrill.com/",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.ihop.com/en-us/wa/seattle/breakfast-950-e-madison-st-612/pancakes",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.ihop.com/en-us/wa/seattle/breakfast-950-e-madison-st-612/pancakes",
+      "error": ""
+    },
+    {
+      "url": "https://chick-n-crunch.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://chick-n-crunch.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.theinfatuation.com/seattle/guides/seattle-late-night-restaurants",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.theinfatuation.com/seattle/guides/seattle-late-night-restaurants",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

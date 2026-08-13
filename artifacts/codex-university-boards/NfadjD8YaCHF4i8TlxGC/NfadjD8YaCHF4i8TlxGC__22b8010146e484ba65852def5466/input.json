@@ -1,0 +1,61 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "AEZokngwyCckmcLVD1al",
+    "schoolName": "New Orleans Baptist Theological Seminary",
+    "shortSchoolName": "New Orleans Baptist Theological Seminary",
+    "townName": "New Orleans",
+    "state": "LA",
+    "countryCode": "US",
+    "unitId": "159948",
+    "website": "https://www.nobts.edu/",
+    "latitude": 30.004336,
+    "longitude": -90.043439,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=nobts.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=nobts.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Reference Room",
+    "Martin Music Library",
+    "Curriculum Lab",
+    "Course Reserves",
+    "Periodicals",
+    "Microforms & Microform Reader",
+    "Book Stacks A–BT",
+    "Book Stacks BT–Z",
+    "Information Technology Center (ITC)",
+    "Writing Center",
+    "New Orleans Baptist Theological Seminary Campus Map",
+    "Luter Student Center",
+    "Café New Orleans",
+    "Landrum Leavell Dining Hall",
+    "John T. Christian Library",
+    "Leavell Chapel",
+    "Bible Museum",
+    "Caskey Center for Church Excellence",
+    "River City Café",
+    "Leeke Magee Christian Counseling Center"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

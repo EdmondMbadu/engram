@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.cityofames.org/My-Government/Departments/Parks-and-Recreation/Parks/Campustown-Court",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cityofames.org/My-Government/Departments/Parks-and-Recreation/Parks/Campustown-Court",
+      "error": ""
+    },
+    {
+      "url": "https://www.joysmongoliangrill.com/order/main",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.joysmongoliangrill.com/menu",
+      "error": ""
+    },
+    {
+      "url": "https://www.barefootcampusoutfitter.com/pages/our-stores",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.barefootcampusoutfitter.com/pages/our-stores",
+      "error": ""
+    },
+    {
+      "url": "https://cafebeaudelaire.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cafebeaudelaire.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.mayhemcomics.com/?section=aboutus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mayhemcomics.com/?section=aboutus",
+      "error": ""
+    },
+    {
+      "url": "https://dogearedbooksames.com/our-story/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dogearedbooksames.com/our-story/",
+      "error": ""
+    },
+    {
+      "url": "https://downtownames.org/directory/cooks-emporium/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://downtownames.org/directory/cooks-emporium/",
+      "error": ""
+    },
+    {
+      "url": "https://ameshistory.org/content/contact-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ameshistory.org/content/contact-us",
+      "error": ""
+    },
+    {
+      "url": "https://octagonarts.org/about-2/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://octagonarts.org/about-2/about/",
+      "error": ""
+    },
+    {
+      "url": "https://www.amespubliclibrary.org/branch/ames-public-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.amespubliclibrary.org/branch/ames-public-library",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

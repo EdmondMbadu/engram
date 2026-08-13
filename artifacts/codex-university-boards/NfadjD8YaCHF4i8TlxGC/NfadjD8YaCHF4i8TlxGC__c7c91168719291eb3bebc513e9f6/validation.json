@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.mass.gov/locations/chestnut-hill-reservation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mass.gov/locations/chestnut-hill-reservation",
+      "error": ""
+    },
+    {
+      "url": "https://waterworksmuseum.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://waterworksmuseum.org/",
+      "error": ""
+    },
+    {
+      "url": "https://pinospizza.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pinospizza.com/",
+      "error": ""
+    },
+    {
+      "url": "https://eaglesdeli.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://eaglesdeli.com/",
+      "error": ""
+    },
+    {
+      "url": "https://local.starmarket.com/ma/brookline.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://local.starmarket.com/ma/brookline.html",
+      "error": ""
+    },
+    {
+      "url": "https://fuelamerica.orderexperience.net/67feeb9a2c61a69fff01ce33/menu",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fuelamerica.orderexperience.net/67feeb9a2c61a69fff01ce33/menu",
+      "error": ""
+    },
+    {
+      "url": "https://gyrotheory.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gyrotheory.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.boston.gov/cemeteries/evergreen-cemetery",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.boston.gov/cemeteries/evergreen-cemetery",
+      "error": ""
+    },
+    {
+      "url": "https://www.bpl.org/locations/brighton/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bpl.org/locations/brighton/",
+      "error": ""
+    },
+    {
+      "url": "https://www.bc.edu/bc-web/sites/neighborhood-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bc.edu/bc-web/sites/neighborhood-center/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Pino's Pizza"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

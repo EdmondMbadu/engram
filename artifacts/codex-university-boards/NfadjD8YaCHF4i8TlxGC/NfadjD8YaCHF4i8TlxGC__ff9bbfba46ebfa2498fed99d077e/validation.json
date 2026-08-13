@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://news.rhodes.edu/stories/clough-hanson-gallery-exhibition-highlights-exceptional-work-rhodes-art-professor-david",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://news.rhodes.edu/stories/clough-hanson-gallery-exhibition-highlights-exceptional-work-rhodes-art-professor-david",
+      "error": ""
+    },
+    {
+      "url": "https://www.dixon.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.dixon.org/",
+      "error": ""
+    },
+    {
+      "url": "https://www.memphis.edu/amum/about/visitmuseum.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.memphis.edu/amum/about/visitmuseum.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.memphis.edu/fogelmangalleries/about/visit.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.memphis.edu/fogelmangalleries/about/visit.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.brooksmuseum.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.brooksmuseum.org/",
+      "error": ""
+    },
+    {
+      "url": "https://overtonpark.org/the-park/park-features/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://overtonpark.org/the-park/park-features/",
+      "error": ""
+    },
+    {
+      "url": "https://overtonpark.org/the-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://overtonpark.org/the-park/",
+      "error": ""
+    },
+    {
+      "url": "https://www.shelbyfarmspark.org/default.aspx?naid=24087&p=143321",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.shelbyfarmspark.org/default.aspx?naid=24087&p=143321",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

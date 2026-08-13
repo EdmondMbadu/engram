@@ -1,0 +1,283 @@
+Reading additional input from stdin...
+2026-08-13T07:19:08.064126Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:19:08.089667Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9fd-3202-7251-9a35-bf7519648cda
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"SLjas3RrXagqPr1eL3qX","schoolName":"Georgia College & State University","shortSchoolName":"Georgia College & State University","townName":"Milledgeville","state":"GA","countryCode":"US","website":"https://www.gcsu.edu/","latitude":33.082787,"longitude":-83.231962},"templates":[{"id":"college-blocks-off-campus","version":"1.0","titlePattern":"{count} Blocks Off Campus, One Reason Each","editorialBrief":"Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.","researchQueries":["off campus streets student district","campus adjacent commercial streets","neighborhood plan near university"],"count":10,"icon":"location_city","primarySubjectType":"street_or_district","allowedSubjectTypes":["street_or_district"],"freshnessDays":730,"exactTitle":"10 Blocks Off Campus, One Reason Each"}]}
+codex
+{
+  "complete": false,
+  "school_name": "Georgia College & State University",
+  "town_name": "Milledgeville",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Georgia College & State University",
+      "town_name": "Milledgeville",
+      "template_id": "college-blocks-off-campus",
+      "title": "10 Blocks Off Campus, One Reason Each",
+      "description": "",
+      "icon": "location_city",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+     		,
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:milledgevillega.us downtown Milledgeville attractions Hancock Street Wayne Street ...
+web search: 
+web search: site:visitmilledgeville.org/listings Milledgeville "Hancock Street" Campus Theatre Blackbird ...
+web search: 
+web search: site:visitmilledgeville.org/listings "Old Governor's Mansion" ...
+codex
+{"complete":true,"school_name":"Georgia College & State University","town_name":"Milledgeville","boards":[{"complete":true,"school_name":"Georgia College & State University","town_name":"Milledgeville","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named destinations along downtown Milledgeville corridors, each paired with one specific reason to step beyond campus.","icon":"location_city","cards":[{"subject_id":"campus-black-box-theatre","subject_type":"street_or_district","entity_name":"Campus Black Box Theatre","title":"See a Flexible Stage","subtitle":"West Hancock Street corridor","notes":"Walk east along West Hancock Street to check the theatre schedule and see how the flexible seating changes with each production.","short_summary":"A downtown performance space configured for varied staging styles.","evidence_claim":"The Campus Black Box Theatre is at 137 West Hancock Street and has flexible seating designed for multiple staging configurations.","source_url":"https://www.visitmilledgeville.org/listings/campus-black-box-theatre/41809/","source_title":"Campus Black Box Theatre","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Performance access depends on the current theatre schedule and ticketing; check before visiting.","cost_status":"unknown","under21_safe":true},{"subject_id":"milledgeville-visitor-information-center","subject_type":"street_or_district","entity_name":"Milledgeville Visitor Information Center","title":"Start with the Walking-Tour Map","subtitle":"West Hancock Street corridor","notes":"Begin at 200 West Hancock Street and pick up the self-guided historic-walking-tour brochure before choosing a downtown route.","short_summary":"A practical launch point for exploring the historic district on foot.","evidence_claim":"The Visitor Information Center is located at 200 West Hancock Street, and the local tourism bureau directs visitors there for the historic walking-tour brochure.","source_url":"https://www.visitmilledgeville.org/blog/post/2-day-itinerary-in-downtown-milledgeville-ga/","source_title":"Things to Do in Milledgeville, GA | 2-day Itinerary","source_kind":"other_reliable","source_published_at":"2021-03-30","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Visit during information-center operating hours to obtain a brochure; confirm current hours before setting out.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"floyd-l-griffin-jr-black-heritage-plaza","subject_type":"street_or_district","entity_name":"The Floyd L. Griffin, Jr. Black Heritage Plaza","title":"Read the Black Business District Marker","subtitle":"North Wayne Street corridor","notes":"Head to North Wayne Street and pause at the permanent monument documenting the commercial district once known as the Strip.","short_summary":"A public-history stop preserving the story of Milledgeville’s Black business district.","evidence_claim":"The plaza at 201 North Wayne Street contains a permanent monument commemorating the city’s Black history and the former African American business district.","source_url":"https://www.visitmilledgeville.org/listings/the-floyd-l-griffin-jr-black-heritage-plaza/41804/","source_title":"The Floyd L. Griffin, Jr. Black Heritage Plaza","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The listing describes an outdoor plaza with tables and chairs; event access may vary when performances are scheduled.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"john-marlor-art-center","subject_type":"street_or_district","entity_name":"John Marlor Art Center","title":"Catch a Rotating Gallery Exhibit","subtitle":"North Wayne Street corridor","notes":"Continue along North Wayne Street and check the current Marlor Art Gallery exhibition before entering the historic arts center.","short_summary":"Changing exhibitions give this Wayne Street arts stop a fresh focus.","evidence_claim":"The John Marlor Art Center at 201 North Wayne Street houses the Marlor Art Gallery, whose visiting-artist exhibitions change bimonthly.","source_url":"https://www.visitmilledgeville.org/listings/john-marlor-art-center/8/","source_title":"John Marlor Art Center","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Check Allied Arts exhibition dates and gallery access before visiting; programs and workshops may require registration.","cost_status":"unknown","under21_safe":true},{"subject_id":"oconee-outfitters","subject_type":"street_or_district","entity_name":"Oconee Outfitters","title":"Plan an Oconee River Outing","subtitle":"North Wayne Street corridor","notes":"Stop at 112 North Wayne Street to ask about current rentals, river shuttles, and the equipment needed for a future outing.","short_summary":"A downtown planning stop for paddling or cycling beyond the block.","evidence_claim":"Oconee Outfitters at 112 North Wayne Street offers kayak, canoe, paddleboard and bicycle rentals plus shuttle service to the Oconee River.","source_url":"https://www.visitmilledgeville.org/listings/oconee-outfitters/41748/","source_title":"Oconee Outfitters","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The listing gives Monday hours of noon–6 p.m. and Tuesday–Saturday hours of 10 a.m.–6 p.m.; confirm before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wax-galaxy-records","subject_type":"street_or_district","entity_name":"Wax Galaxy Records","title":"Browse New and Vintage Vinyl","subtitle":"North Wayne Street corridor","notes":"Walk to 124 North Wayne Street and browse the genre-spanning record bins during the shop’s posted Wednesday–Saturday window.","short_summary":"A compact downtown record stop with both new and vintage titles.","evidence_claim":"Wax Galaxy Records at 124 North Wayne Street carries hundreds of new and vintage vinyl titles across multiple genres.","source_url":"https://www.visitmilledgeville.org/listings/wax-galaxy-records/42154/","source_title":"Wax Galaxy Records","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The current listing states Wednesday–Saturday, 10 a.m.–6 p.m.; confirm hours directly before going.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"georgias-old-capitol-building","subject_type":"street_or_district","entity_name":"Georgia's Old Capitol Building","title":"Study the Gothic Public Architecture","subtitle":"East Greene Street corridor","notes":"Follow East Greene Street to Statehouse Square and examine the Old Capitol’s granite steps, pointed arches, and towers.","short_summary":"A former statehouse whose exterior makes Georgia political history tangible.","evidence_claim":"Georgia’s Old Capitol Building is at 201 East Greene Street and features granite steps, pointed arches and large towers dating to its 1807 Gothic design.","source_url":"https://www.visitmilledgeville.org/listings/georgias-old-capitol-building/41823/","source_title":"Georgia's Old Capitol Building","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Exterior viewing may be possible from Statehouse Square; verify public interior access with Georgia Military College.","cost_status":"unknown","under21_safe":true},{"subject_id":"georgias-old-governors-mansion","subject_type":"street_or_district","entity_name":"Georgia's Old Governor's Mansion","title":"Tour a Restored 1839 Residence","subtitle":"South Clarke Street corridor","notes":"Turn onto South Clarke Street and time your arrival for an hourly tour of the mansion’s restored 19th-century interior.","short_summary":"An interpreted house museum connecting architecture, politics and antebellum society.","evidence_claim":"The mansion at 120 South Clarke Street was completed in 1839, restored to its 1851 appearance and operates as a historic house museum.","source_url":"https://www.visitmilledgeville.org/listings/georgias-old-governors-mansion/1/","source_title":"Georgia's Old Governor's Mansion","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Tours are listed Tuesday–Saturday, 10 a.m.–4 p.m., and Sunday, 2–4 p.m., beginning each hour; closures apply.","cost_status":"unknown","under21_safe":true},{"subject_id":"sallie-ellis-davis-house","subject_type":"street_or_district","entity_name":"Sallie Ellis Davis House","title":"Enter a Recreated Classroom","subtitle":"South Clarke Street corridor","notes":"Continue south on Clarke Street to explore the recreated classroom and learn how Davis supported students at Eddy High School.","short_summary":"A preserved educator’s home interpreting Black education and community care.","evidence_claim":"The Sallie Ellis Davis House at 301 South Clarke Street includes a recreated classroom and preserves the educator’s work with Eddy High School students.","source_url":"https://www.visitmilledgeville.org/blog/post/reasons-to-visit-the-sallie-ellis-davis-house/","source_title":"The Legacy of Sallie Ellis Davis: African American Educator in Milledgeville","source_kind":"cultural_institution","source_published_at":"2026-01-21","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Tours are offered Wednesdays and Fridays, selected weekends, and by arrangement; call 478-445-5889 to confirm.","cost_status":"free","under21_safe":true},{"subject_id":"bone-cemetery","subject_type":"street_or_district","entity_name":"Bone Cemetery","title":"Locate the Eddy Tour’s Cemetery Stop","subtitle":"Liberty Street corridor at Franklin Street","notes":"Use the entrance map at Liberty and Franklin Streets to find documented burials, and keep your visit quiet and respectful.","short_summary":"A reflective Eddy Neighborhood stop tied to Black civic and military history.","evidence_claim":"Bone Cemetery is at Liberty and Franklin Streets and includes documented burials of physician B. J. Simmons and three Buffalo Soldiers from the 9th Cavalry.","source_url":"https://www.visitmilledgeville.org/blog/post/the-eddy-neighborhood/","source_title":"Exploring The Eddy Neighborhood: African American History in Milledgeville, Georgia","source_kind":"cultural_institution","source_published_at":"2026-01-21","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use the cemetery map at the entrance, remain on established paths and observe respectful daylight visiting practices.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:21:02.789807Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9fd-3202-7251-9a35-bf7519648cda.1786605548035868000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+31,570
+
+{"complete":true,"school_name":"Georgia College & State University","town_name":"Milledgeville","boards":[{"complete":true,"school_name":"Georgia College & State University","town_name":"Milledgeville","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named destinations along downtown Milledgeville corridors, each paired with one specific reason to step beyond campus.","icon":"location_city","cards":[{"subject_id":"campus-black-box-theatre","subject_type":"street_or_district","entity_name":"Campus Black Box Theatre","title":"See a Flexible Stage","subtitle":"West Hancock Street corridor","notes":"Walk east along West Hancock Street to check the theatre schedule and see how the flexible seating changes with each production.","short_summary":"A downtown performance space configured for varied staging styles.","evidence_claim":"The Campus Black Box Theatre is at 137 West Hancock Street and has flexible seating designed for multiple staging configurations.","source_url":"https://www.visitmilledgeville.org/listings/campus-black-box-theatre/41809/","source_title":"Campus Black Box Theatre","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Performance access depends on the current theatre schedule and ticketing; check before visiting.","cost_status":"unknown","under21_safe":true},{"subject_id":"milledgeville-visitor-information-center","subject_type":"street_or_district","entity_name":"Milledgeville Visitor Information Center","title":"Start with the Walking-Tour Map","subtitle":"West Hancock Street corridor","notes":"Begin at 200 West Hancock Street and pick up the self-guided historic-walking-tour brochure before choosing a downtown route.","short_summary":"A practical launch point for exploring the historic district on foot.","evidence_claim":"The Visitor Information Center is located at 200 West Hancock Street, and the local tourism bureau directs visitors there for the historic walking-tour brochure.","source_url":"https://www.visitmilledgeville.org/blog/post/2-day-itinerary-in-downtown-milledgeville-ga/","source_title":"Things to Do in Milledgeville, GA | 2-day Itinerary","source_kind":"other_reliable","source_published_at":"2021-03-30","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Visit during information-center operating hours to obtain a brochure; confirm current hours before setting out.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"floyd-l-griffin-jr-black-heritage-plaza","subject_type":"street_or_district","entity_name":"The Floyd L. Griffin, Jr. Black Heritage Plaza","title":"Read the Black Business District Marker","subtitle":"North Wayne Street corridor","notes":"Head to North Wayne Street and pause at the permanent monument documenting the commercial district once known as the Strip.","short_summary":"A public-history stop preserving the story of Milledgeville’s Black business district.","evidence_claim":"The plaza at 201 North Wayne Street contains a permanent monument commemorating the city’s Black history and the former African American business district.","source_url":"https://www.visitmilledgeville.org/listings/the-floyd-l-griffin-jr-black-heritage-plaza/41804/","source_title":"The Floyd L. Griffin, Jr. Black Heritage Plaza","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The listing describes an outdoor plaza with tables and chairs; event access may vary when performances are scheduled.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"john-marlor-art-center","subject_type":"street_or_district","entity_name":"John Marlor Art Center","title":"Catch a Rotating Gallery Exhibit","subtitle":"North Wayne Street corridor","notes":"Continue along North Wayne Street and check the current Marlor Art Gallery exhibition before entering the historic arts center.","short_summary":"Changing exhibitions give this Wayne Street arts stop a fresh focus.","evidence_claim":"The John Marlor Art Center at 201 North Wayne Street houses the Marlor Art Gallery, whose visiting-artist exhibitions change bimonthly.","source_url":"https://www.visitmilledgeville.org/listings/john-marlor-art-center/8/","source_title":"John Marlor Art Center","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Check Allied Arts exhibition dates and gallery access before visiting; programs and workshops may require registration.","cost_status":"unknown","under21_safe":true},{"subject_id":"oconee-outfitters","subject_type":"street_or_district","entity_name":"Oconee Outfitters","title":"Plan an Oconee River Outing","subtitle":"North Wayne Street corridor","notes":"Stop at 112 North Wayne Street to ask about current rentals, river shuttles, and the equipment needed for a future outing.","short_summary":"A downtown planning stop for paddling or cycling beyond the block.","evidence_claim":"Oconee Outfitters at 112 North Wayne Street offers kayak, canoe, paddleboard and bicycle rentals plus shuttle service to the Oconee River.","source_url":"https://www.visitmilledgeville.org/listings/oconee-outfitters/41748/","source_title":"Oconee Outfitters","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The listing gives Monday hours of noon–6 p.m. and Tuesday–Saturday hours of 10 a.m.–6 p.m.; confirm before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wax-galaxy-records","subject_type":"street_or_district","entity_name":"Wax Galaxy Records","title":"Browse New and Vintage Vinyl","subtitle":"North Wayne Street corridor","notes":"Walk to 124 North Wayne Street and browse the genre-spanning record bins during the shop’s posted Wednesday–Saturday window.","short_summary":"A compact downtown record stop with both new and vintage titles.","evidence_claim":"Wax Galaxy Records at 124 North Wayne Street carries hundreds of new and vintage vinyl titles across multiple genres.","source_url":"https://www.visitmilledgeville.org/listings/wax-galaxy-records/42154/","source_title":"Wax Galaxy Records","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The current listing states Wednesday–Saturday, 10 a.m.–6 p.m.; confirm hours directly before going.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"georgias-old-capitol-building","subject_type":"street_or_district","entity_name":"Georgia's Old Capitol Building","title":"Study the Gothic Public Architecture","subtitle":"East Greene Street corridor","notes":"Follow East Greene Street to Statehouse Square and examine the Old Capitol’s granite steps, pointed arches, and towers.","short_summary":"A former statehouse whose exterior makes Georgia political history tangible.","evidence_claim":"Georgia’s Old Capitol Building is at 201 East Greene Street and features granite steps, pointed arches and large towers dating to its 1807 Gothic design.","source_url":"https://www.visitmilledgeville.org/listings/georgias-old-capitol-building/41823/","source_title":"Georgia's Old Capitol Building","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Exterior viewing may be possible from Statehouse Square; verify public interior access with Georgia Military College.","cost_status":"unknown","under21_safe":true},{"subject_id":"georgias-old-governors-mansion","subject_type":"street_or_district","entity_name":"Georgia's Old Governor's Mansion","title":"Tour a Restored 1839 Residence","subtitle":"South Clarke Street corridor","notes":"Turn onto South Clarke Street and time your arrival for an hourly tour of the mansion’s restored 19th-century interior.","short_summary":"An interpreted house museum connecting architecture, politics and antebellum society.","evidence_claim":"The mansion at 120 South Clarke Street was completed in 1839, restored to its 1851 appearance and operates as a historic house museum.","source_url":"https://www.visitmilledgeville.org/listings/georgias-old-governors-mansion/1/","source_title":"Georgia's Old Governor's Mansion","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Tours are listed Tuesday–Saturday, 10 a.m.–4 p.m., and Sunday, 2–4 p.m., beginning each hour; closures apply.","cost_status":"unknown","under21_safe":true},{"subject_id":"sallie-ellis-davis-house","subject_type":"street_or_district","entity_name":"Sallie Ellis Davis House","title":"Enter a Recreated Classroom","subtitle":"South Clarke Street corridor","notes":"Continue south on Clarke Street to explore the recreated classroom and learn how Davis supported students at Eddy High School.","short_summary":"A preserved educator’s home interpreting Black education and community care.","evidence_claim":"The Sallie Ellis Davis House at 301 South Clarke Street includes a recreated classroom and preserves the educator’s work with Eddy High School students.","source_url":"https://www.visitmilledgeville.org/blog/post/reasons-to-visit-the-sallie-ellis-davis-house/","source_title":"The Legacy of Sallie Ellis Davis: African American Educator in Milledgeville","source_kind":"cultural_institution","source_published_at":"2026-01-21","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Tours are offered Wednesdays and Fridays, selected weekends, and by arrangement; call 478-445-5889 to confirm.","cost_status":"free","under21_safe":true},{"subject_id":"bone-cemetery","subject_type":"street_or_district","entity_name":"Bone Cemetery","title":"Locate the Eddy Tour’s Cemetery Stop","subtitle":"Liberty Street corridor at Franklin Street","notes":"Use the entrance map at Liberty and Franklin Streets to find documented burials, and keep your visit quiet and respectful.","short_summary":"A reflective Eddy Neighborhood stop tied to Black civic and military history.","evidence_claim":"Bone Cemetery is at Liberty and Franklin Streets and includes documented burials of physician B. J. Simmons and three Buffalo Soldiers from the 9th Cavalry.","source_url":"https://www.visitmilledgeville.org/blog/post/the-eddy-neighborhood/","source_title":"Exploring The Eddy Neighborhood: African American History in Milledgeville, Georgia","source_kind":"cultural_institution","source_published_at":"2026-01-21","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use the cemetery map at the entrance, remain on established paths and observe respectful daylight visiting practices.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

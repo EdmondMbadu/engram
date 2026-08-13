@@ -1,0 +1,56 @@
+{
+  "target": {
+    "atlasId": "58EbJDSj24EFv81hykHl",
+    "schoolName": "Lipscomb University",
+    "shortSchoolName": "Lipscomb University",
+    "townName": "Nashville",
+    "state": "TN",
+    "countryCode": "US",
+    "website": "https://www.lipscomb.edu/",
+    "latitude": 36.106253,
+    "longitude": -86.799791
+  },
+  "templates": [
+    {
+      "id": "college-campus-tour-skips",
+      "version": "1.0",
+      "titlePattern": "What the Campus Tour Skips: {count} Places Students Share With Each Other",
+      "editorialBrief": "Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.",
+      "researchQueries": [
+        "student favorite campus places",
+        "campus map student spaces",
+        "student newspaper campus places"
+      ],
+      "count": 10,
+      "icon": "style",
+      "primarySubjectType": "place",
+      "allowedSubjectTypes": [
+        "place",
+        "study_space"
+      ],
+      "freshnessDays": 365,
+      "exactTitle": "What the Campus Tour Skips: 10 Places Students Share With Each Other"
+    },
+    {
+      "id": "college-first-weekend",
+      "version": "1.0",
+      "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+      "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+      "researchQueries": [
+        "new student orientation campus guide",
+        "first year student campus activities",
+        "weekend near campus students"
+      ],
+      "count": 10,
+      "icon": "schedule",
+      "primarySubjectType": "sequence_stop",
+      "allowedSubjectTypes": [
+        "sequence_stop",
+        "place",
+        "activity"
+      ],
+      "freshnessDays": 180,
+      "exactTitle": "Your First Weekend at Lipscomb University, Shared as Cards"
+    }
+  ]
+}

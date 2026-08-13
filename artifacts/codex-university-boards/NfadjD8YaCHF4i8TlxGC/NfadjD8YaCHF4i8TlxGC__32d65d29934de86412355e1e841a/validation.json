@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://admissions.unh.edu/blog/2021/06/favorite-tour-stop",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://admissions.unh.edu/blog/2021/06/favorite-tour-stop",
+      "error": ""
+    },
+    {
+      "url": "https://explore.unh.edu/tour/whittemore-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://explore.unh.edu/tour/whittemore-center",
+      "error": ""
+    },
+    {
+      "url": "https://library.unh.edu/museum/exhibits/out-cats-closet",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.unh.edu/museum/exhibits/out-cats-closet",
+      "error": ""
+    },
+    {
+      "url": "https://library.unh.edu/exhibits/way-we-were",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.unh.edu/exhibits/way-we-were",
+      "error": ""
+    },
+    {
+      "url": "https://library.unh.edu/museum/exhibits/sports-and-social-traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.unh.edu/museum/exhibits/sports-and-social-traditions",
+      "error": ""
+    },
+    {
+      "url": "https://courses.unh.edu/sites/default/files/syllabus/handbook_2023.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://courses.unh.edu/sites/default/files/syllabus/handbook_2023.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

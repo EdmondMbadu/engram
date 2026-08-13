@@ -1,0 +1,66 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "cX3K4TnIiS76MeKYLHbG",
+    "schoolName": "Linfield University",
+    "shortSchoolName": "Linfield University",
+    "townName": "McMinnville",
+    "state": "OR",
+    "countryCode": "US",
+    "unitId": "209065",
+    "website": "https://www.linfield.edu/",
+    "latitude": 45.201173,
+    "longitude": -123.199642,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/4/4d/Linfield_College_%28emblem%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=linfield.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "Jereld R. Nicholson Library",
+    "Nicholson Library Study Rooms",
+    "Austin Reading Room",
+    "Linfield Writing Center",
+    "Nicholson Library Screening Rooms",
+    "Renshaw Hall Computer Lab",
+    "Fred Meyer Lounge",
+    "Riley Campus Center Prayer and Meditation Room",
+    "Multicultural Center",
+    "Potter Hall Study Room",
+    "Riley Campus Center Game Room",
+    "Riley Prayer and Meditation Room",
+    "Intramural Field",
+    "Jonasson Hall",
+    "Linfield Art Gallery",
+    "Linfield Anthropology Museum",
+    "Multicultural Center at Withnell Commons",
+    "Student Media Center",
+    "Founders Way",
+    "Riley Campus Center",
+    "Dillin Hall",
+    "The Oak Grove",
+    "The Linfield Art Gallery",
+    "McMinnville Public Library",
+    "City Park",
+    "Evergreen Aviation & Space Museum"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

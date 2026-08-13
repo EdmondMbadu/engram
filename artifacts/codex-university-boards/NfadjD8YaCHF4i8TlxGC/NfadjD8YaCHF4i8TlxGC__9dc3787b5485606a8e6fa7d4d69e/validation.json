@@ -1,0 +1,48 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.udel.edu/students/involvement/usc/visit/trabant-university-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.udel.edu/students/involvement/usc/visit/trabant-university-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.udel.edu/students/involvement/usc/visit/perkins-student-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.udel.edu/students/involvement/usc/visit/perkins-student-center/",
+      "error": ""
+    },
+    {
+      "url": "https://library.udel.edu/ourspaces/available-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.udel.edu/ourspaces/available-spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://www.udel.edu/research-innovation/maker/spaces/data-and-design/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.udel.edu/research-innovation/maker/spaces/data-and-design/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Daugherty Hall",
+    "Esports Arena"
+  ],
+  "sourceCount": 4,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

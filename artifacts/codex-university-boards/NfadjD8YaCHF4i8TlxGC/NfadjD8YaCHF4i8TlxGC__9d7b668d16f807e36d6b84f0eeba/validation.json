@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://stlzoo.org/visit/frequently-asked-questions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://stlzoo.org/visit/frequently-asked-questions",
+      "error": ""
+    },
+    {
+      "url": "https://www.slam.org/hours-location-parking/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.slam.org/hours-location-parking/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitmo.com/things-to-do/missouri-history-museum",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitmo.com/things-to-do",
+      "error": ""
+    },
+    {
+      "url": "https://donate.slsc.org/campaign/772140/donate",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://donate.slsc.org/campaign/772140/donate",
+      "error": ""
+    },
+    {
+      "url": "https://camstl.org/visit/accessibility/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://camstl.org/visit/accessibility/",
+      "error": ""
+    },
+    {
+      "url": "https://www.laumeiersculpturepark.org/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.laumeiersculpturepark.org/visit",
+      "error": ""
+    },
+    {
+      "url": "https://citygardenstl.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://citygardenstl.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://home.nps.gov/jeff/planyourvisit/fees.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://home.nps.gov/jeff/planyourvisit/fees.htm",
+      "error": ""
+    },
+    {
+      "url": "https://pulitzerarts.org/visit/overview/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pulitzerarts.org/visit/overview/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

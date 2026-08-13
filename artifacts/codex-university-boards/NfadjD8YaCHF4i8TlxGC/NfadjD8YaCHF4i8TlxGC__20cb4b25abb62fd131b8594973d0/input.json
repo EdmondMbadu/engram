@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "rCHBtu3npdly8mTu33Gs",
+    "schoolName": "California State University-Northridge",
+    "shortSchoolName": "California State University-Northridge",
+    "townName": "Northridge",
+    "state": "CA",
+    "countryCode": "US",
+    "unitId": "110608",
+    "website": "https://www.csun.edu/",
+    "latitude": 34.240126,
+    "longitude": -118.529319,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=csun.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=csun.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "University Student Union",
+    "USU Games Room",
+    "CSUN Orange Grove",
+    "Student Recreation Center",
+    "Northridge Recreation Center",
+    "University Library Learning Commons",
+    "The Museum of the San Fernando Valley",
+    "Two Up, Two Down",
+    "CSUN Sculpture",
+    "CSUN Pond"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

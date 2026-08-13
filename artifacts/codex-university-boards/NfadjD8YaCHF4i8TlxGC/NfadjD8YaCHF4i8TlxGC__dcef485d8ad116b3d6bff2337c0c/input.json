@@ -1,0 +1,51 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "sXHwCCAhYtLuVdvWBHib",
+    "schoolName": "New Mexico Institute of Mining and Technology",
+    "shortSchoolName": "New Mexico Institute of Mining and Technology",
+    "townName": "Socorro",
+    "state": "NM",
+    "countryCode": "US",
+    "unitId": "187967",
+    "website": "https://www.nmt.edu/",
+    "latitude": 34.067041,
+    "longitude": -106.905211,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=nmt.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=nmt.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Kelly Mine Experience",
+    "Joseph A. Fidel Student Services Center",
+    "NMT Game Room",
+    "Joseph R. Skeen Library",
+    "New Mexico Mineral Museum",
+    "NMT Recreation and Well-Being Center",
+    "NMT Training Bouldering Wall",
+    "Macey Conference Center",
+    "Etscorn Campus Observatory",
+    "Socorro Historic Plaza"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

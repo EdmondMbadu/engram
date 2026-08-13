@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://sfe.caltech.edu/resources/hameetman-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sfe.caltech.edu/resources/hameetman-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.catalog.caltech.edu/current/general-information/student-life/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.catalog.caltech.edu/current/general-information/student-life/",
+      "error": ""
+    },
+    {
+      "url": "https://www.admissions.caltech.edu/why-caltech/student-life/dining",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.admissions.caltech.edu/why-caltech/student-life/dining",
+      "error": ""
+    },
+    {
+      "url": "https://thisis.caltech.edu/community",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://thisis.caltech.edu/community",
+      "error": ""
+    },
+    {
+      "url": "https://libanswers.caltech.edu/faq/205132",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://libanswers.caltech.edu/faq/205132",
+      "error": ""
+    },
+    {
+      "url": "https://gocaltech.com/sports/2023/4/12/recreational-facilities.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gocaltech.com/sports/2023/4/12/recreational-facilities.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://events.caltech.edu/series/watson",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.caltech.edu/series/watson",
+      "error": ""
+    },
+    {
+      "url": "https://www.caltechy.org/programs",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.caltechy.org/programs",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

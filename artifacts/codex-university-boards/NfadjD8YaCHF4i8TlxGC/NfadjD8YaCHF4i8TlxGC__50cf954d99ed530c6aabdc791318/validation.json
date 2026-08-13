@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://lib.k-state.edu/libraries-hours/hale-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.k-state.edu/libraries-hours/hale-library/",
+      "error": ""
+    },
+    {
+      "url": "https://lib.k-state.edu/libraries-hours/hale-library/study-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.k-state.edu/libraries-hours/hale-library/study-spaces/",
+      "error": ""
+    },
+    {
+      "url": "https://lib.k-state.edu/technology/innovation-lab/policies-procedures/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.k-state.edu/technology/innovation-lab/policies-procedures/",
+      "error": ""
+    },
+    {
+      "url": "https://www.k-state.edu/maps/buildings/UN/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.k-state.edu/maps/buildings/UN/",
+      "error": ""
+    },
+    {
+      "url": "https://www.k-state.edu/maps/buildings/ISC/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.k-state.edu/maps/buildings/",
+      "error": ""
+    },
+    {
+      "url": "https://www.k-state.edu/leadership/about/building/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.k-state.edu/leadership/about/building/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.k-state.edu/diversity/multicultural-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.k-state.edu/belonging/multicultural-center/",
+      "error": ""
+    },
+    {
+      "url": "https://beach.k-state.edu/visit/onsite-activities.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://beach.k-state.edu/visit/onsite-activities.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.k-state.edu/gardens/events-and-news/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.k-state.edu/gardens/events-and-news/",
+      "error": ""
+    },
+    {
+      "url": "https://lib.k-state.edu/libraries-hours/paul-weigel-library-of-apdesign/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lib.k-state.edu/libraries-hours/paul-weigel-library-of-apdesign/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Paul Weigel Library of Architecture, Planning and Design"
+  ],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

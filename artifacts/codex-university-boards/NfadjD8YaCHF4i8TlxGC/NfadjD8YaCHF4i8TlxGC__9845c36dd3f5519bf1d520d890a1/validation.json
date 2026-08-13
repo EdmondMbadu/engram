@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Tiger Stadium tours require advance purchase and are offered only on select dates.",
+    "UREC access, eligibility, reservations, and activity hours should be checked immediately before visiting.",
+    "Outdoor stops may be affected by weather, university events, construction, or game-day controls."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.lsu.edu/auxiliary-services/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lsu.edu/auxiliary-services/index.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.lsu.edu/campus-life/using-tigerlink.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lsu.edu/campus-life/using-tigerlink.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.lsu.edu/blog/culture/quad.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lsu.edu/blog/culture/quad.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.lsu.edu/mounds/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lsu.edu/mounds/index.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.lsu.edu/visit/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lsu.edu/visit/index.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.lsu.edu/mikethetiger/hours.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lsu.edu/mikethetiger/hours.php",
+      "error": ""
+    },
+    {
+      "url": "https://lsusports.net/tickets/tours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lsusports.net/tickets/tours",
+      "error": ""
+    },
+    {
+      "url": "https://www.lsu.edu/urec/hours-facilities/facilities/climbing-area.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lsu.edu/urec/hours-facilities/facilities/climbing-area.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.lsu.edu/campus-life/news/2024/101-things-to-do-lsu.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lsu.edu/campus-life/news/2024/101-things-to-do-lsu.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.lsu.edu/campus-life/things-to-do/fall-fest/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lsu.edu/campus-life/things-to-do/fall-fest/index.php",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

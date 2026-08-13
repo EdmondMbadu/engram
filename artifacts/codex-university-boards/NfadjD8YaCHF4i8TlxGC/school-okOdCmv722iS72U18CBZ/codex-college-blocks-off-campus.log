@@ -1,0 +1,297 @@
+Reading additional input from stdin...
+2026-08-13T07:37:09.588829Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0d-482f-75f3-8f92-6587af5e362b.1786606602287839000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa0d-b265-7090-a908-6c38660d3846
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"okOdCmv722iS72U18CBZ","schoolName":"Hope College","shortSchoolName":"Hope College","townName":"Holland","state":"MI","countryCode":"US","website":"https://hope.edu/","latitude":42.787247,"longitude":-86.100971},"templates":[{"id":"college-blocks-off-campus","version":"1.0","titlePattern":"{count} Blocks Off Campus, One Reason Each","editorialBrief":"Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.","researchQueries":["off campus streets student district","campus adjacent commercial streets","neighborhood plan near university"],"count":10,"icon":"location_city","primarySubjectType":"street_or_district","allowedSubjectTypes":["street_or_district"],"freshnessDays":730,"exactTitle":"10 Blocks Off Campus, One Reason Each"}]}
+2026-08-13T07:37:09.642220Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0d-482f-75b2-af86-9868f19bfb39.1786606602287588000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:37:09.796896Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0d-4830-7ae0-b25d-ed97516bcbcc.1786606602288715000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:37:09.856006Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0d-4831-73e3-8028-9b98d679c2ed.1786606602289908000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:37:09.872454Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:37:09.876805Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:37:09.974410Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0d-4813-7b83-a3c3-697f666ab3cd.1786606602259904000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:37:10.186464Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0d-482f-7c91-8f35-54299e194183.1786606602288095000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:37:10.312445Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa0d-482e-7331-a60d-5a169734a48d.1786606602286482000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Hope College",
+  "town_name": "Holland",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Hope College",
+      "town_name": "Holland",
+      "template_id": "college-blocks-off-campus",
+      "title": "10 Blocks Off Campus, One Reason Each",
+      "description": "",
+      "icon": "location_city",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+     
+      ,
+      {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ],
+      "warnings": [
+        "Research in progress."
+      ]
+    }
+  ],
+  "warnings": [
+    "Research in progress."
+  ]
+}
+web search: 
+web search: site:downtownholland.com business directory 8th Street Holland MI museum library market ...
+web search: 
+web search: Holland MI Centennial Park official address Central Avenue ...
+web search: 
+web search: site:downtownholland.com "East 8th Street" Holland business ...
+web search: 
+web search: site:cityofholland.com "Padnos Transportation Center" 171 Lincoln Avenue ...
+codex
+{"complete":true,"school_name":"Hope College","town_name":"Holland","boards":[{"complete":true,"school_name":"Hope College","town_name":"Holland","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named destinations on distinct, practical downtown corridors and blocks near Hope College, each paired with one verified reason to go.","icon":"location_city","cards":[{"subject_id":"hope-holland-centennial-park","subject_type":"street_or_district","entity_name":"Centennial Park","title":"Take the Garden Paths","subtitle":"Central Avenue corridor — between 10th and 12th Streets","notes":"Enter from Central Avenue and follow the brick walkways past the fountain, gardens, gazebo and seasonal restrooms.","short_summary":"A landscaped civic square with paths, public art and a historic fountain.","evidence_claim":"The City of Holland lists Centennial Park at 250 Central Avenue and identifies gardens, a fountain, pedestrian walkways, a gazebo and other public amenities.","source_url":"https://www.cityofholland.com/facilities/facility/details/Centennial-Park-6","source_title":"Centennial Park","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"City-listed hours are 6:00 a.m.–11:00 p.m. daily; seasonal restrooms are available.","cost_status":"free","under21_safe":true},{"subject_id":"hope-holland-holland-museum","subject_type":"street_or_district","entity_name":"Holland Museum","title":"Read the City Through Its Objects","subtitle":"West 10th Street corridor — at River Avenue","notes":"Check current admission and exhibition details, then focus your visit on the Holland history and Dutch art galleries.","short_summary":"A downtown museum connecting local settlement history with Dutch art and material culture.","evidence_claim":"The museum identifies its location as 31 W. 10th Street and says its galleries cover Holland’s history and feature Dutch artwork from the 1600s through the 1900s.","source_url":"https://hollandmuseum.org/venue/holland-museum/","source_title":"Holland Museum","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open on listed museum days; admission normally applies, with free public admission on designated second Mondays.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"hope-holland-herrick-main-library","subject_type":"street_or_district","entity_name":"Herrick Main Library","title":"Settle In with Books and Tools","subtitle":"South River Avenue corridor — between 12th and 13th Streets","notes":"Use the River Avenue entrance for collections, public programs, technology help and reservable Main Library rooms.","short_summary":"A full-service public library stop on the south edge of downtown.","evidence_claim":"Herrick District Library lists its Main Library at 300 South River and provides public collections, events, technology help and library rooms there.","source_url":"https://herrickdl.org/locations/ho/","source_title":"Herrick Main Library","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current posted hours vary by day; some rooms or services may require a library card or reservation.","cost_status":"free","under21_safe":true},{"subject_id":"hope-holland-farmers-market","subject_type":"street_or_district","entity_name":"Holland Farmers Market","title":"Browse the Market Canopy","subtitle":"West 8th Street corridor — at the Eighth Street Marketplace","notes":"Check the current market calendar before walking west on 8th Street; browsing is possible without making a purchase.","short_summary":"A covered municipal market where the vendor mix changes with the season.","evidence_claim":"The official market site places Holland Farmers Market at 150 West 8th Street and documents its permanent canopy and vendor-stall market space.","source_url":"https://www.hollandfarmersmarket.com/market-history/","source_title":"Market History","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Market operation is schedule-dependent; consult the official calendar before visiting. Dogs are not permitted except service animals.","cost_status":"free","under21_safe":true},{"subject_id":"hope-holland-lemonjellos-coffee","subject_type":"street_or_district","entity_name":"Lemonjello's Coffee","title":"Pair Coffee with Local Music","subtitle":"East 9th Street corridor — near College Avenue","notes":"Walk one block north from campus, then check the posted music calendar before choosing a drink or snack at the counter.","short_summary":"An independent coffeehouse combining a café counter with music programming.","evidence_claim":"Lemonjello’s official site describes the business as a coffee and music venue, while Downtown Holland’s dining guide lists it at 61 East 9th Street.","source_url":"https://lemonjellos.com/","source_title":"Lemonjello's | Coffee. Music. Life.","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public café access; verify current operating hours and event details on the business site before going.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"hope-holland-cappon-house","subject_type":"street_or_district","entity_name":"Cappon House","title":"Tour a Mayor’s 1874 Home","subtitle":"West 9th Street corridor — west of Pine Avenue","notes":"Start at the visitor center and join a scheduled tour to see rooms interpreted around Isaac Cappon and his family.","short_summary":"A preserved mayoral residence interpreted to approximately 1900.","evidence_claim":"Holland Museum lists Cappon House at 228 W. 9th Street and identifies it as the 1874 home of Holland’s first mayor, restored in part to its circa-1900 appearance.","source_url":"https://hollandmuseum.org/venue/cappon-house/","source_title":"Cappon House","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Seasonal guided tours begin at the Cappon House Visitor Center; off-season visits require advance arrangements.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"hope-holland-settlers-house","subject_type":"street_or_district","entity_name":"Settlers House","title":"Compare a Working-Family Home","subtitle":"West 9th Street corridor — near Washington Avenue","notes":"Visit on the paired historic-house tour and compare this compact 1871 interpretation with the nearby Cappon House.","short_summary":"A small surviving home interpreted through Holland’s working-class history.","evidence_claim":"Holland Museum lists Settlers House at 190 W. 9th Street and says the circa-1867 building survived the 1871 fire and is restored to an 1871 appearance.","source_url":"https://hollandmuseum.org/venue/settlers-house/","source_title":"Settlers House","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Seasonal tours start at the nearby Cappon House Visitor Center; appointments are required outside the stated season.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"hope-holland-holland-armory","subject_type":"street_or_district","entity_name":"The Holland Armory","title":"See the National Guard Exhibit","subtitle":"West 9th Street corridor — just west of River Avenue","notes":"Call the Holland Museum before going; the Armory’s National Guard exhibition is free but available by appointment.","short_summary":"A former civic and military building with a focused local National Guard display.","evidence_claim":"Holland Museum places The Holland Armory at 16 W. 9th Street and states that its 1921–1998 National Guard exhibition is free to visit by appointment.","source_url":"https://hollandmuseum.org/venue/the-armory/","source_title":"The Holland Armory","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The exhibition is free but appointment-only; call the Holland Museum at the number on the official page to arrange access.","cost_status":"free","under21_safe":true},{"subject_id":"hope-holland-city-hall","subject_type":"street_or_district","entity_name":"Holland City Hall","title":"Locate the Civic Centerpiece","subtitle":"South River Avenue corridor — opposite Centennial Park","notes":"Use the River Avenue façade as a visual anchor, then cross toward Centennial Park for a closer look at the civic core.","short_summary":"A named municipal landmark anchoring the River Avenue civic block.","evidence_claim":"The City of Holland’s official facilities directory lists City Hall at 270 S River Avenue.","source_url":"https://www.cityofholland.com/Facilities?clear=False","source_title":"Facilities","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Exterior viewing is public; interior access is limited to municipal business hours and public meetings or services.","cost_status":"free","under21_safe":true},{"subject_id":"hope-holland-caboose-a967","subject_type":"street_or_district","entity_name":"Pere Marquette Caboose No. A967","title":"Find the 1941 Caboose","subtitle":"Lincoln Avenue corridor — at the Padnos Transportation Center","notes":"Continue north on Lincoln Avenue to photograph the restored rail car beside the active transportation center.","short_summary":"A museum-operated railroad artifact displayed beside Holland’s passenger station.","evidence_claim":"Holland Museum identifies Pere Marquette Caboose No. A967 as a 1941 rail car located at the Padnos Transportation Center, 171 Lincoln Avenue.","source_url":"https://hollandmuseum.org/","source_title":"Holland Museum","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The exterior display is at an active transportation center; remain in public pedestrian areas and do not enter rail operating space.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:39:00.584056Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa0d-b265-7090-a908-6c38660d3846.1786606629477856000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+53,885
+
+{"complete":true,"school_name":"Hope College","town_name":"Holland","boards":[{"complete":true,"school_name":"Hope College","town_name":"Holland","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named destinations on distinct, practical downtown corridors and blocks near Hope College, each paired with one verified reason to go.","icon":"location_city","cards":[{"subject_id":"hope-holland-centennial-park","subject_type":"street_or_district","entity_name":"Centennial Park","title":"Take the Garden Paths","subtitle":"Central Avenue corridor — between 10th and 12th Streets","notes":"Enter from Central Avenue and follow the brick walkways past the fountain, gardens, gazebo and seasonal restrooms.","short_summary":"A landscaped civic square with paths, public art and a historic fountain.","evidence_claim":"The City of Holland lists Centennial Park at 250 Central Avenue and identifies gardens, a fountain, pedestrian walkways, a gazebo and other public amenities.","source_url":"https://www.cityofholland.com/facilities/facility/details/Centennial-Park-6","source_title":"Centennial Park","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"City-listed hours are 6:00 a.m.–11:00 p.m. daily; seasonal restrooms are available.","cost_status":"free","under21_safe":true},{"subject_id":"hope-holland-holland-museum","subject_type":"street_or_district","entity_name":"Holland Museum","title":"Read the City Through Its Objects","subtitle":"West 10th Street corridor — at River Avenue","notes":"Check current admission and exhibition details, then focus your visit on the Holland history and Dutch art galleries.","short_summary":"A downtown museum connecting local settlement history with Dutch art and material culture.","evidence_claim":"The museum identifies its location as 31 W. 10th Street and says its galleries cover Holland’s history and feature Dutch artwork from the 1600s through the 1900s.","source_url":"https://hollandmuseum.org/venue/holland-museum/","source_title":"Holland Museum","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open on listed museum days; admission normally applies, with free public admission on designated second Mondays.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"hope-holland-herrick-main-library","subject_type":"street_or_district","entity_name":"Herrick Main Library","title":"Settle In with Books and Tools","subtitle":"South River Avenue corridor — between 12th and 13th Streets","notes":"Use the River Avenue entrance for collections, public programs, technology help and reservable Main Library rooms.","short_summary":"A full-service public library stop on the south edge of downtown.","evidence_claim":"Herrick District Library lists its Main Library at 300 South River and provides public collections, events, technology help and library rooms there.","source_url":"https://herrickdl.org/locations/ho/","source_title":"Herrick Main Library","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current posted hours vary by day; some rooms or services may require a library card or reservation.","cost_status":"free","under21_safe":true},{"subject_id":"hope-holland-farmers-market","subject_type":"street_or_district","entity_name":"Holland Farmers Market","title":"Browse the Market Canopy","subtitle":"West 8th Street corridor — at the Eighth Street Marketplace","notes":"Check the current market calendar before walking west on 8th Street; browsing is possible without making a purchase.","short_summary":"A covered municipal market where the vendor mix changes with the season.","evidence_claim":"The official market site places Holland Farmers Market at 150 West 8th Street and documents its permanent canopy and vendor-stall market space.","source_url":"https://www.hollandfarmersmarket.com/market-history/","source_title":"Market History","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Market operation is schedule-dependent; consult the official calendar before visiting. Dogs are not permitted except service animals.","cost_status":"free","under21_safe":true},{"subject_id":"hope-holland-lemonjellos-coffee","subject_type":"street_or_district","entity_name":"Lemonjello's Coffee","title":"Pair Coffee with Local Music","subtitle":"East 9th Street corridor — near College Avenue","notes":"Walk one block north from campus, then check the posted music calendar before choosing a drink or snack at the counter.","short_summary":"An independent coffeehouse combining a café counter with music programming.","evidence_claim":"Lemonjello’s official site describes the business as a coffee and music venue, while Downtown Holland’s dining guide lists it at 61 East 9th Street.","source_url":"https://lemonjellos.com/","source_title":"Lemonjello's | Coffee. Music. Life.","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public café access; verify current operating hours and event details on the business site before going.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"hope-holland-cappon-house","subject_type":"street_or_district","entity_name":"Cappon House","title":"Tour a Mayor’s 1874 Home","subtitle":"West 9th Street corridor — west of Pine Avenue","notes":"Start at the visitor center and join a scheduled tour to see rooms interpreted around Isaac Cappon and his family.","short_summary":"A preserved mayoral residence interpreted to approximately 1900.","evidence_claim":"Holland Museum lists Cappon House at 228 W. 9th Street and identifies it as the 1874 home of Holland’s first mayor, restored in part to its circa-1900 appearance.","source_url":"https://hollandmuseum.org/venue/cappon-house/","source_title":"Cappon House","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Seasonal guided tours begin at the Cappon House Visitor Center; off-season visits require advance arrangements.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"hope-holland-settlers-house","subject_type":"street_or_district","entity_name":"Settlers House","title":"Compare a Working-Family Home","subtitle":"West 9th Street corridor — near Washington Avenue","notes":"Visit on the paired historic-house tour and compare this compact 1871 interpretation with the nearby Cappon House.","short_summary":"A small surviving home interpreted through Holland’s working-class history.","evidence_claim":"Holland Museum lists Settlers House at 190 W. 9th Street and says the circa-1867 building survived the 1871 fire and is restored to an 1871 appearance.","source_url":"https://hollandmuseum.org/venue/settlers-house/","source_title":"Settlers House","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Seasonal tours start at the nearby Cappon House Visitor Center; appointments are required outside the stated season.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"hope-holland-holland-armory","subject_type":"street_or_district","entity_name":"The Holland Armory","title":"See the National Guard Exhibit","subtitle":"West 9th Street corridor — just west of River Avenue","notes":"Call the Holland Museum before going; the Armory’s National Guard exhibition is free but available by appointment.","short_summary":"A former civic and military building with a focused local National Guard display.","evidence_claim":"Holland Museum places The Holland Armory at 16 W. 9th Street and states that its 1921–1998 National Guard exhibition is free to visit by appointment.","source_url":"https://hollandmuseum.org/venue/the-armory/","source_title":"The Holland Armory","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The exhibition is free but appointment-only; call the Holland Museum at the number on the official page to arrange access.","cost_status":"free","under21_safe":true},{"subject_id":"hope-holland-city-hall","subject_type":"street_or_district","entity_name":"Holland City Hall","title":"Locate the Civic Centerpiece","subtitle":"South River Avenue corridor — opposite Centennial Park","notes":"Use the River Avenue façade as a visual anchor, then cross toward Centennial Park for a closer look at the civic core.","short_summary":"A named municipal landmark anchoring the River Avenue civic block.","evidence_claim":"The City of Holland’s official facilities directory lists City Hall at 270 S River Avenue.","source_url":"https://www.cityofholland.com/Facilities?clear=False","source_title":"Facilities","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Exterior viewing is public; interior access is limited to municipal business hours and public meetings or services.","cost_status":"free","under21_safe":true},{"subject_id":"hope-holland-caboose-a967","subject_type":"street_or_district","entity_name":"Pere Marquette Caboose No. A967","title":"Find the 1941 Caboose","subtitle":"Lincoln Avenue corridor — at the Padnos Transportation Center","notes":"Continue north on Lincoln Avenue to photograph the restored rail car beside the active transportation center.","short_summary":"A museum-operated railroad artifact displayed beside Holland’s passenger station.","evidence_claim":"Holland Museum identifies Pere Marquette Caboose No. A967 as a 1941 rail car located at the Padnos Transportation Center, 171 Lincoln Avenue.","source_url":"https://hollandmuseum.org/","source_title":"Holland Museum","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The exterior display is at an active transportation center; remain in public pedestrian areas and do not enter rail operating space.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}

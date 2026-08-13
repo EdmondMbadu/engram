@@ -1,0 +1,21 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Current dates, admission rules, and costs were not stated on the supporting traditions page; event-specific access and cost fields remain unknown where appropriate."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.lawrence.edu/about/traditions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lawrence.edu/about/traditions/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 1,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

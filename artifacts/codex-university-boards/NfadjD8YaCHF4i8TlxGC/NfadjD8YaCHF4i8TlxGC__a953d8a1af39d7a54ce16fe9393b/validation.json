@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.rit.edu/dining/location/midnight-oil",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rit.edu/dining/location/midnight-oil",
+      "error": ""
+    },
+    {
+      "url": "https://www.rit.edu/dining/location/corner-store",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rit.edu/dining/location/corner-store",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/ny/rochester/566-jefferson-rd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/ny/rochester/566-jefferson-rd",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ny/rochester/950-jefferson-rd.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ny/rochester/950-jefferson-rd.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.toasttab.com/local/order/east-of-chicago-rochester-2/r-1d6bc69b-c4d0-46a4-899a-4e1813e5514c",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.toasttab.com/local/order/east-of-chicago-rochester-2/r-1d6bc69b-c4d0-46a4-899a-4e1813e5514c",
+      "error": ""
+    },
+    {
+      "url": "https://henriettahots.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://henriettahots.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.dairyqueen.com/en-us/locations/ny/rochester/1100-jefferson-rd/42934/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.dairyqueen.com/en-us/locations/ny/rochester/1100-jefferson-rd/42934/",
+      "error": ""
+    },
+    {
+      "url": "https://www.thegourmethots.com/contact/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.thegourmethots.com/contact/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/ny/rochester/2177-e-henrietta-rd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/ny/rochester/2177-e-henrietta-rd",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ny/rochester/950-jefferson-rd/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ny/rochester/950-jefferson-rd/restaurant.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

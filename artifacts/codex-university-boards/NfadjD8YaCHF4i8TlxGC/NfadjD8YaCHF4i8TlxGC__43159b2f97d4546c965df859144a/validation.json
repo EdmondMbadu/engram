@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://nau.edu/flagstaff-campus/lumberjack-spirit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://nau.edu/flagstaff-campus/lumberjack-spirit/",
+      "error": ""
+    },
+    {
+      "url": "https://nau.edu/events/nau-welcome-week/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://nau.edu/events/nau-welcome-week/",
+      "error": ""
+    },
+    {
+      "url": "https://in.nau.edu/news/importance-traditions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://in.nau.edu/news/importance-traditions/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

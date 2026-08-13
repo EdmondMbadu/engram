@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://fourthavenue.org/merchant-listings/book-stop/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fourthavenue.org/merchant-listings/book-stop/",
+      "error": ""
+    },
+    {
+      "url": "https://fourthavenue.org/merchant-listings/antigone-books/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fourthavenue.org/merchant-listings/antigone-books/",
+      "error": ""
+    },
+    {
+      "url": "https://fourthavenue.org/merchant-listings/food-conspiracy-co-op/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fourthavenue.org/merchant-listings/food-conspiracy-co-op/",
+      "error": ""
+    },
+    {
+      "url": "https://fourthavenue.org/merchant-listings/hurricane-records/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fourthavenue.org/merchant-listings/hurricane-records/",
+      "error": ""
+    },
+    {
+      "url": "https://fourthavenue.org/merchant-listings/pop-cycle/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fourthavenue.org/merchant-listings/pop-cycle/",
+      "error": ""
+    },
+    {
+      "url": "https://fourthavenue.org/merchant-listings/440-co/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fourthavenue.org/merchant-listings/440-co/",
+      "error": ""
+    },
+    {
+      "url": "https://fourthavenue.org/merchant-listings/a-foam-fabric-place/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fourthavenue.org/merchant-listings/a-foam-fabric-place/",
+      "error": ""
+    },
+    {
+      "url": "https://fourthavenue.org/merchant-listings/la-iguana-art-gallery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fourthavenue.org/merchant-listings/la-iguana-art-gallery/",
+      "error": ""
+    },
+    {
+      "url": "https://fourthavenue.org/merchant-listings/sixth-avenue-antiques/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fourthavenue.org/merchant-listings/sixth-avenue-antiques/",
+      "error": ""
+    },
+    {
+      "url": "https://fourthavenue.org/merchant-listings/heart-of-the-sun-gallery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fourthavenue.org/merchant-listings/heart-of-the-sun-gallery/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

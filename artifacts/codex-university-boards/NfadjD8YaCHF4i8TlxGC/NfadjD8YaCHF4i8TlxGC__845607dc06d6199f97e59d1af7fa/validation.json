@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.hmc.edu/makerspace/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hmc.edu/makerspace/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hmc.edu/about/2021/08/26/mcgregor-computer-science-center-receives-design-award/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hmc.edu/about/2021/08/26/mcgregor-computer-science-center-receives-design-award/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hmc.edu/campus-life/linde-activities-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hmc.edu/campus-life/linde-activities-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hmc.edu/facilities-maintenance/conferences-and-events/facilities-use-policy/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hmc.edu/facilities-maintenance/conferences-and-events/facilities-use-policy/",
+      "error": ""
+    },
+    {
+      "url": "https://arts.hmc.edu/Visual-Arts",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arts.hmc.edu/Visual-Arts",
+      "error": ""
+    },
+    {
+      "url": "https://www.hmc.edu/residential/halls/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hmc.edu/residential/halls/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

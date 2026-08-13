@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://housing.tcnj.edu/meal-plans/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://housing.tcnj.edu/meal-plans/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 1,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

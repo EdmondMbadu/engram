@@ -1,0 +1,52 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "1onrKej104FrnuyClAts",
+    "schoolName": "Nazareth University",
+    "shortSchoolName": "Nazareth University",
+    "townName": "Rochester",
+    "state": "NY",
+    "countryCode": "US",
+    "unitId": "193584",
+    "website": "https://www2.naz.edu/",
+    "latitude": 43.101576,
+    "longitude": -77.518579,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=www2.naz.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=www2.naz.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at Nazareth University, Shared as Cards",
+  "excluded_subjects": [
+    "Pool Overlook",
+    "Commuter & Transfer Lounge",
+    "Reading Lounge",
+    "1924 Room",
+    "Porthole Lounge",
+    "Lorette Wilmot Library Reading Room",
+    "Lorette Wilmot Library Makerspace",
+    "The Zen Den",
+    "Meditation Room",
+    "School of Education Student Lounge"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

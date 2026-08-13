@@ -1,0 +1,301 @@
+Reading additional input from stdin...
+2026-08-13T06:57:51.805376Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-7987-7f82-b97b-ea7a145e55b8.1786604255624481000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:57:51.809398Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:57:51.813571Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:57:51.850774Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-798a-7461-9edc-dd97abf41d2d.1786604255627254000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9e9-b861-7a51-8ba0-dd11c65c3453
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"72G426o8cjd6JGjaoxYw","schoolName":"Elmhurst University","shortSchoolName":"Elmhurst University","townName":"Elmhurst","state":"IL","countryCode":"US","website":"https://www.elmhurst.edu/","latitude":41.897164,"longitude":-87.945369},"templates":[{"id":"college-blocks-off-campus","version":"1.0","titlePattern":"{count} Blocks Off Campus, One Reason Each","editorialBrief":"Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.","researchQueries":["off campus streets student district","campus adjacent commercial streets","neighborhood plan near university"],"count":10,"icon":"location_city","primarySubjectType":"street_or_district","allowedSubjectTypes":["street_or_district"],"freshnessDays":730,"exactTitle":"10 Blocks Off Campus, One Reason Each"}]}
+2026-08-13T06:57:51.897650Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-7987-7a71-a5c3-5b271b0e2efb.1786604255623815000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:57:51.950656Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-7985-7161-b763-db9b2ed589a7.1786604255621553000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:57:51.996558Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-7986-7f70-9ac0-01b5846d379e.1786604255622326000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:57:52.037447Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-799d-7e90-a88b-3f4e26e818e7.1786604255645974000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Elmhurst University",
+  "town_name": "Elmhurst",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Elmhurst University",
+      "town_name": "Elmhurst",
+      "template_id": "college-blocks-off-campus",
+      "title": "10 Blocks Off Campus, One Reason Each",
+      "description": "",
+      "icon": "location_city",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+     
+    },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+     
+    },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+     
+    },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+     
+    },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+     
+    },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+     
+    },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+     
+    },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+     
+    },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+     
+    }
+  ],
+      "warnings": []
+    }
+  ],
+  "warnings": [
+    "I’m researching ten distinct map-listed destinations on specific corridors around Elmhurst University, using direct official or civic pages for every claim."
+  ]
+}
+web search: 
+web search: site:elmhurstcitycentre.com directory Elmhurst Illinois businesses York Street ...
+web search: 
+web search: Elmhurst IL York Street official coffee shop restaurant bookstore theater address ...
+web search: 
+web search: site:classiccinemas.com york theatre Elmhurst address ...
+codex
+{"complete":true,"school_name":"Elmhurst University","town_name":"Elmhurst","boards":[{"complete":true,"school_name":"Elmhurst University","town_name":"Elmhurst","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten map-listed destinations on nearby Elmhurst corridors, each paired with one practical, sourced reason to go.","icon":"location_city","cards":[{"subject_id":"elmhurst-history-museum-park-avenue","subject_type":"street_or_district","entity_name":"Elmhurst History Museum","title":"See Elmhurst Through the Glos Mansion","subtitle":"Park Avenue, just east of York Street","notes":"Walk east from York Street to explore local history inside the Glos Mansion; check the museum’s posted schedule before setting out.","short_summary":"A downtown mansion housing exhibits and archives about Elmhurst’s past.","evidence_claim":"The city-operated Elmhurst History Museum is at 120 E. Park Avenue in the Glos Mansion, one-half block east of York Street, and presents exhibits supported by its collections and archives.","source_url":"https://www.elmhursthistory.org/visit-us/","source_title":"Visit Us | Elmhurst History Museum","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Sunday and Tuesday–Friday 1–5 p.m. and Saturday 10 a.m.–5 p.m.; generally closed Monday and listed holidays.","cost_status":"free","under21_safe":true},{"subject_id":"brewpoint-founders-cafe-park-avenue","subject_type":"street_or_district","entity_name":"Brewpoint Founder's Cafe","title":"Pause for Coffee Beside the Tracks","subtitle":"Park Avenue west of York Street","notes":"Use this Park Avenue stop for coffee or pastries near the station; order ahead if you are fitting the visit between trains or classes.","short_summary":"A compact café stop on the station-side stretch of Park Avenue.","evidence_claim":"Brewpoint identifies Founder's Cafe at 124 W. Park Avenue and lists coffee and pastries among its offerings.","source_url":"https://brewpointcoffee.com/pages/our-locations","source_title":"Our Locations – Brewpoint Coffee","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The business lists Monday–Friday hours of 6:30 a.m.–7 p.m. and weekend hours of 7 a.m.–7 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"elmhurst-metra-station-first-street","subject_type":"street_or_district","entity_name":"Elmhurst Metra Station","title":"Catch the UP-West Line","subtitle":"First Street at York Road","notes":"Enter from First Street for a rail trip toward Chicago or Elburn, and consult Metra’s current schedule before choosing a departure.","short_summary":"The downtown rail connection for trips east or west on Metra.","evidence_claim":"Metra’s Union Pacific West line information lists Elmhurst station at 128 W. First Street, at York Road.","source_url":"https://metrarail.com/sites/default/files/assets/communications/upw.pdf","source_title":"Union Pacific West Line Schedule and Connecting Services | Metra","source_kind":"government","source_published_at":"2025-11-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Train service requires a valid fare; verify the current timetable and platform information with Metra before travel.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"york-theatre-north-york-street","subject_type":"street_or_district","entity_name":"York Theatre","title":"Choose a Movie on York Street","subtitle":"North York Street in downtown Elmhurst","notes":"Check the day’s listings, reserve a seat, and make this restored ten-screen theater the single entertainment reason for walking downtown.","short_summary":"A restored downtown cinema with ten screens and modern projection.","evidence_claim":"Classic Cinemas lists York Theatre at 150 N. York Street and describes it as a restored historic theater with ten screens, recliner seating and digital projection.","source_url":"https://www.classiccinemas.com/york/info","source_title":"York Theatre XQ | Classic Cinemas","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Admission is ticketed. For R-rated films, guests under 17 require an accompanying parent or guardian age 21 or older.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"modern-plate-north-york-street","subject_type":"street_or_district","entity_name":"Modern Plate","title":"Sit Down for Brunch or Dinner","subtitle":"North York Street near downtown dining","notes":"Use this York Street address for a full sit-down meal; review the current menu and kitchen-closing time before making plans.","short_summary":"A downtown restaurant serving brunch, lunch and dinner.","evidence_claim":"Modern Plate’s official site places the restaurant at 119 N. York Street and states that it serves brunch, lunch and dinner.","source_url":"https://www.modernplateelmhurst.com/about/","source_title":"About Us | Modern Plate Elmhurst","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Restaurant hours vary by day; the official page separately identifies kitchen-closing times.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"rainbow-cafe-north-york-road","subject_type":"street_or_district","entity_name":"Rainbow Cafe","title":"Take York Road for Breakfast","subtitle":"North York Road above the downtown core","notes":"Head north on York Road for a daytime breakfast or lunch stop, confirming the café’s temporary hours before leaving campus.","short_summary":"A daytime café option on the northward York Road corridor.","evidence_claim":"Rainbow Cafe’s official contact page lists its location as 254 N. York Road in Elmhurst.","source_url":"https://www.rainbowcafeelmhurst.com/contact","source_title":"Contact — Rainbow Cafe Elmhurst","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The café currently posts temporary hours of 7 a.m.–3 p.m. daily.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"elmhurst-art-museum-cottage-hill-avenue","subject_type":"street_or_district","entity_name":"Elmhurst Art Museum","title":"Turn onto Cottage Hill for Art","subtitle":"Cottage Hill Avenue at the north end of Wilder Park","notes":"Walk Cottage Hill Avenue to the museum for its current exhibitions, checking admission details and Wednesday–Sunday hours first.","short_summary":"A museum destination connecting contemporary art, architecture and Wilder Park.","evidence_claim":"Elmhurst Art Museum lists its address as 150 Cottage Hill Avenue and says it stands at the north end of Wilder Park beside the public library.","source_url":"https://elmhurstartmuseum.org/visit/directions","source_title":"Directions | Elmhurst Art Museum","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The museum lists hours of noon–5 p.m. Wednesday–Thursday and 11 a.m.–5 p.m. Friday–Sunday; closed Monday–Tuesday.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"elmhurst-public-library-prospect-avenue","subject_type":"street_or_district","entity_name":"Elmhurst Public Library","title":"Use Prospect Avenue for Library Time","subtitle":"South Prospect Avenue beside Wilder Park","notes":"Bring study materials to Prospect Avenue and use the library’s public spaces; review room rules or card requirements for specific services.","short_summary":"A municipal library with study rooms, collections and a virtual floor tour.","evidence_claim":"Elmhurst Public Library’s official visitor page gives its address as 125 S. Prospect Avenue and describes an 80,000-square-foot building with reservable study rooms.","source_url":"https://www.elmhurstpubliclibrary.org/visiting-us","source_title":"Visiting Us | Elmhurst Public Library","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Monday–Friday 9 a.m.–9 p.m., Saturday 9 a.m.–5 p.m. and Sunday 1–5 p.m.; some services may require a library card.","cost_status":"free","under21_safe":true},{"subject_id":"wilder-park-south-prospect-avenue","subject_type":"street_or_district","entity_name":"Wilder Park","title":"Follow Prospect Avenue to a Park Loop","subtitle":"South Prospect Avenue through the Wilder Park campus","notes":"Enter from Prospect Avenue for a walk using the park’s paths, then choose among the playground, tennis courts or picnic area.","short_summary":"A 17-acre civic park with paths, gardens, recreation and cultural neighbors.","evidence_claim":"Elmhurst Park District places Wilder Park at 175 S. Prospect Avenue and lists walking paths, a running trail, tennis courts, a playground and picnic space.","source_url":"https://www.epd.org/parks/wilder-park","source_title":"Wilder Park | Elmhurst Park District","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor amenities are subject to park rules, weather and any posted closures.","cost_status":"free","under21_safe":true},{"subject_id":"wilder-park-conservatory-south-prospect-avenue","subject_type":"street_or_district","entity_name":"Wilder Park Conservatory","title":"Continue South for Seasonal Flowers","subtitle":"South Prospect Avenue at the conservatory block","notes":"Continue down Prospect Avenue for the current flower display; follow visitor rules and arrange permits before any posed photography.","short_summary":"A year-round public conservatory presenting rotating seasonal flower shows.","evidence_claim":"Elmhurst Park District lists Wilder Park Conservatory at 225 S. Prospect Avenue and states that it is free, open year-round and hosts three seasonal flower shows.","source_url":"https://www.epd.org/facilities/wilder-park-conservatory","source_title":"Wilder Park Conservatory | Elmhurst Park District","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Listed hours are 8 a.m.–6 p.m. April–December and 8 a.m.–2:30 p.m. January–March; check for weather or show-installation closures.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T06:59:31.823186Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9e9-b861-7a51-8ba0-dd11c65c3453.1786604271714243000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+36,354
+
+{"complete":true,"school_name":"Elmhurst University","town_name":"Elmhurst","boards":[{"complete":true,"school_name":"Elmhurst University","town_name":"Elmhurst","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten map-listed destinations on nearby Elmhurst corridors, each paired with one practical, sourced reason to go.","icon":"location_city","cards":[{"subject_id":"elmhurst-history-museum-park-avenue","subject_type":"street_or_district","entity_name":"Elmhurst History Museum","title":"See Elmhurst Through the Glos Mansion","subtitle":"Park Avenue, just east of York Street","notes":"Walk east from York Street to explore local history inside the Glos Mansion; check the museum’s posted schedule before setting out.","short_summary":"A downtown mansion housing exhibits and archives about Elmhurst’s past.","evidence_claim":"The city-operated Elmhurst History Museum is at 120 E. Park Avenue in the Glos Mansion, one-half block east of York Street, and presents exhibits supported by its collections and archives.","source_url":"https://www.elmhursthistory.org/visit-us/","source_title":"Visit Us | Elmhurst History Museum","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Sunday and Tuesday–Friday 1–5 p.m. and Saturday 10 a.m.–5 p.m.; generally closed Monday and listed holidays.","cost_status":"free","under21_safe":true},{"subject_id":"brewpoint-founders-cafe-park-avenue","subject_type":"street_or_district","entity_name":"Brewpoint Founder's Cafe","title":"Pause for Coffee Beside the Tracks","subtitle":"Park Avenue west of York Street","notes":"Use this Park Avenue stop for coffee or pastries near the station; order ahead if you are fitting the visit between trains or classes.","short_summary":"A compact café stop on the station-side stretch of Park Avenue.","evidence_claim":"Brewpoint identifies Founder's Cafe at 124 W. Park Avenue and lists coffee and pastries among its offerings.","source_url":"https://brewpointcoffee.com/pages/our-locations","source_title":"Our Locations – Brewpoint Coffee","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The business lists Monday–Friday hours of 6:30 a.m.–7 p.m. and weekend hours of 7 a.m.–7 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"elmhurst-metra-station-first-street","subject_type":"street_or_district","entity_name":"Elmhurst Metra Station","title":"Catch the UP-West Line","subtitle":"First Street at York Road","notes":"Enter from First Street for a rail trip toward Chicago or Elburn, and consult Metra’s current schedule before choosing a departure.","short_summary":"The downtown rail connection for trips east or west on Metra.","evidence_claim":"Metra’s Union Pacific West line information lists Elmhurst station at 128 W. First Street, at York Road.","source_url":"https://metrarail.com/sites/default/files/assets/communications/upw.pdf","source_title":"Union Pacific West Line Schedule and Connecting Services | Metra","source_kind":"government","source_published_at":"2025-11-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Train service requires a valid fare; verify the current timetable and platform information with Metra before travel.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"york-theatre-north-york-street","subject_type":"street_or_district","entity_name":"York Theatre","title":"Choose a Movie on York Street","subtitle":"North York Street in downtown Elmhurst","notes":"Check the day’s listings, reserve a seat, and make this restored ten-screen theater the single entertainment reason for walking downtown.","short_summary":"A restored downtown cinema with ten screens and modern projection.","evidence_claim":"Classic Cinemas lists York Theatre at 150 N. York Street and describes it as a restored historic theater with ten screens, recliner seating and digital projection.","source_url":"https://www.classiccinemas.com/york/info","source_title":"York Theatre XQ | Classic Cinemas","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Admission is ticketed. For R-rated films, guests under 17 require an accompanying parent or guardian age 21 or older.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"modern-plate-north-york-street","subject_type":"street_or_district","entity_name":"Modern Plate","title":"Sit Down for Brunch or Dinner","subtitle":"North York Street near downtown dining","notes":"Use this York Street address for a full sit-down meal; review the current menu and kitchen-closing time before making plans.","short_summary":"A downtown restaurant serving brunch, lunch and dinner.","evidence_claim":"Modern Plate’s official site places the restaurant at 119 N. York Street and states that it serves brunch, lunch and dinner.","source_url":"https://www.modernplateelmhurst.com/about/","source_title":"About Us | Modern Plate Elmhurst","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Restaurant hours vary by day; the official page separately identifies kitchen-closing times.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"rainbow-cafe-north-york-road","subject_type":"street_or_district","entity_name":"Rainbow Cafe","title":"Take York Road for Breakfast","subtitle":"North York Road above the downtown core","notes":"Head north on York Road for a daytime breakfast or lunch stop, confirming the café’s temporary hours before leaving campus.","short_summary":"A daytime café option on the northward York Road corridor.","evidence_claim":"Rainbow Cafe’s official contact page lists its location as 254 N. York Road in Elmhurst.","source_url":"https://www.rainbowcafeelmhurst.com/contact","source_title":"Contact — Rainbow Cafe Elmhurst","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The café currently posts temporary hours of 7 a.m.–3 p.m. daily.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"elmhurst-art-museum-cottage-hill-avenue","subject_type":"street_or_district","entity_name":"Elmhurst Art Museum","title":"Turn onto Cottage Hill for Art","subtitle":"Cottage Hill Avenue at the north end of Wilder Park","notes":"Walk Cottage Hill Avenue to the museum for its current exhibitions, checking admission details and Wednesday–Sunday hours first.","short_summary":"A museum destination connecting contemporary art, architecture and Wilder Park.","evidence_claim":"Elmhurst Art Museum lists its address as 150 Cottage Hill Avenue and says it stands at the north end of Wilder Park beside the public library.","source_url":"https://elmhurstartmuseum.org/visit/directions","source_title":"Directions | Elmhurst Art Museum","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The museum lists hours of noon–5 p.m. Wednesday–Thursday and 11 a.m.–5 p.m. Friday–Sunday; closed Monday–Tuesday.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"elmhurst-public-library-prospect-avenue","subject_type":"street_or_district","entity_name":"Elmhurst Public Library","title":"Use Prospect Avenue for Library Time","subtitle":"South Prospect Avenue beside Wilder Park","notes":"Bring study materials to Prospect Avenue and use the library’s public spaces; review room rules or card requirements for specific services.","short_summary":"A municipal library with study rooms, collections and a virtual floor tour.","evidence_claim":"Elmhurst Public Library’s official visitor page gives its address as 125 S. Prospect Avenue and describes an 80,000-square-foot building with reservable study rooms.","source_url":"https://www.elmhurstpubliclibrary.org/visiting-us","source_title":"Visiting Us | Elmhurst Public Library","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Monday–Friday 9 a.m.–9 p.m., Saturday 9 a.m.–5 p.m. and Sunday 1–5 p.m.; some services may require a library card.","cost_status":"free","under21_safe":true},{"subject_id":"wilder-park-south-prospect-avenue","subject_type":"street_or_district","entity_name":"Wilder Park","title":"Follow Prospect Avenue to a Park Loop","subtitle":"South Prospect Avenue through the Wilder Park campus","notes":"Enter from Prospect Avenue for a walk using the park’s paths, then choose among the playground, tennis courts or picnic area.","short_summary":"A 17-acre civic park with paths, gardens, recreation and cultural neighbors.","evidence_claim":"Elmhurst Park District places Wilder Park at 175 S. Prospect Avenue and lists walking paths, a running trail, tennis courts, a playground and picnic space.","source_url":"https://www.epd.org/parks/wilder-park","source_title":"Wilder Park | Elmhurst Park District","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor amenities are subject to park rules, weather and any posted closures.","cost_status":"free","under21_safe":true},{"subject_id":"wilder-park-conservatory-south-prospect-avenue","subject_type":"street_or_district","entity_name":"Wilder Park Conservatory","title":"Continue South for Seasonal Flowers","subtitle":"South Prospect Avenue at the conservatory block","notes":"Continue down Prospect Avenue for the current flower display; follow visitor rules and arrange permits before any posed photography.","short_summary":"A year-round public conservatory presenting rotating seasonal flower shows.","evidence_claim":"Elmhurst Park District lists Wilder Park Conservatory at 225 S. Prospect Avenue and states that it is free, open year-round and hosts three seasonal flower shows.","source_url":"https://www.epd.org/facilities/wilder-park-conservatory","source_title":"Wilder Park Conservatory | Elmhurst Park District","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Listed hours are 8 a.m.–6 p.m. April–December and 8 a.m.–2:30 p.m. January–March; check for weather or show-installation closures.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}

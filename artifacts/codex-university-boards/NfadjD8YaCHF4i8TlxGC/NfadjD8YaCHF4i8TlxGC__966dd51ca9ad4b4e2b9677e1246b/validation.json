@@ -1,0 +1,71 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Campus dining hours are labeled as semester hours and may change during academic breaks.",
+    "Domino’s displays day-sensitive closing information; users should recheck the direct store page for their intended night.",
+    "The McDonald’s source URL contains a legacy address slug, while the rendered official listing identifies the destination as 4805 Florida Avenue S."
+  ],
+  "reachability": [
+    {
+      "url": "https://portal.flsouthern.edu/ics/Portal_Homepage.jnz",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://portal.flsouthern.edu/ics/Portal_Homepage.jnz",
+      "error": ""
+    },
+    {
+      "url": "https://www.flsouthern.edu/campus-offices/offices-directory/office-of-dining-services",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.flsouthern.edu/campus-offices/offices-directory/office-of-dining-services",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/fl/lakeland/3605-south-florida-avenue.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/fl/lakeland/3605-south-florida-avenue.html",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.ihop.com/en-us/fl/lakeland/breakfast-3447-south-florida-avenue-360052/late-night-food",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.ihop.com/en-us/fl/lakeland/breakfast-3447-south-florida-avenue-360052/late-night-food",
+      "error": ""
+    },
+    {
+      "url": "https://dennys.com/location/denny-s-6824-667610",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://dennys.com/location/denny-s-6824-667610",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/florida/lakeland/1523-s-bartow-rd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/florida/lakeland/1523-s-bartow-rd",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/FL/LAKELAND/4721-S-FLORIDA-AVE/5027.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/FL/LAKELAND/4721-S-FLORIDA-AVE/5027.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

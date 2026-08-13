@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://erau.edu/-/media/files/daytona-beach/campus-map.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://erau.edu/-/media/files/daytona-beach/campus-map.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://daytonabeach.erau.edu/campus-life/student-union/relax",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://erau.edu/student-experience/campus-community",
+      "error": ""
+    },
+    {
+      "url": "https://huntlibrary.erau.edu/about/facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://huntlibrary.erau.edu/about/facilities",
+      "error": ""
+    },
+    {
+      "url": "https://erau.edu/student-experience/campus-community/fitness",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://erau.edu/student-experience/campus-community/fitness",
+      "error": ""
+    },
+    {
+      "url": "https://erau.edu/research-and-innovation/labs/embry-riddle-campus-observatory",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://erau.edu/research-and-innovation/labs/embry-riddle-campus-observatory",
+      "error": ""
+    },
+    {
+      "url": "https://daytonabeach.erau.edu/college-aviation/well-beyond",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://erau.edu/academics/colleges/daytona-beach-college-of-aviation",
+      "error": ""
+    },
+    {
+      "url": "https://daytonabeach.erau.edu/ctle/task-force-on-innovation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://erau.edu/faculty",
+      "error": ""
+    },
+    {
+      "url": "https://daytonabeach.erau.edu/college-business/flight-week",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://erau.edu/academics/colleges/daytona-beach-college-of-business",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

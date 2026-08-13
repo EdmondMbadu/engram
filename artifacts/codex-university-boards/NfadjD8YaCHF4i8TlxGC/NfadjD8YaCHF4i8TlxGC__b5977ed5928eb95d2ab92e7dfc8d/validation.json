@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.anselm.edu/campus-life/housing-dining/dining-campus/coffee-shop-and-pub",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.anselm.edu/campus-life/housing-dining/dining-campus/coffee-shop-and-pub",
+      "error": ""
+    },
+    {
+      "url": "https://pizza911nh.com/contact-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza911nh.com/contact-us/",
+      "error": ""
+    },
+    {
+      "url": "https://www.giomanchester.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.giomanchester.com/",
+      "error": ""
+    },
+    {
+      "url": "https://alleycatpizzerianh.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://alleycatpizzerianh.com/",
+      "error": ""
+    },
+    {
+      "url": "https://zosplace.com/locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://zosplace.com/locations",
+      "error": ""
+    },
+    {
+      "url": "https://locations.papajohns.com/united-states/nh/03103/manchester/223-south-willow-street/food-near-me",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.papajohns.com/united-states/nh/03103/manchester/223-south-willow-street/food-near-me",
+      "error": ""
+    },
+    {
+      "url": "https://locations.raisingcanes.com/nh/manchester/782-south-willow-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.raisingcanes.com/nh/manchester/782-south-willow-street",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wingstop.com/nh/manchester/wingstop-1513-manchester-nh-03102",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wingstop.com/nh/manchester/wingstop-1513-manchester-nh-03102",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/new-hampshire/manchester/250-dubuque-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/new-hampshire/manchester/250-dubuque-st",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/nh/manchester/1050-second-st-/takeout.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/nh/manchester/1050-second-st-/takeout.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

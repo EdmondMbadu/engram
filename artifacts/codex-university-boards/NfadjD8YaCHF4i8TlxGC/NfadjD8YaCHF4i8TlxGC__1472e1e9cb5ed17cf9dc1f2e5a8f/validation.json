@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.transy.edu/campus/new-student-orientation/schedule/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.transy.edu/campus/new-student-orientation/schedule/",
+      "error": ""
+    },
+    {
+      "url": "https://www.transy.edu/third-and-broadway/fall-2025/section-2-3-250-timeline/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.transy.edu/third-and-broadway/fall-2025/section-2-3-250-timeline/",
+      "error": ""
+    },
+    {
+      "url": "https://www.transy.edu/1780/2023/10/transylvania-student-activities-board-plans-weeklong-celebration-of-eccentric-professor/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.transy.edu/1780/2023/10/transylvania-student-activities-board-plans-weeklong-celebration-of-eccentric-professor/",
+      "error": ""
+    },
+    {
+      "url": "https://www.transy.edu/1780/2025/10/transylvania-university-sab-conjures-up-campus-chills-for-raf-week/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.transy.edu/1780/2025/10/transylvania-university-sab-conjures-up-campus-chills-for-raf-week/",
+      "error": ""
+    },
+    {
+      "url": "https://www.transy.edu/calendar/archives/bulletin/self-guided-tour",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.transy.edu/calendar/archives/bulletin/self-guided-tour",
+      "error": ""
+    },
+    {
+      "url": "https://www.transy.edu/sites/default/files/downloads/magazine/2003-summer.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.transy.edu/sites/default/files/downloads/magazine/2003-summer.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.transy.edu/academics/bulletin/2026-commencement-program/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.transy.edu/academics/bulletin/2026-commencement-program/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

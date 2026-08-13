@@ -1,0 +1,71 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.cpp.edu/kellogg-gallery/plan-your-visit.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cpp.edu/kellogg-gallery/plan-your-visit.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.cpp.edu/huntley-gallery/plan-your-visit.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cpp.edu/huntley-gallery/plan-your-visit.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.cpp.edu/biotrek/planning-your-visit/index.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cpp.edu/biotrek/planning-your-visit/index.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.cpp.edu/outreach/tours.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cpp.edu/outreach/tours.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.cpp.edu/studentsuccess/directories/tutoring.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cpp.edu/studentsuccess/directories/tutoring.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.cpp.edu/campus-life/index.shtml",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cpp.edu/campus-life/index.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://asi.cpp.edu/facilities/bric/bric-info/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://asi.cpp.edu/facilities/bric/bric-info/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Rain Bird BioTrek"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

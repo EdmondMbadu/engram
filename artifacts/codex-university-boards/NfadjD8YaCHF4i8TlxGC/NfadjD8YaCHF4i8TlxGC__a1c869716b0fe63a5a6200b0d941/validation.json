@@ -1,0 +1,29 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "RAC access is free for current UMBC students, faculty, and staff with a valid Black & Gold ID; it is not represented here as public access."
+  ],
+  "reachability": [
+    {
+      "url": "https://recreation.umbc.edu/facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://recreation.umbc.edu/facilities/",
+      "error": ""
+    },
+    {
+      "url": "https://cadvc.umbc.edu/exhibition/2026-cadvc-arts-faculty-exhibition-curated-by-maleke-glee/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cadvc.umbc.edu/exhibition/2026-cadvc-arts-faculty-exhibition-curated-by-maleke-glee/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 2,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

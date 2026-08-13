@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.stkate.edu/newswire/news/citizen-katie-celebrates-20-years-service-and-community-building",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stkate.edu/newswire/news/citizen-katie-celebrates-20-years-service-and-community-building",
+      "error": ""
+    },
+    {
+      "url": "https://www.stkate.edu/newswire/news/campus-prepares-celebrate-feast-saint-catherine-next-week",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stkate.edu/newswire/news/campus-prepares-celebrate-feast-saint-catherine-next-week",
+      "error": ""
+    },
+    {
+      "url": "https://www.stkate.edu/events/feast-st-joseph",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stkate.edu/events/feast-st-joseph",
+      "error": ""
+    },
+    {
+      "url": "https://www.stkate.edu/newswire/news/st-kates-celebrates-power-we-opening-2025-26-academic-year",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stkate.edu/newswire/news/st-kates-celebrates-power-we-opening-2025-26-academic-year",
+      "error": ""
+    },
+    {
+      "url": "https://www.stkate.edu/events/commencement",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stkate.edu/events/commencement",
+      "error": ""
+    },
+    {
+      "url": "https://www.stkate.edu/newswire/news/honor-inspiring-woman-february-11",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stkate.edu/newswire/news/honor-inspiring-woman-february-11",
+      "error": ""
+    },
+    {
+      "url": "https://www.stkate.edu/newswire/news/january-conversation-with-books-kicks-off-year-2025",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stkate.edu/newswire/news/january-conversation-with-books-kicks-off-year-2025",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

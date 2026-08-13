@@ -1,0 +1,88 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation.",
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://cramersbagels.com/",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://cramersbagels.com/",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.scu.edu/map/location/42",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.scu.edu/map/location/42",
+      "error": ""
+    },
+    {
+      "url": "https://www.discoversantaclara.org/food-trail-2026/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.discoversantaclara.org/food-trail-2026/",
+      "error": ""
+    },
+    {
+      "url": "https://www.jasminethaisantaclara.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jasminethaisantaclara.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.santaclaraca.gov/Home/Components/ServiceDirectory/ServiceDirectory/1279/2661",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.santaclaraca.gov/Home/Components/ServiceDirectory/ServiceDirectory/1279/2661",
+      "error": ""
+    },
+    {
+      "url": "https://www.santaclaraca.gov/our-city/about-santa-clara/maps/art-statues",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.santaclaraca.gov/our-city/about-santa-clara/maps/art-statues",
+      "error": ""
+    },
+    {
+      "url": "https://www.santaclaraca.gov/Home/Components/Calendar/Event/103607/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.santaclaraca.gov/Home/Components/Calendar/Event/103607/",
+      "error": ""
+    },
+    {
+      "url": "https://voyagercraftcoffee.com/locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://voyagercraftcoffee.com/locations",
+      "error": ""
+    },
+    {
+      "url": "https://www.santaclaraca.gov/Home/Components/News/News/45362/3171",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.santaclaraca.gov/Home/Components/News/News/45362/3171",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Mission Santa Clara de Asís"
+  ],
+  "sourceCount": 9,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

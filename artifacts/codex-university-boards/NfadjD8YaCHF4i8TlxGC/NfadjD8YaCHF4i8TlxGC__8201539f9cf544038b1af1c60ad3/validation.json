@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.crystalscuisineandcafe.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.crystalscuisineandcafe.com/",
+      "error": ""
+    },
+    {
+      "url": "https://traveloregon.com/things-to-do/eat-drink/restaurants/the-naked-crepe/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://traveloregon.com/things-to-do/eat-drink/restaurants/the-naked-crepe/",
+      "error": ""
+    },
+    {
+      "url": "https://science.oregonstate.edu/our-college/corvallis/things-to-do-in-corvallis/restaurants-near-oregon-state-university",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://science.oregonstate.edu/our-college/corvallis/things-to-do-in-corvallis/restaurants-near-oregon-state-university",
+      "error": ""
+    },
+    {
+      "url": "https://www.livetheunion.com/location/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.livetheunion.com/location/",
+      "error": ""
+    },
+    {
+      "url": "https://www.allanscoffee.com/blogs/at-allans/corvallis-campus-remodel",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.allanscoffee.com/blogs/at-allans/corvallis-campus-remodel",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

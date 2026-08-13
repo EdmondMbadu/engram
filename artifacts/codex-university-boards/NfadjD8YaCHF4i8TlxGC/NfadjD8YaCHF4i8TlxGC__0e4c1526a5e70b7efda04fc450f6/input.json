@@ -1,0 +1,40 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "h0e8x4JeKD01LAQLYq5l",
+    "schoolName": "Embry-Riddle Aeronautical University-Daytona Beach",
+    "shortSchoolName": "Embry-Riddle Aeronautical University-Daytona Beach",
+    "townName": "Daytona Beach",
+    "state": "FL",
+    "countryCode": "US",
+    "unitId": "133553",
+    "website": "https://daytonabeach.erau.edu/",
+    "latitude": 29.189903,
+    "longitude": -81.048367,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/6/69/Embry-Riddle-COA.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=original",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=daytonabeach.erau.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

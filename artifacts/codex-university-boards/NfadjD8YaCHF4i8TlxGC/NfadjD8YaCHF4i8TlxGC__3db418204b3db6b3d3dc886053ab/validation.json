@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.fairfield.edu/admission-and-aid/visit/campus-visits-and-tours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/admission-and-aid/visit/campus-visits-and-tours/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/library/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/library/about/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/student-life/dining/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/student-life/dining/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/museum/about/plan-your-visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/museum/about/plan-your-visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/construction/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/construction/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/about/jesuit-and-catholic-identity/murphy-center-for-ignatian-spirituality/programs/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/about/jesuit-and-catholic-identity/murphy-center-for-ignatian-spirituality/programs/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/student-life/athletics-and-recreation/ncaa-athletics/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/student-life/athletics-and-recreation/ncaa-athletics/",
+      "error": ""
+    },
+    {
+      "url": "https://quickcenter.fairfield.edu/index.html?from=hp_banner",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://quickcenter.fairfield.edu/index.html?from=hp_banner",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/student-life/campus-ministry/our-staff/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/student-life/campus-ministry/our-staff/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

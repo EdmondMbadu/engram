@@ -1,0 +1,80 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://library.csun.edu/about/visitor-information/audio-tour",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csun.edu/about/visitor-information/audio-tour",
+      "error": ""
+    },
+    {
+      "url": "https://library.csun.edu/technology/cms",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csun.edu/technology/cms",
+      "error": ""
+    },
+    {
+      "url": "https://catalog.csun.edu/about/colleges/lib/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.csun.edu/about/colleges/lib/",
+      "error": ""
+    },
+    {
+      "url": "https://library.csun.edu/about/contacts-departments/access-services",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csun.edu/about/contacts-departments/access-services",
+      "error": ""
+    },
+    {
+      "url": "https://library.csun.edu/about/policies/noise",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.csun.edu/about/policies/noise",
+      "error": ""
+    },
+    {
+      "url": "https://www.csun.edu/src",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csun.edu/src",
+      "error": ""
+    },
+    {
+      "url": "https://www.csun.edu/sites/default/files/PR-Oasis-Opening_on_Aug_24.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csun.edu/sites/default/files/PR-Oasis-Opening_on_Aug_24.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.csun.edu/csu-interim-systemwide-time-place-and-manner-policy/csun-properties-listing",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csun.edu/csu-interim-systemwide-time-place-and-manner-policy/csun-properties-listing",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Quiet Study Lounge",
+    "Student Recreation Center"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

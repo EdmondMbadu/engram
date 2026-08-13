@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.union.edu/about/area/what-to-do",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.union.edu/about/area/what-to-do",
+      "error": ""
+    },
+    {
+      "url": "https://www.tarakitchen.com/schenectady-ny",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.tarakitchen.com/schenectady-ny",
+      "error": ""
+    },
+    {
+      "url": "https://www.atproctors.org/building/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.atproctors.org/building/",
+      "error": ""
+    },
+    {
+      "url": "https://www.schenectadycountyny.gov/ed-planning/bike-trail",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.schenectadycountyny.gov/ed-planning/bike-trail",
+      "error": ""
+    },
+    {
+      "url": "https://schenectadyhistorical.org/site/museum-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://schenectadyhistorical.org/site/museum-library/",
+      "error": ""
+    },
+    {
+      "url": "https://cityofschenectady.com/187/Central-Park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cityofschenectady.gov/Facilities/Facility/Details/Central-Park-1",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

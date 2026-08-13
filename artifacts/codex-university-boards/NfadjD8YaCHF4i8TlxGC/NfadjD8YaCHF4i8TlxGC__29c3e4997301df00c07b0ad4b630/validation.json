@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://dennys.com/location/denny-s-9575-720722",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://dennys.com/location/denny-s-9575-720722",
+      "error": ""
+    },
+    {
+      "url": "https://www.hashtaggyronsubs.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hashtaggyronsubs.com/",
+      "error": ""
+    },
+    {
+      "url": "https://elultimotrago.net/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://elultimotrago.net/",
+      "error": ""
+    },
+    {
+      "url": "https://legendsgrilleva.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://legendsgrilleva.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.chick-fil-a.com/locations/va/fredericksburg",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.chick-fil-a.com/locations/va/fredericksburg",
+      "error": ""
+    },
+    {
+      "url": "https://www.texasroadhouse.com/locations/464-fredericksburgva",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.texasroadhouse.com/locations/464-fredericksburgva",
+      "error": ""
+    },
+    {
+      "url": "https://www.castigliasitalianrestaurant.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.castigliasitalianrestaurant.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.miranchoonline.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.miranchoonline.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fahrenheit132.com/contact-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fahrenheit132.com/contact-us/",
+      "error": ""
+    },
+    {
+      "url": "https://fredvocellipizza.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fredvocellipizza.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

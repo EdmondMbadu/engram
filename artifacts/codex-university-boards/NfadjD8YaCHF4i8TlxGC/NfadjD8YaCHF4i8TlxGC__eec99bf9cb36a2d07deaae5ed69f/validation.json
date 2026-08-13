@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.hendrix.edu/academics/academics.aspx?id=1781",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hendrix.edu/academics/academics.aspx?id=1781",
+      "error": ""
+    },
+    {
+      "url": "https://www.hendrix.edu/sltc/default.aspx?id=44477",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hendrix.edu/sltc/default.aspx?id=44477",
+      "error": ""
+    },
+    {
+      "url": "https://www.windgatemuseum.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.windgatemuseum.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hendrix.edu/music/windensemble/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hendrix.edu/music/windensemble/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hendrix.edu/life/studentactivities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hendrix.edu/life/studentactivities/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hendrix.edu/wac/wac.aspx?id=9746",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hendrix.edu/wac/wac.aspx?id=9746",
+      "error": ""
+    },
+    {
+      "url": "https://www.hendrix.edu/uploadedFiles/Orientation/Move-in%20Day%20Schedule%202-page%202025%20%285%29.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hendrix.edu/uploadedFiles/Orientation/Move-in%20Day%20Schedule%202-page%202025%20%285%29.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.hendrix.edu/embracetheorange/clubs/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hendrix.edu/embracetheorange/clubs/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hendrix.edu/professor-students-stellar-joy-garden/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hendrix.edu/professor-students-stellar-joy-garden/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

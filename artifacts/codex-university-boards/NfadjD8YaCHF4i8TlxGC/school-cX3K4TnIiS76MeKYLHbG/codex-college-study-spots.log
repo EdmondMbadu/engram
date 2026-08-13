@@ -1,0 +1,291 @@
+Reading additional input from stdin...
+2026-08-13T08:00:33.652713Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa22-3fd7-7271-9318-5f8ca0d0c53c.1786607976408022000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:00:33.695272Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa22-3fd2-7fa0-bf04-0eb33516a409.1786607976403083000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa23-1ee4-79a0-9dc1-970ba6a6b816
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"cX3K4TnIiS76MeKYLHbG","schoolName":"Linfield University","shortSchoolName":"Linfield University","townName":"McMinnville","state":"OR","countryCode":"US","website":"https://www.linfield.edu/","latitude":45.201173,"longitude":-123.199642},"templates":[{"id":"college-study-spots","version":"1.0","titlePattern":"Claimed by 9am: {count} Study Spots Worth Showing Up Early For","editorialBrief":"Choose ten distinct study environments. Verify access rules, room or reservation constraints, and the physical affordance that makes each useful. Treat “Claimed by 9am” as editorial framing; never assert crowding or student behavior without evidence.","researchQueries":["campus study spaces","library study rooms students","quiet study campus"],"count":10,"icon":"menu_book","primarySubjectType":"study_space","allowedSubjectTypes":["study_space","place"],"freshnessDays":180,"exactTitle":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For"}]}
+2026-08-13T08:00:33.960943Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa22-3fc0-7c83-9086-55e9e66a0ee6.1786607976385319000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:00:33.975739Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T08:00:34.142142Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa22-3fd4-7461-a1bc-1b40241db390.1786607976404748000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:00:34.169513Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T08:00:34.299892Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa22-3fd9-7d81-9383-8f0bbdd309fe.1786607976410277000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:00:34.371175Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa22-3fcc-7a83-8719-cdf0192b56db.1786607976396635000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:00:34.526305Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa22-3fd3-7183-b1a2-e1eba38223b6.1786607976404452000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Linfield University",
+  "town_name": "McMinnville",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Linfield University",
+      "town_name": "McMinnville",
+      "template_id": "college-study-spots",
+      "title": "Claimed by 9am: 10 Study Spots Worth Showing Up Early For",
+      "description": "",
+      "icon": "menu_book",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     
+        ,
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "study_space",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": [
+    "Research in progress; final response will replace this draft with verified JSON."
+  ]
+}
+web search: 
+web search: site:linfield.edu study spaces Nicholson Library study rooms McMinnville campus ...
+web search: 
+web search: site:linfield.edu "Austin Reading Room" ...
+codex
+{"complete":true,"school_name":"Linfield University","town_name":"McMinnville","boards":[{"complete":true,"school_name":"Linfield University","town_name":"McMinnville","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten documented McMinnville-campus settings for quiet work, group projects, computer access, writing support or a short reset between study sessions.","icon":"menu_book","cards":[{"subject_id":"linfield-nicholson-library","subject_type":"study_space","entity_name":"Jereld R. Nicholson Library","title":"Settle In at Nicholson Library","subtitle":"A spacious setting documented for quiet study","notes":"Bring your Linfield ID, choose a quiet work area and check the live library schedule before planning an evening session.","short_summary":"The university specifically presents Nicholson Library as a comfortable, spacious place for quiet study.","evidence_claim":"Linfield describes Nicholson Library as comfortable and spacious, identifies it as a place for quiet study and publishes separate academic-term access hours for students and the public.","source_url":"https://www.linfield.edu/library/","source_title":"Linfield Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Academic-term access for students, faculty and staff is Monday–Thursday 7:30 a.m.–midnight, Friday 7:30 a.m.–6 p.m., Saturday 10 a.m.–4 p.m. and Sunday noon–midnight; hours may change.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"linfield-nicholson-study-rooms","subject_type":"study_space","entity_name":"Nicholson Library Study Rooms","title":"Take a Project Into a Study Room","subtitle":"Private library rooms for solo or group work","notes":"Check out a room when conversation or collaboration would disrupt an open study area, and confirm the current loan procedure at the desk.","short_summary":"Private rooms provide a defined setting for studying and group projects inside Nicholson Library.","evidence_claim":"Linfield defines its library study rooms as private rooms that can be checked out for studying or working on group projects.","source_url":"https://www.linfield.edu/glossary/academics.html","source_title":"Academic Terms","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"A checkout is required; the official page does not state room capacity, loan duration or advance-reservation rules.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"linfield-austin-reading-room","subject_type":"study_space","entity_name":"Austin Reading Room","title":"Read in the Austin Reading Room","subtitle":"A named reading room inside Nicholson Library","notes":"Use the room for focused reading when it is not hosting a lecture, showcase or discussion; check library events before settling in.","short_summary":"This identifiable Nicholson Library room supports reading while also serving scheduled academic gatherings.","evidence_claim":"Current Linfield pages locate the Austin Reading Room within Nicholson Library and document it as the site of collaborative research discussions and academic presentations.","source_url":"https://www.linfield.edu/academics/business/AIAI-initiative.html","source_title":"AIAI Initiative","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The room hosts scheduled programs, so availability for informal study is not guaranteed; consult the library calendar and posted notices.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"linfield-writing-center","subject_type":"study_space","entity_name":"Linfield Writing Center","title":"Bring a Draft to the Writing Center","subtitle":"Nicholson Library support for papers in progress","notes":"Arrive with a draft or specific writing question and use the center for help editing, drafting or clarifying your next revision.","short_summary":"A task-focused stop for moving an essay from rough notes toward a stronger draft.","evidence_claim":"Linfield identifies the Writing Center as a Nicholson Library location where students can receive help editing, writing or drafting papers.","source_url":"https://www.linfield.edu/glossary/academics.html","source_title":"Academic Terms","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited page confirms the location and service but does not publish current drop-in hours or appointment requirements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"linfield-nicholson-screening-rooms","subject_type":"study_space","entity_name":"Nicholson Library Screening Rooms","title":"Review Media in a Screening Room","subtitle":"Library spaces intended for watching films","notes":"Ask library staff about availability before bringing a course film, and use headphones or the room’s approved playback setup as directed.","short_summary":"A purpose-specific option for assignments that require attentive film or video viewing.","evidence_claim":"Linfield identifies screening rooms in Nicholson Library as areas where users can watch movies.","source_url":"https://linfield.edu/glossary/campus-life.html","source_title":"Linfield Campus Life Terms","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official glossary confirms the rooms and their purpose but does not state reservation, equipment or eligibility rules; ask library staff first.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"linfield-renshaw-computer-lab","subject_type":"study_space","entity_name":"Renshaw Hall Computer Lab","title":"Work From the Renshaw Computer Lab","subtitle":"A map-listed computer lab in Renshaw Hall","notes":"Choose this lab when an assignment needs campus computing, and verify door access and software availability before a deadline.","short_summary":"The current campus map identifies a dedicated computer lab within an academic building.","evidence_claim":"Linfield’s current McMinnville campus map lists a Computer Lab among the facilities in Renshaw Hall.","source_url":"https://www.linfield.edu/assets/files/admission/mcminnville-campus-map.pdf","source_title":"Linfield University Campus Map","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The campus map confirms the lab but does not state current hours, card-access requirements or available software.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"linfield-fred-meyer-lounge","subject_type":"study_space","entity_name":"Fred Meyer Lounge","title":"Spread Out in Fred Meyer Lounge","subtitle":"A Riley Campus Center gathering space beside Starbucks","notes":"Use a table for informal work between commitments, but check posted programming because activities and gatherings can occupy the lounge.","short_summary":"A central, social alternative to library study with nearby campus services.","evidence_claim":"Linfield identifies Fred Meyer Lounge in Riley Campus Center next to Starbucks and states that many activities and gatherings take place there.","source_url":"https://linfield.edu/glossary/campus-life.html","source_title":"Linfield Campus Life Terms","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This is a multipurpose gathering space, not a designated quiet room; availability and noise depend on scheduled campus activities.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"linfield-riley-meditation-room","subject_type":"study_space","entity_name":"Riley Campus Center Prayer and Meditation Room","title":"Pause in the Meditation Room","subtitle":"A second-floor space open to every faith tradition","notes":"Step away for a quiet reset before returning to coursework, and preserve the room’s reflective purpose for everyone who enters.","short_summary":"A documented campus room for quiet reflection rather than group work or conversation.","evidence_claim":"Linfield states that the prayer and meditation room is on the second floor of Riley Campus Center and is available to all students and all faith traditions.","source_url":"https://linfield.edu/glossary/campus-life.html","source_title":"Linfield Campus Life Terms","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Available to all students; the cited page does not publish room hours, occupancy limits or a reservation process.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"linfield-withnell-multicultural-center","subject_type":"study_space","entity_name":"Multicultural Center","title":"Connect at the Multicultural Center","subtitle":"A student gathering space in Withnell Commons","notes":"Use the center for community-oriented work or a study check-in, while respecting events and the space’s belonging-focused mission.","short_summary":"A named gathering environment suited to collaborative, community-connected campus work.","evidence_claim":"Linfield identifies the Multicultural Center as a space where students gather for events and celebrations and locates it in Withnell Commons by the mailroom.","source_url":"https://linfield.edu/glossary/campus-life.html","source_title":"Linfield Campus Life Terms","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page confirms its location and gathering function but does not publish general study access, operating hours or event closures.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"linfield-potter-hall-study-room","subject_type":"study_space","entity_name":"Potter Hall Study Room","title":"Use Potter Hall’s Study Room","subtitle":"A residence-hall room that does not require reservation","notes":"If you have authorized residence-hall access, bring quiet coursework here when library rooms are unavailable and follow housing rules.","short_summary":"A documented no-reservation study room for students who can legitimately access Potter Hall.","evidence_claim":"Linfield states that residence halls such as Potter contain study rooms that do not have to be reserved.","source_url":"https://www.linfield.edu/glossary/academics.html","source_title":"Academic Terms","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"No reservation is required, but Potter Hall is student housing; use only with authorized building access and follow residence-life policies.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T08:02:05.758665Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa23-1ee4-79a0-9dc1-970ba6a6b816.1786608033509065000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+24,886
+
+{"complete":true,"school_name":"Linfield University","town_name":"McMinnville","boards":[{"complete":true,"school_name":"Linfield University","town_name":"McMinnville","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten documented McMinnville-campus settings for quiet work, group projects, computer access, writing support or a short reset between study sessions.","icon":"menu_book","cards":[{"subject_id":"linfield-nicholson-library","subject_type":"study_space","entity_name":"Jereld R. Nicholson Library","title":"Settle In at Nicholson Library","subtitle":"A spacious setting documented for quiet study","notes":"Bring your Linfield ID, choose a quiet work area and check the live library schedule before planning an evening session.","short_summary":"The university specifically presents Nicholson Library as a comfortable, spacious place for quiet study.","evidence_claim":"Linfield describes Nicholson Library as comfortable and spacious, identifies it as a place for quiet study and publishes separate academic-term access hours for students and the public.","source_url":"https://www.linfield.edu/library/","source_title":"Linfield Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Academic-term access for students, faculty and staff is Monday–Thursday 7:30 a.m.–midnight, Friday 7:30 a.m.–6 p.m., Saturday 10 a.m.–4 p.m. and Sunday noon–midnight; hours may change.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"linfield-nicholson-study-rooms","subject_type":"study_space","entity_name":"Nicholson Library Study Rooms","title":"Take a Project Into a Study Room","subtitle":"Private library rooms for solo or group work","notes":"Check out a room when conversation or collaboration would disrupt an open study area, and confirm the current loan procedure at the desk.","short_summary":"Private rooms provide a defined setting for studying and group projects inside Nicholson Library.","evidence_claim":"Linfield defines its library study rooms as private rooms that can be checked out for studying or working on group projects.","source_url":"https://www.linfield.edu/glossary/academics.html","source_title":"Academic Terms","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"A checkout is required; the official page does not state room capacity, loan duration or advance-reservation rules.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"linfield-austin-reading-room","subject_type":"study_space","entity_name":"Austin Reading Room","title":"Read in the Austin Reading Room","subtitle":"A named reading room inside Nicholson Library","notes":"Use the room for focused reading when it is not hosting a lecture, showcase or discussion; check library events before settling in.","short_summary":"This identifiable Nicholson Library room supports reading while also serving scheduled academic gatherings.","evidence_claim":"Current Linfield pages locate the Austin Reading Room within Nicholson Library and document it as the site of collaborative research discussions and academic presentations.","source_url":"https://www.linfield.edu/academics/business/AIAI-initiative.html","source_title":"AIAI Initiative","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The room hosts scheduled programs, so availability for informal study is not guaranteed; consult the library calendar and posted notices.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"linfield-writing-center","subject_type":"study_space","entity_name":"Linfield Writing Center","title":"Bring a Draft to the Writing Center","subtitle":"Nicholson Library support for papers in progress","notes":"Arrive with a draft or specific writing question and use the center for help editing, drafting or clarifying your next revision.","short_summary":"A task-focused stop for moving an essay from rough notes toward a stronger draft.","evidence_claim":"Linfield identifies the Writing Center as a Nicholson Library location where students can receive help editing, writing or drafting papers.","source_url":"https://www.linfield.edu/glossary/academics.html","source_title":"Academic Terms","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited page confirms the location and service but does not publish current drop-in hours or appointment requirements.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"linfield-nicholson-screening-rooms","subject_type":"study_space","entity_name":"Nicholson Library Screening Rooms","title":"Review Media in a Screening Room","subtitle":"Library spaces intended for watching films","notes":"Ask library staff about availability before bringing a course film, and use headphones or the room’s approved playback setup as directed.","short_summary":"A purpose-specific option for assignments that require attentive film or video viewing.","evidence_claim":"Linfield identifies screening rooms in Nicholson Library as areas where users can watch movies.","source_url":"https://linfield.edu/glossary/campus-life.html","source_title":"Linfield Campus Life Terms","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official glossary confirms the rooms and their purpose but does not state reservation, equipment or eligibility rules; ask library staff first.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"linfield-renshaw-computer-lab","subject_type":"study_space","entity_name":"Renshaw Hall Computer Lab","title":"Work From the Renshaw Computer Lab","subtitle":"A map-listed computer lab in Renshaw Hall","notes":"Choose this lab when an assignment needs campus computing, and verify door access and software availability before a deadline.","short_summary":"The current campus map identifies a dedicated computer lab within an academic building.","evidence_claim":"Linfield’s current McMinnville campus map lists a Computer Lab among the facilities in Renshaw Hall.","source_url":"https://www.linfield.edu/assets/files/admission/mcminnville-campus-map.pdf","source_title":"Linfield University Campus Map","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The campus map confirms the lab but does not state current hours, card-access requirements or available software.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"linfield-fred-meyer-lounge","subject_type":"study_space","entity_name":"Fred Meyer Lounge","title":"Spread Out in Fred Meyer Lounge","subtitle":"A Riley Campus Center gathering space beside Starbucks","notes":"Use a table for informal work between commitments, but check posted programming because activities and gatherings can occupy the lounge.","short_summary":"A central, social alternative to library study with nearby campus services.","evidence_claim":"Linfield identifies Fred Meyer Lounge in Riley Campus Center next to Starbucks and states that many activities and gatherings take place there.","source_url":"https://linfield.edu/glossary/campus-life.html","source_title":"Linfield Campus Life Terms","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This is a multipurpose gathering space, not a designated quiet room; availability and noise depend on scheduled campus activities.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"linfield-riley-meditation-room","subject_type":"study_space","entity_name":"Riley Campus Center Prayer and Meditation Room","title":"Pause in the Meditation Room","subtitle":"A second-floor space open to every faith tradition","notes":"Step away for a quiet reset before returning to coursework, and preserve the room’s reflective purpose for everyone who enters.","short_summary":"A documented campus room for quiet reflection rather than group work or conversation.","evidence_claim":"Linfield states that the prayer and meditation room is on the second floor of Riley Campus Center and is available to all students and all faith traditions.","source_url":"https://linfield.edu/glossary/campus-life.html","source_title":"Linfield Campus Life Terms","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Available to all students; the cited page does not publish room hours, occupancy limits or a reservation process.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"linfield-withnell-multicultural-center","subject_type":"study_space","entity_name":"Multicultural Center","title":"Connect at the Multicultural Center","subtitle":"A student gathering space in Withnell Commons","notes":"Use the center for community-oriented work or a study check-in, while respecting events and the space’s belonging-focused mission.","short_summary":"A named gathering environment suited to collaborative, community-connected campus work.","evidence_claim":"Linfield identifies the Multicultural Center as a space where students gather for events and celebrations and locates it in Withnell Commons by the mailroom.","source_url":"https://linfield.edu/glossary/campus-life.html","source_title":"Linfield Campus Life Terms","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page confirms its location and gathering function but does not publish general study access, operating hours or event closures.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"linfield-potter-hall-study-room","subject_type":"study_space","entity_name":"Potter Hall Study Room","title":"Use Potter Hall’s Study Room","subtitle":"A residence-hall room that does not require reservation","notes":"If you have authorized residence-hall access, bring quiet coursework here when library rooms are unavailable and follow housing rules.","short_summary":"A documented no-reservation study room for students who can legitimately access Potter Hall.","evidence_claim":"Linfield states that residence halls such as Potter contain study rooms that do not have to be reserved.","source_url":"https://www.linfield.edu/glossary/academics.html","source_title":"Academic Terms","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"No reservation is required, but Potter Hall is student housing; use only with authorized building access and follow residence-life policies.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

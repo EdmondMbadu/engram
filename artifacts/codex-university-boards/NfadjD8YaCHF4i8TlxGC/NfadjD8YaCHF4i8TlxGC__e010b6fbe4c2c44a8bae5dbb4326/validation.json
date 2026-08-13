@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://allentownfarmersmarket.com/contact-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://allentownfarmersmarket.com/contact-us",
+      "error": ""
+    },
+    {
+      "url": "https://civictheatre.com/about-us/directions-locations.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://civictheatre.com/about-us/directions-locations.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.theudderbar.com/contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.theudderbar.com/contact",
+      "error": ""
+    },
+    {
+      "url": "https://www.allentownpa.gov/Portals/0/files/Departments/Parks/ParksPlan2025/X6219_260323_coa_crosp_finalcompressed.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.allentownpa.gov/Portals/0/files/Departments/Parks/ParksPlan2025/X6219_260323_coa_crosp_finalcompressed.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://allentownpa.myrec.com/info/facilities/default.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://allentownpa.myrec.com/info/facilities/default.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://delawareandlehigh.org/map/attraction/haines-mill-museum/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://delawareandlehigh.org/map/attraction/haines-mill-museum/",
+      "error": ""
+    },
+    {
+      "url": "https://allentownparks.org/park-resources.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://allentownparks.org/park-resources.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

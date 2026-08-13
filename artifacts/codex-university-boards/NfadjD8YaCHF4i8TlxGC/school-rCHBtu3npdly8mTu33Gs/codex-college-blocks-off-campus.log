@@ -1,0 +1,283 @@
+Reading additional input from stdin...
+2026-08-13T06:47:35.444927Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:47:35.451449Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:47:35.523880Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9df-c05c-7292-bd63-5f5fde945f2a.1786603618396593000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9e0-50ee-7fe3-9670-cf6197e3ff25
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"rCHBtu3npdly8mTu33Gs","schoolName":"California State University-Northridge","shortSchoolName":"California State University-Northridge","townName":"Northridge","state":"CA","countryCode":"US","website":"https://www.csun.edu/","latitude":34.240126,"longitude":-118.529319},"templates":[{"id":"college-blocks-off-campus","version":"1.0","titlePattern":"{count} Blocks Off Campus, One Reason Each","editorialBrief":"Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.","researchQueries":["off campus streets student district","campus adjacent commercial streets","neighborhood plan near university"],"count":10,"icon":"location_city","primarySubjectType":"street_or_district","allowedSubjectTypes":["street_or_district"],"freshnessDays":730,"exactTitle":"10 Blocks Off Campus, One Reason Each"}]}
+codex
+{
+  "complete": false,
+  "school_name": "California State University-Northridge",
+  "town_name": "Northridge",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "California State University-Northridge",
+      "town_name": "Northridge",
+      "template_id": "college-blocks-off-campus",
+      "title": "10 Blocks Off Campus, One Reason Each",
+      "description": "",
+      "icon": "location_city",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+       
+    ,
+      {
+      "subject_id": "",
+      "subject_type": "street_or_district",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "other_reliable",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "",
+      "subject_type": "street_or_district",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "other_reliable",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "",
+      "subject_type": "street_or_district",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "other_reliable",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "",
+      "subject_type": "street_or_district",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "other_reliable",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "",
+      "subject_type": "street_or_district",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "other_reliable",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "",
+      "subject_type": "street_or_district",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "other_reliable",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "",
+      "subject_type": "street_or_district",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "other_reliable",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "",
+      "subject_type": "street_or_district",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "other_reliable",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    },
+    {
+      "subject_id": "",
+      "subject_type": "street_or_district",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "other_reliable",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "not_applicable",
+      "under21_safe": true
+    }
+    ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:csun.edu Northridge off campus Reseda Boulevard restaurants shops ...
+web search: 
+web search: 
+codex
+{"complete":true,"school_name":"California State University-Northridge","town_name":"Northridge","boards":[{"complete":true,"school_name":"California State University-Northridge","town_name":"Northridge","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named destinations along Reseda Boulevard, Nordhoff Street, and Dearborn Street, each with one specific reason to leave campus.","icon":"location_city","cards":[{"subject_id":"emles-restaurant-reseda-blvd","subject_type":"street_or_district","entity_name":"Emle’s Restaurant","title":"Mediterranean Meets Comfort Food","subtitle":"Reseda Boulevard — 9250 Reseda Blvd., Suite 1","notes":"Walk south on Reseda Boulevard for American comfort food with Mediterranean flair; review the current menu before choosing a meal.","short_summary":"A nearby sit-down option combining familiar American dishes with Mediterranean influences.","evidence_claim":"CSUN identifies Emle’s Restaurant at 9250 Reseda Boulevard, Suite 1, and describes its food as American comfort fare with Mediterranean flair.","source_url":"https://www.csun.edu/outreach/campus-tours","source_title":"Campus Tours | CSU Northridge","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public restaurant listed 0.3 miles from CSUN; check the restaurant’s current operating details before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"lemon-zest-reseda-blvd","subject_type":"street_or_district","entity_name":"Lemon Zest","title":"Three Mediterranean Traditions","subtitle":"Reseda Boulevard — 9310 Reseda Blvd.","notes":"Use this Reseda Boulevard stop when your group wants Greek, Middle Eastern, and Persian influences represented on one menu.","short_summary":"A close-to-campus restaurant spanning several regional Mediterranean cooking traditions.","evidence_claim":"CSUN lists Lemon Zest at 9310 Reseda Boulevard and describes it as modern Mediterranean food with Greek, Middle Eastern, and Persian influences.","source_url":"https://www.csun.edu/outreach/campus-tours","source_title":"Campus Tours | CSU Northridge","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public restaurant listed 0.2 miles from CSUN; confirm current operating details before departure.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"kickin-kasian-reseda-blvd","subject_type":"street_or_district","entity_name":"Kickin KAsian","title":"Cajun Seafood, Asian Inflection","subtitle":"Reseda Boulevard — 9545 Reseda Blvd.","notes":"Head north on Reseda Boulevard for a seafood-focused meal that combines Cajun-style boils with Asian fusion flavors.","short_summary":"A nearby seafood destination built around a clearly documented cross-cultural menu.","evidence_claim":"CSUN places Kickin KAsian at 9545 Reseda Boulevard and characterizes the restaurant as Cajun seafood boil meeting Asian fusion.","source_url":"https://www.csun.edu/outreach/campus-tours","source_title":"Campus Tours | CSU Northridge","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public restaurant listed 0.3 miles from CSUN; consult current business information before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"bon-bon-tea-house-reseda-blvd","subject_type":"street_or_district","entity_name":"Bon Bon Tea House","title":"A Dedicated Tea Break","subtitle":"Reseda Boulevard — 9663 Reseda Blvd.","notes":"Continue north along Reseda Boulevard when the plan calls for a focused tea-and-boba stop rather than a full restaurant meal.","short_summary":"A beverage-centered option for tea and boba within CSUN’s practical off-campus orbit.","evidence_claim":"CSUN lists Bon Bon Tea House at 9663 Reseda Boulevard and specifically describes its offerings as flavorful teas and boba.","source_url":"https://www.csun.edu/outreach/campus-tours","source_title":"Campus Tours | CSU Northridge","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public tea shop listed 0.5 miles from CSUN; verify current operating details before setting out.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"cafe-86-reseda-blvd","subject_type":"street_or_district","entity_name":"Cafe 86","title":"Ube Across the Counter","subtitle":"Reseda Boulevard — 9717 Reseda Blvd.","notes":"Follow Reseda Boulevard north for an ube-centered café visit, with drinks, lattes, pastries, and shakes documented by CSUN.","short_summary":"A dessert-and-drinks café where ube provides the stop’s specific identity.","evidence_claim":"CSUN lists Cafe 86 at 9717 Reseda Boulevard and says the café serves ube drinks, lattes, pastries, and shakes.","source_url":"https://www.csun.edu/outreach/campus-tours","source_title":"Campus Tours | CSU Northridge","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public café listed 0.5 miles from CSUN; check current business information before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"re-coffee-reseda-blvd","subject_type":"street_or_district","entity_name":"Re: Coffee","title":"Coffee, Hojicha, and Matcha","subtitle":"Reseda Boulevard — 9225 Reseda Blvd.","notes":"Walk south on Reseda Boulevard when you want a café whose documented drink range includes coffee, roasted hojicha, and matcha.","short_summary":"A compact café choice distinguished by three clearly identified beverage traditions.","evidence_claim":"CSUN identifies Re: Coffee at 9225 Reseda Boulevard and states that it serves coffee, hojicha, and matcha.","source_url":"https://www.csun.edu/outreach/campus-tours","source_title":"Campus Tours | CSU Northridge","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public café listed 0.5 miles from CSUN; confirm current operating details before departure.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"house-roots-coffee-nordhoff-st","subject_type":"street_or_district","entity_name":"House Roots Coffee","title":"Breakfast Along Nordhoff","subtitle":"Nordhoff Street — 18401 Nordhoff St., Suite A","notes":"Turn onto Nordhoff Street for specialty coffee plus pastries and breakfast bites, a practical combination for a morning outing.","short_summary":"A Nordhoff Street coffee stop with breakfast food documented alongside its specialty drinks.","evidence_claim":"CSUN lists House Roots Coffee at 18401 Nordhoff Street, Suite A, and describes specialty coffee, pastries, and breakfast bites.","source_url":"https://www.csun.edu/outreach/campus-tours","source_title":"Campus Tours | CSU Northridge","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public café listed 0.3 miles from CSUN; verify current operating details before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"peak-cafe-dearborn-st","subject_type":"street_or_district","entity_name":"Peak Cafe","title":"A Lighter Lunch on Dearborn","subtitle":"Dearborn Street — 18436 Dearborn St.","notes":"Use Dearborn Street for a café stop offering coffee, smoothies, breakfast, and light lunch choices instead of a heavier meal.","short_summary":"A nearby Dearborn Street café covering both breakfast and lighter midday food.","evidence_claim":"CSUN places Peak Cafe at 18436 Dearborn Street and says it offers coffee, smoothies, breakfast, and light lunch options.","source_url":"https://www.csun.edu/outreach/campus-tours","source_title":"Campus Tours | CSU Northridge","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public café listed 0.3 miles from CSUN; consult current business information before departure.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"portos-bakery-nordhoff-st","subject_type":"street_or_district","entity_name":"Porto’s Bakery","title":"Cuban Baking on Nordhoff","subtitle":"Nordhoff Street — 19467 Nordhoff St.","notes":"Travel west on Nordhoff Street for a Cuban bakery visit spanning savory plates, pastries, and other documented comfort-food choices.","short_summary":"A bakery-and-café destination centered on Cuban pastries and savory food.","evidence_claim":"CSUN lists Porto’s Bakery at 19467 Nordhoff Street and describes Cuban comfort food, savory plates, and flaky pastries.","source_url":"https://www.csun.edu/outreach/campus-tours","source_title":"Campus Tours | CSU Northridge","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public bakery listed 1.5 miles from CSUN; check current operating details before making the trip.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"yellow-house-cafe-reseda-blvd","subject_type":"street_or_district","entity_name":"Yellow House Cafe","title":"Breakfast and Sandwiches Southbound","subtitle":"Reseda Boulevard — 8926 Reseda Blvd.","notes":"Head south on Reseda Boulevard for a café combining coffee and pastries with hearty breakfasts and freshly made sandwiches.","short_summary":"A south-of-campus café where the documented menu extends beyond drinks and sweets.","evidence_claim":"CSUN lists Yellow House Cafe at 8926 Reseda Boulevard and describes coffee, pastries, hearty breakfasts, and fresh sandwiches.","source_url":"https://www.csun.edu/outreach/campus-tours","source_title":"Campus Tours | CSU Northridge","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public café listed 0.3 miles from CSUN; confirm current operating details before visiting.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T06:49:18.504706Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9e0-50ee-7fe3-9670-cf6197e3ff25.1786603655406462000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+16,981
+
+{"complete":true,"school_name":"California State University-Northridge","town_name":"Northridge","boards":[{"complete":true,"school_name":"California State University-Northridge","town_name":"Northridge","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named destinations along Reseda Boulevard, Nordhoff Street, and Dearborn Street, each with one specific reason to leave campus.","icon":"location_city","cards":[{"subject_id":"emles-restaurant-reseda-blvd","subject_type":"street_or_district","entity_name":"Emle’s Restaurant","title":"Mediterranean Meets Comfort Food","subtitle":"Reseda Boulevard — 9250 Reseda Blvd., Suite 1","notes":"Walk south on Reseda Boulevard for American comfort food with Mediterranean flair; review the current menu before choosing a meal.","short_summary":"A nearby sit-down option combining familiar American dishes with Mediterranean influences.","evidence_claim":"CSUN identifies Emle’s Restaurant at 9250 Reseda Boulevard, Suite 1, and describes its food as American comfort fare with Mediterranean flair.","source_url":"https://www.csun.edu/outreach/campus-tours","source_title":"Campus Tours | CSU Northridge","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public restaurant listed 0.3 miles from CSUN; check the restaurant’s current operating details before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"lemon-zest-reseda-blvd","subject_type":"street_or_district","entity_name":"Lemon Zest","title":"Three Mediterranean Traditions","subtitle":"Reseda Boulevard — 9310 Reseda Blvd.","notes":"Use this Reseda Boulevard stop when your group wants Greek, Middle Eastern, and Persian influences represented on one menu.","short_summary":"A close-to-campus restaurant spanning several regional Mediterranean cooking traditions.","evidence_claim":"CSUN lists Lemon Zest at 9310 Reseda Boulevard and describes it as modern Mediterranean food with Greek, Middle Eastern, and Persian influences.","source_url":"https://www.csun.edu/outreach/campus-tours","source_title":"Campus Tours | CSU Northridge","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public restaurant listed 0.2 miles from CSUN; confirm current operating details before departure.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"kickin-kasian-reseda-blvd","subject_type":"street_or_district","entity_name":"Kickin KAsian","title":"Cajun Seafood, Asian Inflection","subtitle":"Reseda Boulevard — 9545 Reseda Blvd.","notes":"Head north on Reseda Boulevard for a seafood-focused meal that combines Cajun-style boils with Asian fusion flavors.","short_summary":"A nearby seafood destination built around a clearly documented cross-cultural menu.","evidence_claim":"CSUN places Kickin KAsian at 9545 Reseda Boulevard and characterizes the restaurant as Cajun seafood boil meeting Asian fusion.","source_url":"https://www.csun.edu/outreach/campus-tours","source_title":"Campus Tours | CSU Northridge","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public restaurant listed 0.3 miles from CSUN; consult current business information before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"bon-bon-tea-house-reseda-blvd","subject_type":"street_or_district","entity_name":"Bon Bon Tea House","title":"A Dedicated Tea Break","subtitle":"Reseda Boulevard — 9663 Reseda Blvd.","notes":"Continue north along Reseda Boulevard when the plan calls for a focused tea-and-boba stop rather than a full restaurant meal.","short_summary":"A beverage-centered option for tea and boba within CSUN’s practical off-campus orbit.","evidence_claim":"CSUN lists Bon Bon Tea House at 9663 Reseda Boulevard and specifically describes its offerings as flavorful teas and boba.","source_url":"https://www.csun.edu/outreach/campus-tours","source_title":"Campus Tours | CSU Northridge","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public tea shop listed 0.5 miles from CSUN; verify current operating details before setting out.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"cafe-86-reseda-blvd","subject_type":"street_or_district","entity_name":"Cafe 86","title":"Ube Across the Counter","subtitle":"Reseda Boulevard — 9717 Reseda Blvd.","notes":"Follow Reseda Boulevard north for an ube-centered café visit, with drinks, lattes, pastries, and shakes documented by CSUN.","short_summary":"A dessert-and-drinks café where ube provides the stop’s specific identity.","evidence_claim":"CSUN lists Cafe 86 at 9717 Reseda Boulevard and says the café serves ube drinks, lattes, pastries, and shakes.","source_url":"https://www.csun.edu/outreach/campus-tours","source_title":"Campus Tours | CSU Northridge","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public café listed 0.5 miles from CSUN; check current business information before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"re-coffee-reseda-blvd","subject_type":"street_or_district","entity_name":"Re: Coffee","title":"Coffee, Hojicha, and Matcha","subtitle":"Reseda Boulevard — 9225 Reseda Blvd.","notes":"Walk south on Reseda Boulevard when you want a café whose documented drink range includes coffee, roasted hojicha, and matcha.","short_summary":"A compact café choice distinguished by three clearly identified beverage traditions.","evidence_claim":"CSUN identifies Re: Coffee at 9225 Reseda Boulevard and states that it serves coffee, hojicha, and matcha.","source_url":"https://www.csun.edu/outreach/campus-tours","source_title":"Campus Tours | CSU Northridge","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public café listed 0.5 miles from CSUN; confirm current operating details before departure.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"house-roots-coffee-nordhoff-st","subject_type":"street_or_district","entity_name":"House Roots Coffee","title":"Breakfast Along Nordhoff","subtitle":"Nordhoff Street — 18401 Nordhoff St., Suite A","notes":"Turn onto Nordhoff Street for specialty coffee plus pastries and breakfast bites, a practical combination for a morning outing.","short_summary":"A Nordhoff Street coffee stop with breakfast food documented alongside its specialty drinks.","evidence_claim":"CSUN lists House Roots Coffee at 18401 Nordhoff Street, Suite A, and describes specialty coffee, pastries, and breakfast bites.","source_url":"https://www.csun.edu/outreach/campus-tours","source_title":"Campus Tours | CSU Northridge","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public café listed 0.3 miles from CSUN; verify current operating details before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"peak-cafe-dearborn-st","subject_type":"street_or_district","entity_name":"Peak Cafe","title":"A Lighter Lunch on Dearborn","subtitle":"Dearborn Street — 18436 Dearborn St.","notes":"Use Dearborn Street for a café stop offering coffee, smoothies, breakfast, and light lunch choices instead of a heavier meal.","short_summary":"A nearby Dearborn Street café covering both breakfast and lighter midday food.","evidence_claim":"CSUN places Peak Cafe at 18436 Dearborn Street and says it offers coffee, smoothies, breakfast, and light lunch options.","source_url":"https://www.csun.edu/outreach/campus-tours","source_title":"Campus Tours | CSU Northridge","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public café listed 0.3 miles from CSUN; consult current business information before departure.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"portos-bakery-nordhoff-st","subject_type":"street_or_district","entity_name":"Porto’s Bakery","title":"Cuban Baking on Nordhoff","subtitle":"Nordhoff Street — 19467 Nordhoff St.","notes":"Travel west on Nordhoff Street for a Cuban bakery visit spanning savory plates, pastries, and other documented comfort-food choices.","short_summary":"A bakery-and-café destination centered on Cuban pastries and savory food.","evidence_claim":"CSUN lists Porto’s Bakery at 19467 Nordhoff Street and describes Cuban comfort food, savory plates, and flaky pastries.","source_url":"https://www.csun.edu/outreach/campus-tours","source_title":"Campus Tours | CSU Northridge","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public bakery listed 1.5 miles from CSUN; check current operating details before making the trip.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"yellow-house-cafe-reseda-blvd","subject_type":"street_or_district","entity_name":"Yellow House Cafe","title":"Breakfast and Sandwiches Southbound","subtitle":"Reseda Boulevard — 8926 Reseda Blvd.","notes":"Head south on Reseda Boulevard for a café combining coffee and pastries with hearty breakfasts and freshly made sandwiches.","short_summary":"A south-of-campus café where the documented menu extends beyond drinks and sweets.","evidence_claim":"CSUN lists Yellow House Cafe at 8926 Reseda Boulevard and describes coffee, pastries, hearty breakfasts, and fresh sandwiches.","source_url":"https://www.csun.edu/outreach/campus-tours","source_title":"Campus Tours | CSU Northridge","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Public café listed 0.3 miles from CSUN; confirm current operating details before visiting.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}

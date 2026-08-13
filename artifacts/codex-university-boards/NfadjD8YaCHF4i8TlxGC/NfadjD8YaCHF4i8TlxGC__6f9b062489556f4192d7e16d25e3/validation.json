@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.stpaul.gov/facilities/highland-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stpaul.gov/facilities/highland-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.stpaul.gov/departments/parks-and-recreation/aquatics/highland-park-aquatic-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stpaul.gov/departments/parks-and-recreation/aquatics/highland-park-aquatic-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.stpaul.gov/facilities/highland-park-community-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stpaul.gov/facilities/highland-park-community-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.stpaul.gov/facilities/hidden-falls-regional-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stpaul.gov/facilities/hidden-falls-regional-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.stpaul.gov/facilities/crosby-farm-regional-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.stpaul.gov/facilities/crosby-farm-regional-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.kowalskis.com/locations/grand-avenue-market",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.kowalskis.com/locations/grand-avenue-market",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

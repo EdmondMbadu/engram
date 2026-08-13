@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "4 source URL check(s) were inconclusive and need editorial confirmation."
+  ],
+  "reachability": [
+    {
+      "url": "https://liberalarts.oregonstate.edu/svpda/art/community/art-galleries-fairbanks-hall/fairbanks-gallery-art",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://liberalarts.oregonstate.edu/svpda/art/community/art-galleries-fairbanks-hall/fairbanks-gallery-art",
+      "error": ""
+    },
+    {
+      "url": "https://visitosu.oregonstate.edu/visit-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://visitosu.oregonstate.edu/visit-campus",
+      "error": ""
+    },
+    {
+      "url": "https://prax.oregonstate.edu/visual-arts/public-art",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://prax.oregonstate.edu/visual-arts/public-art",
+      "error": ""
+    },
+    {
+      "url": "https://today.oregonstate.edu/all-stories/how-get-most-out-osu-green-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://today.oregonstate.edu/all-stories/how-get-most-out-osu-green-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://extension.oregonstate.edu/news/oak-creek-center-urban-horticulture-designated-certified-wildlife-habitat",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://extension.oregonstate.edu/news/oak-creek-center-urban-horticulture-designated-certified-wildlife-habitat",
+      "error": ""
+    },
+    {
+      "url": "https://www.corvallisoregon.gov/parksrec/page/avery-park-and-natural-area",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.corvallisoregon.gov/parksrec/page/avery-park-and-natural-area",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.corvallisoregon.gov/parksrec/page/rose-garden",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.corvallisoregon.gov/parksrec/page/rose-garden",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.corvallisoregon.gov/parksrec/page/chip-ross-park-and-natural-area",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.corvallisoregon.gov/parksrec/page/chip-ross-park-and-natural-area",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://cf.forestry.oregonstate.edu/sites/default/files/FDT_TeachersGuide.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cf.forestry.oregonstate.edu/sites/default/files/FDT_TeachersGuide.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.corvallisoregon.gov/parksrec/page/central-park",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.corvallisoregon.gov/parksrec/page/central-park",
+      "error": "fetch failed"
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

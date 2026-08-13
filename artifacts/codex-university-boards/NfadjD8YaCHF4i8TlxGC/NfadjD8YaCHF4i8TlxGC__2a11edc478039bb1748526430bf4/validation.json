@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.raisingcanes.com/ca/san-marcos/105-s-las-posas-road",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.raisingcanes.com/ca/san-marcos/105-s-las-posas-road",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ca/san-marcos/120-n-rancho-santa-fe-rd/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ca/san-marcos/120-n-rancho-santa-fe-rd/restaurant.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jackinthebox.com/us/ca/san-marcos/1655-capalina-rd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jackinthebox.com/us/ca/san-marcos/1655-capalina-rd",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ca/san-marcos/704-center-dr.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ca/san-marcos/704-center-dr.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.in-n-out.com/185-San-Marcos",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.in-n-out.com/185-San-Marcos",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/california/san-marcos/805-w-san-marcos-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/california/san-marcos/805-w-san-marcos-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wingstop.com/ca/san-marcos/wingstop-1635-san-marcos-ca-92078",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wingstop.com/ca/san-marcos/wingstop-1635-san-marcos-ca-92078",
+      "error": ""
+    },
+    {
+      "url": "https://locations.deltaco.com/us/ca/san-marcos/736-s-rancho-santa-fe",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.deltaco.com/us/ca/san-marcos/736-s-rancho-santa-fe",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dennys.com/ca/san-marcos/7445-breakfast",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dennys.com/ca/san-marcos/7445-breakfast",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

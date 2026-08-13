@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://pizza.dominos.com/pennsylvania/annville/1405-east-main-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/pennsylvania/annville/1405-east-main-street",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/pa/lebanon/757-e-cumberland-st/7045.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/pa/lebanon/757-e-cumberland-st/7045.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/pa/lebanon/2100-cumberland-street.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/pa/lebanon/2100-cumberland-street.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/pa/lebanon/2420-w-cumberland-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/pa/lebanon/2420-w-cumberland-st",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/pa/lebanon/1490-east-lehman-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/pa/lebanon/1490-east-lehman-street",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/pa/lebanon",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/pa/lebanon",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/pennsylvania/lebanon/503-cumberland-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/pennsylvania/lebanon/503-cumberland-street",
+      "error": ""
+    },
+    {
+      "url": "https://feniccis.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://feniccis.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hersheypa.com/things-to-do/dining/hershey-social/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hersheypa.com/things-to-do/dining/hershey-social/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hersheyland.ca/plan-your-visit/hours.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hersheyland.ca/plan-your-visit/hours.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

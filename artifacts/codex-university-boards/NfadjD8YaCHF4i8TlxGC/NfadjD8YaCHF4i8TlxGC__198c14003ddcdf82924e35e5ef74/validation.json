@@ -1,0 +1,65 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://map.uncsa.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://map.uncsa.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://www.uncsa.edu/about/doc/uncsa-campus-map.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncsa.edu/about/doc/uncsa-campus-map.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.uncsa.edu/current-students/services/index.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncsa.edu/current-students/services/index.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.uncsa.edu/performances/venues/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncsa.edu/performances/venues/",
+      "error": ""
+    },
+    {
+      "url": "https://www.uncsa.edu/campus-performance-facilities/venues.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncsa.edu/campus-performance-facilities/venues.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.uncsa.edu/performances/index.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.uncsa.edu/performances/index.aspx",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Hanes Student Commons",
+    "Library and Learning Commons",
+    "Daniels Plaza"
+  ],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

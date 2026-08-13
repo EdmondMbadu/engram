@@ -1,0 +1,297 @@
+Reading additional input from stdin...
+2026-08-13T07:59:00.623360Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:59:00.647004Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:59:00.699678Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa21-7a6e-7b72-9795-333241ad5f53.1786607925870592000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa21-b402-7f91-8cff-c9f88a548b57
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"qHq2MZxQLvUrCRkUDvUO","schoolName":"Lewis & Clark College","shortSchoolName":"Lewis & Clark College","townName":"Portland","state":"OR","countryCode":"US","website":"https://www.lclark.edu/","latitude":45.450882,"longitude":-122.669137},"templates":[{"id":"college-first-weekend","version":"1.0","titlePattern":"Your First Weekend at {school}, Shared as Cards","editorialBrief":"Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.","researchQueries":["new student orientation campus guide","first year student campus activities","weekend near campus students"],"count":10,"icon":"schedule","primarySubjectType":"sequence_stop","allowedSubjectTypes":["sequence_stop","place","activity"],"freshnessDays":180,"exactTitle":"Your First Weekend at Lewis & Clark College, Shared as Cards"}]}
+codex
+{
+  "complete": false,
+  "school_name": "Lewis & Clark College",
+  "town_name": "Portland",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Lewis & Clark College",
+      "town_name": "Portland",
+      "template_id": "college-first-weekend",
+      "title": "Your First Weekend at Lewis & Clark College, Shared as Cards",
+      "description": "",
+      "icon": "schedule",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     
+    ,
+      {
+        "subject_id": "research-status",
+        "subject_type": "sequence_stop",
+        "entity_name": "Lewis & Clark College",
+        "title": "Researching the complete sequence",
+        "subtitle": "Verifying ten distinct, current stops",
+        "notes": "I’m checking official campus and Portland sources for access, activities, and named destinations.",
+        "short_summary": "Current public facts and direct supporting pages are being verified.",
+        "evidence_claim": "Research is in progress.",
+        "source_url": "https://www.lclark.edu/",
+        "source_title": "Lewis & Clark College",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "Final access notes will be based only on direct current sources.",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+    ],
+      "warnings": [
+        "Research in progress; this is not the final board."
+      ]
+    }
+  ],
+  "warnings": [
+    "Research in progress."
+  ]
+}
+web search: 
+web search: site:lclark.edu Lewis & Clark College campus map Tryon Creek library chapel estate gardens student activities ...
+web search: 
+web search: site:lclark.edu/maps/buildings Lewis Clark Fowler Student Center Watzek Library Estate Gardens Flanagan Chapel ...
+web search: 
+web search: site:lclark.edu transportation Pioneer Express shuttle schedule Portland Lewis Clark ...
+codex
+{"complete":true,"school_name":"Lewis & Clark College","town_name":"Portland","boards":[{"complete":true,"school_name":"Lewis & Clark College","town_name":"Portland","template_id":"college-first-weekend","title":"Your First Weekend at Lewis & Clark College, Shared as Cards","description":"A Friday-to-Sunday sequence for learning campus landmarks, finding student resources, exploring nearby nature, and practicing a shuttle trip into Portland.","icon":"schedule","cards":[{"subject_id":"lc-first-weekend-fowler","subject_type":"sequence_stop","entity_name":"Stephanie Fowler Student Center","title":"Start at the Student Center","subtitle":"Friday afternoon · Find the campus crossroads","notes":"Walk through Fowler, locate its student-service offices, and note the two dining areas before the weekend gets busy.","short_summary":"Use Fowler as your practical starting point for food, services, and student organizations.","evidence_claim":"Lewis & Clark states that Fowler Student Center contains Fields Dining Room, the Trail Room, major undergraduate organizations, and multiple student-serving offices.","source_url":"https://www.lclark.edu/about/facilities_and_resources/","source_title":"Facilities • About Lewis & Clark","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Campus services and dining operations may follow separate schedules; check posted information before relying on access.","cost_status":"unknown","under21_safe":true},{"subject_id":"lc-first-weekend-holmes-gardens","subject_type":"sequence_stop","entity_name":"Edna Holmes Gardens","title":"Trace the Estate Gardens","subtitle":"Friday afternoon · Learn an outdoor landmark","notes":"Follow the terrace beside Frank Manor House and identify the gardens as a calm reference point for navigating campus.","short_summary":"Learn the named historic landscape adjoining the former estate residence.","evidence_claim":"Lewis & Clark’s undergraduate catalog identifies the terrace and estate gardens east of Frank Manor House as the Edna L. Holmes Gardens.","source_url":"https://docs.lclark.edu/undergraduate/about/campusbuildings/","source_title":"Campus Buildings • Undergraduate Catalog","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor conditions and event closures can affect access; remain on established campus paths.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lc-first-weekend-frank-manor","subject_type":"sequence_stop","entity_name":"Frank Manor House","title":"Find Frank Manor House","subtitle":"Friday afternoon · Anchor the historic campus","notes":"Pause outside the manor, connect it to the gardens and reflecting pool, and use those landmarks to orient your next walk.","short_summary":"Place the college’s historic estate building within its surrounding landscape.","evidence_claim":"Lewis & Clark’s current campus map names Frank Manor House, the Estate Gardens, and the Reflecting Pool as adjacent undergraduate-campus features.","source_url":"https://www.lclark.edu/live/files/7676-campus-map","source_title":"Lewis & Clark Campus Map","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This stop is planned as an exterior orientation walk; interior availability is not assumed.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lc-first-weekend-flanagan","subject_type":"sequence_stop","entity_name":"Agnes Flanagan Chapel","title":"Look Up Inside Flanagan Chapel","subtitle":"Friday evening · Meet a distinctive gathering place","notes":"If the building is open, step inside to see the suspended organ pipes; otherwise, study the chapel’s 16-sided exterior.","short_summary":"Recognize the chapel by its unusual geometry and centrally suspended pipe organ.","evidence_claim":"Lewis & Clark describes Agnes Flanagan Chapel as a 16-sided building with an 85-rank Casavant organ whose nearly 5,000 pipes are largely suspended from the ceiling.","source_url":"https://www.lclark.edu/offices/spiritual_life/agnes_flanagan_chapel/","source_title":"Agnes Flanagan Chapel • Spiritual Life","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"No public drop-in hours are stated on the cited page; enter only when the chapel is open and not reserved for an event.","cost_status":"unknown","under21_safe":true},{"subject_id":"lc-first-weekend-watzek","subject_type":"sequence_stop","entity_name":"Aubrey R. Watzek Library","title":"Claim a Watzek Study Spot","subtitle":"Friday evening · Set up your academic base","notes":"Bring your L&C ID, find a study area that suits you, and save the service-desk details you may need after classes begin.","short_summary":"Learn the library layout while the weekend is still flexible.","evidence_claim":"Lewis & Clark says Watzek offers books, technology, staff, and varied study spaces; evening entry from 6 p.m. requires an L&C ID.","source_url":"https://college.lclark.edu/live/news/57877-changes-to-evening-library-access","source_title":"Changes to Evening Library Access • Libraries","source_kind":"university_official","source_published_at":"2026-03-19","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"From 6 p.m. to midnight Sunday–Thursday, access is limited to the Lewis & Clark community and requires an L&C ID; verify current weekend hours.","cost_status":"unknown","under21_safe":true},{"subject_id":"lc-first-weekend-hoffman","subject_type":"sequence_stop","entity_name":"Ronna and Eric Hoffman Gallery of Contemporary Art","title":"Browse the Hoffman Gallery","subtitle":"Saturday late morning · Add contemporary art","notes":"Arrive after the posted opening time, view the current installation, and leave enough room to look across the adjoining plaza.","short_summary":"Make a compact, no-admission art stop on the undergraduate campus.","evidence_claim":"Lewis & Clark states that the Hoffman Gallery is free, open to the public, open daily from 11 a.m. to 4 p.m., and occupies 3,500 square feet.","source_url":"https://www.lclark.edu/hoffman_gallery/","source_title":"Ronna and Eric Hoffman Gallery of Contemporary Art","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The gallery posts daily hours of 11 a.m.–4 p.m.; confirm the current exhibition calendar before visiting.","cost_status":"free","under21_safe":true},{"subject_id":"lc-first-weekend-college-outdoors","subject_type":"sequence_stop","entity_name":"College Outdoors","title":"Meet College Outdoors","subtitle":"Saturday midday · Map future weekend options","notes":"Find room 239 in Fowler, review the trip program online, and note where to ask about clinics or planning a later outing.","short_summary":"Locate the campus office that organizes recurring outdoor trips and clinics.","evidence_claim":"Lewis & Clark states that College Outdoors runs varied trips and clinics nearly every weekend during the semester and is located in Fowler Student Center room 239.","source_url":"https://www.lclark.edu/programs/college_outdoors/programs/","source_title":"Programs • College Outdoors","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Office access and participation require separate confirmation; trip registration, capacity, prerequisites, and fees may vary.","cost_status":"unknown","under21_safe":true},{"subject_id":"lc-first-weekend-pamplin","subject_type":"sequence_stop","entity_name":"Pamplin Sports Center","title":"Locate Pamplin Sports Center","subtitle":"Saturday afternoon · Learn the recreation hub","notes":"Walk to Pamplin, inspect the posted facility schedule, and note the nearby track and courts for future recreation plans.","short_summary":"Identify the main athletics building and its surrounding outdoor facilities.","evidence_claim":"Lewis & Clark identifies Pamplin Sports Center as the location of Physical Education and Athletics, while its campus map shows Pamplin near Fix Track and tennis courts.","source_url":"https://www.lclark.edu/sports/","source_title":"Sports • Lewis & Clark","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Recreational access and facility hours are not specified on the cited page; consult posted schedules and carry student identification.","cost_status":"unknown","under21_safe":true},{"subject_id":"lc-first-weekend-tryon-creek","subject_type":"sequence_stop","entity_name":"Tryon Creek State Natural Area","title":"Walk Tryon Creek’s Trillium Trail","subtitle":"Sunday morning · Explore the neighboring forest","notes":"Check conditions, choose the paved 0.3-mile Trillium Trail, and turn back before your route exceeds your time or comfort.","short_summary":"Try a short, defined introduction to the state natural area beside campus.","evidence_claim":"Oregon State Parks says Tryon Creek has eight miles of hiking trails and a 0.3-mile fully paved Trillium Trail with benches and turnaround areas.","source_url":"https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=103","source_title":"Tryon Creek State Natural Area • Oregon State Parks","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open for day use year-round with seasonal closing times; trails may be muddy, and vehicles require a day-use parking permit.","cost_status":"unknown","under21_safe":true},{"subject_id":"lc-first-weekend-otterbus","subject_type":"sequence_stop","entity_name":"OtterBus","title":"Practice the Downtown Shuttle","subtitle":"Sunday afternoon · Learn the Portland connection","notes":"Check the live weekend timetable, board at the designated campus stop, and save the downtown stop before beginning the trip.","short_summary":"Finish the weekend by learning the college shuttle’s downtown connection.","evidence_claim":"Lewis & Clark publishes weekend and holiday OtterBus service information and identifies SW Broadway and Hall near Portland State University as its main downtown stop.","source_url":"https://www.lclark.edu/offices/transportation_and_parking/shuttle/","source_title":"OtterBus • Transportation and Parking","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Check the current weekend timetable and tracker before departure; weather or college closures can alter scheduled service.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T08:00:58.960429Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa21-b402-7f91-8cff-c9f88a548b57.1786607940610852000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+35,066
+
+{"complete":true,"school_name":"Lewis & Clark College","town_name":"Portland","boards":[{"complete":true,"school_name":"Lewis & Clark College","town_name":"Portland","template_id":"college-first-weekend","title":"Your First Weekend at Lewis & Clark College, Shared as Cards","description":"A Friday-to-Sunday sequence for learning campus landmarks, finding student resources, exploring nearby nature, and practicing a shuttle trip into Portland.","icon":"schedule","cards":[{"subject_id":"lc-first-weekend-fowler","subject_type":"sequence_stop","entity_name":"Stephanie Fowler Student Center","title":"Start at the Student Center","subtitle":"Friday afternoon · Find the campus crossroads","notes":"Walk through Fowler, locate its student-service offices, and note the two dining areas before the weekend gets busy.","short_summary":"Use Fowler as your practical starting point for food, services, and student organizations.","evidence_claim":"Lewis & Clark states that Fowler Student Center contains Fields Dining Room, the Trail Room, major undergraduate organizations, and multiple student-serving offices.","source_url":"https://www.lclark.edu/about/facilities_and_resources/","source_title":"Facilities • About Lewis & Clark","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Campus services and dining operations may follow separate schedules; check posted information before relying on access.","cost_status":"unknown","under21_safe":true},{"subject_id":"lc-first-weekend-holmes-gardens","subject_type":"sequence_stop","entity_name":"Edna Holmes Gardens","title":"Trace the Estate Gardens","subtitle":"Friday afternoon · Learn an outdoor landmark","notes":"Follow the terrace beside Frank Manor House and identify the gardens as a calm reference point for navigating campus.","short_summary":"Learn the named historic landscape adjoining the former estate residence.","evidence_claim":"Lewis & Clark’s undergraduate catalog identifies the terrace and estate gardens east of Frank Manor House as the Edna L. Holmes Gardens.","source_url":"https://docs.lclark.edu/undergraduate/about/campusbuildings/","source_title":"Campus Buildings • Undergraduate Catalog","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor conditions and event closures can affect access; remain on established campus paths.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lc-first-weekend-frank-manor","subject_type":"sequence_stop","entity_name":"Frank Manor House","title":"Find Frank Manor House","subtitle":"Friday afternoon · Anchor the historic campus","notes":"Pause outside the manor, connect it to the gardens and reflecting pool, and use those landmarks to orient your next walk.","short_summary":"Place the college’s historic estate building within its surrounding landscape.","evidence_claim":"Lewis & Clark’s current campus map names Frank Manor House, the Estate Gardens, and the Reflecting Pool as adjacent undergraduate-campus features.","source_url":"https://www.lclark.edu/live/files/7676-campus-map","source_title":"Lewis & Clark Campus Map","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This stop is planned as an exterior orientation walk; interior availability is not assumed.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"lc-first-weekend-flanagan","subject_type":"sequence_stop","entity_name":"Agnes Flanagan Chapel","title":"Look Up Inside Flanagan Chapel","subtitle":"Friday evening · Meet a distinctive gathering place","notes":"If the building is open, step inside to see the suspended organ pipes; otherwise, study the chapel’s 16-sided exterior.","short_summary":"Recognize the chapel by its unusual geometry and centrally suspended pipe organ.","evidence_claim":"Lewis & Clark describes Agnes Flanagan Chapel as a 16-sided building with an 85-rank Casavant organ whose nearly 5,000 pipes are largely suspended from the ceiling.","source_url":"https://www.lclark.edu/offices/spiritual_life/agnes_flanagan_chapel/","source_title":"Agnes Flanagan Chapel • Spiritual Life","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"No public drop-in hours are stated on the cited page; enter only when the chapel is open and not reserved for an event.","cost_status":"unknown","under21_safe":true},{"subject_id":"lc-first-weekend-watzek","subject_type":"sequence_stop","entity_name":"Aubrey R. Watzek Library","title":"Claim a Watzek Study Spot","subtitle":"Friday evening · Set up your academic base","notes":"Bring your L&C ID, find a study area that suits you, and save the service-desk details you may need after classes begin.","short_summary":"Learn the library layout while the weekend is still flexible.","evidence_claim":"Lewis & Clark says Watzek offers books, technology, staff, and varied study spaces; evening entry from 6 p.m. requires an L&C ID.","source_url":"https://college.lclark.edu/live/news/57877-changes-to-evening-library-access","source_title":"Changes to Evening Library Access • Libraries","source_kind":"university_official","source_published_at":"2026-03-19","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"From 6 p.m. to midnight Sunday–Thursday, access is limited to the Lewis & Clark community and requires an L&C ID; verify current weekend hours.","cost_status":"unknown","under21_safe":true},{"subject_id":"lc-first-weekend-hoffman","subject_type":"sequence_stop","entity_name":"Ronna and Eric Hoffman Gallery of Contemporary Art","title":"Browse the Hoffman Gallery","subtitle":"Saturday late morning · Add contemporary art","notes":"Arrive after the posted opening time, view the current installation, and leave enough room to look across the adjoining plaza.","short_summary":"Make a compact, no-admission art stop on the undergraduate campus.","evidence_claim":"Lewis & Clark states that the Hoffman Gallery is free, open to the public, open daily from 11 a.m. to 4 p.m., and occupies 3,500 square feet.","source_url":"https://www.lclark.edu/hoffman_gallery/","source_title":"Ronna and Eric Hoffman Gallery of Contemporary Art","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The gallery posts daily hours of 11 a.m.–4 p.m.; confirm the current exhibition calendar before visiting.","cost_status":"free","under21_safe":true},{"subject_id":"lc-first-weekend-college-outdoors","subject_type":"sequence_stop","entity_name":"College Outdoors","title":"Meet College Outdoors","subtitle":"Saturday midday · Map future weekend options","notes":"Find room 239 in Fowler, review the trip program online, and note where to ask about clinics or planning a later outing.","short_summary":"Locate the campus office that organizes recurring outdoor trips and clinics.","evidence_claim":"Lewis & Clark states that College Outdoors runs varied trips and clinics nearly every weekend during the semester and is located in Fowler Student Center room 239.","source_url":"https://www.lclark.edu/programs/college_outdoors/programs/","source_title":"Programs • College Outdoors","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Office access and participation require separate confirmation; trip registration, capacity, prerequisites, and fees may vary.","cost_status":"unknown","under21_safe":true},{"subject_id":"lc-first-weekend-pamplin","subject_type":"sequence_stop","entity_name":"Pamplin Sports Center","title":"Locate Pamplin Sports Center","subtitle":"Saturday afternoon · Learn the recreation hub","notes":"Walk to Pamplin, inspect the posted facility schedule, and note the nearby track and courts for future recreation plans.","short_summary":"Identify the main athletics building and its surrounding outdoor facilities.","evidence_claim":"Lewis & Clark identifies Pamplin Sports Center as the location of Physical Education and Athletics, while its campus map shows Pamplin near Fix Track and tennis courts.","source_url":"https://www.lclark.edu/sports/","source_title":"Sports • Lewis & Clark","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Recreational access and facility hours are not specified on the cited page; consult posted schedules and carry student identification.","cost_status":"unknown","under21_safe":true},{"subject_id":"lc-first-weekend-tryon-creek","subject_type":"sequence_stop","entity_name":"Tryon Creek State Natural Area","title":"Walk Tryon Creek’s Trillium Trail","subtitle":"Sunday morning · Explore the neighboring forest","notes":"Check conditions, choose the paved 0.3-mile Trillium Trail, and turn back before your route exceeds your time or comfort.","short_summary":"Try a short, defined introduction to the state natural area beside campus.","evidence_claim":"Oregon State Parks says Tryon Creek has eight miles of hiking trails and a 0.3-mile fully paved Trillium Trail with benches and turnaround areas.","source_url":"https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=103","source_title":"Tryon Creek State Natural Area • Oregon State Parks","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open for day use year-round with seasonal closing times; trails may be muddy, and vehicles require a day-use parking permit.","cost_status":"unknown","under21_safe":true},{"subject_id":"lc-first-weekend-otterbus","subject_type":"sequence_stop","entity_name":"OtterBus","title":"Practice the Downtown Shuttle","subtitle":"Sunday afternoon · Learn the Portland connection","notes":"Check the live weekend timetable, board at the designated campus stop, and save the downtown stop before beginning the trip.","short_summary":"Finish the weekend by learning the college shuttle’s downtown connection.","evidence_claim":"Lewis & Clark publishes weekend and holiday OtterBus service information and identifies SW Broadway and Hall near Portland State University as its main downtown stop.","source_url":"https://www.lclark.edu/offices/transportation_and_parking/shuttle/","source_title":"OtterBus • Transportation and Parking","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Check the current weekend timetable and tracker before departure; weather or college closures can alter scheduled service.","cost_status":"free","under21_safe":true}],"warnings":[]}],"warnings":[]}

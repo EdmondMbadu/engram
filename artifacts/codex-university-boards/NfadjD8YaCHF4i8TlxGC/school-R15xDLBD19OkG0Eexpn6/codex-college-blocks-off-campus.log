@@ -1,0 +1,290 @@
+Reading additional input from stdin...
+2026-08-13T06:47:53.874173Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e0-6328-71f1-bc0a-f14dc08a488c.1786603660073145000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9e0-989c-7ec3-9547-8b50a31be96e
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"R15xDLBD19OkG0Eexpn6","schoolName":"California State University-San Bernardino","shortSchoolName":"California State University-San Bernardino","townName":"San Bernardino","state":"CA","countryCode":"US","website":"https://www.csusb.edu/","latitude":34.182622,"longitude":-117.323801},"templates":[{"id":"college-blocks-off-campus","version":"1.0","titlePattern":"{count} Blocks Off Campus, One Reason Each","editorialBrief":"Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.","researchQueries":["off campus streets student district","campus adjacent commercial streets","neighborhood plan near university"],"count":10,"icon":"location_city","primarySubjectType":"street_or_district","allowedSubjectTypes":["street_or_district"],"freshnessDays":730,"exactTitle":"10 Blocks Off Campus, One Reason Each"}]}
+2026-08-13T06:47:53.923921Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e0-630d-7313-afd6-1b29faf0da0a.1786603660046320000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:47:53.936045Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:47:54.082785Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e0-6329-7360-8866-d9d42e36f777.1786603660074443000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:47:54.137589Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e0-6336-7961-a91d-636a5d4bf463.1786603660086817000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:47:54.141756Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:47:54.217942Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e0-633b-7d61-a32d-738c00350496.1786603660091812000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:47:54.264788Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e0-630d-77c1-8302-72b45e7a5982.1786603660046318000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T06:47:54.416339Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9e0-6315-7bd1-9b4f-3719988b5b2a.1786603660053784000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "California State University-San Bernardino",
+  "town_name": "San Bernardino",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "California State University-San Bernardino",
+      "town_name": "San Bernardino",
+      "template_id": "college-blocks-off-campus",
+      "title": "10 Blocks Off Campus, One Reason Each",
+      "description": "",
+      "icon": "location_city",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "street_or_district",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "street_or_district",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "not_applicable",
+        "under21_safe": true
+      }
+      ],
+      "warnings": ["Research in progress; final response will contain verified direct sources for all 10 cards."]
+    }
+  ],
+  "warnings": ["Verifying named corridor destinations and direct supporting pages."]
+}
+web search: 
+web search: site:csusb.edu campus map University Parkway San Bernardino nearby ...
+web search: 
+web search: site:locations.chipotle.com San Bernardino University Parkway ...
+web search: 
+web search: "University Parkway" "San Bernardino" restaurant official location ...
+codex
+{"complete":true,"school_name":"California State University-San Bernardino","town_name":"San Bernardino","boards":[{"complete":true,"school_name":"California State University-San Bernardino","town_name":"San Bernardino","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named destinations along the University Parkway, Kendall Drive, Northpark Boulevard, and Varsity Avenue corridors near CSUSB, each paired with one sourced reason to stop.","icon":"location_city","cards":[{"subject_id":"baguette-express-kendall-drive","subject_type":"street_or_district","entity_name":"Baguette Express","title":"Baguettes Baked on Site","subtitle":"Kendall Drive corridor","notes":"Follow Kendall Drive to this one-block-from-campus shop when bánh mì, phở, spring rolls, or a freshly baked baguette fits the plan.","short_summary":"A Vietnamese sandwich shop whose official site says its baguettes are made from scratch and baked throughout the day.","evidence_claim":"Baguette Express is at 1689 Kendall Drive, one block from CSUSB, and serves bánh mì, phở, spring rolls, smoothies, and tea.","source_url":"https://www.loibaguetteexpress.com/","source_title":"Baguette Express","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Baguette%20Express%201689%20Kendall%20Drive%20San%20Bernardino%20CA","access_notes":"Public restaurant; consult the official site for its current Monday–Saturday service schedule.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"farmer-boys-kendall-drive","subject_type":"street_or_district","entity_name":"Farmer Boys","title":"Drive-Through Breakfast Stop","subtitle":"Kendall Drive corridor","notes":"Take Kendall Drive to the dedicated San Bernardino location when a counter, pickup, delivery, or drive-through meal is useful.","short_summary":"A Kendall Drive restaurant with breakfast service and several ordering formats documented on its location page.","evidence_claim":"Farmer Boys lists its San Bernardino restaurant at 1766 Kendall Drive with online ordering, drive-through, pickup, and delivery.","source_url":"https://www.farmerboys.com/locations/san-bernardino-kendall-dr","source_title":"Farmer Boys — San Bernardino — Kendall Dr.","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Farmer%20Boys%201766%20Kendall%20Drive%20San%20Bernardino%20CA","access_notes":"Public restaurant with drive-through, pickup, and delivery; check the location page before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"bakers-drive-thru-kendall-drive","subject_type":"street_or_district","entity_name":"Baker's Drive-Thru","title":"Twin Kitchen Menu","subtitle":"Kendall Drive corridor","notes":"Head along Kendall Drive for a drive-through menu that combines burgers and sandwiches with tacos, burritos, and quesadillas.","short_summary":"This local chain’s Kendall Drive branch offers both American and Mexican fast-food menus from one stop.","evidence_claim":"Baker's official locator lists a San Bernardino branch at 1381 Kendall Drive and identifies the chain's American and Mexican menu categories.","source_url":"https://www.bakersdrivethru.com/find-a-location/","source_title":"Find a Location | Baker's Drive-Thru","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Baker%27s%20Drive-Thru%201381%20Kendall%20Drive%20San%20Bernardino%20CA","access_notes":"Public drive-through restaurant; use the official locator to confirm the current schedule and ordering options.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"royal-dumpling-house-kendall-drive","subject_type":"street_or_district","entity_name":"Royal Dumpling House","title":"Dumplings Near Campus","subtitle":"Kendall Drive corridor","notes":"Use Kendall Drive to reach this named dumpling restaurant in the 1689 plaza; confirm current service before setting out.","short_summary":"A clearly addressed dumpling-house option in the commercial plaza immediately south of campus.","evidence_claim":"CSUSB's off-campus city guide lists Royal Dumpling House at 1689 Kendall Drive, Suite G, near the university.","source_url":"https://www.csusb.edu/international-education/student-services/new-students/csusb-city-guide-events","source_title":"CSUSB City Guide / Events","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Royal%20Dumpling%20House%201689%20Kendall%20Drive%20San%20Bernardino%20CA","access_notes":"Off-campus restaurant listed by CSUSB; verify current opening times directly before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"waba-grill-kendall-drive","subject_type":"street_or_district","entity_name":"WaBa Grill","title":"Grilled Rice Bowls","subtitle":"Kendall Drive corridor","notes":"Continue west on Kendall Drive to the University Village plaza when a grilled-protein rice bowl suits a quick meal break.","short_summary":"A bowl-focused restaurant identified by CSUSB in the Kendall Drive commercial cluster.","evidence_claim":"CSUSB's city guide lists WaBa Grill at 2999 Kendall Drive, Unit B-20, among restaurants near campus.","source_url":"https://www.csusb.edu/international-education/student-services/new-students/csusb-city-guide-events","source_title":"CSUSB City Guide / Events","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=WaBa%20Grill%202999%20Kendall%20Drive%20San%20Bernardino%20CA","access_notes":"Public restaurant in the Kendall Drive plaza; confirm current hours and ordering methods with the business.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dickeys-barbecue-pit-northpark-boulevard","subject_type":"street_or_district","entity_name":"Dickey's Barbecue Pit","title":"Barbecue by Northpark","subtitle":"Northpark Boulevard corridor","notes":"Follow Northpark Boulevard west of campus to the 1725 plaza for a barbecue meal without leaving the university district orbit.","short_summary":"A nationally branded barbecue restaurant in the Northpark Boulevard retail cluster beside campus.","evidence_claim":"CSUSB's city guide identifies Dickey's Barbecue Pit at 1725 Northpark Boulevard West near campus.","source_url":"https://www.csusb.edu/international-education/student-services/new-students/csusb-city-guide-events","source_title":"CSUSB City Guide / Events","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Dickey%27s%20Barbecue%20Pit%201725%20Northpark%20Boulevard%20West%20San%20Bernardino%20CA","access_notes":"Public off-campus restaurant; check the operator's current location information before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jamba-northpark-boulevard","subject_type":"street_or_district","entity_name":"Jamba","title":"Smoothies on Northpark","subtitle":"Northpark Boulevard corridor","notes":"Use Northpark Boulevard to reach the 1725 plaza when a made-to-order smoothie or juice is the single reason for the trip.","short_summary":"A smoothie destination sharing the compact Northpark Boulevard commercial cluster near CSUSB.","evidence_claim":"CSUSB's city guide lists Jamba Juice at 1725 Northpark Boulevard West, Suite 2, near campus.","source_url":"https://www.csusb.edu/international-education/student-services/new-students/csusb-city-guide-events","source_title":"CSUSB City Guide / Events","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Jamba%201725%20Northpark%20Boulevard%20West%20San%20Bernardino%20CA","access_notes":"Public smoothie shop listed in CSUSB's city guide; confirm current service details directly.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"chick-fil-a-varsity-avenue","subject_type":"street_or_district","entity_name":"Chick-fil-A University Parkway & Hwy 215","title":"A New Varsity Avenue Stop","subtitle":"Varsity Avenue–University Parkway corridor","notes":"Turn from University Parkway onto Varsity Avenue for dine-in, carry-out, drive-through, or mobile ordering at this 2024 location.","short_summary":"A recently opened restaurant at the freeway-facing end of the University Parkway corridor.","evidence_claim":"Chick-fil-A's location page places this restaurant at 4312 North Varsity Avenue and documents dine-in, carry-out, drive-through, and delivery service.","source_url":"https://www.chick-fil-a.com/locations/ca/university-parkway-hwy-215","source_title":"University Parkway & Hwy 215 | Chick-fil-A","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Chick-fil-A%204312%20North%20Varsity%20Avenue%20San%20Bernardino%20CA","access_notes":"Public restaurant, closed Sundays; its official page provides current service-specific hours.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"carls-jr-university-parkway","subject_type":"street_or_district","entity_name":"Carl's Jr.","title":"Charbroiled Burgers","subtitle":"University Parkway corridor","notes":"Stay on University Parkway for a straightforward burger stop whose official page supports breakfast, lunch, and dinner service.","short_summary":"A directly documented fast-food destination on the main approach between Interstate 215 and CSUSB.","evidence_claim":"Carl's Jr. identifies its restaurant at 4424 University Parkway and describes breakfast, lunch, and dinner offerings.","source_url":"https://locations.carlsjr.com/ca/san-bernardino/4424-university-parkway","source_title":"Carl's Jr. — 4424 University Parkway","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Carl%27s%20Jr.%204424%20University%20Parkway%20San%20Bernardino%20CA","access_notes":"Public restaurant on University Parkway; consult the official location page for current availability.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"hung-up-on-cane-university-parkway","subject_type":"street_or_district","entity_name":"Hung Up on Cane","title":"Cane-Juice Drinks","subtitle":"University Parkway corridor","notes":"Stop along University Parkway for sugarcane-based drinks and food; use the direct ordering page to review the current menu first.","short_summary":"An independent drink-and-food counter with a directly documented University Parkway address.","evidence_claim":"Hung Up on Cane's direct Toast ordering page identifies the business at 4235 University Parkway, Suite 102, and displays its food and drink menu.","source_url":"https://www.toasttab.com/local/order/hung-up-on-cane-1st-location-4235-university-pkwy-102/r-9de88920-cbc5-4c47-8a41-04f7e824837b","source_title":"Hung Up on Cane | Toast","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Hung%20Up%20on%20Cane%204235%20University%20Parkway%20San%20Bernardino%20CA","access_notes":"Public food-and-drink shop; review its direct ordering page for current menu access and availability.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T06:49:45.807572Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9e0-989c-7ec3-9547-8b50a31be96e.1786603673757078000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+33,302
+
+{"complete":true,"school_name":"California State University-San Bernardino","town_name":"San Bernardino","boards":[{"complete":true,"school_name":"California State University-San Bernardino","town_name":"San Bernardino","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named destinations along the University Parkway, Kendall Drive, Northpark Boulevard, and Varsity Avenue corridors near CSUSB, each paired with one sourced reason to stop.","icon":"location_city","cards":[{"subject_id":"baguette-express-kendall-drive","subject_type":"street_or_district","entity_name":"Baguette Express","title":"Baguettes Baked on Site","subtitle":"Kendall Drive corridor","notes":"Follow Kendall Drive to this one-block-from-campus shop when bánh mì, phở, spring rolls, or a freshly baked baguette fits the plan.","short_summary":"A Vietnamese sandwich shop whose official site says its baguettes are made from scratch and baked throughout the day.","evidence_claim":"Baguette Express is at 1689 Kendall Drive, one block from CSUSB, and serves bánh mì, phở, spring rolls, smoothies, and tea.","source_url":"https://www.loibaguetteexpress.com/","source_title":"Baguette Express","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Baguette%20Express%201689%20Kendall%20Drive%20San%20Bernardino%20CA","access_notes":"Public restaurant; consult the official site for its current Monday–Saturday service schedule.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"farmer-boys-kendall-drive","subject_type":"street_or_district","entity_name":"Farmer Boys","title":"Drive-Through Breakfast Stop","subtitle":"Kendall Drive corridor","notes":"Take Kendall Drive to the dedicated San Bernardino location when a counter, pickup, delivery, or drive-through meal is useful.","short_summary":"A Kendall Drive restaurant with breakfast service and several ordering formats documented on its location page.","evidence_claim":"Farmer Boys lists its San Bernardino restaurant at 1766 Kendall Drive with online ordering, drive-through, pickup, and delivery.","source_url":"https://www.farmerboys.com/locations/san-bernardino-kendall-dr","source_title":"Farmer Boys — San Bernardino — Kendall Dr.","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Farmer%20Boys%201766%20Kendall%20Drive%20San%20Bernardino%20CA","access_notes":"Public restaurant with drive-through, pickup, and delivery; check the location page before traveling.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"bakers-drive-thru-kendall-drive","subject_type":"street_or_district","entity_name":"Baker's Drive-Thru","title":"Twin Kitchen Menu","subtitle":"Kendall Drive corridor","notes":"Head along Kendall Drive for a drive-through menu that combines burgers and sandwiches with tacos, burritos, and quesadillas.","short_summary":"This local chain’s Kendall Drive branch offers both American and Mexican fast-food menus from one stop.","evidence_claim":"Baker's official locator lists a San Bernardino branch at 1381 Kendall Drive and identifies the chain's American and Mexican menu categories.","source_url":"https://www.bakersdrivethru.com/find-a-location/","source_title":"Find a Location | Baker's Drive-Thru","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Baker%27s%20Drive-Thru%201381%20Kendall%20Drive%20San%20Bernardino%20CA","access_notes":"Public drive-through restaurant; use the official locator to confirm the current schedule and ordering options.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"royal-dumpling-house-kendall-drive","subject_type":"street_or_district","entity_name":"Royal Dumpling House","title":"Dumplings Near Campus","subtitle":"Kendall Drive corridor","notes":"Use Kendall Drive to reach this named dumpling restaurant in the 1689 plaza; confirm current service before setting out.","short_summary":"A clearly addressed dumpling-house option in the commercial plaza immediately south of campus.","evidence_claim":"CSUSB's off-campus city guide lists Royal Dumpling House at 1689 Kendall Drive, Suite G, near the university.","source_url":"https://www.csusb.edu/international-education/student-services/new-students/csusb-city-guide-events","source_title":"CSUSB City Guide / Events","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Royal%20Dumpling%20House%201689%20Kendall%20Drive%20San%20Bernardino%20CA","access_notes":"Off-campus restaurant listed by CSUSB; verify current opening times directly before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"waba-grill-kendall-drive","subject_type":"street_or_district","entity_name":"WaBa Grill","title":"Grilled Rice Bowls","subtitle":"Kendall Drive corridor","notes":"Continue west on Kendall Drive to the University Village plaza when a grilled-protein rice bowl suits a quick meal break.","short_summary":"A bowl-focused restaurant identified by CSUSB in the Kendall Drive commercial cluster.","evidence_claim":"CSUSB's city guide lists WaBa Grill at 2999 Kendall Drive, Unit B-20, among restaurants near campus.","source_url":"https://www.csusb.edu/international-education/student-services/new-students/csusb-city-guide-events","source_title":"CSUSB City Guide / Events","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=WaBa%20Grill%202999%20Kendall%20Drive%20San%20Bernardino%20CA","access_notes":"Public restaurant in the Kendall Drive plaza; confirm current hours and ordering methods with the business.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dickeys-barbecue-pit-northpark-boulevard","subject_type":"street_or_district","entity_name":"Dickey's Barbecue Pit","title":"Barbecue by Northpark","subtitle":"Northpark Boulevard corridor","notes":"Follow Northpark Boulevard west of campus to the 1725 plaza for a barbecue meal without leaving the university district orbit.","short_summary":"A nationally branded barbecue restaurant in the Northpark Boulevard retail cluster beside campus.","evidence_claim":"CSUSB's city guide identifies Dickey's Barbecue Pit at 1725 Northpark Boulevard West near campus.","source_url":"https://www.csusb.edu/international-education/student-services/new-students/csusb-city-guide-events","source_title":"CSUSB City Guide / Events","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Dickey%27s%20Barbecue%20Pit%201725%20Northpark%20Boulevard%20West%20San%20Bernardino%20CA","access_notes":"Public off-campus restaurant; check the operator's current location information before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"jamba-northpark-boulevard","subject_type":"street_or_district","entity_name":"Jamba","title":"Smoothies on Northpark","subtitle":"Northpark Boulevard corridor","notes":"Use Northpark Boulevard to reach the 1725 plaza when a made-to-order smoothie or juice is the single reason for the trip.","short_summary":"A smoothie destination sharing the compact Northpark Boulevard commercial cluster near CSUSB.","evidence_claim":"CSUSB's city guide lists Jamba Juice at 1725 Northpark Boulevard West, Suite 2, near campus.","source_url":"https://www.csusb.edu/international-education/student-services/new-students/csusb-city-guide-events","source_title":"CSUSB City Guide / Events","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Jamba%201725%20Northpark%20Boulevard%20West%20San%20Bernardino%20CA","access_notes":"Public smoothie shop listed in CSUSB's city guide; confirm current service details directly.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"chick-fil-a-varsity-avenue","subject_type":"street_or_district","entity_name":"Chick-fil-A University Parkway & Hwy 215","title":"A New Varsity Avenue Stop","subtitle":"Varsity Avenue–University Parkway corridor","notes":"Turn from University Parkway onto Varsity Avenue for dine-in, carry-out, drive-through, or mobile ordering at this 2024 location.","short_summary":"A recently opened restaurant at the freeway-facing end of the University Parkway corridor.","evidence_claim":"Chick-fil-A's location page places this restaurant at 4312 North Varsity Avenue and documents dine-in, carry-out, drive-through, and delivery service.","source_url":"https://www.chick-fil-a.com/locations/ca/university-parkway-hwy-215","source_title":"University Parkway & Hwy 215 | Chick-fil-A","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Chick-fil-A%204312%20North%20Varsity%20Avenue%20San%20Bernardino%20CA","access_notes":"Public restaurant, closed Sundays; its official page provides current service-specific hours.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"carls-jr-university-parkway","subject_type":"street_or_district","entity_name":"Carl's Jr.","title":"Charbroiled Burgers","subtitle":"University Parkway corridor","notes":"Stay on University Parkway for a straightforward burger stop whose official page supports breakfast, lunch, and dinner service.","short_summary":"A directly documented fast-food destination on the main approach between Interstate 215 and CSUSB.","evidence_claim":"Carl's Jr. identifies its restaurant at 4424 University Parkway and describes breakfast, lunch, and dinner offerings.","source_url":"https://locations.carlsjr.com/ca/san-bernardino/4424-university-parkway","source_title":"Carl's Jr. — 4424 University Parkway","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Carl%27s%20Jr.%204424%20University%20Parkway%20San%20Bernardino%20CA","access_notes":"Public restaurant on University Parkway; consult the official location page for current availability.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"hung-up-on-cane-university-parkway","subject_type":"street_or_district","entity_name":"Hung Up on Cane","title":"Cane-Juice Drinks","subtitle":"University Parkway corridor","notes":"Stop along University Parkway for sugarcane-based drinks and food; use the direct ordering page to review the current menu first.","short_summary":"An independent drink-and-food counter with a directly documented University Parkway address.","evidence_claim":"Hung Up on Cane's direct Toast ordering page identifies the business at 4235 University Parkway, Suite 102, and displays its food and drink menu.","source_url":"https://www.toasttab.com/local/order/hung-up-on-cane-1st-location-4235-university-pkwy-102/r-9de88920-cbc5-4c47-8a41-04f7e824837b","source_title":"Hung Up on Cane | Toast","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":"https://www.google.com/maps/search/?api=1&query=Hung%20Up%20on%20Cane%204235%20University%20Parkway%20San%20Bernardino%20CA","access_notes":"Public food-and-drink shop; review its direct ordering page for current menu access and availability.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}

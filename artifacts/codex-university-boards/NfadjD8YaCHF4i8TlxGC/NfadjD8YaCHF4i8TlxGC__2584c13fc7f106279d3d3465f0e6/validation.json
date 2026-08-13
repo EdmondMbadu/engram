@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://catalog.nobts.edu/graduate/calendars/graduateprogramcalendar",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://catalog.nobts.edu/graduate/calendars/graduateprogramcalendar",
+      "error": ""
+    },
+    {
+      "url": "https://www.nobts.edu/news/articles/2026/NOBTSConvocationspring2026.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nobts.edu/news/articles/2026/NOBTSConvocationspring2026.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.nobts.edu/chapel/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nobts.edu/chapel/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nobts.edu/news/articles/2026/NOBTSSpringServeDay2026.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nobts.edu/news/articles/2026/NOBTSSpringServeDay2026.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.nobts.edu/news/articles/2026/missionsweek2026.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nobts.edu/news/articles/2026/missionsweek2026.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.nobts.edu/news/articles/2026/Defend2026recap.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nobts.edu/news/articles/2026/Defend2026recap.html",
+      "error": ""
+    },
+    {
+      "url": "https://nobts.edu/news/articles/2026/Abide2026recap.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://nobts.edu/news/articles/2026/Abide2026recap.html",
+      "error": ""
+    },
+    {
+      "url": "https://nobts.edu/henryinstitute/documents/JHLI-2026-Impact-Report.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://nobts.edu/henryinstitute/documents/JHLI-2026-Impact-Report.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.nobts.edu/news/articles/2026/endofyearchapelrecaps.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nobts.edu/news/articles/2026/endofyearchapelrecaps.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.nobts.edu/news/articles/2025/NOBTSgraduationfall2025.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nobts.edu/news/articles/2025/NOBTSgraduationfall2025.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 100,
+  "generationGrade": "A"
+}

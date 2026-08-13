@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.towson.edu/news/articles/2026/month-in-photos.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.towson.edu/news/articles/2026/month-in-photos.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.towson.edu/studentlife/activities/student-activities/events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.towson.edu/studentlife/activities/student-activities/events/",
+      "error": ""
+    },
+    {
+      "url": "https://www.towson.edu/studentlife/activities/student-activities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.towson.edu/studentlife/activities/student-activities/",
+      "error": ""
+    },
+    {
+      "url": "https://www.towson.edu/news/articles/2026/rearview-mirror-spring26.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.towson.edu/news/articles/2026/rearview-mirror-spring26.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.towson.edu/support/ways/student/foundation/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.towson.edu/support/ways/student/foundation/",
+      "error": ""
+    },
+    {
+      "url": "https://www.towson.edu/news/2021/tigerprideday.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.towson.edu/news/",
+      "error": ""
+    },
+    {
+      "url": "https://www.towson.edu/news/articles/2026/big-fat-desi-wedding.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.towson.edu/news/articles/2026/big-fat-desi-wedding.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

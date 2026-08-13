@@ -1,0 +1,101 @@
+{
+  "ok": false,
+  "problems": [
+    "Cross-board overlap exceeds four subjects: Hekman Library, Center Art Gallery, Bruce Dice Mineralogical Museum, Calvin Climbing Center, Venema Plaza & Gardens, Calvin Ecosystem Preserve, Calvin Observatory."
+  ],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://calvin.edu/student-life-division/welcome-calvin",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calvin.edu/student-life-division/welcome-calvin",
+      "error": ""
+    },
+    {
+      "url": "https://calvin.edu/intramurals",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calvin.edu/intramurals",
+      "error": ""
+    },
+    {
+      "url": "https://calvin.edu/places/hekman-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calvin.edu/places/hekman-library",
+      "error": ""
+    },
+    {
+      "url": "https://calvin.edu/center-art-gallery",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calvin.edu/center-art-gallery",
+      "error": ""
+    },
+    {
+      "url": "https://calvin.edu/bruce-dice-mineralogical-museum/visit-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calvin.edu/bruce-dice-mineralogical-museum/visit-us",
+      "error": ""
+    },
+    {
+      "url": "https://calvin.edu/places/calvin-climbing-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calvin.edu/places/calvin-climbing-center",
+      "error": ""
+    },
+    {
+      "url": "https://calvin.edu/ecosystem-preserve/native-gardens",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calvin.edu/ecosystem-preserve/native-gardens",
+      "error": ""
+    },
+    {
+      "url": "https://calvin.edu/ecosystem-preserve/walking-trails",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calvin.edu/ecosystem-preserve/walking-trails",
+      "error": ""
+    },
+    {
+      "url": "https://calvin.edu/places/university-chapel",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calvin.edu/places/university-chapel",
+      "error": ""
+    },
+    {
+      "url": "https://calvin.edu/observatory/visit-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calvin.edu/observatory/visit-us",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Hekman Library",
+    "Center Art Gallery",
+    "Bruce Dice Mineralogical Museum",
+    "Calvin Climbing Center",
+    "Venema Plaza & Gardens",
+    "Calvin Ecosystem Preserve",
+    "Calvin Observatory"
+  ],
+  "sourceCount": 10,
+  "generationScore": null,
+  "generationGrade": null
+}

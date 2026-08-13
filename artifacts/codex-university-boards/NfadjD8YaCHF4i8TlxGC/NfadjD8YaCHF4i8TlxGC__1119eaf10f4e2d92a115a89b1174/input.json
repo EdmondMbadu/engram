@@ -1,0 +1,52 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "m5q6CLfOQPyQp7O9Icgu",
+    "schoolName": "Michigan State University",
+    "shortSchoolName": "Michigan State University",
+    "townName": "East Lansing",
+    "state": "MI",
+    "countryCode": "US",
+    "unitId": "171100",
+    "website": "https://www.msu.edu/",
+    "latitude": 42.73212,
+    "longitude": -84.476111,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/5/53/Michigan_State_University_seal.svg/250px-Michigan_State_University_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=msu.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at Michigan State University, Shared as Cards",
+  "excluded_subjects": [
+    "Pizza House East Lansing",
+    "Conrad's Grill II",
+    "Bell's Greek Pizza",
+    "El Azteco East Lansing",
+    "Denny's East Lansing",
+    "Raising Cane's East Lansing",
+    "Cottage Inn Pizza East Lansing",
+    "Taco Bell East Lansing — 7195 E. Saginaw St.",
+    "Shake Shack East Lansing",
+    "Crunchy's East Lansing"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

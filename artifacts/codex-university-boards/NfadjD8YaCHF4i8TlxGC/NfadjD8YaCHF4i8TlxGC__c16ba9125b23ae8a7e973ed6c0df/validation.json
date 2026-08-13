@@ -1,0 +1,39 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.callutheran.edu/galleries/visit.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.callutheran.edu/galleries/visit.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.crpd.org/2026-08-14-movies-at-the-park-zootopia-2",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.crpd.org/2026-08-14-movies-at-the-park-zootopia-2",
+      "error": ""
+    },
+    {
+      "url": "https://toaks.gov/news-and-updates%26prrid%3D207",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://toaks.gov/news-and-updates%26prrid%3D207",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "William Rolland Art Center"
+  ],
+  "sourceCount": 3,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

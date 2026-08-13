@@ -1,0 +1,81 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.marist.edu/about/map",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marist.edu/about/map",
+      "error": ""
+    },
+    {
+      "url": "https://www.marist.edu/academics/library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marist.edu/academics/library",
+      "error": ""
+    },
+    {
+      "url": "https://www.marist.edu/student-life/campus/student-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marist.edu/student-life/campus/student-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.marist.edu/student-life/campus/dining",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marist.edu/student-life/campus/dining",
+      "error": ""
+    },
+    {
+      "url": "https://www.marist.edu/clubs/mccta",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marist.edu/clubs/mccta",
+      "error": ""
+    },
+    {
+      "url": "https://www.marist.edu/student-life/community/ministry/activities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marist.edu/student-life/community/ministry/activities",
+      "error": ""
+    },
+    {
+      "url": "https://www.marist.edu/student-life/athletics/facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.marist.edu/student-life/athletics/facilities",
+      "error": ""
+    },
+    {
+      "url": "https://walkway.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://walkway.org/visit/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "James A. Cannavino Library",
+    "Murray Student Center",
+    "Longview Park"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

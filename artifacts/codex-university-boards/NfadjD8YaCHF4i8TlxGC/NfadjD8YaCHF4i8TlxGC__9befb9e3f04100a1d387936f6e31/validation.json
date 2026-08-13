@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.hillsdale.edu/about/facilities/slayton-aboretum/programs-events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsdale.edu/about/facilities/slayton-aboretum/programs-events/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hillsdale.edu/campus-life/clubs-intramurals/clubs/classical-liberal-organization/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsdale.edu/campus-life/clubs-intramurals/clubs/classical-liberal-organization/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hillsdale.edu/educational-outreach/lifelong-learning-opportunities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsdale.edu/educational-outreach/lifelong-learning-opportunities/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hillsdale.edu/wp-content/uploads/2026/04/HC-PR-Senior-Art-Exhibits-2026.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsdale.edu/wp-content/uploads/2026/04/HC-PR-Senior-Art-Exhibits-2026.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.hillsdale.edu/wp-content/uploads/2026/04/HC-PR-Fine-Arts-April-2026.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsdale.edu/wp-content/uploads/2026/04/HC-PR-Fine-Arts-April-2026.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.hillsdale.edu/news-and-media/press-releases/hillsdale-college-announces-april-fine-arts-events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsdale.edu/news-and-media/press-releases/hillsdale-college-announces-april-fine-arts-events/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hillsdale.edu/wp-content/uploads/2026/02/HC-PR-Fine-Arts-March-2026.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsdale.edu/wp-content/uploads/2026/02/HC-PR-Fine-Arts-March-2026.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.hillsdale.edu/news-and-media/press-releases/hillsdale-college-announces-august-and-september-2025-fine-arts-events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hillsdale.edu/news-and-media/press-releases/hillsdale-college-announces-august-and-september-2025-fine-arts-events/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

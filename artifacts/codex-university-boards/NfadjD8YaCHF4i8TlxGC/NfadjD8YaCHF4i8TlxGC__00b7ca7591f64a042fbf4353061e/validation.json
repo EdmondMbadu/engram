@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.syracuse.edu/map/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.syracuse.edu/map/",
+      "error": ""
+    },
+    {
+      "url": "https://artsandsciences.syracuse.edu/news-all/news-2026/must-see-as-attractions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://artsandsciences.syracuse.edu/news-all/news-2026/must-see-as-attractions/",
+      "error": ""
+    },
+    {
+      "url": "https://www.syracuse.edu/stories/campus-architecture/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.syracuse.edu/stories/campus-architecture/",
+      "error": ""
+    },
+    {
+      "url": "https://library.syracuse.edu/bird-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.syracuse.edu/bird-library/",
+      "error": ""
+    },
+    {
+      "url": "https://experience.syracuse.edu/student-engagement/student-engagement/schine-student-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://experience.syracuse.edu/student-engagement/student-engagement/schine-student-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.syracuse.edu/campus-life/highlights/hendricks-chapel/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.syracuse.edu/campus-life/highlights/hendricks-chapel/",
+      "error": ""
+    },
+    {
+      "url": "https://cuse.com/sports/2020/3/26/jma-dome-contact-info",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cuse.com/sports/2020/3/26/jma-dome-contact-info",
+      "error": ""
+    },
+    {
+      "url": "https://experience.syracuse.edu/student-engagement/student-organizations/cuse-activities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://experience.syracuse.edu/student-engagement/student-organizations/cuse-activities/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

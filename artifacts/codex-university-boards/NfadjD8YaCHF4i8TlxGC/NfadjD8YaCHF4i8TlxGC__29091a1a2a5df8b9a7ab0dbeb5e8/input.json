@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "58EbJDSj24EFv81hykHl",
+    "schoolName": "Lipscomb University",
+    "shortSchoolName": "Lipscomb University",
+    "townName": "Nashville",
+    "state": "TN",
+    "countryCode": "US",
+    "unitId": "219976",
+    "website": "https://www.lipscomb.edu/",
+    "latitude": 36.106253,
+    "longitude": -86.799791,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=lipscomb.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=lipscomb.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "Painting the Bison",
+    "Singarama",
+    "Tau Phi Cowboy Show",
+    "Halloween Dodgeball Tournament",
+    "Battle of the Boulevard",
+    "Running of the Bison",
+    "Initium Ceremony",
+    "Lighting of the Green",
+    "Bisons Weekend Student Parade",
+    "Savannah’s Boogie 5K"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

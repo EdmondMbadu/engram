@@ -1,0 +1,72 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.watkinsmuseum.org/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.watkinsmuseum.org/about/",
+      "error": ""
+    },
+    {
+      "url": "https://lawrenceks.gov/prc/parks/southpark/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lawrenceks.gov/prc/parks/southpark/",
+      "error": ""
+    },
+    {
+      "url": "https://lawrenceartscenter.org/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lawrenceartscenter.org/about/",
+      "error": ""
+    },
+    {
+      "url": "https://lplks.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lplks.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.lovegardensounds.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lovegardensounds.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.phoenixgalleryart.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.phoenixgalleryart.com/",
+      "error": ""
+    },
+    {
+      "url": "https://downtownlawrence.com/member-directory/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://downtownlawrence.com/member-directory/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Watkins Museum of History",
+    "South Park"
+  ],
+  "sourceCount": 7,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

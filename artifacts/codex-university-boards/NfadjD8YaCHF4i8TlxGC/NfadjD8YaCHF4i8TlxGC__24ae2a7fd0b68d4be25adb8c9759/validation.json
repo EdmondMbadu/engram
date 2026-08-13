@@ -1,0 +1,77 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Recurring-event dates and access conditions can change; cards distinguish established traditions from the specific dated editions documented by their sources."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.lewisu.edu/encounter/monument.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lewisu.edu/encounter/monument.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.lewisu.edu/commencement/aquinas/award.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lewisu.edu/commencement/aquinas/award.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.alumni.lewisu.edu/file/FY24-December-Jet-Setter.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.alumni.lewisu.edu/file/FY24-December-Jet-Setter.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.lewisu.edu/welcome/lasallian-heritage-month.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lewisu.edu/welcome/lasallian-heritage-month.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.lewisu.edu/celebration-scholarship/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lewisu.edu/celebration-scholarship/",
+      "error": ""
+    },
+    {
+      "url": "https://www.alumni.lewisu.edu/EventsListing",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.alumni.lewisu.edu/EventsListing",
+      "error": ""
+    },
+    {
+      "url": "https://www.lewisu.edu/studentservices/iss/student-life.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lewisu.edu/studentservices/iss/student-life.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.alumni.lewisu.edu/GoldenFlyers26",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.alumni.lewisu.edu/GoldenFlyers26",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

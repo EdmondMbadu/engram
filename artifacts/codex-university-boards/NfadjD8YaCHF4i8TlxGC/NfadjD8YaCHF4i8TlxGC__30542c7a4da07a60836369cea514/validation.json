@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.tacobell.com/or/portland/4909-n-lombard-st-.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/or/portland/4909-n-lombard-st-.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/or/portland.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/or/portland.html",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/oregon/portland/4908-n-lombard-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/oregon/portland/4908-n-lombard-street",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/oregon/portland/8040-n-lombard-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/oregon/portland/8040-n-lombard-street",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/or/portland/5265-n-lombard-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/or/portland/5265-n-lombard-st",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/or/portland/1405-n-lombard",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/or/portland/1405-n-lombard",
+      "error": ""
+    },
+    {
+      "url": "https://www.finopdx.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.finopdx.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.jankenrestaurant.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jankenrestaurant.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.xportportland.com/contact-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.xportportland.com/contact-us/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

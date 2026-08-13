@@ -1,0 +1,81 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.hendrix.edu/moveinday/schedule/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hendrix.edu/moveinday/schedule/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hendrix.edu/newstudents/newstudents.aspx?id=4702",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hendrix.edu/newstudents/newstudents.aspx?id=4702",
+      "error": ""
+    },
+    {
+      "url": "https://www.hendrix.edu/uploadedFiles/About_Hendrix/Campus_map-directions/Campus%20Map_FULL%20%28with%20legend%29_Fall%202025%281%29.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hendrix.edu/uploadedFiles/About_Hendrix/Campus_map-directions/Campus%20Map_FULL%20%28with%20legend%29_Fall%202025%281%29.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.hendrix.edu/baileylibrary/baileylibrary.aspx?id=1629",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hendrix.edu/baileylibrary/baileylibrary.aspx?id=1629",
+      "error": ""
+    },
+    {
+      "url": "https://www.hendrix.edu/windgate/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hendrix.edu/windgate/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hendrix.edu/location/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hendrix.edu/location/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hendrix.edu/life/studentactivities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hendrix.edu/life/studentactivities/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hendrix.edu/discoverhendrix/default.aspx?id=56632",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hendrix.edu/discoverhendrix/default.aspx?id=56632",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Brick Pit",
+    "Windgate Museum of Art",
+    "Shirttails"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.lakeforest.edu/student-life/commuter-students",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakeforest.edu/student-life/commuter-students",
+      "error": ""
+    },
+    {
+      "url": "https://www.lakeforest.edu/student-resources/dining",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakeforest.edu/student-resources/dining",
+      "error": ""
+    },
+    {
+      "url": "https://www.lakeforest.edu/on-campus-facilities-hours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakeforest.edu/on-campus-facilities-hours",
+      "error": ""
+    },
+    {
+      "url": "https://www.lakeforest.edu/academics/majors-and-minors/art-and-art-history/art-galleries",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakeforest.edu/academics/majors-and-minors/art-and-art-history/art-galleries",
+      "error": ""
+    },
+    {
+      "url": "https://www.lakeforest.edu/student-life/gates-center-for-leadership-and-personal-growth/new-student-orientation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakeforest.edu/student-life/gates-center-for-leadership-and-personal-growth/new-student-orientation",
+      "error": ""
+    },
+    {
+      "url": "https://www.shopmarketsquare.com/about.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.shopmarketsquare.com/about.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.lakeforestlibrary.org/services-contact",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakeforestlibrary.org/services-contact",
+      "error": ""
+    },
+    {
+      "url": "https://www.lakeforest.edu/Public/OCM/map/campus_map.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lakeforest.edu/Public/OCM/map/campus_map.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

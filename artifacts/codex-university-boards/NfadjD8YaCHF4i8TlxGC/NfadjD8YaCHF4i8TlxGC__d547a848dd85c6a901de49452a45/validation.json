@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://calvin.edu/news-stories/12-favorite-student-traditions-calvin-university",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calvin.edu/news-stories/12-favorite-student-traditions-calvin-university",
+      "error": ""
+    },
+    {
+      "url": "https://calvin.edu/student-engagement/calvin-traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calvin.edu/student-engagement/calvin-traditions",
+      "error": ""
+    },
+    {
+      "url": "https://calvin.edu/alumni-association/traditions/150",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calvin.edu/alumni-association/traditions/150",
+      "error": ""
+    },
+    {
+      "url": "https://calvin.edu/alumni-association/traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calvin.edu/alumni-association/traditions",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

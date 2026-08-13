@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.newbergoregon.gov/government/departments/library/faq.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.newbergoregon.gov/government/departments/library/faq.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.chehalemculturalcenter.org/galleries",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.chehalemculturalcenter.org/galleries",
+      "error": ""
+    },
+    {
+      "url": "https://www.chaptersbooksandcoffee.com/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.chaptersbooksandcoffee.com/about",
+      "error": ""
+    },
+    {
+      "url": "https://www.sprinklesofjoy.net/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sprinklesofjoy.net/",
+      "error": ""
+    },
+    {
+      "url": "https://www.artelementsgallery.com/pages/contact-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.artelementsgallery.com/pages/contact-us",
+      "error": ""
+    },
+    {
+      "url": "https://heritagedata.prd.state.or.us/historic/index.cfm?do=v.dsp_siteSummary&resultDisplay=19257",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://heritagedata.prd.state.or.us/historic/index.cfm?do=v.dsp_siteSummary&resultDisplay=19257",
+      "error": ""
+    },
+    {
+      "url": "https://www.hooverminthorn.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hooverminthorn.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://cprdnewberg.org/1335/Parks",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cprdnewberg.org/1335/Parks",
+      "error": ""
+    },
+    {
+      "url": "https://newsberg.org/2025/11/25/newberg-guide-to-shopping-local-for-the-holiday-season/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://newsberg.org/2025/11/25/newberg-guide-to-shopping-local-for-the-holiday-season/",
+      "error": ""
+    },
+    {
+      "url": "https://nikkijanesboutique.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://nikkijanesboutique.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

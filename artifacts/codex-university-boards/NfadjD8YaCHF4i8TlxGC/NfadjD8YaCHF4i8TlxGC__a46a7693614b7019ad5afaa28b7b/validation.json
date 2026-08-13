@@ -1,0 +1,94 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "T-Night is supported by a direct 2025 event page; its recurrence, date, format, and free admission must be reconfirmed for later years.",
+    "Event routes, eligibility rules, registration procedures, and spectator access can change; consult current Georgia Tech schedules before attending."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.traditions.gatech.edu/ramblinreck.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.traditions.gatech.edu/ramblinreck.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.traditions.gatech.edu/whistle.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.traditions.gatech.edu/whistle.html",
+      "error": ""
+    },
+    {
+      "url": "https://traditions.gatech.edu/ratcaps.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://traditions.gatech.edu/ratcaps.html",
+      "error": ""
+    },
+    {
+      "url": "https://traditions.gatech.edu/tbook.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://traditions.gatech.edu/tbook.html",
+      "error": ""
+    },
+    {
+      "url": "https://traditions.gatech.edu/mini500.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://traditions.gatech.edu/mini500.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.traditions.gatech.edu/cakerace.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.traditions.gatech.edu/cakerace.html",
+      "error": ""
+    },
+    {
+      "url": "https://traditions.gatech.edu/reckparade.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://traditions.gatech.edu/reckparade.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.traditions.gatech.edu/gpb.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.traditions.gatech.edu/gpb.html",
+      "error": ""
+    },
+    {
+      "url": "https://calendar.gatech.edu/event/2025/08/24/t-night",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://calendar.gatech.edu/event/2025/08/24/t-night",
+      "error": ""
+    },
+    {
+      "url": "https://traditions.gatech.edu/gtsongs.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://traditions.gatech.edu/gtsongs.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

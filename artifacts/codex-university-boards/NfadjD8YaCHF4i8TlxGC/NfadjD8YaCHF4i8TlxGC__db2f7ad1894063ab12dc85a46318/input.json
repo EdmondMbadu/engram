@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "VNasyg0pzZgqAEcRIFCx",
+    "schoolName": "Pratt Institute-Main",
+    "shortSchoolName": "Pratt Institute-Main",
+    "townName": "Brooklyn",
+    "state": "NY",
+    "countryCode": "US",
+    "unitId": "194578",
+    "website": "https://www.pratt.edu/",
+    "latitude": 40.691297,
+    "longitude": -73.96431,
+    "heroUrl": "https://www.pratt.edu/wp-content/themes/pratt/static/img/og.png",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=pratt.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "Pratt Institute Brooklyn Library",
+    "Pratt Student Union",
+    "William “Bill” Menking Reading Room",
+    "Engineering Computer Lab",
+    "Machinery Computer Lab",
+    "Foundation Media Lab",
+    "Higgins Hall Labs",
+    "2D Printing Center",
+    "3D Printing Center",
+    "Assembly Loop Lab"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

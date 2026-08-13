@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.oakland.edu/oc/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oakland.edu/oc/",
+      "error": ""
+    },
+    {
+      "url": "https://www.oakland.edu/housing/dining/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oakland.edu/housing/dining/",
+      "error": ""
+    },
+    {
+      "url": "https://www.oakland.edu/elliott-tower/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oakland.edu/elliott-tower/",
+      "error": ""
+    },
+    {
+      "url": "https://library.oakland.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.oakland.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://www.oakland.edu/art-arthistory/ou-art-gallery/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oakland.edu/art-arthistory/ou-art-gallery/",
+      "error": ""
+    },
+    {
+      "url": "https://www.oakland.edu/smtd/programs-and-majors/theatre/index",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oakland.edu/smtd/programs-and-majors/theatre/index",
+      "error": ""
+    },
+    {
+      "url": "https://www.oakland.edu/recwell/recreation-facilities/rec-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oakland.edu/recwell/recreation-facilities/rec-center/",
+      "error": ""
+    },
+    {
+      "url": "https://oakland.edu/recwell/recreation-facilities/outdoor-complex/index",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://oakland.edu/recwell/recreation-facilities/outdoor-complex/index",
+      "error": ""
+    },
+    {
+      "url": "https://www.oakland.edu/about/buildings/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oakland.edu/about/buildings/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

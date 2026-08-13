@@ -1,0 +1,35 @@
+{
+  "target": {
+    "atlasId": "UZleLt6KwJZlcSQ1IOCe",
+    "schoolName": "Farmingdale State College",
+    "shortSchoolName": "Farmingdale State College",
+    "townName": "Farmingdale",
+    "state": "NY",
+    "countryCode": "US",
+    "website": "https://www.farmingdale.edu/",
+    "latitude": 40.754224,
+    "longitude": -73.42832
+  },
+  "templates": [
+    {
+      "id": "college-zero-dollar-hangs",
+      "version": "1.0",
+      "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+      "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+      "researchQueries": [
+        "free student activities campus",
+        "free campus spaces students",
+        "free public places near campus"
+      ],
+      "count": 10,
+      "icon": "money_off",
+      "primarySubjectType": "activity",
+      "allowedSubjectTypes": [
+        "activity",
+        "place"
+      ],
+      "freshnessDays": 180,
+      "exactTitle": "Zero Dollars: 10 Hangs That Cost Nothing"
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.samford.edu/admission/virtual-tour/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.samford.edu/admission/virtual-tour/",
+      "error": ""
+    },
+    {
+      "url": "https://library.samford.edu/about/maps.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.samford.edu/about/maps.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.samford.edu/residence-life/new-students",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.samford.edu/residence-life/new-students",
+      "error": ""
+    },
+    {
+      "url": "https://www.samford.edu/arts/venues",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.samford.edu/arts/venues",
+      "error": ""
+    },
+    {
+      "url": "https://www.samford.edu/campus-recreation/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.samford.edu/campus-recreation/",
+      "error": ""
+    },
+    {
+      "url": "https://bbgardens.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://bbgardens.org/visit/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

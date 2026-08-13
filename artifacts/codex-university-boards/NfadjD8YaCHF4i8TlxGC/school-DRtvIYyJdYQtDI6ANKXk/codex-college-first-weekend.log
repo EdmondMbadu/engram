@@ -1,0 +1,295 @@
+Reading additional input from stdin...
+2026-08-13T07:08:07.042881Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:08:07.121046Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ff9f2-0a28-7bf2-ab06-0de9ad9a9658.1786604816937127000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:08:07.123306Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9f3-1be0-7160-aacb-a6a988fc3e3b
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"DRtvIYyJdYQtDI6ANKXk","schoolName":"Florida International University","shortSchoolName":"Florida International University","townName":"Miami","state":"FL","countryCode":"US","website":"https://www.fiu.edu/","latitude":25.75732,"longitude":-80.373928},"templates":[{"id":"college-first-weekend","version":"1.0","titlePattern":"Your First Weekend at {school}, Shared as Cards","editorialBrief":"Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.","researchQueries":["new student orientation campus guide","first year student campus activities","weekend near campus students"],"count":10,"icon":"schedule","primarySubjectType":"sequence_stop","allowedSubjectTypes":["sequence_stop","place","activity"],"freshnessDays":180,"exactTitle":"Your First Weekend at Florida International University, Shared as Cards"}]}
+codex
+{
+  "complete": false,
+  "school_name": "Florida International University",
+  "town_name": "Miami",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Florida International University",
+      "town_name": "Miami",
+      "template_id": "college-first-weekend",
+      "title": "Your First Weekend at Florida International University, Shared as Cards",
+      "description": "",
+      "icon": "schedule",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      							    
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+    ,
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+    ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:fiu.edu Modesto A. Maidique Campus Graham Center official FIU ...
+web search: 
+web search: site:recreation.fiu.edu wellness recreation center hours FIU MMC official ...
+web search: 
+web search: FIU Wellness Recreation Center MMC hours official 2026 ...
+web search: 
+web search: https://dineoncampus.com/fiu/
+codex
+{"complete":true,"school_name":"Florida International University","town_name":"Miami","boards":[{"complete":true,"school_name":"Florida International University","town_name":"Miami","template_id":"college-first-weekend","title":"Your First Weekend at Florida International University, Shared as Cards","description":"A conservative Friday-to-Sunday introduction to FIU’s Modesto A. Maidique Campus through documented landmarks, student facilities, art, recreation and outdoor spaces.","icon":"schedule","cards":[{"subject_id":"fiu-first-weekend-01-graham-center","subject_type":"sequence_stop","entity_name":"Ernest R. Graham Center","title":"Friday: Start at the Student Union","subtitle":"Get oriented inside the Graham Center","notes":"Begin at GC, identify the Welcome Center and major corridors, then check the building’s digital screens for university event notices.","short_summary":"Use FIU’s student union as the practical starting point for learning the center of campus.","evidence_claim":"FIU identifies the Graham Center as its student union and a destination for classes, major events, services and retail.","source_url":"https://dasa.fiu.edu/all-departments/graham-center/","source_title":"Graham Center | FIU Division of Student Affairs","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"FIU currently lists GC building hours as 7 a.m.–10 p.m. Monday–Friday and 8 a.m.–8 p.m. Saturday–Sunday; holiday hours differ.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fiu-first-weekend-02-primera-casa-fountain","subject_type":"sequence_stop","entity_name":"Primera Casa Fountain","title":"Friday: Find the Primera Casa Fountain","subtitle":"Learn one recognizable MMC landmark","notes":"Walk to the fountain and save its name in your phone; FIU’s admissions tour uses it as a documented Modesto Maidique Campus landmark.","short_summary":"Anchor your mental map with a clearly named campus-tour stop near Primera Casa.","evidence_claim":"FIU Admissions includes Primera Casa Fountain among the featured landmarks on its Modesto A. Maidique Campus tour.","source_url":"https://admissions.fiu.edu/experience-fiu/campus-tours/","source_title":"Campus Tours | FIU Admissions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor landmark; weather, construction and university restrictions may affect approach.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fiu-first-weekend-03-turtle-pond","subject_type":"sequence_stop","entity_name":"Turtle Pond","title":"Friday: Pause at Turtle Pond","subtitle":"Add a second named landmark to your route","notes":"Continue to Turtle Pond, observe wildlife without feeding or handling it, and note the nearest building signs before moving onward.","short_summary":"Turn a documented tour landmark into a calm wayfinding checkpoint.","evidence_claim":"FIU Admissions features Turtle Pond as a named attraction on its Modesto A. Maidique Campus tour.","source_url":"https://admissions.fiu.edu/experience-fiu/campus-tours/","source_title":"Campus Tours | FIU Admissions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor viewing stop; remain on designated walkways and avoid disturbing wildlife.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fiu-first-weekend-04-stocker-astroscience-center","subject_type":"sequence_stop","entity_name":"Stocker AstroScience Center","title":"Friday Evening: Scout the Observatory","subtitle":"Check the astronomy center’s event page","notes":"Photograph the observatory exterior, then check its official events section for a posted public program before planning any indoor visit.","short_summary":"Introduce FIU astronomy while keeping access dependent on an announced event.","evidence_claim":"FIU describes the Stocker AstroScience Center as a fully equipped observatory and teaching center with South Florida’s only research-grade telescope.","source_url":"https://astroscience.fiu.edu/","source_title":"FIU Stocker AstroScience Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Do not assume interior or telescope access; FIU says upcoming events are posted on the center’s website.","cost_status":"unknown","under21_safe":true},{"subject_id":"fiu-first-weekend-05-wellness-recreation-center","subject_type":"sequence_stop","entity_name":"Wellness and Recreation Center at MMC","title":"Saturday: Try the Recreation Center","subtitle":"Bring your Panther ID for student access","notes":"Pack athletic shoes, bring your Panther ID and start with a familiar workout; ask staff before using equipment or joining a program.","short_summary":"Use Saturday morning to learn where FIU students access fitness and recreation.","evidence_claim":"FIU says enrolled students are already recreation-center members because assessed tuition fees cover membership, and a valid Panther ID is required.","source_url":"https://dasa.fiu.edu/all-departments/wellness-recreation-centers/","source_title":"Campus Recreation | FIU Division of Student Affairs","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"FIU currently lists Summer B 2026 weekend hours at MMC as 10 a.m.–7 p.m.; verify the term schedule before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fiu-first-weekend-06-fiu-nature-preserve","subject_type":"sequence_stop","entity_name":"FIU Nature Preserve","title":"Saturday: Walk the Nature Preserve","subtitle":"Follow the campus preserve’s designated trails","notes":"Visit in daylight, stay on marked paths and bring water; use the short trail system to compare the preserve’s three ecosystems.","short_summary":"Experience a compact Everglades-focused outdoor classroom on the west side of MMC.","evidence_claim":"FIU describes the Nature Preserve as an 11-acre environmental education facility with three ecosystems, guided nature trails and a 0.6-mile jogging path.","source_url":"https://ignite.fiu.edu/give-now/giving-opportunities/units-and-divisions/university-sustainability/nature-preserve/index.html","source_title":"Nature Preserve | FIU Foundation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"FIU states that the preserve is open to the public daily from sunrise to sunset; use daylight hours and designated paths.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fiu-first-weekend-07-frost-art-museum","subject_type":"sequence_stop","entity_name":"Patricia & Phillip Frost Art Museum","title":"Saturday: Browse the Frost Art Museum","subtitle":"See current exhibitions without an admission charge","notes":"Check the exhibitions page before arrival, enter during museum hours and leave time to view the three-story atrium and gallery spaces.","short_summary":"Make the campus art museum the structured cultural stop of the weekend.","evidence_claim":"The Frost Art Museum states that admission is always free and open to the public during normal museum hours.","source_url":"https://frost.fiu.edu/visit/index.html","source_title":"Visitor Information | Patricia & Phillip Frost Art Museum","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Tuesday–Sunday, 11 a.m.–5 p.m.; closed Mondays and most legal and university holidays. Visitor parking requires payment.","cost_status":"free","under21_safe":true},{"subject_id":"fiu-first-weekend-08-green-lake","subject_type":"sequence_stop","entity_name":"Green Lake","title":"Saturday: Locate Green Lake","subtitle":"See a landmark tied to FIU architecture activity","notes":"Walk to Green Lake in daylight, identify its position on your campus route and remain in public areas away from the water’s edge.","short_summary":"Add a visually distinct outdoor landmark to your growing map of MMC.","evidence_claim":"FIU Admissions identifies Green Lake as an MMC tour landmark and documents architecture students competing there in Walk on Water.","source_url":"https://admissions.fiu.edu/experience-fiu/campus-tours/","source_title":"Campus Tours | FIU Admissions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This card is for ordinary public-area viewing, not participation in Walk on Water; follow posted campus and waterfront restrictions.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fiu-first-weekend-09-steven-dorothea-green-library","subject_type":"sequence_stop","entity_name":"Steven and Dorothea Green Library","title":"Sunday: Find Green Library","subtitle":"Identify FIU’s main MMC library building","notes":"Locate the entrances and service signs, then check the library’s current schedule before choosing a desk or planning a return visit.","short_summary":"Finish the weekend knowing where a central academic resource sits on campus.","evidence_claim":"FIU’s MMC page lists the Steven and Dorothea Green Library among the principal facilities located on campus.","source_url":"https://www.fiu.edu/locations/mmc/","source_title":"Modesto A. Maidique Campus | Florida International University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Library schedules vary by term, holiday and service area; confirm current hours on FIU Libraries’ website before entering.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fiu-first-weekend-10-gc-lawns","subject_type":"sequence_stop","entity_name":"GC Lawns","title":"Sunday: Close Out on the GC Lawns","subtitle":"Review your route beside Graham Center","notes":"Choose a public lawn area, review the places you found and mark any buildings you still need to locate before the academic week begins.","short_summary":"End outside with a simple route review near the weekend’s starting point.","evidence_claim":"FIU Admissions features the GC Lawns as a named Modesto A. Maidique Campus tour location.","source_url":"https://admissions.fiu.edu/experience-fiu/campus-tours/","source_title":"Campus Tours | FIU Admissions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor public-area stop; organized events, maintenance, severe weather or university rules may temporarily limit use.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:09:55.695380Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9f3-1be0-7160-aacb-a6a988fc3e3b.1786604887009324000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+34,412
+
+{"complete":true,"school_name":"Florida International University","town_name":"Miami","boards":[{"complete":true,"school_name":"Florida International University","town_name":"Miami","template_id":"college-first-weekend","title":"Your First Weekend at Florida International University, Shared as Cards","description":"A conservative Friday-to-Sunday introduction to FIU’s Modesto A. Maidique Campus through documented landmarks, student facilities, art, recreation and outdoor spaces.","icon":"schedule","cards":[{"subject_id":"fiu-first-weekend-01-graham-center","subject_type":"sequence_stop","entity_name":"Ernest R. Graham Center","title":"Friday: Start at the Student Union","subtitle":"Get oriented inside the Graham Center","notes":"Begin at GC, identify the Welcome Center and major corridors, then check the building’s digital screens for university event notices.","short_summary":"Use FIU’s student union as the practical starting point for learning the center of campus.","evidence_claim":"FIU identifies the Graham Center as its student union and a destination for classes, major events, services and retail.","source_url":"https://dasa.fiu.edu/all-departments/graham-center/","source_title":"Graham Center | FIU Division of Student Affairs","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"FIU currently lists GC building hours as 7 a.m.–10 p.m. Monday–Friday and 8 a.m.–8 p.m. Saturday–Sunday; holiday hours differ.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fiu-first-weekend-02-primera-casa-fountain","subject_type":"sequence_stop","entity_name":"Primera Casa Fountain","title":"Friday: Find the Primera Casa Fountain","subtitle":"Learn one recognizable MMC landmark","notes":"Walk to the fountain and save its name in your phone; FIU’s admissions tour uses it as a documented Modesto Maidique Campus landmark.","short_summary":"Anchor your mental map with a clearly named campus-tour stop near Primera Casa.","evidence_claim":"FIU Admissions includes Primera Casa Fountain among the featured landmarks on its Modesto A. Maidique Campus tour.","source_url":"https://admissions.fiu.edu/experience-fiu/campus-tours/","source_title":"Campus Tours | FIU Admissions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor landmark; weather, construction and university restrictions may affect approach.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fiu-first-weekend-03-turtle-pond","subject_type":"sequence_stop","entity_name":"Turtle Pond","title":"Friday: Pause at Turtle Pond","subtitle":"Add a second named landmark to your route","notes":"Continue to Turtle Pond, observe wildlife without feeding or handling it, and note the nearest building signs before moving onward.","short_summary":"Turn a documented tour landmark into a calm wayfinding checkpoint.","evidence_claim":"FIU Admissions features Turtle Pond as a named attraction on its Modesto A. Maidique Campus tour.","source_url":"https://admissions.fiu.edu/experience-fiu/campus-tours/","source_title":"Campus Tours | FIU Admissions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor viewing stop; remain on designated walkways and avoid disturbing wildlife.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fiu-first-weekend-04-stocker-astroscience-center","subject_type":"sequence_stop","entity_name":"Stocker AstroScience Center","title":"Friday Evening: Scout the Observatory","subtitle":"Check the astronomy center’s event page","notes":"Photograph the observatory exterior, then check its official events section for a posted public program before planning any indoor visit.","short_summary":"Introduce FIU astronomy while keeping access dependent on an announced event.","evidence_claim":"FIU describes the Stocker AstroScience Center as a fully equipped observatory and teaching center with South Florida’s only research-grade telescope.","source_url":"https://astroscience.fiu.edu/","source_title":"FIU Stocker AstroScience Center","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Do not assume interior or telescope access; FIU says upcoming events are posted on the center’s website.","cost_status":"unknown","under21_safe":true},{"subject_id":"fiu-first-weekend-05-wellness-recreation-center","subject_type":"sequence_stop","entity_name":"Wellness and Recreation Center at MMC","title":"Saturday: Try the Recreation Center","subtitle":"Bring your Panther ID for student access","notes":"Pack athletic shoes, bring your Panther ID and start with a familiar workout; ask staff before using equipment or joining a program.","short_summary":"Use Saturday morning to learn where FIU students access fitness and recreation.","evidence_claim":"FIU says enrolled students are already recreation-center members because assessed tuition fees cover membership, and a valid Panther ID is required.","source_url":"https://dasa.fiu.edu/all-departments/wellness-recreation-centers/","source_title":"Campus Recreation | FIU Division of Student Affairs","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"FIU currently lists Summer B 2026 weekend hours at MMC as 10 a.m.–7 p.m.; verify the term schedule before visiting.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fiu-first-weekend-06-fiu-nature-preserve","subject_type":"sequence_stop","entity_name":"FIU Nature Preserve","title":"Saturday: Walk the Nature Preserve","subtitle":"Follow the campus preserve’s designated trails","notes":"Visit in daylight, stay on marked paths and bring water; use the short trail system to compare the preserve’s three ecosystems.","short_summary":"Experience a compact Everglades-focused outdoor classroom on the west side of MMC.","evidence_claim":"FIU describes the Nature Preserve as an 11-acre environmental education facility with three ecosystems, guided nature trails and a 0.6-mile jogging path.","source_url":"https://ignite.fiu.edu/give-now/giving-opportunities/units-and-divisions/university-sustainability/nature-preserve/index.html","source_title":"Nature Preserve | FIU Foundation","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"FIU states that the preserve is open to the public daily from sunrise to sunset; use daylight hours and designated paths.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fiu-first-weekend-07-frost-art-museum","subject_type":"sequence_stop","entity_name":"Patricia & Phillip Frost Art Museum","title":"Saturday: Browse the Frost Art Museum","subtitle":"See current exhibitions without an admission charge","notes":"Check the exhibitions page before arrival, enter during museum hours and leave time to view the three-story atrium and gallery spaces.","short_summary":"Make the campus art museum the structured cultural stop of the weekend.","evidence_claim":"The Frost Art Museum states that admission is always free and open to the public during normal museum hours.","source_url":"https://frost.fiu.edu/visit/index.html","source_title":"Visitor Information | Patricia & Phillip Frost Art Museum","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Tuesday–Sunday, 11 a.m.–5 p.m.; closed Mondays and most legal and university holidays. Visitor parking requires payment.","cost_status":"free","under21_safe":true},{"subject_id":"fiu-first-weekend-08-green-lake","subject_type":"sequence_stop","entity_name":"Green Lake","title":"Saturday: Locate Green Lake","subtitle":"See a landmark tied to FIU architecture activity","notes":"Walk to Green Lake in daylight, identify its position on your campus route and remain in public areas away from the water’s edge.","short_summary":"Add a visually distinct outdoor landmark to your growing map of MMC.","evidence_claim":"FIU Admissions identifies Green Lake as an MMC tour landmark and documents architecture students competing there in Walk on Water.","source_url":"https://admissions.fiu.edu/experience-fiu/campus-tours/","source_title":"Campus Tours | FIU Admissions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This card is for ordinary public-area viewing, not participation in Walk on Water; follow posted campus and waterfront restrictions.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fiu-first-weekend-09-steven-dorothea-green-library","subject_type":"sequence_stop","entity_name":"Steven and Dorothea Green Library","title":"Sunday: Find Green Library","subtitle":"Identify FIU’s main MMC library building","notes":"Locate the entrances and service signs, then check the library’s current schedule before choosing a desk or planning a return visit.","short_summary":"Finish the weekend knowing where a central academic resource sits on campus.","evidence_claim":"FIU’s MMC page lists the Steven and Dorothea Green Library among the principal facilities located on campus.","source_url":"https://www.fiu.edu/locations/mmc/","source_title":"Modesto A. Maidique Campus | Florida International University","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Library schedules vary by term, holiday and service area; confirm current hours on FIU Libraries’ website before entering.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"fiu-first-weekend-10-gc-lawns","subject_type":"sequence_stop","entity_name":"GC Lawns","title":"Sunday: Close Out on the GC Lawns","subtitle":"Review your route beside Graham Center","notes":"Choose a public lawn area, review the places you found and mark any buildings you still need to locate before the academic week begins.","short_summary":"End outside with a simple route review near the weekend’s starting point.","evidence_claim":"FIU Admissions features the GC Lawns as a named Modesto A. Maidique Campus tour location.","source_url":"https://admissions.fiu.edu/experience-fiu/campus-tours/","source_title":"Campus Tours | FIU Admissions","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor public-area stop; organized events, maintenance, severe weather or university rules may temporarily limit use.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

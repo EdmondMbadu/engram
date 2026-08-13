@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://library.charlotte.edu/about/policies/building-space-use-policies",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.charlotte.edu/about/policies/building-space-use-policies",
+      "error": ""
+    },
+    {
+      "url": "https://library.charlotte.edu/visit-study/rooms-spaces/study-quiet-silent-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.charlotte.edu/visit-study/rooms-spaces/study-quiet-silent-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://library.charlotte.edu/visit-study/rooms-spaces/special-collections",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.charlotte.edu/visit-study/rooms-spaces/special-collections",
+      "error": ""
+    },
+    {
+      "url": "https://library.charlotte.edu/visit-study/floor-maps/tenth-floor",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.charlotte.edu/visit-study/floor-maps/tenth-floor",
+      "error": ""
+    },
+    {
+      "url": "https://library.charlotte.edu/visit-study/architecture-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.charlotte.edu/visit-study/architecture-library",
+      "error": ""
+    },
+    {
+      "url": "https://library.charlotte.edu/technology-equipment/area-49",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.charlotte.edu/technology-equipment/area-49",
+      "error": ""
+    },
+    {
+      "url": "https://library.charlotte.edu/visit-study/rooms-spaces/microforms-video-viewing",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.charlotte.edu/visit-study/rooms-spaces/microforms-video-viewing",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

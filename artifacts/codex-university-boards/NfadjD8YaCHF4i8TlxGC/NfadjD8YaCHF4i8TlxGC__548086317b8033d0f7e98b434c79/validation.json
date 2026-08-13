@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.hsc.edu/brown-student-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hsc.edu/brown-student-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.hsc.edu/documents/About%20H-SC/CampusMap.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hsc.edu/documents/About%20H-SC/CampusMap.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.hsc.edu/student-life/campus-resources",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hsc.edu/student-life/campus-resources",
+      "error": ""
+    },
+    {
+      "url": "https://map.hsc.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://map.hsc.edu/",
+      "error": ""
+    },
+    {
+      "url": "https://www.hsc.edu/academic-centers",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hsc.edu/academic-centers",
+      "error": ""
+    },
+    {
+      "url": "https://www.hsc.edu/student-life/what-to-do",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hsc.edu/student-life/what-to-do",
+      "error": ""
+    },
+    {
+      "url": "https://www.hsc.edu/tigerec",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hsc.edu/tigerec",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

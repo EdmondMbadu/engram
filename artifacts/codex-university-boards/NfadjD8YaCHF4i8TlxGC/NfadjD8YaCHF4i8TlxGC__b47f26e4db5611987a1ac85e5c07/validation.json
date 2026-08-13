@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://library.udel.edu/museums/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.udel.edu/museums/about/",
+      "error": ""
+    },
+    {
+      "url": "https://library.udel.edu/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.udel.edu/about/",
+      "error": ""
+    },
+    {
+      "url": "https://library.udel.edu/about/directions-and-maps/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.udel.edu/about/directions-and-maps/",
+      "error": ""
+    },
+    {
+      "url": "https://library.udel.edu/special-collections/visitor-information/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.udel.edu/special-collections/visitor-information/",
+      "error": ""
+    },
+    {
+      "url": "https://www1.udel.edu/udaily/2013/sep/wildflowers-092412.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www1.udel.edu/udaily/2013/sep/wildflowers-092412.html",
+      "error": ""
+    },
+    {
+      "url": "https://www1.udel.edu/udaily/2011/sep/wildflowers-botanic-gardens092310.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www1.udel.edu/udaily/2011/sep/wildflowers-botanic-gardens092310.html",
+      "error": ""
+    },
+    {
+      "url": "https://apply.udel.edu/portal/self-guided",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://apply.udel.edu/portal/self-guided",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

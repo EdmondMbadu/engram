@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.immaculata.edu/news/history-of-carol-night/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.immaculata.edu/news/history-of-carol-night/",
+      "error": ""
+    },
+    {
+      "url": "https://www.immaculata.edu/advancement/support/lanterns-of-love/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.immaculata.edu/advancement/support/lanterns-of-love/",
+      "error": ""
+    },
+    {
+      "url": "https://immaculatan.immaculata.edu/2022-editions/april-2022-edition/amethyst-day-2022/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://immaculatan.immaculata.edu/2022-editions/april-2022-edition/amethyst-day-2022/",
+      "error": ""
+    },
+    {
+      "url": "https://magazine.immaculata.edu/winter-2025/alumni-association-celebrates-100-years/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://magazine.immaculata.edu/winter-2025/alumni-association-celebrates-100-years/",
+      "error": ""
+    },
+    {
+      "url": "https://www.immaculata.edu/campus-life/new-student-orientation/orientation-schedule/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.immaculata.edu/campus-life/new-student-orientation/orientation-schedule/",
+      "error": ""
+    },
+    {
+      "url": "https://www.immaculata.edu/event/rose-arbor-day-senior-picture-day/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.immaculata.edu/event/rose-arbor-day-senior-picture-day/",
+      "error": ""
+    },
+    {
+      "url": "https://magazine.immaculata.edu/summer-2024/qa-with-kaleigh-dugan-senior-class-president/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://magazine.immaculata.edu/summer-2024/qa-with-kaleigh-dugan-senior-class-president/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

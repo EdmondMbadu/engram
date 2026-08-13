@@ -1,0 +1,47 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "The title’s “Claimed by 9am” language is editorial framing; no claim of morning crowding or student behavior is intended.",
+    "Published Watzek hours are for the 2025–26 academic year and should be rechecked for later terms, holidays, and breaks.",
+    "Law-campus spaces may prioritize law students or require authorized building access; users should verify current eligibility before visiting."
+  ],
+  "reachability": [
+    {
+      "url": "https://college.lclark.edu/live/news/55626-watzek-library-hours-for-the-2025-26-academic-year",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://college.lclark.edu/live/news/55626-watzek-library-hours-for-the-2025-26-academic-year",
+      "error": ""
+    },
+    {
+      "url": "https://docs.lclark.edu/undergraduate/academicservices/student/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://docs.lclark.edu/undergraduate/academicservices/student/",
+      "error": ""
+    },
+    {
+      "url": "https://law.lclark.edu/offices/admissions/visit_us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://law.lclark.edu/offices/admissions/visit_us/",
+      "error": ""
+    },
+    {
+      "url": "https://law.lclark.edu/about/facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://law.lclark.edu/about/facilities/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 89,
+  "generationGrade": "B"
+}

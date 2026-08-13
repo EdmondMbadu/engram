@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.umkc.edu/campus/student-union/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.umkc.edu/campus/student-union/",
+      "error": ""
+    },
+    {
+      "url": "https://www.umkc.edu/recreation/programs-and-services/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.umkc.edu/recreation/programs-and-services/",
+      "error": ""
+    },
+    {
+      "url": "https://www.umkc.edu/news/posts/2024/september/campus-resources-for-student-success-and-wellness.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.umkc.edu/news/posts/2024/september/campus-resources-for-student-success-and-wellness.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.umkc.edu/provost/student-success/campus-resources/kansas-city-athletics.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.umkc.edu/provost/student-success/campus-resources/kansas-city-athletics.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.umkc.edu/get-involved/events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.umkc.edu/get-involved/events/",
+      "error": ""
+    },
+    {
+      "url": "https://roogroups.umkc.edu/club_signup?view=all",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://roogroups.umkc.edu/club_signup?view=all",
+      "error": ""
+    },
+    {
+      "url": "https://roogroups.umkc.edu/web/rsvp_boot?id=417669",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://roogroups.umkc.edu/web/rsvp_boot?id=417669",
+      "error": ""
+    },
+    {
+      "url": "https://nelson-atkins.org/give/get-involved/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://nelson-atkins.org/give/get-involved/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

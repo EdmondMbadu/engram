@@ -1,0 +1,94 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Late service at several fast-food destinations is drive-through-only after the lobby closes; verify same-day hours and transportation before departure.",
+    "IHOP qualifies only on Friday and Saturday, when its official schedule extends to midnight."
+  ],
+  "reachability": [
+    {
+      "url": "https://dennys.com/location/denny-s-7581-345434",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://dennys.com/location/denny-s-7581-345434",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/ca/pomona/3077-w-temple-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/ca/pomona/3077-w-temple-ave",
+      "error": ""
+    },
+    {
+      "url": "https://locations.deltaco.com/us/ca/pomona/1495-n-garey-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.deltaco.com/us/ca/pomona/1495-n-garey-ave",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ca/pomona/690-n--indian-hill-blvd.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ca/pomona/690-n--indian-hill-blvd.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ca/pomona/2204-n-garey.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ca/pomona/2204-n-garey.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jackinthebox.com/us/ca/pomona/100-e-holt-ave",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jackinthebox.com/us/ca/pomona/100-e-holt-ave",
+      "error": ""
+    },
+    {
+      "url": "https://locations.jackinthebox.com/us/ca/pomona/1335-n-dudley-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.jackinthebox.com/us/ca/pomona/1335-n-dudley-st",
+      "error": ""
+    },
+    {
+      "url": "https://locations.in-n-out.com/8-Pomona",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.in-n-out.com/8-Pomona",
+      "error": ""
+    },
+    {
+      "url": "https://locations.in-n-out.com/33-Pomona",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.in-n-out.com/33-Pomona",
+      "error": ""
+    },
+    {
+      "url": "https://restaurants.ihop.com/en-us/ca/pomona/breakfast-50-rio-rancho-rd-3468",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://restaurants.ihop.com/en-us/ca/pomona/breakfast-50-rio-rancho-rd-3468",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

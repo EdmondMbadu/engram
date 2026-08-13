@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://visit.tamu.edu/home",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.tamu.edu/visit/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.tamu.edu/campus-community/life-in-aggieland/campus-destinations.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.tamu.edu/campus-community/life-in-aggieland/campus-destinations.html",
+      "error": ""
+    },
+    {
+      "url": "https://library.tamu.edu/cushing/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 300,
+      "finalUrl": "https://library.tamu.edu/cushing/index.php",
+      "error": ""
+    },
+    {
+      "url": "https://corps.tamu.edu/about-us/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://corps.tamu.edu/about-us/",
+      "error": ""
+    },
+    {
+      "url": "https://www.tamu.edu/campus-community/traditions/remembrance/bonfire-memorial.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.tamu.edu/campus-community/traditions/remembrance/bonfire-memorial.html",
+      "error": ""
+    },
+    {
+      "url": "https://ucenter.tamu.edu/facilities/memorial-student-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ucenter.tamu.edu/facilities/memorial-student-center/",
+      "error": ""
+    },
+    {
+      "url": "https://gardens.tamu.edu/visit/admission-hours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gardens.tamu.edu/visit/admission-hours/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

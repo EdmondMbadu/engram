@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://liberalarts.latech.edu/centers-studios-galleries/art-galleries/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latech.edu/liberal-arts/centers-and-spaces/art-galleries.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.latech.edu/academics/library/government-documents/federal-documents.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latech.edu/academics/library/government-documents/federal-documents.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.latech.edu/academics/library/government-documents/policies.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latech.edu/academics/library/government-documents/policies.php",
+      "error": ""
+    },
+    {
+      "url": "https://www.latech.edu/academics/library/services/visitors-and-alumni.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latech.edu/academics/library/services/visitors-and-alumni.php",
+      "error": ""
+    },
+    {
+      "url": "https://coes.latech.edu/outreach/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.latech.edu/engineering-science/index.php/outreach/",
+      "error": ""
+    },
+    {
+      "url": "https://www.rustonsportscomplex.com/index.php/reservations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.rustonsportscomplex.com/index.php/reservations/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

@@ -1,0 +1,66 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "4 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.du.edu/campus-life/living",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.du.edu/campus-life/living",
+      "error": ""
+    },
+    {
+      "url": "https://studentaffairs.du.edu/Driscoll-Community-Commons",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentaffairs.du.edu/Driscoll-Community-Commons",
+      "error": ""
+    },
+    {
+      "url": "https://studentaffairs.du.edu/Driscoll-Community-Commons/lounge-study",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://studentaffairs.du.edu/Driscoll-Community-Commons/lounge-study",
+      "error": ""
+    },
+    {
+      "url": "https://www.du.edu/media/documents/maps/map-campus.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.du.edu/sites/default/files/2023-12/Aug23DUCampusMap.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://liberalarts.du.edu/lamont/performances-events/calendar",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://liberalarts.du.edu/lamont/performances-events/calendar",
+      "error": ""
+    },
+    {
+      "url": "https://academicaffairs.du.edu/sites/default/files/2022-03/du_campus_resources.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://academicaffairs.du.edu/sites/default/files/2022-03/du_campus_resources.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Anderson Academic Commons",
+    "Community Commons",
+    "Driscoll Commons",
+    "Evans Chapel"
+  ],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

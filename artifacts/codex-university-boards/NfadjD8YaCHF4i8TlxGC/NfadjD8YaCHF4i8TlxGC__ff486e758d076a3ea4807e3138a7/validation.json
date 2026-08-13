@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.gwu.edu/traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gwu.edu/traditions",
+      "error": ""
+    },
+    {
+      "url": "https://commencement.gwu.edu/spirit-and-traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://commencement.gwu.edu/spirit-and-traditions",
+      "error": ""
+    },
+    {
+      "url": "https://gwtoday.gwu.edu/gw-expands-buff-bloom-week-philanthropic-focus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gwtoday.gwu.edu/gw-expands-buff-bloom-week-philanthropic-focus",
+      "error": ""
+    },
+    {
+      "url": "https://students.gwu.edu/buff-and-bloom-week",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://students.gwu.edu/buff-and-bloom-week",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

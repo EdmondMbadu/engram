@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.ndsu.edu/sodaa/facilities/memorial_union_gallery",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.ndsu.edu/school-of-design-architecture-art/facilities/memorial-union-gallery",
+      "error": ""
+    },
+    {
+      "url": "https://plainsart.org/exhibitions/color-improvisations-3/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://plainsart.org/exhibitions/color-improvisations-3/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fargoparks.com/cross-country-ski-trails",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fargoparks.com/cross-country-ski-trails",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 3,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

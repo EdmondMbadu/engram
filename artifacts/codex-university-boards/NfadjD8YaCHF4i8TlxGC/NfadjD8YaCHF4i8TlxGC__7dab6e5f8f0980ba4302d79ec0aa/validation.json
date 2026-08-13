@@ -1,0 +1,97 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 source URL check(s) were inconclusive and need editorial confirmation.",
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.daytonainternationalspeedway.com/tours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.daytonainternationalspeedway.com/tours/",
+      "error": ""
+    },
+    {
+      "url": "https://www.daytonainternationalspeedway.com/hotels/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.daytonainternationalspeedway.com/hotels/",
+      "error": ""
+    },
+    {
+      "url": "https://www.volusiamall.com/en.html",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.volusiamall.com/en.html",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.moas.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.moas.org/",
+      "error": ""
+    },
+    {
+      "url": "https://www.daytonabeach.com/travel-trade/itineraries/african-american-heritage/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.daytonabeach.com/travel-trade/itineraries/african-american-heritage/",
+      "error": ""
+    },
+    {
+      "url": "https://www.daytonabeach.com/listings/riverfront-esplanade/1264/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.daytonabeach.com/listings/riverfront-esplanade/1264/",
+      "error": ""
+    },
+    {
+      "url": "https://www.daytonabeach.com/listings/jackie-robinson-ballpark-and-statue/903/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.daytonabeach.com/listings/jackie-robinson-ballpark-and-statue/903/",
+      "error": ""
+    },
+    {
+      "url": "https://www.daytonabeach.com/listings/daytona-beach-pier/1261/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.daytonabeach.com/listings/daytona-beach-pier/1261/",
+      "error": ""
+    },
+    {
+      "url": "https://www.daytonabeach.com/listings/sun-splash-park/677/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.daytonabeach.com/listings/sun-splash-park/677/",
+      "error": ""
+    },
+    {
+      "url": "https://www.daytonabeach.com/events/festivals-and-music/bandshell-concerts/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.daytonabeach.com/events/festivals-and-music/bandshell-concerts/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Riverfront Esplanade",
+    "Daytona Beach Bandshell"
+  ],
+  "sourceCount": 10,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

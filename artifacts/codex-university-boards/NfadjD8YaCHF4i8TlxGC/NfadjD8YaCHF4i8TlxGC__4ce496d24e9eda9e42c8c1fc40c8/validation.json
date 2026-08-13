@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://sua.umn.edu/coffman-memorial-union",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sua.umn.edu/coffman-memorial-union",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.umn.edu/spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.umn.edu/spaces",
+      "error": ""
+    },
+    {
+      "url": "https://www.lib.umn.edu/spaces/walter",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.lib.umn.edu/spaces/walter",
+      "error": ""
+    },
+    {
+      "url": "https://www.northrop.umn.edu/study-lounges",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.northrop.umn.edu/study-lounges",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

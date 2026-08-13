@@ -1,0 +1,284 @@
+Reading additional input from stdin...
+2026-08-13T07:50:26.264152Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa19-da2c-7803-965b-fb914aecf889
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"4rkshReXw7YUPFTCtJYX","schoolName":"Kalamazoo College","shortSchoolName":"Kalamazoo College","townName":"Kalamazoo","state":"MI","countryCode":"US","website":"https://www.kzoo.edu/","latitude":42.290789,"longitude":-85.601857},"templates":[{"id":"college-first-weekend","version":"1.0","titlePattern":"Your First Weekend at {school}, Shared as Cards","editorialBrief":"Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.","researchQueries":["new student orientation campus guide","first year student campus activities","weekend near campus students"],"count":10,"icon":"schedule","primarySubjectType":"sequence_stop","allowedSubjectTypes":["sequence_stop","place","activity"],"freshnessDays":180,"exactTitle":"Your First Weekend at Kalamazoo College, Shared as Cards"}]}
+2026-08-13T07:50:26.672842Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:50:26.996380Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa19-8c53-7ca2-ac92-01f082653499.1786607406164181000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Kalamazoo College",
+  "town_name": "Kalamazoo",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Kalamazoo College",
+      "town_name": "Kalamazoo",
+      "template_id": "college-first-weekend",
+      "title": "Your First Weekend at Kalamazoo College, Shared as Cards",
+      "description": "",
+      "icon": "schedule",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "I’m researching the complete 10-stop sequence against current direct sources, including access and cost details.",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     ,
+      {
+        "subject_id": "",
+        "subject_type": "sequence_stop",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "university_official",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        },
+        {
+          "subject_id": "",
+          "subject_type": "sequence_stop",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}
+web search: 
+web search: site:kzoo.edu Kalamazoo College campus student activities library dining recreation official ...
+web search: 
+web search: site:library.kzoo.edu hours Upjohn Library Commons Kalamazoo College ...
+web search: 
+web search: site:kiarts.org visit hours admission Kalamazoo Institute of Arts official ...
+codex
+{"complete":true,"school_name":"Kalamazoo College","town_name":"Kalamazoo","boards":[{"complete":true,"school_name":"Kalamazoo College","town_name":"Kalamazoo","template_id":"college-first-weekend","title":"Your First Weekend at Kalamazoo College, Shared as Cards","description":"A Friday-to-Sunday sequence for learning campus landmarks, joining recurring student activities, exploring two downtown museums and resetting before class.","icon":"schedule","cards":[{"subject_id":"kcollege-hicks-student-center","subject_type":"sequence_stop","entity_name":"Hicks Student Center","title":"Start at the Student Center","subtitle":"Friday afternoon · Hicks Student Center","notes":"Locate Student Development on the second floor, save Campus Safety’s number and use Hicks as your reference point for the weekend.","short_summary":"Get oriented inside the campus hub that houses key student services and recurring activities.","evidence_claim":"Kalamazoo College locates Student Development in Hicks Student Center, second-floor East, Room 119, and lists Campus Safety among its student resources.","source_url":"https://studev.kzoo.edu/resources/","source_title":"Student Resources – Student Development | Kalamazoo College","source_kind":"university_official","source_published_at":"2025-07-28","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Student Development lists weekday contact hours of 8 a.m.–5 p.m.; Campus Safety is available 24/7 by phone.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"kcollege-welles-dining-hall","subject_type":"sequence_stop","entity_name":"Welles Dining Hall","title":"Learn the Dining-Hall Routine","subtitle":"Friday dinner · Second floor of Hicks Student Center","notes":"Walk upstairs to identify each station, check dietary labels and learn where to ask staff about ingredients before the first busy week.","short_summary":"Use the first dinner to understand the main dining hall’s layout and inclusive food options.","evidence_claim":"Welles is an all-you-care-to-eat dining hall on the second floor of Hicks Student Center, with buffet-style meals and dietary labeling.","source_url":"https://www.kzoo.edu/student-life/living-at-k/college-dining-services/","source_title":"Kalamazoo College Dining Halls and Services","source_kind":"university_official","source_published_at":"2026-03-30","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Meal-plan entry or payment is required; the official page says campus dining locations accept credit cards.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"kcollege-quadrangle","subject_type":"sequence_stop","entity_name":"Kalamazoo College Quadrangle","title":"Trace the Quad’s Landmarks","subtitle":"Friday early evening · The Quad","notes":"Walk one circuit while it is light, noting Hicks, Stetson Chapel and the academic buildings so tomorrow’s routes feel familiar.","short_summary":"Build a mental map from the named green at the center of campus.","evidence_claim":"The College identifies the Quadrangle, or Quad, as the heart of campus and says it is bordered by academic and administrative buildings, the student center and Stetson Chapel.","source_url":"https://www.kzoo.edu/about/campus/","source_title":"Campus Map for Kalamazoo College - About Kalamazoo College","source_kind":"university_official","source_published_at":"2025-10-15","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor campus stop; choose daylight and follow posted campus guidance.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"kcollege-friday-night-activities","subject_type":"sequence_stop","entity_name":"Friday Night Activities","title":"Try the Friday Rotation","subtitle":"Friday night · Usually Hicks Student Center","notes":"Check the campus calendar for this week’s format, bring your student ID and join whichever movie, game, craft or karaoke session is scheduled.","short_summary":"Meet people through a recurring Friday program whose activity changes each week.","evidence_claim":"Student Activities documents Friday Night Activities every Friday from 8–11 p.m., usually in Hicks Center, rotating among movies, games, crafts, karaoke and off-campus events.","source_url":"https://studentactivities.kzoo.edu/events/","source_title":"Programs and Events – Student Activities | Kalamazoo College","source_kind":"university_official","source_published_at":"2026-07-08","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current official hours are Friday 8–11 p.m., usually in Hicks Center. Check the calendar for location; student ID is used for event entry.","cost_status":"unknown","under21_safe":true},{"subject_id":"kcollege-richardson-room","subject_type":"sequence_stop","entity_name":"Richardson Room","title":"Practice a Grab-and-Go Meal","subtitle":"Saturday morning · First floor of Hicks Student Center","notes":"Use this stop to learn the to-go counter before a rushed weekday; confirm the day’s hours and available payment method before heading over.","short_summary":"Identify the campus counter for portable sandwiches, smoothies and yogurt bowls.","evidence_claim":"Kalamazoo College says the Richardson Room is on the first floor of Hicks Student Center and prepares custom sandwiches, smoothies, yogurt bowls and other food to go.","source_url":"https://www.kzoo.edu/student-life/living-at-k/college-dining-services/","source_title":"Kalamazoo College Dining Halls and Services","source_kind":"university_official","source_published_at":"2026-03-30","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited page does not publish Richardson Room hours; verify the current dining schedule before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"kalamazoo-valley-museum","subject_type":"sequence_stop","entity_name":"Kalamazoo Valley Museum","title":"Explore Kalamazoo’s Museum","subtitle":"Saturday midday · Downtown Kalamazoo","notes":"Allow time for all three floors, then use the exhibits to collect a few local-history reference points for future trips around town.","short_summary":"Add regional history, science and technology to the weekend without an admission charge.","evidence_claim":"The museum publishes Saturday public hours of 10 a.m.–4 p.m., offers exhibits and experiences on three floors, and states that general admission is free.","source_url":"https://kalamazoomuseum.org/visit","source_title":"Kalamazoo Valley Museum - Visit","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Saturday 10 a.m.–4 p.m. General admission is free; some programs may charge fees. Visitors under 16 need an adult.","cost_status":"free","under21_safe":true},{"subject_id":"kalamazoo-institute-of-arts","subject_type":"sequence_stop","entity_name":"Kalamazoo Institute of Arts","title":"Choose a Gallery Conversation","subtitle":"Saturday afternoon · Kalamazoo Institute of Arts","notes":"Pick one permanent-collection work and one special-exhibition work to discuss, leaving enough time to return before the galleries close.","short_summary":"Turn a downtown gallery visit into an easy shared conversation rather than a rushed survey.","evidence_claim":"The KIA is at 314 S. Park Street, opens Saturdays from 11 a.m.–5 p.m., and lists college-student admission for visitors 18 and older with ID.","source_url":"https://www.kiarts.org/connect-visit/plan-your-visit/","source_title":"Plan Your Visit to the KIA","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Saturday gallery hours are 11 a.m.–5 p.m. The KIA advises checking for changes caused by events, rentals or weather.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"kcollege-zoo-after-darks","subject_type":"sequence_stop","entity_name":"Zoo After Darks","title":"Join the Saturday Night Series","subtitle":"Saturday night · Usually Hicks Student Center","notes":"Check the calendar for the theme and location, carry your student ID and arrive when the program begins instead of wandering campus late.","short_summary":"Close Saturday at the College’s recurring late-night activity series.","evidence_claim":"Student Activities documents Zoo After Darks every Saturday from 9 p.m.–midnight, usually in Hicks Center, with changing themes such as sports, competitions and performances.","source_url":"https://studentactivities.kzoo.edu/events/","source_title":"Programs and Events – Student Activities | Kalamazoo College","source_kind":"university_official","source_published_at":"2026-07-08","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current official hours are Saturday 9 p.m.–midnight, usually in Hicks Center. Check the calendar for the week’s location; bring student ID.","cost_status":"unknown","under21_safe":true},{"subject_id":"lillian-anderson-arboretum","subject_type":"sequence_stop","entity_name":"Lillian Anderson Arboretum","title":"Walk a Posted Arboretum Trail","subtitle":"Sunday daylight · 7787 West Main Street","notes":"Download the trail map before leaving campus, arrange transportation and complete a manageable daylight loop while following posted policies.","short_summary":"Use Sunday morning for a planned nature walk across the College’s public trail network.","evidence_claim":"Kalamazoo College describes the Lillian Anderson Arboretum as a 140-acre natural area with five miles of trails, free and open to the public daily from dawn to dusk.","source_url":"https://arboretum.kzoo.edu/","source_title":"Lillian Anderson Arboretum – Kalamazoo College","source_kind":"university_official","source_published_at":"2026-06-19","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open every day from dawn to dusk. Follow posted policies, use the trail map and arrange transportation to the off-campus site.","cost_status":"free","under21_safe":true},{"subject_id":"kcollege-upjohn-library-commons","subject_type":"sequence_stop","entity_name":"Upjohn Library Commons","title":"Set Up the Week at Upjohn","subtitle":"Sunday afternoon · Upjohn Library Commons","notes":"Find the circulation desk, save the current hours page and choose a study table for reviewing Monday’s schedule and organizing materials.","short_summary":"Finish the weekend by learning the library entrance, service points and Sunday access rules.","evidence_claim":"Upjohn Library Commons houses the Kalamazoo College Library; its current term schedule lists Sunday hours, and the building guide identifies study tables and the circulation desk.","source_url":"https://library.kzoo.edu/","source_title":"Library – Kalamazoo College","source_kind":"university_official","source_published_at":"2026-06-16","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Term schedules list Sunday hours, but summer and orientation weekends can be closed or reduced. Sunday term access requires a K College ID.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:52:17.802259Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa19-da2c-7803-965b-fb914aecf889.1786607426093054000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+37,694
+
+{"complete":true,"school_name":"Kalamazoo College","town_name":"Kalamazoo","boards":[{"complete":true,"school_name":"Kalamazoo College","town_name":"Kalamazoo","template_id":"college-first-weekend","title":"Your First Weekend at Kalamazoo College, Shared as Cards","description":"A Friday-to-Sunday sequence for learning campus landmarks, joining recurring student activities, exploring two downtown museums and resetting before class.","icon":"schedule","cards":[{"subject_id":"kcollege-hicks-student-center","subject_type":"sequence_stop","entity_name":"Hicks Student Center","title":"Start at the Student Center","subtitle":"Friday afternoon · Hicks Student Center","notes":"Locate Student Development on the second floor, save Campus Safety’s number and use Hicks as your reference point for the weekend.","short_summary":"Get oriented inside the campus hub that houses key student services and recurring activities.","evidence_claim":"Kalamazoo College locates Student Development in Hicks Student Center, second-floor East, Room 119, and lists Campus Safety among its student resources.","source_url":"https://studev.kzoo.edu/resources/","source_title":"Student Resources – Student Development | Kalamazoo College","source_kind":"university_official","source_published_at":"2025-07-28","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Student Development lists weekday contact hours of 8 a.m.–5 p.m.; Campus Safety is available 24/7 by phone.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"kcollege-welles-dining-hall","subject_type":"sequence_stop","entity_name":"Welles Dining Hall","title":"Learn the Dining-Hall Routine","subtitle":"Friday dinner · Second floor of Hicks Student Center","notes":"Walk upstairs to identify each station, check dietary labels and learn where to ask staff about ingredients before the first busy week.","short_summary":"Use the first dinner to understand the main dining hall’s layout and inclusive food options.","evidence_claim":"Welles is an all-you-care-to-eat dining hall on the second floor of Hicks Student Center, with buffet-style meals and dietary labeling.","source_url":"https://www.kzoo.edu/student-life/living-at-k/college-dining-services/","source_title":"Kalamazoo College Dining Halls and Services","source_kind":"university_official","source_published_at":"2026-03-30","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Meal-plan entry or payment is required; the official page says campus dining locations accept credit cards.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"kcollege-quadrangle","subject_type":"sequence_stop","entity_name":"Kalamazoo College Quadrangle","title":"Trace the Quad’s Landmarks","subtitle":"Friday early evening · The Quad","notes":"Walk one circuit while it is light, noting Hicks, Stetson Chapel and the academic buildings so tomorrow’s routes feel familiar.","short_summary":"Build a mental map from the named green at the center of campus.","evidence_claim":"The College identifies the Quadrangle, or Quad, as the heart of campus and says it is bordered by academic and administrative buildings, the student center and Stetson Chapel.","source_url":"https://www.kzoo.edu/about/campus/","source_title":"Campus Map for Kalamazoo College - About Kalamazoo College","source_kind":"university_official","source_published_at":"2025-10-15","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor campus stop; choose daylight and follow posted campus guidance.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"kcollege-friday-night-activities","subject_type":"sequence_stop","entity_name":"Friday Night Activities","title":"Try the Friday Rotation","subtitle":"Friday night · Usually Hicks Student Center","notes":"Check the campus calendar for this week’s format, bring your student ID and join whichever movie, game, craft or karaoke session is scheduled.","short_summary":"Meet people through a recurring Friday program whose activity changes each week.","evidence_claim":"Student Activities documents Friday Night Activities every Friday from 8–11 p.m., usually in Hicks Center, rotating among movies, games, crafts, karaoke and off-campus events.","source_url":"https://studentactivities.kzoo.edu/events/","source_title":"Programs and Events – Student Activities | Kalamazoo College","source_kind":"university_official","source_published_at":"2026-07-08","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current official hours are Friday 8–11 p.m., usually in Hicks Center. Check the calendar for location; student ID is used for event entry.","cost_status":"unknown","under21_safe":true},{"subject_id":"kcollege-richardson-room","subject_type":"sequence_stop","entity_name":"Richardson Room","title":"Practice a Grab-and-Go Meal","subtitle":"Saturday morning · First floor of Hicks Student Center","notes":"Use this stop to learn the to-go counter before a rushed weekday; confirm the day’s hours and available payment method before heading over.","short_summary":"Identify the campus counter for portable sandwiches, smoothies and yogurt bowls.","evidence_claim":"Kalamazoo College says the Richardson Room is on the first floor of Hicks Student Center and prepares custom sandwiches, smoothies, yogurt bowls and other food to go.","source_url":"https://www.kzoo.edu/student-life/living-at-k/college-dining-services/","source_title":"Kalamazoo College Dining Halls and Services","source_kind":"university_official","source_published_at":"2026-03-30","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited page does not publish Richardson Room hours; verify the current dining schedule before visiting.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"kalamazoo-valley-museum","subject_type":"sequence_stop","entity_name":"Kalamazoo Valley Museum","title":"Explore Kalamazoo’s Museum","subtitle":"Saturday midday · Downtown Kalamazoo","notes":"Allow time for all three floors, then use the exhibits to collect a few local-history reference points for future trips around town.","short_summary":"Add regional history, science and technology to the weekend without an admission charge.","evidence_claim":"The museum publishes Saturday public hours of 10 a.m.–4 p.m., offers exhibits and experiences on three floors, and states that general admission is free.","source_url":"https://kalamazoomuseum.org/visit","source_title":"Kalamazoo Valley Museum - Visit","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Saturday 10 a.m.–4 p.m. General admission is free; some programs may charge fees. Visitors under 16 need an adult.","cost_status":"free","under21_safe":true},{"subject_id":"kalamazoo-institute-of-arts","subject_type":"sequence_stop","entity_name":"Kalamazoo Institute of Arts","title":"Choose a Gallery Conversation","subtitle":"Saturday afternoon · Kalamazoo Institute of Arts","notes":"Pick one permanent-collection work and one special-exhibition work to discuss, leaving enough time to return before the galleries close.","short_summary":"Turn a downtown gallery visit into an easy shared conversation rather than a rushed survey.","evidence_claim":"The KIA is at 314 S. Park Street, opens Saturdays from 11 a.m.–5 p.m., and lists college-student admission for visitors 18 and older with ID.","source_url":"https://www.kiarts.org/connect-visit/plan-your-visit/","source_title":"Plan Your Visit to the KIA","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Saturday gallery hours are 11 a.m.–5 p.m. The KIA advises checking for changes caused by events, rentals or weather.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"kcollege-zoo-after-darks","subject_type":"sequence_stop","entity_name":"Zoo After Darks","title":"Join the Saturday Night Series","subtitle":"Saturday night · Usually Hicks Student Center","notes":"Check the calendar for the theme and location, carry your student ID and arrive when the program begins instead of wandering campus late.","short_summary":"Close Saturday at the College’s recurring late-night activity series.","evidence_claim":"Student Activities documents Zoo After Darks every Saturday from 9 p.m.–midnight, usually in Hicks Center, with changing themes such as sports, competitions and performances.","source_url":"https://studentactivities.kzoo.edu/events/","source_title":"Programs and Events – Student Activities | Kalamazoo College","source_kind":"university_official","source_published_at":"2026-07-08","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current official hours are Saturday 9 p.m.–midnight, usually in Hicks Center. Check the calendar for the week’s location; bring student ID.","cost_status":"unknown","under21_safe":true},{"subject_id":"lillian-anderson-arboretum","subject_type":"sequence_stop","entity_name":"Lillian Anderson Arboretum","title":"Walk a Posted Arboretum Trail","subtitle":"Sunday daylight · 7787 West Main Street","notes":"Download the trail map before leaving campus, arrange transportation and complete a manageable daylight loop while following posted policies.","short_summary":"Use Sunday morning for a planned nature walk across the College’s public trail network.","evidence_claim":"Kalamazoo College describes the Lillian Anderson Arboretum as a 140-acre natural area with five miles of trails, free and open to the public daily from dawn to dusk.","source_url":"https://arboretum.kzoo.edu/","source_title":"Lillian Anderson Arboretum – Kalamazoo College","source_kind":"university_official","source_published_at":"2026-06-19","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open every day from dawn to dusk. Follow posted policies, use the trail map and arrange transportation to the off-campus site.","cost_status":"free","under21_safe":true},{"subject_id":"kcollege-upjohn-library-commons","subject_type":"sequence_stop","entity_name":"Upjohn Library Commons","title":"Set Up the Week at Upjohn","subtitle":"Sunday afternoon · Upjohn Library Commons","notes":"Find the circulation desk, save the current hours page and choose a study table for reviewing Monday’s schedule and organizing materials.","short_summary":"Finish the weekend by learning the library entrance, service points and Sunday access rules.","evidence_claim":"Upjohn Library Commons houses the Kalamazoo College Library; its current term schedule lists Sunday hours, and the building guide identifies study tables and the circulation desk.","source_url":"https://library.kzoo.edu/","source_title":"Library – Kalamazoo College","source_kind":"university_official","source_published_at":"2026-06-16","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Term schedules list Sunday hours, but summer and orientation weekends can be closed or reduced. Sunday term access requires a K College ID.","cost_status":"not_applicable","under21_safe":true}],"warnings":[]}],"warnings":[]}

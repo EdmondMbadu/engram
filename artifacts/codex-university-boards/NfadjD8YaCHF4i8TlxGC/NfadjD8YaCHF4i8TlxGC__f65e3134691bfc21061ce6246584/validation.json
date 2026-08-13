@@ -1,0 +1,80 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Museums For All cards require EBT or Medi-Cal and proof of San Francisco residence; verify individual museum hours and special-exhibit rules before travel.",
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://museum.sfsu.edu/global-museum",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://museum.sfsu.edu/global-museum",
+      "error": ""
+    },
+    {
+      "url": "https://gallery.sfsu.edu/visit-the-garden",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gallery.sfsu.edu/visit-the-garden",
+      "error": ""
+    },
+    {
+      "url": "https://asi.sfsu.edu/the-depot",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://asi.sfsu.edu/the-depot",
+      "error": ""
+    },
+    {
+      "url": "https://library.sfsu.edu/visiting-j-paul-leonard-library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.sfsu.edu/visiting-j-paul-leonard-library",
+      "error": ""
+    },
+    {
+      "url": "https://randallmuseum.org/about-us/directions-hours/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://randallmuseum.org/directions-hours/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/goga/planyourvisit/oceanbeach.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/goga/planyourvisit/oceanbeach.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/thingstodo/wildflower-walk-at-fort-funston.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/thingstodo/wildflower-walk-at-fort-funston.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.sfhsa.org/san-francisco-museums-all",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sfhsa.org/san-francisco-museums-all",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Garden of Remembrance"
+  ],
+  "sourceCount": 8,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

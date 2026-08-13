@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.tacobell.com/or/portland/7710-sw-barbur-blvd.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/or/portland/7710-sw-barbur-blvd.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.banningsrestaurant.com/directions",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.banningsrestaurant.com/directions",
+      "error": ""
+    },
+    {
+      "url": "https://sizzlepie.com/locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://sizzlepie.com/locations",
+      "error": ""
+    },
+    {
+      "url": "https://luclackitchen.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://luclackitchen.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.avaroasteria.com/locations",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.avaroasteria.com/locations",
+      "error": ""
+    },
+    {
+      "url": "https://www.dutchbros.com/locations/or/portland/8169-ne-air-cargo-rd.",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.dutchbros.com/locations/or/portland/8169-ne-air-cargo-rd.",
+      "error": ""
+    },
+    {
+      "url": "https://www.heavenlydonut.com/contact-locations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.heavenlydonut.com/contact-locations/",
+      "error": ""
+    },
+    {
+      "url": "https://babydollpizza.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://babydollpizza.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/or/portland/1831-w-burnside/3972.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/or/portland/1831-w-burnside/3972.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

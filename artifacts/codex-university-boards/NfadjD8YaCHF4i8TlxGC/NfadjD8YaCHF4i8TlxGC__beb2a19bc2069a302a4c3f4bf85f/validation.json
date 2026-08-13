@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://umma.umich.edu/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://umma.umich.edu/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://lsa.umich.edu/kelsey/visit.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://lsa.umich.edu/kelsey/visit.html",
+      "error": ""
+    },
+    {
+      "url": "https://prod.lsa.umich.edu/ummnh",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://prod.lsa.umich.edu/ummnh",
+      "error": ""
+    },
+    {
+      "url": "https://detroitobservatory.umich.edu/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://detroitobservatory.umich.edu/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://mbgna.umich.edu/matthaei-botanical-gardens",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://mbgna.umich.edu/matthaei-botanical-gardens",
+      "error": ""
+    },
+    {
+      "url": "https://mbgna.umich.edu/nichols-arboretum",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://mbgna.umich.edu/nichols-arboretum",
+      "error": ""
+    },
+    {
+      "url": "https://arts.umich.edu/spaces-places/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arts.umich.edu/spaces-places/",
+      "error": ""
+    },
+    {
+      "url": "https://irwg.umich.edu/lanehall",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://irwg.umich.edu/lanehall",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

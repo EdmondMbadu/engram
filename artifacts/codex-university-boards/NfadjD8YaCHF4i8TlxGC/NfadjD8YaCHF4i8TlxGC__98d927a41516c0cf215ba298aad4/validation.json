@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://student-affairs.providence.edu/handbook-student/the-student-handbook-2025-2026-1-30-26/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://student-affairs.providence.edu/handbook-student/the-student-handbook-2025-2026-1-30-26/",
+      "error": ""
+    },
+    {
+      "url": "https://dean-of-students.providence.edu/default/commuter-students/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://dean-of-students.providence.edu/default/commuter-students/",
+      "error": ""
+    },
+    {
+      "url": "https://provlib.org/visit-us/book-a-tourclass/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://provlib.org/visit-us/book-a-tourclass/",
+      "error": ""
+    },
+    {
+      "url": "https://www.sos.ri.gov/divisions/civics-and-education/ri-state-house/state-house-tours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sos.ri.gov/divisions/civics-and-education/ri-state-house/state-house-tours",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/rowi/planyourvisit/fees.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/rowi/planyourvisit/fees.htm",
+      "error": ""
+    },
+    {
+      "url": "https://risdmuseum.org/hours-admission",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://risdmuseum.org/hours-admission",
+      "error": ""
+    },
+    {
+      "url": "https://waterfire.org/about/frequently-asked-questions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://waterfire.org/about/frequently-asked-questions/",
+      "error": ""
+    },
+    {
+      "url": "https://waterfire.org/plan-your-visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://waterfire.org/plan-your-visit/",
+      "error": ""
+    },
+    {
+      "url": "https://arts.brown.edu/news/2019-08-13/david-winton-bell-gallery-brown-university-announces-appointment-kate-kraczon",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://arts.brown.edu/news/2019-08-13/david-winton-bell-gallery-brown-university-announces-appointment-kate-kraczon",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

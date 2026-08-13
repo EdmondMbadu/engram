@@ -1,0 +1,290 @@
+Reading additional input from stdin...
+2026-08-13T06:44:49.894928Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T06:44:49.898666Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ff9dd-ca03-79d0-aff6-f53b062e6611
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"id3dkF0ryJUkhNG5ZEDS","schoolName":"California State University-Monterey Bay","shortSchoolName":"California State University-Monterey Bay","townName":"Seaside","state":"CA","countryCode":"US","website":"https://csumb.edu/","latitude":36.652397,"longitude":-121.796178},"templates":[{"id":"college-blocks-off-campus","version":"1.0","titlePattern":"{count} Blocks Off Campus, One Reason Each","editorialBrief":"Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.","researchQueries":["off campus streets student district","campus adjacent commercial streets","neighborhood plan near university"],"count":10,"icon":"location_city","primarySubjectType":"street_or_district","allowedSubjectTypes":["street_or_district"],"freshnessDays":730,"exactTitle":"10 Blocks Off Campus, One Reason Each"}]}
+codex
+{
+  "complete": false,
+  "school_name": "California State University-Monterey Bay",
+  "town_name": "Seaside",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "California State University-Monterey Bay",
+      "town_name": "Seaside",
+      "template_id": "college-blocks-off-campus",
+      "title": "10 Blocks Off Campus, One Reason Each",
+      "description": "I’m verifying ten distinct, map-listed destinations along practical off-campus corridors, with direct sources and coordinates where available.",
+      "icon": "location_city",
+      "cards": [
+        {
+          "subject_id": "research-in-progress",
+          "subject_type": "street_or_district",
+          "entity_name": "Research in progress",
+          "title": "Research in progress",
+          "subtitle": "CSUMB off-campus corridors",
+          "notes": "Checking direct official, government, cultural, and business pages before assembling the final board.",
+          "short_summary": "Source verification is underway.",
+          "evidence_claim": "This is a progress update, not a completed research card.",
+          "source_url": "https://csumb.edu/",
+          "source_title": "California State University Monterey Bay",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "Final access details will be drawn only from direct supporting pages.",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,{
+          "subject_id": "research-status-2",
+          "subject_type": "street_or_district",
+          "entity_name": "Research status",
+          "title": "Source validation",
+          "subtitle": "Seaside and Marina corridors",
+          "notes": "Validating destination identities, corridor names, direct evidence, and safe public access for every card.",
+          "short_summary": "Ten-card validation is in progress.",
+          "evidence_claim": "This temporary item communicates research status only.",
+          "source_url": "https://csumb.edu/",
+          "source_title": "California State University Monterey Bay",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "The completed response will contain exactly ten researched destination cards.",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,{
+          "subject_id": "research-status-3",
+          "subject_type": "street_or_district",
+          "entity_name": "Research status 3",
+          "title": "Direct-source review",
+          "subtitle": "CSUMB practical orbit",
+          "notes": "Reviewing source pages that directly establish each named destination and its reason to stop.",
+          "short_summary": "Direct sources are being reviewed.",
+          "evidence_claim": "This temporary item is not part of the final board.",
+          "source_url": "https://csumb.edu/",
+          "source_title": "California State University Monterey Bay",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "Public-access details will be stated conservatively.",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,{
+          "subject_id": "research-status-4",
+          "subject_type": "street_or_district",
+          "entity_name": "Research status 4",
+          "title": "Map verification",
+          "subtitle": "Named corridor destinations",
+          "notes": "Confirming map-listed destination names and usable coordinates without relying on directories or reviews.",
+          "short_summary": "Map details are being checked.",
+          "evidence_claim": "This temporary item provides a research update.",
+          "source_url": "https://csumb.edu/",
+          "source_title": "California State University Monterey Bay",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "Unverifiable geographic fields will be null.",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,{
+          "subject_id": "research-status-5",
+          "subject_type": "street_or_district",
+          "entity_name": "Research status 5",
+          "title": "Evidence matching",
+          "subtitle": "One reason per stop",
+          "notes": "Matching each destination to one specific claim supported by its direct official or institutional page.",
+          "short_summary": "Claims are being matched to sources.",
+          "evidence_claim": "This temporary item will be replaced by researched content.",
+          "source_url": "https://csumb.edu/",
+          "source_title": "California State University Monterey Bay",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "No unsupported hours, prices, or behavior will be added.",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,{
+          "subject_id": "research-status-6",
+          "subject_type": "street_or_district",
+          "entity_name": "Research status 6",
+          "title": "Corridor naming",
+          "subtitle": "Seaside and Marina streets",
+          "notes": "Checking that every subtitle and note identifies the actual corridor beside its named destination.",
+          "short_summary": "Corridor labels are being verified.",
+          "evidence_claim": "This is a temporary status card.",
+          "source_url": "https://csumb.edu/",
+          "source_title": "California State University Monterey Bay",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "The final board will use named map-listed destinations only.",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,{
+          "subject_id": "research-status-7",
+          "subject_type": "street_or_district",
+          "entity_name": "Research status 7",
+          "title": "Safety screening",
+          "subtitle": "Under-21-safe destinations",
+          "notes": "Screening out alcohol-centered, age-restricted, unsafe, private, or ambiguous destinations.",
+          "short_summary": "Destinations are being safety-screened.",
+          "evidence_claim": "This temporary item reports the screening process.",
+          "source_url": "https://csumb.edu/",
+          "source_title": "California State University Monterey Bay",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "Every final card will be marked under-21-safe.",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,{
+          "subject_id": "research-status-8",
+          "subject_type": "street_or_district",
+          "entity_name": "Research status 8",
+          "title": "Copy review",
+          "subtitle": "Specific, sourced stops",
+          "notes": "Writing concise action-oriented notes and distinct summaries without popularity or ranking claims.",
+          "short_summary": "Card copy is being reviewed.",
+          "evidence_claim": "This is an interim research-status statement.",
+          "source_url": "https://csumb.edu/",
+          "source_title": "California State University Monterey Bay",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "Descriptions will avoid invented orders, habits, or uniqueness.",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,{
+          "subject_id": "research-status-9",
+          "subject_type": "street_or_district",
+          "entity_name": "Research status 9",
+          "title": "Field consistency",
+          "subtitle": "LivingWiki board schema",
+          "notes": "Checking exact template metadata, ten distinct subjects, dates, source types, and nullable location fields.",
+          "short_summary": "Schema checks are underway.",
+          "evidence_claim": "This temporary card communicates validation status.",
+          "source_url": "https://csumb.edu/",
+          "source_title": "California State University Monterey Bay",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "The final response will be valid JSON only.",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ,{
+          "subject_id": "research-status-10",
+          "subject_type": "street_or_district",
+          "entity_name": "Research status 10",
+          "title": "Final assembly",
+          "subtitle": "Exactly ten destination cards",
+          "notes": "Assembling the verified results into one complete board with exactly ten distinct corridor stops.",
+          "short_summary": "Final assembly follows source checks.",
+          "evidence_claim": "This temporary item will not appear in the completed board.",
+          "source_url": "https://csumb.edu/",
+          "source_title": "California State University Monterey Bay",
+          "source_kind": "university_official",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "The completed board will contain only researched cards.",
+          "cost_status": "not_applicable",
+          "under21_safe": true
+        }
+      ],
+      "warnings": [
+        "Interim progress update only; final researched JSON will replace it."
+      ]
+    }
+  ],
+  "warnings": [
+    "Research is still in progress."
+  ]
+}
+web search: 
+web search: site:seasideca.org parks Broadway Avenue Seaside CA Oldemeyer Center official ...
+web search: 
+web search: site:cityofmarina.org "Locke-Paddon" official ...
+web search: 
+web search: site:cityofmarina.org/Facilities/Facility/Details Marina park "Reservation Road" ...
+web search: 
+web search: The Dunes on Monterey Bay shopping center official directory Cinemark Target REI ...
+web search: 
+web search: site:cityofmarina.org "Locke-Paddon Park" ...
+codex
+{"complete":true,"school_name":"California State University-Monterey Bay","town_name":"Seaside","boards":[{"complete":true,"school_name":"California State University-Monterey Bay","town_name":"Seaside","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named destinations along practical Seaside and Marina corridors around CSUMB, each paired with one directly sourced reason to stop.","icon":"location_city","cards":[{"subject_id":"fort-ord-dunes-state-park","subject_type":"street_or_district","entity_name":"Fort Ord Dunes State Park","title":"Read the Dunes and Fort Ord Landscape","subtitle":"At the west end of the 9th Street corridor","notes":"Follow 9th Street to the designated park entrance, then use the educational panels to interpret the dunes and former Army landscape.","short_summary":"A coastal trailhead where natural habitat and Fort Ord history share the view.","evidence_claim":"California State Parks says the park has four miles of beach, hiking and bike trails, and eight educational panels about Fort Ord and natural history.","source_url":"https://www.parks.ca.gov/?lang=en&page_id=580","source_title":"Fort Ord Dunes State Park","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open 8 a.m. to sunset. Use designated roads and trails; current construction detours and trail closures may apply.","cost_status":"unknown","under21_safe":true},{"subject_id":"marina-state-beach","subject_type":"street_or_district","entity_name":"Marina State Beach","title":"Take a Kite to the Coast","subtitle":"At the western end of Reservation Road","notes":"Continue west on Reservation Road to the beach, bring layers, and keep water activities off the plan because the posted rip-current warning is serious.","short_summary":"Reservation Road ends at a dune-backed beach suited to kites, picnics, and coastal views.","evidence_claim":"California State Parks places the beach at the end of Reservation Road and identifies kite flying, picnic areas, interpretive exhibits, and panoramic bay views.","source_url":"https://www.parks.ca.gov/?page_id=581","source_title":"Marina State Beach","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open 8 a.m. to sunset. Dogs are prohibited, and California State Parks warns that water recreation is extremely hazardous due to strong rip currents.","cost_status":"unknown","under21_safe":true},{"subject_id":"locke-paddon-wetland-community-park","subject_type":"street_or_district","entity_name":"Locke-Paddon Wetland Community Park","title":"Pause Beside Marina’s Wetland","subtitle":"Along the West Reservation Road corridor","notes":"Turn off Reservation Road for a daylight wetland pause, respect restoration work, and observe the pond without entering vegetated habitat.","short_summary":"A named community wetland interrupts Marina’s western gateway with pond habitat.","evidence_claim":"Marina’s official records identify Locke-Paddon as a wetland community park and describe active pond, vegetation, maintenance, and public-access planning.","source_url":"https://cityofmarina.org/Archive.aspx?ADID=14217","source_title":"Resolution No. 2024-109: Management of the Locke-Paddon Wetland Community Park","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Visit only established public areas and heed any restoration or access notices; the source describes ongoing vegetation and access planning.","cost_status":"unknown","under21_safe":true},{"subject_id":"glorya-jean-tate-park-pump-track","subject_type":"street_or_district","entity_name":"Glorya Jean Tate Park & Pump Track","title":"Roll the Pump Track","subtitle":"Beside the Reservation Road corridor","notes":"Enter from Reservation Road with a bike or scooter, check posted conditions, and pair the pump track with the park’s courts or exercise area.","short_summary":"A wheeled-sports stop backed by courts, fitness space, and a playground.","evidence_claim":"The City of Marina documents a professionally designed pump track plus basketball, pickleball, exercise, playground, dog-park, gazebo, and cornhole amenities.","source_url":"https://www.cityofmarina.org/341/Glorya-Jean-Tate","source_title":"Glorya Jean Tate Park & Pump Track","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"City park rules prohibit presence from one hour after sunset until sunrise without prior authorization; the city may close facilities for maintenance.","cost_status":"unknown","under21_safe":true},{"subject_id":"marina-branch-library","subject_type":"street_or_district","entity_name":"Marina Branch Library","title":"Settle Into a Study Room","subtitle":"On Seaside Circle near Reservation Road","notes":"Turn from Reservation Road onto Seaside Circle, ask about a study room, and use the public computers or free Wi-Fi for a focused work session.","short_summary":"A county library stop with study rooms, technology, and student support.","evidence_claim":"Monterey County lists two study rooms, public computers, free wireless internet, and a Tuesday-through-Thursday Student Support Center at this branch.","source_url":"https://www.countyofmonterey.gov/government/departments-i-z/library/locations/marina-branch?NavID=3916","source_title":"Marina Branch","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Tuesday 11 a.m.–7 p.m., Wednesday 11 a.m.–7 p.m., Thursday 10 a.m.–6 p.m., and Friday–Saturday 10 a.m.–5 p.m.","cost_status":"free","under21_safe":true},{"subject_id":"rei-marina","subject_type":"street_or_district","entity_name":"REI Marina","title":"Bring the Bike to the Shop","subtitle":"On the General Stilwell Drive retail corridor","notes":"Use General Stilwell Drive to reach the store, then bring a clean bike for service evaluation or browse equipment for nearby trails.","short_summary":"An outdoor retailer whose on-site bike shop makes the stop more than a gear run.","evidence_claim":"REI’s official Marina store page lists a full-service bike shop, trade-in service, used gear, and equipment for hiking, cycling, paddling, and camping.","source_url":"https://www.rei.com/stores/marina","source_title":"REI Marina Store - Marina, CA - Sporting Goods, Camping Gear","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page lists store hours of 10 a.m.–8 p.m. Monday–Friday, 10 a.m.–7 p.m. Saturday, and 10 a.m.–6 p.m. Sunday.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"target-marina","subject_type":"street_or_district","entity_name":"Target Marina","title":"Consolidate the Supply Run","subtitle":"On the General Stilwell Drive retail corridor","notes":"Turn onto General Stilwell Drive for one supply stop, and use pickup or Drive Up when hauling dorm, pharmacy, or class essentials.","short_summary":"A practical Dunes-area stop offering pickup, pharmacy service, and broad household inventory.","evidence_claim":"Target’s official Marina page identifies the General Stilwell Drive store and lists Order Pickup, Drive Up, a CVS pharmacy, and WIC acceptance.","source_url":"https://www.target.com/sl/marina/2306","source_title":"Target Marina Store, Marina, CA","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current daily and department hours vary; check the official store page before visiting, particularly for the CVS pharmacy.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"cinemark-century-marina-and-xd","subject_type":"street_or_district","entity_name":"Cinemark Century Marina and XD","title":"Choose a Big-Screen Break","subtitle":"On the 10th Street entertainment block","notes":"Follow 10th Street to the theater, confirm the current rating and showtime on the official schedule, and reserve a seat for a study-break screening.","short_summary":"A named cinema block with XD presentation and stadium seating.","evidence_claim":"Cinemark’s official theater page locates the cinema at 100 10th Street and lists XD presentation, stadium seating, current films, ratings, and showtimes.","source_url":"https://www.cinemark.com/theatres/ca-marina/cinemark-century-marina-and-xd","source_title":"Movie Theater In Marina, California | Cinemark Century Marina and XD","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Showtimes and film ratings change daily; consult the official theater page and choose an age-appropriate screening. Admission requires a ticket.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"seaside-branch-library","subject_type":"street_or_district","entity_name":"Seaside Branch Library","title":"Open the Local-History Files","subtitle":"On the Harcourt Avenue civic corridor","notes":"Stop on Harcourt Avenue and ask library staff about local-history, genealogy, or newspaper microfilm resources before beginning archival research.","short_summary":"A civic-corridor library with unusually specific resources for researching Seaside.","evidence_claim":"Monterey County says the Seaside Branch provides local-history and genealogy research, local-newspaper microfilm, reference help, and multilingual materials.","source_url":"https://www.countyofmonterey.gov/government/departments-i-z/library/locations/seaside-branch","source_title":"Seaside Branch","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Monday 10 a.m.–6 p.m., Tuesday–Thursday 11 a.m.–7 p.m., and Friday–Saturday 10 a.m.–5 p.m.","cost_status":"free","under21_safe":true},{"subject_id":"oldemeyer-center","subject_type":"street_or_district","entity_name":"Oldemeyer Center","title":"Find the City’s Community Rooms","subtitle":"On the Hilby Avenue community corridor","notes":"Follow Hilby Avenue to the center, check the current activities guide, and contact staff before planning a club meeting or organized group session.","short_summary":"A municipal center with rooms ranging from a dance studio to community meeting halls.","evidence_claim":"The City of Seaside lists six named meeting spaces at the Oldemeyer Center, including a dance studio and Laguna Grande Hall.","source_url":"https://ci.seaside.ca.us/Facilities/Facility/Details/Oldemeyer-Center-3","source_title":"Facilities • Oldemeyer Center","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The city staff directory lists front-office hours as Monday–Friday, 8:30 a.m.–5 p.m.; room use requires arrangements and may involve rental fees.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T06:47:26.890787Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff9dd-ca03-79d0-aff6-f53b062e6611.1786603489796412000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+53,655
+
+{"complete":true,"school_name":"California State University-Monterey Bay","town_name":"Seaside","boards":[{"complete":true,"school_name":"California State University-Monterey Bay","town_name":"Seaside","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named destinations along practical Seaside and Marina corridors around CSUMB, each paired with one directly sourced reason to stop.","icon":"location_city","cards":[{"subject_id":"fort-ord-dunes-state-park","subject_type":"street_or_district","entity_name":"Fort Ord Dunes State Park","title":"Read the Dunes and Fort Ord Landscape","subtitle":"At the west end of the 9th Street corridor","notes":"Follow 9th Street to the designated park entrance, then use the educational panels to interpret the dunes and former Army landscape.","short_summary":"A coastal trailhead where natural habitat and Fort Ord history share the view.","evidence_claim":"California State Parks says the park has four miles of beach, hiking and bike trails, and eight educational panels about Fort Ord and natural history.","source_url":"https://www.parks.ca.gov/?lang=en&page_id=580","source_title":"Fort Ord Dunes State Park","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open 8 a.m. to sunset. Use designated roads and trails; current construction detours and trail closures may apply.","cost_status":"unknown","under21_safe":true},{"subject_id":"marina-state-beach","subject_type":"street_or_district","entity_name":"Marina State Beach","title":"Take a Kite to the Coast","subtitle":"At the western end of Reservation Road","notes":"Continue west on Reservation Road to the beach, bring layers, and keep water activities off the plan because the posted rip-current warning is serious.","short_summary":"Reservation Road ends at a dune-backed beach suited to kites, picnics, and coastal views.","evidence_claim":"California State Parks places the beach at the end of Reservation Road and identifies kite flying, picnic areas, interpretive exhibits, and panoramic bay views.","source_url":"https://www.parks.ca.gov/?page_id=581","source_title":"Marina State Beach","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open 8 a.m. to sunset. Dogs are prohibited, and California State Parks warns that water recreation is extremely hazardous due to strong rip currents.","cost_status":"unknown","under21_safe":true},{"subject_id":"locke-paddon-wetland-community-park","subject_type":"street_or_district","entity_name":"Locke-Paddon Wetland Community Park","title":"Pause Beside Marina’s Wetland","subtitle":"Along the West Reservation Road corridor","notes":"Turn off Reservation Road for a daylight wetland pause, respect restoration work, and observe the pond without entering vegetated habitat.","short_summary":"A named community wetland interrupts Marina’s western gateway with pond habitat.","evidence_claim":"Marina’s official records identify Locke-Paddon as a wetland community park and describe active pond, vegetation, maintenance, and public-access planning.","source_url":"https://cityofmarina.org/Archive.aspx?ADID=14217","source_title":"Resolution No. 2024-109: Management of the Locke-Paddon Wetland Community Park","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Visit only established public areas and heed any restoration or access notices; the source describes ongoing vegetation and access planning.","cost_status":"unknown","under21_safe":true},{"subject_id":"glorya-jean-tate-park-pump-track","subject_type":"street_or_district","entity_name":"Glorya Jean Tate Park & Pump Track","title":"Roll the Pump Track","subtitle":"Beside the Reservation Road corridor","notes":"Enter from Reservation Road with a bike or scooter, check posted conditions, and pair the pump track with the park’s courts or exercise area.","short_summary":"A wheeled-sports stop backed by courts, fitness space, and a playground.","evidence_claim":"The City of Marina documents a professionally designed pump track plus basketball, pickleball, exercise, playground, dog-park, gazebo, and cornhole amenities.","source_url":"https://www.cityofmarina.org/341/Glorya-Jean-Tate","source_title":"Glorya Jean Tate Park & Pump Track","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"City park rules prohibit presence from one hour after sunset until sunrise without prior authorization; the city may close facilities for maintenance.","cost_status":"unknown","under21_safe":true},{"subject_id":"marina-branch-library","subject_type":"street_or_district","entity_name":"Marina Branch Library","title":"Settle Into a Study Room","subtitle":"On Seaside Circle near Reservation Road","notes":"Turn from Reservation Road onto Seaside Circle, ask about a study room, and use the public computers or free Wi-Fi for a focused work session.","short_summary":"A county library stop with study rooms, technology, and student support.","evidence_claim":"Monterey County lists two study rooms, public computers, free wireless internet, and a Tuesday-through-Thursday Student Support Center at this branch.","source_url":"https://www.countyofmonterey.gov/government/departments-i-z/library/locations/marina-branch?NavID=3916","source_title":"Marina Branch","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Tuesday 11 a.m.–7 p.m., Wednesday 11 a.m.–7 p.m., Thursday 10 a.m.–6 p.m., and Friday–Saturday 10 a.m.–5 p.m.","cost_status":"free","under21_safe":true},{"subject_id":"rei-marina","subject_type":"street_or_district","entity_name":"REI Marina","title":"Bring the Bike to the Shop","subtitle":"On the General Stilwell Drive retail corridor","notes":"Use General Stilwell Drive to reach the store, then bring a clean bike for service evaluation or browse equipment for nearby trails.","short_summary":"An outdoor retailer whose on-site bike shop makes the stop more than a gear run.","evidence_claim":"REI’s official Marina store page lists a full-service bike shop, trade-in service, used gear, and equipment for hiking, cycling, paddling, and camping.","source_url":"https://www.rei.com/stores/marina","source_title":"REI Marina Store - Marina, CA - Sporting Goods, Camping Gear","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official page lists store hours of 10 a.m.–8 p.m. Monday–Friday, 10 a.m.–7 p.m. Saturday, and 10 a.m.–6 p.m. Sunday.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"target-marina","subject_type":"street_or_district","entity_name":"Target Marina","title":"Consolidate the Supply Run","subtitle":"On the General Stilwell Drive retail corridor","notes":"Turn onto General Stilwell Drive for one supply stop, and use pickup or Drive Up when hauling dorm, pharmacy, or class essentials.","short_summary":"A practical Dunes-area stop offering pickup, pharmacy service, and broad household inventory.","evidence_claim":"Target’s official Marina page identifies the General Stilwell Drive store and lists Order Pickup, Drive Up, a CVS pharmacy, and WIC acceptance.","source_url":"https://www.target.com/sl/marina/2306","source_title":"Target Marina Store, Marina, CA","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Current daily and department hours vary; check the official store page before visiting, particularly for the CVS pharmacy.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"cinemark-century-marina-and-xd","subject_type":"street_or_district","entity_name":"Cinemark Century Marina and XD","title":"Choose a Big-Screen Break","subtitle":"On the 10th Street entertainment block","notes":"Follow 10th Street to the theater, confirm the current rating and showtime on the official schedule, and reserve a seat for a study-break screening.","short_summary":"A named cinema block with XD presentation and stadium seating.","evidence_claim":"Cinemark’s official theater page locates the cinema at 100 10th Street and lists XD presentation, stadium seating, current films, ratings, and showtimes.","source_url":"https://www.cinemark.com/theatres/ca-marina/cinemark-century-marina-and-xd","source_title":"Movie Theater In Marina, California | Cinemark Century Marina and XD","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Showtimes and film ratings change daily; consult the official theater page and choose an age-appropriate screening. Admission requires a ticket.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"seaside-branch-library","subject_type":"street_or_district","entity_name":"Seaside Branch Library","title":"Open the Local-History Files","subtitle":"On the Harcourt Avenue civic corridor","notes":"Stop on Harcourt Avenue and ask library staff about local-history, genealogy, or newspaper microfilm resources before beginning archival research.","short_summary":"A civic-corridor library with unusually specific resources for researching Seaside.","evidence_claim":"Monterey County says the Seaside Branch provides local-history and genealogy research, local-newspaper microfilm, reference help, and multilingual materials.","source_url":"https://www.countyofmonterey.gov/government/departments-i-z/library/locations/seaside-branch","source_title":"Seaside Branch","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open Monday 10 a.m.–6 p.m., Tuesday–Thursday 11 a.m.–7 p.m., and Friday–Saturday 10 a.m.–5 p.m.","cost_status":"free","under21_safe":true},{"subject_id":"oldemeyer-center","subject_type":"street_or_district","entity_name":"Oldemeyer Center","title":"Find the City’s Community Rooms","subtitle":"On the Hilby Avenue community corridor","notes":"Follow Hilby Avenue to the center, check the current activities guide, and contact staff before planning a club meeting or organized group session.","short_summary":"A municipal center with rooms ranging from a dance studio to community meeting halls.","evidence_claim":"The City of Seaside lists six named meeting spaces at the Oldemeyer Center, including a dance studio and Laguna Grande Hall.","source_url":"https://ci.seaside.ca.us/Facilities/Facility/Details/Oldemeyer-Center-3","source_title":"Facilities • Oldemeyer Center","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The city staff directory lists front-office hours as Monday–Friday, 8:30 a.m.–5 p.m.; room use requires arrangements and may involve rental fees.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}

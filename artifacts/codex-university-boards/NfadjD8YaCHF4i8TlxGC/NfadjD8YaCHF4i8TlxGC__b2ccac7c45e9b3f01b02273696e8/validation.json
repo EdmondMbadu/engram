@@ -1,0 +1,94 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Late-night options in Saint Peter are limited; six cards require a drive to nearby Mankato. Hours can change during holidays or academic breaks, so users should recheck before departure.",
+    "Godfather's Pizza hours are supported by its current map listing because a location-specific official business page was not available."
+  ],
+  "reachability": [
+    {
+      "url": "https://gustavus.edu/diningservices/concertFiles/media/Meal_Plan_Info_2025-2026.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/diningservices/concertFiles/media/Meal_Plan_Info_2025-2026.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.hy-vee.com/stores/detail.aspx?s=2037",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hy-vee.com/stores/detail.aspx?s=2037",
+      "error": ""
+    },
+    {
+      "url": "https://www.waze.com/live-map/directions/godfathers-pizza-s-minnesota-ave-225-st.-peter?to=place.w.174326203.1743524176.287122",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.waze.com/live-map/directions/godfathers-pizza-s-minnesota-ave-225-st.-peter?to=place.w.174326203.1743524176.287122",
+      "error": ""
+    },
+    {
+      "url": "https://www.jakesstadiumpizza.com/locationsandhours",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jakesstadiumpizza.com/locationsandhours",
+      "error": ""
+    },
+    {
+      "url": "https://www.perkinsrestaurants.com/locations/us/mn/mankato/1790-madison-avenue/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.perkinsrestaurants.com/locations/us/mn/mankato/1790-madison-avenue/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/mn/mankato/1545-madison-avenue",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/mn/mankato/1545-madison-avenue",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/mn/mankato/145-st--andrews-dr/fast-food.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mn/mankato/145-st--andrews-dr/fast-food.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/mn/mankato/1819-madison-avenue.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mn/mankato/1819-madison-avenue.html",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/minnesota/mankato/300-stadium-blvd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/minnesota/mankato/300-stadium-blvd",
+      "error": ""
+    },
+    {
+      "url": "https://www.jerseymikes.ca/locations/24002%2C24005",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.jerseymikes.ca/locations/24002%2C24005",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

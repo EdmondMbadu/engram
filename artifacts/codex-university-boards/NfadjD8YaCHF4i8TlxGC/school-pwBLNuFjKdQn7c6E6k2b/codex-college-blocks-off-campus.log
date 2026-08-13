@@ -1,0 +1,360 @@
+Reading additional input from stdin...
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-terra
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa6d-1fbb-7f50-9847-3541fcf4f3c1
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"pwBLNuFjKdQn7c6E6k2b","schoolName":"United States Coast Guard Academy","shortSchoolName":"United States Coast Guard Academy","townName":"New London","state":"CT","countryCode":"US","website":"https://www.uscga.edu/","latitude":41.375823,"longitude":-72.101583},"templates":[{"id":"college-blocks-off-campus","version":"1.0","titlePattern":"{count} Blocks Off Campus, One Reason Each","editorialBrief":"Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.","researchQueries":["off campus streets student district","campus adjacent commercial streets","neighborhood plan near university"],"count":10,"icon":"location_city","primarySubjectType":"street_or_district","allowedSubjectTypes":["street_or_district"],"freshnessDays":730,"exactTitle":"10 Blocks Off Campus, One Reason Each"}]}
+2026-08-13T09:21:23.685338Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T09:21:23.735587Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa6d-03a1-7162-a10f-17517c58fa13.1786612876193798000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:21:23.740394Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T09:21:23.817060Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa6d-0284-7af3-8e8a-8d77c7137f42.1786612875909565000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:21:23.871483Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa6d-02a9-7230-8ef6-776522f78bfe.1786612875945729000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T09:21:23.920206Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa6d-0292-76e1-8b49-dab93d1d79ce.1786612875923489000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{"complete":false,"school_name":"United States Coast Guard Academy","town_name":"New London","boards":[{"complete":false,"school_name":"United States Coast Guard Academy","town_name":"New London","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"I’ll verify ten distinct, map-listed destinations along off-campus New London corridors and return one complete board.","icon":"location_city","cards":	[{"subject_id":"research-in-progress","subject_type":"street_or_district","entity_name":"Research in progress","title":"Researching verified corridors","subtitle":"New London, CT","notes":"Checking direct official and cultural sources for named destinations beside practical off-campus corridors.","short_summary":"Temporary research placeholder.","evidence_claim":"Research is in progress.","source_url":"https://www.uscga.edu/","source_title":"United States Coast Guard Academy","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"not_applicable","under21_safe":true}		                                                                                                                                                                                                                                                                            ,
+{"subject_id":"research-in-progress","subject_type":"street_or_district","entity_name":"Research in progress","title":"Researching verified corridors","subtitle":"New London, CT","notes":"Checking direct official and cultural sources for named destinations beside practical off-campus corridors.","short_summary":"Temporary research placeholder.","evidence_claim":"Research is in progress.","source_url":"https://www.uscga.edu/","source_title":"United States Coast Guard Academy","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"not_applicable","under21_safe":true}		                                                                  
+            
+         
+                           
+         
+         
+         
+      
+   
+    ,
+{"subject_id":"research-in-progress","subject_type":"street_or_district","entity_name":"Research in progress","title":"Researching verified corridors","subtitle":"New London, CT","notes":"Checking direct official and cultural sources for named destinations beside practical off-campus corridors.","short_summary":"Temporary research placeholder.","evidence_claim":"Research is in progress.","source_url":"https://www.uscga.edu/","source_title":"United States Coast Guard Academy","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"not_applicable","under21_safe":true}                                 
+            
+                   
+                                             
+      
+      
+    
+                        	
+                                  
+         
+         
+   
+              
+         
+      
+    
+          
+               	
+          
+             
+          ,{"subject_id":"research-in-progress","subject_type":"street_or_district","entity_name":"Research in progress","title":"Researching verified corridors","subtitle":"New London, CT","notes":"Checking direct official and cultural sources for named destinations beside practical off-campus corridors.","short_summary":"Temporary research placeholder.","evidence_claim":"Research is in progress.","source_url":"https://www.uscga.edu/","source_title":"United States Coast Guard Academy","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"not_applicable","under21_safe":true}            
+                        
+                    
+           
+                     
+                           
+                                    
+      
+      
+            
+         
+ 
+         
+      
+   
+            
+    
+      
+      
+   
+
+         
+
+         
+               
+   
+       
+                  
+             
+         
+                                 
+            
+                                    
+
+             
+        
+      
+               
+             
+         
+      
+      
+   
+          
+         
+      
+                        
+            
+               
+                                               
+      
+       
+            
+       
+     
+    
+             
+      
+   
+    
+      
+      
+         
+         
+      
+      
+   
+          
+     
+              
+         
+      
+   
+      
+   
+   
+       
+    
+         
+         
+      
+      
+         
+      
+     
+    
+         
+     
+       
+         
+        
+    
+    
+         
+   
+    
+           
+     
+   
+       
+         
+      
+       
+      
+          
+    
+         
+      
+    
+        
+  
+      
+        
+          
+         
+   
+      
+   
+      
+    
+           
+         
+      
+             
+      
+   
+      
+   
+    
+             
+             
+   
+      
+     
+   
+   
+         
+      
+   
+          
+   
+
+         
+      
+     
+   
+      
+         
+    
+         
+      
+      ,
+{"subject_id":"research-in-progress","subject_type":"street_or_district","entity_name":"Research in progress","title":"Researching verified corridors","subtitle":"New London, CT","notes":"Checking direct official and cultural sources for named destinations beside practical off-campus corridors.","short_summary":"Temporary research placeholder.","evidence_claim":"Research is in progress.","source_url":"https://www.uscga.edu/","source_title":"United States Coast Guard Academy","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"not_applicable","under21_safe":true}                     
+                  
+   
+                    
+             
+   
+    
+                        
+
+         
+         
+             
+      
+      
+         
+    
+        
+    
+                     
+         
+      
+                  
+            
+      
+      
+         
+      
+           
+  
+             
+            
+    
+            
+   
+    
+      
+     
+          
+      
+         
+      
+    
+          
+   
+ 
+   
+   
+         
+      
+   
+      
+       
+    
+   
+  
+    
+         
+            
+      
+         
+     
+   
+      
+      
+         
+      
+    
+   
+    
+      
+      
+   
+         
+     
+   
+      
+   
+ 
+      
+   
+         
+      
+         
+      
+   
+      
+    
+    
+      
+      
+   
+      
+   
+         
+   
+         
+   
+   
+      
+      
+   
+         
+      
+       
+      
+   
+    
+     
+      
+      
+      
+     
+                   
+      
+  
+    
+    
+                  ,{"subject_id":"research-in-progress","subject_type":"street_or_district","entity_name":"Research in progress","title":"Researching verified corridors","subtitle":"New London, CT","notes":"Checking direct official and cultural sources for named destinations beside practical off-campus corridors.","short_summary":"Temporary research placeholder.","evidence_claim":"Research is in progress.","source_url":"https://www.uscga.edu/","source_title":"United States Coast Guard Academy","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"not_applicable","under21_safe":true}   ,{"subject_id":"research-in-progress","subject_type":"street_or_district","entity_name":"Research in progress","title":"Researching verified corridors","subtitle":"New London, CT","notes":"Checking direct official and cultural sources for named destinations beside practical off-campus corridors.","short_summary":"Temporary research placeholder.","evidence_claim":"Research is in progress.","source_url":"https://www.uscga.edu/","source_title":"United States Coast Guard Academy","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"not_applicable","under21_safe":true}   ,{"subject_id":"research-in-progress","subject_type":"street_or_district","entity_name":"Research in progress","title":"Researching verified corridors","subtitle":"New London, CT","notes":"Checking direct official and cultural sources for named destinations beside practical off-campus corridors.","short_summary":"Temporary research placeholder.","evidence_claim":"Research is in progress.","source_url":"https://www.uscga.edu/","source_title":"United States Coast Guard Academy","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"not_applicable","under21_safe":true}   ,{"subject_id":"research-in-progress","subject_type":"street_or_district","entity_name":"Research in progress","title":"Researching verified corridors","subtitle":"New London, CT","notes":"Checking direct official and cultural sources for named destinations beside practical off-campus corridors.","short_summary":"Temporary research placeholder.","evidence_claim":"Research is in progress.","source_url":"https://www.uscga.edu/","source_title":"United States Coast Guard Academy","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"not_applicable","under21_safe":true}   ,{"subject_id":"research-in-progress","subject_type":"street_or_district","entity_name":"Research in progress","title":"Researching verified corridors","subtitle":"New London, CT","notes":"Checking direct official and cultural sources for named destinations beside practical off-campus corridors.","short_summary":"Temporary research placeholder.","evidence_claim":"Research is in progress.","source_url":"https://www.uscga.edu/","source_title":"United States Coast Guard Academy","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Not a final card.","cost_status":"not_applicable","under21_safe":true}   ] ,"warnings":[]}],"warnings":[]}
+web search: 
+web search: site:discovernewlondon.org New London attractions addresses ...
+web search: 
+web search: site:discovernewlondon.org New London attractions addresses ...
+web search: 
+web search: New London CT official visitor Garde Arts Center address State Street ...
+web search: 
+web search: site:visitnewlondon.org "State Street" "New London" ...
+2026-08-13T09:24:29.178201Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit
+codex
+{"complete":true,"school_name":"United States Coast Guard Academy","town_name":"New London","boards":[{"complete":true,"school_name":"United States Coast Guard Academy","town_name":"New London","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named downtown New London destinations along documented corridors near the Academy.","icon":"location_city","cards":[{"subject_id":"hygienic-art-bank-street","subject_type":"street_or_district","entity_name":"Hygienic Art Galleries & Art Park","title":"Hygienic Art on Bank Street","subtitle":"Bank Street corridor, downtown New London","notes":"Walk Bank Street to 79–83 and check the gallery’s current exhibition or Art Park program before planning a visit.","short_summary":"A documented gallery and art-park stop on the downtown Bank Street corridor.","evidence_claim":"Connecticut’s tourism office lists Hygienic Art Galleries & Art Park at 79–83 Bank Street and describes it as a venue for emerging and established artists.","source_url":"https://ctvisit.com/listings/hygienic-art-galleries-art-park","source_title":"Hygienic Art Galleries & Art Park","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The source lists gallery hours; confirm the current exhibition and access details directly before going.","cost_status":"unknown","under21_safe":true},{"subject_id":"custom-house-maritime-museum-bank-street","subject_type":"street_or_district","entity_name":"Custom House Maritime Museum","title":"Custom House on Bank Street","subtitle":"Bank Street corridor, downtown New London","notes":"Use Bank Street to reach 150 Bank Street and focus your visit on the museum’s New London waterfront collections.","short_summary":"A maritime-history destination on the same downtown corridor.","evidence_claim":"The National Park Service identifies the New London Customhouse at 150 Bank Street as a National Register site managed by the New London Maritime Society.","source_url":"https://www.nps.gov/places/new-london-customhouse.htm","source_title":"New London Customhouse","source_kind":"government","source_published_at":"2017-08-10","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Museum admission and visiting arrangements may apply; check the operator’s current information.","cost_status":"unknown","under21_safe":true},{"subject_id":"garde-arts-center-state-street","subject_type":"street_or_district","entity_name":"Garde Arts Center","title":"Garde on State Street","subtitle":"State Street corridor, downtown New London","notes":"Head to 325 State Street and review the current calendar for performances, films, or education programs.","short_summary":"A named performing-arts venue on State Street.","evidence_claim":"The Garde Arts Center’s official site gives its address as 325 State Street, New London.","source_url":"https://gardearts.org/classes/","source_title":"Garde Arts Center Classes","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Ticketing and event availability vary; consult the center’s current schedule.","cost_status":"unknown","under21_safe":true},{"subject_id":"timothy-green-new-london-summary-site","subject_type":"street_or_district","entity_name":"Timothy Green’s New London Summary Site","title":"Timothy Green’s State Street site","subtitle":"State Street corridor, downtown New London","notes":"Pause at 158 State Street and use the city’s historic-figures page to connect the building with early Connecticut newspapers.","short_summary":"A surviving 1771 State Street building tied to New London’s early press history.","evidence_claim":"The City of New London identifies 158 State Street as the site of Timothy Green’s New London Summary and says the 1771 building survived the burning of the city.","source_url":"https://visitnewlondon.org/nl-250/historic-figures/","source_title":"Historic Figures – Explore New London","source_kind":"government","source_published_at":"2026-07-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"View from the public street; the source documents the historic site but does not state public interior access.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hotel-bristol-black-heritage-trail","subject_type":"street_or_district","entity_name":"Hotel Bristol","title":"Hotel Bristol on Bank Street","subtitle":"Bank Street corridor, downtown New London","notes":"Find the 90 Bank Street trail location and read the city’s Black Heritage Trail entry before or while you walk the block.","short_summary":"A Bank Street stop included in New London’s Black Heritage Trail.","evidence_claim":"The City of New London’s Black Heritage Trail lists the Hotel Bristol at 90 Bank Street and documents its connection to a 1919 racial-violence incident.","source_url":"https://visitnewlondon.org/black-heritage-trail/","source_title":"New London’s Black Heritage Trail","source_kind":"government","source_published_at":"2024-09-19","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This is a historic trail location; use public sidewalks and respect any private property.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"shiloh-baptist-church-garvin-street","subject_type":"street_or_district","entity_name":"Shiloh Baptist Church","title":"Shiloh on Garvin Street","subtitle":"Garvin Street corridor, downtown New London","notes":"Include 1 Garvin Street on a heritage walk and use the city’s trail entry for context on the congregation’s history.","short_summary":"New London’s oldest historically Black church, documented by the city trail.","evidence_claim":"The City of New London lists Shiloh Baptist Church at 1 Garvin Street and identifies it as the city’s oldest historically Black church.","source_url":"https://visitnewlondon.org/black-heritage-trail/","source_title":"New London’s Black Heritage Trail","source_kind":"government","source_published_at":"2024-09-19","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Observe from public areas unless the church publicly invites visitors inside.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"amistad-pier-waterfront-park","subject_type":"street_or_district","entity_name":"Amistad Pier","title":"Amistad Pier at Waterfront Park","subtitle":"Water Street waterfront corridor, downtown New London","notes":"Use the waterfront path to locate the Amistad Pier entrance and read the trail account of the schooner’s 1839 arrival.","short_summary":"A waterfront trail stop interpreting New London’s connection to La Amistad.","evidence_claim":"New London’s Black Heritage Trail identifies the Amistad Pier entrance at Waterfront Park and recounts that the schooner was towed into New London Harbor in 1839.","source_url":"https://visitnewlondon.org/black-heritage-trail/","source_title":"New London’s Black Heritage Trail","source_kind":"government","source_published_at":"2024-09-19","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use the public waterfront park entrance; the source does not list an admission charge.","cost_status":"free","under21_safe":true},{"subject_id":"new-england-peoples-finance-site-green-street","subject_type":"street_or_district","entity_name":"38 Green Street","title":"38 Green Street’s civic-history stop","subtitle":"Green Street corridor, downtown New London","notes":"Add 38 Green Street to a self-guided heritage walk and use the city trail page for the site’s civic-history context.","short_summary":"A Green Street Black Heritage Trail location tied to community organizations.","evidence_claim":"The city’s Black Heritage Trail says 38 Green Street housed the New England Peoples Finance Corporation and United Negro Welfare Council in the late 1920s.","source_url":"https://visitnewlondon.org/black-heritage-trail/","source_title":"New London’s Black Heritage Trail","source_kind":"government","source_published_at":"2024-09-19","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"View from the public right-of-way and respect the property’s current use.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"antone-desant-site-bank-street","subject_type":"street_or_district","entity_name":"Antone DeSant Site","title":"Antone DeSant’s Bank Street site","subtitle":"Bank Street corridor, downtown New London","notes":"Locate 745 Bank Street and read the city’s entry on DeSant and the Cape Verdean whalers who came to New England.","short_summary":"A named Bank Street site on the Black Heritage Trail.","evidence_claim":"The City of New London’s Black Heritage Trail lists the Antone DeSant site at 745 Bank Street and describes DeSant’s arrival as part of a wave of Cabo Verdeans on whaling vessels.","source_url":"https://visitnewlondon.org/black-heritage-trail/","source_title":"New London’s Black Heritage Trail","source_kind":"government","source_published_at":"2024-09-19","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This is a historic-location stop; view it from public areas unless access is explicitly offered.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"spark-makerspace-union-street","subject_type":"street_or_district","entity_name":"Spark Maker Space","title":"Spark on Union Street","subtitle":"Union Street corridor, downtown New London","notes":"Walk to 7 Union Street and check Spark Maker Space’s current public program or workshop details before visiting.","short_summary":"A named creative-workspace destination on Union Street.","evidence_claim":"The City of New London’s Explore New London site states that Spark Maker Space moved to 7 Union Street in downtown New London.","source_url":"https://visitnewlondon.org/new-london-tales/","source_title":"New London Tales – Explore New London","source_kind":"government","source_published_at":"2022-05-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Workshop access and costs vary by program; verify current visitor information with Spark Maker Space.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T09:24:39.483276Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa6d-1fbb-7f50-9847-3541fcf4f3c1.1786612883387909000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+38,746
+
+{"complete":true,"school_name":"United States Coast Guard Academy","town_name":"New London","boards":[{"complete":true,"school_name":"United States Coast Guard Academy","town_name":"New London","template_id":"college-blocks-off-campus","title":"10 Blocks Off Campus, One Reason Each","description":"Ten named downtown New London destinations along documented corridors near the Academy.","icon":"location_city","cards":[{"subject_id":"hygienic-art-bank-street","subject_type":"street_or_district","entity_name":"Hygienic Art Galleries & Art Park","title":"Hygienic Art on Bank Street","subtitle":"Bank Street corridor, downtown New London","notes":"Walk Bank Street to 79–83 and check the gallery’s current exhibition or Art Park program before planning a visit.","short_summary":"A documented gallery and art-park stop on the downtown Bank Street corridor.","evidence_claim":"Connecticut’s tourism office lists Hygienic Art Galleries & Art Park at 79–83 Bank Street and describes it as a venue for emerging and established artists.","source_url":"https://ctvisit.com/listings/hygienic-art-galleries-art-park","source_title":"Hygienic Art Galleries & Art Park","source_kind":"government","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The source lists gallery hours; confirm the current exhibition and access details directly before going.","cost_status":"unknown","under21_safe":true},{"subject_id":"custom-house-maritime-museum-bank-street","subject_type":"street_or_district","entity_name":"Custom House Maritime Museum","title":"Custom House on Bank Street","subtitle":"Bank Street corridor, downtown New London","notes":"Use Bank Street to reach 150 Bank Street and focus your visit on the museum’s New London waterfront collections.","short_summary":"A maritime-history destination on the same downtown corridor.","evidence_claim":"The National Park Service identifies the New London Customhouse at 150 Bank Street as a National Register site managed by the New London Maritime Society.","source_url":"https://www.nps.gov/places/new-london-customhouse.htm","source_title":"New London Customhouse","source_kind":"government","source_published_at":"2017-08-10","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Museum admission and visiting arrangements may apply; check the operator’s current information.","cost_status":"unknown","under21_safe":true},{"subject_id":"garde-arts-center-state-street","subject_type":"street_or_district","entity_name":"Garde Arts Center","title":"Garde on State Street","subtitle":"State Street corridor, downtown New London","notes":"Head to 325 State Street and review the current calendar for performances, films, or education programs.","short_summary":"A named performing-arts venue on State Street.","evidence_claim":"The Garde Arts Center’s official site gives its address as 325 State Street, New London.","source_url":"https://gardearts.org/classes/","source_title":"Garde Arts Center Classes","source_kind":"cultural_institution","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Ticketing and event availability vary; consult the center’s current schedule.","cost_status":"unknown","under21_safe":true},{"subject_id":"timothy-green-new-london-summary-site","subject_type":"street_or_district","entity_name":"Timothy Green’s New London Summary Site","title":"Timothy Green’s State Street site","subtitle":"State Street corridor, downtown New London","notes":"Pause at 158 State Street and use the city’s historic-figures page to connect the building with early Connecticut newspapers.","short_summary":"A surviving 1771 State Street building tied to New London’s early press history.","evidence_claim":"The City of New London identifies 158 State Street as the site of Timothy Green’s New London Summary and says the 1771 building survived the burning of the city.","source_url":"https://visitnewlondon.org/nl-250/historic-figures/","source_title":"Historic Figures – Explore New London","source_kind":"government","source_published_at":"2026-07-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"View from the public street; the source documents the historic site but does not state public interior access.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"hotel-bristol-black-heritage-trail","subject_type":"street_or_district","entity_name":"Hotel Bristol","title":"Hotel Bristol on Bank Street","subtitle":"Bank Street corridor, downtown New London","notes":"Find the 90 Bank Street trail location and read the city’s Black Heritage Trail entry before or while you walk the block.","short_summary":"A Bank Street stop included in New London’s Black Heritage Trail.","evidence_claim":"The City of New London’s Black Heritage Trail lists the Hotel Bristol at 90 Bank Street and documents its connection to a 1919 racial-violence incident.","source_url":"https://visitnewlondon.org/black-heritage-trail/","source_title":"New London’s Black Heritage Trail","source_kind":"government","source_published_at":"2024-09-19","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This is a historic trail location; use public sidewalks and respect any private property.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"shiloh-baptist-church-garvin-street","subject_type":"street_or_district","entity_name":"Shiloh Baptist Church","title":"Shiloh on Garvin Street","subtitle":"Garvin Street corridor, downtown New London","notes":"Include 1 Garvin Street on a heritage walk and use the city’s trail entry for context on the congregation’s history.","short_summary":"New London’s oldest historically Black church, documented by the city trail.","evidence_claim":"The City of New London lists Shiloh Baptist Church at 1 Garvin Street and identifies it as the city’s oldest historically Black church.","source_url":"https://visitnewlondon.org/black-heritage-trail/","source_title":"New London’s Black Heritage Trail","source_kind":"government","source_published_at":"2024-09-19","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Observe from public areas unless the church publicly invites visitors inside.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"amistad-pier-waterfront-park","subject_type":"street_or_district","entity_name":"Amistad Pier","title":"Amistad Pier at Waterfront Park","subtitle":"Water Street waterfront corridor, downtown New London","notes":"Use the waterfront path to locate the Amistad Pier entrance and read the trail account of the schooner’s 1839 arrival.","short_summary":"A waterfront trail stop interpreting New London’s connection to La Amistad.","evidence_claim":"New London’s Black Heritage Trail identifies the Amistad Pier entrance at Waterfront Park and recounts that the schooner was towed into New London Harbor in 1839.","source_url":"https://visitnewlondon.org/black-heritage-trail/","source_title":"New London’s Black Heritage Trail","source_kind":"government","source_published_at":"2024-09-19","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Use the public waterfront park entrance; the source does not list an admission charge.","cost_status":"free","under21_safe":true},{"subject_id":"new-england-peoples-finance-site-green-street","subject_type":"street_or_district","entity_name":"38 Green Street","title":"38 Green Street’s civic-history stop","subtitle":"Green Street corridor, downtown New London","notes":"Add 38 Green Street to a self-guided heritage walk and use the city trail page for the site’s civic-history context.","short_summary":"A Green Street Black Heritage Trail location tied to community organizations.","evidence_claim":"The city’s Black Heritage Trail says 38 Green Street housed the New England Peoples Finance Corporation and United Negro Welfare Council in the late 1920s.","source_url":"https://visitnewlondon.org/black-heritage-trail/","source_title":"New London’s Black Heritage Trail","source_kind":"government","source_published_at":"2024-09-19","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"View from the public right-of-way and respect the property’s current use.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"antone-desant-site-bank-street","subject_type":"street_or_district","entity_name":"Antone DeSant Site","title":"Antone DeSant’s Bank Street site","subtitle":"Bank Street corridor, downtown New London","notes":"Locate 745 Bank Street and read the city’s entry on DeSant and the Cape Verdean whalers who came to New England.","short_summary":"A named Bank Street site on the Black Heritage Trail.","evidence_claim":"The City of New London’s Black Heritage Trail lists the Antone DeSant site at 745 Bank Street and describes DeSant’s arrival as part of a wave of Cabo Verdeans on whaling vessels.","source_url":"https://visitnewlondon.org/black-heritage-trail/","source_title":"New London’s Black Heritage Trail","source_kind":"government","source_published_at":"2024-09-19","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"This is a historic-location stop; view it from public areas unless access is explicitly offered.","cost_status":"not_applicable","under21_safe":true},{"subject_id":"spark-makerspace-union-street","subject_type":"street_or_district","entity_name":"Spark Maker Space","title":"Spark on Union Street","subtitle":"Union Street corridor, downtown New London","notes":"Walk to 7 Union Street and check Spark Maker Space’s current public program or workshop details before visiting.","short_summary":"A named creative-workspace destination on Union Street.","evidence_claim":"The City of New London’s Explore New London site states that Spark Maker Space moved to 7 Union Street in downtown New London.","source_url":"https://visitnewlondon.org/new-london-tales/","source_title":"New London Tales – Explore New London","source_kind":"government","source_published_at":"2022-05-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Workshop access and costs vary by program; verify current visitor information with Spark Maker Space.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}

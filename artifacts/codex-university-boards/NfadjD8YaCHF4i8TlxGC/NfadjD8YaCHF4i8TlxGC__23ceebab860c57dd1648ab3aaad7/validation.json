@@ -1,0 +1,40 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.fandm.edu/college-policies/institutional/campus-access-policy.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fandm.edu/college-policies/institutional/campus-access-policy.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.fandm.edu/lancaster-community/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fandm.edu/lancaster-community/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fandm.edu/campus-services/conferences-and-events/athletic-facilities.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fandm.edu/campus-services/conferences-and-events/athletic-facilities.html",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Shadek-Fackenthal Library",
+    "Philadelphia Alumni Writers House"
+  ],
+  "sourceCount": 3,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

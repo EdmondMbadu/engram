@@ -1,0 +1,52 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "XdKvC5s98qxNAbPfZKO4",
+    "schoolName": "University of Arizona",
+    "shortSchoolName": "University of Arizona",
+    "townName": "Tucson",
+    "state": "AZ",
+    "countryCode": "US",
+    "unitId": "104179",
+    "website": "https://www.arizona.edu/",
+    "latitude": 32.232672,
+    "longitude": -110.950815,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/e/e4/University_of_Arizona_seal.svg/250px-University_of_Arizona_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=arizona.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at University of Arizona, Shared as Cards",
+  "excluded_subjects": [
+    "Silent Study Room",
+    "Scholars’ Corner",
+    "Main Library Quiet Study Area, Floor 4",
+    "Main Library Quiet Study Area, Floor 5",
+    "Weaver Library Quiet Study Area, Floor 1",
+    "Weaver Library Quiet Study Area, Floor 4",
+    "Main Library Group Study Rooms",
+    "Weaver Library Group Study Rooms",
+    "Maker Studio",
+    "Virtual Reality (VR) Studio"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

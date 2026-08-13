@@ -1,0 +1,274 @@
+Reading additional input from stdin...
+2026-08-13T08:04:02.384914Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa25-d51a-7ff3-a6e6-5f6e3a8cdf57.1786608211226513000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa26-4e6a-7241-9450-a2a553ea2bc7
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"I4pJXjOnybcTpuF1GyJ4","schoolName":"Louisiana State University and Agricultural & Mechanical College","shortSchoolName":"Louisiana State University and Agricultural & Mechanical College","townName":"Baton Rouge","state":"LA","countryCode":"US","website":"https://www.lsu.edu/","latitude":30.414986,"longitude":-91.178921},"templates":[{"id":"college-study-spots","version":"1.0","titlePattern":"Claimed by 9am: {count} Study Spots Worth Showing Up Early For","editorialBrief":"Choose ten distinct study environments. Verify access rules, room or reservation constraints, and the physical affordance that makes each useful. Treat “Claimed by 9am” as editorial framing; never assert crowding or student behavior without evidence.","researchQueries":["campus study spaces","library study rooms students","quiet study campus"],"count":10,"icon":"menu_book","primarySubjectType":"study_space","allowedSubjectTypes":["study_space","place"],"freshnessDays":180,"exactTitle":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For"}]}
+2026-08-13T08:04:02.434796Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa25-d528-76a1-a661-8589b8f4df26.1786608211241099000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:04:02.602518Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa25-d540-7ea2-8642-53c541040be9.1786608211265031000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:04:02.616478Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T08:04:02.619178Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T08:04:02.664123Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa25-d550-7c42-9fbc-ec5660228e2c.1786608211281070000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:04:02.711551Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa25-d529-7822-8bc2-5acf51e20aab.1786608211241782000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:04:02.752277Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa25-d555-7512-ac7f-ac57c5a63793.1786608211285459000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T08:04:02.812432Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa25-d534-7863-9c8c-3acad37bb803.1786608211254077000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Louisiana State University and Agricultural & Mechanical College",
+  "town_name": "Baton Rouge",
+  "boards": [{
+    "complete": false,
+    "school_name": "Louisiana State University and Agricultural & Mechanical College",
+    "town_name": "Baton Rouge",
+    "template_id": "college-study-spots",
+    "title": "Claimed by 9am: 10 Study Spots Worth Showing Up Early For",
+    "description": "",
+    "icon": "menu_book",
+    "cards": [{
+      "subject_id": "",
+      "subject_type": "study_space",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "I’m verifying ten distinct LSU study locations, including access and reservation rules, against direct official pages.",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "study_space",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "study_space",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "study_space",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "study_space",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "study_space",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "study_space",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "study_space",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "study_space",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }, {
+      "subject_id": "",
+      "subject_type": "study_space",
+      "entity_name": "",
+      "title": "",
+      "subtitle": "",
+      "notes": "",
+      "short_summary": "",
+      "evidence_claim": "",
+      "source_url": "",
+      "source_title": "",
+      "source_kind": "university_official",
+      "source_published_at": null,
+      "source_fetched_at": "2026-08-13",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": null,
+      "access_notes": "",
+      "cost_status": "unknown",
+      "under21_safe": true
+    }],
+    "warnings": []
+  }],
+  "warnings": []
+}
+web search: 
+web search: site:lsu.edu library study spaces LSU quiet study rooms ...
+web search: 
+web search: 
+codex
+{"complete":true,"school_name":"Louisiana State University and Agricultural & Mechanical College","town_name":"Baton Rouge","boards":[{"complete":true,"school_name":"Louisiana State University and Agricultural & Mechanical College","town_name":"Baton Rouge","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten documented LSU settings for solo work, group sessions, presentation practice, and outdoor reading, with current access constraints noted.","icon":"menu_book","cards":[{"subject_id":"lsu-main-library-collaborative-study-rooms","subject_type":"study_space","entity_name":"LSU Main Library Collaborative Study Rooms","title":"Bring the Group to a Screen-Ready Room","subtitle":"Bookable rooms for collaborative work in LSU’s Main Library","notes":"Reserve ahead for a two-to-six-person session, then bring a laptop for the room display’s supplied HDMI or USB-C connection.","short_summary":"A reservable group workspace with a display, whiteboard, and seating for small teams.","evidence_claim":"LSU Libraries says these Main Library rooms accommodate groups of two to six; its room guidance identifies displays, whiteboards, and supplied display cables.","source_url":"https://lib.lsu.edu/spaces#collaborativestudyrooms","source_title":"Study Spaces | LSU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Available to LSU undergraduate and graduate students. Study spaces close one hour before the library; reservations take priority over walk-up use.","cost_status":"unknown","under21_safe":true},{"subject_id":"lsu-main-library-student-meeting-rooms","subject_type":"study_space","entity_name":"LSU Main Library Student Meeting Rooms","title":"Practice the Presentation Behind a Door","subtitle":"Enclosed Main Library rooms built around a large display and table","notes":"Use the enclosed setup to rehearse slides aloud; reserve no more than three hours for the day and return borrowed peripherals afterward.","short_summary":"An enclosed option for presentation rehearsal or a focused project meeting.","evidence_claim":"LSU Libraries describes the Student Meeting Rooms as enclosed rooms with a large display and table, suitable for presentation practice and reservable for up to three hours per day.","source_url":"https://lib.lsu.edu/spaces#studentmeetingrooms","source_title":"Study Spaces | LSU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Available to LSU undergraduate and graduate students. An individual student may reserve one for up to three hours per day; spaces close one hour before the library.","cost_status":"unknown","under21_safe":true},{"subject_id":"lsu-main-library-quiet-study-rooms","subject_type":"study_space","entity_name":"LSU Main Library Quiet Study Rooms","title":"Keep the Group Session Quiet","subtitle":"Reservable rooms for two to six quiet collaborators","notes":"Choose this room when the team needs shared space without a loud discussion, and keep the session within the three-hour daily limit.","short_summary":"Small-group rooms where collaboration comes with an explicit quiet-use expectation.","evidence_claim":"LSU Libraries says its Quiet Study Rooms accommodate quiet groups of two to six in the Main Library and may be reserved for up to three hours per day.","source_url":"https://lib.lsu.edu/spaces#quietstudyrooms","source_title":"Study Spaces | LSU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Available to LSU undergraduate and graduate students. Reservations are limited to three hours per individual student per day; spaces close one hour before the library.","cost_status":"unknown","under21_safe":true},{"subject_id":"lsu-main-library-bookable-study-booths","subject_type":"study_space","entity_name":"LSU Main Library Bookable Study Booths","title":"Settle Into a Booth With Power","subtitle":"Individual Main Library booths with a desk, lamp, and outlet","notes":"Reserve a booth for sustained individual work, use a temporary-storage locker if needed, and never leave books or belongings unattended.","short_summary":"A bookable individual station equipped for laptop work and close reading.","evidence_claim":"LSU Libraries states that every bookable study booth has a desk, reading lamp, and electrical outlet and can be reserved by undergraduate and graduate students.","source_url":"https://lib.lsu.edu/spaces#bookablestudybooths","source_title":"Study Spaces | LSU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"LSU undergraduate and graduate students may reserve a booth daily for up to 14 consecutive days. Ask the Checkout Desk about a lock for temporary storage.","cost_status":"unknown","under21_safe":true},{"subject_id":"lsu-quad-study-space","subject_type":"study_space","entity_name":"The Quad","title":"Take the Reading Outside in the Quad","subtitle":"A central outdoor LSU setting for books, notes, and a laptop","notes":"Bring material that works outdoors and pick a comfortable place in the Quad; have an indoor backup ready if weather disrupts the session.","short_summary":"A recognizable central-campus alternative to an indoor desk or study room.","evidence_claim":"An April 2026 LSU photo feature identifies The Quad as a place where students focus and learn during finals.","source_url":"https://www.lsu.edu/blog/2026/04/study-spots.php","source_title":"Photos: Study Spaces that Carry LSU Students through Finals","source_kind":"university_official","source_published_at":"2026-04-27","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official feature documents outdoor studying here but does not state hours, reservation rules, or building-style access controls.","cost_status":"unknown","under21_safe":true},{"subject_id":"hill-memorial-library-quiet-study","subject_type":"study_space","entity_name":"Hill Memorial Library Quiet Study Room","title":"Work Quietly on Hill’s Second Floor","subtitle":"A weekday quiet-study room inside Hill Memorial Library","notes":"Plan this stop for a weekday between 9 a.m. and 5 p.m., finish food or drinks in the lobby, and keep the study room quiet.","short_summary":"A dedicated quiet room with defined weekday access and a no-food-or-drink rule.","evidence_claim":"LSU Libraries says Hill Memorial Library’s second-floor Quiet Study Room is open to students on semester weekdays from 9 a.m. to 5 p.m.; food and drink are prohibited there.","source_url":"https://lib.lsu.edu/spaces#quietstudyhill","source_title":"Study Spaces | LSU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open to students during the semester on weekdays, 9 a.m.–5 p.m. Food and drink are prohibited in the room but may be consumed in the first-floor lobby.","cost_status":"unknown","under21_safe":true},{"subject_id":"lsu-student-union-third-floor-study-pods","subject_type":"study_space","entity_name":"LSU Student Union Third-Floor Study Pods","title":"Plug In at a Divided Study Pod","subtitle":"Third-floor Union pods with charging stations and built-in dividers","notes":"Head to the Union’s third floor when you need a divided workstation, and bring the charging cable required for your own device.","short_summary":"A more separated Union workstation with built-in charging support.","evidence_claim":"LSU’s April 2026 study-spaces feature documents third-floor Student Union study pods with built-in dividers and charging stations.","source_url":"https://www.lsu.edu/blog/2026/04/study-spots.php","source_title":"Photos: Study Spaces that Carry LSU Students through Finals","source_kind":"university_official","source_published_at":"2026-04-27","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on the Student Union’s third floor. The cited feature does not provide operating hours or state whether individual pods can be reserved.","cost_status":"unknown","under21_safe":true},{"subject_id":"lsu-student-union-terrace","subject_type":"study_space","entity_name":"LSU Student Union Terrace","title":"Move the Project to the Terrace","subtitle":"Outdoor Union seating for solo work or a group project","notes":"Use the terrace for work that benefits from fresh air, secure loose papers before opening them, and shift indoors if conditions change.","short_summary":"An outdoor study setting suited to either independent work or meeting a project group.","evidence_claim":"LSU’s April 2026 study-spaces feature says the Student Union Terrace lets students sit outside alone or meet with a group to work on projects.","source_url":"https://www.lsu.edu/blog/2026/04/study-spots.php","source_title":"Photos: Study Spaces that Carry LSU Students through Finals","source_kind":"university_official","source_published_at":"2026-04-27","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor terrace access may depend on Student Union operations and conditions; the cited source gives no hours or reservation requirements.","cost_status":"unknown","under21_safe":true},{"subject_id":"lsu-business-education-complex-rotunda","subject_type":"study_space","entity_name":"Business Education Complex Rotunda","title":"Find a Work Surface in the BEC Rotunda","subtitle":"An indoor Business Education Complex setting with multiple study places","notes":"Use the Rotunda for an indoor session between campus commitments, and confirm building access before planning evening or weekend work.","short_summary":"A spacious academic-building interior documented by LSU as a place to study.","evidence_claim":"LSU’s April 2026 study-spaces feature identifies the Business Education Complex Rotunda as offering numerous places for students to study.","source_url":"https://www.lsu.edu/blog/2026/04/study-spots.php","source_title":"Photos: Study Spaces that Carry LSU Students through Finals","source_kind":"university_official","source_published_at":"2026-04-27","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The source documents study use but does not specify public access, room reservations, or current building hours; verify access before going.","cost_status":"unknown","under21_safe":true},{"subject_id":"lsu-business-education-complex-courtyard","subject_type":"study_space","entity_name":"Business Education Complex Courtyard","title":"Study Among the BEC Courtyard Greenery","subtitle":"An outdoor Business Education Complex space with benches","notes":"Pack a compact study task for a courtyard bench, check the weather first, and keep an indoor alternative ready for heat or rain.","short_summary":"A landscaped outdoor option for reading or completing a shorter assignment.","evidence_claim":"LSU’s April 2026 study-spaces feature documents benches and greenery in the Business Education Complex Courtyard as a setting where students can sit and study.","source_url":"https://www.lsu.edu/blog/2026/04/study-spots.php","source_title":"Photos: Study Spaces that Carry LSU Students through Finals","source_kind":"university_official","source_published_at":"2026-04-27","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited source confirms outdoor study seating but does not state hours, reservations, or whether building closures restrict courtyard access.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T08:05:42.922490Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa26-4e6a-7241-9450-a2a553ea2bc7.1786608242282942000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+26,501
+
+{"complete":true,"school_name":"Louisiana State University and Agricultural & Mechanical College","town_name":"Baton Rouge","boards":[{"complete":true,"school_name":"Louisiana State University and Agricultural & Mechanical College","town_name":"Baton Rouge","template_id":"college-study-spots","title":"Claimed by 9am: 10 Study Spots Worth Showing Up Early For","description":"Ten documented LSU settings for solo work, group sessions, presentation practice, and outdoor reading, with current access constraints noted.","icon":"menu_book","cards":[{"subject_id":"lsu-main-library-collaborative-study-rooms","subject_type":"study_space","entity_name":"LSU Main Library Collaborative Study Rooms","title":"Bring the Group to a Screen-Ready Room","subtitle":"Bookable rooms for collaborative work in LSU’s Main Library","notes":"Reserve ahead for a two-to-six-person session, then bring a laptop for the room display’s supplied HDMI or USB-C connection.","short_summary":"A reservable group workspace with a display, whiteboard, and seating for small teams.","evidence_claim":"LSU Libraries says these Main Library rooms accommodate groups of two to six; its room guidance identifies displays, whiteboards, and supplied display cables.","source_url":"https://lib.lsu.edu/spaces#collaborativestudyrooms","source_title":"Study Spaces | LSU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Available to LSU undergraduate and graduate students. Study spaces close one hour before the library; reservations take priority over walk-up use.","cost_status":"unknown","under21_safe":true},{"subject_id":"lsu-main-library-student-meeting-rooms","subject_type":"study_space","entity_name":"LSU Main Library Student Meeting Rooms","title":"Practice the Presentation Behind a Door","subtitle":"Enclosed Main Library rooms built around a large display and table","notes":"Use the enclosed setup to rehearse slides aloud; reserve no more than three hours for the day and return borrowed peripherals afterward.","short_summary":"An enclosed option for presentation rehearsal or a focused project meeting.","evidence_claim":"LSU Libraries describes the Student Meeting Rooms as enclosed rooms with a large display and table, suitable for presentation practice and reservable for up to three hours per day.","source_url":"https://lib.lsu.edu/spaces#studentmeetingrooms","source_title":"Study Spaces | LSU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Available to LSU undergraduate and graduate students. An individual student may reserve one for up to three hours per day; spaces close one hour before the library.","cost_status":"unknown","under21_safe":true},{"subject_id":"lsu-main-library-quiet-study-rooms","subject_type":"study_space","entity_name":"LSU Main Library Quiet Study Rooms","title":"Keep the Group Session Quiet","subtitle":"Reservable rooms for two to six quiet collaborators","notes":"Choose this room when the team needs shared space without a loud discussion, and keep the session within the three-hour daily limit.","short_summary":"Small-group rooms where collaboration comes with an explicit quiet-use expectation.","evidence_claim":"LSU Libraries says its Quiet Study Rooms accommodate quiet groups of two to six in the Main Library and may be reserved for up to three hours per day.","source_url":"https://lib.lsu.edu/spaces#quietstudyrooms","source_title":"Study Spaces | LSU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Available to LSU undergraduate and graduate students. Reservations are limited to three hours per individual student per day; spaces close one hour before the library.","cost_status":"unknown","under21_safe":true},{"subject_id":"lsu-main-library-bookable-study-booths","subject_type":"study_space","entity_name":"LSU Main Library Bookable Study Booths","title":"Settle Into a Booth With Power","subtitle":"Individual Main Library booths with a desk, lamp, and outlet","notes":"Reserve a booth for sustained individual work, use a temporary-storage locker if needed, and never leave books or belongings unattended.","short_summary":"A bookable individual station equipped for laptop work and close reading.","evidence_claim":"LSU Libraries states that every bookable study booth has a desk, reading lamp, and electrical outlet and can be reserved by undergraduate and graduate students.","source_url":"https://lib.lsu.edu/spaces#bookablestudybooths","source_title":"Study Spaces | LSU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"LSU undergraduate and graduate students may reserve a booth daily for up to 14 consecutive days. Ask the Checkout Desk about a lock for temporary storage.","cost_status":"unknown","under21_safe":true},{"subject_id":"lsu-quad-study-space","subject_type":"study_space","entity_name":"The Quad","title":"Take the Reading Outside in the Quad","subtitle":"A central outdoor LSU setting for books, notes, and a laptop","notes":"Bring material that works outdoors and pick a comfortable place in the Quad; have an indoor backup ready if weather disrupts the session.","short_summary":"A recognizable central-campus alternative to an indoor desk or study room.","evidence_claim":"An April 2026 LSU photo feature identifies The Quad as a place where students focus and learn during finals.","source_url":"https://www.lsu.edu/blog/2026/04/study-spots.php","source_title":"Photos: Study Spaces that Carry LSU Students through Finals","source_kind":"university_official","source_published_at":"2026-04-27","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The official feature documents outdoor studying here but does not state hours, reservation rules, or building-style access controls.","cost_status":"unknown","under21_safe":true},{"subject_id":"hill-memorial-library-quiet-study","subject_type":"study_space","entity_name":"Hill Memorial Library Quiet Study Room","title":"Work Quietly on Hill’s Second Floor","subtitle":"A weekday quiet-study room inside Hill Memorial Library","notes":"Plan this stop for a weekday between 9 a.m. and 5 p.m., finish food or drinks in the lobby, and keep the study room quiet.","short_summary":"A dedicated quiet room with defined weekday access and a no-food-or-drink rule.","evidence_claim":"LSU Libraries says Hill Memorial Library’s second-floor Quiet Study Room is open to students on semester weekdays from 9 a.m. to 5 p.m.; food and drink are prohibited there.","source_url":"https://lib.lsu.edu/spaces#quietstudyhill","source_title":"Study Spaces | LSU Libraries","source_kind":"university_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Open to students during the semester on weekdays, 9 a.m.–5 p.m. Food and drink are prohibited in the room but may be consumed in the first-floor lobby.","cost_status":"unknown","under21_safe":true},{"subject_id":"lsu-student-union-third-floor-study-pods","subject_type":"study_space","entity_name":"LSU Student Union Third-Floor Study Pods","title":"Plug In at a Divided Study Pod","subtitle":"Third-floor Union pods with charging stations and built-in dividers","notes":"Head to the Union’s third floor when you need a divided workstation, and bring the charging cable required for your own device.","short_summary":"A more separated Union workstation with built-in charging support.","evidence_claim":"LSU’s April 2026 study-spaces feature documents third-floor Student Union study pods with built-in dividers and charging stations.","source_url":"https://www.lsu.edu/blog/2026/04/study-spots.php","source_title":"Photos: Study Spaces that Carry LSU Students through Finals","source_kind":"university_official","source_published_at":"2026-04-27","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Located on the Student Union’s third floor. The cited feature does not provide operating hours or state whether individual pods can be reserved.","cost_status":"unknown","under21_safe":true},{"subject_id":"lsu-student-union-terrace","subject_type":"study_space","entity_name":"LSU Student Union Terrace","title":"Move the Project to the Terrace","subtitle":"Outdoor Union seating for solo work or a group project","notes":"Use the terrace for work that benefits from fresh air, secure loose papers before opening them, and shift indoors if conditions change.","short_summary":"An outdoor study setting suited to either independent work or meeting a project group.","evidence_claim":"LSU’s April 2026 study-spaces feature says the Student Union Terrace lets students sit outside alone or meet with a group to work on projects.","source_url":"https://www.lsu.edu/blog/2026/04/study-spots.php","source_title":"Photos: Study Spaces that Carry LSU Students through Finals","source_kind":"university_official","source_published_at":"2026-04-27","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Outdoor terrace access may depend on Student Union operations and conditions; the cited source gives no hours or reservation requirements.","cost_status":"unknown","under21_safe":true},{"subject_id":"lsu-business-education-complex-rotunda","subject_type":"study_space","entity_name":"Business Education Complex Rotunda","title":"Find a Work Surface in the BEC Rotunda","subtitle":"An indoor Business Education Complex setting with multiple study places","notes":"Use the Rotunda for an indoor session between campus commitments, and confirm building access before planning evening or weekend work.","short_summary":"A spacious academic-building interior documented by LSU as a place to study.","evidence_claim":"LSU’s April 2026 study-spaces feature identifies the Business Education Complex Rotunda as offering numerous places for students to study.","source_url":"https://www.lsu.edu/blog/2026/04/study-spots.php","source_title":"Photos: Study Spaces that Carry LSU Students through Finals","source_kind":"university_official","source_published_at":"2026-04-27","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The source documents study use but does not specify public access, room reservations, or current building hours; verify access before going.","cost_status":"unknown","under21_safe":true},{"subject_id":"lsu-business-education-complex-courtyard","subject_type":"study_space","entity_name":"Business Education Complex Courtyard","title":"Study Among the BEC Courtyard Greenery","subtitle":"An outdoor Business Education Complex space with benches","notes":"Pack a compact study task for a courtyard bench, check the weather first, and keep an indoor alternative ready for heat or rain.","short_summary":"A landscaped outdoor option for reading or completing a shorter assignment.","evidence_claim":"LSU’s April 2026 study-spaces feature documents benches and greenery in the Business Education Complex Courtyard as a setting where students can sit and study.","source_url":"https://www.lsu.edu/blog/2026/04/study-spots.php","source_title":"Photos: Study Spaces that Carry LSU Students through Finals","source_kind":"university_official","source_published_at":"2026-04-27","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The cited source confirms outdoor study seating but does not state hours, reservations, or whether building closures restrict courtyard access.","cost_status":"unknown","under21_safe":true}],"warnings":[]}],"warnings":[]}

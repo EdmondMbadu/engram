@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.iastate.edu/life-at-iowa-state/history-and-traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.iastate.edu/life-at-iowa-state/history-and-traditions",
+      "error": ""
+    },
+    {
+      "url": "https://www.mu.iastate.edu/tradition-myths-and-history",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mu.iastate.edu/tradition-myths-and-history",
+      "error": ""
+    },
+    {
+      "url": "https://events.iastate.edu/?date=2025-10-20&display=month",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://events.iastate.edu/?date=2025-10-20&display=month",
+      "error": ""
+    },
+    {
+      "url": "https://facultystaff.info.iastate.edu/event/homecoming-cyfest-fireworks-mass-campaniling",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://facultystaff.info.iastate.edu/event/homecoming-cyfest-fireworks-mass-campaniling",
+      "error": ""
+    },
+    {
+      "url": "https://www.inside.iastate.edu/article/2025/11/19/sign-season",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.inside.iastate.edu/article/2025/11/19/sign-season",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

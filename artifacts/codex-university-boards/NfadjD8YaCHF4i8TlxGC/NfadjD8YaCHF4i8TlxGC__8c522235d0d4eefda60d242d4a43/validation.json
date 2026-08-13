@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.wafflehouse.com/milledgeville-ga-1473",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wafflehouse.com/milledgeville-ga-1473/",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ga/milledgeville/2495-n-columbia-st/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ga/milledgeville/2495-n-columbia-st/restaurant.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/ga/milledgeville/2341-n-columbia-drive",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/ga/milledgeville/2341-n-columbia-drive",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wingstop.com/ga/milledgeville/wingstop-3162-milledgeville-ga-31061",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wingstop.com/ga/milledgeville/wingstop-3162-milledgeville-ga-31061",
+      "error": ""
+    },
+    {
+      "url": "https://locations.papajohns.com/united-states/ga/31061/milledgeville/1960-columbia-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.papajohns.com/united-states/ga/31061/milledgeville/1960-columbia-street",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/georgia/milledgeville/1909-n-columbia-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/georgia/milledgeville/1909-n-columbia-st",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/es-us/location/ga/milledgeville/611-south-wayne-st/11443.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/es-us/location/ga/milledgeville/611-south-wayne-st/11443.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.chick-fil-a.com/locations/ga/milledgeville",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.chick-fil-a.com/locations/ga/milledgeville",
+      "error": ""
+    },
+    {
+      "url": "https://www.dairyqueen.com/en-us/locations/ga/milledgeville/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.dairyqueen.com/en-us/locations/ga/milledgeville/",
+      "error": ""
+    },
+    {
+      "url": "https://www.zaxbys.com/locations/ga/milledgeville",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.zaxbys.com/locations/ga/milledgeville",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

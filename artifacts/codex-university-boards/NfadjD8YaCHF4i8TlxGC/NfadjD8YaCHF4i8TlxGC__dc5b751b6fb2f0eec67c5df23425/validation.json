@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.loibaguetteexpress.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.loibaguetteexpress.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.farmerboys.com/locations/san-bernardino-kendall-dr",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.farmerboys.com/locations/san-bernardino-kendall-dr",
+      "error": ""
+    },
+    {
+      "url": "https://www.bakersdrivethru.com/find-a-location/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bakersdrivethru.com/find-a-location/",
+      "error": ""
+    },
+    {
+      "url": "https://www.csusb.edu/international-education/student-services/new-students/csusb-city-guide-events",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csusb.edu/international-education/student-services/new-students/csusb-city-guide-events",
+      "error": ""
+    },
+    {
+      "url": "https://www.chick-fil-a.com/locations/ca/university-parkway-hwy-215",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.chick-fil-a.com/locations/ca/university-parkway-hwy-215",
+      "error": ""
+    },
+    {
+      "url": "https://locations.carlsjr.com/ca/san-bernardino/4424-university-parkway",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.carlsjr.com/ca/san-bernardino/4424-university-parkway",
+      "error": ""
+    },
+    {
+      "url": "https://www.toasttab.com/local/order/hung-up-on-cane-1st-location-4235-university-pkwy-102/r-9de88920-cbc5-4c47-8a41-04f7e824837b",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.toasttab.com/local/order/hung-up-on-cane-1st-location-4235-university-pkwy-102/r-9de88920-cbc5-4c47-8a41-04f7e824837b",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

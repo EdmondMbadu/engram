@@ -1,0 +1,60 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "OFDgaPkl5yIn35j43GKZ",
+    "schoolName": "Missouri University of Science and Technology",
+    "shortSchoolName": "Missouri University of Science and Technology",
+    "townName": "Rolla",
+    "state": "MO",
+    "countryCode": "US",
+    "unitId": "178411",
+    "website": "https://www.mst.edu/",
+    "latitude": 37.954444,
+    "longitude": -91.77311,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/8/87/Missouri_University_of_Science_and_Technology_emblem.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=mst.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "Taco Bell — 1109 N Bishop Avenue",
+    "Taco Bell — 120 Highway 72 West",
+    "Wendy's — 1007 Kings Highway",
+    "Pizza Hut — 1024 Kings Hwy",
+    "Imo's Pizza — Rolla",
+    "IHOP — 1735 N Bishop Ave",
+    "Freddy's Frozen Custard & Steakburgers — Rolla",
+    "Sonic Drive-In — 109 S Bishop Ave",
+    "Denny's — 1419 Martin Springs Rd.",
+    "Los Arcos Mexican Restaurant",
+    "Havener Center",
+    "Einstein Bros. Bagels",
+    "Curtis Laws Wilson Library",
+    "Innovation Lab",
+    "Makers Studio",
+    "The Puck",
+    "Missouri S&T Stonehenge",
+    "Student Recreation and Fitness Center",
+    "Leach Theatre",
+    "Missouri S&T Self-Guided Tour"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

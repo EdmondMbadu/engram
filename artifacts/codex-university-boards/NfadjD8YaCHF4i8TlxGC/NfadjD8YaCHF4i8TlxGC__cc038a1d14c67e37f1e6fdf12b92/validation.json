@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Campus access, event schedules, and seasonal availability can change; verify posted information before visiting.",
+    "4 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://my.snc.edu/campuscenter/news/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://my.snc.edu/campuscenter/news/",
+      "error": ""
+    },
+    {
+      "url": "https://internal.snc.edu/about/visitorinformation/CampusMap-2025-Update.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://internal.snc.edu/about/visitorinformation/CampusMap-2025-Update.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://my.snc.edu/library/home/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://my.snc.edu/library/home/",
+      "error": ""
+    },
+    {
+      "url": "https://snc.edu/news/pressrelease/dedication-ceremony-new-gehl-mulva-science-center-st-norbert-college",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://snc.edu/news/pressrelease/dedication-ceremony-new-gehl-mulva-science-center-st-norbert-college",
+      "error": ""
+    },
+    {
+      "url": "https://snc.edu/news/donald-patricia-schneider-family-hall-opens-doors-fall-semester-2025",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://snc.edu/news/donald-patricia-schneider-family-hall-opens-doors-fall-semester-2025",
+      "error": ""
+    },
+    {
+      "url": "https://my.snc.edu/artgalleries/bush-art-center-galleries/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://my.snc.edu/artgalleries/bush-art-center-galleries/",
+      "error": ""
+    },
+    {
+      "url": "https://www.snc.edu/performingarts/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://snc.edu/about-snc/student-life/groups-getting-involved/exploring-arts",
+      "error": ""
+    },
+    {
+      "url": "https://www.snc.edu/student-life/spiritual-life.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://snc.edu/about-snc/student-life/living-on-campus/religious-and-spiritual-life",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Ray Van Den Heuvel Family Campus Center",
+    "Miriam B. & James J. Mulva Library",
+    "Gehl-Mulva Science Center",
+    "Old St. Joseph Church"
+  ],
+  "sourceCount": 8,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

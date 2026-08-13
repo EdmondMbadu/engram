@@ -1,0 +1,64 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www2.cortland.edu/offices/campus-activities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.cortland.edu/offices/campus-activities/",
+      "error": ""
+    },
+    {
+      "url": "https://www2.cortland.edu/library/index.dot",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.cortland.edu/library/index.dot",
+      "error": ""
+    },
+    {
+      "url": "https://www2.cortland.edu/library/about/maps",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.cortland.edu/library/about/maps",
+      "error": ""
+    },
+    {
+      "url": "https://www2.cortland.edu/library/about/library-map-text-descriptions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.cortland.edu/library/about/library-map-text-descriptions",
+      "error": ""
+    },
+    {
+      "url": "https://www2.cortland.edu/information/reasons/student-life-center.dot",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.cortland.edu/information/reasons/student-life-center.dot",
+      "error": ""
+    },
+    {
+      "url": "https://www2.cortland.edu/visitors-guide/attractions-events/campus-venues.dot",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www2.cortland.edu/visitors-guide/attractions-events/campus-venues.dot",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Memorial Library",
+    "Dowd Gallery"
+  ],
+  "sourceCount": 6,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.furman.edu/campus-life/trone-student-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.furman.edu/campus-life/trone-student-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.furman.edu/wp-content/uploads/sites/145/2022/08/Study-Spaces-Inventory.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.furman.edu/wp-content/uploads/sites/145/2022/08/Study-Spaces-Inventory.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.furman.edu/offices-services/information-technology-services/it-services/computer-labs/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.furman.edu/offices-services/information-technology-services/it-services/computer-labs/",
+      "error": ""
+    },
+    {
+      "url": "https://www.furman.edu/academics/asian-studies/facilities-resources/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.furman.edu/academics/asian-studies/facilities-resources/",
+      "error": ""
+    },
+    {
+      "url": "https://www.furman.edu/academics/english/facilities-resources/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.furman.edu/academics/english/facilities-resources/",
+      "error": ""
+    },
+    {
+      "url": "https://www.furman.edu/academics/music/facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.furman.edu/academics/music/facilities/",
+      "error": ""
+    },
+    {
+      "url": "https://www.furman.edu/academics/art/facilities-resources/thompson-art-gallery-schedule/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.furman.edu/academics/art/facilities-resources/thompson-art-gallery-schedule/",
+      "error": ""
+    },
+    {
+      "url": "https://www.furman.edu/spiritual-life/daniel-chapel/history-architecture/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.furman.edu/spiritual-life/daniel-chapel/history-architecture/",
+      "error": ""
+    },
+    {
+      "url": "https://www.furman.edu/spiritual-life/daniel-chapel/labyrinth/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.furman.edu/spiritual-life/daniel-chapel/labyrinth/",
+      "error": ""
+    },
+    {
+      "url": "https://www.furman.edu/place-peace/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.furman.edu/place-peace/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

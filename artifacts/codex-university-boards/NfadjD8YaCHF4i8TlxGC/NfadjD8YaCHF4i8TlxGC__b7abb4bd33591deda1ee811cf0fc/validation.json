@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Exact coordinates were left null because the cited destination pages did not publish verifiable latitude/longitude values.",
+    "Some destinations share the broader Peachtree Street spine but occupy distinct named blocks and have different sourced reasons to visit.",
+    "Travel distance and route conditions vary; consult current transit, pedestrian, and cycling information before leaving campus."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.atlanticstation.com/directory/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.atlanticstation.com/directory/",
+      "error": ""
+    },
+    {
+      "url": "https://puppet.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://puppet.org/",
+      "error": ""
+    },
+    {
+      "url": "https://www.museumofdesign.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.museumofdesign.org/",
+      "error": ""
+    },
+    {
+      "url": "https://high.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://high.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://colonysquare.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://colonysquare.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.foxtheatre.org/visit-us",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.foxtheatre.org/visit-us",
+      "error": ""
+    },
+    {
+      "url": "https://piedmontpark.org/faq/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://piedmontpark.org/faq/",
+      "error": ""
+    },
+    {
+      "url": "https://westsideprovisions.squarespace.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://westsideprovisions.squarespace.com/",
+      "error": ""
+    },
+    {
+      "url": "https://westsidepaper.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://westsidepaper.com/",
+      "error": ""
+    },
+    {
+      "url": "https://theworksatl.com/directory/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://theworksatl.com/directory/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 92,
+  "generationGrade": "A"
+}

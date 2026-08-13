@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.nps.gov/inde/planyourvisit/libertybellcenter.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/inde/planyourvisit/libertybellcenter.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/inde/planyourvisit/presidentshousesite.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/inde/planyourvisit/presidentshousesite.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/inde/planyourvisit/oldcityhall.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/inde/planyourvisit/oldcityhall.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/inde/planyourvisit/merchantsexchangebuilding.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/inde/planyourvisit/merchantsexchangebuilding.htm",
+      "error": ""
+    },
+    {
+      "url": "https://home.nps.gov/inde/learn/education/classrooms/planafieldtrip-faqs.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://home.nps.gov/inde/learn/education/classrooms/planafieldtrip-faqs.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitphilly.com/articles/philadelphia/top-free-philadelphia-attractions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitphilly.com/articles/philadelphia/top-free-philadelphia-attractions/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitphilly.com/things-to-do/attractions/dilworth-park-at-city-hall/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitphilly.com/things-to-do/attractions/dilworth-park-at-city-hall/",
+      "error": ""
+    },
+    {
+      "url": "https://www.therailpark.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.therailpark.org/",
+      "error": ""
+    },
+    {
+      "url": "https://www.visitphilly.com/things-to-do/attractions/spruce-street-harbor-park/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.visitphilly.com/things-to-do/attractions/spruce-street-harbor-park/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

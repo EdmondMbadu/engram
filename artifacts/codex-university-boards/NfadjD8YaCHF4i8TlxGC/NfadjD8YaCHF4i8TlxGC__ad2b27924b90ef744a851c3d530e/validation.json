@@ -1,0 +1,79 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.transy.edu/campus/campus-center/information/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.transy.edu/campus/campus-center/information/",
+      "error": ""
+    },
+    {
+      "url": "https://www.transy.edu/about/facility/back-circle/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.transy.edu/about/facility/back-circle/",
+      "error": ""
+    },
+    {
+      "url": "https://www.transy.edu/academics/library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.transy.edu/academics/library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.transy.edu/about/facility/alumni-plaza/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.transy.edu/about/facility/alumni-plaza/",
+      "error": ""
+    },
+    {
+      "url": "https://www.transy.edu/calendar/archives/bulletin/self-guided-tour",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.transy.edu/calendar/archives/bulletin/self-guided-tour",
+      "error": ""
+    },
+    {
+      "url": "https://www.transy.edu/mfa",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.transy.edu/about/facility/mitchell-fine-arts-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.transy.edu/about/facility/transylvania-athletic-complex/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.transy.edu/about/facility/transylvania-athletic-complex/",
+      "error": ""
+    },
+    {
+      "url": "https://www.transy.edu/campus/campus-center/policies/regulations/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.transy.edu/campus/campus-center/policies/regulations/",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Alumni Plaza"
+  ],
+  "sourceCount": 8,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

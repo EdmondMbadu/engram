@@ -1,0 +1,77 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "For park cards, cost-free status covers the listed walking, table, and casual-use activity only; reservable sites, sports fields, parking, pools, and equipment can have separate rules or costs."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.portland.gov/parks/cathedral-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.portland.gov/parks/cathedral-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.portland.gov/parks/picnic-reservation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.portland.gov/parks/picnic-reservation",
+      "error": ""
+    },
+    {
+      "url": "https://www.portland.gov/parks/columbia-park-and-annex",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.portland.gov/parks/columbia-park-and-annex",
+      "error": ""
+    },
+    {
+      "url": "https://www.portland.gov/parks/mckenna-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.portland.gov/parks/mckenna-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.portland.gov/parks/construction/north-portland-parks-improvement-projects",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.portland.gov/parks/construction/north-portland-parks-improvement-projects",
+      "error": ""
+    },
+    {
+      "url": "https://www.portland.gov/parks/portsmouth-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.portland.gov/parks/portsmouth-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.portland.gov/parks/pier-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.portland.gov/parks/pier-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.portland.gov/neighborhoods/university-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.portland.gov/neighborhoods/university-park",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

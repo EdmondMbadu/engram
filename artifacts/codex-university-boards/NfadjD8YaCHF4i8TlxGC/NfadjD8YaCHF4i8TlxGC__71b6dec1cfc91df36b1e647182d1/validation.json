@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.holyfamily.edu/documents/campus-map-2026",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.holyfamily.edu/documents/campus-map-2026",
+      "error": ""
+    },
+    {
+      "url": "https://www.holyfamily.edu/academics/library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.holyfamily.edu/academics/library",
+      "error": ""
+    },
+    {
+      "url": "https://www.holyfamily.edu/magazine/2022/spring/arts",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://www.holyfamily.edu/magazine/2022/spring/arts",
+      "error": ""
+    },
+    {
+      "url": "https://www.holyfamily.edu/student-experience/dining-services",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.holyfamily.edu/student-experience/dining-services",
+      "error": ""
+    },
+    {
+      "url": "https://www.holyfamily.edu/student-experience/clubs-activities/esports",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.holyfamily.edu/student-experience/clubs-activities/esports",
+      "error": ""
+    },
+    {
+      "url": "https://www.holyfamily.edu/student-experience/clubs-activities/fitness-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.holyfamily.edu/student-experience/clubs-activities/fitness-center",
+      "error": ""
+    },
+    {
+      "url": "https://www.glenfoerd.org/main-house-and-grounds",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.glenfoerd.org/main-house-and-grounds",
+      "error": ""
+    },
+    {
+      "url": "https://www.holyfamily.edu/student-experience/campus-ministry",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.holyfamily.edu/student-experience/campus-ministry",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

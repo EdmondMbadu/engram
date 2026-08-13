@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://locations.tacobell.com/ar/conway/2715-prince-street.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ar/conway/2715-prince-street.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ar/conway/205-e-oak-street.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ar/conway/205-e-oak-street.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/ar/conway/2195-dave-ward-drive.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/ar/conway/2195-dave-ward-drive.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.whataburger.com/ar/conway/813-e-oak.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.whataburger.com/ar/conway/813-e-oak.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.dennys.com/ar/conway/9534-breakfast",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.dennys.com/ar/conway/9534-breakfast",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/ar/conway/311-oak-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/ar/conway/311-oak-st",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/ar/conway/1200-hwy-64-west",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/ar/conway/1200-hwy-64-west",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/ar/conway/3750-dave-ward-drive",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/ar/conway/3750-dave-ward-drive",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/arkansas/conway/1075-east-german-lane",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/arkansas/conway/1075-east-german-lane",
+      "error": ""
+    },
+    {
+      "url": "https://locations.pizzahut.com/ar/conway/1825-e-oak-st",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.pizzahut.com/ar/conway/1825-e-oak-st",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

@@ -1,0 +1,85 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Current operating hours were not assumed where direct official pages did not state them; cards instruct students to verify schedules and posted access conditions.",
+    "Coordinates and maps URLs are null except for the supplied campus coordinate because card-level coordinates were not independently verified from direct sources.",
+    "The official 2026 museum page says the local art, science, and history museum is closed to daily public admission, so it was excluded.",
+    "1 source URL check(s) were inconclusive and need editorial confirmation.",
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://erau.edu/-/media/files/daytona-beach/campus-map.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://erau.edu/-/media/files/daytona-beach/campus-map.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://huntlibrary.erau.edu/about/maps",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://huntlibrary.erau.edu/about/maps",
+      "error": ""
+    },
+    {
+      "url": "https://erau.edu/about/news-and-stories/hub-spoke/stories/daytona-beach-campus",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://erau.edu/about/news-and-stories/hub-spoke/stories/daytona-beach-campus",
+      "error": ""
+    },
+    {
+      "url": "https://erau.edu/student-experience/campus-community/fitness",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://erau.edu/student-experience/campus-community/fitness",
+      "error": ""
+    },
+    {
+      "url": "https://www.daytonabeach.gov/1201/Samuel-Butts-Youth-Archaeological-Park",
+      "ok": true,
+      "conclusive": false,
+      "status": 0,
+      "finalUrl": "https://www.daytonabeach.gov/1201/Samuel-Butts-Youth-Archaeological-Park",
+      "error": "The operation was aborted due to timeout"
+    },
+    {
+      "url": "https://publication.daytonabeach.gov/view/1003112570",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://publication.daytonabeach.gov/view/1003112570",
+      "error": ""
+    },
+    {
+      "url": "https://publication.daytonabeach.gov/view/543821249/10/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://publication.daytonabeach.gov/view/543821249/10/",
+      "error": ""
+    },
+    {
+      "url": "https://erau.edu/about/locations/daytona-beach-campus/map",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://erau.edu/about/locations/daytona-beach-campus/map",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Mori Hosseini Student Union",
+    "Eagle Fitness Complex",
+    "Riverfront Esplanade"
+  ],
+  "sourceCount": 8,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

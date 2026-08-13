@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.truman.edu/about/facts-about-truman/traditions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.truman.edu/about/facts-about-truman/traditions/",
+      "error": ""
+    },
+    {
+      "url": "https://homecoming.truman.edu/history/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://homecoming.truman.edu/history/",
+      "error": ""
+    },
+    {
+      "url": "https://newsletter.truman.edu/article.asp?id=17769",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://newsletter.truman.edu/article.asp?id=17769",
+      "error": ""
+    },
+    {
+      "url": "https://trumanreview.truman.edu/article/a-tradition-begins/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://trumanreview.truman.edu/article/a-tradition-begins/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

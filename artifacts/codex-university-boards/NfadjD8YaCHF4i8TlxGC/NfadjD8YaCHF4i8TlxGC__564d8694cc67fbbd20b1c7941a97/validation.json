@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.hws.edu/news/2024/getting-ready-for-orientation-week.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hws.edu/news/2024/getting-ready-for-orientation-week.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.hws.edu/photography/2025/Orientation-2025.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hws.edu/photography/2025/Orientation-2025.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.hws.edu/offices/deans/hobart-traditions.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hws.edu/offices/deans/hobart-traditions.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.hws.edu/offices/deans/william-smith-traditions.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hws.edu/offices/deans/william-smith-traditions.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.hws.edu/news/2025/moving-up-day-2025.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hws.edu/news/2025/moving-up-day-2025.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.hws.edu/news/2023/william-smith-class-of-2023-celebrated-during-senior-toast.aspx",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.hws.edu/news/2023/william-smith-class-of-2023-celebrated-during-senior-toast.aspx",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

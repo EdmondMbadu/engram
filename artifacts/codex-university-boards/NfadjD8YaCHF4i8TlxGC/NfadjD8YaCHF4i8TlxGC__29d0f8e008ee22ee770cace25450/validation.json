@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://kimbellart.org/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://kimbellart.org/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.cartermuseum.org/plan-your-visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.cartermuseum.org/plan-your-visit",
+      "error": ""
+    },
+    {
+      "url": "https://library.tcu.edu/alumni-visitors-texshare.asp",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.tcu.edu/alumni-visitors-texshare.asp",
+      "error": ""
+    },
+    {
+      "url": "https://idcenter.tcu.edu/door-card-swipe-access/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://idcenter.tcu.edu/door-card-swipe-access/",
+      "error": ""
+    },
+    {
+      "url": "https://fwbg.org/faq/can-i-walk-around-the-garden-before-or-after-class/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fwbg.org/faq/can-i-walk-around-the-garden-before-or-after-class/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fortworthtexas.gov/departments/parks/parks-and-trails/trinity-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fortworthtexas.gov/departments/parks/parks-and-trails/trinity-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.fortworthtexas.gov/departments/parks/parks-and-trails/tandy-hills-natural-area",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fortworthtexas.gov/departments/parks/parks-and-trails/tandy-hills-natural-area",
+      "error": ""
+    },
+    {
+      "url": "https://www.fortworthtexas.gov/departments/library/services/9-botanic-garden-passes",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fortworthtexas.gov/departments/library/services/9-botanic-garden-passes",
+      "error": ""
+    },
+    {
+      "url": "https://www.fortworthtexas.gov/departments/library/services/13-nature-center-passes",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fortworthtexas.gov/departments/library/services/13-nature-center-passes",
+      "error": ""
+    },
+    {
+      "url": "https://www.fortworthtexas.gov/departments/library/programs/library-passes",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fortworthtexas.gov/departments/library/programs/library-passes",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

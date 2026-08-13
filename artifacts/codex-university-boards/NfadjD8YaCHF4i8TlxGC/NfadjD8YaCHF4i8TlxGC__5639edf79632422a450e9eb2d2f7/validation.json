@@ -1,0 +1,73 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.csulb.edu/carolyn-campagna-kleefeld-contemporary-art-museum/exhibitions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/carolyn-campagna-kleefeld-contemporary-art-museum/exhibitions",
+      "error": ""
+    },
+    {
+      "url": "https://www.csulb.edu/navigating-grad-studies-at-the-beach/campus-life",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/navigating-grad-studies-at-the-beach/campus-life",
+      "error": ""
+    },
+    {
+      "url": "https://www.csulb.edu/earl-burns-miller-japanese-garden/article/tour-the-ebm-japanese-garden-the-bloomberg-connects-app",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/earl-burns-miller-japanese-garden/article/tour-the-ebm-japanese-garden-the-bloomberg-connects-app",
+      "error": ""
+    },
+    {
+      "url": "https://www.csulb.edu/college-of-the-arts/art-design-events-2",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/college-of-the-arts/art-design-events-2",
+      "error": ""
+    },
+    {
+      "url": "https://www.csulb.edu/shark-lab/event/sharks-the-beach",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/shark-lab/event/sharks-the-beach",
+      "error": ""
+    },
+    {
+      "url": "https://www.csulb.edu/admissions/day-at-the-beach",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/admissions/day-at-the-beach",
+      "error": ""
+    },
+    {
+      "url": "https://www.csulb.edu/parking-and-transportation-services/shuttle",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.csulb.edu/parking-and-transportation-services/shuttle",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Carolyn Campagna Kleefeld Contemporary Art Museum",
+    "Earl Burns Miller Japanese Garden",
+    "Day at The Beach"
+  ],
+  "sourceCount": 7,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

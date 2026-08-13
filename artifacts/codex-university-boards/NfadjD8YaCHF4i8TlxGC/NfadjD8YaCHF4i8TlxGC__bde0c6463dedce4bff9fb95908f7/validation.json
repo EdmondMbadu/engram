@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://campus.und.edu/founders-day/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://campus.und.edu/founders-day/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://und.edu/feast-of-nations/about.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://und.edu/feast-of-nations/about.html",
+      "error": ""
+    },
+    {
+      "url": "https://blogs.und.edu/und-today/2024/10/photos-celebrate-und-homecoming-week-2024/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://blogs.und.edu/und-today/2024/10/photos-celebrate-und-homecoming-week-2024/",
+      "error": ""
+    },
+    {
+      "url": "https://und.edu/about/history.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://und.edu/about/history.html",
+      "error": ""
+    },
+    {
+      "url": "https://cnpd.und.edu/rain/history.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://cnpd.und.edu/rain/history.html",
+      "error": ""
+    },
+    {
+      "url": "https://blogs.und.edu/cem/2026/05/video-2026-spring-ring-ceremony/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://blogs.und.edu/cem/2026/05/video-2026-spring-ring-ceremony/",
+      "error": ""
+    },
+    {
+      "url": "https://blogs.und.edu/uletter/2025/09/und-to-celebrate-constitution-day-on-sept-17-2/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://blogs.und.edu/uletter/2025/09/und-to-celebrate-constitution-day-on-sept-17-2/",
+      "error": ""
+    },
+    {
+      "url": "https://blogs.und.edu/und-today/2024/03/story-and-video-the-magic-endures/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://blogs.und.edu/und-today/2024/03/story-and-video-the-magic-endures/",
+      "error": ""
+    },
+    {
+      "url": "https://und.edu/academics/commencement/pageantry-dress.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://und.edu/academics/commencement/pageantry-dress.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 100,
+  "generationGrade": "A"
+}

@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.macalester.edu/leadership-engagement/campus-center/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.macalester.edu/leadership-engagement/campus-center/",
+      "error": ""
+    },
+    {
+      "url": "https://www.macalester.edu/library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.macalester.edu/library/",
+      "error": ""
+    },
+    {
+      "url": "https://www.macalester.edu/leadership-engagement/student-organizations/event-planning/promoting-your-event/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.macalester.edu/leadership-engagement/student-organizations/event-planning/promoting-your-event/",
+      "error": ""
+    },
+    {
+      "url": "https://www.macalester.edu/admissions/admitted-students/102-things-to-do-at-mac/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.macalester.edu/admissions/admitted-students/102-things-to-do-at-mac/",
+      "error": ""
+    },
+    {
+      "url": "https://www.macalester.edu/news/2023/11/our-campus-home-a-place-of-belonging-a-window-to-the-world/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.macalester.edu/news/2023/11/our-campus-home-a-place-of-belonging-a-window-to-the-world/",
+      "error": ""
+    },
+    {
+      "url": "https://www.macalester.edu/arts-at-mac/studio-and-rehearsal-spaces/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.macalester.edu/arts-at-mac/studio-and-rehearsal-spaces/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

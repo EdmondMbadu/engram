@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.oldwestburygardens.org/plan-your-visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.oldwestburygardens.org/plan-your-visit/",
+      "error": ""
+    },
+    {
+      "url": "https://parks.ny.gov/visit/historic-sites/planting-fields-arboretum-state-historic-park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://parks.ny.gov/visit/historic-sites/planting-fields-arboretum-state-historic-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.nassaucountyny.gov/2944/Nassau-County-Museum-of-Art",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nassaucountyny.gov/2944/Nassau-County-Museum-of-Art",
+      "error": ""
+    },
+    {
+      "url": "https://www.nassaucountyny.gov/2821/Garvies-Point-Museum-and-Preserve",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nassaucountyny.gov/2821/Garvies-Point-Museum-and-Preserve",
+      "error": ""
+    },
+    {
+      "url": "https://www.roslynlandmarks.org/profiles/roslyn-grist-mill/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.roslynlandmarks.org/profiles/roslyn-grist-mill/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nps.gov/sahi/planyourvisit/virtual-visitor-center.htm",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nps.gov/sahi/planyourvisit/virtual-visitor-center.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.audubon.org/theodore-roosevelt/visit",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.audubon.org/theodore-roosevelt/visit",
+      "error": ""
+    },
+    {
+      "url": "https://www.nassaucountyny.gov/2839/Muttontown-Preserve",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nassaucountyny.gov/2839/Muttontown-Preserve",
+      "error": ""
+    },
+    {
+      "url": "https://www.sandspointpreserveconservancy.org/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sandspointpreserveconservancy.org/about/",
+      "error": ""
+    },
+    {
+      "url": "https://www.tillescenter.org/events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.tillescenter.org/events/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

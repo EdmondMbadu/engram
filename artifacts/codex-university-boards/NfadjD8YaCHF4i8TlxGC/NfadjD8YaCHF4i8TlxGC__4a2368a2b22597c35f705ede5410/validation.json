@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://library.tcnj.edu/about-the-library/policies/noise-policy/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://library.tcnj.edu/about-the-library/policies/noise-policy/",
+      "error": ""
+    },
+    {
+      "url": "https://library.tcnj.edu/studyrooms/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://library.tcnj.edu/studyrooms/",
+      "error": ""
+    },
+    {
+      "url": "https://library.tcnj.edu/about-the-library/policies/group-study-room-policy/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://library.tcnj.edu/about-the-library/policies/group-study-room-policy/",
+      "error": ""
+    },
+    {
+      "url": "https://library.tcnj.edu/about-the-library/extended-study-area/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://library.tcnj.edu/about-the-library/extended-study-area/",
+      "error": ""
+    },
+    {
+      "url": "https://studentlife.tcnj.edu/about/brower-student-center/bsc-history/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://studentlife.tcnj.edu/about/brower-student-center/bsc-history/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": 93,
+  "generationGrade": "A"
+}

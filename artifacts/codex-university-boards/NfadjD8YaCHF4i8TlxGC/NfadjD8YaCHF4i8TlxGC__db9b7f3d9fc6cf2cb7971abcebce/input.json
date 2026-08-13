@@ -1,0 +1,50 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "6gbgP1emRVg5PHqiotQF",
+    "schoolName": "University of North Dakota",
+    "shortSchoolName": "University of North Dakota",
+    "townName": "Grand Forks",
+    "state": "ND",
+    "countryCode": "US",
+    "unitId": "200280",
+    "website": "https://und.edu/",
+    "latitude": 47.921654,
+    "longitude": -97.071738,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/0/08/UNDseal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=und.edu&sz=256"
+  },
+  "template": {
+    "id": "college-blocks-off-campus",
+    "version": "1.0",
+    "titlePattern": "{count} Blocks Off Campus, One Reason Each",
+    "editorialBrief": "Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.",
+    "researchQueries": [
+      "off campus streets student district",
+      "campus adjacent commercial streets",
+      "neighborhood plan near university"
+    ],
+    "count": 10,
+    "icon": "location_city",
+    "primarySubjectType": "street_or_district",
+    "allowedSubjectTypes": [
+      "street_or_district"
+    ],
+    "freshnessDays": 730
+  },
+  "exact_title": "10 Blocks Off Campus, One Reason Each",
+  "excluded_subjects": [
+    "Memorial Union Social Stairs",
+    "Chester Fritz Library",
+    "Memorial Union Gallery",
+    "Wellness Center Rock Wall",
+    "NEXUS Esport Gaming Lounge",
+    "Wellness Center Table Tennis",
+    "North Dakota Museum of Art",
+    "The Greenway",
+    "University Park",
+    "Chester Fritz Performing Arts Center"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

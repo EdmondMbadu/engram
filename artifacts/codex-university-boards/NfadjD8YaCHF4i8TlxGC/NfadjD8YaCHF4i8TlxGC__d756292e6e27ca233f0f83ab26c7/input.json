@@ -1,0 +1,61 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "58EbJDSj24EFv81hykHl",
+    "schoolName": "Lipscomb University",
+    "shortSchoolName": "Lipscomb University",
+    "townName": "Nashville",
+    "state": "TN",
+    "countryCode": "US",
+    "unitId": "219976",
+    "website": "https://www.lipscomb.edu/",
+    "latitude": 36.106253,
+    "longitude": -86.799791,
+    "heroUrl": "https://www.google.com/s2/favicons?domain=lipscomb.edu&sz=256",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=lipscomb.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Beaman Library Study Rooms",
+    "Bennett Campus Center",
+    "Ezell Center",
+    "Swang Business Center",
+    "McFarland Science Center",
+    "Crisman Administration Building Lower Level",
+    "Bison Square",
+    "Honors House",
+    "Student Veteran Resource Lounge",
+    "Fields Engineering Center",
+    "Painting the Bison",
+    "Singarama",
+    "Tau Phi Cowboy Show",
+    "Halloween Dodgeball Tournament",
+    "Battle of the Boulevard",
+    "Running of the Bison",
+    "Initium Ceremony",
+    "Lighting of the Green",
+    "Bisons Weekend Student Parade",
+    "Savannah’s Boogie 5K"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

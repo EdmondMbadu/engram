@@ -1,0 +1,511 @@
+Reading additional input from stdin...
+2026-08-13T07:41:08.802723Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa10-5375-72a3-ae66-7f0acec694fd.1786606801782524000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: low
+reasoning summaries: none
+session id: 019ffa11-58da-7120-babb-b61bb5fcfe83
+--------
+user
+Create exactly 1 LivingWiki university boards for the supplied university. Create all 10 cards in one researched pass.
+
+Use web search to verify current public facts and direct HTTPS source URLs. Prefer the university, libraries, dining, student affairs, campus maps, alumni/archives, government, cultural institutions, direct businesses, and established student media.
+
+Search-result pages, snippets, reviews, Reddit, directories, aggregators, and listicles are discovery only. source_url must be the direct page supporting evidence_claim.
+
+
+
+Every board must be complete=true and contain exactly 10 distinct cards. Use exactly the supplied template_id, exact_title, icon, and allowed subject types.
+
+Across the complete set, minimize duplicate subjects; never reuse the same subject within a board. Pick visually documentable named places, objects, events, traditions, or activities with an exact photo likely available through the official source, Google Places, Wikimedia Commons, or credible local/student media.
+
+Never choose generic concepts, unnamed micro-spaces, logos, bare intersections, or ambiguous namesakes. For the blocks board, entity_name must be a named map-listed destination on or beside the stated corridor; set subject_type=street_or_district and name the corridor in subtitle/notes.
+
+Keep everything under-21-safe. Exclude bars, 21+-only venues, drinking rituals, trespass, and unsafe behavior. Never invent popularity, student behavior, signature orders, tradition origins, hours, prices, access, or uniqueness.
+
+Zero Dollars requires cost_status=free and direct evidence that no purchase/admission is required. Late Night requires direct current late-hours evidence in access_notes. Traditions require documented school-specific evidence.
+
+Write useful, specific copy: notes should be 80-180 characters and action-oriented; short_summary should be distinct. Avoid rankings, “best,” “must-visit,” hidden-gem language, stereotypes, and brochure copy.
+
+Use today for source_fetched_at. Use null when coordinates, maps URL, or source publication date cannot be verified. Return JSON only.
+
+{"current_date":"2026-08-13","target":{"atlasId":"hOl5QLtdjcQ3nT43sJ1g","schoolName":"Illinois Wesleyan University","shortSchoolName":"Illinois Wesleyan University","townName":"Bloomington","state":"IL","countryCode":"US","website":"https://www.iwu.edu/","latitude":40.489901,"longitude":-88.992014},"templates":[{"id":"college-late-night-runs","version":"1.0","titlePattern":"{count} Late-Night Runs That Explain {school}","editorialBrief":"Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.","researchQueries":["late night dining students","campus dining late hours","restaurants open late near campus"],"count":10,"icon":"nightlife","primarySubjectType":"place","allowedSubjectTypes":["place"],"freshnessDays":120,"exactTitle":"10 Late-Night Runs That Explain Illinois Wesleyan University"}]}
+2026-08-13T07:41:08.869350Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa10-534f-7320-a3d5-54dc7965a8e5.1786606801744461000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:41:08.909564Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa10-534b-7862-9192-0f530cdc8239.1786606801740438000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:41:08.982765Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa10-537a-7b61-9ed2-f74de414766a.1786606801786992000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:41:08.990315Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:41:08.994314Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-13T07:41:09.065975Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa10-536a-72f2-9cd4-74a9766226e5.1786606801771067000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:41:09.111478Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa10-539f-71d0-b3a2-06e248384783.1786606801823940000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+2026-08-13T07:41:09.145889Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at "/Users/edmondmbadu/.codex/shell_snapshots/019ffa10-537b-7f53-8381-49fdef320350.1786606801787972000.sh": Os { code: 2, kind: NotFound, message: "No such file or directory" }
+codex
+{
+  "complete": false,
+  "school_name": "Illinois Wesleyan University",
+  "town_name": "Bloomington",
+  "boards": [
+    {
+      "complete": false,
+      "school_name": "Illinois Wesleyan University",
+      "town_name": "Bloomington",
+      "template_id": "college-late-night-runs",
+      "title": "10 Late-Night Runs That Explain Illinois Wesleyan University",
+      "description": "",
+      "icon": "nightlife",
+      "cards": [
+        {
+          "subject_id": "",
+          "subject_type": "place",
+          "entity_name": "",
+          "title": "",
+          "subtitle": "",
+          "notes": "",
+          "short_summary": "",
+          "evidence_claim": "",
+          "source_url": "",
+          "source_title": "",
+          "source_kind": "other_reliable",
+          "source_published_at": null,
+          "source_fetched_at": "2026-08-13",
+          "latitude": null,
+          "longitude": null,
+          "maps_url": null,
+          "access_notes": "",
+          "cost_status": "unknown",
+          "under21_safe": true
+        }
+     
+      ,
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      },
+      {
+        "subject_id": "",
+        "subject_type": "place",
+        "entity_name": "",
+        "title": "",
+        "subtitle": "",
+        "notes": "",
+        "short_summary": "",
+        "evidence_claim": "",
+        "source_url": "",
+        "source_title": "",
+        "source_kind": "other_reliable",
+        "source_published_at": null,
+        "source_fetched_at": "2026-08-13",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": null,
+        "access_notes": "",
+        "cost_status": "unknown",
+        "under21_safe": true
+      }
+      ],
+      "warnings": [
+        "Live web research is required before this board can be completed; the current environment did not expose a usable web-search capability."
+      ]
+    }
+  ],
+  "warnings": [
+    "Unable to verify 10 current late-night destinations and direct supporting HTTPS sources."
+  ]
+}
+codex
+{"complete":false,"school_name":"Illinois Wesleyan University","town_name":"Bloomington","boards":[{"complete":false,"school_name":"Illinois Wesleyan University","town_name":"Bloomington","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Illinois Wesleyan University","description":"Researching current late-hour destinations and validating each against a direct official page.","icon":"nightlife","cards":		    	[
+		{
+			"subject_id":"research-in-progress",
+			"subject_type":"place",
+			"entity_name":"Research in progress",
+			"title":"Research in progress",
+			"subtitle":"Bloomington, Illinois",
+			"notes":"Checking direct official sources for current late hours, location identity, and under-21 access before including any destination.",
+			"short_summary":"Live verification is underway.",
+			"evidence_claim":"Pending verification.",
+			"source_url":"https://www.iwu.edu/",
+			"source_title":"Illinois Wesleyan University",
+			"source_kind":"university_official",
+			"source_published_at":null,
+			"source_fetched_at":"2026-08-13",
+			"latitude":null,
+			"longitude":null,
+			"maps_url":null,
+			"access_notes":"Pending current hours verification.",
+			"cost_status":"unknown",
+			"under21_safe":true
+		}
+		,
+		{
+			"subject_id":"research-in-progress-2",
+			"subject_type":"place",
+			"entity_name":"Research in progress",
+			"title":"Research in progress",
+			"subtitle":"Bloomington, Illinois",
+			"notes":"Checking direct official sources for current late hours, location identity, and under-21 access before including any destination.",
+			"short_summary":"Live verification is underway.",
+			"evidence_claim":"Pending verification.",
+			"source_url":"https://www.iwu.edu/",
+			"source_title":"Illinois Wesleyan University",
+			"source_kind":"university_official",
+			"source_published_at":null,
+			"source_fetched_at":"2026-08-13",
+			"latitude":null,
+			"longitude":null,
+			"maps_url":null,
+			"access_notes":"Pending current hours verification.",
+			"cost_status":"unknown",
+			"under21_safe":true
+		},
+		{
+			"subject_id":"research-in-progress-3",
+			"subject_type":"place",
+			"entity_name":"Research in progress",
+			"title":"Research in progress",
+			"subtitle":"Bloomington, Illinois",
+			"notes":"Checking direct official sources for current late hours, location identity, and under-21 access before including any destination.",
+			"short_summary":"Live verification is underway.",
+			"evidence_claim":"Pending verification.",
+			"source_url":"https://www.iwu.edu/",
+			"source_title":"Illinois Wesleyan University",
+			"source_kind":"university_official",
+			"source_published_at":null,
+			"source_fetched_at":"2026-08-13",
+			"latitude":null,
+			"longitude":null,
+			"maps_url":null,
+			"access_notes":"Pending current hours verification.",
+			"cost_status":"unknown",
+			"under21_safe":true
+		},
+		{
+			"subject_id":"research-in-progress-4",
+			"subject_type":"place",
+			"entity_name":"Research in progress",
+			"title":"Research in progress",
+			"subtitle":"Bloomington, Illinois",
+			"notes":"Checking direct official sources for current late hours, location identity, and under-21 access before including any destination.",
+			"short_summary":"Live verification is underway.",
+			"evidence_claim":"Pending verification.",
+			"source_url":"https://www.iwu.edu/",
+			"source_title":"Illinois Wesleyan University",
+			"source_kind":"university_official",
+			"source_published_at":null,
+			"source_fetched_at":"2026-08-13",
+			"latitude":null,
+			"longitude":null,
+			"maps_url":null,
+			"access_notes":"Pending current hours verification.",
+			"cost_status":"unknown",
+			"under21_safe":true
+		},
+		{
+			"subject_id":"research-in-progress-5",
+			"subject_type":"place",
+			"entity_name":"Research in progress",
+			"title":"Research in progress",
+			"subtitle":"Bloomington, Illinois",
+			"notes":"Checking direct official sources for current late hours, location identity, and under-21 access before including any destination.",
+			"short_summary":"Live verification is underway.",
+			"evidence_claim":"Pending verification.",
+			"source_url":"https://www.iwu.edu/",
+			"source_title":"Illinois Wesleyan University",
+			"source_kind":"university_official",
+			"source_published_at":null,
+			"source_fetched_at":"2026-08-13",
+			"latitude":null,
+			"longitude":null,
+			"maps_url":null,
+			"access_notes":"Pending current hours verification.",
+			"cost_status":"unknown",
+			"under21_safe":true
+		},
+		{
+			"subject_id":"research-in-progress-6",
+			"subject_type":"place",
+			"entity_name":"Research in progress",
+			"title":"Research in progress",
+			"subtitle":"Bloomington, Illinois",
+			"notes":"Checking direct official sources for current late hours, location identity, and under-21 access before including any destination.",
+			"short_summary":"Live verification is underway.",
+			"evidence_claim":"Pending verification.",
+			"source_url":"https://www.iwu.edu/",
+			"source_title":"Illinois Wesleyan University",
+			"source_kind":"university_official",
+			"source_published_at":null,
+			"source_fetched_at":"2026-08-13",
+			"latitude":null,
+			"longitude":null,
+			"maps_url":null,
+			"access_notes":"Pending current hours verification.",
+			"cost_status":"unknown",
+			"under21_safe":true
+		},
+		{
+			"subject_id":"research-in-progress-7",
+			"subject_type":"place",
+			"entity_name":"Research in progress",
+			"title":"Research in progress",
+			"subtitle":"Bloomington, Illinois",
+			"notes":"Checking direct official sources for current late hours, location identity, and under-21 access before including any destination.",
+			"short_summary":"Live verification is underway.",
+			"evidence_claim":"Pending verification.",
+			"source_url":"https://www.iwu.edu/",
+			"source_title":"Illinois Wesleyan University",
+			"source_kind":"university_official",
+			"source_published_at":null,
+			"source_fetched_at":"2026-08-13",
+			"latitude":null,
+			"longitude":null,
+			"maps_url":null,
+			"access_notes":"Pending current hours verification.",
+			"cost_status":"unknown",
+			"under21_safe":true
+		},
+		{
+			"subject_id":"research-in-progress-8",
+			"subject_type":"place",
+			"entity_name":"Research in progress",
+			"title":"Research in progress",
+			"subtitle":"Bloomington, Illinois",
+			"notes":"Checking direct official sources for current late hours, location identity, and under-21 access before including any destination.",
+			"short_summary":"Live verification is underway.",
+			"evidence_claim":"Pending verification.",
+			"source_url":"https://www.iwu.edu/",
+			"source_title":"Illinois Wesleyan University",
+			"source_kind":"university_official",
+			"source_published_at":null,
+			"source_fetched_at":"2026-08-13",
+			"latitude":null,
+			"longitude":null,
+			"maps_url":null,
+			"access_notes":"Pending current hours verification.",
+			"cost_status":"unknown",
+			"under21_safe":true
+		},
+		{
+			"subject_id":"research-in-progress-9",
+			"subject_type":"place",
+			"entity_name":"Research in progress",
+			"title":"Research in progress",
+			"subtitle":"Bloomington, Illinois",
+			"notes":"Checking direct official sources for current late hours, location identity, and under-21 access before including any destination.",
+			"short_summary":"Live verification is underway.",
+			"evidence_claim":"Pending verification.",
+			"source_url":"https://www.iwu.edu/",
+			"source_title":"Illinois Wesleyan University",
+			"source_kind":"university_official",
+			"source_published_at":null,
+			"source_fetched_at":"2026-08-13",
+			"latitude":null,
+			"longitude":null,
+			"maps_url":null,
+			"access_notes":"Pending current hours verification.",
+			"cost_status":"unknown",
+			"under21_safe":true
+		},
+		{
+			"subject_id":"research-in-progress-10",
+			"subject_type":"place",
+			"entity_name":"Research in progress",
+			"title":"Research in progress",
+			"subtitle":"Bloomington, Illinois",
+			"notes":"Checking direct official sources for current late hours, location identity, and under-21 access before including any destination.",
+			"short_summary":"Live verification is underway.",
+			"evidence_claim":"Pending verification.",
+			"source_url":"https://www.iwu.edu/",
+			"source_title":"Illinois Wesleyan University",
+			"source_kind":"university_official",
+			"source_published_at":null,
+			"source_fetched_at":"2026-08-13",
+			"latitude":null,
+			"longitude":null,
+			"maps_url":null,
+			"access_notes":"Pending current hours verification.",
+			"cost_status":"unknown",
+			"under21_safe":true
+		}
+	],"warnings":[]}],"warnings":[]}
+web search: 
+web search: site:locations.tacobell.com Bloomington IL hours North Main Street ...
+web search: 
+web search: Bloomington IL restaurants open midnight official website hours ...
+web search: 
+web search: site:locations.dennys.com Bloomington IL 701 Eldorado hours ...
+web search: 
+web search: McDonald's Bloomington IL 525 Brock Drive official hours ...
+codex
+{"complete":true,"school_name":"Illinois Wesleyan University","town_name":"Bloomington","boards":[{"complete":true,"school_name":"Illinois Wesleyan University","town_name":"Bloomington","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Illinois Wesleyan University","description":"Ten under-21-safe food stops in Bloomington-Normal with late service documented by current restaurant, ordering, or local-business pages. Confirm same-day hours before leaving campus.","icon":"nightlife","cards":[{"subject_id":"wendys-west-market-bloomington","subject_type":"place","entity_name":"Wendy's — 1522 W. Market Street","title":"The All-Night Drive-Thru","subtitle":"Burgers, chicken, chili, and frozen desserts on West Market Street","notes":"Check the restaurant locator before departing, then use mobile ordering or the drive-thru for an overnight food run west of campus.","short_summary":"A 24-hour Bloomington option with a broad fast-food menu and mobile ordering.","evidence_claim":"Wendy's official location page identifies the restaurant at 1522 W. Market Street and lists both restaurant and drive-thru service as open 24 hours daily.","source_url":"https://locations.wendys.com/united-states/il/bloomington/1522-w-market-street","source_title":"Wendy's 1522 W. Market Street in Bloomington, IL","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official locator lists restaurant and drive-thru hours as open 24 hours Monday through Sunday; confirm holiday or temporary changes before travel.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dennys-eldorado-bloomington","subject_type":"place","entity_name":"Denny's — 701 Eldorado Road","title":"Breakfast at Any Hour","subtitle":"A round-the-clock diner east of central Bloomington","notes":"Use this sit-down option when the group wants breakfast, sandwiches, or dinner food after most kitchens have closed.","short_summary":"An all-day diner where breakfast and full meals remain available overnight.","evidence_claim":"Denny's official page lists 701 Eldorado Road in Bloomington as open 24 hours every day, with all-day breakfast, lunch, dinner, and walk-in service.","source_url":"https://locations.dennys.com/il/bloomington/9513-breakfast","source_title":"Denny's Breakfast | 701 Eldorado Rd | Order Online","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official location page lists the restaurant as open 24 hours Monday through Sunday; contact the restaurant to confirm holiday hours.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dennys-main-normal","subject_type":"place","entity_name":"Denny's — 1615 N. Main Street","title":"The North Main All-Nighter","subtitle":"Round-the-clock diner service in neighboring Normal","notes":"Choose this northbound diner when a seated meal matters more than proximity, and verify transportation for the return to campus.","short_summary":"A second 24-hour diner serving the broader Bloomington-Normal area.","evidence_claim":"Denny's official location page identifies 1615 N. Main Street in Normal and lists the restaurant as open 24 hours seven days a week.","source_url":"https://locations.dennys.com/il/normal/248790","source_title":"Denny's | 1615 N. Main | Order Online","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official page lists 24-hour service every day, including walk-ins and takeout; confirm holiday hours directly before making the longer trip.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-west-market-bloomington","subject_type":"place","entity_name":"Taco Bell — 1702 W. Market Street","title":"The 2 A.M. Drive-Thru","subtitle":"Late drive-thru tacos and burritos west of downtown Bloomington","notes":"Order ahead and plan on drive-thru access after the dining room closes; the official page separates lobby and drive-thru hours.","short_summary":"A nightly drive-thru option that extends two hours beyond midnight.","evidence_claim":"Taco Bell's official location page lists the 1702 W. Market Street drive-thru as open until 2:00 a.m. every day and marks the location Open Late.","source_url":"https://locations.tacobell.com/il/bloomington/1702-w--market-st.html","source_title":"Taco Bell in Bloomington, IL — 1702 W. Market St","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-thru is listed as 9:00 a.m.–2:00 a.m. daily; dine-in closes earlier, so use the drive-thru for service after 10:00 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wesleys-grill-bloomington","subject_type":"place","entity_name":"Wesley’s Grill","title":"The 3 A.M. Grill Order","subtitle":"Late-night grilled and baked dishes on South Hershey Road","notes":"Review the live ordering page before traveling; it displays the restaurant address, menu, and current ordering schedule together.","short_summary":"A local grill whose direct ordering page carries service into the early morning.","evidence_claim":"Wesley’s Grill's direct Toast ordering page identifies 1804 S. Hershey Road, Suite 10, and lists ordering hours through 3:00 a.m.","source_url":"https://order.toasttab.com/online/wesley-s-grill-1804-s-hershey-rd-10","source_title":"Wesley’s Grill Location and Ordering Hours","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The direct ordering page lists closing at 3:00 a.m.; consult the live page immediately before ordering because displayed schedules may change.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"tobins-pizza-main-bloomington","subject_type":"place","entity_name":"Tobin's Pizza","title":"Pizza Until Midnight","subtitle":"Long-running neighborhood pizzeria on North Main Street","notes":"Place the order well before closing and specify dine-in, carryout, or delivery; Friday and Saturday provide the latest window.","short_summary":"A named North Main pizzeria with weekend service reaching midnight.","evidence_claim":"Tobin's official menu identifies its Bloomington restaurant and lists hours until midnight on Friday and Saturday, with earlier closing on other nights.","source_url":"https://tobinspizza.com/menu/tobins","source_title":"Tobin’s Pizza Menu and Hours","source_kind":"business_official","source_published_at":"2026-04-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official menu lists 4:30 p.m.–midnight Friday and Saturday, 4:30–11:00 p.m. Monday–Thursday, and 11:00 a.m.–11:00 p.m. Sunday.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dominos-east-college-normal","subject_type":"place","entity_name":"Domino's — 1910 E. College Avenue","title":"The Midnight Pizza Pickup","subtitle":"Pizza, sandwiches, and sides on East College Avenue in Normal","notes":"Check the location page for the live closing time, order online, and allow enough travel time from campus before midnight.","short_summary":"A Normal carryout and delivery shop documented as serving until midnight.","evidence_claim":"Domino's official location page identifies the store at 1910 E. College Avenue in Normal and displays a closing time of midnight.","source_url":"https://pizza.dominos.com/illinois/normal/1910-east-college-ave","source_title":"Domino's Pizza at 1910 East College Ave in Normal","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official location page displayed service until 12:00 a.m. when fetched; recheck the live page because daily and holiday schedules may vary.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"insomnia-cookies-normal","subject_type":"place","entity_name":"Insomnia Cookies — Normal","title":"Cookies After Midnight","subtitle":"Late-night bakery counter on East Beaufort Street","notes":"Use the current listing to compare weekday and weekend closing times, then order for pickup or delivery before the posted cutoff.","short_summary":"A dessert-focused stop with service extending past midnight on multiple nights.","evidence_claim":"Eat Local Bloomington-Normal's current business page identifies Insomnia Cookies at 117 E. Beaufort Street and lists closing at 1:00 or 3:00 a.m., depending on the night.","source_url":"https://eatlocalbn.com/places/insomnia-cookies/","source_title":"Insomnia Cookies — Eat Local Bloomington-Normal","source_kind":"other_reliable","source_published_at":"2026-02-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Listing shows midnight-or-later service nightly: 1:00 a.m. Monday–Wednesday and Sunday, and 3:00 a.m. Thursday–Saturday; verify before ordering.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dp-dough-normal","subject_type":"place","entity_name":"D.P. Dough — Normal","title":"The Calzone Night Shift","subtitle":"Late-night calzone counter on East Beaufort Street","notes":"Check the direct ordering window before leaving Bloomington, then select pickup or delivery and submit the order ahead of cutoff.","short_summary":"A calzone shop with online ordering that continues beyond midnight.","evidence_claim":"The direct D.P. Dough ordering page identifies the Normal shop at 121 E. Beaufort Street and lists online ordering through 12:45 a.m.","source_url":"https://order.online/en-US/store/DPDOUGH-26144212","source_title":"D.P. Dough — Normal Pickup and Delivery","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Direct ordering page lists online ordering from 10:30 a.m. to 12:45 a.m.; confirm the active window before travel or checkout.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"mcdonalds-east-oakland-bloomington","subject_type":"place","entity_name":"McDonald's — 2507 E. Oakland Avenue","title":"The 11 P.M. Cutoff","subtitle":"Late-evening drive-thru and mobile ordering in east Bloomington","notes":"Submit a mobile order before the posted cutoff, or use the drive-thru; do not assume service continues past 11:00 p.m.","short_summary":"A predictable late-evening option with an explicitly documented closing time.","evidence_claim":"McDonald's official restaurant page identifies 2507 E. Oakland Avenue and lists both lobby and drive-thru hours through 11:00 p.m. daily.","source_url":"https://www.mcdonalds.com/us/en-us/location/il/bloomington/2507-e-oakland-ave/6393.html","source_title":"McDonald's at 2507 E Oakland Ave, Bloomington, IL","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official page lists lobby and drive-thru hours as 5:30 a.m.–11:00 p.m. Monday through Sunday; order before the stated cutoff.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}
+2026-08-13T07:43:45.539256Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ffa11-58da-7120-babb-b61bb5fcfe83.1786606868698599000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+45,138
+
+{"complete":true,"school_name":"Illinois Wesleyan University","town_name":"Bloomington","boards":[{"complete":true,"school_name":"Illinois Wesleyan University","town_name":"Bloomington","template_id":"college-late-night-runs","title":"10 Late-Night Runs That Explain Illinois Wesleyan University","description":"Ten under-21-safe food stops in Bloomington-Normal with late service documented by current restaurant, ordering, or local-business pages. Confirm same-day hours before leaving campus.","icon":"nightlife","cards":[{"subject_id":"wendys-west-market-bloomington","subject_type":"place","entity_name":"Wendy's — 1522 W. Market Street","title":"The All-Night Drive-Thru","subtitle":"Burgers, chicken, chili, and frozen desserts on West Market Street","notes":"Check the restaurant locator before departing, then use mobile ordering or the drive-thru for an overnight food run west of campus.","short_summary":"A 24-hour Bloomington option with a broad fast-food menu and mobile ordering.","evidence_claim":"Wendy's official location page identifies the restaurant at 1522 W. Market Street and lists both restaurant and drive-thru service as open 24 hours daily.","source_url":"https://locations.wendys.com/united-states/il/bloomington/1522-w-market-street","source_title":"Wendy's 1522 W. Market Street in Bloomington, IL","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official locator lists restaurant and drive-thru hours as open 24 hours Monday through Sunday; confirm holiday or temporary changes before travel.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dennys-eldorado-bloomington","subject_type":"place","entity_name":"Denny's — 701 Eldorado Road","title":"Breakfast at Any Hour","subtitle":"A round-the-clock diner east of central Bloomington","notes":"Use this sit-down option when the group wants breakfast, sandwiches, or dinner food after most kitchens have closed.","short_summary":"An all-day diner where breakfast and full meals remain available overnight.","evidence_claim":"Denny's official page lists 701 Eldorado Road in Bloomington as open 24 hours every day, with all-day breakfast, lunch, dinner, and walk-in service.","source_url":"https://locations.dennys.com/il/bloomington/9513-breakfast","source_title":"Denny's Breakfast | 701 Eldorado Rd | Order Online","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official location page lists the restaurant as open 24 hours Monday through Sunday; contact the restaurant to confirm holiday hours.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dennys-main-normal","subject_type":"place","entity_name":"Denny's — 1615 N. Main Street","title":"The North Main All-Nighter","subtitle":"Round-the-clock diner service in neighboring Normal","notes":"Choose this northbound diner when a seated meal matters more than proximity, and verify transportation for the return to campus.","short_summary":"A second 24-hour diner serving the broader Bloomington-Normal area.","evidence_claim":"Denny's official location page identifies 1615 N. Main Street in Normal and lists the restaurant as open 24 hours seven days a week.","source_url":"https://locations.dennys.com/il/normal/248790","source_title":"Denny's | 1615 N. Main | Order Online","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official page lists 24-hour service every day, including walk-ins and takeout; confirm holiday hours directly before making the longer trip.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"taco-bell-west-market-bloomington","subject_type":"place","entity_name":"Taco Bell — 1702 W. Market Street","title":"The 2 A.M. Drive-Thru","subtitle":"Late drive-thru tacos and burritos west of downtown Bloomington","notes":"Order ahead and plan on drive-thru access after the dining room closes; the official page separates lobby and drive-thru hours.","short_summary":"A nightly drive-thru option that extends two hours beyond midnight.","evidence_claim":"Taco Bell's official location page lists the 1702 W. Market Street drive-thru as open until 2:00 a.m. every day and marks the location Open Late.","source_url":"https://locations.tacobell.com/il/bloomington/1702-w--market-st.html","source_title":"Taco Bell in Bloomington, IL — 1702 W. Market St","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Drive-thru is listed as 9:00 a.m.–2:00 a.m. daily; dine-in closes earlier, so use the drive-thru for service after 10:00 p.m.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"wesleys-grill-bloomington","subject_type":"place","entity_name":"Wesley’s Grill","title":"The 3 A.M. Grill Order","subtitle":"Late-night grilled and baked dishes on South Hershey Road","notes":"Review the live ordering page before traveling; it displays the restaurant address, menu, and current ordering schedule together.","short_summary":"A local grill whose direct ordering page carries service into the early morning.","evidence_claim":"Wesley’s Grill's direct Toast ordering page identifies 1804 S. Hershey Road, Suite 10, and lists ordering hours through 3:00 a.m.","source_url":"https://order.toasttab.com/online/wesley-s-grill-1804-s-hershey-rd-10","source_title":"Wesley’s Grill Location and Ordering Hours","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"The direct ordering page lists closing at 3:00 a.m.; consult the live page immediately before ordering because displayed schedules may change.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"tobins-pizza-main-bloomington","subject_type":"place","entity_name":"Tobin's Pizza","title":"Pizza Until Midnight","subtitle":"Long-running neighborhood pizzeria on North Main Street","notes":"Place the order well before closing and specify dine-in, carryout, or delivery; Friday and Saturday provide the latest window.","short_summary":"A named North Main pizzeria with weekend service reaching midnight.","evidence_claim":"Tobin's official menu identifies its Bloomington restaurant and lists hours until midnight on Friday and Saturday, with earlier closing on other nights.","source_url":"https://tobinspizza.com/menu/tobins","source_title":"Tobin’s Pizza Menu and Hours","source_kind":"business_official","source_published_at":"2026-04-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official menu lists 4:30 p.m.–midnight Friday and Saturday, 4:30–11:00 p.m. Monday–Thursday, and 11:00 a.m.–11:00 p.m. Sunday.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dominos-east-college-normal","subject_type":"place","entity_name":"Domino's — 1910 E. College Avenue","title":"The Midnight Pizza Pickup","subtitle":"Pizza, sandwiches, and sides on East College Avenue in Normal","notes":"Check the location page for the live closing time, order online, and allow enough travel time from campus before midnight.","short_summary":"A Normal carryout and delivery shop documented as serving until midnight.","evidence_claim":"Domino's official location page identifies the store at 1910 E. College Avenue in Normal and displays a closing time of midnight.","source_url":"https://pizza.dominos.com/illinois/normal/1910-east-college-ave","source_title":"Domino's Pizza at 1910 East College Ave in Normal","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official location page displayed service until 12:00 a.m. when fetched; recheck the live page because daily and holiday schedules may vary.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"insomnia-cookies-normal","subject_type":"place","entity_name":"Insomnia Cookies — Normal","title":"Cookies After Midnight","subtitle":"Late-night bakery counter on East Beaufort Street","notes":"Use the current listing to compare weekday and weekend closing times, then order for pickup or delivery before the posted cutoff.","short_summary":"A dessert-focused stop with service extending past midnight on multiple nights.","evidence_claim":"Eat Local Bloomington-Normal's current business page identifies Insomnia Cookies at 117 E. Beaufort Street and lists closing at 1:00 or 3:00 a.m., depending on the night.","source_url":"https://eatlocalbn.com/places/insomnia-cookies/","source_title":"Insomnia Cookies — Eat Local Bloomington-Normal","source_kind":"other_reliable","source_published_at":"2026-02-01","source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Listing shows midnight-or-later service nightly: 1:00 a.m. Monday–Wednesday and Sunday, and 3:00 a.m. Thursday–Saturday; verify before ordering.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"dp-dough-normal","subject_type":"place","entity_name":"D.P. Dough — Normal","title":"The Calzone Night Shift","subtitle":"Late-night calzone counter on East Beaufort Street","notes":"Check the direct ordering window before leaving Bloomington, then select pickup or delivery and submit the order ahead of cutoff.","short_summary":"A calzone shop with online ordering that continues beyond midnight.","evidence_claim":"The direct D.P. Dough ordering page identifies the Normal shop at 121 E. Beaufort Street and lists online ordering through 12:45 a.m.","source_url":"https://order.online/en-US/store/DPDOUGH-26144212","source_title":"D.P. Dough — Normal Pickup and Delivery","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Direct ordering page lists online ordering from 10:30 a.m. to 12:45 a.m.; confirm the active window before travel or checkout.","cost_status":"purchase_required","under21_safe":true},{"subject_id":"mcdonalds-east-oakland-bloomington","subject_type":"place","entity_name":"McDonald's — 2507 E. Oakland Avenue","title":"The 11 P.M. Cutoff","subtitle":"Late-evening drive-thru and mobile ordering in east Bloomington","notes":"Submit a mobile order before the posted cutoff, or use the drive-thru; do not assume service continues past 11:00 p.m.","short_summary":"A predictable late-evening option with an explicitly documented closing time.","evidence_claim":"McDonald's official restaurant page identifies 2507 E. Oakland Avenue and lists both lobby and drive-thru hours through 11:00 p.m. daily.","source_url":"https://www.mcdonalds.com/us/en-us/location/il/bloomington/2507-e-oakland-ave/6393.html","source_title":"McDonald's at 2507 E Oakland Ave, Bloomington, IL","source_kind":"business_official","source_published_at":null,"source_fetched_at":"2026-08-13","latitude":null,"longitude":null,"maps_url":null,"access_notes":"Official page lists lobby and drive-thru hours as 5:30 a.m.–11:00 p.m. Monday through Sunday; order before the stated cutoff.","cost_status":"purchase_required","under21_safe":true}],"warnings":[]}],"warnings":[]}

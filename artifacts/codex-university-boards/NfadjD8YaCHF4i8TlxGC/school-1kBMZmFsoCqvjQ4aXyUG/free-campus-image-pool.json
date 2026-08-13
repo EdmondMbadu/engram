@@ -1,0 +1,140 @@
+{
+  "target": "1kBMZmFsoCqvjQ4aXyUG",
+  "schoolName": "University of California-Santa Barbara",
+  "generatedAt": "2026-08-13T09:30:14.557Z",
+  "mode": "free-related-campus-distinct",
+  "images": [
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2F1kBMZmFsoCqvjQ4aXyUG%2F01-62c5ab97d8ccd852.jpg?alt=media&token=a45e833c-9269-4568-ae97-a3083f9840e0",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Humanities_and_Social_Sciences,_UCSB.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 2.0",
+      "imageLicense": "CC BY-SA 2.0",
+      "imageTitle": "Humanities and Social Sciences, UCSB.jpg",
+      "imageFingerprint": "62c5ab97d8ccd852771586f8050515c685884d8b47b76bf09c81c0f400b9a000",
+      "imageWidth": 1920,
+      "imageHeight": 1440,
+      "imageResolvedAt": "2026-08-13T09:30:14.276Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2F1kBMZmFsoCqvjQ4aXyUG%2F02-959fa386c0e0fa61.png?alt=media&token=37dd5af8-0861-49e3-895a-4764c7882fb5",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:FranciscoTorres-sign.png",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 3.0",
+      "imageLicense": "CC BY-SA 3.0",
+      "imageTitle": "FranciscoTorres-sign.png",
+      "imageFingerprint": "959fa386c0e0fa61ce1712d410e59df6651b43b6cd3330bb2ef0a0cb1a1a568b",
+      "imageWidth": 600,
+      "imageHeight": 622,
+      "imageResolvedAt": "2026-08-13T09:30:14.387Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2F1kBMZmFsoCqvjQ4aXyUG%2F03-ccde29b43f91bdc1.jpg?alt=media&token=b067b2c7-334b-47ab-ac1a-e55610c96a50",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Harry_Glicken_Memorial_UCSB.jpg",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 3.0",
+      "imageLicense": "CC BY-SA 3.0",
+      "imageTitle": "Harry Glicken Memorial UCSB.jpg",
+      "imageFingerprint": "ccde29b43f91bdc193563460d9605e2e092c00ff42b0f8899053213794d26599",
+      "imageWidth": 1920,
+      "imageHeight": 2344,
+      "imageResolvedAt": "2026-08-13T09:30:14.362Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2F1kBMZmFsoCqvjQ4aXyUG%2F04-eb8e0acb925e04d0.jpg?alt=media&token=2905dfb6-4922-486c-91ae-6ba6998af03e",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Goleta_Beach_(2013)_03.JPG",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 3.0",
+      "imageLicense": "CC BY-SA 3.0",
+      "imageTitle": "Goleta Beach (2013) 03.JPG",
+      "imageFingerprint": "eb8e0acb925e04d0dd8a84f36c1282fda6f583d7b8c18831491872e46177ac1b",
+      "imageWidth": 1920,
+      "imageHeight": 1277,
+      "imageResolvedAt": "2026-08-13T09:30:14.316Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2F1kBMZmFsoCqvjQ4aXyUG%2F05-0e012b00ef948758.jpg?alt=media&token=8be5e37c-53ad-4c7d-a6d7-f0d14b6d947a",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Goleta_Beach_(2013)_04.JPG",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 3.0",
+      "imageLicense": "CC BY-SA 3.0",
+      "imageTitle": "Goleta Beach (2013) 04.JPG",
+      "imageFingerprint": "0e012b00ef948758fe900a9e98823889ad33fc51ed4b29ea8fd390d5db46b7db",
+      "imageWidth": 1920,
+      "imageHeight": 1277,
+      "imageResolvedAt": "2026-08-13T09:30:14.305Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2F1kBMZmFsoCqvjQ4aXyUG%2F06-20e0b032669cf5da.jpg?alt=media&token=99cbb3e4-184a-400a-95b7-95645ecae9cb",
+      "imageSource": "campus-fallback-wikimedia",
+      "imageSourceUrl": "https://commons.wikimedia.org/wiki/File:Goleta_Beach_(2013)_09.JPG",
+      "imageSourceLabel": "Wikimedia Commons · related campus/location photo · CC BY-SA 3.0",
+      "imageLicense": "CC BY-SA 3.0",
+      "imageTitle": "Goleta Beach (2013) 09.JPG",
+      "imageFingerprint": "20e0b032669cf5daa2463a4ea46a2dafcf56924b73387c872e09ccdb01849b48",
+      "imageWidth": 1920,
+      "imageHeight": 1277,
+      "imageResolvedAt": "2026-08-13T09:30:14.287Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2F1kBMZmFsoCqvjQ4aXyUG%2F07-52126aecf7476be4.jpg?alt=media&token=07362e18-c93f-45f3-b15e-b7d924326e20",
+      "imageSource": "official-campus-fallback",
+      "imageSourceUrl": "https://www.ucsb.edu/",
+      "imageSourceLabel": "University of California-Santa Barbara official website",
+      "imageLicense": "",
+      "imageTitle": "Home | UC Santa Barbara",
+      "imageFingerprint": "52126aecf7476be48945b2f2efca2a4066cad40ceefa043a0544bf44adc26dfb",
+      "imageWidth": 1800,
+      "imageHeight": 1195,
+      "imageResolvedAt": "2026-08-13T09:30:14.412Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2F1kBMZmFsoCqvjQ4aXyUG%2F08-eecd614f2672f499.jpg?alt=media&token=b9c4eab8-7707-4e43-a7a1-dc319a7f1d24",
+      "imageSource": "official-campus-fallback",
+      "imageSourceUrl": "https://www.ucsb.edu/",
+      "imageSourceLabel": "University of California-Santa Barbara official website",
+      "imageLicense": "",
+      "imageTitle": "Home | UC Santa Barbara",
+      "imageFingerprint": "eecd614f2672f499635db084bb662ee921f90eb01a7272f71dcf6d2e95dc9238",
+      "imageWidth": 1800,
+      "imageHeight": 1200,
+      "imageResolvedAt": "2026-08-13T09:30:14.433Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2F1kBMZmFsoCqvjQ4aXyUG%2F09-c3e46920beb3f8a9.jpg?alt=media&token=04c6a066-e5a0-4620-8df0-dcf108d58570",
+      "imageSource": "official-campus-fallback",
+      "imageSourceUrl": "https://www.ucsb.edu/",
+      "imageSourceLabel": "University of California-Santa Barbara official website",
+      "imageLicense": "",
+      "imageTitle": "Home | UC Santa Barbara",
+      "imageFingerprint": "c3e46920beb3f8a98e7a3cc207a91b82744be84eb6f67f7b7a024c97bdeb1268",
+      "imageWidth": 1800,
+      "imageHeight": 1200,
+      "imageResolvedAt": "2026-08-13T09:30:14.455Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2F1kBMZmFsoCqvjQ4aXyUG%2F10-319a9d344df524fe.jpg?alt=media&token=3a798f56-cc66-4800-afa7-1d0d09846143",
+      "imageSource": "official-campus-fallback",
+      "imageSourceUrl": "https://www.ucsb.edu/applying/undergraduate-admission",
+      "imageSourceLabel": "University of California-Santa Barbara official website",
+      "imageLicense": "",
+      "imageTitle": "Undergraduate Admission | UC Santa Barbara",
+      "imageFingerprint": "319a9d344df524fe31c0c60591a38c18e50f77aa9374882cf9dde7032cba274a",
+      "imageWidth": 2340,
+      "imageHeight": 1560,
+      "imageResolvedAt": "2026-08-13T09:30:14.557Z"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/university-image-pools%2F1kBMZmFsoCqvjQ4aXyUG%2F11-2196c077ba401724.jpg?alt=media&token=8c22efe6-90fc-4234-8cb0-688f3c473b4e",
+      "imageSource": "official-campus-fallback",
+      "imageSourceUrl": "https://www.ucsb.edu/campus-experience",
+      "imageSourceLabel": "University of California-Santa Barbara official website",
+      "imageLicense": "",
+      "imageTitle": "The UC Santa Barbara Experience | UC Santa Barbara",
+      "imageFingerprint": "2196c077ba40172437b4477209619653373fd8ee4421ba44e3c9e012b316ab09",
+      "imageWidth": 2340,
+      "imageHeight": 1560,
+      "imageResolvedAt": "2026-08-13T09:30:14.533Z"
+    }
+  ]
+}
