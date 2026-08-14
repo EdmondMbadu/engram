@@ -1467,6 +1467,25 @@
   background: #ffffff;
 }
 
+.stack-final-screen__preview-brand {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.65rem;
+  left: 0.75rem;
+  display: grid;
+  gap: 0.05rem;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.48rem;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.stack-final-screen__preview-brand b {
+  color: #ffffff;
+  font-size: 0.58rem;
+  font-weight: 950;
+}
+
 .stack-final-screen__controls {
   display: grid;
   align-content: start;

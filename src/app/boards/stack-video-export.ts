@@ -94,8 +94,9 @@ const DEFAULT_CLOSING_DURATION_SECONDS = 3;
 const NARRATION_LEAD_MS = 100;
 const NARRATION_TAIL_MS = 350;
 
-export const STACK_VIDEO_RENDER_VERSION = 'stack-video-v12';
+export const STACK_VIDEO_RENDER_VERSION = 'stack-video-v13';
 export const STACK_TRAILER_RENDER_VERSION = 'board-trailer-v2';
+export const STACK_VIDEO_BRAND_URL = 'LivingWiki.com';
 
 const TRAILER_MIN_DURATION_MS = 15_000;
 const TRAILER_MAX_DURATION_MS = 30_000;
@@ -1140,8 +1141,9 @@ function drawClosingFrame(
   context.fillStyle = 'rgba(255,255,255,.76)';
   context.font = `750 ${Math.round(width * 0.028)}px Inter, Arial, sans-serif`;
   context.fillText('Made with LivingWiki', width / 2, height * 0.89);
-  context.font = `800 ${Math.round(width * 0.024)}px Inter, Arial, sans-serif`;
-  context.fillText(shortDisplayUrl(board.liveUrl), width / 2, height * 0.93);
+  context.fillStyle = '#ffffff';
+  context.font = `900 ${Math.round(width * 0.027)}px Inter, Arial, sans-serif`;
+  context.fillText(STACK_VIDEO_BRAND_URL, width / 2, height * 0.93);
   context.restore();
 }
 
@@ -1321,15 +1323,6 @@ function roundedRect(
   context.arcTo(x, y + height, x, y, r);
   context.arcTo(x, y, x + width, y, r);
   context.closePath();
-}
-
-function shortDisplayUrl(url: string): string {
-  try {
-    const parsed = new URL(url);
-    return `${parsed.host}${parsed.pathname}`;
-  } catch {
-    return url.replace(/^https?:\/\//, '');
-  }
 }
 
 function displayUrlHost(url: string): string {

@@ -1,5 +1,6 @@
 import {
   STACK_TRAILER_RENDER_VERSION,
+  STACK_VIDEO_BRAND_URL,
   combineStackVideoMediaStream,
   generateStackTrailer,
   generateStackVideo,
@@ -18,6 +19,10 @@ import {
 import { reorderRelativeToTarget } from './reorder';
 
 describe('Stack video card images', () => {
+  it('uses permanent LivingWiki branding on every final screen', () => {
+    expect(STACK_VIDEO_BRAND_URL).toBe('LivingWiki.com');
+  });
+
   it('marks the corrected closing-card layout as a new trailer render', () => {
     expect(STACK_TRAILER_RENDER_VERSION).toBe('board-trailer-v2');
   });
@@ -83,7 +88,8 @@ describe('Stack video card images', () => {
     expect(stackVideoRenderIsCurrent('stack-video-v9')).toBeFalse();
     expect(stackVideoRenderIsCurrent('stack-video-v10')).toBeFalse();
     expect(stackVideoRenderIsCurrent('stack-video-v11')).toBeFalse();
-    expect(stackVideoRenderIsCurrent('stack-video-v12')).toBeTrue();
+    expect(stackVideoRenderIsCurrent('stack-video-v12')).toBeFalse();
+    expect(stackVideoRenderIsCurrent('stack-video-v13')).toBeTrue();
   });
 
   it('normalizes safe final-screen defaults and duration bounds', () => {
