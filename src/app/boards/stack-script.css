@@ -483,6 +483,16 @@
   padding: 0.4rem 0.55rem;
 }
 
+.stack-script-card__actions .stack-script-card__fresh {
+  border-color: color-mix(in srgb, var(--accent) 42%, var(--line));
+  background: color-mix(in srgb, var(--accent) 9%, var(--surface));
+}
+
+.stack-script-card__actions button:disabled {
+  cursor: wait;
+  opacity: 0.58;
+}
+
 .stack-script-card__actions .material-symbols-outlined {
   font-size: 0.95rem;
 }

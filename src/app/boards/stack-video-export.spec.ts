@@ -3,9 +3,11 @@ import {
   combineStackVideoMediaStream,
   generateStackTrailer,
   generateStackVideo,
+  normalizeStackVideoClosingScreen,
   preferredRecorderMimeType,
   stackVideoCardVisibleText,
   stackVideoCardImageCandidates,
+  stackVideoClosingDurationMs,
   stackVideoFrameAtElapsed,
   stackVideoNarrationFrameDurationMs,
   stackVideoNarrationIsComplete,
@@ -80,7 +82,33 @@ describe('Stack video card images', () => {
     expect(stackVideoRenderIsCurrent('stack-video-v8')).toBeFalse();
     expect(stackVideoRenderIsCurrent('stack-video-v9')).toBeFalse();
     expect(stackVideoRenderIsCurrent('stack-video-v10')).toBeFalse();
-    expect(stackVideoRenderIsCurrent('stack-video-v11')).toBeTrue();
+    expect(stackVideoRenderIsCurrent('stack-video-v11')).toBeFalse();
+    expect(stackVideoRenderIsCurrent('stack-video-v12')).toBeTrue();
+  });
+
+  it('normalizes safe final-screen defaults and duration bounds', () => {
+    expect(normalizeStackVideoClosingScreen(null, 'A Board')).toEqual({
+      headline: 'Keep exploring',
+      message: 'A Board',
+      showQrCode: true,
+      image: 'cover',
+      durationSeconds: 3,
+    });
+    expect(normalizeStackVideoClosingScreen({
+      headline: '  See you there  ',
+      message: '  Open the full guide  ',
+      showQrCode: false,
+      image: 'final-card',
+      durationSeconds: 8.2,
+    })).toEqual({
+      headline: 'See you there',
+      message: 'Open the full guide',
+      showQrCode: false,
+      image: 'final-card',
+      durationSeconds: 6,
+    });
+    expect(stackVideoClosingDurationMs({ durationSeconds: 2.24 })).toBe(2_000);
+    expect(stackVideoClosingDurationMs({ durationSeconds: 4.26 })).toBe(4_500);
   });
 
   it('shows only the title on full-video card frames', () => {

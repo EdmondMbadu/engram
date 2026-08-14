@@ -62,6 +62,39 @@ service cloud.firestore {
       ];
     }
 
+    function hasValidSocialVideoClosingScreen(data) {
+      return (
+          !data.keys().hasAny(['socialVideoClosingHeadline'])
+          || (
+            data.socialVideoClosingHeadline is string
+            && data.socialVideoClosingHeadline.size() <= 72
+          )
+        )
+        && (
+          !data.keys().hasAny(['socialVideoClosingMessage'])
+          || (
+            data.socialVideoClosingMessage is string
+            && data.socialVideoClosingMessage.size() <= 180
+          )
+        )
+        && (
+          !data.keys().hasAny(['socialVideoClosingShowQrCode'])
+          || data.socialVideoClosingShowQrCode is bool
+        )
+        && (
+          !data.keys().hasAny(['socialVideoClosingImage'])
+          || data.socialVideoClosingImage in ['cover', 'final-card']
+        )
+        && (
+          !data.keys().hasAny(['socialVideoClosingDurationSeconds'])
+          || (
+            data.socialVideoClosingDurationSeconds is number
+            && data.socialVideoClosingDurationSeconds >= 2
+            && data.socialVideoClosingDurationSeconds <= 6
+          )
+        );
+    }
+
     function personalBoardKeys() {
       return [
         'id',
@@ -96,6 +129,11 @@ service cloud.firestore {
         'socialVideoAudioTrackId',
         'socialVideoAudioVolume',
         'socialVideoNarrationEnabled',
+        'socialVideoClosingHeadline',
+        'socialVideoClosingMessage',
+        'socialVideoClosingShowQrCode',
+        'socialVideoClosingImage',
+        'socialVideoClosingDurationSeconds',
         'trailerVideoUrl',
         'trailerVideoMimeType',
         'trailerVideoUpdatedAt',
@@ -691,6 +729,7 @@ service cloud.firestore {
         && request.resource.data.socialVideoUpdatedAt is string
         && request.resource.data.socialVideoUpdatedAt.size() <= 80
         && request.resource.data.socialVideoRatio in ['vertical', 'square', 'landscape']
+        && hasValidSocialVideoClosingScreen(request.resource.data)
         && request.resource.data.stickers is list
         && request.resource.data.stickers.size() <= 48
         && request.resource.data.cards is list
@@ -740,6 +779,11 @@ service cloud.firestore {
           'socialVideoAudioTrackId',
           'socialVideoAudioVolume',
           'socialVideoNarrationEnabled',
+          'socialVideoClosingHeadline',
+          'socialVideoClosingMessage',
+          'socialVideoClosingShowQrCode',
+          'socialVideoClosingImage',
+          'socialVideoClosingDurationSeconds',
           'trailerVideoUrl',
           'trailerVideoMimeType',
           'trailerVideoUpdatedAt',
@@ -803,6 +847,7 @@ service cloud.firestore {
         && request.resource.data.socialVideoUrl == ''
         && request.resource.data.socialVideoMimeType == ''
         && request.resource.data.socialVideoUpdatedAt == ''
+        && hasValidSocialVideoClosingScreen(request.resource.data)
         && request.resource.data.trailerVideoUrl == ''
         && request.resource.data.trailerVideoMimeType == ''
         && request.resource.data.trailerVideoUpdatedAt == ''
@@ -932,6 +977,11 @@ service cloud.firestore {
           'socialVideoAudioTrackId',
           'socialVideoAudioVolume',
           'socialVideoNarrationEnabled',
+          'socialVideoClosingHeadline',
+          'socialVideoClosingMessage',
+          'socialVideoClosingShowQrCode',
+          'socialVideoClosingImage',
+          'socialVideoClosingDurationSeconds',
           'trailerVideoUrl',
           'trailerVideoMimeType',
           'trailerVideoUpdatedAt',
@@ -1104,6 +1154,7 @@ service cloud.firestore {
           !request.resource.data.keys().hasAny(['socialVideoNarrationEnabled'])
           || request.resource.data.socialVideoNarrationEnabled is bool
         )
+        && hasValidSocialVideoClosingScreen(request.resource.data)
         && (
           !request.resource.data.keys().hasAny(['trailerVideoUrl'])
           || (

@@ -49,6 +49,11 @@ function personalWizardBoard(overrides = {}) {
     socialVideoMimeType: '',
     socialVideoUpdatedAt: '',
     socialVideoRatio: 'vertical',
+    socialVideoClosingHeadline: 'Keep exploring',
+    socialVideoClosingMessage: 'Open the full board',
+    socialVideoClosingShowQrCode: true,
+    socialVideoClosingImage: 'cover',
+    socialVideoClosingDurationSeconds: 3,
     stickers: [],
     cards: [],
     created_at_iso: '2026-08-12T00:00:00.000Z',
@@ -153,6 +158,48 @@ test('owner can update a full personal board without hitting the rule expression
       title: 'My updated board',
       updated_at_iso: '2026-08-12T01:00:00.000Z',
     }),
+  ));
+});
+
+test('owner can save a fresh narration revision with final-screen settings', async () => {
+  await testEnvironment.withSecurityRulesDisabled(async (context) => {
+    await setDoc(
+      doc(context.firestore(), 'boards', 'wizard-board-1'),
+      personalWizardBoard({ server_updated_at: new Date('2026-08-12T00:00:00.000Z') }),
+    );
+  });
+  const database = testEnvironment.authenticatedContext(ownerUid).firestore();
+
+  await assertSucceeds(setDoc(
+    doc(database, 'boards', 'wizard-board-1'),
+    personalWizardBoard({
+      cards: [{
+        id: 'card-1',
+        title: 'Closing card',
+        notes: 'A clean narration take.',
+        videoNarrationRevision: 1,
+      }],
+      socialVideoRenderVersion: '',
+      socialVideoClosingHeadline: 'Plan your own journey',
+      socialVideoClosingMessage: 'Scan to explore every stop.',
+      socialVideoClosingShowQrCode: false,
+      socialVideoClosingImage: 'final-card',
+      socialVideoClosingDurationSeconds: 4.5,
+      updated_at_iso: '2026-08-12T01:00:00.000Z',
+    }),
+  ));
+});
+
+test('final-screen settings remain bounded by the board schema', async () => {
+  const database = testEnvironment.authenticatedContext(ownerUid).firestore();
+
+  await assertFails(setDoc(
+    doc(database, 'boards', 'wizard-board-1'),
+    personalWizardBoard({ socialVideoClosingDurationSeconds: 30 }),
+  ));
+  await assertFails(setDoc(
+    doc(database, 'boards', 'wizard-board-1'),
+    personalWizardBoard({ socialVideoClosingImage: 'external-image' }),
   ));
 });
 

@@ -2,7 +2,7 @@ WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
 WARNING: sun.misc.Unsafe::allocateMemory has been called by io.netty.util.internal.PlatformDependent0$2 (file:/Users/edmondmbadu/.cache/firebase/emulators/cloud-firestore-emulator-v1.20.2.jar)
 WARNING: Please consider reporting this to the maintainers of class io.netty.util.internal.PlatformDependent0$2
 WARNING: sun.misc.Unsafe::allocateMemory will be removed in a future release
-Aug 13, 2026 10:01:49 AM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketServer start
+Aug 14, 2026 1:34:13 PM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketServer start
 INFO: Started WebSocket server on ws://127.0.0.1:9150
 API endpoint: http://127.0.0.1:8080
 If you are using a library that supports the FIRESTORE_EMULATOR_HOST environment variable, run:
@@ -16,17 +16,17 @@ If you are running a Firestore in Datastore Mode project, run:
 Note: Support for Datastore Mode is in preview. If you encounter any bugs please file at https://github.com/firebase/firebase-tools/issues.
 Dev App Server is now running.
 
-Aug 13, 2026 10:01:49 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Aug 14, 2026 1:34:13 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Aug 13, 2026 10:01:49 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Aug 14, 2026 1:34:14 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected HTTP/2 connection.
-Aug 13, 2026 10:01:50 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Aug 14, 2026 1:34:14 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Aug 13, 2026 10:01:50 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Aug 14, 2026 1:34:14 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected HTTP/2 connection.
-Aug 13, 2026 10:01:51 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Aug 14, 2026 1:34:14 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected HTTP/2 connection.
-Aug 13, 2026 10:01:51 AM com.google.firebase.rules.runtime.impl.CompositeListener tryInvoke
+Aug 14, 2026 1:34:15 PM com.google.firebase.rules.runtime.impl.CompositeListener tryInvoke
 WARNING: [CONTEXT ratelimit_period="1 MINUTES" ]
 java.lang.ArrayIndexOutOfBoundsException: Index 0 out of bounds for length 0
 	at com.google.common.collect.RegularImmutableList.get(RegularImmutableList.java:81)
@@ -81,11 +81,11 @@ java.lang.ArrayIndexOutOfBoundsException: Index 0 out of bounds for length 0
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
 	at java.base/java.lang.Thread.run(Thread.java:1474)
 
-Aug 13, 2026 10:01:51 AM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
+Aug 14, 2026 1:34:15 PM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
 WARNING: Operation failed: 
-evaluation error at L612:32 for 'create' @ L612, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L706, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L884, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L1533, evaluation error at L597:24 for 'update' @ L597, evaluation error at L612:32 for 'update' @ L612, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L833, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L884, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L1533, false for 'create' @ L612, false for 'create' @ L706, false for 'create' @ L884, false for 'create' @ L1533
+evaluation error at L650:32 for 'create' @ L650, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L745, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L929, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L1584, evaluation error at L635:24 for 'update' @ L635, evaluation error at L650:32 for 'update' @ L650, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L878, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L929, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L1584, false for 'create' @ L650, false for 'create' @ L745, false for 'create' @ L929, false for 'create' @ L1584
 com.google.cloud.datastore.core.exception.DatastoreException: 
-evaluation error at L612:32 for 'create' @ L612, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L706, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L884, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L1533, evaluation error at L597:24 for 'update' @ L597, evaluation error at L612:32 for 'update' @ L612, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L833, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L884, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L1533, false for 'create' @ L612, false for 'create' @ L706, false for 'create' @ L884, false for 'create' @ L1533
+evaluation error at L650:32 for 'create' @ L650, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L745, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L929, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L1584, evaluation error at L635:24 for 'update' @ L635, evaluation error at L650:32 for 'update' @ L650, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L878, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L929, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L1584, false for 'create' @ L650, false for 'create' @ L745, false for 'create' @ L929, false for 'create' @ L1584
 	at com.google.cloud.datastore.core.exception.DatastoreException$Builder.build(DatastoreException.java:139)
 	at com.google.cloud.datastore.emulator.impl.rules.DefaultEmulatorRulesAuthorizer.verboseError(DefaultEmulatorRulesAuthorizer.java:318)
 	at com.google.cloud.datastore.emulator.impl.rules.DefaultEmulatorRulesAuthorizer.withVerboseErrors(DefaultEmulatorRulesAuthorizer.java:295)
@@ -112,11 +112,127 @@ evaluation error at L612:32 for 'create' @ L612, Unable to evaluate the expressi
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
 	at java.base/java.lang.Thread.run(Thread.java:1474)
 
-Aug 13, 2026 10:01:51 AM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
+Aug 14, 2026 1:34:15 PM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
 WARNING: Operation failed: 
-evaluation error at L612:32 for 'create' @ L612, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L706, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L884, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L1533, evaluation error at L597:24 for 'update' @ L597, evaluation error at L612:32 for 'update' @ L612, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L833, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L884, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L1533, false for 'create' @ L612, false for 'create' @ L706, false for 'create' @ L884, false for 'create' @ L1533
+evaluation error at L650:32 for 'create' @ L650, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L745, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L929, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L1584, evaluation error at L635:24 for 'update' @ L635, evaluation error at L650:32 for 'update' @ L650, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L878, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L929, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L1584, false for 'create' @ L650, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L745, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L929, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L1584
 com.google.cloud.datastore.core.exception.DatastoreException: 
-evaluation error at L612:32 for 'create' @ L612, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L706, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L884, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L1533, evaluation error at L597:24 for 'update' @ L597, evaluation error at L612:32 for 'update' @ L612, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L833, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L884, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L1533, false for 'create' @ L612, false for 'create' @ L706, false for 'create' @ L884, false for 'create' @ L1533
+evaluation error at L650:32 for 'create' @ L650, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L745, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L929, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L1584, evaluation error at L635:24 for 'update' @ L635, evaluation error at L650:32 for 'update' @ L650, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L878, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L929, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L1584, false for 'create' @ L650, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L745, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L929, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L1584
+	at com.google.cloud.datastore.core.exception.DatastoreException$Builder.build(DatastoreException.java:139)
+	at com.google.cloud.datastore.emulator.impl.rules.DefaultEmulatorRulesAuthorizer.verboseError(DefaultEmulatorRulesAuthorizer.java:318)
+	at com.google.cloud.datastore.emulator.impl.rules.DefaultEmulatorRulesAuthorizer.withVerboseErrors(DefaultEmulatorRulesAuthorizer.java:295)
+	at com.google.cloud.datastore.emulator.impl.rules.DefaultEmulatorRulesAuthorizer.checkCommit(DefaultEmulatorRulesAuthorizer.java:114)
+	at com.google.cloud.datastore.emulator.impl.firestore.FirestoreEmulatorHelper.commitHelper(FirestoreEmulatorHelper.java:365)
+	at com.google.cloud.datastore.emulator.impl.firestore.FirestoreEmulatorHelper.internalCommit(FirestoreEmulatorHelper.java:319)
+	at com.google.cloud.datastore.emulator.impl.firestore.CloudFirestoreV1.internalCommit(CloudFirestoreV1.java:1170)
+	at com.google.cloud.datastore.emulator.impl.firestore.CloudFirestoreV1.write(CloudFirestoreV1.java:1158)
+	at com.google.cloud.datastore.emulator.impl.firestore.CloudFirestoreV1WriteStream.handleRequest(CloudFirestoreV1WriteStream.java:222)
+	at com.google.cloud.datastore.emulator.impl.firestore.CloudFirestoreV1WriteStream.write(CloudFirestoreV1WriteStream.java:144)
+	at com.google.cloud.datastore.emulator.impl.firestore.CloudFirestoreV1WriteStream.onNext(CloudFirestoreV1WriteStream.java:99)
+	at com.google.cloud.datastore.emulator.impl.firestore.CloudFirestoreV1WriteStream.onNext(CloudFirestoreV1WriteStream.java:27)
+	at io.grpc.stub.ServerCalls$StreamingServerCallHandler$StreamingServerCallListener.onMessage(ServerCalls.java:262)
+	at io.grpc.ForwardingServerCallListener.onMessage(ForwardingServerCallListener.java:33)
+	at io.grpc.Contexts$ContextualizedServerCallListener.onMessage(Contexts.java:76)
+	at io.grpc.ForwardingServerCallListener.onMessage(ForwardingServerCallListener.java:33)
+	at io.grpc.Contexts$ContextualizedServerCallListener.onMessage(Contexts.java:76)
+	at io.grpc.internal.ServerCallImpl$ServerStreamListenerImpl.messagesAvailableInternal(ServerCallImpl.java:334)
+	at io.grpc.internal.ServerCallImpl$ServerStreamListenerImpl.messagesAvailable(ServerCallImpl.java:319)
+	at io.grpc.internal.ServerImpl$JumpToApplicationThreadServerStreamListener$1MessagesAvailable.runInContext(ServerImpl.java:834)
+	at io.grpc.internal.ContextRunnable.run(ContextRunnable.java:37)
+	at io.grpc.internal.SerializingExecutor.run(SerializingExecutor.java:133)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+Caused by: com.google.firebase.rules.runtime.common.EvaluationException: Error:  line [842], column [49]. Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached.
+	at com.google.firebase.rules.runtime.impl.DefaultEvaluator$TransformEvaluationException.apply(DefaultEvaluator.java:275)
+	at com.google.firebase.rules.runtime.impl.DefaultEvaluator$TransformEvaluationException.apply(DefaultEvaluator.java:261)
+	at com.google.common.util.concurrent.AbstractCatchingFuture$AsyncCatchingFuture.doFallback(AbstractCatchingFuture.java:207)
+	at com.google.common.util.concurrent.AbstractCatchingFuture$AsyncCatchingFuture.doFallback(AbstractCatchingFuture.java:194)
+	at com.google.common.util.concurrent.AbstractCatchingFuture.run(AbstractCatchingFuture.java:136)
+	at com.google.common.util.concurrent.DirectExecutor.execute(DirectExecutor.java:30)
+	at com.google.common.util.concurrent.AbstractFuture.executeListener(AbstractFuture.java:1007)
+	at com.google.common.util.concurrent.AbstractFuture.addListener(AbstractFuture.java:469)
+	at com.google.common.util.concurrent.FluentFuture$TrustedFuture.addListener(FluentFuture.java:121)
+	at com.google.common.util.concurrent.AbstractCatchingFuture.createAsync(AbstractCatchingFuture.java:58)
+	at com.google.common.util.concurrent.Futures.catchingAsync(Futures.java:407)
+	at com.google.firebase.rules.runtime.impl.DefaultEvaluator.evaluate(DefaultEvaluator.java:177)
+	at com.google.cloud.datastore.emulator.impl.rules.EmulatorRuleClient$EmulatorRuleEvaluator.evaluate(EmulatorRuleClient.java:88)
+	at com.google.cloud.datastore.core.auth.rules.AsyncTwoPhaseRulesAuthorizer.lambda$fullEvaluate$0(AsyncTwoPhaseRulesAuthorizer.java:1001)
+	at com.google.cloud.datastore.computation.Computation.tryCatch(Computation.java:439)
+	at com.google.cloud.datastore.core.auth.rules.AsyncTwoPhaseRulesAuthorizer.fullEvaluate(AsyncTwoPhaseRulesAuthorizer.java:1000)
+	at com.google.cloud.datastore.core.auth.rules.AsyncTwoPhaseRulesAuthorizer$CommitAuthorizerImpl.lambda$checkWrite$0(AsyncTwoPhaseRulesAuthorizer.java:1237)
+	at com.google.cloud.datastore.computation.Computation.lambda$tryClose$1(Computation.java:708)
+	at com.google.cloud.datastore.computation.Computation.tryCatch(Computation.java:439)
+	at com.google.cloud.datastore.computation.Computation.tryFinally(Computation.java:675)
+	at com.google.cloud.datastore.computation.Computation.tryFinally(Computation.java:681)
+	at com.google.cloud.datastore.computation.Computation.tryClose(Computation.java:708)
+	at com.google.cloud.datastore.core.auth.rules.AsyncTwoPhaseRulesAuthorizer$CommitAuthorizerImpl.checkWrite(AsyncTwoPhaseRulesAuthorizer.java:1206)
+	at com.google.cloud.datastore.emulator.impl.rules.DefaultEmulatorRulesAuthorizer.lambda$checkCommit$0(DefaultEmulatorRulesAuthorizer.java:124)
+	at com.google.cloud.datastore.emulator.impl.rules.DefaultEmulatorRulesAuthorizer.withVerboseErrors(DefaultEmulatorRulesAuthorizer.java:290)
+	... 22 more
+
+Aug 14, 2026 1:34:15 PM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
+WARNING: Operation failed: 
+evaluation error at L650:32 for 'create' @ L650, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L745, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L929, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L1584, evaluation error at L635:24 for 'update' @ L635, evaluation error at L650:32 for 'update' @ L650, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L878, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L929, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L1584, false for 'create' @ L650, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L745, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L929, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L1584
+com.google.cloud.datastore.core.exception.DatastoreException: 
+evaluation error at L650:32 for 'create' @ L650, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L745, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L929, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L1584, evaluation error at L635:24 for 'update' @ L635, evaluation error at L650:32 for 'update' @ L650, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L878, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L929, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L1584, false for 'create' @ L650, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L745, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L929, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L1584
+	at com.google.cloud.datastore.core.exception.DatastoreException$Builder.build(DatastoreException.java:139)
+	at com.google.cloud.datastore.emulator.impl.rules.DefaultEmulatorRulesAuthorizer.verboseError(DefaultEmulatorRulesAuthorizer.java:318)
+	at com.google.cloud.datastore.emulator.impl.rules.DefaultEmulatorRulesAuthorizer.withVerboseErrors(DefaultEmulatorRulesAuthorizer.java:295)
+	at com.google.cloud.datastore.emulator.impl.rules.DefaultEmulatorRulesAuthorizer.checkCommit(DefaultEmulatorRulesAuthorizer.java:114)
+	at com.google.cloud.datastore.emulator.impl.firestore.FirestoreEmulatorHelper.commitHelper(FirestoreEmulatorHelper.java:365)
+	at com.google.cloud.datastore.emulator.impl.firestore.FirestoreEmulatorHelper.internalCommit(FirestoreEmulatorHelper.java:319)
+	at com.google.cloud.datastore.emulator.impl.firestore.CloudFirestoreV1.internalCommit(CloudFirestoreV1.java:1170)
+	at com.google.cloud.datastore.emulator.impl.firestore.CloudFirestoreV1.write(CloudFirestoreV1.java:1158)
+	at com.google.cloud.datastore.emulator.impl.firestore.CloudFirestoreV1WriteStream.handleRequest(CloudFirestoreV1WriteStream.java:222)
+	at com.google.cloud.datastore.emulator.impl.firestore.CloudFirestoreV1WriteStream.write(CloudFirestoreV1WriteStream.java:144)
+	at com.google.cloud.datastore.emulator.impl.firestore.CloudFirestoreV1WriteStream.onNext(CloudFirestoreV1WriteStream.java:99)
+	at com.google.cloud.datastore.emulator.impl.firestore.CloudFirestoreV1WriteStream.onNext(CloudFirestoreV1WriteStream.java:27)
+	at io.grpc.stub.ServerCalls$StreamingServerCallHandler$StreamingServerCallListener.onMessage(ServerCalls.java:262)
+	at io.grpc.ForwardingServerCallListener.onMessage(ForwardingServerCallListener.java:33)
+	at io.grpc.Contexts$ContextualizedServerCallListener.onMessage(Contexts.java:76)
+	at io.grpc.ForwardingServerCallListener.onMessage(ForwardingServerCallListener.java:33)
+	at io.grpc.Contexts$ContextualizedServerCallListener.onMessage(Contexts.java:76)
+	at io.grpc.internal.ServerCallImpl$ServerStreamListenerImpl.messagesAvailableInternal(ServerCallImpl.java:334)
+	at io.grpc.internal.ServerCallImpl$ServerStreamListenerImpl.messagesAvailable(ServerCallImpl.java:319)
+	at io.grpc.internal.ServerImpl$JumpToApplicationThreadServerStreamListener$1MessagesAvailable.runInContext(ServerImpl.java:834)
+	at io.grpc.internal.ContextRunnable.run(ContextRunnable.java:37)
+	at io.grpc.internal.SerializingExecutor.run(SerializingExecutor.java:133)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+Caused by: com.google.firebase.rules.runtime.common.EvaluationException: Error:  line [845], column [49]. Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached.
+	at com.google.firebase.rules.runtime.impl.DefaultEvaluator$TransformEvaluationException.apply(DefaultEvaluator.java:275)
+	at com.google.firebase.rules.runtime.impl.DefaultEvaluator$TransformEvaluationException.apply(DefaultEvaluator.java:261)
+	at com.google.common.util.concurrent.AbstractCatchingFuture$AsyncCatchingFuture.doFallback(AbstractCatchingFuture.java:207)
+	at com.google.common.util.concurrent.AbstractCatchingFuture$AsyncCatchingFuture.doFallback(AbstractCatchingFuture.java:194)
+	at com.google.common.util.concurrent.AbstractCatchingFuture.run(AbstractCatchingFuture.java:136)
+	at com.google.common.util.concurrent.DirectExecutor.execute(DirectExecutor.java:30)
+	at com.google.common.util.concurrent.AbstractFuture.executeListener(AbstractFuture.java:1007)
+	at com.google.common.util.concurrent.AbstractFuture.addListener(AbstractFuture.java:469)
+	at com.google.common.util.concurrent.FluentFuture$TrustedFuture.addListener(FluentFuture.java:121)
+	at com.google.common.util.concurrent.AbstractCatchingFuture.createAsync(AbstractCatchingFuture.java:58)
+	at com.google.common.util.concurrent.Futures.catchingAsync(Futures.java:407)
+	at com.google.firebase.rules.runtime.impl.DefaultEvaluator.evaluate(DefaultEvaluator.java:177)
+	at com.google.cloud.datastore.emulator.impl.rules.EmulatorRuleClient$EmulatorRuleEvaluator.evaluate(EmulatorRuleClient.java:88)
+	at com.google.cloud.datastore.core.auth.rules.AsyncTwoPhaseRulesAuthorizer.lambda$fullEvaluate$0(AsyncTwoPhaseRulesAuthorizer.java:1001)
+	at com.google.cloud.datastore.computation.Computation.tryCatch(Computation.java:439)
+	at com.google.cloud.datastore.core.auth.rules.AsyncTwoPhaseRulesAuthorizer.fullEvaluate(AsyncTwoPhaseRulesAuthorizer.java:1000)
+	at com.google.cloud.datastore.core.auth.rules.AsyncTwoPhaseRulesAuthorizer$CommitAuthorizerImpl.lambda$checkWrite$0(AsyncTwoPhaseRulesAuthorizer.java:1237)
+	at com.google.cloud.datastore.computation.Computation.lambda$tryClose$1(Computation.java:708)
+	at com.google.cloud.datastore.computation.Computation.tryCatch(Computation.java:439)
+	at com.google.cloud.datastore.computation.Computation.tryFinally(Computation.java:675)
+	at com.google.cloud.datastore.computation.Computation.tryFinally(Computation.java:681)
+	at com.google.cloud.datastore.computation.Computation.tryClose(Computation.java:708)
+	at com.google.cloud.datastore.core.auth.rules.AsyncTwoPhaseRulesAuthorizer$CommitAuthorizerImpl.checkWrite(AsyncTwoPhaseRulesAuthorizer.java:1206)
+	at com.google.cloud.datastore.emulator.impl.rules.DefaultEmulatorRulesAuthorizer.lambda$checkCommit$0(DefaultEmulatorRulesAuthorizer.java:124)
+	at com.google.cloud.datastore.emulator.impl.rules.DefaultEmulatorRulesAuthorizer.withVerboseErrors(DefaultEmulatorRulesAuthorizer.java:290)
+	... 22 more
+
+Aug 14, 2026 1:34:15 PM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
+WARNING: Operation failed: 
+evaluation error at L650:32 for 'create' @ L650, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L745, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L929, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L1584, evaluation error at L635:24 for 'update' @ L635, evaluation error at L650:32 for 'update' @ L650, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L878, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L929, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L1584, false for 'create' @ L650, false for 'create' @ L745, false for 'create' @ L929, false for 'create' @ L1584
+com.google.cloud.datastore.core.exception.DatastoreException: 
+evaluation error at L650:32 for 'create' @ L650, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L745, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L929, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'create' @ L1584, evaluation error at L635:24 for 'update' @ L635, evaluation error at L650:32 for 'update' @ L650, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L878, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L929, Unable to evaluate the expression as the maximum of 1000 expressions to evaluate has been reached. for 'update' @ L1584, false for 'create' @ L650, false for 'create' @ L745, false for 'create' @ L929, false for 'create' @ L1584
 	at com.google.cloud.datastore.core.exception.DatastoreException$Builder.build(DatastoreException.java:139)
 	at com.google.cloud.datastore.emulator.impl.rules.DefaultEmulatorRulesAuthorizer.verboseError(DefaultEmulatorRulesAuthorizer.java:318)
 	at com.google.cloud.datastore.emulator.impl.rules.DefaultEmulatorRulesAuthorizer.withVerboseErrors(DefaultEmulatorRulesAuthorizer.java:295)
@@ -143,11 +259,11 @@ evaluation error at L612:32 for 'create' @ L612, Unable to evaluate the expressi
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
 	at java.base/java.lang.Thread.run(Thread.java:1474)
 
-Aug 13, 2026 10:01:51 AM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
+Aug 14, 2026 1:34:15 PM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
 WARNING: Operation failed: 
-evaluation error at L577:24 for 'create' @ L577, false for 'create' @ L1533, evaluation error at L579:24 for 'update' @ L579, false for 'update' @ L1533, false for 'update' @ L579, false for 'update' @ L1533
+evaluation error at L615:24 for 'create' @ L615, false for 'create' @ L1584, evaluation error at L617:24 for 'update' @ L617, false for 'update' @ L1584, false for 'update' @ L617, false for 'update' @ L1584
 com.google.cloud.datastore.core.exception.DatastoreException: 
-evaluation error at L577:24 for 'create' @ L577, false for 'create' @ L1533, evaluation error at L579:24 for 'update' @ L579, false for 'update' @ L1533, false for 'update' @ L579, false for 'update' @ L1533
+evaluation error at L615:24 for 'create' @ L615, false for 'create' @ L1584, evaluation error at L617:24 for 'update' @ L617, false for 'update' @ L1584, false for 'update' @ L617, false for 'update' @ L1584
 	at com.google.cloud.datastore.core.exception.DatastoreException$Builder.build(DatastoreException.java:139)
 	at com.google.cloud.datastore.emulator.impl.rules.DefaultEmulatorRulesAuthorizer.verboseError(DefaultEmulatorRulesAuthorizer.java:318)
 	at com.google.cloud.datastore.emulator.impl.rules.DefaultEmulatorRulesAuthorizer.withVerboseErrors(DefaultEmulatorRulesAuthorizer.java:295)
@@ -174,11 +290,11 @@ evaluation error at L577:24 for 'create' @ L577, false for 'create' @ L1533, eva
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
 	at java.base/java.lang.Thread.run(Thread.java:1474)
 
-Aug 13, 2026 10:01:51 AM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
+Aug 14, 2026 1:34:15 PM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
 WARNING: Operation failed: 
-evaluation error at L577:24 for 'create' @ L577, false for 'create' @ L1533, evaluation error at L579:24 for 'update' @ L579, false for 'update' @ L1533, false for 'create' @ L577, false for 'create' @ L1533
+evaluation error at L615:24 for 'create' @ L615, false for 'create' @ L1584, evaluation error at L617:24 for 'update' @ L617, false for 'update' @ L1584, false for 'create' @ L615, false for 'create' @ L1584
 com.google.cloud.datastore.core.exception.DatastoreException: 
-evaluation error at L577:24 for 'create' @ L577, false for 'create' @ L1533, evaluation error at L579:24 for 'update' @ L579, false for 'update' @ L1533, false for 'create' @ L577, false for 'create' @ L1533
+evaluation error at L615:24 for 'create' @ L615, false for 'create' @ L1584, evaluation error at L617:24 for 'update' @ L617, false for 'update' @ L1584, false for 'create' @ L615, false for 'create' @ L1584
 	at com.google.cloud.datastore.core.exception.DatastoreException$Builder.build(DatastoreException.java:139)
 	at com.google.cloud.datastore.emulator.impl.rules.DefaultEmulatorRulesAuthorizer.verboseError(DefaultEmulatorRulesAuthorizer.java:318)
 	at com.google.cloud.datastore.emulator.impl.rules.DefaultEmulatorRulesAuthorizer.withVerboseErrors(DefaultEmulatorRulesAuthorizer.java:295)

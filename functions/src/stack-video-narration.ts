@@ -30,6 +30,17 @@ export function stackVideoNarrationTextFromCard(
   );
 }
 
+export function stackVideoNarrationRevisionFromCard(value: unknown): number {
+  const card = value && typeof value === 'object' ? value as StackVideoNarrationCard : {};
+  const revision = Number(card['videoNarrationRevision']);
+  return Number.isFinite(revision) ? Math.max(0, Math.min(1_000_000, Math.trunc(revision))) : 0;
+}
+
+export function stackVideoNarrationRevisionCacheKey(value: unknown): string {
+  const revision = stackVideoNarrationRevisionFromCard(value);
+  return revision > 0 ? `:r${revision}` : '';
+}
+
 export function boardTrailerFallbackScript(params: {
   title: string;
   cardTitles: string[];

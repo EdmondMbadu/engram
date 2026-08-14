@@ -122,6 +122,7 @@ import {
 import {
   generateStackTrailer,
   generateStackVideo,
+  normalizeStackVideoClosingScreen,
   STACK_TRAILER_RENDER_VERSION,
   STACK_VIDEO_RENDER_VERSION,
   stackVideoRenderIsCurrent,
@@ -129,6 +130,7 @@ import {
   type StackVideoNarration,
   type StackVideoResult,
   type StackTrailerNarration,
+  type StackVideoClosingImage,
 } from './stack-video-export';
 import {
   DEFAULT_STACK_AUDIO_TRACK_ID,
@@ -291,6 +293,7 @@ type BoardCard = {
   mediaKind?: BoardMediaKind;
   shortSummary?: string;
   rank?: number;
+  videoNarrationRevision?: number;
   videoIntent?: boolean;
   videoSearchQuery?: string;
   youtubeVideoId?: string;
@@ -367,6 +370,11 @@ type Board = {
   socialVideoAudioTrackId: string;
   socialVideoAudioVolume: number;
   socialVideoNarrationEnabled?: boolean;
+  socialVideoClosingHeadline: string;
+  socialVideoClosingMessage: string;
+  socialVideoClosingShowQrCode: boolean;
+  socialVideoClosingImage: StackVideoClosingImage;
+  socialVideoClosingDurationSeconds: number;
   trailerVideoUrl: string;
   trailerVideoMimeType: string;
   trailerVideoUpdatedAt: string;
@@ -1657,7 +1665,16 @@ export class BoardsComponent implements OnDestroy {
   readonly stackScriptSavedAt = signal('');
   readonly stackScriptError = signal<string | null>(null);
   readonly stackScriptPreviewLoadingCardId = signal<string | null>(null);
+  readonly stackScriptRegeneratingCardId = signal<string | null>(null);
   readonly stackScriptDiscardConfirmOpen = signal(false);
+  readonly stackFinalScreenHeadline = signal('Keep exploring');
+  readonly stackFinalScreenMessage = signal('');
+  readonly stackFinalScreenShowQrCode = signal(true);
+  readonly stackFinalScreenImage = signal<StackVideoClosingImage>('cover');
+  readonly stackFinalScreenDurationSeconds = signal(3);
+  readonly stackFinalScreenOriginalSnapshot = signal('');
+  readonly stackFinalScreenSaving = signal(false);
+  readonly stackFinalScreenError = signal<string | null>(null);
   readonly personalNarratorVoice = signal<PersonalNarratorVoice | null>(null);
   readonly personalVoiceLoading = signal(false);
   readonly personalVoiceServerEligible = signal<boolean | null>(null);
@@ -2324,6 +2341,9 @@ export class BoardsComponent implements OnDestroy {
     && !this.stackScriptSaving()
     && !!this.stackScriptBoardTitle().trim()
     && this.stackScriptMissingCount() === 0,
+  );
+  readonly stackFinalScreenDirty = computed(() =>
+    this.stackFinalScreenSnapshot() !== this.stackFinalScreenOriginalSnapshot(),
   );
   readonly stackSelectedAudioTrack = computed(() =>
     stackAudioTrackById(this.stackAudioTrackId()),
@@ -4625,6 +4645,11 @@ export class BoardsComponent implements OnDestroy {
           socialVideoAudioTrackId: DEFAULT_STACK_AUDIO_TRACK_ID,
           socialVideoAudioVolume: DEFAULT_STACK_AUDIO_VOLUME,
           socialVideoNarrationEnabled: true,
+          socialVideoClosingHeadline: 'Keep exploring',
+          socialVideoClosingMessage: '',
+          socialVideoClosingShowQrCode: true,
+          socialVideoClosingImage: 'cover',
+          socialVideoClosingDurationSeconds: 3,
           trailerVideoUrl: '',
           trailerVideoMimeType: '',
           trailerVideoUpdatedAt: '',
@@ -4835,6 +4860,11 @@ export class BoardsComponent implements OnDestroy {
         socialVideoAudioTrackId: DEFAULT_STACK_AUDIO_TRACK_ID,
         socialVideoAudioVolume: DEFAULT_STACK_AUDIO_VOLUME,
         socialVideoNarrationEnabled: true,
+        socialVideoClosingHeadline: 'Keep exploring',
+        socialVideoClosingMessage: '',
+        socialVideoClosingShowQrCode: true,
+        socialVideoClosingImage: 'cover',
+        socialVideoClosingDurationSeconds: 3,
         trailerVideoUrl: '',
         trailerVideoMimeType: '',
         trailerVideoUpdatedAt: '',
@@ -10916,6 +10946,11 @@ export class BoardsComponent implements OnDestroy {
       socialVideoAudioTrackId: DEFAULT_STACK_AUDIO_TRACK_ID,
       socialVideoAudioVolume: DEFAULT_STACK_AUDIO_VOLUME,
       socialVideoNarrationEnabled: true,
+      socialVideoClosingHeadline: 'Keep exploring',
+      socialVideoClosingMessage: '',
+      socialVideoClosingShowQrCode: true,
+      socialVideoClosingImage: 'cover',
+      socialVideoClosingDurationSeconds: 3,
       trailerVideoUrl: '',
       trailerVideoMimeType: '',
       trailerVideoUpdatedAt: '',
@@ -11556,7 +11591,7 @@ export class BoardsComponent implements OnDestroy {
     this.stackScriptError.set(null);
     try {
       const url = await this.ensureTourAudioUrl(
-        `stack-script-preview:${card.id}:${text}`,
+        `stack-script-preview:${card.id}:r${Math.max(0, Math.trunc(card.videoNarrationRevision ?? 0))}:${text}`,
         text,
         this.stackNarratorVoiceId(),
         board.id,
@@ -11579,6 +11614,63 @@ export class BoardsComponent implements OnDestroy {
       this.stackScriptError.set(error instanceof Error ? error.message : 'This script preview could not be played.');
     } finally {
       this.stackScriptPreviewLoadingCardId.set(null);
+    }
+  }
+
+  async regenerateStackScriptCardNarration(card: BoardCard, event?: Event): Promise<void> {
+    event?.preventDefault();
+    event?.stopPropagation();
+    let board = this.stackBoard();
+    const text = this.stackScriptNarration(card).trim();
+    if (!this.isBrowser || !board || !this.canEditBoard(board) || !text || this.stackScriptRegeneratingCardId()) return;
+    this.stopStackVoicePreview();
+    this.stackScriptRegeneratingCardId.set(card.id);
+    this.stackScriptError.set(null);
+    try {
+      if (this.stackScriptDirty() && !await this.saveStackScript(board)) return;
+      board = this.stackBoard();
+      const currentCard = board?.cards.find((item) => item.id === card.id);
+      if (!board || !currentCard) throw new Error('This card is no longer available.');
+      const now = new Date().toISOString();
+      const revision = Math.max(0, Math.trunc(currentCard.videoNarrationRevision ?? 0)) + 1;
+      const nextBoard: Board = {
+        ...board,
+        cards: board.cards.map((item) => item.id === currentCard.id
+          ? { ...item, videoNarrationRevision: revision, updatedAt: now }
+          : item),
+        socialVideoRenderVersion: '',
+        updatedAt: now,
+      };
+      if (!await this.persistAndReplaceBoard(nextBoard)) {
+        throw new Error('The fresh narration could not be saved to this board.');
+      }
+      const savedCard = nextBoard.cards.find((item) => item.id === currentCard.id)!;
+      const savedText = this.stackVideoNarrationText(savedCard);
+      const url = await this.ensureTourAudioUrl(
+        `stack-video:${savedCard.id}:r${revision}:${savedText}`,
+        savedText,
+        this.stackNarratorVoiceId(),
+        nextBoard.id,
+        'stack-video',
+        savedCard.id,
+        true,
+      );
+      if (!url) throw new Error('Fresh narration audio was not returned.');
+      const audio = new Audio(url);
+      audio.preload = 'auto';
+      audio.onended = () => this.stopStackVoicePreview();
+      audio.onerror = () => {
+        this.stopStackVoicePreview();
+        this.stackScriptError.set('The fresh narration was saved, but its preview could not be played.');
+      };
+      this.stackVoicePreview = audio;
+      await audio.play();
+      this.stackVoicePreviewingId.set(`studio-script:${card.id}`);
+      this.setStackShareMessage('Fresh narration saved. The next Full video will use this take.', false);
+    } catch (error) {
+      this.stackScriptError.set(error instanceof Error ? error.message : 'Fresh narration could not be created.');
+    } finally {
+      this.stackScriptRegeneratingCardId.set(null);
     }
   }
 
@@ -11642,6 +11734,81 @@ export class BoardsComponent implements OnDestroy {
   async continueStackStudio(board: Board, to: 'voice' | 'music'): Promise<void> {
     if (this.stackScriptDirty() && !await this.saveStackScript(board)) return;
     this.setStackSoundTab(to);
+  }
+
+  updateStackFinalScreenHeadline(value: string): void {
+    this.stackFinalScreenHeadline.set(value.slice(0, 72));
+    this.stackFinalScreenError.set(null);
+  }
+
+  updateStackFinalScreenMessage(value: string): void {
+    this.stackFinalScreenMessage.set(value.slice(0, 180));
+    this.stackFinalScreenError.set(null);
+  }
+
+  setStackFinalScreenShowQrCode(show: boolean): void {
+    this.stackFinalScreenShowQrCode.set(show);
+    this.stackFinalScreenError.set(null);
+  }
+
+  setStackFinalScreenImage(image: StackVideoClosingImage): void {
+    this.stackFinalScreenImage.set(image);
+    this.stackFinalScreenError.set(null);
+  }
+
+  setStackFinalScreenDuration(value: number): void {
+    this.stackFinalScreenDurationSeconds.set(
+      normalizeStackVideoClosingScreen({ durationSeconds: value }).durationSeconds,
+    );
+    this.stackFinalScreenError.set(null);
+  }
+
+  stackFinalScreenPreviewImage(board: Board): string {
+    if (this.stackFinalScreenImage() === 'final-card') {
+      const finalCard = this.stackSelectedCards()[this.stackSelectedCards().length - 1];
+      const finalImage = finalCard ? this.cardImages(finalCard)[0] ?? '' : '';
+      if (finalImage) return finalImage;
+    }
+    return this.stackCoverImage(board);
+  }
+
+  stackFinalScreenQrImage(board: Board): string {
+    return this.stackQrImageUrl(board);
+  }
+
+  async saveStackFinalScreen(board: Board): Promise<boolean> {
+    if (!this.canEditBoard(board) || this.stackFinalScreenSaving()) return false;
+    const normalized = this.currentStackFinalScreen(board);
+    if (!normalized.headline || !normalized.message) {
+      this.stackFinalScreenError.set('Add a headline and closing message before saving.');
+      return false;
+    }
+    this.stackFinalScreenSaving.set(true);
+    this.stackFinalScreenError.set(null);
+    const now = new Date().toISOString();
+    const nextBoard: Board = {
+      ...board,
+      socialVideoClosingHeadline: normalized.headline,
+      socialVideoClosingMessage: normalized.message,
+      socialVideoClosingShowQrCode: normalized.showQrCode,
+      socialVideoClosingImage: normalized.image,
+      socialVideoClosingDurationSeconds: normalized.durationSeconds,
+      socialVideoRenderVersion: '',
+      updatedAt: now,
+    };
+    try {
+      if (!await this.persistAndReplaceBoard(nextBoard)) {
+        throw new Error('The final screen could not be synchronized.');
+      }
+      this.applyStackFinalScreenState(nextBoard);
+      this.setStackShareMessage('Final screen saved. Update the Full video to publish it.', false);
+      return true;
+    } catch (error) {
+      this.stackFinalScreenError.set(error instanceof Error ? error.message : 'The final screen could not be saved.');
+      return false;
+    } finally {
+      this.stackFinalScreenSaving.set(false);
+    }
   }
 
   selectStackAudioTrack(board: Board, trackId: string): void {
@@ -12613,7 +12780,7 @@ export class BoardsComponent implements OnDestroy {
       this.requestPersonalVoiceUpgrade();
       return;
     }
-    const savedBoard = await this.stackBoardWithSavedScript(board);
+    const savedBoard = await this.stackBoardWithSavedVideoSettings(board);
     if (!savedBoard) return;
     board = savedBoard;
     const url = this.stackShareUrl(board);
@@ -13046,7 +13213,7 @@ export class BoardsComponent implements OnDestroy {
       this.requestPersonalVoiceUpgrade();
       return;
     }
-    const savedBoard = await this.stackBoardWithSavedScript(board);
+    const savedBoard = await this.stackBoardWithSavedVideoSettings(board);
     if (!savedBoard) return;
     board = savedBoard;
 
@@ -13209,6 +13376,7 @@ export class BoardsComponent implements OnDestroy {
       liveUrl: this.stackShareUrl(board),
       qrImageUrl: this.stackQrImageUrl(board),
       showCardNumbers: this.boardShowsCardNumbers(board),
+      closingScreen: this.currentStackFinalScreen(board),
       cards: selectedCards.map((card) => ({
         title: this.stackScriptTitle(card),
         subtitle: this.cardDisplaySubtitle(board, card),
@@ -13234,7 +13402,7 @@ export class BoardsComponent implements OnDestroy {
         for (let attempt = 0; attempt < 3; attempt += 1) {
           try {
             const url = await this.ensureTourAudioUrl(
-              `stack-video:${card.id}:${text}`,
+              `stack-video:${card.id}:r${Math.max(0, Math.trunc(card.videoNarrationRevision ?? 0))}:${text}`,
               text,
               voiceId,
               board.id,
@@ -13282,6 +13450,20 @@ export class BoardsComponent implements OnDestroy {
     }
     const current = this.stackBoard();
     return current?.id === board.id ? current : board;
+  }
+
+  private async stackBoardWithSavedVideoSettings(board: Board): Promise<Board | null> {
+    const scriptBoard = await this.stackBoardWithSavedScript(board);
+    if (!scriptBoard) return null;
+    if (this.stackFinalScreenDirty()) {
+      const saved = await this.saveStackFinalScreen(scriptBoard);
+      if (!saved) {
+        this.setStackShareMessage('Review the Final screen settings before creating the video.', false);
+        return null;
+      }
+    }
+    const current = this.stackBoard();
+    return current?.id === scriptBoard.id ? current : scriptBoard;
   }
 
   private stackVideoBackgroundAudio(): StackVideoBackgroundAudio | null {
@@ -13509,6 +13691,7 @@ export class BoardsComponent implements OnDestroy {
     this.stackScriptSavedAt.set('');
     this.stackScriptError.set(null);
     this.stackScriptDiscardConfirmOpen.set(false);
+    this.applyStackFinalScreenState(board);
     this.stackCaption.set(`I made a LivingWiki Stack: ${board.title}. Explore the full board.`);
     this.stackFormat.set('reel');
     this.stackRatio.set('vertical');
@@ -13531,6 +13714,43 @@ export class BoardsComponent implements OnDestroy {
     this.stackTourNarrationConsent.set(false);
     this.setStackShareMessage(null);
     void this.preloadStackAudioUrls();
+  }
+
+  private currentStackFinalScreen(board: Board): ReturnType<typeof normalizeStackVideoClosingScreen> {
+    return normalizeStackVideoClosingScreen({
+      headline: this.stackFinalScreenHeadline(),
+      message: this.stackFinalScreenMessage(),
+      showQrCode: this.stackFinalScreenShowQrCode(),
+      image: this.stackFinalScreenImage(),
+      durationSeconds: this.stackFinalScreenDurationSeconds(),
+    }, board.title);
+  }
+
+  private stackFinalScreenSnapshot(): string {
+    return JSON.stringify({
+      headline: this.stackFinalScreenHeadline().trim(),
+      message: this.stackFinalScreenMessage().trim(),
+      showQrCode: this.stackFinalScreenShowQrCode(),
+      image: this.stackFinalScreenImage(),
+      durationSeconds: this.stackFinalScreenDurationSeconds(),
+    });
+  }
+
+  private applyStackFinalScreenState(board: Board): void {
+    const closing = normalizeStackVideoClosingScreen({
+      headline: board.socialVideoClosingHeadline,
+      message: board.socialVideoClosingMessage,
+      showQrCode: board.socialVideoClosingShowQrCode,
+      image: board.socialVideoClosingImage,
+      durationSeconds: board.socialVideoClosingDurationSeconds,
+    }, board.title);
+    this.stackFinalScreenHeadline.set(closing.headline);
+    this.stackFinalScreenMessage.set(closing.message);
+    this.stackFinalScreenShowQrCode.set(closing.showQrCode);
+    this.stackFinalScreenImage.set(closing.image);
+    this.stackFinalScreenDurationSeconds.set(closing.durationSeconds);
+    this.stackFinalScreenError.set(null);
+    this.stackFinalScreenOriginalSnapshot.set(this.stackFinalScreenSnapshot());
   }
 
   private stackScriptSnapshot(board: Board | null = this.stackBoard()): string {
@@ -16262,6 +16482,17 @@ export class BoardsComponent implements OnDestroy {
           socialVideoNarrationEnabled: typeof (board as Partial<Board>).socialVideoNarrationEnabled === 'boolean'
             ? (board as Partial<Board>).socialVideoNarrationEnabled
             : undefined,
+          socialVideoClosingHeadline: typeof (board as Partial<Board>).socialVideoClosingHeadline === 'string'
+            ? (board as Partial<Board>).socialVideoClosingHeadline!.slice(0, 72)
+            : 'Keep exploring',
+          socialVideoClosingMessage: typeof (board as Partial<Board>).socialVideoClosingMessage === 'string'
+            ? (board as Partial<Board>).socialVideoClosingMessage!.slice(0, 180)
+            : '',
+          socialVideoClosingShowQrCode: (board as Partial<Board>).socialVideoClosingShowQrCode !== false,
+          socialVideoClosingImage: (board as Partial<Board>).socialVideoClosingImage === 'final-card' ? 'final-card' : 'cover',
+          socialVideoClosingDurationSeconds: normalizeStackVideoClosingScreen({
+            durationSeconds: (board as Partial<Board>).socialVideoClosingDurationSeconds,
+          }).durationSeconds,
           trailerVideoUrl: typeof board.trailerVideoUrl === 'string' ? board.trailerVideoUrl : '',
           trailerVideoMimeType: typeof board.trailerVideoMimeType === 'string' ? board.trailerVideoMimeType : '',
           trailerVideoUpdatedAt: typeof board.trailerVideoUpdatedAt === 'string' ? board.trailerVideoUpdatedAt : '',
@@ -16318,6 +16549,9 @@ export class BoardsComponent implements OnDestroy {
             locationLng: this.optionalCoordinate((card as Partial<BoardCard>).locationLng, -180, 180),
             what3wordsAddress: what3WordsAddressFromCard(card),
             scope: this.isBoardCardScope((card as BoardCard).scope) ? (card as BoardCard).scope : 'place',
+            videoNarrationRevision: typeof (card as Partial<BoardCard>).videoNarrationRevision === 'number'
+              ? Math.max(0, Math.trunc((card as Partial<BoardCard>).videoNarrationRevision!))
+              : 0,
             stickers: this.normalizeStickers(card.stickers),
             tour: this.normalizeCardTour((card as BoardCard).tour),
             childBoardId: typeof (card as BoardCard).childBoardId === 'string' ? (card as BoardCard).childBoardId : '',
@@ -16587,6 +16821,17 @@ export class BoardsComponent implements OnDestroy {
       socialVideoNarrationEnabled: typeof data['socialVideoNarrationEnabled'] === 'boolean'
         ? data['socialVideoNarrationEnabled']
         : undefined,
+      socialVideoClosingHeadline: typeof data['socialVideoClosingHeadline'] === 'string'
+        ? data['socialVideoClosingHeadline'].slice(0, 72)
+        : 'Keep exploring',
+      socialVideoClosingMessage: typeof data['socialVideoClosingMessage'] === 'string'
+        ? data['socialVideoClosingMessage'].slice(0, 180)
+        : '',
+      socialVideoClosingShowQrCode: data['socialVideoClosingShowQrCode'] !== false,
+      socialVideoClosingImage: data['socialVideoClosingImage'] === 'final-card' ? 'final-card' : 'cover',
+      socialVideoClosingDurationSeconds: normalizeStackVideoClosingScreen({
+        durationSeconds: data['socialVideoClosingDurationSeconds'] as number | undefined,
+      }).durationSeconds,
       trailerVideoUrl: typeof data['trailerVideoUrl'] === 'string' ? data['trailerVideoUrl'] : '',
       trailerVideoMimeType: typeof data['trailerVideoMimeType'] === 'string' ? data['trailerVideoMimeType'] : '',
       trailerVideoUpdatedAt: typeof data['trailerVideoUpdatedAt'] === 'string' ? data['trailerVideoUpdatedAt'] : '',
@@ -16659,6 +16904,9 @@ export class BoardsComponent implements OnDestroy {
       mediaKind: this.isBoardMediaKind(data['mediaKind']) ? data['mediaKind'] : 'none',
       shortSummary: typeof data['shortSummary'] === 'string' ? data['shortSummary'] : (typeof data['subtitle'] === 'string' ? data['subtitle'] : ''),
       rank: typeof data['rank'] === 'number' ? Math.max(0, Math.min(100, Math.trunc(data['rank']))) : this.rankFromTags(data['tags']),
+      videoNarrationRevision: typeof data['videoNarrationRevision'] === 'number'
+        ? Math.max(0, Math.trunc(data['videoNarrationRevision']))
+        : 0,
       videoIntent: data['videoIntent'] === true,
       videoSearchQuery: typeof data['videoSearchQuery'] === 'string' ? data['videoSearchQuery'].slice(0, 180) : '',
       youtubeVideoId: youtubeVideoIdFromReference(data['youtubeVideoId']),

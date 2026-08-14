@@ -5456,9 +5456,19 @@
                                 </label>
                                 <div class="stack-script-card__actions">
                                   <span>{{ stackScriptCardWordCount(card) }} words · ~{{ stackScriptCardEstimatedSeconds(card) }}s</span>
-                                  <button type="button" [disabled]="stackScriptPreviewLoadingCardId() === card.id" (click)="previewStackScriptCard(card, $event)">
+                                  <button type="button" [disabled]="stackScriptPreviewLoadingCardId() === card.id || stackScriptRegeneratingCardId() === card.id" (click)="previewStackScriptCard(card, $event)">
                                     <span class="material-symbols-outlined">{{ stackScriptPreviewLoadingCardId() === card.id ? 'progress_activity' : 'play_arrow' }}</span>
                                     Preview
+                                  </button>
+                                  <button
+                                    type="button"
+                                    class="stack-script-card__fresh"
+                                    title="Create and save a brand-new voice take for this card"
+                                    [disabled]="stackScriptRegeneratingCardId() !== null || stackScriptPreviewLoadingCardId() === card.id || !stackScriptNarration(card).trim()"
+                                    (click)="regenerateStackScriptCardNarration(card, $event)"
+                                  >
+                                    <span class="material-symbols-outlined">{{ stackScriptRegeneratingCardId() === card.id ? 'progress_activity' : 'refresh' }}</span>
+                                    {{ stackScriptRegeneratingCardId() === card.id ? 'Creating…' : 'Fresh narration' }}
                                   </button>
                                   <button type="button" (click)="resetStackScriptCard(card)">
                                     <span class="material-symbols-outlined">restart_alt</span>
@@ -6203,6 +6213,69 @@
                     <button type="button" (click)="openStackMusicStudio()" i18n>Change</button>
                   }
                 </div>
+              }
+
+              @if (stackShareMode() === 'video' && canEditBoard(board)) {
+                <details class="stack-final-screen" open>
+                  <summary>
+                    <span class="material-symbols-outlined">featured_video</span>
+                    <span><strong>Final screen</strong><small>What viewers see after the last card</small></span>
+                    <span class="material-symbols-outlined stack-final-screen__chevron">expand_more</span>
+                  </summary>
+                  <div class="stack-final-screen__body">
+                    <div class="stack-final-screen__preview" aria-label="Final screen preview">
+                      @if (stackFinalScreenPreviewImage(board); as finalImage) {
+                        <img class="stack-final-screen__preview-image" [src]="finalImage" alt="" />
+                      }
+                      <div class="stack-final-screen__preview-shade"></div>
+                      <div class="stack-final-screen__preview-copy">
+                        <small>{{ stackFinalScreenHeadline() || 'Keep exploring' }}</small>
+                        <strong>{{ stackFinalScreenMessage() || board.title }}</strong>
+                        @if (stackFinalScreenShowQrCode()) {
+                          <img [src]="stackFinalScreenQrImage(board)" alt="QR code to open this board" />
+                        }
+                      </div>
+                    </div>
+                    <div class="stack-final-screen__controls">
+                      <label>
+                        <span>Custom headline</span>
+                        <input type="text" maxlength="72" [value]="stackFinalScreenHeadline()" (input)="updateStackFinalScreenHeadline($any($event.target).value)" placeholder="Keep exploring" />
+                      </label>
+                      <label>
+                        <span>Custom closing message</span>
+                        <textarea rows="2" maxlength="180" [value]="stackFinalScreenMessage()" (input)="updateStackFinalScreenMessage($any($event.target).value)" [placeholder]="board.title"></textarea>
+                      </label>
+                      <label class="stack-final-screen__toggle">
+                        <input type="checkbox" [checked]="stackFinalScreenShowQrCode()" (change)="setStackFinalScreenShowQrCode($any($event.target).checked)" />
+                        <span><strong>Show QR code</strong><small>Links viewers directly to this board</small></span>
+                      </label>
+                      <fieldset>
+                        <legend>Background image</legend>
+                        <div class="stack-final-screen__image-options">
+                          <button type="button" [class.stack-final-screen__image-option--active]="stackFinalScreenImage() === 'cover'" (click)="setStackFinalScreenImage('cover')">
+                            <span class="material-symbols-outlined">image</span>
+                            Board cover
+                          </button>
+                          <button type="button" [class.stack-final-screen__image-option--active]="stackFinalScreenImage() === 'final-card'" (click)="setStackFinalScreenImage('final-card')">
+                            <span class="material-symbols-outlined">last_page</span>
+                            Final card
+                          </button>
+                        </div>
+                      </fieldset>
+                      <label class="stack-final-screen__duration">
+                        <span><strong>Duration</strong><output>{{ stackFinalScreenDurationSeconds() }} sec</output></span>
+                        <input type="range" min="2" max="6" step="0.5" [value]="stackFinalScreenDurationSeconds()" (input)="setStackFinalScreenDuration(+$any($event.target).value)" />
+                      </label>
+                      @if (stackFinalScreenError()) {
+                        <small class="stack-final-screen__error">{{ stackFinalScreenError() }}</small>
+                      }
+                      <button type="button" class="stack-final-screen__save" [disabled]="!stackFinalScreenDirty() || stackFinalScreenSaving()" (click)="saveStackFinalScreen(board)">
+                        <span class="material-symbols-outlined">{{ stackFinalScreenSaving() ? 'progress_activity' : stackFinalScreenDirty() ? 'save' : 'check_circle' }}</span>
+                        {{ stackFinalScreenSaving() ? 'Saving…' : stackFinalScreenDirty() ? 'Save final screen' : 'Final screen saved' }}
+                      </button>
+                    </div>
+                  </div>
+                </details>
               }
 
               @if (stackShareMode() === 'trailer' && !board.trailerVideoUrl) {

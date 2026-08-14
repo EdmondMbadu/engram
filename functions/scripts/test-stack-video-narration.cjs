@@ -1,6 +1,8 @@
 const assert = require('node:assert/strict');
 const {
   stackVideoNarrationCardFromBoard,
+  stackVideoNarrationRevisionCacheKey,
+  stackVideoNarrationRevisionFromCard,
   stackVideoNarrationTextFromCard,
   boardTrailerFallbackScript,
   normalizeBoardTrailerScript,
@@ -19,6 +21,11 @@ assert.equal(stackVideoNarrationCardFromBoard(board, 'missing'), null);
 assert.equal(stackVideoNarrationTextFromCard(board.cards[0]), 'Canonical first narration.');
 assert.equal(stackVideoNarrationTextFromCard(board.cards[1]), 'Guide narration.');
 assert.equal(stackVideoNarrationTextFromCard(board.cards[2]), 'Title-only card.');
+assert.equal(stackVideoNarrationRevisionFromCard({ videoNarrationRevision: 4.8 }), 4);
+assert.equal(stackVideoNarrationRevisionFromCard({ videoNarrationRevision: -10 }), 0);
+assert.equal(stackVideoNarrationRevisionFromCard({ videoNarrationRevision: 'not-a-number' }), 0);
+assert.equal(stackVideoNarrationRevisionCacheKey({ videoNarrationRevision: 0 }), '');
+assert.equal(stackVideoNarrationRevisionCacheKey({ videoNarrationRevision: 5 }), ':r5');
 
 const fallback = boardTrailerFallbackScript({
   title: 'Ten Dishes That Explain Philadelphia',

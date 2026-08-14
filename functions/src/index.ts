@@ -128,6 +128,7 @@ import {
 } from './city-place-search';
 import {
   stackVideoNarrationCardFromBoard,
+  stackVideoNarrationRevisionCacheKey,
   stackVideoNarrationTextFromCard,
 } from './stack-video-narration';
 import {
@@ -18471,6 +18472,9 @@ export const synthesizeChatAnswerSpeech = onCall(
     const speechVersion = requestedMode === 'tour' || requestedMode === 'stack-video'
       ? tourSpeechVersion
       : speechRecapVersion;
+    const stackVideoNarrationRevisionKey = requestedMode === 'stack-video'
+      ? stackVideoNarrationRevisionCacheKey(requestedStackVideoCard)
+      : '';
     const primaryVoiceId = requestedNarratorVoiceId || chatAnswerVoiceId;
     const voiceIds = isPersonalNarrator
       ? [primaryVoiceId]
@@ -18483,7 +18487,7 @@ export const synthesizeChatAnswerSpeech = onCall(
 
     for (const voiceId of voiceIds) {
       const textHash = createHash('sha256')
-        .update(`${voiceId}:${speechModel}:${speechVersion}:${requestedMode}:${JSON.stringify(voiceSettings)}:${text}`)
+        .update(`${voiceId}:${speechModel}:${speechVersion}:${requestedMode}${stackVideoNarrationRevisionKey}:${JSON.stringify(voiceSettings)}:${text}`)
         .digest('hex');
       const storagePath = isPersonalNarrator
         ? `chat-answer-speech/personal/${personalVoiceOwnerId}/${requestedMode}/${speechVersion}/${textHash}.mp3`

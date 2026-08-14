@@ -18,7 +18,18 @@ export type StackVideoBoard = {
   liveUrl: string;
   qrImageUrl: string;
   showCardNumbers: boolean;
+  closingScreen?: Partial<StackVideoClosingScreen> | null;
   cards: StackVideoCard[];
+};
+
+export type StackVideoClosingImage = 'cover' | 'final-card';
+
+export type StackVideoClosingScreen = {
+  headline: string;
+  message: string;
+  showQrCode: boolean;
+  image: StackVideoClosingImage;
+  durationSeconds: number;
 };
 
 export type StackVideoResult = {
@@ -79,11 +90,11 @@ type VideoFrame =
 
 const FRAME_RATE = 15;
 const FRAME_DURATION_MS = 2200;
-const CLOSING_DURATION_MS = 2100;
+const DEFAULT_CLOSING_DURATION_SECONDS = 3;
 const NARRATION_LEAD_MS = 100;
 const NARRATION_TAIL_MS = 350;
 
-export const STACK_VIDEO_RENDER_VERSION = 'stack-video-v11';
+export const STACK_VIDEO_RENDER_VERSION = 'stack-video-v12';
 export const STACK_TRAILER_RENDER_VERSION = 'board-trailer-v2';
 
 const TRAILER_MIN_DURATION_MS = 15_000;
@@ -138,6 +149,30 @@ export function stackTrailerCaptionChunks(script: string, maxWords = 9): string[
 
 export function stackVideoRenderIsCurrent(version: unknown): boolean {
   return version === STACK_VIDEO_RENDER_VERSION;
+}
+
+export function normalizeStackVideoClosingScreen(
+  value: Partial<StackVideoClosingScreen> | null | undefined,
+  boardTitle = '',
+): StackVideoClosingScreen {
+  const duration = typeof value?.durationSeconds === 'number' ? value.durationSeconds : Number.NaN;
+  const headline = typeof value?.headline === 'string' ? value.headline : '';
+  const message = typeof value?.message === 'string' ? value.message : '';
+  return {
+    headline: headline.trim().slice(0, 72) || 'Keep exploring',
+    message: message.trim().slice(0, 180) || boardTitle.trim().slice(0, 180),
+    showQrCode: value?.showQrCode !== false,
+    image: value?.image === 'final-card' ? 'final-card' : 'cover',
+    durationSeconds: Number.isFinite(duration)
+      ? Math.min(6, Math.max(2, Math.round(duration * 2) / 2))
+      : DEFAULT_CLOSING_DURATION_SECONDS,
+  };
+}
+
+export function stackVideoClosingDurationMs(
+  value: Partial<StackVideoClosingScreen> | null | undefined,
+): number {
+  return Math.round(normalizeStackVideoClosingScreen(value).durationSeconds * 1000);
 }
 
 export function stackVideoCardVisibleText(
@@ -245,7 +280,9 @@ export async function generateStackVideo(
     ...board.cards.map((card) => ({ kind: 'card' as const, card })),
     { kind: 'closing' },
   ];
-  const baseFrameDurations = frames.map((frame) => frame.kind === 'closing' ? CLOSING_DURATION_MS : FRAME_DURATION_MS);
+  const baseFrameDurations = frames.map((frame) => frame.kind === 'closing'
+    ? stackVideoClosingDurationMs(board.closingScreen)
+    : FRAME_DURATION_MS);
   const preparedAudio = backgroundAudio?.url || hasNarration
     ? await prepareVideoAudio(backgroundAudio, narration, baseFrameDurations)
     : null;
@@ -751,7 +788,21 @@ function renderFrame(
       progress,
     );
   } else {
-    drawClosingFrame(context, width, height, board, images.get(board.qrImageUrl), progress);
+    const closing = normalizeStackVideoClosingScreen(board.closingScreen, board.title);
+    const finalCard = board.cards[board.cards.length - 1];
+    const closingImage = closing.image === 'final-card' && finalCard
+      ? firstLoadedCardImage(finalCard, images) ?? images.get(board.coverImageUrl)
+      : images.get(board.coverImageUrl);
+    drawClosingFrame(
+      context,
+      width,
+      height,
+      board,
+      closing,
+      closingImage,
+      closing.showQrCode ? images.get(board.qrImageUrl) : undefined,
+      progress,
+    );
   }
   drawTimeline(context, width, height, frameIndex, frameCount, progress);
   context.restore();
@@ -1059,9 +1110,13 @@ function drawClosingFrame(
   width: number,
   height: number,
   board: StackVideoBoard,
+  closing: StackVideoClosingScreen,
+  image: LoadedImage | undefined,
   qrImage: LoadedImage | undefined,
   progress: number,
 ): void {
+  if (image) drawCoverImage(context, image, width, height, 1.03 + progress * 0.025);
+  drawShade(context, width, height, image ? 0.9 : 0.4);
   const reveal = easeOut(Math.min(1, progress * 2.5));
   context.save();
   context.globalAlpha = reveal;
@@ -1069,10 +1124,10 @@ function drawClosingFrame(
   context.textAlign = 'center';
   context.fillStyle = '#bdfbe3';
   context.font = `850 ${Math.round(width * 0.034)}px Inter, Arial, sans-serif`;
-  context.fillText('KEEP EXPLORING', width / 2, height * 0.24);
+  drawWrappedText(context, closing.headline.toUpperCase(), width * 0.1, height * 0.2, width * 0.8, width * 0.044, 2, 'center');
   context.fillStyle = '#ffffff';
-  context.font = `950 ${Math.round(width * 0.092)}px Inter, Arial, sans-serif`;
-  drawWrappedText(context, board.title, width * 0.1, height * 0.3, width * 0.8, width * 0.098, 3, 'center');
+  context.font = `950 ${Math.round(width * 0.072)}px Inter, Arial, sans-serif`;
+  drawWrappedText(context, closing.message || board.title, width * 0.09, height * 0.3, width * 0.82, width * 0.078, 3, 'center');
   if (qrImage) {
     const qrSize = Math.min(width * 0.36, height * 0.27);
     const x = (width - qrSize) / 2;
