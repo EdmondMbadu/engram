@@ -4,7 +4,7 @@ import {
   generateStackTrailer,
   generateStackVideo,
   preferredRecorderMimeType,
-  stackVideoCardKicker,
+  stackVideoCardVisibleText,
   stackVideoCardImageCandidates,
   stackVideoFrameAtElapsed,
   stackVideoNarrationFrameDurationMs,
@@ -79,24 +79,18 @@ describe('Stack video card images', () => {
     expect(stackVideoRenderIsCurrent('stack-video-v7')).toBeFalse();
     expect(stackVideoRenderIsCurrent('stack-video-v8')).toBeFalse();
     expect(stackVideoRenderIsCurrent('stack-video-v9')).toBeFalse();
-    expect(stackVideoRenderIsCurrent('stack-video-v10')).toBeTrue();
+    expect(stackVideoRenderIsCurrent('stack-video-v10')).toBeFalse();
+    expect(stackVideoRenderIsCurrent('stack-video-v11')).toBeTrue();
   });
 
-  it('uses only a rank label for ranked cards', () => {
-    expect(stackVideoCardKicker({ rank: 3 }, 2, 10)).toBe('RANK #3');
-  });
-
-  it('uses only the tour stop when a card is part of a tour', () => {
-    expect(stackVideoCardKicker({ rank: 3, tourSequence: 2 }, 1, 5)).toBe('TOUR STOP 2');
-  });
-
-  it('does not repeat card position when no rank or tour stop exists', () => {
-    expect(stackVideoCardKicker({}, 0, 4)).toBe('');
-  });
-
-  it('removes rank and tour-stop numbering when the board setting is off', () => {
-    expect(stackVideoCardKicker({ rank: 3 }, 2, 10, false)).toBe('');
-    expect(stackVideoCardKicker({ tourSequence: 2 }, 1, 5, false)).toBe('');
+  it('shows only the title on full-video card frames', () => {
+    expect(stackVideoCardVisibleText({
+      title: 'Cumberland Island, Georgia',
+      subtitle: 'A subtitle that should not be drawn',
+      notes: 'Narration that should be heard but not drawn',
+      rank: 1,
+      tourSequence: 2,
+    })).toEqual(['Cumberland Island, Georgia']);
   });
 
   it('keeps gallery images available when the primary image is empty after reordering', () => {

@@ -74,7 +74,7 @@ type PreparedTrailerAudio = {
 
 type VideoFrame =
   | { kind: 'cover' }
-  | { kind: 'card'; card: StackVideoCard; cardIndex: number }
+  | { kind: 'card'; card: StackVideoCard }
   | { kind: 'closing' };
 
 const FRAME_RATE = 15;
@@ -83,7 +83,7 @@ const CLOSING_DURATION_MS = 2100;
 const NARRATION_LEAD_MS = 100;
 const NARRATION_TAIL_MS = 350;
 
-export const STACK_VIDEO_RENDER_VERSION = 'stack-video-v10';
+export const STACK_VIDEO_RENDER_VERSION = 'stack-video-v11';
 export const STACK_TRAILER_RENDER_VERSION = 'board-trailer-v2';
 
 const TRAILER_MIN_DURATION_MS = 15_000;
@@ -140,22 +140,10 @@ export function stackVideoRenderIsCurrent(version: unknown): boolean {
   return version === STACK_VIDEO_RENDER_VERSION;
 }
 
-export function stackVideoCardKicker(
-  card: Pick<StackVideoCard, 'rank' | 'tourSequence'>,
-  _cardIndex: number,
-  _cardCount: number,
-  showCardNumbers = true,
-): string {
-  if (!showCardNumbers) {
-    return '';
-  }
-  if (card.tourSequence && card.tourSequence > 0) {
-    return `TOUR STOP ${card.tourSequence}`;
-  }
-  if (card.rank && card.rank > 0) {
-    return `RANK #${card.rank}`;
-  }
-  return '';
+export function stackVideoCardVisibleText(
+  card: Pick<StackVideoCard, 'title' | 'subtitle' | 'notes' | 'rank' | 'tourSequence'>,
+): string[] {
+  return [card.title];
 }
 
 export function stackVideoCardImageCandidates(card: Pick<StackVideoCard, 'imageUrl' | 'imageUrls'>): string[] {
@@ -254,7 +242,7 @@ export async function generateStackVideo(
 
   const frames: VideoFrame[] = [
     { kind: 'cover' },
-    ...board.cards.map((card, cardIndex) => ({ kind: 'card' as const, card, cardIndex })),
+    ...board.cards.map((card) => ({ kind: 'card' as const, card })),
     { kind: 'closing' },
   ];
   const baseFrameDurations = frames.map((frame) => frame.kind === 'closing' ? CLOSING_DURATION_MS : FRAME_DURATION_MS);
@@ -759,9 +747,6 @@ function renderFrame(
       width,
       height,
       frame.card,
-      frame.cardIndex,
-      board.cards.length,
-      board.showCardNumbers,
       firstLoadedCardImage(frame.card, images),
       progress,
     );
@@ -1051,9 +1036,6 @@ function drawCardFrame(
   width: number,
   height: number,
   card: StackVideoCard,
-  cardIndex: number,
-  cardCount: number,
-  showCardNumbers: boolean,
   image: LoadedImage | undefined,
   progress: number,
 ): void {
@@ -1065,21 +1047,10 @@ function drawCardFrame(
   context.save();
   context.globalAlpha = reveal;
   context.translate(0, (1 - reveal) * height * 0.035);
-  const kicker = stackVideoCardKicker(card, cardIndex, cardCount, showCardNumbers);
-  if (kicker) {
-    context.fillStyle = '#bdfbe3';
-    context.font = `850 ${Math.round(width * 0.032)}px Inter, Arial, sans-serif`;
-    context.fillText(kicker, padding, height * 0.64);
-  }
+  const [title] = stackVideoCardVisibleText(card);
   context.fillStyle = '#ffffff';
   context.font = `950 ${Math.round(width * 0.09)}px Inter, Arial, sans-serif`;
-  const titleBottom = drawWrappedText(context, card.title, padding, height * (kicker ? 0.69 : 0.64), width - padding * 2, width * 0.095, 3);
-  const detail = card.subtitle || card.notes;
-  if (detail) {
-    context.fillStyle = 'rgba(255,255,255,.86)';
-    context.font = `750 ${Math.round(width * 0.037)}px Inter, Arial, sans-serif`;
-    drawWrappedText(context, detail, padding, titleBottom + width * 0.036, width - padding * 2, width * 0.052, 3);
-  }
+  drawWrappedText(context, title, padding, height * 0.64, width - padding * 2, width * 0.095, 3);
   context.restore();
 }
 
