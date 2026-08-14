@@ -89,7 +89,8 @@ describe('Stack video card images', () => {
     expect(stackVideoRenderIsCurrent('stack-video-v10')).toBeFalse();
     expect(stackVideoRenderIsCurrent('stack-video-v11')).toBeFalse();
     expect(stackVideoRenderIsCurrent('stack-video-v12')).toBeFalse();
-    expect(stackVideoRenderIsCurrent('stack-video-v13')).toBeTrue();
+    expect(stackVideoRenderIsCurrent('stack-video-v13')).toBeFalse();
+    expect(stackVideoRenderIsCurrent('stack-video-v14')).toBeTrue();
   });
 
   it('normalizes safe final-screen defaults and duration bounds', () => {
@@ -98,6 +99,7 @@ describe('Stack video card images', () => {
       message: 'A Board',
       showQrCode: true,
       image: 'cover',
+      customImageUrl: '',
       durationSeconds: 3,
     });
     expect(normalizeStackVideoClosingScreen({
@@ -111,8 +113,17 @@ describe('Stack video card images', () => {
       message: 'Open the full guide',
       showQrCode: false,
       image: 'final-card',
+      customImageUrl: '',
       durationSeconds: 6,
     });
+    expect(normalizeStackVideoClosingScreen({
+      image: 'custom',
+      customImageUrl: '  https://example.com/custom.jpg  ',
+    })).toEqual(jasmine.objectContaining({
+      image: 'custom',
+      customImageUrl: 'https://example.com/custom.jpg',
+    }));
+    expect(normalizeStackVideoClosingScreen({ image: 'custom', customImageUrl: '' }).image).toBe('cover');
     expect(stackVideoClosingDurationMs({ durationSeconds: 2.24 })).toBe(2_000);
     expect(stackVideoClosingDurationMs({ durationSeconds: 4.26 })).toBe(4_500);
   });

@@ -6223,7 +6223,12 @@
                     <span class="material-symbols-outlined stack-final-screen__chevron">expand_more</span>
                   </summary>
                   <div class="stack-final-screen__body">
-                    <div class="stack-final-screen__preview" aria-label="Final screen preview">
+                    <div
+                      class="stack-final-screen__preview"
+                      [class.stack-final-screen__preview--square]="stackRatio() === 'square'"
+                      [class.stack-final-screen__preview--landscape]="stackRatio() === 'landscape'"
+                      aria-label="Final screen preview"
+                    >
                       @if (stackFinalScreenPreviewImage(board); as finalImage) {
                         <img class="stack-final-screen__preview-image" [src]="finalImage" alt="" />
                       }
@@ -6264,7 +6269,32 @@
                             <span class="material-symbols-outlined">last_page</span>
                             Final card
                           </button>
+                          <button
+                            type="button"
+                            [class.stack-final-screen__image-option--active]="stackFinalScreenImage() === 'custom'"
+                            [disabled]="!stackFinalScreenCustomImageUrl()"
+                            (click)="setStackFinalScreenImage('custom')"
+                          >
+                            <span class="material-symbols-outlined">add_photo_alternate</span>
+                            Custom
+                          </button>
                         </div>
+                        <div class="stack-final-screen__custom-image-actions">
+                          <label [class.stack-final-screen__upload--busy]="stackFinalScreenImageUploading()">
+                            <span class="material-symbols-outlined">upload</span>
+                            {{ stackFinalScreenImageUploading() ? 'Preparing image…' : stackFinalScreenCustomImageUrl() ? 'Replace custom image' : 'Upload custom image' }}
+                            <input
+                              type="file"
+                              accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
+                              [disabled]="stackFinalScreenImageUploading()"
+                              (change)="onStackFinalScreenImageSelected($event)"
+                            />
+                          </label>
+                          @if (stackFinalScreenCustomImageUrl()) {
+                            <button type="button" (click)="clearStackFinalScreenCustomImage()">Remove</button>
+                          }
+                        </div>
+                        <small class="stack-final-screen__image-help">JPG, PNG, or WebP up to 10 MB. The image is cropped to fill the video.</small>
                       </fieldset>
                       <label class="stack-final-screen__duration">
                         <span><strong>Duration</strong><output>{{ stackFinalScreenDurationSeconds() }} sec</output></span>
@@ -6273,7 +6303,7 @@
                       @if (stackFinalScreenError()) {
                         <small class="stack-final-screen__error">{{ stackFinalScreenError() }}</small>
                       }
-                      <button type="button" class="stack-final-screen__save" [disabled]="!stackFinalScreenDirty() || stackFinalScreenSaving()" (click)="saveStackFinalScreen(board)">
+                      <button type="button" class="stack-final-screen__save" [disabled]="!stackFinalScreenDirty() || stackFinalScreenSaving() || stackFinalScreenImageUploading()" (click)="saveStackFinalScreen(board)">
                         <span class="material-symbols-outlined">{{ stackFinalScreenSaving() ? 'progress_activity' : stackFinalScreenDirty() ? 'save' : 'check_circle' }}</span>
                         {{ stackFinalScreenSaving() ? 'Saving…' : stackFinalScreenDirty() ? 'Save final screen' : 'Final screen saved' }}
                       </button>

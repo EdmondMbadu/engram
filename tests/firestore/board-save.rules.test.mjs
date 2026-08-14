@@ -53,6 +53,7 @@ function personalWizardBoard(overrides = {}) {
     socialVideoClosingMessage: 'Open the full board',
     socialVideoClosingShowQrCode: true,
     socialVideoClosingImage: 'cover',
+    socialVideoClosingCustomImageUrl: '',
     socialVideoClosingDurationSeconds: 3,
     stickers: [],
     cards: [],
@@ -200,6 +201,22 @@ test('final-screen settings remain bounded by the board schema', async () => {
   await assertFails(setDoc(
     doc(database, 'boards', 'wizard-board-1'),
     personalWizardBoard({ socialVideoClosingImage: 'external-image' }),
+  ));
+  await assertFails(setDoc(
+    doc(database, 'boards', 'wizard-board-1'),
+    personalWizardBoard({ socialVideoClosingImage: 'custom', socialVideoClosingCustomImageUrl: '' }),
+  ));
+});
+
+test('owner can save a custom final-screen image', async () => {
+  const database = testEnvironment.authenticatedContext(ownerUid).firestore();
+
+  await assertSucceeds(setDoc(
+    doc(database, 'boards', 'wizard-board-1'),
+    personalWizardBoard({
+      socialVideoClosingImage: 'custom',
+      socialVideoClosingCustomImageUrl: 'https://storage.googleapis.com/example/final-screen.jpg',
+    }),
   ));
 });
 

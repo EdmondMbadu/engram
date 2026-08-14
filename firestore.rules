@@ -83,7 +83,23 @@ service cloud.firestore {
         )
         && (
           !data.keys().hasAny(['socialVideoClosingImage'])
-          || data.socialVideoClosingImage in ['cover', 'final-card']
+          || data.socialVideoClosingImage in ['cover', 'final-card', 'custom']
+        )
+        && (
+          !data.keys().hasAny(['socialVideoClosingCustomImageUrl'])
+          || (
+            data.socialVideoClosingCustomImageUrl is string
+            && data.socialVideoClosingCustomImageUrl.size() <= 2000
+          )
+        )
+        && (
+          !data.keys().hasAny(['socialVideoClosingImage'])
+          || data.socialVideoClosingImage != 'custom'
+          || (
+            data.keys().hasAny(['socialVideoClosingCustomImageUrl'])
+            && data.socialVideoClosingCustomImageUrl is string
+            && data.socialVideoClosingCustomImageUrl.size() > 0
+          )
         )
         && (
           !data.keys().hasAny(['socialVideoClosingDurationSeconds'])
@@ -133,6 +149,7 @@ service cloud.firestore {
         'socialVideoClosingMessage',
         'socialVideoClosingShowQrCode',
         'socialVideoClosingImage',
+        'socialVideoClosingCustomImageUrl',
         'socialVideoClosingDurationSeconds',
         'trailerVideoUrl',
         'trailerVideoMimeType',
@@ -783,6 +800,7 @@ service cloud.firestore {
           'socialVideoClosingMessage',
           'socialVideoClosingShowQrCode',
           'socialVideoClosingImage',
+          'socialVideoClosingCustomImageUrl',
           'socialVideoClosingDurationSeconds',
           'trailerVideoUrl',
           'trailerVideoMimeType',
@@ -981,6 +999,7 @@ service cloud.firestore {
           'socialVideoClosingMessage',
           'socialVideoClosingShowQrCode',
           'socialVideoClosingImage',
+          'socialVideoClosingCustomImageUrl',
           'socialVideoClosingDurationSeconds',
           'trailerVideoUrl',
           'trailerVideoMimeType',

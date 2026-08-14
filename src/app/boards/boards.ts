@@ -374,6 +374,7 @@ type Board = {
   socialVideoClosingMessage: string;
   socialVideoClosingShowQrCode: boolean;
   socialVideoClosingImage: StackVideoClosingImage;
+  socialVideoClosingCustomImageUrl: string;
   socialVideoClosingDurationSeconds: number;
   trailerVideoUrl: string;
   trailerVideoMimeType: string;
@@ -1671,6 +1672,8 @@ export class BoardsComponent implements OnDestroy {
   readonly stackFinalScreenMessage = signal('');
   readonly stackFinalScreenShowQrCode = signal(true);
   readonly stackFinalScreenImage = signal<StackVideoClosingImage>('cover');
+  readonly stackFinalScreenCustomImageUrl = signal('');
+  readonly stackFinalScreenImageUploading = signal(false);
   readonly stackFinalScreenDurationSeconds = signal(3);
   readonly stackFinalScreenOriginalSnapshot = signal('');
   readonly stackFinalScreenSaving = signal(false);
@@ -4649,6 +4652,7 @@ export class BoardsComponent implements OnDestroy {
           socialVideoClosingMessage: '',
           socialVideoClosingShowQrCode: true,
           socialVideoClosingImage: 'cover',
+          socialVideoClosingCustomImageUrl: '',
           socialVideoClosingDurationSeconds: 3,
           trailerVideoUrl: '',
           trailerVideoMimeType: '',
@@ -4864,6 +4868,7 @@ export class BoardsComponent implements OnDestroy {
         socialVideoClosingMessage: '',
         socialVideoClosingShowQrCode: true,
         socialVideoClosingImage: 'cover',
+        socialVideoClosingCustomImageUrl: '',
         socialVideoClosingDurationSeconds: 3,
         trailerVideoUrl: '',
         trailerVideoMimeType: '',
@@ -10950,6 +10955,7 @@ export class BoardsComponent implements OnDestroy {
       socialVideoClosingMessage: '',
       socialVideoClosingShowQrCode: true,
       socialVideoClosingImage: 'cover',
+      socialVideoClosingCustomImageUrl: '',
       socialVideoClosingDurationSeconds: 3,
       trailerVideoUrl: '',
       trailerVideoMimeType: '',
@@ -11752,7 +11758,38 @@ export class BoardsComponent implements OnDestroy {
   }
 
   setStackFinalScreenImage(image: StackVideoClosingImage): void {
+    if (image === 'custom' && !this.stackFinalScreenCustomImageUrl()) return;
     this.stackFinalScreenImage.set(image);
+    this.stackFinalScreenError.set(null);
+  }
+
+  async onStackFinalScreenImageSelected(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    input.value = '';
+    if (!file || this.stackFinalScreenImageUploading()) return;
+    if (file.size > 10 * 1024 * 1024) {
+      this.stackFinalScreenError.set('Choose a custom image smaller than 10 MB.');
+      return;
+    }
+    this.stackFinalScreenImageUploading.set(true);
+    this.stackFinalScreenError.set(null);
+    try {
+      const imageUrl = await this.readImageFile(file);
+      this.stackFinalScreenCustomImageUrl.set(imageUrl);
+      this.stackFinalScreenImage.set('custom');
+    } catch (error) {
+      this.stackFinalScreenError.set(error instanceof Error ? error.message : 'That custom image could not be prepared.');
+    } finally {
+      this.stackFinalScreenImageUploading.set(false);
+    }
+  }
+
+  clearStackFinalScreenCustomImage(): void {
+    this.stackFinalScreenCustomImageUrl.set('');
+    if (this.stackFinalScreenImage() === 'custom') {
+      this.stackFinalScreenImage.set('cover');
+    }
     this.stackFinalScreenError.set(null);
   }
 
@@ -11764,6 +11801,9 @@ export class BoardsComponent implements OnDestroy {
   }
 
   stackFinalScreenPreviewImage(board: Board): string {
+    if (this.stackFinalScreenImage() === 'custom' && this.stackFinalScreenCustomImageUrl()) {
+      return this.stackFinalScreenCustomImageUrl();
+    }
     if (this.stackFinalScreenImage() === 'final-card') {
       const finalCard = this.stackSelectedCards()[this.stackSelectedCards().length - 1];
       const finalImage = finalCard ? this.cardImages(finalCard)[0] ?? '' : '';
@@ -11777,7 +11817,7 @@ export class BoardsComponent implements OnDestroy {
   }
 
   async saveStackFinalScreen(board: Board): Promise<boolean> {
-    if (!this.canEditBoard(board) || this.stackFinalScreenSaving()) return false;
+    if (!this.canEditBoard(board) || this.stackFinalScreenSaving() || this.stackFinalScreenImageUploading()) return false;
     const normalized = this.currentStackFinalScreen(board);
     if (!normalized.headline || !normalized.message) {
       this.stackFinalScreenError.set('Add a headline and closing message before saving.');
@@ -11792,6 +11832,7 @@ export class BoardsComponent implements OnDestroy {
       socialVideoClosingMessage: normalized.message,
       socialVideoClosingShowQrCode: normalized.showQrCode,
       socialVideoClosingImage: normalized.image,
+      socialVideoClosingCustomImageUrl: normalized.customImageUrl,
       socialVideoClosingDurationSeconds: normalized.durationSeconds,
       socialVideoRenderVersion: '',
       updatedAt: now,
@@ -11800,7 +11841,7 @@ export class BoardsComponent implements OnDestroy {
       if (!await this.persistAndReplaceBoard(nextBoard)) {
         throw new Error('The final screen could not be synchronized.');
       }
-      this.applyStackFinalScreenState(nextBoard);
+      this.applyStackFinalScreenState(this.boards().find((item) => item.id === nextBoard.id) ?? nextBoard);
       this.setStackShareMessage('Final screen saved. Update the Full video to publish it.', false);
       return true;
     } catch (error) {
@@ -13722,6 +13763,7 @@ export class BoardsComponent implements OnDestroy {
       message: this.stackFinalScreenMessage(),
       showQrCode: this.stackFinalScreenShowQrCode(),
       image: this.stackFinalScreenImage(),
+      customImageUrl: this.stackFinalScreenCustomImageUrl(),
       durationSeconds: this.stackFinalScreenDurationSeconds(),
     }, board.title);
   }
@@ -13732,6 +13774,7 @@ export class BoardsComponent implements OnDestroy {
       message: this.stackFinalScreenMessage().trim(),
       showQrCode: this.stackFinalScreenShowQrCode(),
       image: this.stackFinalScreenImage(),
+      customImageUrl: this.stackFinalScreenCustomImageUrl(),
       durationSeconds: this.stackFinalScreenDurationSeconds(),
     });
   }
@@ -13742,12 +13785,14 @@ export class BoardsComponent implements OnDestroy {
       message: board.socialVideoClosingMessage,
       showQrCode: board.socialVideoClosingShowQrCode,
       image: board.socialVideoClosingImage,
+      customImageUrl: board.socialVideoClosingCustomImageUrl,
       durationSeconds: board.socialVideoClosingDurationSeconds,
     }, board.title);
     this.stackFinalScreenHeadline.set(closing.headline);
     this.stackFinalScreenMessage.set(closing.message);
     this.stackFinalScreenShowQrCode.set(closing.showQrCode);
     this.stackFinalScreenImage.set(closing.image);
+    this.stackFinalScreenCustomImageUrl.set(closing.customImageUrl);
     this.stackFinalScreenDurationSeconds.set(closing.durationSeconds);
     this.stackFinalScreenError.set(null);
     this.stackFinalScreenOriginalSnapshot.set(this.stackFinalScreenSnapshot());
@@ -16489,7 +16534,15 @@ export class BoardsComponent implements OnDestroy {
             ? (board as Partial<Board>).socialVideoClosingMessage!.slice(0, 180)
             : '',
           socialVideoClosingShowQrCode: (board as Partial<Board>).socialVideoClosingShowQrCode !== false,
-          socialVideoClosingImage: (board as Partial<Board>).socialVideoClosingImage === 'final-card' ? 'final-card' : 'cover',
+          socialVideoClosingImage: (board as Partial<Board>).socialVideoClosingImage === 'final-card'
+            || ((board as Partial<Board>).socialVideoClosingImage === 'custom'
+              && typeof (board as Partial<Board>).socialVideoClosingCustomImageUrl === 'string'
+              && Boolean((board as Partial<Board>).socialVideoClosingCustomImageUrl!.trim()))
+            ? (board as Partial<Board>).socialVideoClosingImage as StackVideoClosingImage
+            : 'cover',
+          socialVideoClosingCustomImageUrl: typeof (board as Partial<Board>).socialVideoClosingCustomImageUrl === 'string'
+            ? (board as Partial<Board>).socialVideoClosingCustomImageUrl!.trim()
+            : '',
           socialVideoClosingDurationSeconds: normalizeStackVideoClosingScreen({
             durationSeconds: (board as Partial<Board>).socialVideoClosingDurationSeconds,
           }).durationSeconds,
@@ -16828,7 +16881,15 @@ export class BoardsComponent implements OnDestroy {
         ? data['socialVideoClosingMessage'].slice(0, 180)
         : '',
       socialVideoClosingShowQrCode: data['socialVideoClosingShowQrCode'] !== false,
-      socialVideoClosingImage: data['socialVideoClosingImage'] === 'final-card' ? 'final-card' : 'cover',
+      socialVideoClosingImage: data['socialVideoClosingImage'] === 'final-card'
+        || (data['socialVideoClosingImage'] === 'custom'
+          && typeof data['socialVideoClosingCustomImageUrl'] === 'string'
+          && Boolean(data['socialVideoClosingCustomImageUrl'].trim()))
+        ? data['socialVideoClosingImage'] as StackVideoClosingImage
+        : 'cover',
+      socialVideoClosingCustomImageUrl: typeof data['socialVideoClosingCustomImageUrl'] === 'string'
+        ? data['socialVideoClosingCustomImageUrl'].trim()
+        : '',
       socialVideoClosingDurationSeconds: normalizeStackVideoClosingScreen({
         durationSeconds: data['socialVideoClosingDurationSeconds'] as number | undefined,
       }).durationSeconds,
@@ -17243,10 +17304,14 @@ export class BoardsComponent implements OnDestroy {
   private async prepareBoardImagesForFirebase(board: Board, uid: string): Promise<Board> {
     const imageUrl = await this.persistImageIfNeeded(board.imageUrl, `users/${uid}/boards/${board.id}/cover.jpg`);
     const logoUrl = await this.persistImageIfNeeded(board.logoUrl, `users/${uid}/boards/${board.id}/logo.jpg`);
+    const socialVideoClosingCustomImageUrl = await this.persistImageIfNeeded(
+      board.socialVideoClosingCustomImageUrl,
+      `users/${uid}/boards/${board.id}/social/final-screen.jpg`,
+    );
     const cards = await Promise.all(
       board.cards.map((card) => this.prepareBoardCardImagesForFirebase(card, uid, board.id)),
     );
-    return { ...board, imageUrl, logoUrl, cards };
+    return { ...board, imageUrl, logoUrl, socialVideoClosingCustomImageUrl, cards };
   }
 
   private async prepareBoardCardImagesForFirebase(

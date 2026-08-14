@@ -22,13 +22,14 @@ export type StackVideoBoard = {
   cards: StackVideoCard[];
 };
 
-export type StackVideoClosingImage = 'cover' | 'final-card';
+export type StackVideoClosingImage = 'cover' | 'final-card' | 'custom';
 
 export type StackVideoClosingScreen = {
   headline: string;
   message: string;
   showQrCode: boolean;
   image: StackVideoClosingImage;
+  customImageUrl: string;
   durationSeconds: number;
 };
 
@@ -94,7 +95,7 @@ const DEFAULT_CLOSING_DURATION_SECONDS = 3;
 const NARRATION_LEAD_MS = 100;
 const NARRATION_TAIL_MS = 350;
 
-export const STACK_VIDEO_RENDER_VERSION = 'stack-video-v13';
+export const STACK_VIDEO_RENDER_VERSION = 'stack-video-v14';
 export const STACK_TRAILER_RENDER_VERSION = 'board-trailer-v2';
 export const STACK_VIDEO_BRAND_URL = 'LivingWiki.com';
 
@@ -159,11 +160,16 @@ export function normalizeStackVideoClosingScreen(
   const duration = typeof value?.durationSeconds === 'number' ? value.durationSeconds : Number.NaN;
   const headline = typeof value?.headline === 'string' ? value.headline : '';
   const message = typeof value?.message === 'string' ? value.message : '';
+  const customImageUrl = typeof value?.customImageUrl === 'string' ? value.customImageUrl.trim() : '';
+  const image: StackVideoClosingImage = value?.image === 'custom'
+    ? customImageUrl ? 'custom' : 'cover'
+    : value?.image === 'final-card' ? 'final-card' : 'cover';
   return {
     headline: headline.trim().slice(0, 72) || 'Keep exploring',
     message: message.trim().slice(0, 180) || boardTitle.trim().slice(0, 180),
     showQrCode: value?.showQrCode !== false,
-    image: value?.image === 'final-card' ? 'final-card' : 'cover',
+    image,
+    customImageUrl,
     durationSeconds: Number.isFinite(duration)
       ? Math.min(6, Math.max(2, Math.round(duration * 2) / 2))
       : DEFAULT_CLOSING_DURATION_SECONDS,
@@ -269,6 +275,7 @@ export async function generateStackVideo(
   await Promise.all([
     loadCachedImage(board.coverImageUrl),
     loadCachedImage(board.qrImageUrl),
+    loadCachedImage(normalizeStackVideoClosingScreen(board.closingScreen).customImageUrl),
     ...board.cards.map(async (card) => {
       for (const imageUrl of stackVideoCardImageCandidates(card)) {
         if (await loadCachedImage(imageUrl)) return;
@@ -791,9 +798,11 @@ function renderFrame(
   } else {
     const closing = normalizeStackVideoClosingScreen(board.closingScreen, board.title);
     const finalCard = board.cards[board.cards.length - 1];
-    const closingImage = closing.image === 'final-card' && finalCard
-      ? firstLoadedCardImage(finalCard, images) ?? images.get(board.coverImageUrl)
-      : images.get(board.coverImageUrl);
+    const closingImage = closing.image === 'custom'
+      ? images.get(closing.customImageUrl) ?? images.get(board.coverImageUrl)
+      : closing.image === 'final-card' && finalCard
+        ? firstLoadedCardImage(finalCard, images) ?? images.get(board.coverImageUrl)
+        : images.get(board.coverImageUrl);
     drawClosingFrame(
       context,
       width,
