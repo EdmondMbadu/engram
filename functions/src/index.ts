@@ -3117,6 +3117,7 @@ function buildBoardFriendNewBoardEmail(params: {
   friendName: string;
   boardTitle: string;
   boardDescription: string;
+  boardCoverImageUrl: string;
   boardUrl: string;
 }) {
   const recipientName = params.recipientName?.trim() || params.recipientEmail;
@@ -3126,6 +3127,7 @@ function buildBoardFriendNewBoardEmail(params: {
   const safeBoardTitle = escapeHtml(params.boardTitle);
   const safeBoardDescription = escapeHtml(params.boardDescription);
   const safeBoardUrl = escapeHtml(params.boardUrl);
+  const safeBoardCoverImageUrl = escapeHtml(safeBoardCardRemoteImageUrl(params.boardCoverImageUrl));
 
   const text = `Hi ${recipientName},
 
@@ -3149,9 +3151,15 @@ The LivingWiki Team`;
         <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 22px;">
           <strong>${safeFriendName}</strong> added a new public board.
         </p>
-        <div style="background: #f8faf9; border: 1px solid #dbe8df; border-radius: 14px; padding: 20px; margin: 0 0 24px;">
-          <h2 style="color: #102017; font-size: 22px; line-height: 1.25; margin: 0 0 10px;">${safeBoardTitle}</h2>
-          ${safeBoardDescription ? `<p style="color: #4b5563; font-size: 15px; line-height: 1.6; margin: 0;">${safeBoardDescription}</p>` : ''}
+        <div style="background: #f8faf9; border: 1px solid #dbe8df; border-radius: 14px; overflow: hidden; margin: 0 0 24px;">
+          ${safeBoardCoverImageUrl ? `
+          <a href="${safeBoardUrl}" style="display: block; text-decoration: none;">
+            <img src="${safeBoardCoverImageUrl}" alt="${safeBoardTitle} cover image" width="578" style="display: block; width: 100%; height: 260px; object-fit: cover; border: 0;" />
+          </a>` : ''}
+          <div style="padding: 20px;">
+            <h2 style="color: #102017; font-size: 22px; line-height: 1.25; margin: 0 0 10px;">${safeBoardTitle}</h2>
+            ${safeBoardDescription ? `<p style="color: #4b5563; font-size: 15px; line-height: 1.6; margin: 0;">${safeBoardDescription}</p>` : ''}
+          </div>
         </div>
         <div style="text-align: center; margin: 26px 0;">
           <a href="${safeBoardUrl}" style="background: #1c7c41; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 999px; font-weight: 850; display: inline-block; font-size: 15px;">
@@ -3536,6 +3544,7 @@ export const notifyBoardFriendsOnCreate = onDocumentCreated(
     const boardId = event.params.boardId;
     const boardTitle = typeof data.title === 'string' && data.title.trim() ? data.title.trim() : 'New board';
     const boardDescription = typeof data.description === 'string' ? data.description.trim() : '';
+    const boardCoverImageUrl = safeBoardCardRemoteImageUrl(data.imageUrl);
     const friendName = typeof data.owner_display_name === 'string' && data.owner_display_name.trim()
       ? data.owner_display_name.trim()
       : 'A LivingWiki friend';
@@ -3560,6 +3569,7 @@ export const notifyBoardFriendsOnCreate = onDocumentCreated(
         friendName,
         boardTitle,
         boardDescription,
+        boardCoverImageUrl,
         boardUrl,
       });
       try {
