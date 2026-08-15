@@ -798,7 +798,7 @@
                 [class.board-square--drop-after]="isBoardDropAfter(board.id)"
                 [style.--board-accent]="toneAccent(board.tone)"
                 [style.--board-soft]="toneSoft(board.tone)"
-                [attr.draggable]="canEditBoard(board) && filteredBoards().length > 1 ? 'true' : null"
+                [attr.draggable]="!publicOwnerKey() && canEditBoard(board) && filteredBoards().length > 1 ? 'true' : null"
                 (dragstart)="beginBoardReorderDrag($event, board)"
                 (dragover)="dragBoardOver($event, board)"
                 (dragleave)="dragBoardLeave($event, board)"

@@ -3,7 +3,7 @@ import { Component, computed, effect, ElementRef, HostListener, inject, LOCALE_I
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DomSanitizer, type SafeResourceUrl } from '@angular/platform-browser';
 import { FirebaseError } from 'firebase/app';
-import { collection, deleteDoc, doc, getDoc, getDocs, limit, onSnapshot, query, serverTimestamp, setDoc, startAfter, updateDoc, where, writeBatch, type DocumentData, type Firestore, type QueryConstraint, type QueryDocumentSnapshot, type Unsubscribe } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDoc, getDocs, limit, onSnapshot, orderBy, query, serverTimestamp, setDoc, startAfter, updateDoc, where, writeBatch, type DocumentData, type Firestore, type QueryConstraint, type QueryDocumentSnapshot, type Unsubscribe } from 'firebase/firestore';
 import { httpsCallable, type Functions } from 'firebase/functions';
 import { deleteObject, getDownloadURL, ref as storageRef, uploadBytes, type FirebaseStorage } from 'firebase/storage';
 import { AccountMenuComponent } from '../account-menu/account-menu';
@@ -63,6 +63,7 @@ import {
   shouldFlushBoardWizardDraftOnClose,
 } from './board-wizard-draft-lifecycle';
 import { appendBoardCards } from './board-batch';
+import { compareBoardsByCreatedDate } from './board-gallery-order';
 import {
   BOARD_NARRATION_STYLES,
   DEFAULT_BOARD_NARRATION_STYLE_ID,
@@ -2116,7 +2117,7 @@ export class BoardsComponent implements OnDestroy {
       .filter((board) => !board.parentCardId)
       .filter((board) => !this.songsPage() || this.isSongBoard(board))
       .filter((board) => !this.tripsPage() || this.isTourBoard(board))
-      .sort((a, b) => this.compareBoards(a, b));
+      .sort((a, b) => this.compareGalleryBoards(a, b));
     if (!query) {
       return boards;
     }
@@ -16393,6 +16394,9 @@ export class BoardsComponent implements OnDestroy {
     } else {
       constraints.push(where('visibility', '==', 'public'));
     }
+    if (context.publicOwnerRouteActive) {
+      constraints.push(orderBy('created_at_iso', 'desc'));
+    }
     if (this.boardPageCursor) {
       constraints.push(startAfter(this.boardPageCursor));
     }
@@ -16410,7 +16414,7 @@ export class BoardsComponent implements OnDestroy {
       const current = replace ? [] : this.boards();
       const boardsById = new Map(current.map((board) => [board.id, board]));
       page.forEach((board) => boardsById.set(board.id, board));
-      this.boards.set([...boardsById.values()].sort((left, right) => this.compareBoards(left, right)));
+      this.boards.set([...boardsById.values()].sort((left, right) => this.compareGalleryBoards(left, right)));
       this.boardPageCursor = snapshot.docs.at(-1) ?? this.boardPageCursor;
       this.boardsHasMore.set(snapshot.docs.length === BOARD_GALLERY_PAGE_SIZE);
       return snapshot.docs.length > 0;
@@ -17531,6 +17535,12 @@ export class BoardsComponent implements OnDestroy {
       left.title.localeCompare(right.title) ||
       left.id.localeCompare(right.id)
     );
+  }
+
+  private compareGalleryBoards(left: Board, right: Board): number {
+    return this.publicOwnerKey()
+      ? compareBoardsByCreatedDate(left, right)
+      : this.compareBoards(left, right);
   }
 
   private nextBoardSortOrder(): number {
