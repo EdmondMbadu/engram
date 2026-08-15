@@ -18,6 +18,7 @@
     "test:spotify-oauth": "npm run build && node scripts/test-spotify-oauth.cjs",
     "test:visit-plans": "npm run build && node scripts/test-visit-plans.cjs",
     "test:visit-email-sandbox": "npm run build && node scripts/test-visit-email-sandbox.cjs",
+    "test:board-share-email": "npm run build && node scripts/test-board-share-email.cjs",
     "test:city-place-search": "npm run build && node scripts/test-city-place-search.cjs",
     "test:bulk-board-generation": "npm run build && node scripts/test-bulk-board-generation.cjs",
     "test:university-board-generation": "npm run build && node scripts/test-university-board-generation.cjs",

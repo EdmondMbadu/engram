@@ -1479,6 +1479,10 @@ export class BoardsComponent implements OnDestroy {
   readonly cardImageApplying = signal(false);
   readonly cardImageToolError = signal<string | null>(null);
   readonly shareMessage = signal<string | null>(null);
+  readonly boardEmailShareOpenId = signal<string | null>(null);
+  readonly boardEmailShareRecipient = signal('');
+  readonly boardEmailShareSending = signal(false);
+  readonly boardEmailShareError = signal<string | null>(null);
   readonly boardTranslationMenuOpen = signal(false);
   readonly boardTranslationTarget = signal<BoardTranslationLanguage | null>(null);
   readonly boardTranslationResult = signal<BoardTranslationResult | null>(null);
@@ -11168,8 +11172,79 @@ export class BoardsComponent implements OnDestroy {
   }
 
   toggleSharePanel(): void {
-    this.sharePanelOpen.update((open) => !open);
+    const opening = !this.sharePanelOpen();
+    this.sharePanelOpen.set(opening);
+    if (!opening) {
+      this.closeBoardEmailShare();
+    }
     this.setShareMessage(null);
+  }
+
+  toggleBoardEmailShare(board: Board, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (board.visibility !== 'public') {
+      this.setShareMessage('Only public boards can be emailed.');
+      return;
+    }
+    const opening = this.boardEmailShareOpenId() !== board.id;
+    this.boardEmailShareOpenId.set(opening ? board.id : null);
+    this.boardEmailShareRecipient.set('');
+    this.boardEmailShareError.set(null);
+  }
+
+  closeBoardEmailShare(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (this.boardEmailShareSending()) return;
+    this.boardEmailShareOpenId.set(null);
+    this.boardEmailShareRecipient.set('');
+    this.boardEmailShareError.set(null);
+  }
+
+  updateBoardEmailShareRecipient(value: string): void {
+    this.boardEmailShareRecipient.set(value.slice(0, 320));
+    this.boardEmailShareError.set(null);
+  }
+
+  signInToEmailBoard(): void {
+    void this.router.navigate(['/sign-in'], { queryParams: { redirectTo: this.router.url } });
+  }
+
+  async sendBoardByEmail(board: Board, event?: Event): Promise<void> {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (this.boardEmailShareSending()) return;
+    if (!this.authService.isAuthenticated()) {
+      this.signInToEmailBoard();
+      return;
+    }
+    if (!this.functions || board.visibility !== 'public') {
+      this.boardEmailShareError.set('Only public boards can be emailed.');
+      return;
+    }
+    const email = this.boardEmailShareRecipient().trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      this.boardEmailShareError.set('Enter a valid email address.');
+      return;
+    }
+
+    this.boardEmailShareSending.set(true);
+    this.boardEmailShareError.set(null);
+    try {
+      const callable = httpsCallable<{ boardId: string; email: string }, { sent?: boolean }>(
+        this.functions,
+        'shareBoardByEmail',
+      );
+      await callable({ boardId: board.id, email });
+      this.boardEmailShareOpenId.set(null);
+      this.boardEmailShareRecipient.set('');
+      this.setShareMessage(`Board emailed to ${email}.`, false);
+    } catch (error) {
+      this.boardEmailShareError.set(this.boardEmailShareErrorMessage(error));
+    } finally {
+      this.boardEmailShareSending.set(false);
+    }
   }
 
   boardRouteRoot(board: Board | null = this.selectedBoard()): string {
@@ -13996,6 +14071,23 @@ export class BoardsComponent implements OnDestroy {
       return error.message.trim();
     }
     return fallback;
+  }
+
+  private boardEmailShareErrorMessage(error: unknown): string {
+    if (error instanceof FirebaseError) {
+      if (error.code === 'functions/resource-exhausted') {
+        return 'You have reached the email sharing limit. Try again later.';
+      }
+      if (error.code === 'functions/failed-precondition') {
+        return error.message.includes('Verify')
+          ? 'Verify your account email before sharing a board by email.'
+          : 'Only public boards can be emailed.';
+      }
+      if (error.code === 'functions/unauthenticated') {
+        return 'Sign in before emailing a board.';
+      }
+    }
+    return this.boardFriendErrorMessage(error, 'The board could not be emailed. Please try again.');
   }
 
   private cardImageActionErrorMessage(error: unknown, fallback: string): string {

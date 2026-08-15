@@ -671,6 +671,10 @@
     "source": "Scraper",
     "file": "src/app/mobile-menu/mobile-menu.ts"
   },
+  "1446768985954212859": {
+    "source": "Sign in to email this board",
+    "file": "src/app/boards/boards.html"
+  },
   "1446856790383333173": {
     "source": "Board save failed. Please try again.",
     "file": "src/app/boards/boards.ts"
@@ -1785,10 +1789,6 @@
   },
   "2202010677726191006": {
     "source": "Example: 1934 Italy World Cup champions",
-    "file": "src/app/boards/boards.html"
-  },
-  "2205769407711854293": {
-    "source": "{$START_TAG_SPAN}add{$CLOSE_TAG_SPAN} Create ",
     "file": "src/app/boards/boards.html"
   },
   "2207530172337162652": {
@@ -6663,6 +6663,10 @@
     "source": " Saved. The next chat reply in this wiki will use this voice. ",
     "file": "src/app/atlas-persona/atlas-persona.html"
   },
+  "5374948793948746137": {
+    "source": "Sends the full board—not the Stack or video.",
+    "file": "src/app/boards/boards.html"
+  },
   "5376278527160123538": {
     "source": "Find what lights you up!",
     "file": "src/app/public-wikis/public-wikis.html"
@@ -6690,6 +6694,10 @@
   "5388781089216918537": {
     "source": "No matching places found.",
     "file": "src/app/boards/boards.ts"
+  },
+  "5390443190067058395": {
+    "source": "Email this board",
+    "file": "src/app/boards/boards.html"
   },
   "5401235049169008975": {
     "source": "Open source page",

@@ -50,6 +50,7 @@ import {
 } from './board-translation';
 import { db, storage } from './firebase';
 import { handleAnswerCardShare, handleBoardShare, handleTravelCardShare } from './answer-card-share';
+import { buildDirectBoardShareEmail, safeBoardShareImageUrl } from './board-share-email';
 import { resolveSpotifyOAuthRedirectUri } from './spotify-oauth';
 import {
   boardCardById,
@@ -3197,6 +3198,91 @@ async function sendBoardFriendEmail(params: {
     html: params.html,
   });
 }
+
+async function consumeBoardEmailShareQuota(userId: string): Promise<void> {
+  const now = Date.now();
+  const hourBucket = Math.floor(now / (60 * 60 * 1000));
+  const dayBucket = Math.floor(now / (24 * 60 * 60 * 1000));
+  const quotaRef = db.collection('board_email_share_limits').doc(userId);
+
+  await db.runTransaction(async (transaction) => {
+    const snapshot = await transaction.get(quotaRef);
+    const data = snapshot.data() as Record<string, unknown> | undefined;
+    const previousHourCount = data?.hour_bucket === hourBucket && typeof data.hour_count === 'number'
+      ? data.hour_count
+      : 0;
+    const previousDayCount = data?.day_bucket === dayBucket && typeof data.day_count === 'number'
+      ? data.day_count
+      : 0;
+    if (previousHourCount >= 10 || previousDayCount >= 30) {
+      throw new HttpsError('resource-exhausted', 'You have reached the board email sharing limit. Try again later.');
+    }
+    transaction.set(quotaRef, {
+      user_id: userId,
+      hour_bucket: hourBucket,
+      hour_count: previousHourCount + 1,
+      day_bucket: dayBucket,
+      day_count: previousDayCount + 1,
+      updated_at: FieldValue.serverTimestamp(),
+    }, { merge: true });
+  });
+}
+
+export const shareBoardByEmail = onCall(
+  { region: callableRegion, cors: true, secrets: [sendgridApiKey] },
+  async (request) => {
+    const senderUserId = request.auth?.uid ?? '';
+    if (!senderUserId) {
+      throw new HttpsError('unauthenticated', 'Sign in before emailing a board.');
+    }
+    if (request.auth?.token.email_verified !== true) {
+      throw new HttpsError('failed-precondition', 'Verify your email address before emailing a board.');
+    }
+
+    const boardId = typeof request.data?.boardId === 'string' ? request.data.boardId.trim().slice(0, 160) : '';
+    const recipientEmail = normalizeUserEmail(request.data?.email);
+    if (!boardId || !/^[a-zA-Z0-9_-]+$/.test(boardId)) {
+      throw new HttpsError('invalid-argument', 'Choose a valid board.');
+    }
+    if (!isValidEmail(recipientEmail)) {
+      throw new HttpsError('invalid-argument', 'Enter a valid recipient email address.');
+    }
+
+    const [boardSnapshot, senderSnapshot] = await Promise.all([
+      db.collection('boards').doc(boardId).get(),
+      db.collection('users').doc(senderUserId).get(),
+    ]);
+    if (!boardSnapshot.exists) {
+      throw new HttpsError('not-found', 'That board is no longer available.');
+    }
+    const board = boardSnapshot.data() as Record<string, unknown>;
+    if (board.visibility !== 'public') {
+      throw new HttpsError('failed-precondition', 'Only public boards can be emailed.');
+    }
+
+    await consumeBoardEmailShareQuota(senderUserId);
+
+    const senderEmail = normalizeUserEmail(request.auth?.token.email);
+    const sender = senderSnapshot.data() as Record<string, unknown> | undefined;
+    const senderName = displayNameForUser(sender, senderEmail, 'A LivingWiki member').slice(0, 100);
+    const recipientSnapshot = await db.collection('users').where('email', '==', recipientEmail).limit(1).get();
+    const recipientDoc = recipientSnapshot.docs[0];
+    const email = buildDirectBoardShareEmail({
+      recipientEmail,
+      recipientName: recipientDoc
+        ? displayNameForUser(recipientDoc.data() as Record<string, unknown>, recipientEmail)
+        : null,
+      senderName,
+      boardTitle: typeof board.title === 'string' ? board.title.slice(0, 120) : 'LivingWiki board',
+      boardDescription: typeof board.description === 'string' ? board.description.slice(0, 600) : '',
+      boardCoverImageUrl: safeBoardShareImageUrl(board.imageUrl),
+      boardUrl: `${publicAppUrl}/boards/${encodeURIComponent(boardId)}`,
+    });
+    await sendBoardFriendEmail({ recipientEmail, ...email });
+    logger.info('Public board shared by email.', { boardId, senderUserId });
+    return { sent: true };
+  },
+);
 
 export const inviteBoardFriend = onCall({ region: callableRegion, cors: true, secrets: [sendgridApiKey] }, async (request) => {
   const fromUserId = request.auth?.uid ?? '';

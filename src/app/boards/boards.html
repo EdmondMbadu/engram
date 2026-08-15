@@ -1357,12 +1357,70 @@
                     <span><strong i18n>Live view</strong><small i18n>Immersive card-by-card experience</small></span>
                     <span class="board-share-destination__action" i18n><span class="material-symbols-outlined">content_copy</span> Copy</span>
                   </button>
-                  <button type="button" class="board-share-destination" (click)="copyBoardUrl(board)">
+                  <div class="board-share-destination board-share-destination--static">
                     <span class="board-share-destination__icon material-symbols-outlined">dashboard_customize</span>
                     <span><strong i18n>Board view</strong><small i18n>Full collection with every card</small></span>
-                    <span class="board-share-destination__action" i18n><span class="material-symbols-outlined">content_copy</span> Copy</span>
-                  </button>
+                    <span class="board-share-destination__actions">
+                      <button type="button" class="board-share-destination__mini-action" (click)="copyBoardUrl(board)">
+                        <span class="material-symbols-outlined">content_copy</span>
+                        <span i18n>Copy</span>
+                      </button>
+                      @if (board.visibility === 'public') {
+                        <button
+                          type="button"
+                          class="board-share-destination__mini-action"
+                          [class.board-share-destination__mini-action--active]="boardEmailShareOpenId() === board.id"
+                          [attr.aria-expanded]="boardEmailShareOpenId() === board.id"
+                          (click)="toggleBoardEmailShare(board, $event)"
+                        >
+                          <span class="material-symbols-outlined">mail</span>
+                          <span i18n>Email</span>
+                        </button>
+                      }
+                    </span>
+                  </div>
                 </div>
+
+                @if (boardEmailShareOpenId() === board.id) {
+                  <form class="board-email-share" (submit)="sendBoardByEmail(board, $event)">
+                    <div class="board-email-share__head">
+                      <span class="material-symbols-outlined">forward_to_inbox</span>
+                      <span><strong i18n>Email this board</strong><small i18n>Sends the full board—not the Stack or video.</small></span>
+                      <button type="button" aria-label="Close email form" [disabled]="boardEmailShareSending()" (click)="closeBoardEmailShare($event)">
+                        <span class="material-symbols-outlined">close</span>
+                      </button>
+                    </div>
+                    @if (isSignedIn()) {
+                      <div class="board-email-share__form-row">
+                        <label>
+                          <span i18n>Email address</span>
+                          <input
+                            type="email"
+                            autocomplete="email"
+                            maxlength="320"
+                            required
+                            placeholder="friend@example.com"
+                            [value]="boardEmailShareRecipient()"
+                            [disabled]="boardEmailShareSending()"
+                            (input)="updateBoardEmailShareRecipient($any($event.target).value)"
+                          />
+                        </label>
+                        <button type="submit" [disabled]="boardEmailShareSending()">
+                          <span class="material-symbols-outlined">{{ boardEmailShareSending() ? 'progress_activity' : 'send' }}</span>
+                          {{ boardEmailShareSending() ? 'Sending…' : 'Send board' }}
+                        </button>
+                      </div>
+                    } @else {
+                      <button type="button" class="board-email-share__sign-in" (click)="signInToEmailBoard()">
+                        <span class="material-symbols-outlined">login</span>
+                        <span i18n>Sign in to email this board</span>
+                      </button>
+                    }
+                    @if (boardEmailShareError()) {
+                      <small class="board-email-share__error" role="alert">{{ boardEmailShareError() }}</small>
+                    }
+                  </form>
+                }
 
                 @if (board.kind === 'off-grid') {
                   <div class="off-grid-share-note">
@@ -1374,22 +1432,25 @@
                   </div>
                 }
 
-                <div class="board-share-panel__actions">
-                  <button type="button" class="board-share-panel__studio" (click)="openStackView(board, $event)" i18n>
-                    <span class="material-symbols-outlined">smart_display</span>
-                    View Stack
-                  </button>
-                  @if (canUseStackStudio(board)) {
-                    <button type="button" class="board-share-panel__studio" (click)="openStackStudio(board, $event)" i18n>
-                      <span class="material-symbols-outlined">auto_awesome_motion</span>
-                      Stack Studio
+                <details class="board-share-panel__more">
+                  <summary><span class="material-symbols-outlined">more_horiz</span><span i18n>More options</span><span class="material-symbols-outlined">expand_more</span></summary>
+                  <div class="board-share-panel__actions">
+                    <button type="button" class="board-share-panel__studio" (click)="openStackView(board, $event)" i18n>
+                      <span class="material-symbols-outlined">smart_display</span>
+                      View Stack
                     </button>
-                  }
-                  <button type="button" (click)="nativeShareBoard(board)" i18n>
-                    <span class="material-symbols-outlined">ios_share</span>
-                    Share page
-                  </button>
-                </div>
+                    @if (canUseStackStudio(board)) {
+                      <button type="button" class="board-share-panel__studio" (click)="openStackStudio(board, $event)" i18n>
+                        <span class="material-symbols-outlined">auto_awesome_motion</span>
+                        Stack Studio
+                      </button>
+                    }
+                    <button type="button" (click)="nativeShareBoard(board)" i18n>
+                      <span class="material-symbols-outlined">ios_share</span>
+                      Share page
+                    </button>
+                  </div>
+                </details>
                 @if (shareMessage()) {
                   <small class="board-share-panel__note">{{ shareMessage() }}</small>
                 }
@@ -2115,29 +2176,90 @@
                           <span><strong i18n>Live view</strong><small i18n>Immersive card-by-card experience</small></span>
                           <span class="board-share-destination__action" i18n><span class="material-symbols-outlined">content_copy</span> Copy</span>
                         </button>
-                        <button type="button" class="board-share-destination" (click)="copyBoardUrl(board)">
+                        <div class="board-share-destination board-share-destination--static">
                           <span class="board-share-destination__icon material-symbols-outlined">dashboard_customize</span>
                           <span><strong i18n>Board view</strong><small i18n>Full collection with every card</small></span>
-                          <span class="board-share-destination__action" i18n><span class="material-symbols-outlined">content_copy</span> Copy</span>
-                        </button>
+                          <span class="board-share-destination__actions">
+                            <button type="button" class="board-share-destination__mini-action" (click)="copyBoardUrl(board)">
+                              <span class="material-symbols-outlined">content_copy</span>
+                              <span i18n>Copy</span>
+                            </button>
+                            @if (board.visibility === 'public') {
+                              <button
+                                type="button"
+                                class="board-share-destination__mini-action"
+                                [class.board-share-destination__mini-action--active]="boardEmailShareOpenId() === board.id"
+                                [attr.aria-expanded]="boardEmailShareOpenId() === board.id"
+                                (click)="toggleBoardEmailShare(board, $event)"
+                              >
+                                <span class="material-symbols-outlined">mail</span>
+                                <span i18n>Email</span>
+                              </button>
+                            }
+                          </span>
+                        </div>
                       </div>
 
-                      <div class="board-share-panel__actions">
-                        <button type="button" class="board-share-panel__studio" (click)="openStackView(board, $event)" i18n>
-                          <span class="material-symbols-outlined">smart_display</span>
-                          View Stack
-                        </button>
-                        @if (canUseStackStudio(board)) {
-                          <button type="button" class="board-share-panel__studio" (click)="openStackStudio(board, $event)" i18n>
-                            <span class="material-symbols-outlined">auto_awesome_motion</span>
-                            Stack Studio
+                      @if (boardEmailShareOpenId() === board.id) {
+                        <form class="board-email-share" (submit)="sendBoardByEmail(board, $event)">
+                          <div class="board-email-share__head">
+                            <span class="material-symbols-outlined">forward_to_inbox</span>
+                            <span><strong i18n>Email this board</strong><small i18n>Sends the full board—not the Stack or video.</small></span>
+                            <button type="button" aria-label="Close email form" [disabled]="boardEmailShareSending()" (click)="closeBoardEmailShare($event)">
+                              <span class="material-symbols-outlined">close</span>
+                            </button>
+                          </div>
+                          @if (isSignedIn()) {
+                            <div class="board-email-share__form-row">
+                              <label>
+                                <span i18n>Email address</span>
+                                <input
+                                  type="email"
+                                  autocomplete="email"
+                                  maxlength="320"
+                                  required
+                                  placeholder="friend@example.com"
+                                  [value]="boardEmailShareRecipient()"
+                                  [disabled]="boardEmailShareSending()"
+                                  (input)="updateBoardEmailShareRecipient($any($event.target).value)"
+                                />
+                              </label>
+                              <button type="submit" [disabled]="boardEmailShareSending()">
+                                <span class="material-symbols-outlined">{{ boardEmailShareSending() ? 'progress_activity' : 'send' }}</span>
+                                {{ boardEmailShareSending() ? 'Sending…' : 'Send board' }}
+                              </button>
+                            </div>
+                          } @else {
+                            <button type="button" class="board-email-share__sign-in" (click)="signInToEmailBoard()">
+                              <span class="material-symbols-outlined">login</span>
+                              <span i18n>Sign in to email this board</span>
+                            </button>
+                          }
+                          @if (boardEmailShareError()) {
+                            <small class="board-email-share__error" role="alert">{{ boardEmailShareError() }}</small>
+                          }
+                        </form>
+                      }
+
+                      <details class="board-share-panel__more">
+                        <summary><span class="material-symbols-outlined">more_horiz</span><span i18n>More options</span><span class="material-symbols-outlined">expand_more</span></summary>
+                        <div class="board-share-panel__actions">
+                          <button type="button" class="board-share-panel__studio" (click)="openStackView(board, $event)" i18n>
+                            <span class="material-symbols-outlined">smart_display</span>
+                            View Stack
                           </button>
-                        }
-                        <button type="button" (click)="nativeShareBoard(board)" i18n>
-                          <span class="material-symbols-outlined">ios_share</span>
-                          Share page
-                        </button>
-                      </div>
+                          @if (canUseStackStudio(board)) {
+                            <button type="button" class="board-share-panel__studio" (click)="openStackStudio(board, $event)" i18n>
+                              <span class="material-symbols-outlined">auto_awesome_motion</span>
+                              Stack Studio
+                            </button>
+                          }
+                          <button type="button" (click)="nativeShareBoard(board)" i18n>
+                            <span class="material-symbols-outlined">ios_share</span>
+                            Share page
+                          </button>
+                        </div>
+                      </details>
                       @if (shareMessage()) {
                         <small class="board-share-panel__note">{{ shareMessage() }}</small>
                       }
