@@ -220,6 +220,50 @@ test('owner can save a custom final-screen image', async () => {
   ));
 });
 
+test('owner can update the Studio cover and final card together', async () => {
+  await testEnvironment.withSecurityRulesDisabled(async (context) => {
+    await setDoc(
+      doc(context.firestore(), 'boards', 'wizard-board-1'),
+      personalWizardBoard({ server_updated_at: new Date('2026-08-12T00:00:00.000Z') }),
+    );
+  });
+  const database = testEnvironment.authenticatedContext(ownerUid).firestore();
+
+  await assertSucceeds(setDoc(
+    doc(database, 'boards', 'wizard-board-1'),
+    personalWizardBoard({
+      title: 'A stronger opening',
+      description: '',
+      imageUrl: 'https://storage.googleapis.com/example/cover.jpg',
+      socialVideoClosingHeadline: 'Keep exploring',
+      socialVideoClosingMessage: 'Scan to open the complete board.',
+      socialVideoClosingShowQrCode: true,
+      socialVideoClosingImage: 'cover',
+      socialVideoClosingDurationSeconds: 4,
+      updated_at_iso: '2026-08-12T02:00:00.000Z',
+    }),
+  ));
+});
+
+test('a non-owner cannot update an existing board through Studio fields', async () => {
+  await testEnvironment.withSecurityRulesDisabled(async (context) => {
+    await setDoc(
+      doc(context.firestore(), 'boards', 'wizard-board-1'),
+      personalWizardBoard({ server_updated_at: new Date('2026-08-12T00:00:00.000Z') }),
+    );
+  });
+  const database = testEnvironment.authenticatedContext('different-user').firestore();
+
+  await assertFails(setDoc(
+    doc(database, 'boards', 'wizard-board-1'),
+    personalWizardBoard({
+      title: 'Unauthorized cover edit',
+      socialVideoClosingMessage: 'Unauthorized final-card edit',
+      updated_at_iso: '2026-08-12T02:00:00.000Z',
+    }),
+  ));
+});
+
 test('owner can repair a legacy personal board that stored null city metadata', async () => {
   await testEnvironment.withSecurityRulesDisabled(async (context) => {
     await setDoc(

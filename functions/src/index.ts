@@ -18553,12 +18553,19 @@ export const synthesizeChatAnswerSpeech = onCall(
       ? tourGuideSpeechModel
       : chatAnswerSpeechModel;
     const voiceSettings = requestedMode === 'tour' || requestedMode === 'stack-video'
-      ? {
-          stability: 0.34,
-          similarity_boost: 0.86,
-          style: 0.72,
-          use_speaker_boost: true,
-        }
+      ? isPersonalNarrator
+        ? {
+            stability: 0.6,
+            similarity_boost: 0.86,
+            style: 0,
+            use_speaker_boost: true,
+          }
+        : {
+            stability: 0.34,
+            similarity_boost: 0.86,
+            style: 0.72,
+            use_speaker_boost: true,
+          }
       : {
           stability: 0.5,
           similarity_boost: 0.75,

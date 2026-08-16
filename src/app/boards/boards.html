@@ -5477,7 +5477,7 @@
                     >
                       <span class="stack-workflow-tabs__step">1</span>
                       <span class="stack-workflow-tabs__copy"><strong>Script</strong><small>Write the story</small></span>
-                      @if (!stackScriptDirty() && stackScriptMissingCount() === 0) {
+                      @if (!stackScriptDirty() && !stackCoverDirty() && stackScriptMissingCount() === 0) {
                         <span class="stack-workflow-tabs__status" aria-label="Script ready">✓</span>
                       }
                     </button>
@@ -5609,9 +5609,9 @@
                         <div class="stack-script-error">{{ stackScriptError() }}</div>
                       }
                       <footer class="stack-script-footer">
-                        <span class="stack-script-save-state" [class.stack-script-save-state--dirty]="stackScriptDirty()">
+                        <span class="stack-script-save-state" [class.stack-script-save-state--dirty]="stackScriptDirty() || stackCoverDirty()">
                           <span class="stack-script-save-state__dot" aria-hidden="true"></span>
-                          {{ stackScriptSaving() ? 'Saving…' : stackScriptDirty() ? 'Unsaved changes' : stackScriptSavedAt() ? 'Script saved' : 'Ready to edit' }}
+                          {{ stackScriptSaving() ? 'Saving…' : stackScriptDirty() || stackCoverDirty() ? 'Unsaved changes' : stackScriptSavedAt() ? 'Script saved' : 'Ready to edit' }}
                         </span>
                         <button type="button" class="boards-ghost-action" [disabled]="!stackScriptCanSave()" (click)="saveStackScript(board)">
                           {{ stackScriptSaving() ? 'Saving…' : 'Save script' }}
@@ -6137,6 +6137,27 @@
               </div>
 
               <aside class="stack-preview-panel">
+                <div class="stack-preview-shortcuts" role="group" aria-label="Edit opening or final card">
+                  <button
+                    type="button"
+                    [class.stack-preview-shortcuts__active]="stackCurrentFrame().kind === 'cover'"
+                    [attr.aria-pressed]="stackCurrentFrame().kind === 'cover'"
+                    (click)="showStackStudioFrame('cover')"
+                  >
+                    <span class="material-symbols-outlined">web_asset</span>
+                    <span><strong>Cover</strong><small>Opening frame</small></span>
+                  </button>
+                  <button
+                    type="button"
+                    [class.stack-preview-shortcuts__active]="stackCurrentFrame().kind === 'closing'"
+                    [attr.aria-pressed]="stackCurrentFrame().kind === 'closing'"
+                    (click)="showStackStudioFrame('closing')"
+                  >
+                    <span class="material-symbols-outlined">featured_video</span>
+                    <span><strong>Final Card</strong><small>Closing frame</small></span>
+                  </button>
+                </div>
+
                 <div class="stack-preview-toolbar">
                   <div>
                     <strong>{{ stackFrameLabel(stackCurrentFrame()) }}</strong>
@@ -6167,8 +6188,8 @@
                     [class.stack-preview--landscape]="stackRatio() === 'landscape'"
                   >
                     @if (frame.kind === 'cover') {
-                      @if (stackCoverImage(board)) {
-                        <img class="stack-preview__media" [src]="stackCoverImage(board)" [alt]="stackCoverTitle()" />
+                      @if (stackStudioCoverImage(board)) {
+                        <img class="stack-preview__media" [src]="stackStudioCoverImage(board)" [alt]="stackScriptBoardTitle()" />
                       }
                       <div class="stack-preview__shade"></div>
                       <div class="stack-preview__content stack-preview__content--cover">
@@ -6204,18 +6225,22 @@
                         }
                       }
                     } @else {
-                      <div class="stack-preview__closing">
-                        <span class="material-symbols-outlined">auto_awesome_motion</span>
-                        <h4 i18n>Made with LivingWiki</h4>
-                        <p>{{ stackScriptBoardTitle() || board.title }}</p>
-                        @if (board.stackCtaLabel && stackCtaHref(board)) {
-                          <a class="stack-preview__cta" [href]="stackCtaHref(board)" target="_blank" rel="noopener" style="justify-content: center; gap: .5rem; max-width: min(88%, 20rem); border-width: 3px; background: linear-gradient(135deg, #ffffff, #fff3bd); box-shadow: 0 18px 34px rgba(0,0,0,.28); color: #111827; font-size: .92rem; line-height: 1; padding: .78rem 1rem .78rem .82rem;">
-                            <span class="material-symbols-outlined" style="display: grid; width: 2rem; height: 2rem; flex: 0 0 auto; place-items: center; border-radius: 999px; background: #111827; color: #ffffff; font-size: 1.16rem; font-variation-settings: 'FILL' 1;">ads_click</span>
-                            <strong style="min-width: 0; overflow: hidden; color: inherit; font-size: inherit; font-weight: 950; line-height: 1.15; text-overflow: ellipsis; white-space: nowrap;">{{ board.stackCtaLabel }}</strong>
-                          </a>
+                      <div class="stack-preview__final-card">
+                        @if (stackFinalScreenPreviewImage(board); as finalImage) {
+                          <img class="stack-preview__media" [src]="finalImage" alt="" />
                         }
-                        <img [src]="stackQrImageUrl(board)" alt="Board QR code"  i18n-alt/>
-                        <strong>{{ stackClosingUrlLabel(board) }}</strong>
+                        <div class="stack-preview__final-shade"></div>
+                        <div class="stack-preview__final-copy">
+                          <small>{{ stackFinalScreenHeadline() || 'Keep exploring' }}</small>
+                          <h4>{{ stackFinalScreenMessage() || stackScriptBoardTitle() || board.title }}</h4>
+                          @if (stackFinalScreenShowQrCode()) {
+                            <img class="stack-preview__final-qr" [src]="stackFinalScreenQrImage(board)" alt="QR code to open this board" />
+                          }
+                          <div class="stack-preview__final-brand">
+                            <span>Made with LivingWiki</span>
+                            <strong>LivingWiki.com</strong>
+                          </div>
+                        </div>
                       </div>
                     }
                   </div>
@@ -6233,6 +6258,138 @@
                     <span class="material-symbols-outlined">chevron_right</span>
                   </button>
                 </div>
+
+                @if (canEditBoard(board) && stackCurrentFrame(); as editorFrame) {
+                  @if (editorFrame.kind === 'cover') {
+                    <section class="stack-preview-editor" aria-labelledby="stack-cover-editor-title">
+                      <header class="stack-preview-editor__head">
+                        <span class="stack-preview-editor__icon material-symbols-outlined">edit_note</span>
+                        <span>
+                          <small>Opening frame</small>
+                          <strong id="stack-cover-editor-title">Edit Cover</strong>
+                        </span>
+                        @if (stackCoverDirty()) { <em>Unsaved</em> }
+                      </header>
+                      <div class="stack-preview-editor__fields">
+                        <label>
+                          <span>Title</span>
+                          <input type="text" maxlength="120" [value]="stackScriptBoardTitle()" (input)="updateStackScriptBoardTitle($any($event.target).value)" />
+                        </label>
+                        <label>
+                          <span>Description <small>Optional</small></span>
+                          <textarea rows="2" maxlength="1000" [value]="stackScriptBoardDescription()" (input)="updateStackScriptBoardDescription($any($event.target).value)" placeholder="Add a short opening line"></textarea>
+                        </label>
+                      </div>
+                      <div class="stack-preview-editor__media-actions">
+                        <label [class.stack-preview-editor__upload--busy]="stackCoverImageUploading()">
+                          <span class="material-symbols-outlined">upload</span>
+                          {{ stackCoverImageUploading() ? 'Preparing…' : stackCoverImageDraft() ? 'Replace image' : 'Upload cover' }}
+                          <input
+                            type="file"
+                            accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
+                            [disabled]="stackCoverImageUploading()"
+                            (change)="onStackCoverImageSelected($event)"
+                          />
+                        </label>
+                        @if (stackCoverImageDraft()) {
+                          <button type="button" (click)="clearStackCoverImage()">
+                            <span class="material-symbols-outlined">layers</span>
+                            Use first card
+                          </button>
+                        }
+                      </div>
+                      <small class="stack-preview-editor__help">The title is required. Leave the description blank for a cleaner cover.</small>
+                      @if (stackCoverError()) {
+                        <small class="stack-preview-editor__error">{{ stackCoverError() }}</small>
+                      }
+                      <button
+                        type="button"
+                        class="stack-preview-editor__save"
+                        [disabled]="!stackCoverDirty() || !stackScriptBoardTitle().trim() || stackCoverSaving() || stackCoverImageUploading() || stackScriptSaving()"
+                        (click)="saveStackCover(board)"
+                      >
+                        <span class="material-symbols-outlined">{{ stackCoverSaving() ? 'progress_activity' : stackCoverDirty() ? 'save' : 'check_circle' }}</span>
+                        {{ stackCoverSaving() ? 'Saving…' : stackCoverDirty() ? 'Save cover' : stackCoverSavedAt() ? 'Cover saved' : 'Cover is current' }}
+                      </button>
+                    </section>
+                  } @else if (editorFrame.kind === 'closing') {
+                    <section class="stack-preview-editor" aria-labelledby="stack-final-card-editor-title">
+                      <header class="stack-preview-editor__head">
+                        <span class="stack-preview-editor__icon material-symbols-outlined">featured_video</span>
+                        <span>
+                          <small>Closing frame</small>
+                          <strong id="stack-final-card-editor-title">Edit Final Card</strong>
+                        </span>
+                        @if (stackFinalScreenDirty()) { <em>Unsaved</em> }
+                      </header>
+                      <div class="stack-preview-editor__fields">
+                        <label>
+                          <span>Headline</span>
+                          <input type="text" maxlength="72" [value]="stackFinalScreenHeadline()" (input)="updateStackFinalScreenHeadline($any($event.target).value)" placeholder="Keep exploring" />
+                        </label>
+                        <label>
+                          <span>Closing message</span>
+                          <textarea rows="2" maxlength="180" [value]="stackFinalScreenMessage()" (input)="updateStackFinalScreenMessage($any($event.target).value)" [placeholder]="stackScriptBoardTitle() || board.title"></textarea>
+                        </label>
+                      </div>
+                      <label class="stack-preview-editor__toggle">
+                        <input type="checkbox" [checked]="stackFinalScreenShowQrCode()" (change)="setStackFinalScreenShowQrCode($any($event.target).checked)" />
+                        <span><strong>Show QR code</strong><small>Opens the complete board</small></span>
+                      </label>
+                      <fieldset class="stack-preview-editor__backgrounds">
+                        <legend>Background</legend>
+                        <div>
+                          <button type="button" [class.stack-preview-editor__choice--active]="stackFinalScreenImage() === 'cover'" (click)="setStackFinalScreenImage('cover')">
+                            <span class="material-symbols-outlined">web_asset</span>
+                            Cover
+                          </button>
+                          <button type="button" [class.stack-preview-editor__choice--active]="stackFinalScreenImage() === 'final-card'" (click)="setStackFinalScreenImage('final-card')">
+                            <span class="material-symbols-outlined">last_page</span>
+                            Last card
+                          </button>
+                          <button type="button" [class.stack-preview-editor__choice--active]="stackFinalScreenImage() === 'custom'" [disabled]="!stackFinalScreenCustomImageUrl()" (click)="setStackFinalScreenImage('custom')">
+                            <span class="material-symbols-outlined">photo</span>
+                            Custom
+                          </button>
+                        </div>
+                      </fieldset>
+                      <div class="stack-preview-editor__media-actions">
+                        <label [class.stack-preview-editor__upload--busy]="stackFinalScreenImageUploading()">
+                          <span class="material-symbols-outlined">upload</span>
+                          {{ stackFinalScreenImageUploading() ? 'Preparing…' : stackFinalScreenCustomImageUrl() ? 'Replace custom' : 'Upload custom' }}
+                          <input
+                            type="file"
+                            accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
+                            [disabled]="stackFinalScreenImageUploading()"
+                            (change)="onStackFinalScreenImageSelected($event)"
+                          />
+                        </label>
+                        @if (stackFinalScreenCustomImageUrl()) {
+                          <button type="button" (click)="clearStackFinalScreenCustomImage()">
+                            <span class="material-symbols-outlined">delete</span>
+                            Remove
+                          </button>
+                        }
+                      </div>
+                      <label class="stack-preview-editor__duration">
+                        <span><strong>On-screen time</strong><output>{{ stackFinalScreenDurationSeconds() }} sec</output></span>
+                        <input type="range" min="2" max="6" step="0.5" [value]="stackFinalScreenDurationSeconds()" (input)="setStackFinalScreenDuration(+$any($event.target).value)" />
+                      </label>
+                      @if (stackFinalScreenError()) {
+                        <small class="stack-preview-editor__error">{{ stackFinalScreenError() }}</small>
+                      }
+                      <button
+                        type="button"
+                        class="stack-preview-editor__save"
+                        [disabled]="!stackFinalScreenDirty() || stackFinalScreenSaving() || stackFinalScreenImageUploading()"
+                        (click)="saveStackFinalScreen(board)"
+                      >
+                        <span class="material-symbols-outlined">{{ stackFinalScreenSaving() ? 'progress_activity' : stackFinalScreenDirty() ? 'save' : 'check_circle' }}</span>
+                        {{ stackFinalScreenSaving() ? 'Saving…' : stackFinalScreenDirty() ? 'Save final card' : 'Final card is current' }}
+                      </button>
+                    </section>
+                  }
+                }
 
                 <section class="stack-export">
                   <div class="stack-panel__head">
@@ -6275,10 +6432,10 @@
 
   @if (stackStudioOpen() && stackScriptDiscardConfirmOpen()) {
     <div class="boards-modal-backdrop stack-script-discard-backdrop" (click)="keepEditingStackScript()">
-      <section class="boards-modal boards-modal--confirm stack-script-discard" aria-label="Unsaved script changes" (click)="$event.stopPropagation()">
+      <section class="boards-modal boards-modal--confirm stack-script-discard" aria-label="Unsaved Studio changes" (click)="$event.stopPropagation()">
         <span class="stack-script-discard__icon material-symbols-outlined">edit_note</span>
-        <h3>Keep your script changes?</h3>
-        <p>Your edits have not been saved to this board yet.</p>
+        <h3>Keep your Studio changes?</h3>
+        <p>Your cover, script, or final-card edits have not been saved yet.</p>
         <div>
           <button type="button" class="boards-ghost-action" (click)="discardStackScriptAndClose()">Discard changes</button>
           <button type="button" class="boards-primary-action" (click)="keepEditingStackScript()">Keep editing</button>
@@ -6389,7 +6546,7 @@
                           </button>
                           <button type="button" [class.stack-final-screen__image-option--active]="stackFinalScreenImage() === 'final-card'" (click)="setStackFinalScreenImage('final-card')">
                             <span class="material-symbols-outlined">last_page</span>
-                            Final card
+                            Last content card
                           </button>
                           <button
                             type="button"

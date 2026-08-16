@@ -1266,7 +1266,7 @@ type BoardLoadContext = {
   selector: 'app-boards',
   imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink, BoardCollectionCreateComponent, BoardCollectionListComponent],
   templateUrl: './boards.html',
-  styleUrls: ['./boards.css', './board-wizard-drafts.css', './board-narration-style.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css', './stack-script.css', './board-city-tag.css'],
+  styleUrls: ['./boards.css', './board-wizard-drafts.css', './board-narration-style.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css', './stack-script.css', './stack-cover-final.css', './board-city-tag.css'],
 })
 export class BoardsComponent implements OnDestroy {
   private readonly localeId = inject(LOCALE_ID);
@@ -1643,6 +1643,12 @@ export class BoardsComponent implements OnDestroy {
   readonly stackSelectedCardIds = signal<Set<string>>(new Set());
   readonly stackCoverTitle = signal('');
   readonly stackCoverSubtitle = signal('');
+  readonly stackCoverImageDraft = signal('');
+  readonly stackCoverOriginalSnapshot = signal('');
+  readonly stackCoverSaving = signal(false);
+  readonly stackCoverImageUploading = signal(false);
+  readonly stackCoverSavedAt = signal('');
+  readonly stackCoverError = signal<string | null>(null);
   readonly stackCaption = signal('');
   readonly stackFormat = signal<StackFormat>('both');
   readonly stackRatio = signal<StackRatio>('vertical');
@@ -2339,19 +2345,24 @@ export class BoardsComponent implements OnDestroy {
     return board ? this.cityForBoard(board) : null;
   });
   readonly stackScriptDirty = computed(() => this.stackScriptSnapshot() !== this.stackScriptOriginalSnapshot());
+  readonly stackCoverDirty = computed(() => this.stackCoverSnapshot() !== this.stackCoverOriginalSnapshot());
   readonly stackScriptWordCount = computed(() => this.stackSelectedCards().reduce((total, card) => {
     return total + this.stackScriptNarration(card).split(/\s+/).filter(Boolean).length;
   }, 0));
   readonly stackScriptEstimatedSeconds = computed(() => Math.max(0, Math.ceil(this.stackScriptWordCount() / 2.35)));
   readonly stackScriptMissingCount = computed(() => this.stackSelectedCards().filter((card) => !this.stackScriptNarration(card).trim()).length);
   readonly stackScriptCanSave = computed(() =>
-    this.stackScriptDirty()
+    (this.stackScriptDirty() || this.stackCoverDirty())
     && !this.stackScriptSaving()
+    && !this.stackCoverSaving()
     && !!this.stackScriptBoardTitle().trim()
     && this.stackScriptMissingCount() === 0,
   );
   readonly stackFinalScreenDirty = computed(() =>
     this.stackFinalScreenSnapshot() !== this.stackFinalScreenOriginalSnapshot(),
+  );
+  readonly stackStudioDirty = computed(() =>
+    this.stackScriptDirty() || this.stackCoverDirty() || this.stackFinalScreenDirty(),
   );
   readonly stackSelectedAudioTrack = computed(() =>
     stackAudioTrackById(this.stackAudioTrackId()),
@@ -11444,6 +11455,10 @@ export class BoardsComponent implements OnDestroy {
   openStackView(board: Board, event?: Event): void {
     event?.preventDefault();
     event?.stopPropagation();
+    if (this.stackStudioOpen() && this.stackStudioDirty()) {
+      this.stackScriptDiscardConfirmOpen.set(true);
+      return;
+    }
     this.prepareStackForBoard(board);
     this.unlockStackNarrationAudio();
     this.stackStudioOpen.set(false);
@@ -11482,7 +11497,7 @@ export class BoardsComponent implements OnDestroy {
       this.stackScriptDiscardConfirmOpen.set(false);
       return;
     }
-    if (this.stackScriptDirty()) {
+    if (this.stackStudioDirty()) {
       this.stackScriptDiscardConfirmOpen.set(true);
       return;
     }
@@ -11577,6 +11592,11 @@ export class BoardsComponent implements OnDestroy {
     this.stackRatio.set(ratio);
   }
 
+  showStackStudioFrame(kind: 'cover' | 'closing'): void {
+    this.stopStackPlayback();
+    this.stackFrameIndex.set(kind === 'cover' ? 0 : Math.max(0, this.stackFrameCount() - 1));
+  }
+
   setStackSoundTab(tab: StackSoundTab): void {
     this.stopStackAudioPreview();
     this.stopStackVoicePreview();
@@ -11587,12 +11607,14 @@ export class BoardsComponent implements OnDestroy {
     this.stackScriptBoardTitle.set(value);
     this.stackCoverTitle.set(value);
     this.stackScriptError.set(null);
+    this.stackCoverError.set(null);
   }
 
   updateStackScriptBoardDescription(value: string): void {
     this.stackScriptBoardDescription.set(value);
     this.stackCoverSubtitle.set(value);
     this.stackScriptError.set(null);
+    this.stackCoverError.set(null);
   }
 
   updateStackScriptCard(cardId: string, field: keyof StackScriptCardDraft, value: string): void {
@@ -11757,7 +11779,7 @@ export class BoardsComponent implements OnDestroy {
   }
 
   async saveStackScript(board: Board): Promise<boolean> {
-    if (!this.canEditBoard(board) || this.stackScriptSaving()) return false;
+    if (!this.canEditBoard(board) || this.stackScriptSaving() || this.stackCoverSaving()) return false;
     const title = this.stackScriptBoardTitle().trim();
     if (!title) {
       this.stackScriptError.set('Add a board title before saving.');
@@ -11776,6 +11798,7 @@ export class BoardsComponent implements OnDestroy {
       ...board,
       title,
       description: this.stackScriptBoardDescription().trim(),
+      imageUrl: this.stackCoverImageDraft(),
       cards: board.cards.map((card) => {
         const draft = drafts[card.id];
         if (!draft || !selectedIds.has(card.id)) return card;
@@ -11788,20 +11811,20 @@ export class BoardsComponent implements OnDestroy {
           updatedAt: now,
         };
       }),
+      socialVideoRenderVersion: '',
+      trailerVideoRenderVersion: '',
       updatedAt: now,
     };
     try {
       const saved = await this.persistAndReplaceBoard(nextBoard);
       if (!saved) throw new Error('The script could not be synchronized. Your draft is still here.');
-      this.stackCoverTitle.set(nextBoard.title);
-      this.stackCoverSubtitle.set(nextBoard.description);
-      this.stackScriptBoardTitle.set(nextBoard.title);
-      this.stackScriptBoardDescription.set(nextBoard.description);
-      this.stackScriptCardDrafts.set(Object.fromEntries(nextBoard.cards.map((card) => [card.id, {
+      const savedBoard = this.boards().find((item) => item.id === nextBoard.id) ?? nextBoard;
+      this.applyStackCoverState(savedBoard);
+      this.stackScriptCardDrafts.set(Object.fromEntries(savedBoard.cards.map((card) => [card.id, {
         title: card.title,
         narration: card.tour?.guideScript || this.persistedStackCardNarrationText(card) || '',
       }])));
-      this.stackScriptOriginalSnapshot.set(this.stackScriptSnapshot(nextBoard));
+      this.stackScriptOriginalSnapshot.set(this.stackScriptSnapshot(savedBoard));
       this.stackScriptSavedAt.set(now);
       this.setStackShareMessage('Script saved. Your video will use these words.', false);
       return true;
@@ -11814,8 +11837,78 @@ export class BoardsComponent implements OnDestroy {
   }
 
   async continueStackStudio(board: Board, to: 'voice' | 'music'): Promise<void> {
-    if (this.stackScriptDirty() && !await this.saveStackScript(board)) return;
+    if ((this.stackScriptDirty() || this.stackCoverDirty()) && !await this.saveStackScript(board)) return;
     this.setStackSoundTab(to);
+  }
+
+  stackStudioCoverImage(board: Board): string {
+    return this.stackCoverImageDraft()
+      || board.cards.map((card) => this.cardImages(card)[0] ?? '').find(Boolean)
+      || '';
+  }
+
+  async onStackCoverImageSelected(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    input.value = '';
+    if (!file || this.stackCoverImageUploading()) return;
+    if (file.size > 10 * 1024 * 1024) {
+      this.stackCoverError.set('Choose a cover image smaller than 10 MB.');
+      return;
+    }
+    this.stackCoverImageUploading.set(true);
+    this.stackCoverError.set(null);
+    try {
+      this.stackCoverImageDraft.set(await this.readImageFile(file));
+    } catch (error) {
+      this.stackCoverError.set(error instanceof Error ? error.message : 'That cover image could not be prepared.');
+    } finally {
+      this.stackCoverImageUploading.set(false);
+    }
+  }
+
+  clearStackCoverImage(): void {
+    this.stackCoverImageDraft.set('');
+    this.stackCoverError.set(null);
+  }
+
+  async saveStackCover(board: Board): Promise<boolean> {
+    if (!this.canEditBoard(board) || this.stackCoverSaving() || this.stackCoverImageUploading() || this.stackScriptSaving()) {
+      return false;
+    }
+    const title = this.stackScriptBoardTitle().trim();
+    if (!title) {
+      this.stackCoverError.set('Add a cover title before saving.');
+      return false;
+    }
+    this.stackCoverSaving.set(true);
+    this.stackCoverError.set(null);
+    const now = new Date().toISOString();
+    const currentBoard = this.stackBoard()?.id === board.id ? this.stackBoard()! : board;
+    const nextBoard: Board = {
+      ...currentBoard,
+      title,
+      description: this.stackScriptBoardDescription().trim(),
+      imageUrl: this.stackCoverImageDraft(),
+      socialVideoRenderVersion: '',
+      trailerVideoRenderVersion: '',
+      updatedAt: now,
+    };
+    try {
+      if (!await this.persistAndReplaceBoard(nextBoard)) {
+        throw new Error('The cover could not be synchronized.');
+      }
+      const savedBoard = this.boards().find((item) => item.id === nextBoard.id) ?? nextBoard;
+      this.applyStackCoverState(savedBoard);
+      this.stackCoverSavedAt.set(now);
+      this.setStackShareMessage('Cover saved. Update the video when you are ready to publish it.', false);
+      return true;
+    } catch (error) {
+      this.stackCoverError.set(error instanceof Error ? error.message : 'The cover could not be saved.');
+      return false;
+    } finally {
+      this.stackCoverSaving.set(false);
+    }
   }
 
   updateStackFinalScreenHeadline(value: string): void {
@@ -11885,7 +11978,9 @@ export class BoardsComponent implements OnDestroy {
       const finalImage = finalCard ? this.cardImages(finalCard)[0] ?? '' : '';
       if (finalImage) return finalImage;
     }
-    return this.stackCoverImage(board);
+    return this.stackStudioOpen() && this.stackStudioBoardId() === board.id
+      ? this.stackStudioCoverImage(board)
+      : this.stackCoverImage(board);
   }
 
   stackFinalScreenQrImage(board: Board): string {
@@ -13557,11 +13652,13 @@ export class BoardsComponent implements OnDestroy {
   }
 
   private async stackBoardWithSavedScript(board: Board): Promise<Board | null> {
-    if (this.stackScriptDirty()) {
-      const saved = await this.saveStackScript(board);
+    if (this.stackScriptDirty() || this.stackCoverDirty()) {
+      const saved = this.stackScriptDirty()
+        ? await this.saveStackScript(board)
+        : await this.saveStackCover(board);
       if (!saved) {
         this.stackSoundTab.set('script');
-        this.setStackShareMessage('Review the highlighted script fields before creating the video.', false);
+        this.setStackShareMessage('Review the highlighted Studio fields before creating the video.', false);
         return null;
       }
     }
@@ -13792,13 +13889,9 @@ export class BoardsComponent implements OnDestroy {
     this.stopStackPlayback();
     this.stopStackAudioPreview();
     this.stopStackVoicePreview();
-    const subtitle = board.description.trim() || `${board.cards.length} card${board.cards.length === 1 ? '' : 's'} curated by ${this.ownerName(board)}`;
     this.stackStudioBoardId.set(board.id);
     this.stackSelectedCardIds.set(new Set(board.cards.map((card) => card.id)));
-    this.stackCoverTitle.set(board.title);
-    this.stackCoverSubtitle.set(subtitle);
-    this.stackScriptBoardTitle.set(board.title);
-    this.stackScriptBoardDescription.set(board.description);
+    this.applyStackCoverState(board);
     this.stackScriptCardDrafts.set(Object.fromEntries(board.cards.map((card) => [card.id, {
       title: card.title,
       narration: card.tour?.guideScript || this.persistedStackCardNarrationText(card) || '',
@@ -13806,6 +13899,7 @@ export class BoardsComponent implements OnDestroy {
     this.stackScriptExpandedCardIds.set(new Set(board.cards.slice(0, 1).map((card) => card.id)));
     this.stackScriptOriginalSnapshot.set(this.stackScriptSnapshot(board));
     this.stackScriptSavedAt.set('');
+    this.stackCoverSavedAt.set('');
     this.stackScriptError.set(null);
     this.stackScriptDiscardConfirmOpen.set(false);
     this.applyStackFinalScreenState(board);
@@ -13874,11 +13968,27 @@ export class BoardsComponent implements OnDestroy {
     this.stackFinalScreenOriginalSnapshot.set(this.stackFinalScreenSnapshot());
   }
 
+  private stackCoverSnapshot(): string {
+    return JSON.stringify({
+      title: this.stackScriptBoardTitle().trim(),
+      description: this.stackScriptBoardDescription().trim(),
+      imageUrl: this.stackCoverImageDraft(),
+    });
+  }
+
+  private applyStackCoverState(board: Board): void {
+    this.stackCoverTitle.set(board.title);
+    this.stackCoverSubtitle.set(board.description);
+    this.stackCoverImageDraft.set(board.imageUrl);
+    this.stackScriptBoardTitle.set(board.title);
+    this.stackScriptBoardDescription.set(board.description);
+    this.stackCoverError.set(null);
+    this.stackCoverOriginalSnapshot.set(this.stackCoverSnapshot());
+  }
+
   private stackScriptSnapshot(board: Board | null = this.stackBoard()): string {
     const drafts = this.stackScriptCardDrafts();
     return JSON.stringify({
-      title: this.stackScriptBoardTitle(),
-      description: this.stackScriptBoardDescription(),
       cards: (board?.cards ?? []).map((card) => ({
         id: card.id,
         title: drafts[card.id]?.title ?? card.title,
