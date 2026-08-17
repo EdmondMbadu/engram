@@ -370,7 +370,7 @@ function hasActivePersonalWikiPlan(profile: Record<string, unknown> | undefined)
   const snakeStatus = typeof profile?.subscription_status === 'string' ? profile.subscription_status.trim().toLowerCase() : '';
   const plan = camelPlan || snakePlan;
   const status = camelStatus || snakeStatus;
-  return (plan === 'personal_plus' || plan === 'creator')
+  return (plan === 'personal_plus' || plan === 'creator' || plan === 'explorer' || plan === 'lifetime')
     && (status === 'active' || status === 'trialing' || status === 'paid');
 }
 
@@ -386,6 +386,7 @@ async function assertCanCreateWiki(userId: string): Promise<void> {
 type BusinessCheckoutPlanKey = 'local' | 'favorite' | 'sponsor';
 type UserPricingPlanKey = 'personal_plus' | 'creator';
 type UserPricingBillingCycle = 'monthly' | 'annual';
+type MembershipCheckoutPlanKey = 'explorer' | 'lifetime';
 
 const businessCheckoutPlans: Record<BusinessCheckoutPlanKey, {
   amount: number;
@@ -412,6 +413,29 @@ const businessCheckoutPlans: Record<BusinessCheckoutPlanKey, {
 const userPricingPlanLabels: Record<UserPricingPlanKey, string> = {
   personal_plus: 'LivingWiki Personal Plus',
   creator: 'LivingWiki Creator',
+};
+
+const membershipCheckoutPlans: Record<MembershipCheckoutPlanKey, {
+  amount: number;
+  billingCycle: 'monthly' | 'lifetime';
+  description: string;
+  mode: 'subscription' | 'payment';
+  name: string;
+}> = {
+  explorer: {
+    amount: 399,
+    billingCycle: 'monthly',
+    description: 'Unlimited boards, advanced templates, collaboration, and higher AI generation limits.',
+    mode: 'subscription',
+    name: 'LivingWiki Explorer Launch Membership',
+  },
+  lifetime: {
+    amount: 5900,
+    billingCycle: 'lifetime',
+    description: 'Lifetime access to Explorer features, upgrades, priority support, and Founding Member benefits.',
+    mode: 'payment',
+    name: 'LivingWiki Lifetime Launch Membership',
+  },
 };
 
 const allowedCheckoutOrigins = new Set([
@@ -458,6 +482,14 @@ function normalizeUserPricingBillingCycle(value: unknown): UserPricingBillingCyc
   }
   const cycle = value.toLowerCase();
   return cycle === 'monthly' || cycle === 'annual' ? cycle : null;
+}
+
+function normalizeMembershipCheckoutPlan(value: unknown): MembershipCheckoutPlanKey | null {
+  if (typeof value !== 'string') {
+    return null;
+  }
+  const plan = value.toLowerCase();
+  return plan === 'explorer' || plan === 'lifetime' ? plan : null;
 }
 
 function getUserPricingPriceId(plan: UserPricingPlanKey, billingCycle: UserPricingBillingCycle): string {
@@ -577,6 +609,47 @@ async function markUserCheckoutPaid(session: Stripe.Checkout.Session): Promise<v
     stripe_subscription_id: typeof session.subscription === 'string' ? session.subscription : null,
     stripePriceId: priceId,
     stripe_price_id: priceId,
+    paidAt: FieldValue.serverTimestamp(),
+    paid_at: FieldValue.serverTimestamp(),
+    updatedAt: FieldValue.serverTimestamp(),
+    updated_at: FieldValue.serverTimestamp(),
+  }, { merge: true });
+}
+
+async function markMembershipCheckoutPaid(session: Stripe.Checkout.Session): Promise<void> {
+  const userId = session.metadata?.userId?.trim();
+  const planKey = normalizeMembershipCheckoutPlan(session.metadata?.planType);
+  if (!userId || !planKey) {
+    throw new HttpsError('invalid-argument', 'Checkout session is missing membership metadata.');
+  }
+
+  const paid = session.payment_status === 'paid' || session.status === 'complete';
+  if (!paid) {
+    throw new HttpsError('failed-precondition', 'Checkout has not completed yet.');
+  }
+
+  const plan = membershipCheckoutPlans[planKey];
+  await db.collection('users').doc(userId).set({
+    pricingPlan: planKey,
+    pricing_plan: planKey,
+    pricingPlanLabel: plan.name,
+    pricing_plan_label: plan.name,
+    billingCycle: plan.billingCycle,
+    billing_cycle: plan.billingCycle,
+    subscriptionStatus: 'paid',
+    subscription_status: 'paid',
+    userBillingActive: true,
+    user_billing_active: true,
+    launchMember: true,
+    launch_member: true,
+    foundingMember: true,
+    founding_member: true,
+    stripeCheckoutSessionId: session.id,
+    stripe_checkout_session_id: session.id,
+    stripeCustomerId: typeof session.customer === 'string' ? session.customer : null,
+    stripe_customer_id: typeof session.customer === 'string' ? session.customer : null,
+    stripeSubscriptionId: typeof session.subscription === 'string' ? session.subscription : null,
+    stripe_subscription_id: typeof session.subscription === 'string' ? session.subscription : null,
     paidAt: FieldValue.serverTimestamp(),
     paid_at: FieldValue.serverTimestamp(),
     updatedAt: FieldValue.serverTimestamp(),
@@ -752,7 +825,6 @@ export const createBusinessCheckoutSession = onCall(
       const stripe = getStripeClient();
       const session = await stripe.checkout.sessions.create({
         mode: 'subscription',
-        payment_method_types: ['card'],
         line_items: [
           {
             price_data: {
@@ -829,7 +901,6 @@ export const createUserCheckoutSession = onCall(
       const stripe = getStripeClient();
       const session = await stripe.checkout.sessions.create({
         mode: 'subscription',
-        payment_method_types: ['card'],
         line_items: [{ price: priceId, quantity: 1 }],
         success_url: successUrl,
         cancel_url: cancelUrl,
@@ -875,6 +946,99 @@ export const createUserCheckoutSession = onCall(
   },
 );
 
+export const createMembershipCheckoutSession = onCall(
+  { region: callableRegion, cors: true, secrets: [stripeSecretKey] },
+  async (request) => {
+    const userId = request.auth?.uid;
+    if (!userId) {
+      throw new HttpsError('unauthenticated', 'Sign in to start membership checkout.');
+    }
+
+    const planKey = normalizeMembershipCheckoutPlan(request.data?.plan);
+    if (!planKey) {
+      throw new HttpsError('invalid-argument', 'Choose a Launch Membership.');
+    }
+
+    const originHeader = request.rawRequest.headers.origin;
+    const requestOrigin = typeof originHeader === 'string' ? originHeader : undefined;
+    const successUrl = resolveCheckoutUrl(
+      request.data?.successUrl,
+      `/membership?membershipPayment=success&plan=${planKey}`,
+      requestOrigin,
+    );
+    const cancelUrl = resolveCheckoutUrl(
+      request.data?.cancelUrl,
+      `/membership?membershipPayment=cancelled&plan=${planKey}`,
+      requestOrigin,
+    );
+    const customerEmail = typeof request.auth?.token.email === 'string'
+      ? request.auth.token.email
+      : undefined;
+    const plan = membershipCheckoutPlans[planKey];
+
+    try {
+      const stripe = getStripeClient();
+      const session = await stripe.checkout.sessions.create({
+        mode: plan.mode,
+        line_items: [
+          {
+            price_data: {
+              currency: 'usd',
+              product_data: {
+                name: plan.name,
+                description: plan.description,
+              },
+              unit_amount: plan.amount,
+              ...(plan.mode === 'subscription'
+                ? { recurring: { interval: 'month' as const } }
+                : {}),
+            },
+            quantity: 1,
+          },
+        ],
+        success_url: successUrl,
+        cancel_url: cancelUrl,
+        client_reference_id: userId,
+        allow_promotion_codes: true,
+        customer_creation: plan.mode === 'payment' ? 'always' : undefined,
+        metadata: {
+          source: 'membership_launch',
+          userId,
+          planType: planKey,
+          billingCycle: plan.billingCycle,
+          amount: String(plan.amount),
+        },
+        customer_email: customerEmail,
+      });
+
+      await db.collection('users').doc(userId).set({
+        pricingPlan: planKey,
+        pricing_plan: planKey,
+        pricingPlanLabel: plan.name,
+        pricing_plan_label: plan.name,
+        billingCycle: plan.billingCycle,
+        billing_cycle: plan.billingCycle,
+        subscriptionStatus: 'checkout_started',
+        subscription_status: 'checkout_started',
+        userBillingActive: false,
+        user_billing_active: false,
+        stripeCheckoutSessionId: session.id,
+        stripe_checkout_session_id: session.id,
+        updatedAt: FieldValue.serverTimestamp(),
+        updated_at: FieldValue.serverTimestamp(),
+      }, { merge: true });
+
+      return { sessionId: session.id, url: session.url ?? null };
+    } catch (error) {
+      if (error instanceof HttpsError) {
+        throw error;
+      }
+      logger.error('Failed to create membership checkout session', error);
+      throw new HttpsError('internal', 'Membership checkout could not be started. Please try again.');
+    }
+  },
+);
+
 export const confirmUserCheckoutSession = onCall(
   { region: callableRegion, cors: true, secrets: [stripeSecretKey] },
   async (request) => {
@@ -905,6 +1069,41 @@ export const confirmUserCheckoutSession = onCall(
       }
       logger.error('Failed to confirm user checkout session', error);
       throw new HttpsError('internal', 'Checkout could not be confirmed. Please try again.');
+    }
+  },
+);
+
+export const confirmMembershipCheckoutSession = onCall(
+  { region: callableRegion, cors: true, secrets: [stripeSecretKey] },
+  async (request) => {
+    const userId = request.auth?.uid;
+    if (!userId) {
+      throw new HttpsError('unauthenticated', 'Sign in to confirm membership checkout.');
+    }
+
+    const sessionId = typeof request.data?.sessionId === 'string'
+      ? request.data.sessionId.trim()
+      : '';
+    if (!sessionId) {
+      throw new HttpsError('invalid-argument', 'Checkout session ID is required.');
+    }
+
+    try {
+      const session = await getStripeClient().checkout.sessions.retrieve(sessionId);
+      if (session.metadata?.source !== 'membership_launch' || session.metadata?.userId !== userId) {
+        throw new HttpsError('permission-denied', 'This checkout session does not belong to your account.');
+      }
+      await markMembershipCheckoutPaid(session);
+      return {
+        paid: true,
+        plan: normalizeMembershipCheckoutPlan(session.metadata?.planType),
+      };
+    } catch (error) {
+      if (error instanceof HttpsError) {
+        throw error;
+      }
+      logger.error('Failed to confirm membership checkout session', error);
+      throw new HttpsError('internal', 'Membership checkout could not be confirmed. Please try again.');
     }
   },
 );
@@ -976,6 +1175,8 @@ export const stripeBusinessWebhook = onRequest(
             await markBusinessCheckoutPaid(session);
           } else if (session.metadata?.source === 'user_pricing') {
             await markUserCheckoutPaid(session);
+          } else if (session.metadata?.source === 'membership_launch') {
+            await markMembershipCheckoutPaid(session);
           }
           break;
         }

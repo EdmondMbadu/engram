@@ -1,7 +1,12 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { Meta } from '@angular/platform-browser';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { httpsCallable } from 'firebase/functions';
+import { AuthService } from '../auth.service';
+import { getFirebaseFunctions } from '../firebase.client';
+
+type MembershipCheckoutPlan = 'explorer' | 'lifetime';
 
 @Component({
   selector: 'app-membership',
@@ -12,6 +17,14 @@ import { RouterLink } from '@angular/router';
 export class MembershipComponent implements OnInit, OnDestroy {
   private readonly document = inject(DOCUMENT);
   private readonly meta = inject(Meta);
+  private readonly authService = inject(AuthService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+
+  readonly isSignedIn = this.authService.isAuthenticated;
+  readonly checkoutLoading = signal<MembershipCheckoutPlan | null>(null);
+  readonly checkoutError = signal<string | null>(null);
+  readonly checkoutStatus = signal<string | null>(null);
 
   readonly features = [
     {
@@ -80,6 +93,101 @@ export class MembershipComponent implements OnInit, OnDestroy {
       { name: 'twitter:description', content: description },
       { name: 'twitter:image', content: image },
     ]);
+
+    void this.restoreMembershipCheckout();
+  }
+
+  async startMembershipCheckout(plan: MembershipCheckoutPlan): Promise<void> {
+    if (this.checkoutLoading()) {
+      return;
+    }
+
+    if (!this.isSignedIn()) {
+      await this.router.navigate(['/create-account'], {
+        queryParams: { redirectTo: `/membership?checkout=${plan}` },
+      });
+      return;
+    }
+
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    this.checkoutLoading.set(plan);
+    this.checkoutError.set(null);
+    this.checkoutStatus.set(null);
+
+    const origin = window.location.origin;
+    const successUrl = `${origin}/membership?membershipPayment=success&plan=${plan}&session_id={CHECKOUT_SESSION_ID}`;
+    const cancelUrl = `${origin}/membership?membershipPayment=cancelled&plan=${plan}`;
+
+    try {
+      const createCheckoutSession = httpsCallable(
+        getFirebaseFunctions(),
+        'createMembershipCheckoutSession',
+      );
+      const result = await createCheckoutSession({ plan, successUrl, cancelUrl });
+      const data = result.data as { url?: string; sessionUrl?: string };
+      const checkoutUrl = data.url || data.sessionUrl;
+      if (!checkoutUrl) {
+        throw new Error('Checkout URL was not returned.');
+      }
+      window.location.href = checkoutUrl;
+    } catch {
+      this.checkoutError.set('Checkout could not be started. Please try again in a moment.');
+      this.checkoutLoading.set(null);
+    }
+  }
+
+  private async restoreMembershipCheckout(): Promise<void> {
+    const requestedPlan = this.normalizeCheckoutPlan(this.route.snapshot.queryParamMap.get('checkout'));
+    const returnedPlan = this.normalizeCheckoutPlan(this.route.snapshot.queryParamMap.get('plan'));
+    const payment = this.route.snapshot.queryParamMap.get('membershipPayment');
+    const sessionId = this.route.snapshot.queryParamMap.get('session_id');
+
+    if (payment === 'cancelled') {
+      this.checkoutError.set('Checkout was cancelled. Your place is still here when you’re ready.');
+      return;
+    }
+
+    if (payment === 'success') {
+      if (!sessionId) {
+        this.checkoutError.set('Payment returned without a checkout session. Please contact support.');
+        return;
+      }
+
+      this.checkoutLoading.set(returnedPlan ?? 'explorer');
+      this.checkoutStatus.set('Confirming your Launch Membership…');
+      try {
+        const confirmCheckout = httpsCallable(
+          getFirebaseFunctions(),
+          'confirmMembershipCheckoutSession',
+        );
+        const result = await confirmCheckout({ sessionId });
+        const data = result.data as { paid?: boolean };
+        if (!data.paid) {
+          throw new Error('Checkout was not paid.');
+        }
+        await this.authService.refreshUser();
+        this.checkoutStatus.set('Welcome, Launch Member! Your membership is active.');
+      } catch {
+        this.checkoutError.set(
+          'We could not confirm the payment yet. If you were charged, refresh in a moment or contact support.',
+        );
+        this.checkoutStatus.set(null);
+      } finally {
+        this.checkoutLoading.set(null);
+      }
+      return;
+    }
+
+    if (requestedPlan && this.isSignedIn()) {
+      await this.startMembershipCheckout(requestedPlan);
+    }
+  }
+
+  private normalizeCheckoutPlan(value: string | null): MembershipCheckoutPlan | null {
+    return value === 'explorer' || value === 'lifetime' ? value : null;
   }
 
   ngOnDestroy(): void {

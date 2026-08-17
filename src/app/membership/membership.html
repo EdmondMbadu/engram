@@ -155,6 +155,13 @@
           <p>Special perks. Early access. Better value for life.</p>
         </div>
 
+        @if (checkoutStatus() || checkoutError()) {
+          <div class="membership-checkout-message" [class.is-error]="checkoutError()">
+            <span class="material-symbols-outlined">{{ checkoutError() ? 'error' : 'verified' }}</span>
+            <p>{{ checkoutError() || checkoutStatus() }}</p>
+          </div>
+        }
+
         <div class="pricing-layout">
           <div class="plans">
             <article class="plan">
@@ -164,7 +171,14 @@
               <ul>
                 <li>Create up to 3 boards</li><li>Basic templates</li><li>Export cards</li><li>Community access</li>
               </ul>
-              <a routerLink="/create-account" class="plan-button outline">Get Started Free</a>
+              <a
+                routerLink="/create-account"
+                [queryParams]="{ redirectTo: '/membership' }"
+                class="plan-button outline"
+              >
+                Get Started Free
+                <span class="material-symbols-outlined">arrow_forward</span>
+              </a>
             </article>
 
             <article class="plan featured-plan">
@@ -175,7 +189,15 @@
               <ul>
                 <li>Unlimited boards</li><li>Advanced templates</li><li>Higher AI generation limits</li><li>Export cards & videos (MP4)</li><li>Invite friends & collaborate</li><li>Early access to new tools</li>
               </ul>
-              <a routerLink="/create-account" class="plan-button green">Start Explorer Plan</a>
+              <button
+                type="button"
+                class="plan-button green"
+                [disabled]="checkoutLoading() !== null"
+                (click)="startMembershipCheckout('explorer')"
+              >
+                {{ checkoutLoading() === 'explorer' ? 'Opening secure checkout…' : 'Start Explorer Plan' }}
+                <span class="material-symbols-outlined">arrow_forward</span>
+              </button>
             </article>
 
             <article class="plan lifetime-plan">
@@ -186,7 +208,15 @@
               <ul>
                 <li>All Explorer features</li><li>Lifetime upgrades</li><li>Priority support</li><li>Founding Member badge</li><li>Reserve your public username</li>
               </ul>
-              <a routerLink="/create-account" class="plan-button purple">Go Lifetime</a>
+              <button
+                type="button"
+                class="plan-button purple"
+                [disabled]="checkoutLoading() !== null"
+                (click)="startMembershipCheckout('lifetime')"
+              >
+                {{ checkoutLoading() === 'lifetime' ? 'Opening secure checkout…' : 'Go Lifetime' }}
+                <span class="material-symbols-outlined">arrow_forward</span>
+              </button>
             </article>
           </div>
 

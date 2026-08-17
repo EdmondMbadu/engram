@@ -339,7 +339,7 @@ export class AuthService {
     const profile = this.profile();
     const plan = (profile?.pricingPlan ?? '').trim().toLowerCase();
     const status = (profile?.subscriptionStatus ?? '').trim().toLowerCase();
-    return ['personal_plus', 'creator'].includes(plan)
+    return ['personal_plus', 'creator', 'explorer', 'lifetime'].includes(plan)
       && ['active', 'trialing', 'paid'].includes(status);
   }
 
