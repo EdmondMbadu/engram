@@ -147,6 +147,7 @@ export class MembershipComponent implements OnInit, OnDestroy {
 
     if (payment === 'cancelled') {
       this.checkoutError.set('Checkout was cancelled. Your place is still here when you’re ready.');
+      await this.clearCheckoutQueryParams();
       return;
     }
 
@@ -177,13 +178,29 @@ export class MembershipComponent implements OnInit, OnDestroy {
         this.checkoutStatus.set(null);
       } finally {
         this.checkoutLoading.set(null);
+        await this.clearCheckoutQueryParams();
       }
       return;
     }
 
     if (requestedPlan && this.isSignedIn()) {
+      await this.clearCheckoutQueryParams();
       await this.startMembershipCheckout(requestedPlan);
     }
+  }
+
+  private async clearCheckoutQueryParams(): Promise<void> {
+    await this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        checkout: null,
+        membershipPayment: null,
+        plan: null,
+        session_id: null,
+      },
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+    });
   }
 
   private normalizeCheckoutPlan(value: string | null): MembershipCheckoutPlan | null {
