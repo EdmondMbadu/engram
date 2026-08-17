@@ -37,6 +37,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pricing/pricing').then((m) => m.PricingComponent),
     title: $localize`Pricing | LivingWiki`,
   },
+  {
+    path: 'membership',
+    loadComponent: () => import('./membership/membership').then((m) => m.MembershipComponent),
+    title: 'Membership | LivingWiki',
+  },
   { path: 'landing', component: MarketingComponent, title: $localize`LivingWiki` },
   { path: 'marketing', redirectTo: 'landing', pathMatch: 'full' },
   { path: 'business', component: BusinessComponent, title: $localize`For Business | LivingWiki` },
