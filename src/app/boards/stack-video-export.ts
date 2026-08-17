@@ -99,6 +99,16 @@ export const STACK_VIDEO_RENDER_VERSION = 'stack-video-v14';
 export const STACK_TRAILER_RENDER_VERSION = 'board-trailer-v2';
 export const STACK_VIDEO_BRAND_URL = 'LivingWiki.com';
 
+export function publishedStackVideoStoragePath(
+  uid: string,
+  boardId: string,
+  videoKind: 'full' | 'trailer',
+  extension: StackVideoResult['extension'],
+  generationId: string,
+): string {
+  return `users/${uid}/boards/${boardId}/social/${videoKind}/${generationId}.${extension}`;
+}
+
 const TRAILER_MIN_DURATION_MS = 15_000;
 const TRAILER_MAX_DURATION_MS = 30_000;
 const TRAILER_COVER_DURATION_MS = 2_250;

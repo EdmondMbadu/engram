@@ -1,3 +1,33 @@
+@if (spotify.connectDialogOpen()) {
+  <div class="spotify-connect" role="presentation" (click)="spotify.closeConnectionDialog()">
+    <section class="spotify-connect__dialog" role="dialog" aria-modal="true" aria-labelledby="spotify-connect-title" (click)="$event.stopPropagation()">
+      <header><span class="spotify-connect__logo material-symbols-outlined">graphic_eq</span><span><small>Music connection</small><strong id="spotify-connect-title">Listen with Spotify</strong></span><button type="button" aria-label="Close Spotify connection" (click)="spotify.closeConnectionDialog()"><span class="material-symbols-outlined">close</span></button></header>
+      @if (spotify.connectionLoading()) {
+        <div class="spotify-connect__loading"><span class="material-symbols-outlined">progress_activity</span><span>Checking your Spotify connection…</span></div>
+      } @else if (!spotify.signedIn()) {
+        <p>Sign in to LivingWiki first. Your Spotify password is always handled by Spotify.</p>
+        <a class="spotify-connect__primary" [href]="spotify.signInHref()"><span class="material-symbols-outlined">login</span><span>Sign in to continue</span></a>
+      } @else if (!spotify.connected() || !spotify.connection().canExportPlaylists) {
+        <p>Connect once to play the complete board here and create a private playlist in your Spotify library.</p>
+        <button type="button" class="spotify-connect__primary" [disabled]="spotify.connecting()" (click)="spotify.connect()"><span class="material-symbols-outlined">link</span><span>{{ spotify.connecting() ? 'Opening Spotify…' : spotify.connected() ? 'Approve playlist access' : 'Connect Spotify' }}</span></button>
+      } @else {
+        <div class="spotify-connect__account">@if (spotify.account()?.imageUrl) { <img [src]="spotify.account()?.imageUrl" alt="" /> }<span><small>Connected as</small><strong>{{ spotify.account()?.displayName || 'Spotify listener' }}</strong></span><span class="material-symbols-outlined">check_circle</span></div>
+        @if (spotify.currentTrack() && spotify.pendingQueueLength()) {
+          <button type="button" class="spotify-connect__primary" [disabled]="spotify.playerInitializing()" (click)="spotify.playPendingQueue()"><span class="material-symbols-outlined">play_arrow</span><span>{{ spotify.playerInitializing() ? 'Preparing player…' : 'Play complete board' }}</span></button>
+        }
+      }
+      @if (spotify.playlistExporting()) { <div class="spotify-connect__loading"><span class="material-symbols-outlined">progress_activity</span><span>Matching songs and building your playlist…</span></div> }
+      @if (spotify.notice()) { <p class="spotify-connect__notice" role="status">{{ spotify.notice() }}</p> }
+      @if (spotify.error()) { <p class="spotify-connect__error" role="alert">{{ spotify.error() }}</p> }
+      @if (spotify.playlistExport(); as playlist) {
+        <div class="spotify-connect__result"><span class="material-symbols-outlined">playlist_add_check</span><span><strong>Full playlist ready</strong><small>{{ playlist.matchedCount }} of {{ playlist.totalCount }} songs matched</small></span></div>
+        <a class="spotify-connect__primary" [href]="playlist.playlistUrl" target="_blank" rel="noopener"><span class="material-symbols-outlined">open_in_new</span><span>Open playlist in Spotify</span></a>
+      }
+      <footer><span class="material-symbols-outlined">lock</span>OAuth only—LivingWiki never receives your Spotify password.</footer>
+    </section>
+  </div>
+}
+
 @if (spotify.embeddedTrack(); as track) {
   <aside
     class="spotify-official-dock"

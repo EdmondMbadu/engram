@@ -55,6 +55,13 @@ import { handleAnswerCardShare, handleBoardShare, handleTravelCardShare } from '
 import { buildDirectBoardShareEmail, safeBoardShareImageUrl } from './board-share-email';
 import { resolveSpotifyOAuthRedirectUri } from './spotify-oauth';
 import {
+  SPOTIFY_PLAYLIST_SCOPE,
+  spotifyCanExportPlaylist,
+  spotifyPlaylistContentHash,
+  spotifyPlaylistDescription,
+  spotifyPlaylistName,
+} from './spotify-playlist';
+import {
   boardCardById,
   buildVisitGuestPage,
   buildVisitInterestAcknowledgementEmail,
@@ -232,6 +239,7 @@ const spotifyOAuthScopes = [
   'user-read-playback-state',
   'user-modify-playback-state',
   'user-read-private',
+  SPOTIFY_PLAYLIST_SCOPE,
 ].join(' ');
 const spotifyOAuthStateTtlMs = 10 * 60 * 1000;
 const spotifyRefreshLifetimeMs = 183 * 24 * 60 * 60 * 1000;
@@ -8591,6 +8599,7 @@ export const getSpotifyConnection = onCall(
         configured: !!spotifyClientId,
         connected: false,
         needsReauthorization: false,
+        canExportPlaylists: false,
       };
     }
     const snapshot = await db.collection('spotify_connections').doc(userId).get();
@@ -8599,10 +8608,12 @@ export const getSpotifyConnection = onCall(
     const connected = data?.status === 'connected'
       && !!data.refresh_token
       && refreshExpiresAt > Date.now();
+    const canExportPlaylists = connected && spotifyCanExportPlaylist(data?.scopes);
     return {
       configured: !!spotifyClientId,
       connected,
-      needsReauthorization: !!data && !connected,
+      needsReauthorization: !!data && (!connected || !canExportPlaylists),
+      canExportPlaylists,
       account: data
         ? {
             accountId: data.account_id ?? '',
@@ -8785,7 +8796,7 @@ export const resolveSpotifyPlaybackTracks = onCall(
       ? request.data as Record<string, unknown>
       : {};
     const requests: SpotifyPlaybackLookup[] = (Array.isArray(data.tracks) ? data.tracks : [])
-      .slice(0, 40)
+      .slice(0, 100)
       .map((value, index) => {
         const track = value && typeof value === 'object' ? value as Record<string, unknown> : {};
         return {
@@ -8813,6 +8824,136 @@ export const resolveSpotifyPlaybackTracks = onCall(
       });
     }
     return { tracks };
+  },
+);
+
+export const exportSpotifyBoardPlaylist = onCall(
+  { region: callableRegion, cors: true, timeoutSeconds: 120, memory: '512MiB' },
+  async (request) => {
+    const userId = requireCallableUserId(request.auth?.uid, 'Sign in to create a Spotify playlist.');
+    const boardId = stringOrEmpty(request.data?.boardId).trim();
+    if (!/^[A-Za-z0-9_-]{8,128}$/.test(boardId)) {
+      throw new HttpsError('invalid-argument', 'Choose a valid music board.');
+    }
+    const [boardSnapshot, connectionSnapshot] = await Promise.all([
+      db.collection('boards').doc(boardId).get(),
+      db.collection('spotify_connections').doc(userId).get(),
+    ]);
+    if (!boardSnapshot.exists) throw new HttpsError('not-found', 'This music board could not be found.');
+    const board = boardSnapshot.data() as Record<string, unknown>;
+    if (board.visibility !== 'public' && stringOrEmpty(board.owner_user_id) !== userId) {
+      throw new HttpsError('permission-denied', 'You do not have access to this music board.');
+    }
+    const connection = connectionSnapshot.data() as SpotifyConnectionRecord | undefined;
+    if (!connection || !spotifyCanExportPlaylist(connection.scopes)) {
+      throw new HttpsError('failed-precondition', 'Reconnect Spotify and approve playlist access.');
+    }
+
+    const rawCards = Array.isArray(board.cards) ? board.cards.slice(0, 100) : [];
+    const candidates = rawCards.map((value, index) => {
+      const card = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+      const title = stringOrEmpty(card.title).slice(0, 220);
+      const tags = Array.isArray(card.tags) ? card.tags.map(stringOrEmpty) : [];
+      const spotifyReference = [card.spotifyUri, card.spotifyTrackId, card.spotifyTrackUrl]
+        .map(stringOrEmpty).join(' ');
+      const directId = spotifyReference.match(/(?:spotify:track:|open\.spotify\.com\/track\/)?([A-Za-z0-9]{12,32})/)?.[1] ?? '';
+      const looksLikeSong = !!directId
+        || !!stringOrEmpty(card.audioPreviewUrl)
+        || stringOrEmpty(card.mediaKind) === 'song'
+        || tags.some((tag) => ['song', 'songs', 'music-track', 'spotify-track'].includes(tag.toLowerCase()));
+      return {
+        key: String(index),
+        title,
+        artist: stringOrEmpty(card.spotifyArtistName || card.subtitle).slice(0, 220),
+        context: stringOrEmpty(board.title).slice(0, 220),
+        directUri: directId ? `spotify:track:${directId}` : '',
+        looksLikeSong,
+      };
+    }).filter((card) => card.looksLikeSong && card.title);
+    if (!candidates.length) throw new HttpsError('failed-precondition', 'This board has no songs to export.');
+
+    const resolved = new Map<string, string>();
+    candidates.forEach((card) => { if (card.directUri) resolved.set(card.key, card.directUri); });
+    const missing = candidates.filter((card) => !card.directUri);
+    for (let index = 0; index < missing.length; index += 5) {
+      const matches = await Promise.all(missing.slice(index, index + 5).map((card) => (
+        resolveSpotifyPlaybackTrack(userId, card).catch(() => null)
+      )));
+      matches.forEach((match) => {
+        const key = stringOrEmpty(match?.key);
+        const uri = stringOrEmpty(match?.uri);
+        if (key && isSpotifyTrackUri(uri)) resolved.set(key, uri);
+      });
+    }
+    const uris = candidates.flatMap((card) => {
+      const uri = resolved.get(card.key) ?? '';
+      return uri ? [uri] : [];
+    });
+    const unmatchedTitles = candidates.filter((card) => !resolved.has(card.key)).map((card) => card.title);
+    if (!uris.length) throw new HttpsError('not-found', 'Spotify could not match any songs from this board.');
+
+    const contentHash = spotifyPlaylistContentHash(boardId, uris);
+    const exportRef = db.collection('spotify_playlist_exports')
+      .doc(createHash('sha256').update(`${userId}:${boardId}`).digest('hex'));
+    const previousSnapshot = await exportRef.get();
+    const previous = previousSnapshot.data() as Record<string, unknown> | undefined;
+    const previousPlaylistId = stringOrEmpty(previous?.playlist_id);
+    const previousPlaylistUrl = stringOrEmpty(previous?.playlist_url);
+    if (previous?.content_hash === contentHash && previousPlaylistId && previousPlaylistUrl) {
+      return {
+        playlistId: previousPlaylistId,
+        playlistUrl: previousPlaylistUrl,
+        matchedCount: uris.length,
+        totalCount: candidates.length,
+        unmatchedTitles,
+        reused: true,
+      };
+    }
+
+    let playlistId = previousPlaylistId;
+    let playlistUrl = previousPlaylistUrl;
+    if (!playlistId) {
+      const createResponse = await spotifyApiRequestForUser(userId, '/v1/me/playlists', {
+        method: 'POST',
+        body: JSON.stringify({
+          name: spotifyPlaylistName(board.title),
+          description: spotifyPlaylistDescription(boardId),
+          public: false,
+        }),
+      }, 'playlist');
+      const created = await createResponse.json().catch(() => ({})) as Record<string, unknown>;
+      playlistId = stringOrEmpty(created.id);
+      const externalUrls = created.external_urls && typeof created.external_urls === 'object'
+        ? created.external_urls as Record<string, unknown> : {};
+      playlistUrl = stringOrEmpty(externalUrls.spotify)
+        || (playlistId ? `https://open.spotify.com/playlist/${encodeURIComponent(playlistId)}` : '');
+      if (!playlistId || !playlistUrl) throw new HttpsError('unavailable', 'Spotify returned an incomplete playlist.');
+    }
+
+    await spotifyApiRequestForUser(userId, `/v1/playlists/${encodeURIComponent(playlistId)}/items`, {
+      method: 'PUT',
+      body: JSON.stringify({ uris }),
+    }, 'playlist');
+    await exportRef.set({
+      owner_user_id: userId,
+      board_id: boardId,
+      playlist_id: playlistId,
+      playlist_url: playlistUrl,
+      content_hash: contentHash,
+      matched_count: uris.length,
+      total_count: candidates.length,
+      unmatched_titles: unmatchedTitles,
+      updated_at_iso: new Date().toISOString(),
+      server_updated_at: FieldValue.serverTimestamp(),
+    }, { merge: true });
+    return {
+      playlistId,
+      playlistUrl,
+      matchedCount: uris.length,
+      totalCount: candidates.length,
+      unmatchedTitles,
+      reused: false,
+    };
   },
 );
 
@@ -9064,6 +9205,7 @@ async function spotifyApiRequestForUser(
   userId: string,
   path: string,
   init: { method: 'GET' | 'POST' | 'PUT'; body?: string },
+  context: 'playback' | 'playlist' = 'playback',
 ): Promise<Response> {
   const makeRequest = async (forceRefresh: boolean) => {
     const token = await spotifyAccessTokenForUser(userId, forceRefresh);
@@ -9088,19 +9230,28 @@ async function spotifyApiRequestForUser(
   if (response.status === 403) {
     throw new HttpsError(
       'permission-denied',
-      'Spotify Premium and playback permission are required for full songs.',
+      context === 'playlist'
+        ? 'Spotify did not allow playlist changes. Reconnect and approve playlist access.'
+        : 'Spotify Premium and playback permission are required for full songs.',
     );
   }
   if (response.status === 404) {
     throw new HttpsError(
       'failed-precondition',
-      'No Spotify player is available. Open Spotify on a device or try this browser again.',
+      context === 'playlist'
+        ? 'That Spotify playlist is no longer available. Disconnect and reconnect Spotify to create it again.'
+        : 'No Spotify player is available. Open Spotify on a device or try this browser again.',
     );
   }
   if (response.status === 429) {
     throw new HttpsError('resource-exhausted', 'Spotify is busy. Wait a moment and try again.');
   }
-  throw new HttpsError('unavailable', 'Spotify playback is temporarily unavailable.');
+  throw new HttpsError(
+    'unavailable',
+    context === 'playlist'
+      ? 'Spotify playlist creation is temporarily unavailable.'
+      : 'Spotify playback is temporarily unavailable.',
+  );
 }
 
 function isSpotifyTrackUri(value: string): boolean {
@@ -18459,6 +18610,8 @@ export const synthesizeChatAnswerSpeech = onCall(
       ? 'stack-trailer'
       : request.data?.mode === 'stack-video'
       ? 'stack-video'
+      : request.data?.mode === 'voice-preview'
+        ? 'voice-preview'
       : request.data?.mode === 'tour'
         ? 'tour'
         : request.data?.mode === 'full'
@@ -18502,7 +18655,7 @@ export const synthesizeChatAnswerSpeech = onCall(
     }
     const text = requestedMode === 'stack-video' && requestedStackVideoCard
       ? stackVideoNarrationTextFromCard(requestedStackVideoCard, normalizeSpeechText)
-      : requestedMode === 'full' || requestedMode === 'tour' || requestedMode === 'stack-video' || requestedMode === 'stack-trailer'
+      : requestedMode === 'full' || requestedMode === 'tour' || requestedMode === 'stack-video' || requestedMode === 'stack-trailer' || requestedMode === 'voice-preview'
         ? normalizeSpeechText(request.data?.text)
         : buildSpeechRecapText(request.data?.question, request.data?.text);
     if (!text) {
@@ -18564,6 +18717,43 @@ export const synthesizeChatAnswerSpeech = onCall(
       throw new HttpsError('failed-precondition', 'ElevenLabs API key is not configured.');
     }
 
+    const primaryVoiceId = requestedNarratorVoiceId || chatAnswerVoiceId;
+    if (requestedMode === 'voice-preview') {
+      const previewResponse = await fetch(
+        `https://api.elevenlabs.io/v1/voices/${encodeURIComponent(primaryVoiceId)}`,
+        { headers: { 'xi-api-key': apiKey } },
+      );
+      if (!previewResponse.ok) {
+        const previewBody = await previewResponse.text().catch(() => '');
+        logger.warn('ElevenLabs voice preview lookup failed', {
+          status: previewResponse.status,
+          voiceId: primaryVoiceId,
+          body: previewBody.slice(0, 500),
+        });
+        throw new HttpsError('unavailable', 'This voice preview is temporarily unavailable.');
+      }
+      const previewData = await previewResponse.json() as Record<string, unknown>;
+      const previewUrl = typeof previewData['preview_url'] === 'string'
+        ? previewData['preview_url'].trim()
+        : '';
+      if (!previewUrl.startsWith('https://')) {
+        logger.warn('ElevenLabs voice did not provide a secure preview URL', {
+          voiceId: primaryVoiceId,
+        });
+        throw new HttpsError('unavailable', 'This voice does not have a preview available.');
+      }
+      return {
+        audioUrl: previewUrl,
+        contentType: 'audio/mpeg',
+        voiceId: isPersonalNarrator ? null : primaryVoiceId,
+        speechText: text,
+        durationHintSeconds: null,
+        provider: 'elevenlabs',
+        narratorVoiceId: requestedNarratorId || null,
+        cached: true,
+      };
+    }
+
     const speechModel = requestedMode === 'tour' || requestedMode === 'stack-video'
       ? tourGuideSpeechModel
       : chatAnswerSpeechModel;
@@ -18593,7 +18783,6 @@ export const synthesizeChatAnswerSpeech = onCall(
     const stackVideoNarrationRevisionKey = requestedMode === 'stack-video'
       ? stackVideoNarrationRevisionCacheKey(requestedStackVideoCard)
       : '';
-    const primaryVoiceId = requestedNarratorVoiceId || chatAnswerVoiceId;
     const voiceIds = isPersonalNarrator
       ? [primaryVoiceId]
       : Array.from(new Set([
@@ -18650,6 +18839,12 @@ export const synthesizeChatAnswerSpeech = onCall(
           voiceId,
           body: lastErrorBody,
         });
+        if (response.status === 401 && errorText.includes('quota_exceeded')) {
+          throw new HttpsError(
+            'resource-exhausted',
+            'Video narration is temporarily unavailable because the voice-generation quota is exhausted.',
+          );
+        }
         if (response.status === 404) {
           continue;
         }

@@ -4,6 +4,32 @@
   z-index: 1200;
 }
 
+.spotify-connect { position: fixed; inset: 0; z-index: 1300; display: grid; place-items: center; background: rgba(4, 12, 7, .66); backdrop-filter: blur(7px); padding: 1rem; }
+.spotify-connect__dialog { display: grid; width: min(100%, 29rem); max-height: calc(100vh - 2rem); gap: .85rem; overflow: auto; border: 1px solid rgba(255,255,255,.15); border-radius: 1.35rem; background: radial-gradient(circle at 0 0, rgba(30,215,96,.15), transparent 38%), #101713; box-shadow: 0 30px 90px rgba(0,0,0,.55); color: #fff; padding: 1rem; animation: spotify-dialog-in 180ms ease-out both; }
+.spotify-connect__dialog > header { display: grid; grid-template-columns: auto minmax(0,1fr) auto; gap: .7rem; align-items: center; }
+.spotify-connect__dialog > header > span:nth-child(2) { display: grid; }
+.spotify-connect__dialog > header small { color: #93a299; font-size: .62rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
+.spotify-connect__dialog > header strong { font-size: 1.15rem; }
+.spotify-connect__logo { display: grid; width: 2.65rem; height: 2.65rem; place-items: center; border-radius: 999px; background: var(--spotify-green); color: #07150c; font-variation-settings: 'FILL' 1; }
+.spotify-connect__dialog > header button { display: grid; width: 2.35rem; height: 2.35rem; place-items: center; border: 1px solid rgba(255,255,255,.12); border-radius: 999px; background: rgba(255,255,255,.07); color: #fff; cursor: pointer; }
+.spotify-connect__dialog > p { margin: 0; color: #c2ccc5; font-size: .82rem; line-height: 1.5; }
+.spotify-connect__primary { display: inline-flex; min-height: 2.7rem; align-items: center; justify-content: center; gap: .4rem; border: 0; border-radius: 999px; background: var(--spotify-green); color: #06140b; cursor: pointer; font: inherit; font-size: .82rem; font-weight: 950; padding: .7rem 1rem; text-decoration: none; }
+.spotify-connect__primary:disabled { cursor: wait; opacity: .65; }
+.spotify-connect__loading, .spotify-connect__account, .spotify-connect__result { display: flex; align-items: center; gap: .65rem; border: 1px solid rgba(255,255,255,.11); border-radius: .9rem; background: rgba(255,255,255,.055); color: #d6ded8; padding: .75rem; font-size: .78rem; font-weight: 780; }
+.spotify-connect__loading .material-symbols-outlined { color: var(--spotify-green); animation: spotify-spin 900ms linear infinite; }
+.spotify-connect__account img { width: 2.5rem; height: 2.5rem; border-radius: 999px; object-fit: cover; }
+.spotify-connect__account > span:nth-child(2), .spotify-connect__result > span:nth-child(2) { display: grid; min-width: 0; }
+.spotify-connect__account small, .spotify-connect__result small { color: #98a69c; font-size: .66rem; }
+.spotify-connect__account > .material-symbols-outlined { margin-left: auto; color: var(--spotify-green); }
+.spotify-connect__result > .material-symbols-outlined { color: var(--spotify-green); font-size: 1.8rem; }
+.spotify-connect__notice, .spotify-connect__error { border-radius: .75rem; padding: .65rem .75rem; }
+.spotify-connect__dialog .spotify-connect__notice { background: rgba(30,215,96,.1); color: #9ceab7; }
+.spotify-connect__dialog .spotify-connect__error { background: rgba(255,102,102,.11); color: #ffb4b4; }
+.spotify-connect__dialog > footer { display: flex; align-items: center; justify-content: center; gap: .35rem; color: #85938a; font-size: .62rem; text-align: center; }
+.spotify-connect__dialog > footer .material-symbols-outlined { font-size: .9rem; }
+@keyframes spotify-dialog-in { from { opacity: 0; transform: translateY(.7rem) scale(.98); } to { opacity: 1; transform: none; } }
+@keyframes spotify-spin { to { transform: rotate(360deg); } }
+
 .spotify-official-dock {
   animation: spotify-dock-in 320ms cubic-bezier(.18, .9, .24, 1) both;
   background:

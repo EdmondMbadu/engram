@@ -16,6 +16,7 @@
     "test:board-wizard-video": "npm run build && node scripts/test-board-wizard-video.cjs",
     "test:board-translation": "npm run build && node scripts/test-board-translation.cjs",
     "test:spotify-oauth": "npm run build && node scripts/test-spotify-oauth.cjs",
+    "test:spotify-playlist": "npm run build && node scripts/test-spotify-playlist.cjs",
     "test:visit-plans": "npm run build && node scripts/test-visit-plans.cjs",
     "test:visit-email-sandbox": "npm run build && node scripts/test-visit-email-sandbox.cjs",
     "test:board-share-email": "npm run build && node scripts/test-board-share-email.cjs",

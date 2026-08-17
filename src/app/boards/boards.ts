@@ -28,6 +28,7 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 import { VideoLibraryService } from '../video-library/video-library.service';
 import { SpotifyPlaybackService, type SpotifyTrack } from '../spotify-playback.service';
+import { orderedSpotifyQueue } from '../music-board-playlist';
 import {
   spotifyTrackEmbedUrl as buildSpotifyTrackEmbedUrl,
   spotifyTrackIdFromReference,
@@ -136,6 +137,7 @@ import {
   generateStackTrailer,
   generateStackVideo,
   normalizeStackVideoClosingScreen,
+  publishedStackVideoStoragePath,
   STACK_TRAILER_RENDER_VERSION,
   STACK_VIDEO_RENDER_VERSION,
   stackVideoRenderIsCurrent,
@@ -1580,6 +1582,7 @@ export class BoardsComponent implements OnDestroy {
   readonly boardFriendCandidates = signal<BoardFriendCandidate[]>([]);
   readonly boardFriendCandidateLoading = signal(false);
   readonly sharePanelOpen = signal(false);
+  readonly musicServicesOpen = signal(false);
   readonly cardImageLocked = signal(false);
   readonly draggedStickerId = signal<string | null>(null);
   readonly placeSuggestions = signal<PlaceSearchResult[]>([]);
@@ -7615,6 +7618,34 @@ export class BoardsComponent implements OnDestroy {
     this.spotify.openEmbeddedPlayer(this.spotifyTrackForCard(card, board));
   }
 
+  playAllSongsOnSpotify(board: Board, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.stopSongPreview();
+    const queue = orderedSpotifyQueue(this.songCards(board).map((card) => {
+      const track = this.spotifyTrackForCard(card, board);
+      return {
+        title: track.title,
+        artist: track.artist,
+        album: track.album,
+        artworkUrl: track.artworkUrl,
+        spotifyUri: track.uri,
+        spotifyUrl: track.spotifyUrl,
+        lookupContext: track.lookupContext,
+      };
+    }));
+    if (!queue.length) return;
+    this.musicServicesOpen.set(false);
+    void this.spotify.requestPlay(queue[0], queue);
+  }
+
+  saveAllSongsToSpotify(board: Board, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.musicServicesOpen.set(false);
+    void this.spotify.exportBoardPlaylist(board.id);
+  }
+
   nextTourCard(card: BoardCard, cards = this.selectedBoardTourCards()): BoardCard | null {
     const index = cards.findIndex((item) => item.id === card.id);
     return index >= 0 ? cards[index + 1] ?? null : null;
@@ -8036,7 +8067,7 @@ export class BoardsComponent implements OnDestroy {
     text: string,
     narratorVoiceId?: string,
     boardId?: string,
-    mode: 'tour' | 'stack-video' | 'stack-trailer' = 'tour',
+    mode: 'tour' | 'stack-video' | 'stack-trailer' | 'voice-preview' = 'tour',
     cardId?: string,
     required = false,
   ): Promise<string | null> {
@@ -8061,7 +8092,7 @@ export class BoardsComponent implements OnDestroy {
     const promise = (async () => {
       try {
         const callable = httpsCallable<
-          { text: string; question?: string | null; anonymousVisitorId?: string | null; mode?: 'recap' | 'full' | 'tour' | 'stack-video' | 'stack-trailer'; narratorVoiceId?: string | null; boardId?: string | null; cardId?: string | null },
+          { text: string; question?: string | null; anonymousVisitorId?: string | null; mode?: 'recap' | 'full' | 'tour' | 'stack-video' | 'stack-trailer' | 'voice-preview'; narratorVoiceId?: string | null; boardId?: string | null; cardId?: string | null },
           TourSpeechResponse
         >(functions, 'synthesizeChatAnswerSpeech', { timeout: 120_000 });
         const response = await callable({
@@ -8081,7 +8112,9 @@ export class BoardsComponent implements OnDestroy {
       } catch (error) {
         this.tourAudioNotice.set(mode === 'stack-video'
           ? 'A video narration clip could not be created. The video will not be generated with missing narration.'
-          : 'ElevenLabs tour narration failed to generate. Check the function logs if this persists.');
+          : mode === 'voice-preview'
+            ? 'The selected voice sample could not be loaded. Try again in a moment.'
+            : 'ElevenLabs tour narration failed to generate. Check the function logs if this persists.');
         console.error('Narration audio generation failed.', error, { boardId, cardId, mode });
         if (required) throw error;
       } finally {
@@ -12210,10 +12243,11 @@ export class BoardsComponent implements OnDestroy {
         sampleText,
         voice.id,
         board?.id,
+        'voice-preview',
       );
       if (run !== this.stackVoicePreviewRun) return;
       if (!audioUrl) {
-        this.stackVoiceError.set('This voice preview could not be generated. Try again in a moment.');
+        this.stackVoiceError.set('This voice preview could not be loaded. Try again in a moment.');
         return;
       }
       const audio = new Audio(audioUrl);
@@ -13299,27 +13333,36 @@ export class BoardsComponent implements OnDestroy {
         throw new Error('The trailer is too large to publish. Select fewer cards and try again.');
       }
       const file = this.stackTrailerFile(board, result);
-      const path = `users/${uid}/boards/${board.id}/social/trailer.${result.extension}`;
+      const generatedAt = new Date().toISOString();
+      // Every render gets its own object URL. Overwriting a stable Storage path
+      // can leave browsers and the public video proxy serving the previous
+      // voice/script from cache even after a successful regeneration.
+      const path = publishedStackVideoStoragePath(
+        uid,
+        board.id,
+        'trailer',
+        result.extension,
+        `${Date.now().toString(36)}-${this.createId()}`,
+      );
       const ref = storageRef(this.storage, path);
       await uploadBytes(ref, result.blob, {
         contentType: this.normalizedVideoMimeType(result.mimeType),
-        cacheControl: 'public,max-age=3600',
+        cacheControl: 'public,max-age=31536000,immutable',
         contentDisposition: `inline; filename="${file.name}"`,
         customMetadata: {
           boardId: board.id,
           videoKind: 'trailer',
-          generatedAt: new Date().toISOString(),
+          generatedAt,
         },
       });
       const videoUrl = await getDownloadURL(ref);
       this.publishedStackTrailerFiles.set(board.id, file);
       this.stackPublishedTrailerReady.set(true);
-      const now = new Date().toISOString();
       const nextBoard: Board = {
         ...board,
         trailerVideoUrl: videoUrl,
         trailerVideoMimeType: this.normalizedVideoMimeType(result.mimeType),
-        trailerVideoUpdatedAt: now,
+        trailerVideoUpdatedAt: generatedAt,
         trailerVideoRenderVersion: STACK_TRAILER_RENDER_VERSION,
         trailerVideoRatio: this.stackRatio(),
         trailerVideoAudioTrackId: this.stackAudioTrackId(),
@@ -13490,15 +13533,26 @@ export class BoardsComponent implements OnDestroy {
         throw new Error('The video is too large to publish. Select fewer cards and try again.');
       }
       const file = this.stackVideoFile(board, result);
-      const path = `users/${uid}/boards/${board.id}/social/stack.${result.extension}`;
+      const generatedAt = new Date().toISOString();
+      // Use a versioned object instead of overwriting the previous render. A
+      // changed voice must produce a changed URL so no cache can retain the old
+      // video under the same Firebase download URL.
+      const path = publishedStackVideoStoragePath(
+        uid,
+        board.id,
+        'full',
+        result.extension,
+        `${Date.now().toString(36)}-${this.createId()}`,
+      );
       const ref = storageRef(this.storage, path);
       await uploadBytes(ref, result.blob, {
         contentType: this.normalizedVideoMimeType(result.mimeType),
-        cacheControl: 'public,max-age=3600',
+        cacheControl: 'public,max-age=31536000,immutable',
         contentDisposition: `inline; filename="${file.name}"`,
         customMetadata: {
           boardId: board.id,
-          generatedAt: new Date().toISOString(),
+          videoKind: 'full',
+          generatedAt,
         },
       });
       const videoUrl = await getDownloadURL(ref);
@@ -13508,7 +13562,7 @@ export class BoardsComponent implements OnDestroy {
         ...board,
         socialVideoUrl: videoUrl,
         socialVideoMimeType: this.normalizedVideoMimeType(result.mimeType),
-        socialVideoUpdatedAt: new Date().toISOString(),
+        socialVideoUpdatedAt: generatedAt,
         socialVideoRenderVersion: STACK_VIDEO_RENDER_VERSION,
         socialVideoRatio: this.stackRatio(),
         socialVideoAudioTrackId: this.stackAudioTrackId(),

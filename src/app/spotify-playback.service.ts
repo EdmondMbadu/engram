@@ -39,8 +39,11 @@ type SpotifyConnection = {
   configured: boolean;
   connected: boolean;
   needsReauthorization: boolean;
+  canExportPlaylists: boolean;
   account: SpotifyAccount | null;
 };
+
+export type SpotifyPlaylistExport = { playlistId: string; playlistUrl: string; matchedCount: number; totalCount: number; unmatchedTitles: string[]; reused: boolean };
 
 type SpotifySdkTrack = {
   uri?: string;
@@ -90,10 +93,12 @@ const emptyConnection: SpotifyConnection = {
   configured: true,
   connected: false,
   needsReauthorization: false,
+  canExportPlaylists: false,
   account: null,
 };
 
 const pendingPlaybackKey = 'livingwiki.spotify.pending.v1';
+const pendingPlaylistExportKey = 'livingwiki.spotify.playlist-export.v1';
 
 @Injectable({ providedIn: 'root' })
 export class SpotifyPlaybackService {
@@ -125,6 +130,8 @@ export class SpotifyPlaybackService {
   readonly selectedDeviceId = signal('');
   readonly notice = signal<string | null>(null);
   readonly error = signal<string | null>(null);
+  readonly playlistExporting = signal(false);
+  readonly playlistExport = signal<SpotifyPlaylistExport | null>(null);
 
   readonly signedIn = this.authService.isAuthenticated;
   readonly connected = computed(() => this.connection().connected);
@@ -209,10 +216,12 @@ export class SpotifyPlaybackService {
         configured: result.data.configured !== false,
         connected: result.data.connected === true,
         needsReauthorization: result.data.needsReauthorization === true,
+        canExportPlaylists: result.data.canExportPlaylists === true,
         account: result.data.account ?? null,
       });
       if (result.data.connected) {
         this.restorePendingPlayback();
+        if (result.data.canExportPlaylists) void this.restorePendingPlaylistExport();
         void this.initializePlayer().catch(() => undefined);
       }
     } catch (error) {
@@ -267,6 +276,7 @@ export class SpotifyPlaybackService {
       this.selectedDeviceId.set('');
       this.connection.set(emptyConnection);
       this.clearPendingPlayback();
+      this.clearPendingPlaylistExport();
       this.notice.set('Spotify has been disconnected from LivingWiki.');
     } catch (error) {
       this.error.set(this.friendlyError(error, $localize`Could not disconnect Spotify.`));
@@ -320,6 +330,41 @@ export class SpotifyPlaybackService {
         $localize`Spotify could not start playback. Open Spotify once, then try again.`,
       ));
     }
+  }
+
+  async exportBoardPlaylist(boardId: string): Promise<void> {
+    const normalizedBoardId = boardId.trim();
+    if (!normalizedBoardId || this.playlistExporting()) return;
+    this.error.set(null); this.notice.set(null); this.playlistExport.set(null);
+    this.savePendingPlaylistExport(normalizedBoardId);
+    if (!this.authService.uid() || !this.connected() || !this.connection().canExportPlaylists) {
+      this.openConnectionDialog();
+      return;
+    }
+    if (!this.functions) { this.error.set('Spotify playlist export is unavailable here.'); return; }
+    this.playlistExporting.set(true);
+    try {
+      const callable = httpsCallable<{ boardId: string }, SpotifyPlaylistExport>(this.functions, 'exportSpotifyBoardPlaylist');
+      const result = await callable({ boardId: normalizedBoardId });
+      this.playlistExport.set(result.data);
+      this.clearPendingPlaylistExport();
+      this.connectDialogOpen.set(true);
+      this.notice.set(result.data.reused ? 'Your Spotify playlist is already up to date.' : 'Your full board is ready in Spotify.');
+    } catch (error) {
+      this.error.set(this.friendlyError(error, 'Spotify could not create this playlist.'));
+      this.connectDialogOpen.set(true);
+    } finally { this.playlistExporting.set(false); }
+  }
+
+  pendingQueueLength(): number {
+    return this.queue.length;
+  }
+
+  async playPendingQueue(): Promise<void> {
+    const track = this.currentTrack();
+    if (!track) return;
+    await this.requestPlay(track, this.queue.length ? this.queue : [track]);
+    if (!this.error()) this.closeConnectionDialog();
   }
 
   async togglePlayback(): Promise<void> {
@@ -647,11 +692,11 @@ export class SpotifyPlaybackService {
       /^spotify:track:[A-Za-z0-9]{12,32}$/i.test(item.uri)
       || !!(item.lookupTitle || item.title).trim()
     ));
-    const keyFor = (item: SpotifyTrack) => item.uri
-      || `${item.lookupTitle || item.title}\u0000${item.lookupArtist || item.artist}`;
-    const unique = [...new Map(playable.map((item) => [keyFor(item), item])).values()];
-    const selectedKey = keyFor(track);
-    return [track, ...unique.filter((item) => keyFor(item) !== selectedKey)].slice(0, 40);
+    const selectedIndex = playable.indexOf(track);
+    const ordered = selectedIndex > 0
+      ? [track, ...playable.slice(0, selectedIndex), ...playable.slice(selectedIndex + 1)]
+      : selectedIndex === 0 ? playable : [track, ...playable];
+    return ordered.slice(0, 100);
   }
 
   private async resolveTracksForPlayback(tracks: SpotifyTrack[]): Promise<SpotifyTrack[]> {
@@ -718,7 +763,7 @@ export class SpotifyPlaybackService {
     try {
       const raw = window.sessionStorage.getItem(pendingPlaybackKey);
       const value = raw ? JSON.parse(raw) as PendingPlayback : null;
-      if (!value?.track?.uri) {
+      if (!value?.track || !(value.track.uri || value.track.title || value.track.lookupTitle)) {
         return;
       }
       this.currentTrack.set(value.track);
@@ -738,6 +783,24 @@ export class SpotifyPlaybackService {
     } catch {
       // Ignore unavailable storage.
     }
+  }
+
+  private savePendingPlaylistExport(boardId: string): void {
+    if (!this.isBrowser) return;
+    try { window.sessionStorage.setItem(pendingPlaylistExportKey, boardId); } catch { /* Optional restoration. */ }
+  }
+
+  private async restorePendingPlaylistExport(): Promise<void> {
+    if (!this.isBrowser || this.playlistExporting()) return;
+    try {
+      const boardId = window.sessionStorage.getItem(pendingPlaylistExportKey)?.trim() ?? '';
+      if (boardId) await this.exportBoardPlaylist(boardId);
+    } catch { this.clearPendingPlaylistExport(); }
+  }
+
+  private clearPendingPlaylistExport(): void {
+    if (!this.isBrowser) return;
+    try { window.sessionStorage.removeItem(pendingPlaylistExportKey); } catch { /* Ignore unavailable storage. */ }
   }
 
   private readOAuthResult(): void {

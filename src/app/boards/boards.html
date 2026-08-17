@@ -2293,6 +2293,32 @@
                     <strong>{{ board.title }}</strong>
                   </div>
 
+                  <section class="music-services" aria-label="Play the complete board">
+                    <button type="button" class="music-services__trigger" [attr.aria-expanded]="musicServicesOpen()" aria-controls="music-services-panel" (click)="musicServicesOpen.set(!musicServicesOpen())">
+                      <span class="material-symbols-outlined">queue_music</span>
+                      <span><strong>Play all {{ songCards(board).length }} songs</strong><small>Choose where you listen</small></span>
+                      <span class="material-symbols-outlined">{{ musicServicesOpen() ? 'expand_less' : 'expand_more' }}</span>
+                    </button>
+                    @if (musicServicesOpen()) {
+                      <div id="music-services-panel" class="music-services__panel">
+                        <article class="music-provider music-provider--spotify">
+                          <header><span class="music-provider__mark">S</span><span><strong>Spotify</strong><small>Connected playback and a private playlist</small></span><em>Available</em></header>
+                          <div class="music-provider__actions">
+                            <button type="button" (click)="playAllSongsOnSpotify(board, $event)"><span class="material-symbols-outlined">play_arrow</span><span>Play all now</span></button>
+                            <button type="button" class="music-provider__primary" [disabled]="spotify.playlistExporting()" (click)="saveAllSongsToSpotify(board, $event)">
+                              <span class="material-symbols-outlined">{{ spotify.playlistExporting() ? 'progress_activity' : 'playlist_add' }}</span>
+                              <span>{{ spotify.playlistExporting() ? 'Building playlist…' : 'Open full playlist' }}</span>
+                            </button>
+                          </div>
+                        </article>
+                        <article class="music-provider music-provider--pending" aria-disabled="true"><header><span class="music-provider__mark music-provider__mark--apple">♪</span><span><strong>Apple Music</strong><small>MusicKit account connection required</small></span><em>Setup required</em></header></article>
+                        <article class="music-provider music-provider--pending" aria-disabled="true"><header><span class="music-provider__mark music-provider__mark--youtube">▶</span><span><strong>YouTube Music</strong><small>YouTube playlist permission required</small></span><em>Setup required</em></header></article>
+                        <article class="music-provider music-provider--pending" aria-disabled="true"><header><span class="music-provider__mark music-provider__mark--amazon">a</span><span><strong>Amazon Music</strong><small>Amazon Music API partner approval required</small></span><em>Closed beta</em></header></article>
+                        <p class="music-services__note">Your account stays with the music service. LivingWiki only sends this board’s ordered song list after you approve access.</p>
+                      </div>
+                    }
+                  </section>
+
                   <button type="button" class="song-board__live-card" (click)="openLiveCardVersion(board, $event)" i18n>
                     <span class="material-symbols-outlined">graphic_eq</span>
                     Live card version

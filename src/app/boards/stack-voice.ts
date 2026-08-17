@@ -87,5 +87,6 @@ export function stackNarrationErrorIsPermanent(error: unknown): boolean {
     'invalid-argument',
     'failed-precondition',
     'not-found',
+    'resource-exhausted',
   ].some((suffix) => code === suffix || code.endsWith(`/${suffix}`));
 }

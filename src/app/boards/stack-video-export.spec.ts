@@ -6,6 +6,7 @@ import {
   generateStackVideo,
   normalizeStackVideoClosingScreen,
   preferredRecorderMimeType,
+  publishedStackVideoStoragePath,
   stackVideoCardVisibleText,
   stackVideoCardImageCandidates,
   stackVideoClosingDurationMs,
@@ -25,6 +26,15 @@ describe('Stack video card images', () => {
 
   it('marks the corrected closing-card layout as a new trailer render', () => {
     expect(STACK_TRAILER_RENDER_VERSION).toBe('board-trailer-v2');
+  });
+
+  it('publishes each video do-over at a distinct cache-safe URL', () => {
+    const first = publishedStackVideoStoragePath('user-1', 'board-1', 'full', 'mp4', 'render-1');
+    const second = publishedStackVideoStoragePath('user-1', 'board-1', 'full', 'mp4', 'render-2');
+
+    expect(first).toBe('users/user-1/boards/board-1/social/full/render-1.mp4');
+    expect(second).toBe('users/user-1/boards/board-1/social/full/render-2.mp4');
+    expect(second).not.toBe(first);
   });
 
   it('keeps Board Trailers inside the 15–30 second promise', () => {

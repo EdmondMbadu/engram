@@ -77,6 +77,7 @@ describe('Stack narrator voice catalog', () => {
     expect(stackNarrationErrorIsPermanent({ code: 'functions/permission-denied' })).toBeTrue();
     expect(stackNarrationErrorIsPermanent({ code: 'unauthenticated' })).toBeTrue();
     expect(stackNarrationErrorIsPermanent({ code: 'functions/invalid-argument' })).toBeTrue();
+    expect(stackNarrationErrorIsPermanent({ code: 'functions/resource-exhausted' })).toBeTrue();
     expect(stackNarrationErrorIsPermanent({ code: 'functions/internal' })).toBeFalse();
     expect(stackNarrationErrorIsPermanent(new Error('Temporary network failure'))).toBeFalse();
   });
