@@ -203,6 +203,10 @@
     "source": "Shared board contributions accept one place at a time. Keep one row here, or create the list on your own board.",
     "file": "src/app/boards/boards.html"
   },
+  "1153362258318924333": {
+    "source": "Video search stopped. The remaining cards kept their images.",
+    "file": "src/app/boards/boards.ts"
+  },
   "1156828345537801891": {
     "source": "Local markets",
     "file": "src/app/atlas-landing/atlas-landing.ts"
@@ -431,6 +435,10 @@
     "source": "{$START_TAG_SPAN}auto_awesome_motion{$CLOSE_TAG_SPAN} Stack Studio ",
     "file": "src/app/boards/boards.html"
   },
+  "1294104683635463866": {
+    "source": "Only relevant, playable videos are used. If a match cannot be verified, the card keeps its image.",
+    "file": "src/app/boards/boards.html"
+  },
   "1295614462098694869": {
     "source": "Preview",
     "file": "src/app/atlas-manage/atlas-manage.html"
@@ -606,6 +614,10 @@
   "1410451104176546762": {
     "source": "{$INTERPOLATION} Wikis available in this workspace.",
     "file": "src/app/atlas-manage/atlas-manage.html"
+  },
+  "1413714338880942050": {
+    "source": "Card visuals",
+    "file": "src/app/boards/boards.html"
   },
   "1413778527796351850": {
     "source": "Africa",
@@ -973,6 +985,10 @@
   },
   "16005692485610512": {
     "source": "and see how well you know this board.",
+    "file": "src/app/boards/boards.ts"
+  },
+  "1606346231769336177": {
+    "source": "Create an even mix, with images kept as reliable fallbacks.",
     "file": "src/app/boards/boards.ts"
   },
   "1606806526214470410": {
@@ -3159,6 +3175,10 @@
     "source": "{$START_TAG_SPAN}chat{$CLOSE_TAG_SPAN} Chat ",
     "file": "src/app/atlas-landing/atlas-landing.html"
   },
+  "3133539296286953705": {
+    "source": "Stop",
+    "file": "src/app/boards/boards.html"
+  },
   "3135994256278133060": {
     "source": "Banner URL",
     "file": "src/app/atlas-manage/atlas-manage.html"
@@ -4311,6 +4331,10 @@
     "source": "Pages",
     "file": "src/app/profile/profile.html"
   },
+  "3822493341978466046": {
+    "source": "Images only",
+    "file": "src/app/boards/boards.ts"
+  },
   "3822976356925041300": {
     "source": "This business is not available yet.",
     "file": "src/app/business-detail/business-detail.html"
@@ -5095,6 +5119,10 @@
     "source": "This tour changed elsewhere. Reload it and try again.",
     "file": "src/app/boards/boards.ts"
   },
+  "4350763498845569576": {
+    "source": "Images + videos",
+    "file": "src/app/boards/boards.ts"
+  },
   "4351801655798226456": {
     "source": "Sign in for card",
     "file": "src/app/chat/chat.ts"
@@ -5342,6 +5370,10 @@
   "4528730451850190827": {
     "source": "Logo image",
     "file": "src/app/atlas-landing/atlas-landing.html"
+  },
+  "4536580068218685874": {
+    "source": "Choose the balance once. You can still edit any card before saving.",
+    "file": "src/app/boards/boards.html"
   },
   "4539910588356049438": {
     "source": "Family",
@@ -7009,7 +7041,7 @@
   },
   "5607669932062416162": {
     "source": "Default",
-    "file": "src/app/business-claim/business-claim.html"
+    "file": "src/app/boards/boards.html"
   },
   "5611592591303869712": {
     "source": "Status",
@@ -7898,10 +7930,6 @@
   "6188069562258249012": {
     "source": " Claim ",
     "file": "src/app/business/business.html"
-  },
-  "6191441716648737921": {
-    "source": "Board QR code",
-    "file": "src/app/boards/boards.html"
   },
   "6191533016450951787": {
     "source": "Vapi",
@@ -9262,10 +9290,6 @@
   "7058560051550513950": {
     "source": "Sky",
     "file": "src/app/boards/boards.ts"
-  },
-  "7064098783390125905": {
-    "source": "Made with LivingWiki",
-    "file": "src/app/boards/boards.html"
   },
   "7066875700485988101": {
     "source": "Atlas",
@@ -11659,6 +11683,10 @@
     "source": "Local Orbit",
     "file": "src/app/profile/profile-icons.ts"
   },
+  "8814243242604699951": {
+    "source": "Find a verified playable video for every card when one is available.",
+    "file": "src/app/boards/boards.ts"
+  },
   "8815719575309331876": {
     "source": "https://www.youtube.com/watch?v=...",
     "file": "src/app/boards/boards.html"
@@ -11846,6 +11874,10 @@
   "8933329832416037471": {
     "source": "No Wikis connected yet.",
     "file": "src/app/profile/profile.html"
+  },
+  "8936704404804793618": {
+    "source": "Videos",
+    "file": "src/app/boards/boards.ts"
   },
   "8938925228574395120": {
     "source": "Current Business",
@@ -12254,6 +12286,10 @@
   "9183665075985529683": {
     "source": " The page you entered does not exist. Head back to the landing page or open your wiki home. ",
     "file": "src/app/not-found/not-found.html"
+  },
+  "9184166069746319341": {
+    "source": "Use a strong image on every card. No videos are added automatically.",
+    "file": "src/app/boards/boards.ts"
   },
   "9188397733808972472": {
     "source": "Census-tract health outcomes connecting pollution exposure to people.",

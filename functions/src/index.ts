@@ -28,6 +28,7 @@ import {
 } from './board-wizard-image-quality';
 import { resolveBoardWizardMediaKind, type BoardWizardMediaKind } from './board-wizard-media-quality';
 import {
+  applyBoardWizardMediaMode,
   boardWizardCardWantsVideo,
   boardWizardVideoCandidateLooksDirect,
   buildBoardWizardContextVideoSearchQuery,
@@ -37,6 +38,7 @@ import {
   parseIso8601DurationSeconds,
   rankBoardWizardVideoCandidates,
   scoreBoardWizardVideoCandidate,
+  normalizeBoardWizardMediaMode,
   youtubeVideoIdFromReference,
   type BoardWizardVideoCandidate,
   type BoardWizardVideoCardInput,
@@ -4969,6 +4971,7 @@ type BoardWizardCallableData = {
   defaultType?: unknown;
   count?: unknown;
   vibe?: unknown;
+  mediaMode?: unknown;
   narrationStyle?: unknown;
   tourOptions?: unknown;
   existingCards?: unknown;
@@ -6330,6 +6333,7 @@ export const generateBoardWizardBatch = onCall(
     const mode = normalizeBoardWizardMode(data.mode);
     const defaultType = normalizeBoardWizardDefaultType(data.defaultType);
     const vibe = normalizeBoardWizardVibe(data.vibe);
+    const mediaMode = normalizeBoardWizardMediaMode(data.mediaMode);
     const narrationStyle = normalizeBoardNarrationStyle(data.narrationStyle);
     const tourOptions = normalizeBoardWizardTourOptions(data.tourOptions, mode);
     const targetBoardId = stringOrEmpty(data.targetBoardId).slice(0, 140);
@@ -6703,18 +6707,22 @@ export const generateBoardWizardBatch = onCall(
     const routeReadyResult = isBoardWizardTourMode(mode)
       ? await enrichBoardWizardTourBatchWithRoutes(previewReadyResult, mode, tourOptions)
       : previewReadyResult;
+    const mediaReadyResult: GeneratedBoardWizardBatch = {
+      ...routeReadyResult,
+      cards: applyBoardWizardMediaMode(routeReadyResult.cards, mediaMode),
+    };
 
     const resultWithSourceReport: GeneratedBoardWizardBatch = usesUrlSource && url
       ? {
-          ...routeReadyResult,
-          sourceReport: buildBoardWizardSourceReport(routeReadyResult, {
+          ...mediaReadyResult,
+          sourceReport: buildBoardWizardSourceReport(mediaReadyResult, {
             sourceUrl: url,
             sourceBlocked: urlSourceBlocked,
             method: urlRecoveryMethod,
             manifest: articleManifest,
           }),
         }
-      : routeReadyResult;
+      : mediaReadyResult;
 
     await db.collection('board_wizard_batches').add({
       owner_user_id: userId,
@@ -6723,6 +6731,7 @@ export const generateBoardWizardBatch = onCall(
       target_board_title: targetBoardTitle || null,
       default_type: defaultType,
       vibe,
+      media_mode: mediaMode,
       narration_style: narrationStyle,
       requested_count: generationCount,
       generated_count: resultWithSourceReport.cards.length,
@@ -6755,6 +6764,12 @@ export const resolveBoardCardVideos = onCall(
     const data = request.data && typeof request.data === 'object'
       ? request.data as Record<string, unknown>
       : {};
+    const submittedMediaMode = data.mediaMode === undefined
+      ? null
+      : normalizeBoardWizardMediaMode(data.mediaMode);
+    if (submittedMediaMode === 'images') {
+      return { matches: [], attempted: 0, skippedByMediaMode: true };
+    }
     const boardContext = [
       stringOrEmpty(data.boardTitle).slice(0, 120),
       stringOrEmpty(data.boardDescription).slice(0, 300),

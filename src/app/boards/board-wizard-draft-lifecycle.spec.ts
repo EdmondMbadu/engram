@@ -2,6 +2,7 @@ import {
   boardWizardStepAfterGenerationFailure,
   shouldAutosaveBoardWizardDraft,
   shouldFlushBoardWizardDraftOnClose,
+  shouldRetryBoardWizardDraftAutosave,
 } from './board-wizard-draft-lifecycle';
 
 describe('board wizard draft lifecycle', () => {
@@ -59,5 +60,11 @@ describe('board wizard draft lifecycle', () => {
 
   it('keeps an earlier preview visible when a refinement fails', () => {
     expect(boardWizardStepAfterGenerationFailure(true)).toBe('preview');
+  });
+
+  it('does not immediately replay a denied autosave for the same snapshot', () => {
+    expect(shouldRetryBoardWizardDraftAutosave('snapshot-a', 'snapshot-a')).toBeFalse();
+    expect(shouldRetryBoardWizardDraftAutosave('snapshot-b', 'snapshot-a')).toBeTrue();
+    expect(shouldRetryBoardWizardDraftAutosave('snapshot-a', '')).toBeTrue();
   });
 });

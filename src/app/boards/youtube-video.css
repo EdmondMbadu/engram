@@ -11,5 +11,8 @@
 .boards-wizard-card__video-meta small { overflow:hidden;margin-top:.12rem;font-size:.62rem;text-overflow:ellipsis;white-space:nowrap }
 .boards-wizard-refine__video { display:flex;align-items:flex-start;gap:.45rem;border:1px solid color-mix(in srgb,var(--accent) 40%,var(--line));border-radius:.75rem;background:color-mix(in srgb,var(--accent) 8%,var(--surface));color:var(--text);font-size:.72rem;font-weight:850;line-height:1.35;padding:.6rem }
 .boards-wizard-refine__video .material-symbols-outlined { color:#e4281f;font-size:1.15rem }
+.boards-wizard-refine__video>span:nth-child(2){flex:1 1 auto}
+.boards-wizard-refine__video>button{flex:0 0 auto;border:1px solid color-mix(in srgb,var(--accent) 38%,var(--line));border-radius:999px;background:var(--surface);color:var(--text);cursor:pointer;font:inherit;font-weight:950;padding:.28rem .55rem}
+.boards-wizard-refine__video>button:hover{border-color:var(--accent);color:var(--accent)}
 .card-youtube-field__ready { display:flex!important;align-items:center;gap:.3rem;color:#197642!important;font-weight:900!important }
 .card-youtube-field__ready .material-symbols-outlined { color:#e4281f;font-size:1rem }

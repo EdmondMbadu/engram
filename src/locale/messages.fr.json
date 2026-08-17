@@ -1976,7 +1976,6 @@
     "6184689154800822298": "Invitation copiée. Envoyez-la où vous voulez.",
     "6187415062918811052": "Parcourir les fichiers sources",
     "6188069562258249012": " Réclamation ",
-    "6191441716648737921": "Code QR du Conseil",
     "6191533016450951787": "Vapi",
     "6191643918822075959": "Carte d'histoire",
     "619608034616931471": "Commencez avec des questions modifiables générées à partir de vos cartes.",
@@ -2317,7 +2316,6 @@
     "7055168605128539443": " Réinitialiser par défaut ",
     "7056588119694382431": "Ce chat partagé n'est pas disponible",
     "7058560051550513950": "Ciel",
-    "7064098783390125905": "Fabriqué avec LivingWiki",
     "7066875700485988101": "Atlas",
     "7071055120332182136": "Votre nom, votre photo et votre carré what3words exact seront partagés avec toutes les personnes de ce tableau.",
     "7077855156909409528": "Draft local trouvé pour ce nom et ville.",
@@ -3113,6 +3111,17 @@
     "99319995922500877": " Choisir une autre heure ",
     "99359195923654024": "Nom Wiki",
     "999205338894734695": "{$START_BOLD_TEXT}LivingWiki{$CLOSE_BOLD_TEXT} · Le moteur de Serendipity Global",
+    "1153362258318924333": "La recherche de vidéos a été arrêtée. Les cartes restantes ont conservé leurs images.",
+    "1294104683635463866": "Seules les vidéos pertinentes et lisibles sont utilisées. Si une correspondance ne peut pas être vérifiée, la carte conserve son image.",
+    "1413714338880942050": "Visuels des cartes",
+    "1606346231769336177": "Créez un mélange équilibré, avec des images conservées comme solution de repli fiable.",
+    "3133539296286953705": "Arrêter",
+    "3822493341978466046": "Images uniquement",
+    "4350763498845569576": "Images + vidéos",
+    "4536580068218685874": "Choisissez l’équilibre une fois. Vous pourrez toujours modifier chaque carte avant de l’enregistrer.",
+    "8814243242604699951": "Trouvez une vidéo vérifiée et lisible pour chaque carte lorsqu’elle est disponible.",
+    "8936704404804793618": "Vidéos",
+    "9184166069746319341": "Utilisez une image forte sur chaque carte. Aucune vidéo n’est ajoutée automatiquement.",
     "languageSwitcher.menuLabel": "Langues"
   }
 }

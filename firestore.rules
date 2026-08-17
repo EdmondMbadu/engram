@@ -307,6 +307,8 @@ service cloud.firestore {
 
     match /users/{userId}/board_wizard_drafts/{draftId} {
       allow read, delete: if isOwner(userId);
+      // Keep optional wizard preferences inside result.wizard_preferences.
+      // Adding new top-level keys creates a client/rules deployment-order trap.
       allow create, update: if isOwner(userId)
         && request.resource.data.keys().hasOnly([
           'id',
@@ -318,6 +320,7 @@ service cloud.firestore {
           'default_type',
           'count',
           'vibe',
+          'media_mode',
           'narration_style',
           'prompt',
           'pasted_list',
@@ -353,6 +356,10 @@ service cloud.firestore {
         ]
         && request.resource.data.default_type in ['place', 'food', 'memory', 'idea', 'shop', 'note']
         && request.resource.data.vibe in ['playful', 'foodie', 'traveler', 'curator', 'memory']
+        && (
+          !request.resource.data.keys().hasAny(['media_mode'])
+          || request.resource.data.media_mode in ['images', 'mixed', 'videos']
+        )
         && request.resource.data.count is number
         && request.resource.data.count >= 1
         && request.resource.data.count <= 100

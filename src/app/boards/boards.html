@@ -4416,6 +4416,47 @@
               }
             </section>
 
+            @if (wizardMode() !== 'photos' && wizardMode() !== 'off-grid') {
+              <section class="boards-wizard-media">
+                <div class="boards-wizard-media__head">
+                  <span class="boards-wizard-label" i18n>Card visuals</span>
+                  <small i18n>Choose the balance once. You can still edit any card before saving.</small>
+                </div>
+                <div class="boards-wizard-media__grid" role="radiogroup" aria-label="Card visuals" i18n-aria-label>
+                  @for (mediaMode of wizardMediaModes; track mediaMode.id) {
+                    <button
+                      type="button"
+                      role="radio"
+                      class="boards-wizard-media__option"
+                      [class.boards-wizard-media__option--active]="wizardMediaMode() === mediaMode.id"
+                      [attr.aria-checked]="wizardMediaMode() === mediaMode.id"
+                      (click)="wizardMediaMode.set(mediaMode.id)"
+                    >
+                      <span class="boards-wizard-media__icon material-symbols-outlined">{{ mediaMode.icon }}</span>
+                      <span class="boards-wizard-media__copy">
+                        <span class="boards-wizard-media__title">
+                          <strong>{{ mediaMode.label }}</strong>
+                          @if (mediaMode.id === 'images') {
+                            <em i18n>Default</em>
+                          }
+                        </span>
+                        <small>{{ mediaMode.description }}</small>
+                      </span>
+                      @if (wizardMediaMode() === mediaMode.id) {
+                        <span class="boards-wizard-media__check material-symbols-outlined" aria-hidden="true">check_circle</span>
+                      }
+                    </button>
+                  }
+                </div>
+                @if (wizardMediaMode() !== 'images') {
+                  <p class="boards-wizard-media__fallback">
+                    <span class="material-symbols-outlined" aria-hidden="true">verified</span>
+                    <span i18n>Only relevant, playable videos are used. If a match cannot be verified, the card keeps its image.</span>
+                  </p>
+                }
+              </section>
+            }
+
             @if (!isTourWizardMode() && wizardMode() !== 'off-grid') {
             <section>
               <span class="boards-wizard-label" i18n>Default card type</span>
@@ -5183,10 +5224,13 @@
                     }
                   </p>
                   @if (wizardVideoNotice()) {
-                    <p class="boards-wizard-refine__video" aria-live="polite">
+                    <div class="boards-wizard-refine__video" aria-live="polite">
                       <span class="material-symbols-outlined">smart_display</span>
                       <span>{{ wizardVideoNotice() }}</span>
-                    </p>
+                      @if (wizardVideoLoadingCardIds().size > 0) {
+                        <button type="button" (click)="cancelWizardVideoEnrichment()" i18n>Stop</button>
+                      }
+                    </div>
                   }
                   <textarea
                     rows="5"

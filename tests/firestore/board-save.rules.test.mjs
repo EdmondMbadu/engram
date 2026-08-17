@@ -85,6 +85,42 @@ function publicBoardCollection(overrides = {}) {
   };
 }
 
+function personalWizardDraft(overrides = {}) {
+  return {
+    id: 'media-draft-1',
+    owner_user_id: ownerUid,
+    mode: 'describe',
+    target_board_id: 'new',
+    locked_target_board_id: '',
+    contribution_board_id: '',
+    default_type: 'place',
+    count: 12,
+    vibe: 'curator',
+    narration_style: 'storyteller',
+    prompt: 'A carefully researched board',
+    pasted_list: '',
+    source_url: '',
+    off_grid_name: '',
+    off_grid_address: '',
+    off_grid_tip: '',
+    stack_cta_label: '',
+    stack_cta_url: '',
+    tour_voice_style: 'historian',
+    tour_pace_or_style: 'Standard',
+    tour_extras: [],
+    result: {
+      board: { title: 'Draft' },
+      cards: [{ id: 'card-1', title: 'First card' }],
+      wizard_preferences: { media_mode: 'images' },
+    },
+    selected_card_ids: ['card-1'],
+    created_at_iso: '2026-08-16T00:00:00.000Z',
+    updated_at_iso: '2026-08-16T00:00:00.000Z',
+    server_updated_at: serverTimestamp(),
+    ...overrides,
+  };
+}
+
 before(async () => {
   testEnvironment = await initializeTestEnvironment({
     projectId,
@@ -124,6 +160,54 @@ test('owner can atomically save a personal wizard board and remove its draft', a
     assert.equal((await getDoc(doc(context.firestore(), 'boards', 'wizard-board-1'))).exists(), true);
     assert.equal((await getDoc(doc(context.firestore(), 'users', ownerUid, 'board_wizard_drafts', 'wizard-board-1'))).exists(), false);
   });
+});
+
+test('owner can save each media preference without adding a top-level draft field', async () => {
+  const database = testEnvironment.authenticatedContext(ownerUid).firestore();
+
+  for (const mediaMode of ['images', 'mixed', 'videos']) {
+    const draftId = `media-draft-${mediaMode}`;
+    const payload = personalWizardDraft({
+      id: draftId,
+      result: {
+        board: { title: 'Draft' },
+        cards: [{ id: 'card-1', title: 'First card' }],
+        wizard_preferences: { media_mode: mediaMode },
+      },
+    });
+    assert.equal('media_mode' in payload, false);
+    await assertSucceeds(setDoc(
+      doc(database, 'users', ownerUid, 'board_wizard_drafts', draftId),
+      payload,
+    ));
+  }
+});
+
+test('wizard draft media mode cannot bypass its allowlist or ownership', async () => {
+  const ownerDatabase = testEnvironment.authenticatedContext(ownerUid).firestore();
+  await assertFails(setDoc(
+    doc(ownerDatabase, 'users', ownerUid, 'board_wizard_drafts', 'media-draft-invalid'),
+    personalWizardDraft({ id: 'media-draft-invalid', media_mode: 'random' }),
+  ));
+
+  const otherDatabase = testEnvironment.authenticatedContext('different-user').firestore();
+  await assertFails(setDoc(
+    doc(otherDatabase, 'users', ownerUid, 'board_wizard_drafts', 'media-draft-other'),
+    personalWizardDraft({ id: 'media-draft-other' }),
+  ));
+});
+
+test('legacy wizard drafts remain writable without media preferences', async () => {
+  const database = testEnvironment.authenticatedContext(ownerUid).firestore();
+  const legacyDraft = personalWizardDraft({
+    id: 'media-draft-legacy',
+    result: { board: { title: 'Legacy draft' }, cards: [{ id: 'card-1' }] },
+  });
+
+  await assertSucceeds(setDoc(
+    doc(database, 'users', ownerUid, 'board_wizard_drafts', 'media-draft-legacy'),
+    legacyDraft,
+  ));
 });
 
 test('older clients may save a personal board with null city metadata', async () => {

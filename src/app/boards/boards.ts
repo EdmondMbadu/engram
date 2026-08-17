@@ -61,7 +61,19 @@ import {
   boardWizardStepAfterGenerationFailure,
   shouldAutosaveBoardWizardDraft,
   shouldFlushBoardWizardDraftOnClose,
+  shouldRetryBoardWizardDraftAutosave,
 } from './board-wizard-draft-lifecycle';
+import {
+  boardWizardVideoCandidateBatches,
+  boardWizardVideoTargetCount,
+  DEFAULT_BOARD_WIZARD_MEDIA_MODE,
+  orderBoardWizardVideoCandidates,
+  type BoardWizardMediaMode,
+} from './board-wizard-media-mode';
+import {
+  boardWizardDraftMediaMode,
+  boardWizardDraftPayloadWithPreferences,
+} from './board-wizard-draft-persistence';
 import { appendBoardCards } from './board-batch';
 import { compareBoardsByCreatedDate } from './board-gallery-order';
 import {
@@ -704,6 +716,7 @@ type BoardWizardDraft = {
   defaultType: BoardCardType;
   count: number;
   vibe: BoardWizardVibe;
+  mediaMode: BoardWizardMediaMode;
   narrationStyle: BoardNarrationStyleId;
   prompt: string;
   pastedList: string;
@@ -905,6 +918,32 @@ const BOARD_WIZARD_VIBES: Array<{ id: BoardWizardVibe; label: string; icon: stri
   { id: 'traveler', label: $localize`Traveler`, icon: 'travel_explore' },
   { id: 'curator', label: $localize`Curator`, icon: 'interests' },
   { id: 'memory', label: $localize`Memory`, icon: 'auto_stories' },
+];
+
+const BOARD_WIZARD_MEDIA_MODES: Array<{
+  id: BoardWizardMediaMode;
+  label: string;
+  description: string;
+  icon: string;
+}> = [
+  {
+    id: 'images',
+    label: $localize`Images only`,
+    description: $localize`Use a strong image on every card. No videos are added automatically.`,
+    icon: 'photo_library',
+  },
+  {
+    id: 'mixed',
+    label: $localize`Images + videos`,
+    description: $localize`Create an even mix, with images kept as reliable fallbacks.`,
+    icon: 'auto_awesome_motion',
+  },
+  {
+    id: 'videos',
+    label: $localize`Videos`,
+    description: $localize`Find a verified playable video for every card when one is available.`,
+    icon: 'smart_display',
+  },
 ];
 
 const BOARD_WIZARD_STATUS_MESSAGES = [
@@ -1266,7 +1305,7 @@ type BoardLoadContext = {
   selector: 'app-boards',
   imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink, BoardCollectionCreateComponent, BoardCollectionListComponent],
   templateUrl: './boards.html',
-  styleUrls: ['./boards.css', './board-wizard-drafts.css', './board-narration-style.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css', './stack-script.css', './stack-cover-final.css', './board-city-tag.css'],
+  styleUrls: ['./boards.css', './board-wizard-drafts.css', './board-wizard-media-mode.css', './board-narration-style.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css', './stack-script.css', './stack-cover-final.css', './board-city-tag.css'],
 })
 export class BoardsComponent implements OnDestroy {
   private readonly localeId = inject(LOCALE_ID);
@@ -1319,6 +1358,7 @@ export class BoardsComponent implements OnDestroy {
   private wizardDraftSavePending = false;
   private wizardDraftRestoreInProgress = false;
   private wizardDraftsLoadedForUid = '';
+  private readonly wizardDraftFailedSnapshotKey = signal('');
   private stackLivePreviewAutoplay = false;
   private stackStudioDirectRequested = false;
   private stackStudioDirectOpenedFor = '';
@@ -1383,6 +1423,7 @@ export class BoardsComponent implements OnDestroy {
   readonly cardStatuses = CARD_STATUSES;
   readonly wizardModes = BOARD_WIZARD_MODES;
   readonly wizardVibes = BOARD_WIZARD_VIBES;
+  readonly wizardMediaModes = BOARD_WIZARD_MEDIA_MODES;
   readonly wizardNarrationStyles = BOARD_NARRATION_STYLES;
   readonly wizardNarrationVoiceName = defaultNarratorVoiceNameForStyle;
   readonly tourVoiceStyles = TOUR_VOICE_STYLES;
@@ -1554,6 +1595,7 @@ export class BoardsComponent implements OnDestroy {
   readonly wizardDefaultType = signal<BoardCardType>('place');
   readonly wizardCount = signal(12);
   readonly wizardVibe = signal<BoardWizardVibe>('playful');
+  readonly wizardMediaMode = signal<BoardWizardMediaMode>(DEFAULT_BOARD_WIZARD_MEDIA_MODE);
   readonly wizardNarrationStyle = signal<BoardNarrationStyleId>(DEFAULT_BOARD_NARRATION_STYLE_ID);
   readonly wizardPrompt = signal('');
   readonly wizardPastedList = signal('');
@@ -2692,6 +2734,7 @@ export class BoardsComponent implements OnDestroy {
       const snapshotKey = this.wizardDraftSnapshotKey();
       if (
         !snapshotKey
+        || !shouldRetryBoardWizardDraftAutosave(snapshotKey, this.wizardDraftFailedSnapshotKey())
         || !shouldAutosaveBoardWizardDraft({
           step: this.wizardStep(),
           hasResult: !!this.wizardResult(),
@@ -3267,6 +3310,7 @@ export class BoardsComponent implements OnDestroy {
     }
     this.wizardMode.set(mode);
     if (mode === 'off-grid') {
+      this.wizardMediaMode.set(DEFAULT_BOARD_WIZARD_MEDIA_MODE);
       this.wizardDefaultType.set('place');
       this.wizardVibe.set('traveler');
       this.wizardCount.set(1);
@@ -3275,6 +3319,9 @@ export class BoardsComponent implements OnDestroy {
       }
       this.wizardStep.set('configure');
       return;
+    }
+    if (mode === 'photos') {
+      this.wizardMediaMode.set(DEFAULT_BOARD_WIZARD_MEDIA_MODE);
     }
     if (this.isTourWizardMode(mode)) {
       this.wizardDefaultType.set('place');
@@ -3317,6 +3364,7 @@ export class BoardsComponent implements OnDestroy {
   }
 
   async closeBoardWizard(): Promise<void> {
+    this.cancelWizardVideoEnrichment();
     if (shouldFlushBoardWizardDraftOnClose({
       step: this.wizardStep(),
       hasResult: !!this.wizardResult(),
@@ -3350,6 +3398,7 @@ export class BoardsComponent implements OnDestroy {
     this.wizardDefaultType.set(draft.defaultType);
     this.wizardCount.set(draft.count);
     this.wizardVibe.set(draft.vibe);
+    this.wizardMediaMode.set(draft.mediaMode);
     this.wizardNarrationStyle.set(draft.narrationStyle);
     this.wizardPrompt.set(draft.prompt);
     this.wizardPastedList.set(draft.pastedList);
@@ -3453,6 +3502,7 @@ export class BoardsComponent implements OnDestroy {
       }
       this.wizardStep.set('choose');
     } else if (step === 'preview' || step === 'source-review') {
+      this.cancelWizardVideoEnrichment();
       this.wizardStep.set('configure');
     }
   }
@@ -3957,7 +4007,9 @@ export class BoardsComponent implements OnDestroy {
       : null;
 
     try {
-      const generatedBatch = await this.requestWizardBatch(refinement);
+      const generatedBatch = this.applyWizardMediaModeToGeneratedBatch(
+        await this.requestWizardBatch(refinement),
+      );
       const batch = this.wizardMode() === 'photos'
         ? this.attachWizardPhotosToBatch(generatedBatch)
         : generatedBatch;
@@ -14647,6 +14699,7 @@ export class BoardsComponent implements OnDestroy {
       defaultType: this.wizardDefaultType(),
       count: this.wizardCount(),
       vibe: this.wizardVibe(),
+      mediaMode: this.wizardMediaMode(),
       narrationStyle: this.wizardNarrationStyle(),
       prompt: this.wizardPrompt(),
       pastedList: this.wizardPastedList(),
@@ -14718,8 +14771,10 @@ export class BoardsComponent implements OnDestroy {
     if (!this.firestore || !uid || !result || !cards.length || !draftId) {
       return;
     }
+    const attemptedSnapshotKey = this.wizardDraftSnapshotKey();
 
     this.wizardDraftSaveInFlight = true;
+    let saveSucceeded = false;
     let completeSave: () => void = () => undefined;
     this.wizardDraftSavePromise = new Promise<void>((resolve) => {
       completeSave = resolve;
@@ -14747,6 +14802,7 @@ export class BoardsComponent implements OnDestroy {
         defaultType: this.wizardDefaultType(),
         count: this.wizardCount(),
         vibe: this.wizardVibe(),
+        mediaMode: this.wizardMediaMode(),
         narrationStyle: this.wizardNarrationStyle(),
         prompt: this.wizardPrompt(),
         pastedList: this.wizardPastedList(),
@@ -14764,36 +14820,37 @@ export class BoardsComponent implements OnDestroy {
         createdAt,
         updatedAt,
       };
+      const persistedDraftPayload = boardWizardDraftPayloadWithPreferences({
+        id: draft.id,
+        owner_user_id: draft.ownerUserId,
+        mode: draft.mode,
+        target_board_id: draft.targetBoardId,
+        locked_target_board_id: draft.lockedTargetBoardId,
+        contribution_board_id: draft.contributionBoardId,
+        default_type: draft.defaultType,
+        count: draft.count,
+        vibe: draft.vibe,
+        narration_style: draft.narrationStyle,
+        prompt: draft.prompt,
+        pasted_list: draft.pastedList,
+        source_url: draft.sourceUrl,
+        off_grid_name: draft.offGridName,
+        off_grid_address: draft.offGridAddress,
+        off_grid_tip: draft.offGridTip,
+        stack_cta_label: draft.stackCtaLabel,
+        stack_cta_url: draft.stackCtaUrl,
+        tour_voice_style: draft.tourVoiceStyle,
+        tour_pace_or_style: draft.tourPaceOrStyle,
+        tour_extras: draft.tourExtras,
+        result: draft.result,
+        selected_card_ids: draft.selectedCardIds,
+        created_at_iso: draft.createdAt,
+        updated_at_iso: draft.updatedAt,
+        server_updated_at: serverTimestamp(),
+      }, draft.mediaMode);
       await setDoc(
         doc(this.firestore, 'users', uid, 'board_wizard_drafts', draftId),
-        omitUndefinedDeep({
-          id: draft.id,
-          owner_user_id: draft.ownerUserId,
-          mode: draft.mode,
-          target_board_id: draft.targetBoardId,
-          locked_target_board_id: draft.lockedTargetBoardId,
-          contribution_board_id: draft.contributionBoardId,
-          default_type: draft.defaultType,
-          count: draft.count,
-          vibe: draft.vibe,
-          narration_style: draft.narrationStyle,
-          prompt: draft.prompt,
-          pasted_list: draft.pastedList,
-          source_url: draft.sourceUrl,
-          off_grid_name: draft.offGridName,
-          off_grid_address: draft.offGridAddress,
-          off_grid_tip: draft.offGridTip,
-          stack_cta_label: draft.stackCtaLabel,
-          stack_cta_url: draft.stackCtaUrl,
-          tour_voice_style: draft.tourVoiceStyle,
-          tour_pace_or_style: draft.tourPaceOrStyle,
-          tour_extras: draft.tourExtras,
-          result: draft.result,
-          selected_card_ids: draft.selectedCardIds,
-          created_at_iso: draft.createdAt,
-          updated_at_iso: draft.updatedAt,
-          server_updated_at: serverTimestamp(),
-        }),
+        omitUndefinedDeep(persistedDraftPayload),
       );
       this.wizardDrafts.update((drafts) => [
         draft,
@@ -14801,8 +14858,11 @@ export class BoardsComponent implements OnDestroy {
       ].sort((left, right) => right.updatedAt.localeCompare(left.updatedAt)));
       this.wizardDraftSavedAt.set(updatedAt);
       this.wizardDraftSaveState.set('saved');
+      this.wizardDraftFailedSnapshotKey.set('');
+      saveSucceeded = true;
     } catch (error) {
       this.wizardDraftSaveState.set('error');
+      this.wizardDraftFailedSnapshotKey.set(attemptedSnapshotKey);
       console.error('Wizard draft autosave failed', error, {
         draftId,
         mode: this.wizardMode(),
@@ -14815,7 +14875,7 @@ export class BoardsComponent implements OnDestroy {
       this.wizardDraftSavePending = false;
       completeSave();
       this.wizardDraftSavePromise = null;
-      if (shouldSaveAgain) {
+      if (shouldSaveAgain && saveSucceeded) {
         await this.persistActiveWizardDraft();
       }
     }
@@ -14874,6 +14934,7 @@ export class BoardsComponent implements OnDestroy {
         ? vibeValue
         : 'playful';
       const narrationStyle = normalizeBoardNarrationStyleId(value['narration_style']);
+      const mediaMode = boardWizardDraftMediaMode(value);
       const tourVoiceValue = value['tour_voice_style'];
       const tourVoiceStyle: BoardTourVoiceStyle = tourVoiceValue === 'local' || tourVoiceValue === 'kid-friendly'
         ? tourVoiceValue
@@ -14888,6 +14949,7 @@ export class BoardsComponent implements OnDestroy {
         defaultType,
         count: Math.round(this.numberValue(value['count'], cards.length, 1, 100)),
         vibe,
+        mediaMode,
         narrationStyle,
         prompt: this.stringValue(value['prompt'], '', 2000),
         pastedList: this.stringValue(value['pasted_list'], '', BOARD_WIZARD_PASTE_MAX_LENGTH),
@@ -14926,6 +14988,7 @@ export class BoardsComponent implements OnDestroy {
     this.wizardDefaultType.set('place');
     this.wizardCount.set(12);
     this.wizardVibe.set('playful');
+    this.wizardMediaMode.set(DEFAULT_BOARD_WIZARD_MEDIA_MODE);
     this.wizardNarrationStyle.set(DEFAULT_BOARD_NARRATION_STYLE_ID);
     this.wizardPrompt.set('');
     this.wizardPastedList.set('');
@@ -14975,6 +15038,7 @@ export class BoardsComponent implements OnDestroy {
     this.wizardDraftSaveState.set('idle');
     this.wizardDraftSavedAt.set('');
     this.wizardDraftDiscardCandidateId.set(null);
+    this.wizardDraftFailedSnapshotKey.set('');
   }
 
   private resetWizardCardImageTools(): void {
@@ -15085,6 +15149,7 @@ export class BoardsComponent implements OnDestroy {
       defaultType: this.wizardDefaultType(),
       count: this.wizardCount(),
       vibe: this.wizardVibe(),
+      mediaMode: this.wizardMediaMode(),
       narrationStyle: this.wizardNarrationStyleForGeneration(),
       tourOptions: this.isTourWizardMode(this.wizardMode())
         ? {
@@ -15131,6 +15196,28 @@ export class BoardsComponent implements OnDestroy {
       // Do not truncate a verified complete set back to the UI's default count.
       cards: cards.slice(0, 100),
       sourceReport: this.normalizeWizardSourceReport(data['sourceReport']),
+    };
+  }
+
+  private applyWizardMediaModeToGeneratedBatch(batch: BoardWizardGeneratedBatch): BoardWizardGeneratedBatch {
+    const mode = this.wizardMediaMode();
+    if (mode === 'mixed') return batch;
+    return {
+      ...batch,
+      cards: batch.cards.map((card) => mode === 'videos'
+        ? { ...card, video_intent: true }
+        : {
+            ...card,
+            video_intent: false,
+            video_search_query: '',
+            youtubeVideoId: '',
+            youtubeVideoTitle: '',
+            youtubeChannelTitle: '',
+            youtubeThumbnailUrl: '',
+            youtubeDurationSeconds: 0,
+            youtubeMatchConfidence: 0,
+            youtubeVerifiedAt: '',
+          }),
     };
   }
 
@@ -15445,95 +15532,144 @@ export class BoardsComponent implements OnDestroy {
     options: { youtubeReferences?: Record<string, string>; forceCardIds?: Set<string> } = {},
   ): Promise<void> {
     if (!this.functions) return;
-    const candidates = cards
-      .filter((card) => options.forceCardIds?.has(card.id) || this.wizardCardWantsVideo(card))
-      .slice(0, 20);
-    if (!candidates.length) {
+    const forcedCards = options.forceCardIds
+      ? cards.filter((card) => options.forceCardIds?.has(card.id))
+      : [];
+    const mediaMode = forcedCards.length ? 'videos' : this.wizardMediaMode();
+    const candidates = forcedCards.length
+      ? forcedCards
+      : orderBoardWizardVideoCandidates(cards, mediaMode, (card) => this.wizardCardWantsVideo(card));
+    const targetCount = forcedCards.length
+      ? forcedCards.length
+      : boardWizardVideoTargetCount(mediaMode, cards.length);
+    if (!candidates.length || !targetCount) {
       this.wizardVideoNotice.set(null);
+      this.wizardVideoLoadingCardIds.set(new Set());
       return;
     }
     const run = ++this.wizardVideoEnrichmentRun;
     this.wizardVideoLoadingCardIds.set(new Set(candidates.map((card) => card.id)));
-    this.wizardVideoNotice.set(
-      candidates.length === 1 ? $localize`Finding a verified video…` : `Finding videos for ${candidates.length} cards…`,
-    );
+    let matchedCount = 0;
+    let attemptedCount = 0;
+    let usedBackupSearch = false;
+    let deadlineLimited = false;
+    let lookupFailed = false;
+    const batches = boardWizardVideoCandidateBatches(candidates);
+    this.wizardVideoNotice.set(targetCount === 1
+      ? $localize`Finding a verified video…`
+      : `Finding up to ${targetCount} verified videos…`);
     try {
       const callable = httpsCallable<Record<string, unknown>, unknown>(this.functions, 'resolveBoardCardVideos', {
         timeout: 55_000,
       });
-      const response = await callable({
-        boardTitle: batch.board.title,
-        boardDescription: batch.board.description,
-        prompt: this.wizardPrompt().trim(),
-        cards: candidates.map((card) => ({
-          cardId: card.id,
-          title: card.title,
-          subtitle: card.subtitle,
-          notes: card.notes,
-          entityName: card.entity_name || card.title,
-          entityType: card.entity_type || '',
-          imageContext: card.image_context || '',
-          tags: card.tags,
-          videoIntent: options.forceCardIds?.has(card.id) || card.video_intent === true,
-          videoSearchQuery: card.video_search_query || '',
-          youtubeReference: options.youtubeReferences?.[card.id] || '',
-        })),
-      });
-      if (run !== this.wizardVideoEnrichmentRun) return;
-      const data = response.data && typeof response.data === 'object'
-        ? response.data as Record<string, unknown>
-        : {};
-      const matches = Array.isArray(data['matches']) ? data['matches'] : [];
-      const degraded = data['degraded'] === true;
-      const partial = data['partial'] === true;
-      const byCardId = new Map<string, Partial<BoardWizardPreviewCard>>();
-      for (const value of matches) {
-        if (!value || typeof value !== 'object') continue;
-        const match = value as Record<string, unknown>;
-        const cardId = this.stringValue(match['cardId'], '', 160);
-        const videoId = youtubeVideoIdFromReference(match['youtubeVideoId']);
-        if (!cardId || !videoId) continue;
-        byCardId.set(cardId, {
-          video_intent: true,
-          youtubeVideoId: videoId,
-          youtubeVideoTitle: this.stringValue(match['youtubeVideoTitle'], '', 300),
-          youtubeChannelTitle: this.stringValue(match['youtubeChannelTitle'], '', 200),
-          youtubeThumbnailUrl: this.stringValue(match['youtubeThumbnailUrl'], '', 2000),
-          youtubeDurationSeconds: this.numberValue(match['youtubeDurationSeconds'], 0, 0, 86_400),
-          youtubeMatchConfidence: this.numberValue(match['youtubeMatchConfidence'], 0, 0, 1),
-          youtubeVerifiedAt: this.stringValue(match['youtubeVerifiedAt'], new Date().toISOString(), 80),
-        });
-      }
-      this.wizardPreviewCards.update((current) => current.map((card) => {
-        const match = byCardId.get(card.id);
-        return match ? { ...card, ...match } : card;
-      }));
-      const refreshedCards = this.wizardPreviewCards();
-      const currentResult = this.wizardResult();
-      if (currentResult) this.wizardResult.set({ ...currentResult, cards: refreshedCards });
-      const count = byCardId.size;
-      if (count) {
-        const qualifier = degraded
-          ? ' found using backup search'
-          : partial
-            ? ' found before the lookup deadline'
-            : ' found';
+      for (const candidateBatch of batches) {
+        if (run !== this.wizardVideoEnrichmentRun) return;
+        if (matchedCount >= targetCount) break;
         this.wizardVideoNotice.set(
-          `${count} video${count === 1 ? '' : 's'}${qualifier}. Review any card before saving.`,
+          `Verified ${matchedCount} of ${targetCount} videos · checking ${attemptedCount + 1}–${Math.min(attemptedCount + candidateBatch.length, candidates.length)} of ${candidates.length}`,
         );
+        let response: Awaited<ReturnType<typeof callable>>;
+        try {
+          response = await callable({
+            boardTitle: batch.board.title,
+            boardDescription: batch.board.description,
+            prompt: this.wizardPrompt().trim(),
+            mediaMode,
+            cards: candidateBatch.map((card) => ({
+              cardId: card.id,
+              title: card.title,
+              subtitle: card.subtitle,
+              notes: card.notes,
+              entityName: card.entity_name || card.title,
+              entityType: card.entity_type || '',
+              imageContext: card.image_context || '',
+              tags: card.tags,
+              videoIntent: true,
+              videoSearchQuery: card.video_search_query || '',
+              youtubeReference: options.youtubeReferences?.[card.id] || '',
+            })),
+          });
+        } catch (error) {
+          console.error('Board wizard video enrichment batch failed.', error);
+          lookupFailed = true;
+          break;
+        }
+        if (run !== this.wizardVideoEnrichmentRun) return;
+        attemptedCount += candidateBatch.length;
+        const data = response.data && typeof response.data === 'object'
+          ? response.data as Record<string, unknown>
+          : {};
+        usedBackupSearch ||= data['degraded'] === true;
+        deadlineLimited ||= data['partial'] === true;
+        const matches = Array.isArray(data['matches']) ? data['matches'] : [];
+        const rawMatches = new Map<string, Record<string, unknown>>();
+        for (const value of matches) {
+          if (!value || typeof value !== 'object') continue;
+          const match = value as Record<string, unknown>;
+          const cardId = this.stringValue(match['cardId'], '', 160);
+          if (cardId) rawMatches.set(cardId, match);
+        }
+        const accepted = new Map<string, Partial<BoardWizardPreviewCard>>();
+        for (const card of candidateBatch) {
+          if (matchedCount + accepted.size >= targetCount) break;
+          const match = rawMatches.get(card.id);
+          const videoId = youtubeVideoIdFromReference(match?.['youtubeVideoId']);
+          if (!match || !videoId) continue;
+          accepted.set(card.id, {
+            video_intent: true,
+            youtubeVideoId: videoId,
+            youtubeVideoTitle: this.stringValue(match['youtubeVideoTitle'], '', 300),
+            youtubeChannelTitle: this.stringValue(match['youtubeChannelTitle'], '', 200),
+            youtubeThumbnailUrl: this.stringValue(match['youtubeThumbnailUrl'], '', 2000),
+            youtubeDurationSeconds: this.numberValue(match['youtubeDurationSeconds'], 0, 0, 86_400),
+            youtubeMatchConfidence: this.numberValue(match['youtubeMatchConfidence'], 0, 0, 1),
+            youtubeVerifiedAt: this.stringValue(match['youtubeVerifiedAt'], new Date().toISOString(), 80),
+          });
+        }
+        matchedCount += accepted.size;
+        if (accepted.size) {
+          this.wizardPreviewCards.update((current) => current.map((card) => {
+            const match = accepted.get(card.id);
+            return match ? { ...card, ...match } : card;
+          }));
+          const currentResult = this.wizardResult();
+          if (currentResult) this.wizardResult.set({ ...currentResult, cards: this.wizardPreviewCards() });
+        }
+        const attemptedIds = new Set(candidateBatch.map((card) => card.id));
+        this.wizardVideoLoadingCardIds.update((current) => new Set(
+          [...current].filter((cardId) => !attemptedIds.has(cardId)),
+        ));
+      }
+      if (run !== this.wizardVideoEnrichmentRun) return;
+      if (matchedCount) {
+        const qualifier = usedBackupSearch
+          ? ' Some matches used backup search.'
+          : deadlineLimited
+            ? ' Some searches reached the lookup deadline.'
+            : '';
+        const fallback = matchedCount < targetCount
+          ? ` ${targetCount - matchedCount} card${targetCount - matchedCount === 1 ? '' : 's'} kept their images.`
+          : '';
+        this.wizardVideoNotice.set(
+          `${matchedCount} verified video${matchedCount === 1 ? '' : 's'} ready.${fallback}${qualifier}`,
+        );
+      } else if (lookupFailed) {
+        this.wizardVideoNotice.set($localize`Video lookup is unavailable right now. Your image cards are unchanged.`);
       } else {
         this.wizardVideoNotice.set($localize`No confident embeddable videos were found. Your image cards are unchanged.`);
-      }
-    } catch (error) {
-      console.error('Board wizard video enrichment failed.', error);
-      if (run === this.wizardVideoEnrichmentRun) {
-        this.wizardVideoNotice.set($localize`Video lookup is unavailable right now. Your image cards are unchanged.`);
       }
     } finally {
       if (run === this.wizardVideoEnrichmentRun) {
         this.wizardVideoLoadingCardIds.set(new Set());
       }
     }
+  }
+
+  cancelWizardVideoEnrichment(): void {
+    if (!this.wizardVideoLoadingCardIds().size) return;
+    this.wizardVideoEnrichmentRun += 1;
+    this.wizardVideoLoadingCardIds.set(new Set());
+    this.wizardVideoNotice.set($localize`Video search stopped. The remaining cards kept their images.`);
   }
 
   async refreshWizardCardVideo(cardId: string, reference = ''): Promise<void> {

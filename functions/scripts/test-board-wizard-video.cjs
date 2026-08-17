@@ -1,5 +1,6 @@
 const assert = require('node:assert/strict');
 const {
+  applyBoardWizardMediaMode,
   boardWizardCardWantsVideo,
   boardWizardVideoCandidateLooksDirect,
   buildBoardWizardContextVideoSearchQuery,
@@ -8,6 +9,7 @@ const {
   buildBoardWizardVideoSearchQuery,
   parseIso8601DurationSeconds,
   rankBoardWizardVideoCandidates,
+  normalizeBoardWizardMediaMode,
   scoreBoardWizardVideoCandidate,
   youtubeVideoIdFromReference,
 } = require('../lib/board-wizard-video.js');
@@ -24,6 +26,31 @@ const card = {
   videoIntent: true,
   videoSearchQuery: 'Prince Super Bowl XLI halftime show official NFL',
 };
+
+assert.equal(normalizeBoardWizardMediaMode(undefined), 'images');
+assert.equal(normalizeBoardWizardMediaMode('unknown'), 'images');
+assert.equal(normalizeBoardWizardMediaMode('mixed'), 'mixed');
+assert.equal(normalizeBoardWizardMediaMode('videos'), 'videos');
+const mediaCards = [{
+  title: 'A speech',
+  video_intent: true,
+  video_search_query: 'A speech official',
+  youtubeVideoId: 'M7lc1UVf-VE',
+}];
+assert.deepEqual(applyBoardWizardMediaMode(mediaCards, 'images'), [{
+  title: 'A speech',
+  video_intent: false,
+  video_search_query: '',
+  youtubeVideoId: '',
+  youtubeVideoTitle: '',
+  youtubeChannelTitle: '',
+  youtubeThumbnailUrl: '',
+  youtubeDurationSeconds: 0,
+  youtubeMatchConfidence: 0,
+  youtubeVerifiedAt: '',
+}]);
+assert.equal(applyBoardWizardMediaMode([{ title: 'A speech' }], 'videos')[0].video_intent, true);
+assert.deepEqual(applyBoardWizardMediaMode(mediaCards, 'mixed'), mediaCards);
 
 assert.equal(boardWizardCardWantsVideo(card, 'Top 10 Super Bowl halftime shows'), true);
 assert.equal(

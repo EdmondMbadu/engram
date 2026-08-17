@@ -28,3 +28,7 @@ export function shouldFlushBoardWizardDraftOnClose(
 export function boardWizardStepAfterGenerationFailure(hasPreviousPreview: boolean): BoardWizardDraftLifecycleStep {
   return hasPreviousPreview ? 'preview' : 'configure';
 }
+
+export function shouldRetryBoardWizardDraftAutosave(snapshotKey: string, failedSnapshotKey: string): boolean {
+  return !!snapshotKey && snapshotKey !== failedSnapshotKey;
+}

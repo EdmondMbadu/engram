@@ -19,6 +19,42 @@ export type BoardWizardVideoCardInput = {
   videoSearchQuery?: string;
 };
 
+export type BoardWizardMediaMode = 'images' | 'mixed' | 'videos';
+
+export function normalizeBoardWizardMediaMode(value: unknown): BoardWizardMediaMode {
+  return value === 'mixed' || value === 'videos' ? value : 'images';
+}
+
+export function applyBoardWizardMediaMode<
+  T extends BoardWizardVideoCardInput & {
+    video_intent?: boolean;
+    video_search_query?: string;
+    youtubeVideoId?: string;
+    youtubeVideoTitle?: string;
+    youtubeChannelTitle?: string;
+    youtubeThumbnailUrl?: string;
+    youtubeDurationSeconds?: number;
+    youtubeMatchConfidence?: number;
+    youtubeVerifiedAt?: string;
+  },
+>(cards: readonly T[], mode: BoardWizardMediaMode): T[] {
+  if (mode === 'mixed') return cards.map((card) => ({ ...card }));
+  return cards.map((card) => mode === 'videos'
+    ? { ...card, video_intent: true }
+    : {
+        ...card,
+        video_intent: false,
+        video_search_query: '',
+        youtubeVideoId: '',
+        youtubeVideoTitle: '',
+        youtubeChannelTitle: '',
+        youtubeThumbnailUrl: '',
+        youtubeDurationSeconds: 0,
+        youtubeMatchConfidence: 0,
+        youtubeVerifiedAt: '',
+      });
+}
+
 const VIDEO_INTENT_PATTERN = /\b(?:you\s*tube(?:\s+(?:link|video))?|best\s+song|signature\s+song|half[\s-]?time\s+show|live\s+performance|performance|concert|music\s+video|trailer|highlight(?:s|\s+reel)?|speech|keynote|interview|tutorial|demonstration|demo\s+video|dance|recital|awards?\s+show|opening\s+ceremony|closing\s+ceremony)\b/i;
 
 const VIDEO_ID_PATTERN = /^[A-Za-z0-9_-]{11}$/;
