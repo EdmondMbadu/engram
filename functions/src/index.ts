@@ -9095,6 +9095,9 @@ function spotifyPublicErrorCode(error: unknown): string {
   if (message.includes('cancel')) return 'cancelled';
   if (message.includes('expired') || message.includes('no longer valid')) return 'expired';
   if (message.includes('redirect') || message.includes('client')) return 'configuration';
+  if (message.includes('development mode') || message.includes('authorized user')) {
+    return 'access_restricted';
+  }
   return 'connection_failed';
 }
 
@@ -9150,6 +9153,11 @@ async function fetchSpotifyProfile(accessToken: string): Promise<SpotifyProfileR
     signal: AbortSignal.timeout(12_000),
   });
   if (!response.ok) {
+    if (response.status === 403) {
+      throw new Error(
+        'Spotify Development Mode denied this account. The app owner must have Premium and this Spotify account must be an authorized user.',
+      );
+    }
     throw new Error('Spotify account details could not be loaded.');
   }
   return response.json() as Promise<SpotifyProfileResponse>;

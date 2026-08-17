@@ -889,6 +889,8 @@ export class SpotifyPlaybackService {
       expired: 'That Spotify connection link expired. Please try again.',
       configuration: 'Spotify is not configured for LivingWiki yet.',
       unavailable: 'Spotify is temporarily unavailable. Please try again.',
+      access_restricted:
+        'Spotify accepted the login but blocked API access. Add this Spotify account under Users Management for the LivingWiki Spotify Developer app, and make sure the app owner has Spotify Premium.',
       connection_failed:
         'Spotify could not finish the optional account connection. You can still play songs here with the official Spotify player. Enhanced controls are currently limited to approved LivingWiki beta accounts.',
     };
