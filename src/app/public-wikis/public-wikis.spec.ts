@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AtlasService } from '../atlas.service';
 import { AuthService } from '../auth.service';
 import {
+  appendDiscoverBoardPage,
   PublicWikisComponent,
   shouldAutoLoadDiscoverBoards,
   shouldFallbackDiscoverNewestFirstQuery,
@@ -148,6 +149,23 @@ describe('PublicWikisComponent home pagination', () => {
     expect(shouldFallbackDiscoverNewestFirstQuery({ code: 'firestore/failed-precondition' }, true)).toBeTrue();
     expect(shouldFallbackDiscoverNewestFirstQuery({ code: 'permission-denied' }, true)).toBeFalse();
     expect(shouldFallbackDiscoverNewestFirstQuery({ code: 'failed-precondition' }, false)).toBeFalse();
+  });
+
+  it('appends later discover pages without moving cards that are already visible', () => {
+    const existing = [
+      { id: 'first', title: 'First', createdAt: '2026-03-03T00:00:00.000Z', version: 1 },
+      { id: 'second', title: 'Second', createdAt: '2026-03-02T00:00:00.000Z', version: 1 },
+    ];
+    const incoming = [
+      { id: 'fourth', title: 'Fourth', createdAt: '2026-02-28T00:00:00.000Z', version: 1 },
+      { id: 'second', title: 'Second updated', createdAt: '2026-03-02T00:00:00.000Z', version: 2 },
+      { id: 'third', title: 'Third', createdAt: '2026-03-01T00:00:00.000Z', version: 1 },
+    ];
+
+    const merged = appendDiscoverBoardPage(existing, incoming);
+
+    expect(merged.map((item) => item.id)).toEqual(['first', 'second', 'third', 'fourth']);
+    expect(merged[1].version).toBe(2);
   });
 
   it('switches the home directory between cities and universities', () => {

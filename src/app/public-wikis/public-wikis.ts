@@ -221,6 +221,23 @@ export function shouldFallbackDiscoverNewestFirstQuery(error: unknown, isFirstPa
   return code === 'failed-precondition' || code === 'firestore/failed-precondition';
 }
 
+export function appendDiscoverBoardPage<T extends { id: string; title: string; createdAt: string }>(
+  existingBoards: T[],
+  incomingBoards: T[],
+): T[] {
+  const incomingById = new Map(incomingBoards.map((board) => [board.id, board]));
+  const stableExistingBoards = existingBoards.map((board) => {
+    const updatedBoard = incomingById.get(board.id);
+    if (!updatedBoard) return board;
+    incomingById.delete(board.id);
+    return updatedBoard;
+  });
+  return [
+    ...stableExistingBoards,
+    ...sortDiscoverBoardsNewestFirst([...incomingById.values()]),
+  ];
+}
+
 const CITY_DENSITY_PER_KM2_BY_KEY: Record<string, number> = {
   'abu dhabi': 110,
   abidjan: 14900,
@@ -1536,9 +1553,7 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
         .map((boardDoc) => this.mobileBoardFromRecord(boardDoc.id, boardDoc.data()))
         .filter((board): board is MobileBoard => !!board)
         .filter((board) => !MOBILE_DEMO_BOARD_IDS.has(board.id) && board.ownerUserId !== uid);
-      const boardsById = new Map(this.mobileDiscoverBoards().map((board) => [board.id, board]));
-      boards.forEach((board) => boardsById.set(board.id, board));
-      this.mobileDiscoverBoards.set(sortDiscoverBoardsNewestFirst([...boardsById.values()]));
+      this.mobileDiscoverBoards.update((existingBoards) => appendDiscoverBoardPage(existingBoards, boards));
       this.mobileDiscoverCursor = snapshot.docs.at(-1) ?? this.mobileDiscoverCursor;
       this.mobileDiscoverHasMore.set(snapshot.docs.length === HOME_BOARD_QUERY_PAGE_SIZE);
     } catch {
