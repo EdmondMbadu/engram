@@ -1239,8 +1239,26 @@ button.mobile-talk-action {
   font-size: 1.1rem;
 }
 
-.mobile-home-more--discover {
-  margin-top: 1rem;
+.mobile-discover-load-sentinel {
+  display: flex;
+  min-height: 4.5rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  color: #526458;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+}
+
+.mobile-discover-load-sentinel .material-symbols-outlined {
+  color: var(--mobile-green);
+  font-size: 1.25rem;
+  animation: mobile-discover-spin 900ms linear infinite;
+}
+
+@keyframes mobile-discover-spin {
+  to { transform: rotate(360deg); }
 }
 
 .mobile-card-row {

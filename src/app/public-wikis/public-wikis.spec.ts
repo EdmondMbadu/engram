@@ -3,10 +3,15 @@ import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AtlasService } from '../atlas.service';
 import { AuthService } from '../auth.service';
-import { PublicWikisComponent } from './public-wikis';
+import {
+  PublicWikisComponent,
+  shouldAutoLoadDiscoverBoards,
+  shouldFallbackDiscoverNewestFirstQuery,
+  sortDiscoverBoardsNewestFirst,
+} from './public-wikis';
 
 describe('PublicWikisComponent home pagination', () => {
-  function createComponent(): PublicWikisComponent {
+  function createComponent(discoverPage = false): PublicWikisComponent {
     TestBed.configureTestingModule({
       providers: [
         provideZonelessChangeDetection(),
@@ -24,7 +29,12 @@ describe('PublicWikisComponent home pagination', () => {
         { provide: AtlasService, useValue: {} },
         {
           provide: ActivatedRoute,
-          useValue: { snapshot: { data: { signedInHome: true }, routeConfig: { path: 'home' } } },
+          useValue: {
+            snapshot: {
+              data: discoverPage ? { discoverPage: true } : { signedInHome: true },
+              routeConfig: { path: discoverPage ? 'discover' : 'home' },
+            },
+          },
         },
         { provide: Router, useValue: { navigate: async () => true } },
       ],
@@ -83,6 +93,61 @@ describe('PublicWikisComponent home pagination', () => {
     await component.showMoreMobileDiscoverBoards();
     expect(component.mobileDiscoverPreviewBoards().length).toBe(25);
     expect(component.hasMoreMobileDiscoverBoards()).toBeFalse();
+  });
+
+  it('automatically reveals the next discover batch when its sentinel enters view', async () => {
+    const component = createComponent(true);
+    component.mobileDiscoverBoards.set(Array.from({ length: 25 }, (_, index) => board(index)));
+
+    await component.onDiscoverLoadSentinelIntersection(false);
+    expect(component.mobileDiscoverPreviewBoards().length).toBe(10);
+
+    await component.onDiscoverLoadSentinelIntersection(true);
+    expect(component.mobileDiscoverPreviewBoards().length).toBe(20);
+  });
+
+  it('only auto-loads on Discover when more boards are available and no request is active', () => {
+    expect(shouldAutoLoadDiscoverBoards({
+      isDiscoverRoute: true,
+      isIntersecting: true,
+      hasMore: true,
+      loading: false,
+    })).toBeTrue();
+    expect(shouldAutoLoadDiscoverBoards({
+      isDiscoverRoute: false,
+      isIntersecting: true,
+      hasMore: true,
+      loading: false,
+    })).toBeFalse();
+    expect(shouldAutoLoadDiscoverBoards({
+      isDiscoverRoute: true,
+      isIntersecting: true,
+      hasMore: true,
+      loading: true,
+    })).toBeFalse();
+  });
+
+  it('ranks discover boards by newest creation date with deterministic ties', () => {
+    const boards = [
+      { id: 'older', title: 'Older', createdAt: '2026-01-01T00:00:00.000Z' },
+      { id: 'newer-b', title: 'Bravo', createdAt: '2026-03-01T00:00:00.000Z' },
+      { id: 'newer-a', title: 'Alpha', createdAt: '2026-03-01T00:00:00.000Z' },
+      { id: 'undated', title: 'Undated', createdAt: '' },
+    ];
+
+    expect(sortDiscoverBoardsNewestFirst(boards).map((item) => item.id)).toEqual([
+      'newer-a',
+      'newer-b',
+      'older',
+      'undated',
+    ]);
+  });
+
+  it('falls back on the first page while the newest-first Firestore index is unavailable', () => {
+    expect(shouldFallbackDiscoverNewestFirstQuery({ code: 'failed-precondition' }, true)).toBeTrue();
+    expect(shouldFallbackDiscoverNewestFirstQuery({ code: 'firestore/failed-precondition' }, true)).toBeTrue();
+    expect(shouldFallbackDiscoverNewestFirstQuery({ code: 'permission-denied' }, true)).toBeFalse();
+    expect(shouldFallbackDiscoverNewestFirstQuery({ code: 'failed-precondition' }, false)).toBeFalse();
   });
 
   it('switches the home directory between cities and universities', () => {

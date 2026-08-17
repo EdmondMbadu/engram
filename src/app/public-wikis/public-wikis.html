@@ -504,15 +504,15 @@
           }
         </div>
         @if (hasMoreMobileDiscoverBoards()) {
-          <button
-            type="button"
-            class="mobile-home-more mobile-home-more--discover"
-            [disabled]="mobileDiscoverLoadingMore()"
-            (click)="showMoreMobileDiscoverBoards()"
+          <div
+            #discoverLoadSentinel
+            class="mobile-discover-load-sentinel"
+            role="status"
+            aria-live="polite"
           >
-            <span class="material-symbols-outlined">expand_more</span>
-            <span>{{ mobileDiscoverLoadingMore() ? 'Loading…' : 'Load 10 more' }}</span>
-          </button>
+            <span class="material-symbols-outlined">progress_activity</span>
+            <span i18n>Loading...</span>
+          </div>
         }
       </section>
     </main>

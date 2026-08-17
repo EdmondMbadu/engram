@@ -1,17 +1,19 @@
 import { DecimalPipe, isPlatformBrowser } from '@angular/common';
-import { AfterViewChecked, Component, computed, ElementRef, HostListener, inject, LOCALE_ID, OnInit, PLATFORM_ID, signal, ViewChild, type WritableSignal } from '@angular/core';
+import { AfterViewChecked, Component, computed, ElementRef, HostListener, inject, LOCALE_ID, OnDestroy, OnInit, PLATFORM_ID, signal, ViewChild, type WritableSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
   collection,
   getDocs,
   limit,
+  orderBy,
   query,
   startAfter,
   where,
   type DocumentData,
   type Firestore,
   type QueryDocumentSnapshot,
+  type QuerySnapshot,
 } from 'firebase/firestore';
 import { httpsCallable, type Functions } from 'firebase/functions';
 import { AtlasService } from '../atlas.service';
@@ -192,6 +194,32 @@ const MOBILE_BOARD_ACTIONS_STORAGE_KEY = 'lw-board-actions';
 const MOBILE_DEMO_BOARD_IDS = new Set(['board-summer-places', 'board-eats', 'board-weekend']);
 const HOME_SECTION_PAGE_SIZE = 10;
 const HOME_BOARD_QUERY_PAGE_SIZE = HOME_SECTION_PAGE_SIZE + 1;
+const DISCOVER_AUTOLOAD_ROOT_MARGIN_PX = 600;
+
+export function sortDiscoverBoardsNewestFirst<T extends { id: string; title: string; createdAt: string }>(boards: T[]): T[] {
+  return [...boards].sort((left, right) => {
+    const rightCreated = Date.parse(right.createdAt) || 0;
+    const leftCreated = Date.parse(left.createdAt) || 0;
+    return rightCreated - leftCreated
+      || left.title.localeCompare(right.title)
+      || left.id.localeCompare(right.id);
+  });
+}
+
+export function shouldAutoLoadDiscoverBoards(options: {
+  isDiscoverRoute: boolean;
+  isIntersecting: boolean;
+  hasMore: boolean;
+  loading: boolean;
+}): boolean {
+  return options.isDiscoverRoute && options.isIntersecting && options.hasMore && !options.loading;
+}
+
+export function shouldFallbackDiscoverNewestFirstQuery(error: unknown, isFirstPage: boolean): boolean {
+  if (!isFirstPage || !error || typeof error !== 'object') return false;
+  const code = 'code' in error && typeof error.code === 'string' ? error.code : '';
+  return code === 'failed-precondition' || code === 'firestore/failed-precondition';
+}
 
 const CITY_DENSITY_PER_KM2_BY_KEY: Record<string, number> = {
   'abu dhabi': 110,
@@ -498,8 +526,13 @@ interface PublicWikiFeelingSticker {
   templateUrl: './public-wikis.html',
   styleUrl: './public-wikis.css',
 })
-export class PublicWikisComponent implements OnInit, AfterViewChecked {
+export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy {
   @ViewChild('directorySearchInput') private directorySearchInput?: ElementRef<HTMLInputElement>;
+  @ViewChild('discoverLoadSentinel')
+  set discoverLoadSentinel(element: ElementRef<HTMLElement> | undefined) {
+    this.discoverLoadSentinelElement = element?.nativeElement ?? null;
+    this.observeDiscoverLoadSentinel();
+  }
   private readonly localeId = inject(LOCALE_ID);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly atlasService = inject(AtlasService);
@@ -560,7 +593,10 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked {
   private readonly pendingTemperatureCoordinateLookups = new Map<string, Promise<CityTemperatureCoordinates | null>>();
   private mobileBoardCursor: QueryDocumentSnapshot<DocumentData> | null = null;
   private mobileDiscoverCursor: QueryDocumentSnapshot<DocumentData> | null = null;
+  private mobileDiscoverUsesNewestFirstQuery = true;
   private homeRailLayoutCheckQueued = false;
+  private discoverLoadSentinelElement: HTMLElement | null = null;
+  private discoverLoadObserver: IntersectionObserver | null = null;
 
   readonly publicWikis = computed(() => this.liveWikis());
 
@@ -888,6 +924,11 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked {
         if (railId) this.updateHomeRailState(railId, rail);
       });
     });
+  }
+
+  ngOnDestroy(): void {
+    this.discoverLoadObserver?.disconnect();
+    this.discoverLoadObserver = null;
   }
 
   @HostListener('window:hashchange')
@@ -1296,6 +1337,49 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked {
     }
   }
 
+  async onDiscoverLoadSentinelIntersection(isIntersecting: boolean): Promise<void> {
+    if (!shouldAutoLoadDiscoverBoards({
+      isDiscoverRoute: this.isDiscoverRoute(),
+      isIntersecting,
+      hasMore: this.hasMoreMobileDiscoverBoards(),
+      loading: this.mobileDiscoverLoadingMore(),
+    })) {
+      return;
+    }
+    await this.showMoreMobileDiscoverBoards();
+    this.queueDiscoverLoadIfSentinelStillNearViewport();
+  }
+
+  private observeDiscoverLoadSentinel(): void {
+    this.discoverLoadObserver?.disconnect();
+    this.discoverLoadObserver = null;
+    if (!this.isBrowser || !this.isDiscoverRoute() || !this.discoverLoadSentinelElement) {
+      return;
+    }
+    this.discoverLoadObserver = new IntersectionObserver((entries) => {
+      void this.onDiscoverLoadSentinelIntersection(entries.some((entry) => entry.isIntersecting));
+    }, {
+      root: null,
+      rootMargin: `${DISCOVER_AUTOLOAD_ROOT_MARGIN_PX}px 0px`,
+      threshold: 0,
+    });
+    this.discoverLoadObserver.observe(this.discoverLoadSentinelElement);
+  }
+
+  private queueDiscoverLoadIfSentinelStillNearViewport(): void {
+    if (!this.isBrowser || !this.discoverLoadSentinelElement || !this.hasMoreMobileDiscoverBoards()) {
+      return;
+    }
+    requestAnimationFrame(() => {
+      const sentinel = this.discoverLoadSentinelElement;
+      if (!sentinel) return;
+      const bounds = sentinel.getBoundingClientRect();
+      const nearViewport = bounds.top <= window.innerHeight + DISCOVER_AUTOLOAD_ROOT_MARGIN_PX
+        && bounds.bottom >= -DISCOVER_AUTOLOAD_ROOT_MARGIN_PX;
+      if (nearViewport) void this.onDiscoverLoadSentinelIntersection(true);
+    });
+  }
+
   showMoreMobileFeaturedWikis(): void {
     this.mobileFeaturedCityLimit.update((currentLimit) => currentLimit + HOME_SECTION_PAGE_SIZE);
   }
@@ -1388,6 +1472,7 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked {
       await this.authService.waitForReady();
       const uid = this.authService.uid();
       this.mobileDiscoverCursor = null;
+      this.mobileDiscoverUsesNewestFirstQuery = true;
       this.mobileDiscoverHasMore.set(true);
       this.mobileDiscoverBoards.set([]);
       await this.fetchNextMobileDiscoverPage(uid);
@@ -1406,26 +1491,54 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked {
   }
 
   private async fetchNextMobileDiscoverPage(uid: string): Promise<void> {
-    if (!this.firestore || !this.mobileDiscoverHasMore() || this.mobileDiscoverLoadingMore()) {
+    const firestore = this.firestore;
+    if (!firestore || !this.mobileDiscoverHasMore() || this.mobileDiscoverLoadingMore()) {
       return;
     }
 
     this.mobileDiscoverLoadingMore.set(true);
     try {
-      const boardQuery = query(
-        collection(this.firestore, 'boards'),
+      const cursor = this.mobileDiscoverCursor;
+      const legacyQuery = () => query(
+        collection(firestore, 'boards'),
         where('visibility', '==', 'public'),
-        ...(this.mobileDiscoverCursor ? [startAfter(this.mobileDiscoverCursor)] : []),
+        ...(cursor ? [startAfter(cursor)] : []),
         limit(HOME_BOARD_QUERY_PAGE_SIZE),
       );
-      const snapshot = await getDocs(boardQuery);
+      const newestFirstQuery = () => query(
+        collection(firestore, 'boards'),
+        where('visibility', '==', 'public'),
+        orderBy('created_at_iso', 'desc'),
+        ...(cursor ? [startAfter(cursor)] : []),
+        limit(HOME_BOARD_QUERY_PAGE_SIZE),
+      );
+      let snapshot: QuerySnapshot<DocumentData>;
+      if (this.mobileDiscoverUsesNewestFirstQuery) {
+        try {
+          snapshot = await getDocs(newestFirstQuery());
+        } catch (error) {
+          if (!shouldFallbackDiscoverNewestFirstQuery(error, !cursor)) throw error;
+          this.mobileDiscoverUsesNewestFirstQuery = false;
+          console.warn('Discover newest-first index is not ready; using the compatibility query.', error);
+          snapshot = await getDocs(legacyQuery());
+        }
+        if (!cursor && snapshot.empty) {
+          const legacySnapshot = await getDocs(legacyQuery());
+          if (!legacySnapshot.empty) {
+            this.mobileDiscoverUsesNewestFirstQuery = false;
+            snapshot = legacySnapshot;
+          }
+        }
+      } else {
+        snapshot = await getDocs(legacyQuery());
+      }
       const boards = snapshot.docs
         .map((boardDoc) => this.mobileBoardFromRecord(boardDoc.id, boardDoc.data()))
         .filter((board): board is MobileBoard => !!board)
         .filter((board) => !MOBILE_DEMO_BOARD_IDS.has(board.id) && board.ownerUserId !== uid);
       const boardsById = new Map(this.mobileDiscoverBoards().map((board) => [board.id, board]));
       boards.forEach((board) => boardsById.set(board.id, board));
-      this.mobileDiscoverBoards.set(this.sortMobileBoards([...boardsById.values()]));
+      this.mobileDiscoverBoards.set(sortDiscoverBoardsNewestFirst([...boardsById.values()]));
       this.mobileDiscoverCursor = snapshot.docs.at(-1) ?? this.mobileDiscoverCursor;
       this.mobileDiscoverHasMore.set(snapshot.docs.length === HOME_BOARD_QUERY_PAGE_SIZE);
     } catch {
