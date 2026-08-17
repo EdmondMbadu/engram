@@ -2302,19 +2302,25 @@
                     @if (musicServicesOpen()) {
                       <div id="music-services-panel" class="music-services__panel">
                         <article class="music-provider music-provider--spotify">
-                          <header><span class="music-provider__mark">S</span><span><strong>Spotify</strong><small>Connected playback and a private playlist</small></span><em>Available</em></header>
+                          <header><span class="music-provider__mark">S</span><span><strong>Spotify</strong><small>Listen here or open Spotify directly</small></span><em>Available</em></header>
                           <div class="music-provider__actions">
-                            <button type="button" (click)="playAllSongsOnSpotify(board, $event)"><span class="material-symbols-outlined">play_arrow</span><span>Play all now</span></button>
-                            <button type="button" class="music-provider__primary" [disabled]="spotify.playlistExporting()" (click)="saveAllSongsToSpotify(board, $event)">
-                              <span class="material-symbols-outlined">{{ spotify.playlistExporting() ? 'progress_activity' : 'playlist_add' }}</span>
-                              <span>{{ spotify.playlistExporting() ? 'Building playlist…' : 'Open full playlist' }}</span>
-                            </button>
+                            <button type="button" (click)="playAllSongsHere(board, $event)"><span class="material-symbols-outlined">play_arrow</span><span>Play all here</span></button>
+                            <a class="music-provider__primary" [href]="musicProviderHref('spotify', board)" target="_blank" rel="noopener" (click)="$event.stopPropagation()"><span class="material-symbols-outlined">open_in_new</span><span>Open Spotify</span></a>
                           </div>
                         </article>
-                        <article class="music-provider music-provider--pending" aria-disabled="true"><header><span class="music-provider__mark music-provider__mark--apple">♪</span><span><strong>Apple Music</strong><small>MusicKit account connection required</small></span><em>Setup required</em></header></article>
-                        <article class="music-provider music-provider--pending" aria-disabled="true"><header><span class="music-provider__mark music-provider__mark--youtube">▶</span><span><strong>YouTube Music</strong><small>YouTube playlist permission required</small></span><em>Setup required</em></header></article>
-                        <article class="music-provider music-provider--pending" aria-disabled="true"><header><span class="music-provider__mark music-provider__mark--amazon">a</span><span><strong>Amazon Music</strong><small>Amazon Music API partner approval required</small></span><em>Closed beta</em></header></article>
-                        <p class="music-services__note">Your account stays with the music service. LivingWiki only sends this board’s ordered song list after you approve access.</p>
+                        <article class="music-provider">
+                          <header><span class="music-provider__mark music-provider__mark--apple">♪</span><span><strong>Apple Music</strong><small>Open Apple Music results for this board</small></span><em>External</em></header>
+                          <div class="music-provider__actions music-provider__actions--single"><a [href]="musicProviderHref('apple', board)" target="_blank" rel="noopener" (click)="$event.stopPropagation()"><span class="material-symbols-outlined">open_in_new</span><span>Open Apple Music</span></a></div>
+                        </article>
+                        <article class="music-provider">
+                          <header><span class="music-provider__mark music-provider__mark--youtube">▶</span><span><strong>YouTube Music</strong><small>Open YouTube Music results for this board</small></span><em>External</em></header>
+                          <div class="music-provider__actions music-provider__actions--single"><a [href]="musicProviderHref('youtube', board)" target="_blank" rel="noopener" (click)="$event.stopPropagation()"><span class="material-symbols-outlined">open_in_new</span><span>Open YouTube Music</span></a></div>
+                        </article>
+                        <article class="music-provider">
+                          <header><span class="music-provider__mark music-provider__mark--amazon">a</span><span><strong>Amazon Music</strong><small>Open Amazon Music results for this board</small></span><em>External</em></header>
+                          <div class="music-provider__actions music-provider__actions--single"><a [href]="musicProviderHref('amazon', board)" target="_blank" rel="noopener" (click)="$event.stopPropagation()"><span class="material-symbols-outlined">open_in_new</span><span>Open Amazon Music</span></a></div>
+                        </article>
+                        <p class="music-services__note">These links open the music service directly; that service handles sign-in or account creation. Loading every song as a new playlist requires permission from that provider, so LivingWiki does not claim a playlist was created when it was not.</p>
                       </div>
                     }
                   </section>

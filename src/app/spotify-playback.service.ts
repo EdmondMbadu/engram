@@ -124,6 +124,8 @@ export class SpotifyPlaybackService {
   readonly playing = signal(false);
   readonly currentTrack = signal<SpotifyTrack | null>(null);
   readonly embeddedTrack = signal<SpotifyTrack | null>(null);
+  readonly embeddedQueue = signal<SpotifyTrack[]>([]);
+  readonly embeddedQueueIndex = signal(0);
   readonly positionMs = signal(0);
   readonly durationMs = signal(0);
   readonly devices = signal<SpotifyDevice[]>([]);
@@ -183,13 +185,41 @@ export class SpotifyPlaybackService {
   }
 
   openEmbeddedPlayer(track: SpotifyTrack): void {
+    this.openEmbeddedQueue([track]);
+  }
+
+  openEmbeddedQueue(queue: SpotifyTrack[], startIndex = 0): void {
     this.error.set(null);
     this.notice.set(null);
-    this.embeddedTrack.set(track);
+    if (!queue.length) {
+      this.closeEmbeddedPlayer();
+      return;
+    }
+    const safeIndex = Math.max(0, Math.min(startIndex, queue.length - 1));
+    this.embeddedQueue.set([...queue]);
+    this.embeddedQueueIndex.set(safeIndex);
+    this.embeddedTrack.set(queue[safeIndex]);
+  }
+
+  selectEmbeddedQueueTrack(index: number): void {
+    const queue = this.embeddedQueue();
+    if (!queue.length) return;
+    const safeIndex = Math.max(0, Math.min(index, queue.length - 1));
+    this.embeddedQueueIndex.set(safeIndex);
+    this.embeddedTrack.set(queue[safeIndex]);
+  }
+
+  stepEmbeddedQueue(direction: number): void {
+    const queue = this.embeddedQueue();
+    if (queue.length < 2) return;
+    const nextIndex = (this.embeddedQueueIndex() + direction + queue.length) % queue.length;
+    this.selectEmbeddedQueueTrack(nextIndex);
   }
 
   closeEmbeddedPlayer(): void {
     this.embeddedTrack.set(null);
+    this.embeddedQueue.set([]);
+    this.embeddedQueueIndex.set(0);
   }
 
   isEmbeddedTrack(uri: string): boolean {

@@ -46,8 +46,21 @@
           Official Spotify player
         </small>
         <strong>{{ track.title }}</strong>
-        <span>{{ track.artist }}{{ track.album ? ' · ' + track.album : '' }}</span>
+        <span>
+          {{ track.artist }}{{ track.album ? ' · ' + track.album : '' }}
+          @if (spotify.embeddedQueue().length > 1) {
+            · {{ spotify.embeddedQueueIndex() + 1 }} of {{ spotify.embeddedQueue().length }}
+          }
+        </span>
       </div>
+      @if (spotify.embeddedQueue().length > 1) {
+        <button type="button" aria-label="Previous song in queue" (click)="spotify.stepEmbeddedQueue(-1)">
+          <span class="material-symbols-outlined">skip_previous</span>
+        </button>
+        <button type="button" aria-label="Next song in queue" (click)="spotify.stepEmbeddedQueue(1)">
+          <span class="material-symbols-outlined">skip_next</span>
+        </button>
+      }
       <button
         type="button"
         [attr.aria-label]="officialCompact() ? 'Expand official Spotify player' : 'Minimize official Spotify player'"
@@ -78,6 +91,38 @@
           loading="eager"
         ></iframe>
       </div>
+      @if (spotify.embeddedQueue().length > 1) {
+        <section class="spotify-official-dock__queue" aria-label="Songs in this queue">
+          <header>
+            <strong>Up next</strong>
+            <span>{{ spotify.embeddedQueue().length }} songs</span>
+          </header>
+          <div>
+            @for (queuedTrack of spotify.embeddedQueue(); track $index; let index = $index) {
+              <button
+                type="button"
+                [class.spotify-official-dock__queue-item--active]="index === spotify.embeddedQueueIndex()"
+                [attr.aria-current]="index === spotify.embeddedQueueIndex() ? 'true' : null"
+                (click)="spotify.selectEmbeddedQueueTrack(index)"
+              >
+                <span class="spotify-official-dock__queue-number">{{ index + 1 }}</span>
+                @if (queuedTrack.artworkUrl) {
+                  <img [src]="queuedTrack.artworkUrl" [alt]="queuedTrack.title + ' artwork'" />
+                } @else {
+                  <span class="spotify-official-dock__queue-fallback material-symbols-outlined">music_note</span>
+                }
+                <span>
+                  <strong>{{ queuedTrack.title }}</strong>
+                  <small>{{ queuedTrack.artist }}</small>
+                </span>
+                <span class="material-symbols-outlined">
+                  {{ index === spotify.embeddedQueueIndex() ? 'graphic_eq' : 'play_arrow' }}
+                </span>
+              </button>
+            }
+          </div>
+        </section>
+      }
       <div class="spotify-official-dock__footer">
         <span i18n>
           <span class="material-symbols-outlined">verified_user</span>

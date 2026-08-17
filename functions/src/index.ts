@@ -2102,6 +2102,24 @@ async function buildSpeechCacheDownloadUrl(storagePath: string): Promise<string>
   return buildDocumentDownloadUrl(storagePath);
 }
 
+const speechSynthesisLockWaitMs = 20_000;
+const speechSynthesisLockStaleMs = 150_000;
+
+function cloudStorageErrorStatus(error: unknown): number | null {
+  if (!error || typeof error !== 'object' || !('code' in error)) return null;
+  const code = Number((error as { code?: unknown }).code);
+  return Number.isFinite(code) ? code : null;
+}
+
+function isCloudStoragePreconditionFailure(error: unknown): boolean {
+  const status = cloudStorageErrorStatus(error);
+  return status === 409 || status === 412;
+}
+
+async function waitForSpeechSynthesisLock(): Promise<void> {
+  await new Promise<void>((resolve) => setTimeout(resolve, 400));
+}
+
 async function loadPublicAtlasById(atlasId: string): Promise<Record<string, unknown> & { id: string; user_id: string; is_public: boolean }> {
   const atlasSnapshot = await db.collection('atlases').doc(atlasId).get();
   if (!atlasSnapshot.exists) {
@@ -18868,77 +18886,204 @@ export const synthesizeChatAnswerSpeech = onCall(
         }
       }
 
-      const response = await fetch(
-        `https://api.elevenlabs.io/v1/text-to-speech/${encodeURIComponent(voiceId)}/stream?output_format=mp3_44100_128&optimize_streaming_latency=3`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'xi-api-key': apiKey,
-          },
-          body: JSON.stringify({
-            text,
-            model_id: speechModel,
-            voice_settings: voiceSettings,
-          }),
-        },
-      );
+      // A cache lookup alone is not enough: two Cloud Run instances can miss at
+      // the same time and both spend credits. This zero-generation lock is an
+      // atomic, cross-instance single-flight guard for one exact audio identity.
+      const synthesisLockFile = storage.bucket().file(`${storagePath}.synthesis-lock`);
+      const lockWaitDeadline = Date.now() + speechSynthesisLockWaitMs;
+      const lockToken = randomUUID();
+      let ownsSynthesisLock = false;
+      let ownedSynthesisLockGeneration = '';
+      let releaseSynthesisLock = false;
+      while (!ownsSynthesisLock) {
+        try {
+          await synthesisLockFile.save(Buffer.from(JSON.stringify({
+            token: lockToken,
+            createdAt: new Date().toISOString(),
+          })), {
+            resumable: false,
+            preconditionOpts: { ifGenerationMatch: 0 },
+            metadata: {
+              contentType: 'application/json',
+              cacheControl: 'no-store',
+            },
+          });
+          ownsSynthesisLock = true;
+          try {
+            const [ownedLockMetadata] = await synthesisLockFile.getMetadata();
+            ownedSynthesisLockGeneration = String(ownedLockMetadata.generation ?? '');
+          } catch (metadataError) {
+            logger.warn('Speech synthesis lock generation could not be read', {
+              storagePath,
+              lockToken,
+              errorMessage: metadataError instanceof Error ? metadataError.message : String(metadataError),
+            });
+          }
+        } catch (error) {
+          if (!isCloudStoragePreconditionFailure(error)) throw error;
 
-      if (!response.ok) {
-        const errorText = await response.text().catch(() => '');
-        lastErrorStatus = response.status;
-        lastErrorBody = errorText.slice(0, 500);
-        logger.warn('ElevenLabs speech synthesis failed for voice candidate', {
-          status: response.status,
-          voiceId,
-          body: lastErrorBody,
-        });
-        if (response.status === 401 && errorText.includes('quota_exceeded')) {
-          throw new HttpsError(
-            'resource-exhausted',
-            'Video narration is temporarily unavailable because the voice-generation quota is exhausted.',
-          );
+          const [cacheCreatedByOtherRequest] = await cachedFile.exists();
+          if (cacheCreatedByOtherRequest) {
+            return {
+              audioUrl: await buildSpeechCacheDownloadUrl(storagePath),
+              contentType: 'audio/mpeg',
+              voiceId: isPersonalNarrator ? null : voiceId,
+              speechText: text,
+              durationHintSeconds: requestedMode === 'recap' ? 15 : null,
+              provider: 'elevenlabs',
+              narratorVoiceId: requestedNarratorId || null,
+              cached: true,
+            };
+          }
+
+          try {
+            const [lockMetadata] = await synthesisLockFile.getMetadata();
+            const lockCreatedAt = Date.parse(String(lockMetadata.timeCreated ?? ''));
+            if (Number.isFinite(lockCreatedAt)
+              && Date.now() - lockCreatedAt > speechSynthesisLockStaleMs
+              && lockMetadata.generation) {
+              await synthesisLockFile.delete({
+                ifGenerationMatch: lockMetadata.generation,
+              });
+              logger.warn('Removed stale speech synthesis lock', {
+                storagePath,
+                lockGeneration: lockMetadata.generation,
+              });
+              continue;
+            }
+          } catch (metadataError) {
+            const status = cloudStorageErrorStatus(metadataError);
+            if (status !== 404 && !isCloudStoragePreconditionFailure(metadataError)) {
+              logger.warn('Speech synthesis lock metadata could not be checked', {
+                storagePath,
+                errorMessage: metadataError instanceof Error ? metadataError.message : String(metadataError),
+              });
+            }
+          }
+
+          if (Date.now() >= lockWaitDeadline) {
+            throw new HttpsError(
+              'unavailable',
+              'This narration is already being generated. Try again after it finishes.',
+            );
+          }
+          await waitForSpeechSynthesisLock();
         }
-        if (response.status === 404) {
-          continue;
-        }
-        throw new HttpsError('internal', 'Failed to create audio for this answer.');
       }
 
-      const audioBuffer = Buffer.from(await response.arrayBuffer());
-      await cachedFile.save(audioBuffer, {
-        resumable: false,
-        metadata: {
-          contentType: 'audio/mpeg',
-          cacheControl: 'public, max-age=31536000, immutable',
+      try {
+        // Recheck after taking the lock in case another request completed between
+        // the original cache lookup and our atomic lock acquisition.
+        const [cacheCreatedBeforeLock] = await cachedFile.exists();
+        if (cacheCreatedBeforeLock) {
+          releaseSynthesisLock = true;
+          return {
+            audioUrl: await buildSpeechCacheDownloadUrl(storagePath),
+            contentType: 'audio/mpeg',
+            voiceId: isPersonalNarrator ? null : voiceId,
+            speechText: text,
+            durationHintSeconds: requestedMode === 'recap' ? 15 : null,
+            provider: 'elevenlabs',
+            narratorVoiceId: requestedNarratorId || null,
+            cached: true,
+          };
+        }
+
+        const response = await fetch(
+          `https://api.elevenlabs.io/v1/text-to-speech/${encodeURIComponent(voiceId)}/stream?output_format=mp3_44100_128&optimize_streaming_latency=3`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'xi-api-key': apiKey,
+            },
+            body: JSON.stringify({
+              text,
+              model_id: speechModel,
+              voice_settings: voiceSettings,
+            }),
+          },
+        );
+
+        if (!response.ok) {
+          const errorText = await response.text().catch(() => '');
+          lastErrorStatus = response.status;
+          lastErrorBody = errorText.slice(0, 500);
+          logger.warn('ElevenLabs speech synthesis failed for voice candidate', {
+            status: response.status,
+            voiceId,
+            body: lastErrorBody,
+          });
+          if (response.status === 401 && errorText.includes('quota_exceeded')) {
+            throw new HttpsError(
+              'resource-exhausted',
+              'Video narration is temporarily unavailable because the voice-generation quota is exhausted.',
+            );
+          }
+          if (response.status === 404) {
+            releaseSynthesisLock = true;
+            continue;
+          }
+          throw new HttpsError('internal', 'Failed to create audio for this answer.');
+        }
+
+        const audioBuffer = Buffer.from(await response.arrayBuffer());
+        await cachedFile.save(audioBuffer, {
+          resumable: false,
           metadata: {
-            voiceId: isPersonalNarrator ? personalStackNarratorVoiceId : voiceId,
-            modelId: speechModel,
-            mode: narrationCacheMode,
-            requestedMode,
-            textHash,
+            contentType: 'audio/mpeg',
+            cacheControl: 'public, max-age=31536000, immutable',
+            metadata: {
+              voiceId: isPersonalNarrator ? personalStackNarratorVoiceId : voiceId,
+              modelId: speechModel,
+              mode: narrationCacheMode,
+              requestedMode,
+              textHash,
+            },
           },
-        },
-      });
-
-      if (voiceId !== primaryVoiceId) {
-        logger.warn('Using fallback ElevenLabs voice for speech synthesis', {
-          requestedVoiceId: primaryVoiceId,
-          fallbackVoiceId: voiceId,
-          mode: requestedMode,
         });
-      }
+        releaseSynthesisLock = true;
 
-      return {
-        audioUrl: await buildSpeechCacheDownloadUrl(storagePath),
-        contentType: 'audio/mpeg',
-        voiceId: isPersonalNarrator ? null : voiceId,
-        speechText: text,
-        durationHintSeconds: requestedMode === 'recap' ? 15 : null,
-        provider: 'elevenlabs',
-        narratorVoiceId: requestedNarratorId || null,
-        cached: false,
-      };
+        if (voiceId !== primaryVoiceId) {
+          logger.warn('Using fallback ElevenLabs voice for speech synthesis', {
+            requestedVoiceId: primaryVoiceId,
+            fallbackVoiceId: voiceId,
+            mode: requestedMode,
+          });
+        }
+
+        return {
+          audioUrl: await buildSpeechCacheDownloadUrl(storagePath),
+          contentType: 'audio/mpeg',
+          voiceId: isPersonalNarrator ? null : voiceId,
+          speechText: text,
+          durationHintSeconds: requestedMode === 'recap' ? 15 : null,
+          provider: 'elevenlabs',
+          narratorVoiceId: requestedNarratorId || null,
+          cached: false,
+        };
+      } finally {
+        if (ownsSynthesisLock && releaseSynthesisLock) {
+          await synthesisLockFile.delete({
+            ignoreNotFound: true,
+            ...(ownedSynthesisLockGeneration
+              ? { ifGenerationMatch: ownedSynthesisLockGeneration }
+              : {}),
+          }).catch((error) => {
+            logger.warn('Speech synthesis lock cleanup failed', {
+              storagePath,
+              lockToken,
+              errorMessage: error instanceof Error ? error.message : String(error),
+            });
+          });
+        } else if (ownsSynthesisLock) {
+          logger.warn('Retaining speech synthesis lock after an uncertain failure', {
+            storagePath,
+            lockToken,
+            retryAfterMs: speechSynthesisLockStaleMs,
+          });
+        }
+      }
     }
 
     logger.warn('ElevenLabs speech synthesis failed for all voice candidates', {

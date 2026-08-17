@@ -167,7 +167,6 @@ import {
   STACK_NARRATOR_VOICE_PRESENTATIONS,
   filterStackNarratorVoices,
   normalizeStackNarratorVoiceId,
-  stackNarrationErrorIsPermanent,
   stackNarratorVoiceRequiresPaidPlan,
   stackNarratorVoiceById,
   type StackNarratorVoice,
@@ -7618,7 +7617,7 @@ export class BoardsComponent implements OnDestroy {
     this.spotify.openEmbeddedPlayer(this.spotifyTrackForCard(card, board));
   }
 
-  playAllSongsOnSpotify(board: Board, event?: Event): void {
+  playAllSongsHere(board: Board, event?: Event): void {
     event?.preventDefault();
     event?.stopPropagation();
     this.stopSongPreview();
@@ -7636,14 +7635,25 @@ export class BoardsComponent implements OnDestroy {
     }));
     if (!queue.length) return;
     this.musicServicesOpen.set(false);
-    void this.spotify.requestPlay(queue[0], queue);
+    this.spotify.openEmbeddedQueue(queue);
   }
 
-  saveAllSongsToSpotify(board: Board, event?: Event): void {
-    event?.preventDefault();
-    event?.stopPropagation();
-    this.musicServicesOpen.set(false);
-    void this.spotify.exportBoardPlaylist(board.id);
+  musicProviderHref(
+    provider: 'spotify' | 'apple' | 'youtube' | 'amazon',
+    board: Board,
+  ): string {
+    const query = board.title.trim() || this.songCards(board)[0]?.title.trim() || 'music';
+    const encodedQuery = encodeURIComponent(query);
+    switch (provider) {
+      case 'spotify':
+        return `https://open.spotify.com/search/${encodedQuery}`;
+      case 'apple':
+        return `https://music.apple.com/us/search?term=${encodedQuery}`;
+      case 'youtube':
+        return `https://music.youtube.com/search?q=${encodedQuery}`;
+      case 'amazon':
+        return `https://music.amazon.com/search/${encodedQuery}`;
+    }
   }
 
   nextTourCard(card: BoardCard, cards = this.selectedBoardTourCards()): BoardCard | null {
@@ -13716,31 +13726,23 @@ export class BoardsComponent implements OnDestroy {
       const batch = cards.slice(offset, offset + batchSize);
       const urls = await Promise.all(batch.map(async (card) => {
         const text = this.stackVideoNarrationText(card);
-        let lastError: unknown = null;
-        for (let attempt = 0; attempt < 3; attempt += 1) {
-          try {
-            const url = await this.ensureTourAudioUrl(
-              `stack-video:${card.id}:r${Math.max(0, Math.trunc(card.videoNarrationRevision ?? 0))}:${text}`,
-              text,
-              voiceId,
-              board.id,
-              'stack-video',
-              card.id,
-              true,
-            );
-            if (url) return url;
-          } catch (error) {
-            lastError = error;
-            if (stackNarrationErrorIsPermanent(error)) break;
-          }
-          if (attempt < 2) {
-            await new Promise<void>((resolve) => window.setTimeout(resolve, 450 * (attempt + 1)));
-          }
+        try {
+          const url = await this.ensureTourAudioUrl(
+            `stack-video:${card.id}:r${Math.max(0, Math.trunc(card.videoNarrationRevision ?? 0))}:${text}`,
+            text,
+            voiceId,
+            board.id,
+            'stack-video',
+            card.id,
+            true,
+          );
+          if (url) return url;
+        } catch (error) {
+          console.error('Full video narration stopped before rendering.', error, {
+            boardId: board.id,
+            cardId: card.id,
+          });
         }
-        console.error('Full video narration stopped before rendering.', lastError, {
-          boardId: board.id,
-          cardId: card.id,
-        });
         throw new Error(`Narration could not be prepared for “${card.title}”. No video was created. Please try again.`);
       }));
       urls.forEach((url, index) => {

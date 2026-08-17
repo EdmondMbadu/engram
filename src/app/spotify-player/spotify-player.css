@@ -41,7 +41,8 @@
   box-shadow: 0 24px 70px rgba(0, 0, 0, .46);
   color: #fff;
   left: 50%;
-  max-width: min(52rem, calc(100vw - 1.5rem));
+  max-height: calc(100vh - 1.5rem);
+  max-width: min(58rem, calc(100vw - 1.5rem));
   overflow: hidden;
   padding: .7rem;
   position: fixed;
@@ -56,6 +57,10 @@
   gap: .72rem;
   grid-template-columns: 3.25rem minmax(0, 1fr) auto auto;
   padding: 0 .1rem .65rem;
+}
+
+.spotify-official-dock__header:has(> button:nth-of-type(4)) {
+  grid-template-columns: 3.25rem minmax(0, 1fr) auto auto auto auto;
 }
 
 .spotify-official-dock__header > img,
@@ -145,6 +150,104 @@
   width: 100%;
 }
 
+.spotify-official-dock__queue {
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: .9rem;
+  margin-top: .55rem;
+  overflow: hidden;
+}
+
+.spotify-official-dock__queue > header {
+  align-items: center;
+  background: rgba(255, 255, 255, .055);
+  display: flex;
+  justify-content: space-between;
+  padding: .58rem .72rem;
+}
+
+.spotify-official-dock__queue > header strong {
+  font-size: .76rem;
+}
+
+.spotify-official-dock__queue > header span {
+  color: #93a299;
+  font-size: .66rem;
+  font-weight: 800;
+}
+
+.spotify-official-dock__queue > div {
+  display: grid;
+  max-height: min(17rem, 30vh);
+  overflow-y: auto;
+}
+
+.spotify-official-dock__queue button {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, .07);
+  color: #fff;
+  cursor: pointer;
+  display: grid;
+  font: inherit;
+  gap: .58rem;
+  grid-template-columns: 1.4rem 2.35rem minmax(0, 1fr) auto;
+  min-width: 0;
+  padding: .48rem .7rem;
+  text-align: left;
+}
+
+.spotify-official-dock__queue button:hover,
+.spotify-official-dock__queue-item--active {
+  background: rgba(30, 215, 96, .1) !important;
+}
+
+.spotify-official-dock__queue-number {
+  color: #829087;
+  font-size: .65rem;
+  font-weight: 850;
+  text-align: center;
+}
+
+.spotify-official-dock__queue button > img,
+.spotify-official-dock__queue-fallback {
+  align-items: center;
+  background: #27322a;
+  border-radius: .4rem;
+  color: var(--spotify-green);
+  display: flex;
+  height: 2.35rem;
+  justify-content: center;
+  object-fit: cover;
+  width: 2.35rem;
+}
+
+.spotify-official-dock__queue button > span:nth-child(3) {
+  display: grid;
+  min-width: 0;
+}
+
+.spotify-official-dock__queue button strong,
+.spotify-official-dock__queue button small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.spotify-official-dock__queue button strong {
+  font-size: .75rem;
+}
+
+.spotify-official-dock__queue button small {
+  color: #9eaaa2;
+  font-size: .65rem;
+}
+
+.spotify-official-dock__queue button > .material-symbols-outlined:last-child {
+  color: var(--spotify-green);
+  font-size: 1.05rem;
+}
+
 .spotify-official-dock__footer {
   align-items: center;
   color: #a9b5ac;
@@ -212,6 +315,15 @@
   .spotify-official-dock__header {
     gap: .5rem;
     grid-template-columns: 2.65rem minmax(0, 1fr) auto auto;
+  }
+
+  .spotify-official-dock__header:has(> button:nth-of-type(4)) {
+    grid-template-columns: 2.65rem minmax(0, 1fr) auto auto auto auto;
+  }
+
+  .spotify-official-dock__header:has(> button:nth-of-type(4)) > button {
+    height: 1.8rem;
+    width: 1.8rem;
   }
 
   .spotify-official-dock__header > img,
