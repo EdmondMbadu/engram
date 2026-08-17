@@ -1,5 +1,6 @@
 const assert = require('node:assert/strict');
 const {
+  sharedStackNarrationCacheMode,
   stackVideoNarrationCardFromBoard,
   stackVideoNarrationRevisionCacheKey,
   stackVideoNarrationRevisionFromCard,
@@ -7,6 +8,10 @@ const {
   boardTrailerFallbackScript,
   normalizeBoardTrailerScript,
 } = require('../lib/stack-video-narration.js');
+
+assert.equal(sharedStackNarrationCacheMode('tour'), 'tour');
+assert.equal(sharedStackNarrationCacheMode('stack-video'), 'tour');
+assert.equal(sharedStackNarrationCacheMode('stack-trailer'), 'stack-trailer');
 
 const board = {
   cards: [

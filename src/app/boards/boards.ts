@@ -8096,7 +8096,7 @@ export class BoardsComponent implements OnDestroy {
           TourSpeechResponse
         >(functions, 'synthesizeChatAnswerSpeech', { timeout: 120_000 });
         const response = await callable({
-          text: text.slice(0, 3600),
+          text: text.slice(0, 4000),
           question: $localize`Read this LivingWiki tour preview aloud with a lively human tour-guide voice.`,
           anonymousVisitorId: this.authService.uid() ? null : this.ensureTourAnonymousVisitorId(),
           mode,

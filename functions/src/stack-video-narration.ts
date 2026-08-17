@@ -1,5 +1,9 @@
 export type StackVideoNarrationCard = Record<string, unknown>;
 
+export function sharedStackNarrationCacheMode(mode: string): string {
+  return mode === 'stack-video' ? 'tour' : mode;
+}
+
 export function stackVideoNarrationCardFromBoard(
   board: Record<string, unknown>,
   cardId: string,

@@ -137,6 +137,7 @@ import {
   cityPlaceSearchGoogleResultLimit,
 } from './city-place-search';
 import {
+  sharedStackNarrationCacheMode,
   stackVideoNarrationCardFromBoard,
   stackVideoNarrationRevisionCacheKey,
   stackVideoNarrationTextFromCard,
@@ -18780,6 +18781,10 @@ export const synthesizeChatAnswerSpeech = onCall(
     const speechVersion = requestedMode === 'tour' || requestedMode === 'stack-video'
       ? tourSpeechVersion
       : speechRecapVersion;
+    // Live View and full-video narration use identical synthesis settings, so they
+    // share one cache identity. Keep `tour` as the canonical mode so existing Live
+    // View audio is reused immediately after this change.
+    const narrationCacheMode = sharedStackNarrationCacheMode(requestedMode);
     const stackVideoNarrationRevisionKey = requestedMode === 'stack-video'
       ? stackVideoNarrationRevisionCacheKey(requestedStackVideoCard)
       : '';
@@ -18794,11 +18799,11 @@ export const synthesizeChatAnswerSpeech = onCall(
 
     for (const voiceId of voiceIds) {
       const textHash = createHash('sha256')
-        .update(`${voiceId}:${speechModel}:${speechVersion}:${requestedMode}${stackVideoNarrationRevisionKey}:${JSON.stringify(voiceSettings)}:${text}`)
+        .update(`${voiceId}:${speechModel}:${speechVersion}:${narrationCacheMode}:${JSON.stringify(voiceSettings)}:${text}`)
         .digest('hex');
       const storagePath = isPersonalNarrator
-        ? `chat-answer-speech/personal/${personalVoiceOwnerId}/${requestedMode}/${speechVersion}/${textHash}.mp3`
-        : `chat-answer-speech/${requestedMode}/${speechVersion}/${voiceId}/${textHash}.mp3`;
+        ? `chat-answer-speech/personal/${personalVoiceOwnerId}/${narrationCacheMode}/${speechVersion}/${textHash}.mp3`
+        : `chat-answer-speech/${narrationCacheMode}/${speechVersion}/${voiceId}/${textHash}.mp3`;
       const cachedFile = storage.bucket().file(storagePath);
       const [cacheExists] = await cachedFile.exists();
       if (cacheExists) {
@@ -18812,6 +18817,55 @@ export const synthesizeChatAnswerSpeech = onCall(
           narratorVoiceId: requestedNarratorId || null,
           cached: true,
         };
+      }
+
+      // Preserve audio made by the previous stack-video-specific cache. When a
+      // video encounters it, copy it into the shared cache without spending more
+      // ElevenLabs credits.
+      if (requestedMode === 'stack-video') {
+        const legacyTextHash = createHash('sha256')
+          .update(`${voiceId}:${speechModel}:${speechVersion}:${requestedMode}${stackVideoNarrationRevisionKey}:${JSON.stringify(voiceSettings)}:${text}`)
+          .digest('hex');
+        const legacyStoragePath = isPersonalNarrator
+          ? `chat-answer-speech/personal/${personalVoiceOwnerId}/${requestedMode}/${speechVersion}/${legacyTextHash}.mp3`
+          : `chat-answer-speech/${requestedMode}/${speechVersion}/${voiceId}/${legacyTextHash}.mp3`;
+        const legacyFile = storage.bucket().file(legacyStoragePath);
+        const [legacyCacheExists] = await legacyFile.exists();
+        if (legacyCacheExists) {
+          try {
+            await legacyFile.copy(cachedFile);
+            logger.info('Migrated video narration into shared Live View cache', {
+              legacyStoragePath,
+              storagePath,
+            });
+            return {
+              audioUrl: await buildSpeechCacheDownloadUrl(storagePath),
+              contentType: 'audio/mpeg',
+              voiceId: isPersonalNarrator ? null : voiceId,
+              speechText: text,
+              durationHintSeconds: null,
+              provider: 'elevenlabs',
+              narratorVoiceId: requestedNarratorId || null,
+              cached: true,
+            };
+          } catch (error) {
+            logger.warn('Could not migrate legacy video narration cache; using it in place', {
+              legacyStoragePath,
+              storagePath,
+              errorMessage: error instanceof Error ? error.message : String(error),
+            });
+            return {
+              audioUrl: await buildSpeechCacheDownloadUrl(legacyStoragePath),
+              contentType: 'audio/mpeg',
+              voiceId: isPersonalNarrator ? null : voiceId,
+              speechText: text,
+              durationHintSeconds: null,
+              provider: 'elevenlabs',
+              narratorVoiceId: requestedNarratorId || null,
+              cached: true,
+            };
+          }
+        }
       }
 
       const response = await fetch(
@@ -18860,7 +18914,8 @@ export const synthesizeChatAnswerSpeech = onCall(
           metadata: {
             voiceId: isPersonalNarrator ? personalStackNarratorVoiceId : voiceId,
             modelId: speechModel,
-            mode: requestedMode,
+            mode: narrationCacheMode,
+            requestedMode,
             textHash,
           },
         },
