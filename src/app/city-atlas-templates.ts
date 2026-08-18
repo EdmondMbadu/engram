@@ -115,7 +115,7 @@ export const CITY_ATLAS_TEMPLATES: CityAtlasTemplate[] = [
     badges: ['geo', 'business'],
     coverColor: '#17465f',
     logoUrl: livingCitiesLogoUrl,
-    heroUrl: null,
+    heroUrl: '/assets/public-wikis/boston-hero.jpg',
     cityConfig: cityConfig({
       cityName: 'Boston',
       regionName: 'Massachusetts',
@@ -144,7 +144,7 @@ export const CITY_ATLAS_TEMPLATES: CityAtlasTemplate[] = [
     badges: ['geo', 'evergreen'],
     coverColor: '#2d5a3d',
     logoUrl: livingCitiesLogoUrl,
-    heroUrl: null,
+    heroUrl: '/assets/public-wikis/portland-hero.jpg',
     cityConfig: cityConfig({
       cityName: 'Portland',
       regionName: 'Oregon',
@@ -172,7 +172,7 @@ export const CITY_ATLAS_TEMPLATES: CityAtlasTemplate[] = [
     badges: ['geo', 'trending'],
     coverColor: '#744725',
     logoUrl: livingCitiesLogoUrl,
-    heroUrl: null,
+    heroUrl: '/assets/public-wikis/austin-hero.jpg',
     cityConfig: cityConfig({
       cityName: 'Austin',
       regionName: 'Texas',
@@ -201,7 +201,7 @@ export const CITY_ATLAS_TEMPLATES: CityAtlasTemplate[] = [
     badges: ['geo', 'evergreen'],
     coverColor: '#1f6f61',
     logoUrl: livingCitiesLogoUrl,
-    heroUrl: null,
+    heroUrl: '/assets/public-wikis/gainesville-hero.jpg',
     cityConfig: cityConfig({
       cityName: 'Gainesville',
       regionName: 'Florida',
@@ -250,7 +250,7 @@ export const CITY_ATLAS_TEMPLATES: CityAtlasTemplate[] = [
     badges: ['geo', 'ai'],
     coverColor: '#5f3f8c',
     logoUrl: livingCitiesLogoUrl,
-    heroUrl: null,
+    heroUrl: '/assets/public-wikis/san-francisco-hero.jpg',
     cityConfig: cityConfig({
       cityName: 'San Francisco',
       regionName: 'California',
@@ -278,7 +278,7 @@ export const CITY_ATLAS_TEMPLATES: CityAtlasTemplate[] = [
     badges: ['geo', 'trending'],
     coverColor: '#1d4f7a',
     logoUrl: livingCitiesLogoUrl,
-    heroUrl: null,
+    heroUrl: '/assets/public-wikis/new-york-city-hero.jpg',
     cityConfig: cityConfig({
       cityName: 'New York City',
       regionName: 'New York',

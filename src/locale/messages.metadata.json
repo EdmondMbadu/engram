@@ -339,6 +339,10 @@
     "source": "Email content",
     "file": "src/app/atlas-manage/atlas-manage.html"
   },
+  "1239386547380499939": {
+    "source": "What would you like to know?",
+    "file": "src/app/chat/chat.html"
+  },
   "1241348629231510663": {
     "source": "End",
     "file": "src/app/chat/chat.ts"
@@ -578,6 +582,10 @@
   "1397508107892334926": {
     "source": "Public atlas live",
     "file": "src/app/chat/chat.ts"
+  },
+  "1397512334982372726": {
+    "source": "Places",
+    "file": "src/app/chat/chat.html"
   },
   "1399751150846675372": {
     "source": "{$START_TAG_SPAN}add{$CLOSE_TAG_SPAN} Create board ",
@@ -6615,6 +6623,10 @@
     "source": "Subscribe for weekly updates, or sign in to keep exploring the Philly guide.",
     "file": "src/app/atlas-landing/atlas-landing.html"
   },
+  "5324339397222499756": {
+    "source": "Ask the city. Explore what locals know.",
+    "file": "src/app/chat/chat.html"
+  },
   "5327783398991797788": {
     "source": "No account needed. We use your email only for this plan and its updates.",
     "file": "src/app/boards/boards.html"
@@ -8007,6 +8019,10 @@
     "source": " Monthly ",
     "file": "src/app/business/business.html"
   },
+  "6227334792487098279": {
+    "source": "Local activity",
+    "file": "src/app/chat/chat.html"
+  },
   "6228516837221569422": {
     "source": "LivingWiki answers are generated from available source material, public records, uploaded documents, verified local sources, and user-submitted updates, and may require human review.",
     "file": "src/app/atlas-landing/atlas-landing.html"
@@ -9139,6 +9155,10 @@
     "source": " Chester, Pennsylvania has lived beside the nation's largest trash incinerator for more than thirty years. It is not alone. Twenty-three communities, one shared scorecard, no sacrifice zones. ",
     "file": "src/app/fence-line/fence-line.html"
   },
+  "6958673397236081799": {
+    "source": "Add sources",
+    "file": "src/app/chat/chat.html"
+  },
   "6962699013778688473": {
     "source": "Continue",
     "file": "src/app/auth-action/auth-action.html"
@@ -9154,6 +9174,10 @@
   "6968929969698738479": {
     "source": "Pathways",
     "file": "src/app/green-jobs/green-jobs.html"
+  },
+  "6972760944859470754": {
+    "source": "LivingWiki city guide",
+    "file": "src/app/chat/chat.html"
   },
   "69750652428701466": {
     "source": "Add the business admin name before checkout so the payment is tied to the right account owner.",
@@ -10681,7 +10705,7 @@
   },
   "8058495689153782394": {
     "source": " “{$INTERPOLATION}” ",
-    "file": "src/app/chat/chat.html"
+    "file": "src/app/city-places/city-places.html"
   },
   "805935341664252510": {
     "source": "What should someone know before they go?",
@@ -11626,6 +11650,10 @@
   "8764914467347531922": {
     "source": "No LivingWiki connection needed",
     "file": "src/app/boards/boards.html"
+  },
+  "8774165344727486216": {
+    "source": "Live public sources",
+    "file": "src/app/chat/chat.html"
   },
   "8774793818215319708": {
     "source": "Review your stop",

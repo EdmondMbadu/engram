@@ -9,7 +9,7 @@
   </div>
 
   <div class="relative flex min-h-screen flex-col md:h-screen md:flex-row md:overflow-hidden">
-    <aside class="theme-sidebar hidden h-screen w-72 shrink-0 border-r px-5 py-6 md:flex md:flex-col">
+    <aside class="theme-sidebar chat-city-sidebar hidden h-screen w-72 shrink-0 border-r px-5 py-6 md:flex md:flex-col">
       <div class="mb-8 px-2">
         <a routerLink="/" class="flex items-center">
           <div class="flex h-10 w-44 items-center justify-start">
@@ -45,7 +45,7 @@
       @if (canStartFreshChat()) {
         <button
           type="button"
-          class="mb-6 flex items-center justify-center gap-2 rounded-xl border border-[var(--line-strong)] bg-white/5 px-3 py-3 text-sm font-bold text-[var(--accent)] transition-colors hover:bg-white/10"
+          class="chat-city-sidebar__new mb-6 flex items-center justify-center gap-2 px-3 py-3 text-sm font-bold transition-[background-color,transform,box-shadow]"
           (click)="newChat()"
         >
           <span class="material-symbols-outlined text-[1.1rem]">edit_square</span>
@@ -53,7 +53,7 @@
         </button>
       }
 
-      <section class="rounded-[1.35rem] border border-[var(--line-strong)] bg-[var(--surface)] p-3 shadow-[var(--shadow-soft)]">
+      <section class="chat-city-sidebar__explore rounded-[1.35rem] border border-[var(--line-strong)] bg-[var(--surface)] p-3 shadow-[var(--shadow-soft)]">
         <div class="mb-3 border-b border-[var(--line)] px-1 pb-3">
           <div>
             <p class="text-[0.72rem] font-black uppercase tracking-[0.18em] text-[var(--text)]">{{ uiText('exploreCities') }}</p>
@@ -100,7 +100,7 @@
           }
         </div>
       } @else {
-        <div class="mt-6 flex min-h-0 flex-1 flex-col">
+        <div class="chat-city-sidebar__threads mt-6 flex min-h-0 flex-1 flex-col">
           <p class="px-2 text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">{{ uiText('threads') }}</p>
           <div class="mt-3 flex-1 min-h-0 space-y-1 overflow-y-auto pr-1">
             @if (queryHistory().length === 0) {
@@ -108,8 +108,8 @@
             } @else {
               @for (item of visibleHistory(); track item.id) {
                 <div
-                  class="group flex items-start gap-2 rounded-lg px-2 py-1.5 transition-colors hover:bg-white/5"
-                  [class.bg-white/5]="activeHistoryId() === item.id"
+                  class="chat-city-sidebar__thread group flex items-start gap-2 rounded-lg px-2 py-1.5 transition-colors"
+                  [class.chat-city-sidebar__thread--active]="activeHistoryId() === item.id"
                 >
                   <button
                     type="button"
@@ -152,7 +152,7 @@
           </div>
         </div>
 
-        <div class="mt-4 border-t border-white/5 pt-4">
+        <div class="chat-city-sidebar__footer mt-4 border-t border-white/5 pt-4">
           <button type="button" class="danger-action flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm" [disabled]="isSigningOut()" (click)="signOut()">
             <span class="material-symbols-outlined text-[1.2rem]">logout</span>
             <span>{{ isSigningOut() ? uiText('signingOut') : uiText('signOut') }}</span>
@@ -162,8 +162,14 @@
     </aside>
 
     <main class="theme-shell relative flex min-w-0 flex-1 flex-col">
-      <header class="theme-nav sticky top-0 z-[180] flex min-h-16 flex-nowrap items-center justify-between gap-3 border-b px-4 py-3 backdrop-blur-xl md:h-16 md:py-0 md:px-8">
-        <div class="flex min-w-0 flex-1 items-center gap-3 md:gap-8">
+      <header
+        class="theme-nav chat-city-nav sticky top-0 z-[180] flex min-h-16 flex-nowrap items-center justify-between gap-3 border-b px-4 py-3 backdrop-blur-xl md:h-16 md:py-0 md:px-8"
+        [class.chat-city-nav--landing]="!hasMessages() && isCityLandingPage()"
+      >
+        <div
+          class="chat-city-nav__titlewrap flex min-w-0 flex-1 items-center gap-3 md:gap-8"
+          [class.chat-city-nav__titlewrap--landing]="!hasMessages() && isCityLandingPage()"
+        >
           <app-mobile-menu
             activePage="chat"
             [publicSlug]="routeSlug()"
@@ -176,8 +182,10 @@
             (join)="openSubscribeModal()"
           ></app-mobile-menu>
           <div class="min-w-0">
-            <h1 class="truncate text-lg font-black tracking-[-0.04em] text-[var(--text)] sm:text-2xl sm:tracking-[-0.06em]">{{ pageTitle() }}</h1>
-            @if (pageSubtitle()) {
+            <h1 class="truncate text-lg font-black tracking-[-0.04em] text-[var(--text)] sm:text-2xl sm:tracking-[-0.06em]">
+              {{ !hasMessages() && isCityLandingPage() ? currentWikiName() : pageTitle() }}
+            </h1>
+            @if (pageSubtitle() && (hasMessages() || !isCityLandingPage())) {
               <p class="hidden truncate text-xs uppercase tracking-[0.18em] text-[var(--muted)] sm:block">{{ pageSubtitle() }}</p>
             }
           </div>
@@ -415,8 +423,9 @@
         <div #chatScrollViewport class="flex-1 min-h-0 overflow-y-auto">
           <div
             class="mx-auto w-full px-5 py-4 md:px-8 md:py-5"
-            [class.max-w-3xl]="!hasMessages()"
+            [class.max-w-3xl]="!hasMessages() && !isCityLandingPage()"
             [class.max-w-4xl]="hasMessages()"
+            [class.chat-city-landing-container]="!hasMessages() && isCityLandingPage()"
           >
             @if (canShowCityVoiceCarousel()) {
               <section
@@ -553,7 +562,7 @@
                 </div>
               </div>
             } @else if (!hasMessages()) {
-              <div class="flex flex-col items-center pb-10 pt-2 text-center md:pt-4">
+              <div class="chat-empty-state flex flex-col items-center pb-10 pt-2 text-center md:pt-4" [class.chat-city-landing]="isCityLandingPage()">
                 @if (!isInternetMode()) {
                   <span class="chat-hero-eyebrow">
                     <span class="chat-hero-eyebrow__dot"></span>
@@ -679,6 +688,43 @@
                     }
                   </div>
 	                } @else {
+                  @if (isCityLandingPage()) {
+                    <section class="chat-city-landing-hero" [class.chat-city-landing-hero--without-image]="!cityHeroImageUrl()">
+                      @if (cityHeroImageUrl(); as heroImage) {
+                        <img
+                          class="chat-city-landing-hero__image"
+                          [src]="heroImage"
+                          [alt]="currentWikiName() + ' city view'"
+                          (error)="handleCityHeroImageError()"
+                        />
+                      }
+                      <span class="chat-city-landing-hero__wash" aria-hidden="true"></span>
+                      <div class="chat-city-landing-hero__content">
+                        <p class="chat-city-landing-hero__eyebrow" i18n>LivingWiki city guide</p>
+                        <h2>{{ currentWikiName() || uiText('askThisWiki') }}</h2>
+                        <p class="chat-city-landing-hero__tagline" i18n>Ask the city. Explore what locals know.</p>
+
+                        @if (cityHeroFacts().length) {
+                          <div class="chat-city-landing-hero__facts" [attr.aria-label]="'Facts about ' + currentWikiName()">
+                            @for (fact of cityHeroFacts(); track fact.id) {
+                              <span>
+                                <span class="material-symbols-outlined" aria-hidden="true">{{ fact.icon }}</span>
+                                <strong>{{ fact.value }}</strong>
+                              </span>
+                            }
+                          </div>
+                        }
+
+                        @if (chatCityMoodStickers().length) {
+                          <div class="chat-city-landing-hero__topics" [attr.aria-label]="'Topics for ' + currentWikiName()">
+                            @for (topic of chatCityMoodStickers(); track topic.label) {
+                              <span>{{ topic.label }}</span>
+                            }
+                          </div>
+                        }
+                      </div>
+                    </section>
+                  } @else {
                   <div class="chat-city-hero-sticker mt-3">
                     <div class="chat-city-hero-sticker__mark">
                       @if (isUniversityPage() && currentWikiAtlas()?.logo_url) {
@@ -735,12 +781,18 @@
                       </div>
                     }
                   }
+                  }
                 }
 
-                <p class="chat-hero-sub mt-2">{{ heroPromptText() }}</p>
+                @if (!isCityLandingPage()) {
+                  <p class="chat-hero-sub mt-2">{{ heroPromptText() }}</p>
+                }
 
-                <div class="mt-5 w-full max-w-3xl">
-                  <div class="chat-premium-composer">
+                <div class="mt-5 w-full max-w-3xl" [class.chat-city-landing-composer]="isCityLandingPage()">
+                  @if (isCityLandingPage()) {
+                    <h3 class="chat-city-landing-composer__title" i18n>What would you like to know?</h3>
+                  }
+                  <div class="chat-premium-composer" [class.chat-premium-composer--landing]="isCityLandingPage()">
                     <textarea
                       #composerInput
                       [value]="question()"
@@ -779,6 +831,45 @@
                             </button>
                           </div>
                         }
+                        @if (isCityLandingPage()) {
+                          @if (!hidePublicSourceFiles()) {
+                            <a class="chat-city-composer-action" [routerLink]="libraryLink()">
+                              <span class="material-symbols-outlined" aria-hidden="true">attach_file</span>
+                              <span i18n>Add sources</span>
+                            </a>
+                          }
+                          @if (canShowCityVoiceCarousel()) {
+                            <button
+                              type="button"
+                              class="chat-city-composer-action"
+                              [class.chat-city-composer-action--active]="cityLanguageExpanded()"
+                              [attr.aria-expanded]="cityLanguageExpanded()"
+                              [attr.aria-label]="uiText('languages')"
+                              (click)="toggleCityLanguageExpanded()"
+                            >
+                              <span class="material-symbols-outlined" aria-hidden="true">language</span>
+                              <span>{{ cityLanguageSummary() }}</span>
+                              <span class="material-symbols-outlined chat-city-composer-action__chevron" aria-hidden="true">{{ cityLanguageExpanded() ? 'expand_less' : 'expand_more' }}</span>
+                            </button>
+                          }
+                          @if (canStartRealtimeVoice()) {
+                            <button
+                              type="button"
+                              class="chat-city-composer-action chat-city-composer-action--voice"
+                              [class.chat-city-composer-action--connected]="realtimeVoiceStatus() === 'connected'"
+                              [disabled]="realtimeVoiceStatus() === 'connecting' || realtimeVoiceStatus() === 'disconnecting'"
+                              [attr.aria-label]="realtimeVoiceActive() ? uiText('endRealtimeVoiceMode') : uiText('startRealtimeVoiceMode')"
+                              (click)="toggleRealtimeVoice()"
+                            >
+                              @if (realtimeVoiceStatus() === 'connecting' || realtimeVoiceStatus() === 'disconnecting') {
+                                <span class="inline-block h-3.5 w-3.5 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
+                              } @else {
+                                <span class="material-symbols-outlined" aria-hidden="true">{{ realtimeVoiceStatus() === 'connected' ? 'stop_circle' : 'graphic_eq' }}</span>
+                              }
+                              <span>{{ realtimeVoiceStatus() === 'connected' ? uiText('endVoiceMode') : uiText('voiceMode') }}</span>
+                            </button>
+                          }
+                        }
                         <span class="chat-premium-composer__hint hidden sm:inline-flex">
                           <span class="chat-premium-composer__kbd">⌘</span>
                           <span class="chat-premium-composer__kbd">↵</span>
@@ -800,18 +891,24 @@
                       </button>
                     </div>
                   </div>
-                  <p class="chat-helper-line">{{ composerHelperText() }}</p>
+                  @if (isCityLandingPage()) {
+                    <p class="chat-helper-line"><span i18n>Live public sources</span> · {{ voiceLanguages().length }} {{ uiText('languages') }}</p>
+                  } @else {
+                    <p class="chat-helper-line">{{ composerHelperText() }}</p>
+                  }
                 </div>
 
                 @if (isBoardShelfPage() && (cityBoardsLoading() || cityBoards().length > 0)) {
                   <section class="city-board-shelf" [attr.aria-label]="cityBoardsHeading()">
                     <header class="city-board-shelf__header">
                       <div>
-                        <span class="city-board-shelf__eyebrow">
-                          <span class="material-symbols-outlined" aria-hidden="true">explore</span>
-                          <span>{{ boardShelfEyebrow() }}</span>
-                        </span>
-                        <h2>{{ cityBoardsHeading() }}</h2>
+                        @if (!isCityLandingPage()) {
+                          <span class="city-board-shelf__eyebrow">
+                            <span class="material-symbols-outlined" aria-hidden="true">explore</span>
+                            <span>{{ boardShelfEyebrow() }}</span>
+                          </span>
+                        }
+                        <h2>{{ isCityLandingPage() ? ('Explore ' + currentWikiName()) : cityBoardsHeading() }}</h2>
                         <p>{{ boardShelfDescription() }}</p>
                       </div>
                       @if (!cityBoardsLoading() && cityBoards().length > 0 && cityBoardsCollectionLink(); as collectionLink) {
@@ -821,6 +918,13 @@
                         </a>
                       }
                     </header>
+
+                    @if (isCityLandingPage()) {
+                      <nav class="city-board-shelf__tabs" aria-label="City discovery">
+                        <span class="city-board-shelf__tab city-board-shelf__tab--active" i18n>Boards</span>
+                        <a class="city-board-shelf__tab" [routerLink]="placesLink()" i18n>Places</a>
+                      </nav>
+                    }
 
                     @if (cityBoardsLoading()) {
                       <div class="city-board-grid" aria-busy="true" aria-label="Loading boards">
@@ -1503,60 +1607,52 @@
 	      </div>
 	    </main>
 	      @if (canShowPlaceReviews()) {
-	        <aside class="theme-sidebar hidden h-screen w-80 shrink-0 flex-col border-l px-4 py-5 xl:flex">
-	          <section class="flex min-h-0 flex-1 flex-col rounded-[1.65rem] border border-[var(--line-strong)] bg-[var(--surface)] p-4 shadow-[var(--shadow-soft)]">
-	            <div class="flex items-start justify-between gap-3">
-	              <div class="min-w-0">
-	                <h2 class="text-[1.7rem] font-black leading-none tracking-[-0.055em] text-[var(--text)]">{{ uiText('reviewedLocations') }}</h2>
-	                <p class="mt-2 text-sm font-semibold leading-5 text-[var(--muted)]">{{ reviewedPlacesCountLabel() }}</p>
+	        <aside class="theme-sidebar chat-city-activity hidden h-screen w-80 shrink-0 flex-col border-l px-4 py-5 xl:flex">
+	          <section class="chat-city-activity__panel">
+	            <h2 i18n>Local activity</h2>
+
+	            <div class="chat-city-activity__review-head">
+	              <div>
+	                <span>{{ uiText('reviewedLocations') }}</span>
+	                <strong>{{ reviewedPlaces().length }}</strong>
 	              </div>
-	              <a
-	                [routerLink]="placesLink()"
-	                class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--soft-fill)] text-[var(--accent)] no-underline transition hover:border-[var(--accent)]/35"
-	                [attr.aria-label]="uiText('openPlacesBoard')"
-	              >
-	                <span class="material-symbols-outlined text-[1.05rem]">arrow_outward</span>
+	              <a [routerLink]="placesLink()" [attr.aria-label]="uiText('openPlacesBoard')">
+	                <span class="material-symbols-outlined" aria-hidden="true">arrow_outward</span>
 	              </a>
 	            </div>
-	            <div class="mt-4 flex items-center justify-between border-t border-[var(--line)] pt-3">
-	              <p class="text-[0.68rem] font-black uppercase tracking-[0.18em] text-[var(--muted)]">{{ uiText('trendingNow') }}</p>
-	              @if (reviewedPlacesLoading()) {
-	                <span class="inline-block h-3 w-3 animate-spin rounded-full border-2 border-[var(--muted)] border-t-transparent"></span>
-	              }
-	            </div>
 
-	            @if (reviewedPlacesPreview().length === 0 && !reviewedPlacesLoading()) {
-	              <div class="mt-4 rounded-[1.35rem] border border-[var(--line)] bg-[var(--soft-fill)] p-5 text-center">
-	                <span class="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] text-[var(--accent)]">
-	                  <span class="material-symbols-outlined">rate_review</span>
-                </span>
-                <p class="mt-3 text-sm font-black tracking-[-0.02em] text-[var(--text)]">{{ uiText('noLocalReviewsYet') }}</p>
-	                <p class="mt-1 text-xs font-semibold leading-5 text-[var(--muted)]">{{ uiText('openBoardFirstPlace') }}</p>
+	            @if (reviewedPlacesLoading()) {
+	              <div class="chat-city-activity__loading" aria-live="polite">
+	                <span class="inline-block h-4 w-4 animate-spin rounded-full border-2 border-[var(--muted)] border-t-transparent"></span>
 	              </div>
+	            } @else if (reviewedPlacesPreview().length === 0) {
+	              <a class="chat-city-activity__empty" [routerLink]="placesLink()">
+	                <span class="chat-city-activity__empty-mark material-symbols-outlined" aria-hidden="true">rate_review</span>
+	                <strong>{{ uiText('noLocalReviewsYet') }}</strong>
+	                <span>{{ uiText('openPlacesBoard') }}</span>
+	              </a>
 	            } @else {
-	              <div class="mt-3 min-h-0 flex-1 space-y-5 overflow-y-auto pr-1">
+	              <div class="chat-city-activity__places">
 	                @for (place of reviewedPlacesPreview(); track place.id) {
-	                  <a
-	                    [routerLink]="placesLink()"
-	                    [queryParams]="placeDetailQueryParams(place)"
-	                    class="block text-[var(--text)] no-underline transition hover:translate-x-0.5"
-	                  >
-	                    <h3 class="line-clamp-2 text-[1.05rem] font-black leading-6 tracking-[-0.025em] text-[var(--text)]">{{ place.name }}</h3>
-	                    <p class="mt-1 line-clamp-1 text-xs font-semibold leading-4 text-[var(--muted)]">{{ place.address || place.category }}</p>
-	                    @if (place.latestReviewText) {
-	                      <p class="mt-2 line-clamp-2 text-sm font-semibold leading-5 text-[var(--text)]/90" i18n>
-	                        &ldquo;{{ truncatePlaceText(place.latestReviewText, 82) }}&rdquo;
-	                      </p>
-	                    }
-	                    <div class="mt-2 flex items-center gap-2 text-sm font-semibold text-[var(--muted)]">
-	                      <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--soft-fill)] text-[0.7rem] font-black text-[var(--accent)]">{{ placeInitial(place.name) }}</span>
-	                      <span class="inline-flex items-center gap-1">
-	                        <span class="material-symbols-outlined text-[0.9rem] text-[var(--accent)]">star</span>
-	                        {{ (place.ratingAvg || 0).toFixed(1) }}
-	                      </span>
-	                      <span>·</span>
-	                      <span>{{ placeReviewCountLabel(place) }}</span>
-	                    </div>
+	                  <a [routerLink]="placesLink()" [queryParams]="placeDetailQueryParams(place)">
+	                    <span class="chat-city-activity__place-mark">{{ placeInitial(place.name) }}</span>
+	                    <span>
+	                      <strong>{{ place.name }}</strong>
+	                      <small>{{ place.address || place.category }} · {{ placeRatingLabel(place) }}</small>
+	                    </span>
+	                    <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
+	                  </a>
+	                }
+	              </div>
+	            }
+
+	            @if (cityBoards().length) {
+	              <div class="chat-city-activity__trending">
+	                <p>{{ uiText('trendingNow') }}</p>
+	                @for (board of cityBoards().slice(0, 2); track board.id) {
+	                  <a [routerLink]="['/boards', board.id]">
+	                    <span class="material-symbols-outlined" aria-hidden="true">trending_up</span>
+	                    <span>{{ board.title }}</span>
 	                  </a>
 	                }
 	              </div>

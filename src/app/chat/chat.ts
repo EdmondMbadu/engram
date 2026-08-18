@@ -39,6 +39,7 @@ import {
   type PublicWikiCatalogItem,
   sortPublicAtlases,
 } from '../public-wiki-catalog';
+import { CITY_ATLAS_TEMPLATES } from '../city-atlas-templates';
 import { formatAssistantMessageHtml } from './message-format.util';
 
 interface ChatMessage {
@@ -620,8 +621,27 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly cityBoardsLoading = signal(false);
   readonly cityBoardsError = signal<string | null>(null);
   readonly cityBoardsExpanded = signal(false);
-  readonly visibleCityBoards = computed(() => this.cityBoards().slice(0, 4));
-  readonly hasMoreCityBoards = computed(() => this.cityBoards().length > 4);
+  readonly cityHeroImageErrors = signal<readonly string[]>([]);
+  readonly visibleCityBoards = computed(() => this.cityBoards().slice(0, 3));
+  readonly hasMoreCityBoards = computed(() => this.cityBoards().length > 3);
+  readonly cityHeroImageCandidates = computed(() => {
+    const atlas = this.currentWikiAtlas();
+    const slug = (atlas?.slug || this.routeSlug() || '').trim().toLowerCase();
+    const template = CITY_ATLAS_TEMPLATES.find((item) => item.slug.toLowerCase() === slug);
+    const catalog = this.publicCityWikis().find((item) => (item.slug || '').trim().toLowerCase() === slug);
+    return [...new Set([
+      atlas?.hero_url?.trim(),
+      atlas?.chat_guide?.banner_url?.trim(),
+      template?.heroUrl?.trim(),
+      catalog?.heroUrl?.trim(),
+      catalog?.fallbackHeroUrl?.trim(),
+      ...this.cityBoards().map((board) => board.imageUrl.trim()),
+    ].filter((value): value is string => !!value))];
+  });
+  readonly cityHeroImageUrl = computed(() => {
+    const failed = new Set(this.cityHeroImageErrors());
+    return this.cityHeroImageCandidates().find((url) => !failed.has(url)) || '';
+  });
   readonly isPublicView = computed(() => !!this.routeSlug());
   readonly businessPageContext = computed(() => !!this.routeBusinessSlug());
   readonly isBoardShelfPage = computed(() => {
@@ -632,6 +652,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         || atlas?.wiki_type === 'university'
         || atlas?.university_config?.enabled === true);
   });
+  readonly isCityLandingPage = computed(() => this.isBoardShelfPage() && !this.isUniversityPage());
   readonly boardShelfEyebrow = computed(() => this.isUniversityPage() ? 'Explore campus life' : 'Explore the city');
   readonly boardShelfDescription = computed(() => this.isUniversityPage()
     ? 'Source-backed collections for campus traditions, shared spaces, food, study, and the college town.'
@@ -649,7 +670,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   });
   readonly cityBoardsToggleLabel = computed(() => {
     if (this.cityBoardsExpanded()) return this.uiText('showLess');
-    const remaining = Math.max(0, this.cityBoards().length - 4);
+    const remaining = Math.max(0, this.cityBoards().length - 3);
     return `More boards (${remaining})`;
   });
   readonly businessPageName = computed(() =>
@@ -971,7 +992,15 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     }
     return [...options]
       .sort((left, right) => ((seed + left.label.charCodeAt(0) * 17) % 97) - ((seed + right.label.charCodeAt(0) * 17) % 97))
-      .slice(0, 3);
+      .slice(0, 4);
+  });
+  readonly cityHeroFacts = computed(() => {
+    const facts = this.chatCityStickers();
+    const prioritized = ['region', 'population', 'time']
+      .map((id) => facts.find((fact) => fact.id === id))
+      .filter((fact): fact is ChatCitySticker => !!fact);
+    if (prioritized.length >= 3) return prioritized.slice(0, 3);
+    return [...prioritized, ...facts.filter((fact) => !prioritized.some((item) => item.id === fact.id))].slice(0, 3);
   });
   readonly canShowPlaceReviews = computed(() => {
     const atlas = this.currentWikiAtlas();
@@ -1275,7 +1304,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   }
 
   cityWikiLocationLabel(wiki: PublicWikiCatalogItem): string {
-    return wiki.title.replace(/^Living\s*Wiki:\s*/i, '').trim();
+    return wiki.title.replace(/^(?:My\s+)?Living\s*Wiki:\s*/i, '').trim();
   }
 
   private localInternetPlaceholder(): string {
@@ -4171,6 +4200,12 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 
   cityBoardCountLabel(board: CityBoardListing): string {
     return board.cardCount === 1 ? '1 card' : `${board.cardCount} cards`;
+  }
+
+  handleCityHeroImageError(): void {
+    const failedUrl = this.cityHeroImageUrl();
+    if (!failedUrl || this.cityHeroImageErrors().includes(failedUrl)) return;
+    this.cityHeroImageErrors.update((urls) => [...urls, failedUrl]);
   }
 
   async startSelectedVoiceLanguage(): Promise<void> {
