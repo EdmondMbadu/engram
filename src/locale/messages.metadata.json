@@ -495,10 +495,6 @@
     "source": "Board sync is not ready. Refresh and try again.",
     "file": "src/app/boards/boards.ts"
   },
-  "1342039955289279987": {
-    "source": "{$INTERPOLATION} cards",
-    "file": "src/app/boards/boards.html"
-  },
   "1342826649609889809": {
     "source": "Your businesses",
     "file": "src/app/business/business.html"
@@ -969,7 +965,7 @@
   },
   "1594128309539616928": {
     "source": "Join for free",
-    "file": "src/app/boards/boards.html"
+    "file": "src/app/chat/chat.ts"
   },
   "1594219297096530764": {
     "source": "Loading Source Files...",
@@ -2002,6 +1998,10 @@
   "2333217804782040044": {
     "source": "We could not confirm the payment yet. If your card was charged, refresh in a moment or contact support.",
     "file": "src/app/pricing/pricing.ts"
+  },
+  "233475429155664846": {
+    "source": "Keep exploring",
+    "file": "src/app/boards/boards.html"
   },
   "2336399506345743944": {
     "source": "{$START_TAG_STRONG}{$INTERPOLATION}{$CLOSE_TAG_STRONG} Route",
@@ -3230,10 +3230,6 @@
   "3161045580446394854": {
     "source": "Your business claim draft is saved.",
     "file": "src/app/verify-email/verify-email.html"
-  },
-  "3163044740176820503": {
-    "source": "Get started",
-    "file": "src/app/boards/boards.html"
   },
   "3164641023049687472": {
     "source": "{$START_TAG_SPAN}location_on{$CLOSE_TAG_SPAN} Map pin ",
@@ -5043,6 +5039,10 @@
     "source": "Roughly 4 million tons of coal ash landfilled beside the community.",
     "file": "src/app/fence-line/fence-line.ts"
   },
+  "4288766279891792147": {
+    "source": "Close to board",
+    "file": "src/app/boards/boards.html"
+  },
   "4290049735353622879": {
     "source": "{$START_TAG_SPAN}location_on{$CLOSE_TAG_SPAN} Philadelphia ",
     "file": "src/app/green-jobs/green-jobs.html"
@@ -5334,6 +5334,10 @@
   "4515054874938847912": {
     "source": "Map context",
     "file": "src/app/city-places/city-places.html"
+  },
+  "4515513161371717834": {
+    "source": "Play again",
+    "file": "src/app/boards/boards.html"
   },
   "4515641172123668072": {
     "source": "Realtime voice mode",
@@ -6277,7 +6281,7 @@
   },
   "5100760148289082697": {
     "source": "Discover. Share. Belong.",
-    "file": "src/app/boards/boards.html"
+    "file": "src/app/public-wikis/public-wikis.html"
   },
   "5103910017747954236": {
     "source": "The Mental Health Knowledge Base",
@@ -6462,10 +6466,6 @@
   "5249218357685052008": {
     "source": "Failed to save email settings.",
     "file": "src/app/atlas-manage/atlas-manage.ts"
-  },
-  "5249499135310327185": {
-    "source": "{$START_TAG_SPAN}school{$CLOSE_TAG_SPAN} Learn ",
-    "file": "src/app/boards/boards.html"
   },
   "5249573116861036420": {
     "source": "My Wikis",
@@ -11874,6 +11874,10 @@
   "8933329832416037471": {
     "source": "No Wikis connected yet.",
     "file": "src/app/profile/profile.html"
+  },
+  "8933852319458742994": {
+    "source": "Board complete",
+    "file": "src/app/boards/boards.html"
   },
   "8936704404804793618": {
     "source": "Videos",

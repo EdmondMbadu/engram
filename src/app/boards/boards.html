@@ -61,9 +61,11 @@
                     </span>
                   </button>
                 }
-                <button type="button" aria-label="{{ stackPlaying() ? 'Pause Stack' : 'Play Stack' }}" (click)="toggleStackPlayback()">
-                  <span class="material-symbols-outlined">{{ stackPlaying() ? 'pause' : 'play_arrow' }}</span>
-                </button>
+                @if (stackCurrentFrame().kind !== 'closing') {
+                  <button type="button" aria-label="{{ stackPlaying() ? 'Pause Stack' : 'Play Stack' }}" (click)="toggleStackPlayback()">
+                    <span class="material-symbols-outlined">{{ stackPlaying() ? 'pause' : 'play_arrow' }}</span>
+                  </button>
+                }
                 <button type="button" aria-label="Share Stack" (click)="openStackShareDialog(board, $event)" i18n-aria-label>
                   <span class="material-symbols-outlined">near_me</span>
                 </button>
@@ -211,18 +213,25 @@
 
                     <div class="stack-closing__invitation">
                       <img class="stack-closing__crane" src="/assets/image/lucky-paper-crane.png" alt="" aria-hidden="true" />
-                      <h4 i18n>Join for free</h4>
-                      <p i18n>Discover. Share. Belong.</p>
+                      <span class="stack-closing__eyebrow" i18n>Board complete</span>
+                      <h4 i18n>Keep exploring</h4>
+                      <p>{{ stackSelectedCount() }} cards from {{ board.title }}</p>
+                    </div>
+
+                    <div class="stack-closing__actions">
+                      <button type="button" class="stack-closing__action stack-closing__action--primary" (click)="replayStack(board, $event)">
+                        <span class="material-symbols-outlined" aria-hidden="true">replay</span>
+                        <strong i18n>Play again</strong>
+                      </button>
+                      <button type="button" class="stack-closing__action stack-closing__action--secondary" (click)="closeStackView(board)">
+                        <span class="material-symbols-outlined" aria-hidden="true">dashboard_customize</span>
+                        <strong i18n>Close to board</strong>
+                      </button>
                     </div>
 
                     @if (board.stackCtaLabel && stackCtaHref(board)) {
-                      <a class="stack-preview__cta stack-closing__cta" [href]="stackCtaHref(board)" target="_blank" rel="noopener">
-                        <strong>{{ board.stackCtaLabel }}</strong>
-                        <span class="material-symbols-outlined" aria-hidden="true">arrow_outward</span>
-                      </a>
-                    } @else {
-                      <a class="stack-preview__cta stack-closing__cta" routerLink="/create-account">
-                        <strong i18n>Get started</strong>
+                      <a class="stack-closing__optional-link" [href]="stackCtaHref(board)" target="_blank" rel="noopener">
+                        {{ board.stackCtaLabel }}
                         <span class="material-symbols-outlined" aria-hidden="true">arrow_outward</span>
                       </a>
                     }
@@ -251,7 +260,14 @@
             }
           </section>
 
-          <button type="button" class="stack-viewer-side stack-viewer-side--next" aria-label="Next frame" (click)="nextStackFrame()" i18n-aria-label>
+          <button
+            type="button"
+            class="stack-viewer-side stack-viewer-side--next"
+            aria-label="Next frame"
+            [disabled]="stackCurrentFrame().kind === 'closing'"
+            (click)="nextStackFrame()"
+            i18n-aria-label
+          >
             <span class="material-symbols-outlined">chevron_right</span>
           </button>
         </main>

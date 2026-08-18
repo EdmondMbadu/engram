@@ -100,7 +100,11 @@ import { cardPresentationSubtitle } from './card-numbering';
 import { cardNotesForPersistence, cardNotesSummary } from './card-notes';
 import { boardCityMetadataForFirestore, omitUndefinedDeep } from './firestore-payload';
 import { cardsForNewBoardInside, legacyMemoryImages, relatedCardCollectionLabel, upsertNestedCard } from './related-cards';
-import { cardsForStackView } from './stack-card-selection';
+import {
+  cardsForStackView,
+  nextFiniteStackFrameIndex,
+  previousFiniteStackFrameIndex,
+} from './stack-card-selection';
 import {
   insertionSortOrder,
   reorderRelativeToTarget,
@@ -12909,15 +12913,25 @@ export class BoardsComponent implements OnDestroy {
       this.stackTourNarrationConsent.set(true);
     }
     this.stopStackPlayback();
-    this.stackFrameIndex.update((index) => {
-      const count = this.stackFrameCount();
-      return count ? (index - 1 + count) % count : 0;
-    });
+    this.stackFrameIndex.update((index) => previousFiniteStackFrameIndex(index));
     this.syncStackLivePreviewAfterFrameChange();
     if (resumeNarratedPlayback) {
       this.stackPlaying.set(true);
       this.syncStackNarrationAfterFrameChange({ autoAdvance: true, forceNarration: true });
     }
+  }
+
+  async replayStack(board: Board, event?: Event): Promise<void> {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.stopStackPlayback();
+    this.stackExpandedCardId.set(null);
+    this.stackFrameIndex.set(0);
+    this.syncStackLivePreviewAfterFrameChange();
+    await this.unlockStackNarrationAudio();
+    if (!this.stackDirectView() || this.selectedBoard()?.id !== board.id) return;
+    this.stackTourNarrationConsent.set(true);
+    this.startStackPlayback();
   }
 
   nextStackFrame(): void {
@@ -14424,11 +14438,18 @@ export class BoardsComponent implements OnDestroy {
 
   private advanceStackFrame(options: { forceNarration?: boolean } = {}): void {
     this.stackExpandedCardId.set(null);
+    let reachedClosingFrame = false;
     this.stackFrameIndex.update((index) => {
       const count = this.stackFrameCount();
-      return count ? (index + 1) % count : 0;
+      const nextIndex = nextFiniteStackFrameIndex(index, count);
+      reachedClosingFrame = count > 0 && nextIndex === count - 1;
+      return nextIndex;
     });
     this.syncStackLivePreviewAfterFrameChange();
+    if (reachedClosingFrame) {
+      this.stopStackPlayback();
+      return;
+    }
     this.syncStackNarrationAfterFrameChange({
       autoAdvance: this.stackPlaying(),
       forceNarration: options.forceNarration ?? false,

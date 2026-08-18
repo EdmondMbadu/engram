@@ -1,4 +1,8 @@
-import { cardsForStackView } from './stack-card-selection';
+import {
+  cardsForStackView,
+  nextFiniteStackFrameIndex,
+  previousFiniteStackFrameIndex,
+} from './stack-card-selection';
 
 describe('Stack card selection', () => {
   const cards = [
@@ -15,5 +19,15 @@ describe('Stack card selection', () => {
 
   it('preserves intentional card selection inside Stack Studio', () => {
     expect(cardsForStackView(cards, new Set(['second']), false)).toEqual([cards[1]]);
+  });
+
+  it('stops on the closing frame instead of looping to the cover', () => {
+    expect(nextFiniteStackFrameIndex(10, 12)).toBe(11);
+    expect(nextFiniteStackFrameIndex(11, 12)).toBe(11);
+  });
+
+  it('stops on the cover when navigating backward', () => {
+    expect(previousFiniteStackFrameIndex(1)).toBe(0);
+    expect(previousFiniteStackFrameIndex(0)).toBe(0);
   });
 });
