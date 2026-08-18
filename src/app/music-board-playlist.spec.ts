@@ -1,4 +1,52 @@
-import { orderedSpotifyQueue } from './music-board-playlist';
+import {
+  hasSongCardSignal,
+  isMusicBoard,
+  orderedSpotifyQueue,
+  type MusicBoardCardSignal,
+} from './music-board-playlist';
+
+function card(overrides: Partial<MusicBoardCardSignal> = {}): MusicBoardCardSignal {
+  return {
+    tags: [],
+    ...overrides,
+  };
+}
+
+describe('music board classification', () => {
+  it('does not classify an empty board from music words in its title or description', () => {
+    expect(isMusicBoard({
+      title: 'Music in the Face of War',
+      description: 'Videos about songs, musicians, and conflict.',
+      cards: [],
+    })).toBeFalse();
+  });
+
+  it('does not classify video and editorial cards from prose alone', () => {
+    expect(isMusicBoard({
+      title: 'Music in the Face of War',
+      cards: [card({ tags: ['music', 'history'] }), card({ tags: ['video'] })],
+    })).toBeFalse();
+  });
+
+  it('recognizes structured song metadata and supports a one-song board', () => {
+    expect(hasSongCardSignal(card({ spotifyTrackId: 'spotify-track-id' }))).toBeTrue();
+    expect(hasSongCardSignal(card({ audioPreviewUrl: 'https://example.com/preview.mp3' }))).toBeTrue();
+    expect(hasSongCardSignal(card({ mediaKind: 'song' }))).toBeTrue();
+    expect(hasSongCardSignal(card({ entityType: 'work', tags: ['song'] }))).toBeTrue();
+    expect(isMusicBoard({ cards: [card({ mediaKind: 'song' })] })).toBeTrue();
+  });
+
+  it('does not turn a larger mixed board into a music board because of one song', () => {
+    const cards = Array.from({ length: 10 }, (_, index) =>
+      card(index === 0 ? { mediaKind: 'song' } : { tags: ['history'] }),
+    );
+
+    expect(isMusicBoard({ cards })).toBeFalse();
+    expect(isMusicBoard({
+      cards: cards.map((item, index) => index < 4 ? card({ mediaKind: 'song' }) : item),
+    })).toBeTrue();
+  });
+});
 
 describe('orderedSpotifyQueue', () => {
   it('preserves the board order and intentional duplicates', () => {

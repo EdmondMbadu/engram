@@ -28,7 +28,11 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 import { VideoLibraryService } from '../video-library/video-library.service';
 import { SpotifyPlaybackService, type SpotifyTrack } from '../spotify-playback.service';
-import { orderedSpotifyQueue } from '../music-board-playlist';
+import {
+  hasSongCardSignal,
+  isMusicBoard,
+  orderedSpotifyQueue,
+} from '../music-board-playlist';
 import {
   spotifyTrackEmbedUrl as buildSpotifyTrackEmbedUrl,
   spotifyTrackIdFromReference,
@@ -8743,15 +8747,7 @@ export class BoardsComponent implements OnDestroy {
   }
 
   isSongBoard(board: Board): boolean {
-    if (/\b(song|songs|music|album|single|tracks|hits|spotify|playlist|discography)\b/i.test(`${board.title} ${board.description}`)) {
-      return true;
-    }
-    const sample = board.cards.slice(0, 24);
-    if (!sample.length) {
-      return false;
-    }
-    const songSignals = sample.filter((card) => this.isSongCard(card)).length;
-    return songSignals >= Math.max(2, Math.ceil(sample.length * 0.35));
+    return isMusicBoard(board);
   }
 
   private boardSongArtistContext(board: Board): string {
@@ -12721,12 +12717,7 @@ export class BoardsComponent implements OnDestroy {
   }
 
   isSongCard(card: Pick<BoardCard, 'title' | 'subtitle' | 'tags' | 'audioPreviewUrl' | 'spotifyTrackId' | 'spotifyTrackUrl' | 'mediaKind' | 'entityType'>): boolean {
-    if (card.spotifyTrackId || card.spotifyTrackUrl || card.audioPreviewUrl) {
-      return true;
-    }
-    if (card.mediaKind) return card.mediaKind === 'song';
-    if (card.entityType && card.entityType !== 'work') return false;
-    return card.tags.some((tag) => ['song', 'songs', 'music-track', 'spotify-track'].includes(tag.toLowerCase()));
+    return hasSongCardSignal(card);
   }
 
   spotifyTrackEmbedUrl(card: BoardCard): SafeResourceUrl | null {

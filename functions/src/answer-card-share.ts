@@ -1128,12 +1128,8 @@ function boardShareRoute(board: BoardShare): 'boards' | 'songs' | 'trips' {
   if (board.kind === 'walking-tour' || board.kind === 'driving-tour') {
     return 'trips';
   }
-  const text = `${board.title} ${board.description}`;
-  if (/\b(song|songs|music|album|single|tracks|hits|spotify|playlist|discography)\b/i.test(text)) {
-    return 'songs';
-  }
   const songCards = board.cards.filter((card) => card.hasSongMedia).length;
-  return songCards >= Math.max(2, Math.ceil(board.cards.length * 0.35)) ? 'songs' : 'boards';
+  return songCards >= Math.max(1, Math.ceil(board.cards.length * 0.35)) ? 'songs' : 'boards';
 }
 
 function buildShareImageHtml(card: ShareCard, kind: ShareImageKind): string {
