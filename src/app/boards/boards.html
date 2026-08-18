@@ -385,7 +385,7 @@
         </div>
       </header>
 
-      <main class="boards-shell">
+      <main class="boards-shell" [class.boards-shell--detail]="!!selectedBoard()">
     @if (boardsSyncError() && !privateBoardBlocked()) {
       <div class="boards-sync-banner">
         <span class="material-symbols-outlined">cloud_off</span>
@@ -1152,6 +1152,208 @@
               }
             </div>
           }
+
+          <nav class="board-editorial-back" aria-label="Board navigation">
+            <button type="button" (click)="closeBoardDetail()">
+              <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+              <span>Back to {{ board.parentCardId ? (board.parentCardTitle || 'parent card') : (tripsPage() ? 'trips' : songsPage() ? 'songs' : 'boards') }}</span>
+            </button>
+            @if (board.parentCardId) {
+              <button type="button" class="board-editorial-back__parent" (click)="openParentBoard(board, $event)">
+                <span class="material-symbols-outlined" aria-hidden="true">account_tree</span>
+                <span>{{ selectedBoardParent()?.title || board.parentBoardTitle || 'Parent board' }}</span>
+              </button>
+            }
+          </nav>
+
+          <section class="board-editorial-hero" aria-labelledby="board-editorial-title">
+            <div class="board-editorial-hero__story">
+              <span class="board-editorial-hero__steps" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+
+              <div class="board-editorial-hero__eyebrow-row">
+                @if (board.logoUrl) {
+                  @if (boardLogoHref(board)) {
+                    <a class="board-editorial-hero__logo" [href]="boardLogoHref(board)" target="_blank" rel="noopener" aria-label="Open board logo link">
+                      <img [src]="board.logoUrl" [alt]="board.title + ' logo'" />
+                    </a>
+                  } @else {
+                    <span class="board-editorial-hero__logo">
+                      <img [src]="board.logoUrl" [alt]="board.title + ' logo'" />
+                    </span>
+                  }
+                }
+                <p class="board-editorial-hero__eyebrow">
+                  <span>{{ board.parentCardId ? 'Board inside' : isTourBoard(board) ? (board.kind === 'driving-tour' ? 'Driving tour' : 'Walking tour') : isSongBoard(board) ? 'Music board' : 'Board' }}</span>
+                  <span aria-hidden="true">·</span>
+                  <span>
+                    {{ isSongBoard(board) ? songCards(board).length : isTourBoard(board) ? selectedBoardTourCards().length : boardDisplayCardCount(board) }}
+                    {{ isSongBoard(board) ? (songCards(board).length === 1 ? 'song' : 'songs') : isTourBoard(board) ? (selectedBoardTourCards().length === 1 ? 'stop' : 'stops') : (boardDisplayCardCount(board) === 1 ? 'card' : 'cards') }}
+                  </span>
+                </p>
+              </div>
+
+              <div class="board-editorial-hero__copy">
+                <h1 id="board-editorial-title">{{ board.title }}</h1>
+                <p>{{ board.description || 'A living collection ready to grow one card at a time.' }}</p>
+              </div>
+
+              <div class="board-editorial-hero__meta">
+                <span class="board-editorial-hero__avatar">
+                  @if (ownerPhotoUrl(board)) {
+                    <img [src]="ownerPhotoUrl(board)" [alt]="ownerName(board) + ' profile photo'" />
+                  } @else {
+                    <span
+                      class="material-symbols-outlined"
+                      [style.background]="'linear-gradient(135deg, ' + ownerIcon(board).from + ', ' + ownerIcon(board).to + ')'"
+                      [style.color]="ownerIcon(board).ink"
+                    >{{ ownerIcon(board).icon }}</span>
+                  }
+                </span>
+                <span>Curated by <strong>{{ ownerName(board) }}</strong></span>
+                <i aria-hidden="true"></i>
+                <span>Updated {{ board.cards.length ? boardUpdatedLabel(board) : 'today' }}</span>
+              </div>
+
+              @if (selectedBoardCity(); as city) {
+                <a class="board-editorial-hero__city" [routerLink]="cityBoardLink(city)" [attr.aria-label]="'Open ' + city.name + ' city Wiki'">
+                  <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
+                  <span>{{ city.name }}</span>
+                  <span class="material-symbols-outlined" aria-hidden="true">arrow_outward</span>
+                </a>
+              }
+
+              <div class="board-editorial-hero__view-row" aria-label="Board viewing options">
+                <div class="board-editorial-hero__view-switch" role="group" aria-label="Choose board experience">
+                  <a href="#board-content" aria-current="page">
+                    <span class="material-symbols-outlined" aria-hidden="true">{{ isSongBoard(board) ? 'queue_music' : isTourBoard(board) ? 'route' : 'dashboard' }}</span>
+                    <span>{{ isSongBoard(board) ? 'Jukebox' : isTourBoard(board) ? 'Tour' : 'Cards' }}</span>
+                  </a>
+                  <button type="button" (click)="openStackView(board, $event)">
+                    <span class="material-symbols-outlined" aria-hidden="true">play_arrow</span>
+                    <span>Live</span>
+                  </button>
+                </div>
+                <button type="button" class="board-editorial-hero__live" (click)="openStackView(board, $event)">
+                  <span class="material-symbols-outlined" aria-hidden="true">play_circle</span>
+                  <span>Open live view</span>
+                </button>
+              </div>
+
+              <div class="board-editorial-hero__actions" aria-label="Board actions">
+                <button
+                  type="button"
+                  [class.board-editorial-hero__action--active]="isBoardLiked(board)"
+                  [attr.aria-pressed]="isBoardLiked(board)"
+                  (click)="toggleBoardLike(board, $event)"
+                >
+                  <span class="material-symbols-outlined" aria-hidden="true">{{ isBoardLiked(board) ? 'favorite' : 'favorite_border' }}</span>
+                  <span>{{ isBoardLiked(board) ? 'Liked' : 'Like' }}</span>
+                </button>
+                <button
+                  type="button"
+                  [class.board-editorial-hero__action--active]="isBoardSaved(board)"
+                  [attr.aria-pressed]="isBoardSaved(board)"
+                  (click)="toggleBoardSave(board, $event)"
+                >
+                  <span class="material-symbols-outlined" aria-hidden="true">{{ isBoardSaved(board) ? 'bookmark' : 'bookmark_add' }}</span>
+                  <span>{{ isBoardSaved(board) ? 'Saved' : 'Save' }}</span>
+                </button>
+                @if (board.cards.length) {
+                  <button type="button" (click)="openBoardLearn(board, $event)">
+                    <span class="material-symbols-outlined" aria-hidden="true">school</span>
+                    <span>Learn</span>
+                  </button>
+                }
+                <button
+                  type="button"
+                  [class.board-editorial-hero__action--active]="sharePanelOpen()"
+                  [attr.aria-expanded]="sharePanelOpen()"
+                  (click)="toggleSharePanel()"
+                >
+                  <span class="material-symbols-outlined" aria-hidden="true">ios_share</span>
+                  <span>Share</span>
+                </button>
+                @if (canForkBoard(board) || canEditBoard(board) || canUseStackStudio(board) || (board.stackCtaLabel && stackCtaHref(board))) {
+                  <details class="board-editorial-hero__more">
+                    <summary>
+                      <span class="material-symbols-outlined" aria-hidden="true">more_horiz</span>
+                      <span>More</span>
+                    </summary>
+                    <div class="board-editorial-hero__more-menu">
+                    @if (canForkBoard(board)) {
+                      <button type="button" [disabled]="!!boardForkingId()" (click)="forkBoard(board, $event)">
+                        <span class="material-symbols-outlined" aria-hidden="true">content_copy</span>
+                        <span>{{ boardForkingId() === board.id ? 'Making your copy…' : 'Make your own copy' }}</span>
+                      </button>
+                    }
+                    @if (canEditBoard(board)) {
+                      <button type="button" (click)="openEditBoard(board, $event)">
+                        <span class="material-symbols-outlined" aria-hidden="true">edit_square</span>
+                        <span>Edit cover</span>
+                      </button>
+                      @if (isTourBoard(board)) {
+                        <button type="button" [disabled]="tourRouteUpdating()" (click)="openAppendTourStop(board, $event)">
+                          <span class="material-symbols-outlined" aria-hidden="true">add_location_alt</span>
+                          <span>Add stop</span>
+                        </button>
+                      } @else {
+                        <button type="button" (click)="openCreateCard(board.id)">
+                          <span class="material-symbols-outlined" aria-hidden="true">add</span>
+                          <span>{{ isSongBoard(board) ? 'Add song' : 'Add card' }}</span>
+                        </button>
+                      }
+                    }
+                    @if (canUseStackStudio(board)) {
+                      <button type="button" (click)="openStackStudio(board, $event)">
+                        <span class="material-symbols-outlined" aria-hidden="true">auto_awesome_motion</span>
+                        <span>Stack Studio</span>
+                      </button>
+                    }
+                    @if (board.stackCtaLabel && stackCtaHref(board)) {
+                      <a [href]="stackCtaHref(board)" target="_blank" rel="noopener">
+                        <span class="material-symbols-outlined" aria-hidden="true">arrow_outward</span>
+                        <span>{{ board.stackCtaLabel }}</span>
+                      </a>
+                    }
+                    </div>
+                  </details>
+                }
+              </div>
+
+              @if (forkAttributionLabel(board)) {
+                <small class="board-editorial-hero__attribution">{{ forkAttributionLabel(board) }}</small>
+              }
+            </div>
+
+            <figure class="board-editorial-hero__visual">
+              @if (stackCoverImage(board); as coverImage) {
+                <img [src]="coverImage" [alt]="board.title + ' cover image'" />
+              } @else {
+                <span class="board-editorial-hero__fallback material-symbols-outlined" aria-hidden="true">{{ boardDisplayIcon(board) }}</span>
+              }
+              @if (board.stickers.length) {
+                <div class="board-editorial-hero__stickers" aria-hidden="true">
+                  @for (sticker of board.stickers; track sticker.id) {
+                    <span
+                      class="board-sticker"
+                      [class.board-sticker--dragging]="draggedStickerId() === sticker.id"
+                      [style.left.%]="sticker.x"
+                      [style.top.%]="sticker.y"
+                      [style.transform]="stickerTransform(sticker)"
+                      [style.--sticker-bg]="stickerBackground(stickerColor(sticker, $index))"
+                      [style.--sticker-bg-2]="stickerBackgroundAlt(stickerColor(sticker, $index))"
+                      [style.--sticker-ink]="stickerInk(stickerColor(sticker, $index))"
+                      [style.--sticker-shadow]="stickerShadow(stickerColor(sticker, $index))"
+                      (pointerdown)="beginStickerDrag($event, 'board', board.id, sticker.id)"
+                    >
+                      <span class="material-symbols-outlined">{{ sticker.icon }}</span>
+                    </span>
+                  }
+                </div>
+              }
+            </figure>
+          </section>
+
           @if (!isSongBoard(board)) {
           <div class="board-detail__cover">
             @if (board.imageUrl) {
@@ -1459,26 +1661,31 @@
           </div>
           }
 
-          @if (!isSongBoard(board)) {
-          <div class="board-detail__toolbar">
-            <label class="boards-search boards-search--detail">
-              <span class="material-symbols-outlined">search</span>
+          <div class="board-editorial-utility">
+            <label class="board-editorial-search">
+              <span class="material-symbols-outlined" aria-hidden="true">search</span>
               <input
                 type="search"
                 autocomplete="off"
-                [placeholder]="exploredRelatedCardParent() ? 'Search inside this card...' : 'Search this board...'"
+                [attr.aria-label]="'Search ' + board.title"
+                [placeholder]="exploredRelatedCardParent() ? 'Search inside this card...' : isSongBoard(board) ? 'Search songs...' : 'Search this board...'"
                 [value]="cardSearch()"
                 (input)="cardSearch.set($any($event.target).value)"
               />
+              @if (cardSearch()) {
+                <button type="button" aria-label="Clear search" (click)="cardSearch.set('')">
+                  <span class="material-symbols-outlined" aria-hidden="true">close</span>
+                </button>
+              }
             </label>
+          </div>
+
+          <span id="board-content" class="board-editorial-content-anchor" aria-hidden="true"></span>
+
+          @if (!isSongBoard(board)) {
+          <div class="board-detail__toolbar">
             @if (!exploredRelatedCardParent() && (board.cards.length || canEditBoard(board) || board.kind === 'off-grid')) {
               <div class="board-detail__actions">
-                @if (board.cards.length) {
-                  <button type="button" class="boards-primary-action board-learn-action" (click)="openBoardLearn(board, $event)" i18n>
-                    <span class="material-symbols-outlined">school</span>
-                    Learn
-                  </button>
-                }
                 @if (canEditBoard(board) && board.cards.length) {
                   <button type="button" class="boards-ghost-action" (click)="toggleCardManageMode(board, $event)">
                     <span class="material-symbols-outlined">{{ isManagingBoard(board.id) ? 'close' : 'settings' }}</span>
@@ -1775,6 +1982,12 @@
               }
             </div>
           } @else {
+            @if (!isTourBoard(board) && !isSongBoard(board) && !exploredRelatedCardParent() && board.cards.length) {
+              <header class="board-editorial-section-heading">
+                <h2>{{ filteredCards().length }} {{ filteredCards().length === 1 ? 'card' : 'cards' }}</h2>
+                <span aria-hidden="true"></span>
+              </header>
+            }
             @if (isTourBoard(board) && tourBoardView() === 'route' && !exploredRelatedCardParent()) {
               <section class="tour-board">
                 <div class="tour-board__summary">
