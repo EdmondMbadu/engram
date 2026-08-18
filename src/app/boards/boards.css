@@ -7336,6 +7336,52 @@
   }
 }
 
+/* On shorter laptop screens, reveal the beginning of the collection below. */
+@media (min-width: 761px) and (max-height: 820px) {
+  .board-editorial-hero {
+    min-height: 22rem;
+  }
+
+  .board-editorial-hero__story {
+    padding-block: 2rem 1.5rem;
+  }
+
+  .board-editorial-hero__copy {
+    margin-top: 0.8rem;
+  }
+
+  .board-editorial-hero__copy h1 {
+    font-size: clamp(2.15rem, 3.6vw, 3rem);
+    line-height: 1;
+  }
+
+  .board-editorial-hero__copy p {
+    margin-top: 0.7rem;
+    line-height: 1.45;
+    -webkit-line-clamp: 2;
+  }
+
+  .board-editorial-hero__meta {
+    margin-top: 0.9rem;
+  }
+
+  .board-editorial-hero__view-row {
+    margin-top: 1rem;
+  }
+
+  .board-editorial-hero__actions {
+    margin-top: 0.65rem;
+  }
+
+  .board-editorial-utility {
+    margin-top: 0.75rem;
+  }
+
+  .board-editorial-section-heading {
+    margin-block: 0.65rem 0.55rem;
+  }
+}
+
 @media (max-width: 760px) {
   .boards-shell--detail {
     padding-inline: 0.9rem;
