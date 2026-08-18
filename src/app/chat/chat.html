@@ -427,12 +427,14 @@
             [class.max-w-4xl]="hasMessages()"
             [class.chat-city-landing-container]="!hasMessages() && isCityLandingPage()"
           >
-            @if (canShowCityVoiceCarousel()) {
+            @if (canShowCityVoiceCarousel() && (!hasMessages() || cityLanguageExpanded())) {
               <section
                 class="lang-carousel lang-carousel--top"
+                [class.lang-carousel--conversation-picker]="hasMessages()"
                 [class.lang-carousel--expanded]="cityLanguageExpanded()"
                 [attr.aria-label]="uiText('startVoiceConversation')"
               >
+                @if (!hasMessages()) {
                 <button
                   type="button"
                   class="lang-carousel__summary"
@@ -451,6 +453,7 @@
                     <span class="material-symbols-outlined" aria-hidden="true">{{ cityLanguageExpanded() ? 'expand_less' : 'expand_more' }}</span>
                   </span>
                 </button>
+                }
 
                 @if (cityLanguageExpanded()) {
                   <div id="city-language-options" class="lang-carousel__body">
@@ -1054,10 +1057,25 @@
               <div class="chat-thread space-y-10 pb-8">
                 @for (msg of messages(); track msg.id) {
                   @if (msg.role === 'user') {
-                    <div class="flex justify-end">
+                    <div class="chat-conversation-question">
                       <div class="chat-user-bubble chat-message-actions">
+                        <p class="chat-user-bubble__eyebrow">You asked</p>
                         <div class="chat-user-bubble__text">{{ msg.text }}</div>
-                        <div class="chat-user-bubble__actions">
+                        <div class="chat-user-bubble__footer">
+                          @if (canShowCityVoiceCarousel()) {
+                            <button
+                              type="button"
+                              class="chat-user-bubble__language"
+                              [attr.aria-expanded]="cityLanguageExpanded()"
+                              aria-controls="city-language-options"
+                              (click)="toggleCityLanguageExpanded()"
+                            >
+                              <span class="material-symbols-outlined" aria-hidden="true">graphic_eq</span>
+                              <span>{{ cityLanguageSummary() }}</span>
+                              <span class="material-symbols-outlined" aria-hidden="true">expand_more</span>
+                            </button>
+                          }
+                          <div class="chat-user-bubble__actions">
                           <button
                             type="button"
                             class="chat-inline-action"
@@ -1097,6 +1115,7 @@
                               </div>
                             }
                           </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1114,11 +1133,17 @@
                           <div class="assistant-message__header">
                             <div class="assistant-message__badge">
                               <span class="assistant-message__badge-dot" [class.assistant-message__badge-dot--live]="msg.pending"></span>
-                              <span class="grid min-w-0">
+                              <span class="assistant-message__identity-copy">
                                 <span class="truncate text-sm font-black text-[var(--text)]">{{ assistantMessageName() }}</span>
                                 <span class="truncate text-[0.68rem] font-black uppercase tracking-[0.14em] text-[var(--muted)]">{{ assistantMessageSubtitle(msg) }}</span>
                               </span>
                             </div>
+                            @if (!msg.pending) {
+                              <span class="assistant-message__source-status">
+                                <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
+                                <span>Answered with live public sources</span>
+                              </span>
+                            }
                             <div class="ml-auto flex items-center gap-2">
                               @if (msg.pending) {
                                 <div class="assistant-message__thinking" aria-hidden="true">
@@ -1434,7 +1459,7 @@
                                   </div>
                                 }
 
-                                <details class="chat-answer-board__notes">
+                                <details class="chat-answer-board__notes chat-full-notes">
                                   <summary>
                                     <span class="material-symbols-outlined">notes</span>
                                     <span>
@@ -1443,7 +1468,97 @@
                                     </span>
                                     <span class="material-symbols-outlined">keyboard_arrow_down</span>
                                   </summary>
-                                  <div class="assistant-message__content" [innerHTML]="msg.html || ''"></div>
+                                  <section class="chat-full-notes__panel">
+                                    <header class="chat-full-notes__header">
+                                      <img [src]="assistantAvatarUrl()" [alt]="assistantAvatarAlt()" />
+                                      <div class="chat-full-notes__heading">
+                                        <span>Full notes</span>
+                                        <h4>{{ guide.title || uiText('fullNotes') }}</h4>
+                                        <p>{{ answerReadingTime(msg) }} min read <i aria-hidden="true"></i> Updated now</p>
+                                      </div>
+                                      <div class="chat-full-notes__header-actions">
+                                        <button
+                                          type="button"
+                                          [disabled]="loadingSpeechMessageId() === msg.id"
+                                          (pointerdown)="prepareReadAnswerClick($event)"
+                                          (mousedown)="$event.preventDefault()"
+                                          (click)="toggleReadAnswer(msg, $event)"
+                                        >
+                                          <span class="material-symbols-outlined">{{ playingSpeechMessageId() === msg.id ? 'stop_circle' : 'headphones' }}</span>
+                                          <span>{{ playingSpeechMessageId() === msg.id ? uiText('stopRecap') : uiText('listenNow') }}</span>
+                                        </button>
+                                        <button type="button" (click)="collapseFullNotes($event)">
+                                          <span class="material-symbols-outlined">expand_less</span>
+                                          <span>Collapse notes</span>
+                                        </button>
+                                      </div>
+                                    </header>
+
+                                    <div class="chat-full-notes__layout">
+                                      <article class="chat-full-notes__article">
+                                        @if (guide.summary) {
+                                          <blockquote class="chat-full-notes__summary">{{ guide.summary }}</blockquote>
+                                        }
+                                        <div class="assistant-message__content" [innerHTML]="msg.html || ''"></div>
+                                      </article>
+
+                                      <aside class="chat-full-notes__rail" aria-label="Answer summary">
+                                        <section>
+                                          <h5>At a glance</h5>
+                                          @for (card of guide.cards.slice(0, 3); track card.id; let i = $index) {
+                                            <div class="chat-full-notes__fact">
+                                              <span class="material-symbols-outlined">{{ travelCardVisualIcon(card) }}</span>
+                                              <p><strong>{{ card.title }}</strong><small>{{ travelCardFact(card) }}</small></p>
+                                            </div>
+                                          }
+                                        </section>
+                                        <section>
+                                          <h5>In this answer</h5>
+                                          <ol>
+                                            @for (card of guide.cards; track card.id) {
+                                              <li>{{ card.title }}</li>
+                                            }
+                                          </ol>
+                                        </section>
+                                        <section class="chat-full-notes__sources">
+                                          @if (answerBoardSourceCount(msg, guide) > 0) {
+                                          <a [attr.href]="'#sources-' + msg.id">
+                                            <span><strong>Sources</strong><small>{{ answerBoardSourceCount(msg, guide) }} live public sources</small></span>
+                                            <span class="material-symbols-outlined">open_in_new</span>
+                                          </a>
+                                          } @else {
+                                            <div>
+                                              <span><strong>Sources</strong><small>Live public sources</small></span>
+                                              <span class="material-symbols-outlined">verified</span>
+                                            </div>
+                                          }
+                                        </section>
+                                      </aside>
+                                    </div>
+
+                                    <footer class="chat-full-notes__footer">
+                                      <button
+                                        type="button"
+                                        [disabled]="loadingSpeechMessageId() === msg.id"
+                                        (pointerdown)="prepareReadAnswerClick($event)"
+                                        (mousedown)="$event.preventDefault()"
+                                        (click)="toggleReadAnswer(msg, $event)"
+                                      >
+                                        <span class="material-symbols-outlined">headphones</span><span>{{ uiText('listenNow') }}</span>
+                                      </button>
+                                      <button type="button" (click)="copyMessageBody(msg, $event)">
+                                        <span class="material-symbols-outlined">content_copy</span><span>{{ copiedTarget() === msg.id + ':body' ? uiText('copied') : uiText('copy') }}</span>
+                                      </button>
+                                      @if (canCreateAnswerCard(msg)) {
+                                        <button type="button" (click)="shareGuideCardForMessage(msg, $event)">
+                                          <span class="material-symbols-outlined">ios_share</span><span>{{ uiText('share') }}</span>
+                                        </button>
+                                      }
+                                      <button type="button" (click)="collapseFullNotes($event)">
+                                        <span class="material-symbols-outlined">expand_less</span><span>Collapse notes</span>
+                                      </button>
+                                    </footer>
+                                  </section>
                                 </details>
                               </section>
                             } @else {

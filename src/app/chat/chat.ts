@@ -5304,6 +5304,43 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     return description || this.cleanTravelCardText(card.description ?? '');
   }
 
+  travelCardFact(card: TravelGuideCard): string {
+    const bestFor = card.best_for?.trim() ?? '';
+    const description = this.travelCardDescription(card);
+    const firstSentence = description.match(/^.*?(?:[.!?](?:\s|$)|$)/)?.[0]?.trim() || description;
+    const fact = (!/^a focused local stop$/i.test(bestFor) ? bestFor : '')
+      || card.time_hint?.trim()
+      || card.cost?.trim()
+      || firstSentence
+      || card.neighborhood?.trim()
+      || description;
+    return fact.length > 88 ? `${fact.slice(0, 85).trimEnd()}…` : fact;
+  }
+
+  answerReadingTime(message: ChatMessage): number {
+    const plainText = (message.text || message.html || '')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/&[a-z0-9#]+;/gi, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    const wordCount = plainText ? plainText.split(' ').length : 0;
+    return Math.max(1, Math.ceil(wordCount / 220));
+  }
+
+  collapseFullNotes(event: MouseEvent): void {
+    event.stopPropagation();
+    const trigger = event.currentTarget;
+    if (!(trigger instanceof HTMLElement)) {
+      return;
+    }
+    const details = trigger.closest('details');
+    if (!(details instanceof HTMLDetailsElement)) {
+      return;
+    }
+    details.open = false;
+    details.querySelector('summary')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
   guideIntro(message: ChatMessage, guide: TravelGuideStructuredResponse): string {
     const question = this.questionBeforeMessage(message.id).replace(/[?!.]+$/, '').trim();
     const topic = question || guide.title || 'this Philly mission';
