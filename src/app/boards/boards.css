@@ -6838,7 +6838,7 @@
   text-decoration: none;
 }
 
-.board-editorial-hero__view-switch a[aria-current='page'] {
+.board-editorial-hero__view-switch [aria-current='page'] {
   background: #1b5b47;
   color: #ffffff;
 }
@@ -7135,6 +7135,12 @@
   align-items: center;
   gap: 1rem;
   margin: 1rem 0 0.8rem;
+  scroll-margin-top: 5.5rem;
+}
+
+.board-detail--song .music-services,
+.tour-view-bar {
+  scroll-margin-top: 5.5rem;
 }
 
 .board-editorial-section-heading h2 {

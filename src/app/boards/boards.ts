@@ -5435,6 +5435,23 @@ export class BoardsComponent implements OnDestroy {
     });
   }
 
+  scrollToBoardContent(board: Board, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (!this.isBrowser) {
+      return;
+    }
+
+    const contentSelector = this.isSongBoard(board)
+      ? '.board-detail--song .music-services, .board-detail--song .song-deck'
+      : this.isTourBoard(board)
+        ? '.tour-view-bar, .tour-board'
+        : '.board-editorial-section-heading, .detail-cards-grid';
+    const target = window.document.querySelector<HTMLElement>(contentSelector)
+      ?? window.document.getElementById('board-content');
+    target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
   openRelatedCardManager(card: BoardCard, event?: Event): void {
     void this.openBoardInside(card, event);
   }

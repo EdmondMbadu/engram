@@ -1224,10 +1224,15 @@
 
               <div class="board-editorial-hero__view-row" aria-label="Board viewing options">
                 <div class="board-editorial-hero__view-switch" role="group" aria-label="Choose board experience">
-                  <a href="#board-content" aria-current="page">
+                  <button
+                    type="button"
+                    aria-current="page"
+                    aria-controls="board-content"
+                    (click)="scrollToBoardContent(board, $event)"
+                  >
                     <span class="material-symbols-outlined" aria-hidden="true">{{ isSongBoard(board) ? 'queue_music' : isTourBoard(board) ? 'route' : 'dashboard' }}</span>
                     <span>{{ isSongBoard(board) ? 'Jukebox' : isTourBoard(board) ? 'Tour' : 'Cards' }}</span>
-                  </a>
+                  </button>
                   <button type="button" (click)="openStackView(board, $event)">
                     <span class="material-symbols-outlined" aria-hidden="true">play_arrow</span>
                     <span>Live</span>
