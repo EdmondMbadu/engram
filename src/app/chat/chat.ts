@@ -66,6 +66,8 @@ interface PromptSuggestion {
   icon: string;
 }
 
+type AnswerBoardView = 'overview' | 'cards' | 'map';
+
 interface ChatCitySticker {
   id: string;
   label: string;
@@ -595,6 +597,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly pendingDeleteHistoryItem = signal<ChatHistoryItem | null>(null);
   readonly copiedTarget = signal<string | null>(null);
   readonly savedTravelCardIds = signal<Record<string, boolean>>(this.loadSavedTravelCardIds());
+  readonly answerBoardViews = signal<Record<string, AnswerBoardView>>({});
   readonly sharingTravelCardId = signal<string | null>(null);
   readonly sharePageModal = signal<SharePageModal | null>(null);
   readonly publicAtlas = signal<AtlasItem | null>(null);
@@ -5212,6 +5215,37 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 
   travelGuideHeroImage(): string | null {
     return this.currentWikiGuide()?.banner_url?.trim() || this.currentWikiAtlas()?.hero_url?.trim() || null;
+  }
+
+  answerBoardView(messageId: string): AnswerBoardView {
+    return this.answerBoardViews()[messageId] ?? 'overview';
+  }
+
+  setAnswerBoardView(messageId: string, view: AnswerBoardView): void {
+    this.answerBoardViews.update((views) => ({ ...views, [messageId]: view }));
+  }
+
+  travelCardDisplayImage(card: TravelGuideCard, index: number): string | null {
+    const boardImages = this.cityBoards()
+      .map((board) => board.imageUrl?.trim())
+      .filter((url): url is string => !!url);
+    return this.travelCardImageUrl(card)
+      || boardImages[index % Math.max(boardImages.length, 1)]
+      || this.travelGuideHeroImage();
+  }
+
+  answerBoardSourceCount(message: ChatMessage, guide: TravelGuideStructuredResponse): number {
+    const sources = new Set<string>();
+    for (const citation of message.citations ?? []) {
+      sources.add(`${citation.entry_id}:${citation.page}`);
+    }
+    for (const card of guide.cards) {
+      const sourceUrl = this.travelCardSourceUrl(card);
+      if (sourceUrl) {
+        sources.add(sourceUrl);
+      }
+    }
+    return sources.size;
   }
 
   travelCardVisualBackground(card: TravelGuideCard, index: number): string {
