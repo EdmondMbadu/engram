@@ -275,7 +275,7 @@
     }
 
     <div #boardsScrollViewport class="boards-main" (scroll)="onBoardsViewportScroll($event)">
-      <header class="boards-topbar">
+      <header class="boards-topbar" [class.boards-topbar--gallery]="!selectedBoard() && !boardRouteLoading()">
         <div class="boards-topbar__brand">
           @if (isSignedIn()) {
             <app-mobile-menu activePage="home"></app-mobile-menu>
@@ -310,7 +310,7 @@
                 <span class="hidden sm:inline" i18n>New Card</span>
               </button>
             }
-          } @else if (canCreateBoard()) {
+          } @else if (!boardRouteLoading() && canCreateBoard()) {
             <button type="button" class="boards-primary-action" (click)="openCreateBoard()">
               <span class="material-symbols-outlined">add</span>
               <span class="hidden sm:inline" i18n>New Board</span>
@@ -385,7 +385,7 @@
         </div>
       </header>
 
-      <main class="boards-shell" [class.boards-shell--detail]="!!selectedBoard()">
+      <main class="boards-shell" [class.boards-shell--detail]="!!selectedBoard() || boardRouteLoading()">
     @if (boardsSyncError() && !privateBoardBlocked()) {
       <div class="boards-sync-banner">
         <span class="material-symbols-outlined">cloud_off</span>
@@ -401,6 +401,21 @@
           <span class="material-symbols-outlined">dashboard_customize</span>
           See other boards
         </a>
+      </section>
+    } @else if (boardRouteLoading()) {
+      <section class="board-route-loading" role="status" aria-live="polite" aria-label="Loading board">
+        <div class="board-route-loading__content">
+          <span class="board-route-loading__mark" aria-hidden="true">
+            <span class="material-symbols-outlined">auto_awesome_motion</span>
+          </span>
+          <p>Opening board</p>
+          <h1>Gathering its story…</h1>
+          <div class="board-route-loading__lines" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
       </section>
     } @else if (!selectedBoard()) {
       @if (!friendsPage()) {
@@ -428,28 +443,31 @@
                 <small class="boards-profile__share-note">{{ shareMessage() }}</small>
               }
             </div>
-            <div class="boards-profile__actions">
-              @if (canShareBoardsProfile()) {
-                <button type="button" class="boards-ghost-action" (click)="copyBoardsProfileUrl()" i18n>
-                  <span class="material-symbols-outlined">content_copy</span>
-                  Copy link
-                </button>
-                <button type="button" class="boards-ghost-action" (click)="nativeShareBoardsProfile()" i18n>
-                  <span class="material-symbols-outlined">ios_share</span>
-                  Share
-                </button>
-              }
-              @if (canCreateBoard()) {
-                <button type="button" class="boards-ghost-action" (click)="openCreateBoard()" i18n>
-                  <span class="material-symbols-outlined">add</span>
-                  Create board
-                </button>
-              }
-              @if (canCreateCollection()) {
-                <button type="button" class="boards-primary-action" (click)="openCreateCollection()">
-                  <span class="material-symbols-outlined">collections_bookmark</span>
-                  New collection
-                </button>
+            <div class="boards-profile__utilities">
+              <div class="boards-profile__actions">
+                @if (canShareBoardsProfile()) {
+                  <button type="button" class="boards-ghost-action boards-profile__copy" (click)="copyBoardsProfileUrl()" i18n>
+                    <span class="material-symbols-outlined">content_copy</span>
+                    Copy link
+                  </button>
+                  <button type="button" class="boards-ghost-action" (click)="nativeShareBoardsProfile()" i18n>
+                    <span class="material-symbols-outlined">ios_share</span>
+                    Share
+                  </button>
+                }
+                @if (canCreateCollection()) {
+                  <button type="button" class="boards-ghost-action" (click)="openCreateCollection()">
+                    <span class="material-symbols-outlined">collections_bookmark</span>
+                    New collection
+                  </button>
+                }
+              </div>
+              @if (canManageBoardFriends()) {
+                <div class="boards-profile__friends">
+                  <a routerLink="/friends">{{ boardFriendsLoading() ? 'Friends' : boardFriendsCountLabel() }}</a>
+                  <span aria-hidden="true">·</span>
+                  <a routerLink="/friends">Invite</a>
+                </div>
               }
             </div>
           </div>
@@ -472,7 +490,7 @@
         </section>
       }
 
-      @if (canManageBoardFriends()) {
+      @if (canManageBoardFriends() && friendsPage()) {
         <section id="board-friends" class="boards-friends-panel" [class.boards-friends-panel--directory]="friendsPage()" aria-label="Board friends" i18n-aria-label>
           <div class="boards-friends-panel__head">
             <div>
@@ -764,17 +782,52 @@
       }
 
       <section class="boards-feed">
-        <div class="boards-feed__toolbar">
-          <label class="boards-search">
-            <span class="material-symbols-outlined">search</span>
-            <input
-              type="search"
-              autocomplete="off"
-              [placeholder]="activeGalleryTab() === 'boards' ? 'Search boards...' : activeGalleryTab() === 'collections' ? 'Search collections...' : 'Search cards...'"
-              [value]="boardSearch()"
-              (input)="onBoardSearchInput($any($event.target).value)"
-            />
-          </label>
+        <div class="boards-feed__header">
+          <div class="boards-feed__heading">
+            <h2>
+              {{
+                activeGalleryTab() === 'boards'
+                  ? publicOwnerKey() ? 'Boards' : 'Your boards'
+                  : activeGalleryTab() === 'cards'
+                    ? 'Your cards'
+                    : activeGalleryTab() === 'favorites'
+                      ? 'Favorites'
+                      : 'Collections'
+              }}
+            </h2>
+            <p>
+              @if (activeGalleryTab() === 'boards') {
+                {{ filteredBoards().length }} boards
+              } @else if (activeGalleryTab() === 'collections') {
+                {{ filteredBoardCollections().length }} collections
+              } @else {
+                {{ visibleGalleryCards().length }} cards
+              }
+            </p>
+          </div>
+          <div class="boards-feed__toolbar">
+            <label class="boards-search">
+              <span class="material-symbols-outlined">search</span>
+              <input
+                type="search"
+                autocomplete="off"
+                [placeholder]="activeGalleryTab() === 'boards' ? 'Search boards...' : activeGalleryTab() === 'collections' ? 'Search collections...' : 'Search cards...'"
+                [value]="boardSearch()"
+                (input)="onBoardSearchInput($any($event.target).value)"
+              />
+            </label>
+            @if (activeGalleryTab() === 'boards') {
+              <label class="boards-sort">
+                <span class="material-symbols-outlined" aria-hidden="true">sort</span>
+                <span class="sr-only">Sort boards</span>
+                <select [value]="boardGallerySort()" (change)="setBoardGallerySort($any($event.target).value)">
+                  <option value="custom">Your order</option>
+                  <option value="recent">Recently updated</option>
+                  <option value="title">Title A–Z</option>
+                </select>
+              </label>
+            }
+          </div>
         </div>
 
         @if (activeGalleryTab() === 'collections') {
@@ -798,7 +851,7 @@
                 [class.board-square--drop-after]="isBoardDropAfter(board.id)"
                 [style.--board-accent]="toneAccent(board.tone)"
                 [style.--board-soft]="toneSoft(board.tone)"
-                [attr.draggable]="!publicOwnerKey() && canEditBoard(board) && filteredBoards().length > 1 ? 'true' : null"
+                [attr.draggable]="!publicOwnerKey() && canEditBoard(board) && filteredBoards().length > 1 && boardGallerySort() === 'custom' ? 'true' : null"
                 (dragstart)="beginBoardReorderDrag($event, board)"
                 (dragover)="dragBoardOver($event, board)"
                 (dragleave)="dragBoardLeave($event, board)"
@@ -807,35 +860,53 @@
               >
                 <div class="board-square__rotor">
                   <button type="button" class="board-square__open board-square__face board-square__face--front" (click)="selectBoard(board.id)">
-                    @if (board.imageUrl) {
-                      <img class="board-square__image" [src]="board.imageUrl" [alt]="board.title + ' cover image'" loading="lazy" />
-                    }
-                    @if (board.stickers.length) {
-                      <span class="board-square__stickers" aria-hidden="true">
-                        @for (sticker of board.stickers; track sticker.id) {
-                          <span
-                            class="board-sticker"
-                            [class.board-sticker--dragging]="draggedStickerId() === sticker.id"
-                            [style.left.%]="sticker.x"
-                            [style.top.%]="sticker.y"
-                            [style.transform]="stickerTransform(sticker)"
-                            [style.--sticker-bg]="stickerBackground(stickerColor(sticker, $index))"
-                            [style.--sticker-bg-2]="stickerBackgroundAlt(stickerColor(sticker, $index))"
-                            [style.--sticker-ink]="stickerInk(stickerColor(sticker, $index))"
-                            [style.--sticker-shadow]="stickerShadow(stickerColor(sticker, $index))"
-                            (pointerdown)="beginStickerDrag($event, 'board', board.id, sticker.id)"
-                          >
-                            <span class="material-symbols-outlined">{{ sticker.icon }}</span>
-                          </span>
-                        }
+                    <span class="board-square__media">
+                      @if (board.imageUrl) {
+                        <img class="board-square__image" [src]="board.imageUrl" [alt]="board.title + ' cover image'" loading="lazy" />
+                      } @else {
+                        <span class="board-square__media-fallback" aria-hidden="true">
+                          <span class="material-symbols-outlined">{{ boardDisplayIcon(board) }}</span>
+                        </span>
+                      }
+                      @if (board.stickers.length) {
+                        <span class="board-square__stickers" aria-hidden="true">
+                          @for (sticker of board.stickers; track sticker.id) {
+                            <span
+                              class="board-sticker"
+                              [class.board-sticker--dragging]="draggedStickerId() === sticker.id"
+                              [style.left.%]="sticker.x"
+                              [style.top.%]="sticker.y"
+                              [style.transform]="stickerTransform(sticker)"
+                              [style.--sticker-bg]="stickerBackground(stickerColor(sticker, $index))"
+                              [style.--sticker-bg-2]="stickerBackgroundAlt(stickerColor(sticker, $index))"
+                              [style.--sticker-ink]="stickerInk(stickerColor(sticker, $index))"
+                              [style.--sticker-shadow]="stickerShadow(stickerColor(sticker, $index))"
+                              (pointerdown)="beginStickerDrag($event, 'board', board.id, sticker.id)"
+                            >
+                              <span class="material-symbols-outlined">{{ sticker.icon }}</span>
+                            </span>
+                          }
+                        </span>
+                      }
+                      <span class="board-square__type">
+                        <span class="material-symbols-outlined" aria-hidden="true">{{ boardDisplayIcon(board) }}</span>
+                        <small>{{ boardCategoryLabel(board) }}</small>
                       </span>
-                    }
-                    <span class="board-square__icon">
-                      <span class="material-symbols-outlined">{{ boardDisplayIcon(board) }}</span>
                     </span>
-                    <span class="board-square__meta">
-                      <strong>{{ board.title }}</strong>
-                      <small i18n>{{ board.cards.length }} cards</small>
+                    <span class="board-square__content">
+                      <span class="board-square__title-row">
+                        <strong>{{ board.title }}</strong>
+                      </span>
+                      <span class="board-square__description">
+                        {{ board.description || board.backNote || 'A LivingWiki collection.' }}
+                      </span>
+                      <span class="board-square__footer-meta">
+                        <small>
+                          <span class="material-symbols-outlined" aria-hidden="true">library_books</span>
+                          {{ board.cards.length }} cards
+                        </small>
+                        <small>Updated {{ boardUpdatedLabel(board) }}</small>
+                      </span>
                     </span>
                   </button>
 

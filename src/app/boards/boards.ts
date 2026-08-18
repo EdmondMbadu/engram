@@ -207,6 +207,7 @@ type BoardEntityType = 'person' | 'fictional_character' | 'place' | 'event' | 'w
 type BoardImageIntent = 'portrait' | 'character' | 'place' | 'event' | 'cover' | 'product' | 'food' | 'logo' | 'other';
 type BoardMediaKind = 'none' | 'song' | 'album' | 'film' | 'book' | 'tv' | 'game';
 type BoardGalleryTab = 'boards' | 'cards' | 'favorites' | 'collections';
+type BoardGallerySort = 'custom' | 'recent' | 'title';
 type ShareTarget = 'facebook' | 'x' | 'linkedin' | 'whatsapp' | 'reddit' | 'email';
 type StickerSurface = 'board' | 'card';
 type CardImageToolMode = 'generate' | 'search' | null;
@@ -1478,6 +1479,7 @@ export class BoardsComponent implements OnDestroy {
   readonly boardInsideDisplaySavingId = signal<string | null>(null);
   readonly boardCardNumbersSavingId = signal<string | null>(null);
   readonly activeGalleryTab = signal<BoardGalleryTab>('boards');
+  readonly boardGallerySort = signal<BoardGallerySort>('custom');
   readonly boardSearch = signal('');
   readonly cardSearch = signal('');
   readonly boardDialogOpen = signal(false);
@@ -1913,6 +1915,12 @@ export class BoardsComponent implements OnDestroy {
     const selectedId = this.selectedBoardId();
     return this.boards().find((board) => board.id === selectedId) ?? null;
   });
+  readonly boardRouteLoading = computed(() =>
+    !!this.selectedBoardId()
+    && !this.originalSelectedBoard()
+    && this.boardsLoading()
+    && !this.privateBoardBlocked(),
+  );
   readonly selectedBoardParent = computed(() => {
     const board = this.originalSelectedBoard();
     return board?.parentBoardId
@@ -2171,7 +2179,7 @@ export class BoardsComponent implements OnDestroy {
       .filter((board) => !board.parentCardId)
       .filter((board) => !this.songsPage() || this.isSongBoard(board))
       .filter((board) => !this.tripsPage() || this.isTourBoard(board))
-      .sort((a, b) => this.compareGalleryBoards(a, b));
+      .sort((a, b) => this.compareBoardGallerySelection(a, b));
     if (!query) {
       return boards;
     }
@@ -2814,6 +2822,15 @@ export class BoardsComponent implements OnDestroy {
   setGalleryTab(tab: BoardGalleryTab): void {
     this.activeGalleryTab.set(tab);
     this.boardSearch.set('');
+    this.galleryVisibleLimit.set(BOARD_GALLERY_PAGE_SIZE);
+    this.scheduleGalleryViewportCheck();
+  }
+
+  setBoardGallerySort(value: string): void {
+    if (value !== 'custom' && value !== 'recent' && value !== 'title') {
+      return;
+    }
+    this.boardGallerySort.set(value);
     this.galleryVisibleLimit.set(BOARD_GALLERY_PAGE_SIZE);
     this.scheduleGalleryViewportCheck();
   }
@@ -8896,6 +8913,13 @@ export class BoardsComponent implements OnDestroy {
 
   boardDisplayIcon(board: Pick<Board, 'icon' | 'title' | 'description' | 'kind'>): string {
     return resolveBoardIcon(board.icon, board);
+  }
+
+  boardCategoryLabel(board: Board): string {
+    if (this.isSongBoard(board)) return 'Music';
+    if (board.kind === 'walking-tour' || board.kind === 'driving-tour') return 'Tour';
+    if (board.kind === 'off-grid') return 'Off-grid';
+    return 'Board';
   }
 
   cardTypeLabel(type: BoardCardType): string {
@@ -16610,6 +16634,8 @@ export class BoardsComponent implements OnDestroy {
     this.boardsLoading.set(true);
     this.boardsLoadingMore.set(false);
     this.boardsHasMore.set(false);
+    this.boardsSyncError.set(null);
+    this.privateBoardBlocked.set(false);
     this.boardPageCursor = null;
     this.boardLoadContext = null;
     await this.authService.waitForReady();
@@ -16617,8 +16643,6 @@ export class BoardsComponent implements OnDestroy {
       return;
     }
     const uid = this.authService.uid();
-    this.boardsSyncError.set(null);
-    this.privateBoardBlocked.set(false);
     this.boardLoadContext = { uid, publicOwnerUid, publicOwnerSlug, publicOwnerRouteActive };
     this.boardsHasMore.set(true);
     const storedBoards = this.boards();
@@ -16721,7 +16745,14 @@ export class BoardsComponent implements OnDestroy {
       const page = snapshot.docs
         .map((boardDoc) => this.boardFromRecord(boardDoc.id, boardDoc.data()))
         .filter((board): board is Board => !!board);
-      const current = replace ? [] : this.boards();
+      // A route change can refresh the gallery before a board that lives beyond
+      // page one is fetched by id. Retain that board so the detail view never
+      // collapses back into the gallery during the refresh.
+      const selectedId = this.selectedBoardId();
+      const selectedBoard = replace && selectedId
+        ? this.boards().find((board) => board.id === selectedId) ?? null
+        : null;
+      const current = replace ? (selectedBoard ? [selectedBoard] : []) : this.boards();
       const boardsById = new Map(current.map((board) => [board.id, board]));
       page.forEach((board) => boardsById.set(board.id, board));
       this.boards.set([...boardsById.values()].sort((left, right) => this.compareGalleryBoards(left, right)));
@@ -17851,6 +17882,21 @@ export class BoardsComponent implements OnDestroy {
     return this.publicOwnerKey()
       ? compareBoardsByCreatedDate(left, right)
       : this.compareBoards(left, right);
+  }
+
+  private compareBoardGallerySelection(left: Board, right: Board): number {
+    const selection = this.boardGallerySort();
+    if (selection === 'recent') {
+      return this.compareDatesDesc(left.updatedAt, right.updatedAt)
+        || left.title.localeCompare(right.title)
+        || left.id.localeCompare(right.id);
+    }
+    if (selection === 'title') {
+      return left.title.localeCompare(right.title)
+        || this.compareDatesDesc(left.updatedAt, right.updatedAt)
+        || left.id.localeCompare(right.id);
+    }
+    return this.compareGalleryBoards(left, right);
   }
 
   private nextBoardSortOrder(): number {
