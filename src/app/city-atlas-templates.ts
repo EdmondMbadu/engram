@@ -24,7 +24,7 @@ export interface CityAtlasTemplate {
   personaPrompt: string;
 }
 
-const livingCitiesLogoUrl = '/assets/image/living-cities.png';
+const livingCitiesLogoUrl = '/assets/image/lucky-paper-crane.png';
 
 function buildCityPersona(cityName: string, regionName: string, civicFocus: string): string {
   return [

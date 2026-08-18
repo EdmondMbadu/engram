@@ -26,7 +26,7 @@ import type { CityAtlasTemplate } from './city-atlas-templates';
 import { getFirebaseFirestore, getFirebaseFunctions, getFirebaseStorage } from './firebase.client';
 
 const ACTIVE_ATLAS_STORAGE_KEY = 'living-atlas:activeAtlasId';
-const DEFAULT_CITY_LOGO_URL = '/assets/image/living-cities.png';
+const DEFAULT_CITY_LOGO_URL = '/assets/image/lucky-paper-crane.png';
 const COUNTRY_LABEL_BY_CODE: Record<string, string> = {
   AE: 'United Arab Emirates',
   AO: 'Angola',

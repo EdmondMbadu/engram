@@ -759,7 +759,7 @@ function inferPresentation(atlas: AtlasItem): PublicWikiPresentation {
       category: 'Cities & Regions',
       priority: 'med',
       badges: ['geo'],
-      fallbackLogoUrl: '/assets/image/living-cities.png',
+      fallbackLogoUrl: '/assets/image/lucky-paper-crane.png',
       sources: 'Internet-grounded city answers. Source bundles can be added later.',
     };
   }
