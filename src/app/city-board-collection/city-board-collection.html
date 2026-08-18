@@ -152,7 +152,11 @@
                   <span class="material-symbols-outlined" aria-hidden="true">dashboard_customize</span>
                   Explore board
                 </a>
-                <a [routerLink]="['/boards', featured.id]" [queryParams]="{ view: 'stack' }" class="collection-spotlight__secondary">
+                <a
+                  [href]="'/boards/' + featured.id + '?view=stack&autoplay=1'"
+                  class="collection-spotlight__secondary"
+                  (click)="openLiveView(featured, $event)"
+                >
                   <span class="material-symbols-outlined" aria-hidden="true">play_arrow</span>
                   Live view
                 </a>

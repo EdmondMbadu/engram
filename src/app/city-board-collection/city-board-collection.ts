@@ -2,7 +2,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { Component, HostListener, LOCALE_ID, OnDestroy, PLATFORM_ID, computed, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Title } from '@angular/platform-browser';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
 import type { AtlasItem } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
@@ -22,6 +22,7 @@ import {
   type CityBoardListing,
 } from '../city-board-listings.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
+import { StackNarrationSessionService } from '../stack-narration-session.service';
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 
@@ -37,11 +38,13 @@ const SPOTLIGHT_ROTATION_MS = 5_000;
 })
 export class CityBoardCollectionComponent implements OnDestroy {
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly atlasService = inject(AtlasService);
   private readonly authService = inject(AuthService);
   private readonly boardCollectionsService = inject(BoardCollectionsService);
   private readonly listingsService = inject(CityBoardListingsService);
   private readonly titleService = inject(Title);
+  private readonly stackNarrationSession = inject(StackNarrationSessionService);
   private readonly localeId = inject(LOCALE_ID);
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private loadSequence = 0;
@@ -233,6 +236,16 @@ export class CityBoardCollectionComponent implements OnDestroy {
   selectFeatured(board: CityBoardListing): void {
     this.selectedFeaturedId.set(board.id);
     this.restartSpotlightRotation();
+  }
+
+  async openLiveView(board: CityBoardListing, event: MouseEvent): Promise<void> {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+      return;
+    }
+    event.preventDefault();
+    event.stopPropagation();
+    await this.stackNarrationSession.unlock();
+    await this.router.navigate(['/boards', board.id], { queryParams: { view: 'stack', autoplay: '1' } });
   }
 
   moveFeatured(direction: -1 | 1): void {
