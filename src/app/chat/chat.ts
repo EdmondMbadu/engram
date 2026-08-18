@@ -5304,19 +5304,6 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     return description || this.cleanTravelCardText(card.description ?? '');
   }
 
-  travelCardFact(card: TravelGuideCard): string {
-    const bestFor = card.best_for?.trim() ?? '';
-    const description = this.travelCardDescription(card);
-    const firstSentence = description.match(/^.*?(?:[.!?](?:\s|$)|$)/)?.[0]?.trim() || description;
-    const fact = (!/^a focused local stop$/i.test(bestFor) ? bestFor : '')
-      || card.time_hint?.trim()
-      || card.cost?.trim()
-      || firstSentence
-      || card.neighborhood?.trim()
-      || description;
-    return fact.length > 88 ? `${fact.slice(0, 85).trimEnd()}…` : fact;
-  }
-
   answerReadingTime(message: ChatMessage): number {
     const plainText = (message.text || message.html || '')
       .replace(/<[^>]+>/g, ' ')

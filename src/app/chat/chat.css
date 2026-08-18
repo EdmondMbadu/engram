@@ -2451,30 +2451,30 @@
 }
 
 .chat-full-notes__layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(12rem, 15.5rem);
-  align-items: start;
-  gap: clamp(1.25rem, 4vw, 2.5rem);
-  padding: clamp(1rem, 3vw, 1.65rem);
+  padding: clamp(1.25rem, 4vw, 2.25rem);
 }
 
 .chat-full-notes__article {
+  display: grid;
+  grid-template-columns: 1.5rem minmax(0, 1fr);
+  align-items: start;
+  gap: 0.85rem;
   min-width: 0;
-  max-width: 45rem;
+  max-width: 48rem;
+  margin: 0 auto;
 }
 
-.chat-full-notes__summary {
-  margin: 0 0 1.25rem;
-  border: 1px solid color-mix(in srgb, var(--answer-green) 16%, var(--line));
-  border-left: 3px solid var(--answer-green);
-  border-radius: 0.7rem;
+.chat-full-notes__reading-mark {
+  display: grid;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-top: 0.1rem;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--answer-green) 18%, var(--line));
+  border-radius: 999px;
   background: var(--answer-green-soft);
-  padding: 0.8rem 0.9rem;
-  color: color-mix(in srgb, var(--text) 86%, var(--answer-green) 14%);
-  font-family: Georgia, 'Times New Roman', serif;
+  color: var(--answer-green);
   font-size: 0.9rem;
-  font-style: normal;
-  line-height: 1.55;
 }
 
 .chat-full-notes__article .assistant-message__content {
@@ -2505,105 +2505,6 @@
   margin-block: 0.45rem;
   padding-left: 0.15rem;
 }
-
-.chat-full-notes__rail {
-  position: sticky;
-  top: 0.75rem;
-  display: grid;
-  gap: 0.55rem;
-}
-
-.chat-full-notes__rail > section {
-  border: 1px solid color-mix(in srgb, var(--answer-green) 12%, var(--line));
-  border-radius: 0.75rem;
-  background: color-mix(in srgb, var(--answer-green-soft) 50%, var(--surface));
-  padding: 0.8rem;
-}
-
-.chat-full-notes__rail h5 {
-  margin: 0 0 0.62rem;
-  color: var(--answer-green);
-  font-size: 0.65rem;
-  font-weight: 850;
-  letter-spacing: 0.025em;
-}
-
-.chat-full-notes__fact {
-  display: grid;
-  grid-template-columns: 1.4rem minmax(0, 1fr);
-  gap: 0.5rem;
-  align-items: start;
-}
-
-.chat-full-notes__fact + .chat-full-notes__fact {
-  margin-top: 0.62rem;
-}
-
-.chat-full-notes__fact > .material-symbols-outlined {
-  color: var(--answer-green);
-  font-size: 1.18rem;
-}
-
-.chat-full-notes__fact p {
-  display: grid;
-  gap: 0.08rem;
-  margin: 0;
-}
-
-.chat-full-notes__fact strong,
-.chat-full-notes__fact small {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.chat-full-notes__fact strong {
-  color: var(--text);
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: 0.68rem;
-  line-height: 1.25;
-}
-
-.chat-full-notes__fact small {
-  display: -webkit-box;
-  color: var(--muted);
-  font-size: 0.57rem;
-  line-height: 1.35;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
-
-.chat-full-notes__rail ol {
-  display: grid;
-  gap: 0.32rem;
-  margin: 0;
-  padding-left: 1rem;
-  color: var(--muted);
-  font-size: 0.61rem;
-  line-height: 1.4;
-}
-
-.chat-full-notes__sources {
-  padding: 0 !important;
-}
-
-.chat-full-notes__sources a,
-.chat-full-notes__sources > div {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  padding: 0.75rem 0.8rem;
-  color: var(--text);
-}
-
-.chat-full-notes__sources :is(a, div) > span:first-child {
-  display: grid;
-  gap: 0.1rem;
-}
-
-.chat-full-notes__sources strong { font-size: 0.64rem; }
-.chat-full-notes__sources small { color: var(--muted); font-size: 0.57rem; }
-.chat-full-notes__sources .material-symbols-outlined { color: var(--answer-green); font-size: 0.95rem; }
 
 .chat-full-notes__footer {
   justify-content: flex-end;
@@ -2636,21 +2537,8 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .chat-full-notes__layout {
-    grid-template-columns: 1fr;
-  }
-
   .chat-full-notes__article {
     max-width: none;
-  }
-
-  .chat-full-notes__rail {
-    position: static;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .chat-full-notes__sources {
-    grid-column: 1 / -1;
   }
 }
 
@@ -2694,12 +2582,9 @@
     padding: 1rem;
   }
 
-  .chat-full-notes__rail {
+  .chat-full-notes__article {
     grid-template-columns: 1fr;
-  }
-
-  .chat-full-notes__sources {
-    grid-column: auto;
+    gap: 0.6rem;
   }
 
   .chat-full-notes__footer {

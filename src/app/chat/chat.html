@@ -1496,44 +1496,9 @@
 
                                     <div class="chat-full-notes__layout">
                                       <article class="chat-full-notes__article">
-                                        @if (guide.summary) {
-                                          <blockquote class="chat-full-notes__summary">{{ guide.summary }}</blockquote>
-                                        }
+                                        <span class="chat-full-notes__reading-mark material-symbols-outlined" aria-hidden="true">subject</span>
                                         <div class="assistant-message__content" [innerHTML]="msg.html || ''"></div>
                                       </article>
-
-                                      <aside class="chat-full-notes__rail" aria-label="Answer summary">
-                                        <section>
-                                          <h5>At a glance</h5>
-                                          @for (card of guide.cards.slice(0, 3); track card.id; let i = $index) {
-                                            <div class="chat-full-notes__fact">
-                                              <span class="material-symbols-outlined">{{ travelCardVisualIcon(card) }}</span>
-                                              <p><strong>{{ card.title }}</strong><small>{{ travelCardFact(card) }}</small></p>
-                                            </div>
-                                          }
-                                        </section>
-                                        <section>
-                                          <h5>In this answer</h5>
-                                          <ol>
-                                            @for (card of guide.cards; track card.id) {
-                                              <li>{{ card.title }}</li>
-                                            }
-                                          </ol>
-                                        </section>
-                                        <section class="chat-full-notes__sources">
-                                          @if (answerBoardSourceCount(msg, guide) > 0) {
-                                          <a [attr.href]="'#sources-' + msg.id">
-                                            <span><strong>Sources</strong><small>{{ answerBoardSourceCount(msg, guide) }} live public sources</small></span>
-                                            <span class="material-symbols-outlined">open_in_new</span>
-                                          </a>
-                                          } @else {
-                                            <div>
-                                              <span><strong>Sources</strong><small>Live public sources</small></span>
-                                              <span class="material-symbols-outlined">verified</span>
-                                            </div>
-                                          }
-                                        </section>
-                                      </aside>
                                     </div>
 
                                     <footer class="chat-full-notes__footer">
