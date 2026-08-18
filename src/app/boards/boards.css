@@ -7203,6 +7203,348 @@
   box-shadow: 0 5px 16px rgba(12, 46, 35, 0.14);
 }
 
+/* Premium editorial cards: quiet media, warm paper, and an explicit flip action. */
+.board-detail .detail-card {
+  min-height: 0;
+  border-color: #ddd7c9;
+  border-radius: 1.15rem;
+  background: #fbfaf5;
+  box-shadow: 0 12px 32px rgba(12, 46, 35, 0.075);
+}
+
+.board-detail .detail-card:hover {
+  border-color: #cec5b2;
+  box-shadow: 0 18px 42px rgba(12, 46, 35, 0.115);
+  transform: translateY(-2px);
+}
+
+.board-detail .detail-card .board-square__rotor {
+  height: auto;
+  min-height: 0;
+  aspect-ratio: 1 / 1.08;
+}
+
+.board-detail .detail-card.board-square--flipped .board-square__rotor {
+  min-height: 30rem;
+  aspect-ratio: auto;
+}
+
+.board-detail .detail-card--expanded .board-square__rotor {
+  min-height: 35rem;
+  aspect-ratio: auto;
+}
+
+.board-detail .detail-card .board-square__face:not(.board-square__face--back) {
+  background: #fbfaf5 !important;
+}
+
+.board-detail .detail-card__media,
+.board-detail .detail-card--photo-only .detail-card__media {
+  flex: none;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-bottom: 1px solid #ddd7c9;
+  background: #e8e7e1;
+}
+
+.board-detail .detail-card--expanded .detail-card__media,
+.board-detail .detail-card.board-square--flipped .detail-card__media {
+  height: 13rem;
+  aspect-ratio: auto;
+  border-bottom-width: 1px;
+}
+
+.board-detail .detail-card__photo-button {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+.board-detail .detail-card__photo-button::after {
+  position: absolute;
+  inset: auto 0 0;
+  height: 26%;
+  transform: none;
+  border: 0;
+  border-radius: 0;
+  background: linear-gradient(to top, rgba(5, 22, 17, 0.28), transparent);
+  box-shadow: none;
+  backdrop-filter: none;
+  content: '';
+  padding: 0;
+  pointer-events: none;
+}
+
+.board-detail .detail-card__media img {
+  transition: transform 450ms ease, filter 220ms ease;
+}
+
+.board-detail .detail-card:hover .detail-card__media img {
+  transform: scale(1.012);
+}
+
+.board-detail .detail-card__photo-hint {
+  position: absolute;
+  right: auto;
+  bottom: 0.8rem;
+  left: 0.8rem;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.42rem;
+  color: #fffdf5;
+  font-size: 0.7rem;
+  font-weight: 760;
+}
+
+.board-detail .detail-card__photo-hint .material-symbols-outlined {
+  display: grid;
+  width: 2.45rem;
+  height: 2.45rem;
+  place-items: center;
+  border: 1px solid rgba(255, 253, 245, 0.88);
+  border-radius: 50%;
+  background: #185641;
+  box-shadow: 0 8px 20px rgba(5, 22, 17, 0.2);
+  font-size: 1.25rem;
+  font-variation-settings: 'FILL' 1;
+}
+
+.board-detail .detail-card__photo-hint small {
+  color: inherit;
+  font: inherit;
+}
+
+.board-detail .detail-card__photo-button.card-video-trigger .detail-card__photo-hint {
+  top: auto;
+  right: auto;
+  bottom: 0.8rem;
+  left: 0.8rem;
+  display: inline-flex;
+  width: auto;
+  height: auto;
+  transform: none;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  opacity: 1;
+  backdrop-filter: none;
+}
+
+.board-detail .detail-card__photo-button:not(.card-video-trigger) .detail-card__photo-hint {
+  right: 0.8rem;
+  left: auto;
+}
+
+.board-detail .detail-card__photo-button:not(.card-video-trigger) .detail-card__photo-hint .material-symbols-outlined {
+  width: 2rem;
+  height: 2rem;
+  background: rgba(10, 48, 37, 0.58);
+  font-size: 1rem;
+  backdrop-filter: blur(8px);
+}
+
+.board-detail .detail-card__summary {
+  position: relative;
+  z-index: 4;
+  display: grid;
+  min-height: 7.25rem;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 0.75rem;
+  background: #fbfaf5;
+  padding: 0.9rem 0.85rem 0.85rem;
+}
+
+.board-detail .detail-card__peek {
+  position: static;
+  display: grid;
+  min-height: 0;
+  align-self: stretch;
+  align-content: start;
+  align-items: start;
+  justify-content: start;
+  justify-items: start;
+  gap: 0.34rem;
+  overflow: visible;
+  border: 0;
+  background: transparent;
+  color: #14271f;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+  text-align: left;
+}
+
+.board-detail .detail-card__peek:focus-visible,
+.board-detail .detail-card__flip-button--inline:focus-visible,
+.board-detail .detail-card__flip-button--back:focus-visible {
+  outline: 2px solid #2d7b62;
+  outline-offset: 3px;
+}
+
+.board-detail .detail-card__peek small {
+  color: #a17f2f;
+  font-size: 0.61rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.board-detail .detail-card__peek strong {
+  display: -webkit-box;
+  overflow: hidden;
+  color: #17231e;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.08rem, 1.7vw, 1.32rem);
+  font-weight: 600;
+  letter-spacing: -0.022em;
+  line-height: 1.08;
+  text-shadow: none;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.board-detail .detail-card__peek > span {
+  display: -webkit-box;
+  overflow: hidden;
+  color: #748078;
+  font-size: 0.7rem;
+  font-weight: 620;
+  line-height: 1.25;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.board-detail .detail-card__flip-button--inline {
+  position: static;
+  display: inline-flex;
+  width: auto;
+  height: 2.15rem;
+  align-items: center;
+  gap: 0.32rem;
+  border: 1px solid #d5cebc;
+  border-radius: 0.7rem;
+  background: #f8f7f1;
+  box-shadow: none;
+  color: #214b3d;
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 760;
+  padding: 0.48rem 0.58rem;
+}
+
+.board-detail .detail-card__flip-button--inline:hover,
+.board-detail .detail-card__flip-button--inline:active {
+  border-color: #9eaf9f;
+  background: #edf2ec;
+  box-shadow: none;
+  transform: translateY(-1px);
+}
+
+.board-detail .detail-card__flip-button--inline svg {
+  width: 0.92rem;
+  height: 0.92rem;
+  stroke-width: 2.1;
+}
+
+.board-detail .detail-card__rank,
+.board-detail .detail-card__like,
+.board-detail .detail-card .card-action-menu__trigger {
+  width: 2.15rem;
+  height: 2.15rem;
+  border: 1px solid rgba(228, 224, 213, 0.92);
+  background: rgba(255, 253, 247, 0.94);
+  box-shadow: 0 6px 18px rgba(10, 35, 27, 0.13);
+  backdrop-filter: blur(9px);
+}
+
+.board-detail .detail-card__rank {
+  top: 0.75rem;
+  left: 0.75rem;
+  color: #17372d;
+  font-size: 0.72rem;
+}
+
+.board-detail .detail-card__like {
+  top: 0.75rem;
+  right: 3.45rem;
+}
+
+.board-detail .detail-card__like--solo {
+  right: 0.75rem;
+}
+
+.board-detail .detail-card__action-menu {
+  top: 0.75rem;
+  right: 0.75rem;
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
+}
+
+.board-detail .detail-card__status {
+  display: none;
+}
+
+.board-detail .detail-card--managing .detail-card__rank {
+  display: none;
+}
+
+.board-detail .detail-card--expanded .detail-card__summary {
+  border-bottom: 1px solid #e2ddd1;
+}
+
+.board-detail .detail-card--expanded .board-square__face:not(.board-square__face--back) .detail-card__body > :is(.detail-card__line, h2, .detail-card__subtitle) {
+  display: none;
+}
+
+.board-detail .detail-card__body {
+  background: #fbfaf5;
+  padding: 0.85rem;
+}
+
+.board-detail .detail-card__footer {
+  border-top: 1px solid #e2ddd1;
+  background: #fbfaf5;
+}
+
+.board-detail .detail-card__flip-button--back {
+  top: auto;
+  right: 0.85rem;
+  bottom: 2.3rem;
+  display: inline-flex;
+  width: auto;
+  height: 2.2rem;
+  align-items: center;
+  gap: 0.35rem;
+  border-width: 1px;
+  border-radius: 0.7rem;
+  box-shadow: 0 6px 18px rgba(10, 35, 27, 0.12);
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 760;
+  padding: 0.45rem 0.6rem;
+}
+
+.board-detail .detail-card__flip-button--back.detail-card__flip-button--solo {
+  right: 0.85rem;
+}
+
+.board-detail .detail-card__flip-button--back:hover {
+  transform: translateY(-1px);
+}
+
 /* The Jukebox keeps its behavior, but now belongs to the same editorial system. */
 .board-detail--song .song-board {
   gap: 1.15rem;
