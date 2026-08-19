@@ -4479,6 +4479,10 @@
     "source": "{$START_TAG_SPAN}map{$CLOSE_TAG_SPAN} Directions ",
     "file": "src/app/boards/boards.html"
   },
+  "3917601321281278574": {
+    "source": "Newer board edits",
+    "file": "src/app/video-library/video-library.html"
+  },
   "392017562171689836": {
     "source": "Internet mode uses general web knowledge and current public sources, not just your uploaded material.",
     "file": "src/app/chat/chat.ts"
@@ -9055,6 +9059,10 @@
     "source": "{$START_TAG_SPAN}check{$CLOSE_TAG_SPAN} Add to card ",
     "file": "src/app/boards/boards.html"
   },
+  "6903423843103608824": {
+    "source": "Regenerate video",
+    "file": "src/app/video-library/video-library.html"
+  },
   "6909371735476074535": {
     "source": "Explore cities",
     "file": "src/app/chat/chat.ts"
@@ -9447,10 +9455,6 @@
     "source": "Enter your password.",
     "file": "src/app/sign-in/sign-in.html"
   },
-  "7208763421467281516": {
-    "source": "Regenerate this video",
-    "file": "src/app/video-library/video-library.html"
-  },
   "7212239620607483566": {
     "source": "Only the owner can view this LivingWiki board.",
     "file": "src/app/boards/boards.html"
@@ -9727,10 +9731,6 @@
     "source": " Pathways {$START_TAG_SPAN}{$INTERPOLATION}{$CLOSE_TAG_SPAN}",
     "file": "src/app/green-jobs/green-jobs.html"
   },
-  "7410087971193228836": {
-    "source": "Not published yet",
-    "file": "src/app/video-library/video-library.html"
-  },
   "7410470931053054860": {
     "source": "Official Spotify player",
     "file": "src/app/boards/boards.html"
@@ -9762,10 +9762,6 @@
   "7427471338737489302": {
     "source": "Add company knowledge so the AI answers from real source material.",
     "file": "src/app/business-claim/business-claim.html"
-  },
-  "7430416142942514215": {
-    "source": "Publish",
-    "file": "src/app/video-library/video-library.html"
   },
   "7430680760319628492": {
     "source": "Review",
@@ -11375,6 +11371,10 @@
     "source": "Sign in to save a score to this leaderboard.",
     "file": "src/app/boards/boards.html"
   },
+  "8538983396813141916": {
+    "source": "Publish video",
+    "file": "src/app/video-library/video-library.html"
+  },
   "8541114178051979184": {
     "source": "Project research, Client knowledge base...",
     "file": "src/app/wiki-home/wiki-home.html"
@@ -12227,10 +12227,6 @@
     "source": "Tomorrow",
     "file": "src/app/boards/boards.html"
   },
-  "9135678218646939886": {
-    "source": "Your board has newer edits.",
-    "file": "src/app/video-library/video-library.html"
-  },
   "9137345098023582320": {
     "source": "Copy chat",
     "file": "src/app/chat/chat.ts"
@@ -12318,10 +12314,6 @@
   "920232928891867801": {
     "source": " Included ",
     "file": "src/app/pricing/pricing.html"
-  },
-  "9203624695497087561": {
-    "source": "Public video link",
-    "file": "src/app/video-library/video-library.html"
   },
   "9203853982818549778": {
     "source": "Delete board",

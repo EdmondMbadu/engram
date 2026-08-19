@@ -95,9 +95,17 @@ describe('VideoLibraryComponent', () => {
     expect(fixture.nativeElement.querySelector('h3')?.textContent).toContain('Odysseus');
     expect(fixture.nativeElement.textContent).toContain('Latest');
     expect(fixture.nativeElement.textContent).toContain('0:42');
-    expect(fixture.nativeElement.querySelector('.video-library-link input')?.value)
+    expect(fixture.nativeElement.querySelector('.video-library-menu-link-row__open')?.getAttribute('href'))
       .toBe('https://www.livingwiki.com/share/board/board-1/video?v=latest');
-    expect(fixture.nativeElement.textContent).toContain('Copy');
+    expect(fixture.nativeElement.textContent).toContain('Copy public link');
+
+    const actionsMenu = fixture.nativeElement.querySelector('.video-library-details') as HTMLDetailsElement;
+    actionsMenu.querySelector('summary')?.click();
+    fixture.detectChanges();
+    expect(actionsMenu.open).toBeTrue();
+    expect(actionsMenu.textContent).toContain('Open board');
+    expect(actionsMenu.textContent).toContain('Regenerate video');
+    expect(actionsMenu.textContent).toContain('Delete video');
 
     fixture.nativeElement.querySelector('.video-library-poster').click();
     fixture.detectChanges();
@@ -120,7 +128,7 @@ describe('VideoLibraryComponent', () => {
 
     const title = fixture.nativeElement.querySelector('.video-library-card__heading h3') as HTMLElement;
     const actions = fixture.nativeElement.querySelector('.video-library-actions') as HTMLElement;
-    const buttons = actions.querySelectorAll('button');
+    const buttons = actions.querySelectorAll(':scope > button');
     const download = buttons.item(2) as HTMLElement;
     const titleStyle = getComputedStyle(title);
 
