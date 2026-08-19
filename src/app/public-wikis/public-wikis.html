@@ -76,7 +76,9 @@
 
     @if (isHomeRoute()) {
     <main class="mobile-home-main">
-      <p class="mobile-tagline" i18n>Find what lights you up!</p>
+      <p class="mobile-tagline">
+        <span>Find what </span><em>lights you up.</em>
+      </p>
 
       <section id="mobile-city" class="mobile-city-block mobile-city-block--top">
         <div class="mobile-city-row">
@@ -95,21 +97,26 @@
               <span class="material-symbols-outlined">school</span>
             </span>
           }
-          <span class="mobile-city-label">{{ mobileDirectoryPreferenceLabel() }}</span>
-          <button
-            type="button"
-            class="mobile-city-select"
-            [attr.aria-label]="mobileDirectoryPreferenceName()"
-            (click)="beginChangingHomeDirectoryPreference()"
-          >
-            <span>{{ mobileDirectoryPreferenceName() }}</span>
-            <span class="material-symbols-outlined">edit</span>
-          </button>
-          <button type="button" class="mobile-all-cities-link" (click)="openHomeDirectory()">
-            {{ mobileDirectoryIsUniversities() ? 'All Universities' : 'All Cities' }}
-          </button>
+          <div class="mobile-city-identity">
+            <div class="mobile-city-identity__line">
+              <span class="mobile-city-label">{{ mobileDirectoryPreferenceLabel() }}</span>
+              <button
+                type="button"
+                class="mobile-city-select"
+                [attr.aria-label]="mobileDirectoryPreferenceName()"
+                (click)="beginChangingHomeDirectoryPreference()"
+              >
+                <span>{{ mobileDirectoryPreferenceName() }}</span>
+                <span class="material-symbols-outlined">edit</span>
+              </button>
+              <button type="button" class="mobile-all-cities-link" (click)="openHomeDirectory()">
+                {{ mobileDirectoryIsUniversities() ? 'All Universities' : 'All Cities' }}
+              </button>
+            </div>
+          </div>
         </div>
 
+        <div class="mobile-city-command-row">
         <div class="mobile-directory-tools">
           <div class="mobile-directory-switch" role="group" aria-label="Browse cities or universities">
             <button
@@ -220,6 +227,7 @@
               </span>
             </button>
           }
+        </div>
         </div>
       </section>
 
