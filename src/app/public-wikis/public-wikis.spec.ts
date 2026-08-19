@@ -7,6 +7,7 @@ import {
   appendDiscoverBoardPage,
   PublicWikisComponent,
   shouldAutoLoadDiscoverBoards,
+  shouldAutoLoadPublicWikis,
   shouldFallbackDiscoverNewestFirstQuery,
   sortDiscoverBoardsNewestFirst,
 } from './public-wikis';
@@ -126,6 +127,31 @@ describe('PublicWikisComponent home pagination', () => {
       hasMore: true,
       loading: true,
     })).toBeFalse();
+  });
+
+  it('reveals public directory pages 10 at a time when the landing sentinel enters view', async () => {
+    const component = createComponent();
+    component.liveWikis.set(Array.from({ length: 25 }, (_, index) => ({
+      title: `LivingWiki: City ${index}`,
+      subtitle: 'Cities & Regions',
+      description: `City ${index}`,
+      category: 'Cities & Regions',
+      status: 'live',
+      population: 25 - index,
+    } as any)));
+
+    expect(component.visibleWikis().length).toBe(10);
+    await component.onPublicWikiLoadSentinelIntersection(false);
+    expect(component.visibleWikis().length).toBe(10);
+    await component.onPublicWikiLoadSentinelIntersection(true);
+    expect(component.visibleWikis().length).toBe(20);
+  });
+
+  it('only auto-loads the public directory when more results are available and no reveal is active', () => {
+    expect(shouldAutoLoadPublicWikis({ isIntersecting: true, hasMore: true, loading: false })).toBeTrue();
+    expect(shouldAutoLoadPublicWikis({ isIntersecting: false, hasMore: true, loading: false })).toBeFalse();
+    expect(shouldAutoLoadPublicWikis({ isIntersecting: true, hasMore: false, loading: false })).toBeFalse();
+    expect(shouldAutoLoadPublicWikis({ isIntersecting: true, hasMore: true, loading: true })).toBeFalse();
   });
 
   it('ranks discover boards by newest creation date with deterministic ties', () => {

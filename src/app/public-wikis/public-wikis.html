@@ -579,7 +579,12 @@
           } @else {
             <div class="public-landing-collage__primary public-landing-collage__placeholder"></div>
           }
-          @if (landingSpotlightWikis()[1]; as spotlight) {
+          @if (landingFeaturedBoards()[0]; as board) {
+            <a [routerLink]="['/boards', board.id]" class="public-landing-collage__secondary public-landing-collage__secondary--top public-landing-collage__board">
+              <img [src]="board.imageUrl" [alt]="board.title" />
+              <span><small>Board</small>{{ board.title }}</span>
+            </a>
+          } @else if (landingSpotlightWikis()[1]; as spotlight) {
             <a [routerLink]="spotlight.link || '/chat'" class="public-landing-collage__secondary public-landing-collage__secondary--top">
               <img [src]="spotlight.heroUrl" [alt]="displayWikiTitle(spotlight)" />
               <span>{{ cityDisplayName(spotlight) }}</span>
@@ -587,7 +592,12 @@
           } @else {
             <div class="public-landing-collage__secondary public-landing-collage__secondary--top public-landing-collage__placeholder"></div>
           }
-          @if (landingSpotlightWikis()[2]; as spotlight) {
+          @if (landingFeaturedBoards()[1]; as board) {
+            <a [routerLink]="['/boards', board.id]" class="public-landing-collage__secondary public-landing-collage__secondary--bottom public-landing-collage__board">
+              <img [src]="board.imageUrl" [alt]="board.title" />
+              <span><small>Board</small>{{ board.title }}</span>
+            </a>
+          } @else if (landingSpotlightWikis()[2]; as spotlight) {
             <a [routerLink]="spotlight.link || '/chat'" class="public-landing-collage__secondary public-landing-collage__secondary--bottom">
               <img [src]="spotlight.heroUrl" [alt]="displayWikiTitle(spotlight)" />
               <span>{{ cityDisplayName(spotlight) }}</span>
@@ -932,11 +942,16 @@
           }
         </div>
         @if (hasMoreWikis()) {
-          <div class="mt-8 flex justify-center">
-            <button type="button" (click)="showMoreWikis()" class="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/40 bg-[var(--surface)] px-6 py-3 text-xs font-black uppercase tracking-[0.16em] text-[var(--accent)] transition hover:-translate-y-0.5 hover:bg-[var(--accent)]/10">
-              <span class="material-symbols-outlined">expand_more</span>
-              Show 10 more · {{ filteredWikis().length - visibleWikis().length }} remaining
-            </button>
+          <div
+            #publicWikiLoadSentinel
+            class="public-wiki-load-sentinel"
+            role="status"
+            aria-live="polite"
+          >
+            <span class="material-symbols-outlined">progress_activity</span>
+            <span>
+              {{ publicWikiAutoLoading() ? 'Loading the next 10…' : 'More LivingWiki pages load as you scroll' }}
+            </span>
           </div>
         }
       </div>

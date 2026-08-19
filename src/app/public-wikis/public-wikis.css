@@ -2327,7 +2327,7 @@ button.mobile-talk-action {
   grid-template-columns: minmax(12rem, 1fr) auto minmax(12rem, 1fr);
   align-items: center;
   width: min(100% - 3rem, 92rem);
-  min-height: 5.25rem;
+  min-height: 4.8rem;
   margin: 0 auto;
   gap: 1.5rem;
 }
@@ -2433,8 +2433,9 @@ button.mobile-talk-action {
   grid-template-columns: minmax(0, 0.82fr) minmax(30rem, 1.18fr);
   width: min(100% - 3rem, 88rem);
   margin: 0 auto;
-  padding: clamp(2.4rem, 5vw, 4.8rem) 0 2.2rem;
-  gap: clamp(2.5rem, 5vw, 5.5rem);
+  padding: clamp(1.4rem, 2.4vw, 2.2rem) 0 1rem;
+  column-gap: clamp(2.5rem, 5vw, 5.5rem);
+  row-gap: 1.15rem;
 }
 
 .public-landing-hero__copy {
@@ -2443,7 +2444,7 @@ button.mobile-talk-action {
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  padding-bottom: 5rem;
+  padding-bottom: 0.5rem;
 }
 
 .public-landing-eyebrow {
@@ -2460,7 +2461,7 @@ button.mobile-talk-action {
   margin: 1rem 0 0;
   color: var(--public-ink);
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(4.1rem, 7vw, 7.1rem);
+  font-size: clamp(4rem, 6.2vw, 6rem);
   font-weight: 400;
   letter-spacing: -0.062em;
   line-height: 0.9;
@@ -2468,7 +2469,7 @@ button.mobile-talk-action {
 
 .public-landing-hero__lede {
   max-width: 33rem;
-  margin: 1.7rem 0 0;
+  margin: 1.25rem 0 0;
   color: var(--muted);
   font-size: clamp(1.04rem, 1.45vw, 1.3rem);
   line-height: 1.55;
@@ -2478,7 +2479,7 @@ button.mobile-talk-action {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  margin-top: 2.1rem;
+  margin-top: 1.5rem;
   gap: 1rem 1.75rem;
 }
 
@@ -2537,7 +2538,8 @@ button.mobile-talk-action {
 .public-landing-collage {
   position: relative;
   display: grid;
-  min-height: clamp(29rem, 38vw, 36rem);
+  height: clamp(21rem, 26vw, 24rem);
+  min-height: 0;
   grid-template-columns: 1.35fr 0.85fr;
   grid-template-rows: 1fr 1fr;
   overflow: hidden;
@@ -2589,6 +2591,22 @@ button.mobile-talk-action {
   text-overflow: ellipsis;
   text-shadow: 0 2px 14px rgba(0, 0, 0, 0.45);
   white-space: nowrap;
+}
+
+.public-landing-collage__board > span {
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+}
+
+.public-landing-collage__board > span small {
+  color: rgba(255, 255, 255, 0.72);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.55rem;
+  font-weight: 750;
+  letter-spacing: 0.16em;
+  line-height: 1;
+  text-transform: uppercase;
 }
 
 .public-landing-collage__primary {
@@ -2882,6 +2900,31 @@ button.mobile-talk-action {
   text-transform: uppercase;
 }
 
+.public-wiki-load-sentinel {
+  display: flex;
+  min-height: 5.5rem;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1.5rem;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-align: center;
+  text-transform: uppercase;
+  gap: 0.6rem;
+}
+
+.public-wiki-load-sentinel .material-symbols-outlined {
+  color: var(--accent);
+  font-size: 1.05rem;
+  animation: public-wiki-loader-spin 1.2s linear infinite;
+}
+
+@keyframes public-wiki-loader-spin {
+  to { transform: rotate(360deg); }
+}
+
 .public-wiki-grid {
   gap: 1.25rem;
 }
@@ -3090,7 +3133,7 @@ button.mobile-talk-action {
 
   .public-landing-hero__inner {
     grid-template-columns: minmax(0, 0.9fr) minmax(27rem, 1.1fr);
-    gap: 2.5rem;
+    column-gap: 2.5rem;
   }
 
   .public-landing-hero h1 {
@@ -3133,7 +3176,7 @@ button.mobile-talk-action {
   }
 
   .public-landing-collage {
-    min-height: 28rem;
+    height: 25rem;
   }
 
   .public-landing-search {
@@ -3175,7 +3218,7 @@ button.mobile-talk-action {
   }
 
   .public-landing-collage {
-    min-height: 22rem;
+    height: 21rem;
     grid-template-columns: 1fr 0.72fr;
     border-radius: 5rem 0.85rem 0.85rem;
   }

@@ -17,7 +17,12 @@ import {
 } from 'firebase/firestore';
 import { httpsCallable, type Functions } from 'firebase/functions';
 import { AtlasService } from '../atlas.service';
+import type { AtlasItem } from '../atlas.models';
 import { AuthService } from '../auth.service';
+import {
+  CityBoardListingsService,
+  type CityBoardListing,
+} from '../city-board-listings.service';
 import { getFirebaseFirestore, getFirebaseFunctions } from '../firebase.client';
 import {
   buildPublicWikiLiveItem,
@@ -195,6 +200,7 @@ const MOBILE_DEMO_BOARD_IDS = new Set(['board-summer-places', 'board-eats', 'boa
 const HOME_SECTION_PAGE_SIZE = 10;
 const HOME_BOARD_QUERY_PAGE_SIZE = HOME_SECTION_PAGE_SIZE + 1;
 const DISCOVER_AUTOLOAD_ROOT_MARGIN_PX = 600;
+const PUBLIC_WIKI_AUTOLOAD_ROOT_MARGIN_PX = 520;
 
 export function sortDiscoverBoardsNewestFirst<T extends { id: string; title: string; createdAt: string }>(boards: T[]): T[] {
   return [...boards].sort((left, right) => {
@@ -213,6 +219,14 @@ export function shouldAutoLoadDiscoverBoards(options: {
   loading: boolean;
 }): boolean {
   return options.isDiscoverRoute && options.isIntersecting && options.hasMore && !options.loading;
+}
+
+export function shouldAutoLoadPublicWikis(options: {
+  isIntersecting: boolean;
+  hasMore: boolean;
+  loading: boolean;
+}): boolean {
+  return options.isIntersecting && options.hasMore && !options.loading;
 }
 
 export function shouldFallbackDiscoverNewestFirstQuery(error: unknown, isFirstPage: boolean): boolean {
@@ -550,9 +564,15 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
     this.discoverLoadSentinelElement = element?.nativeElement ?? null;
     this.observeDiscoverLoadSentinel();
   }
+  @ViewChild('publicWikiLoadSentinel')
+  set publicWikiLoadSentinel(element: ElementRef<HTMLElement> | undefined) {
+    this.publicWikiLoadSentinelElement = element?.nativeElement ?? null;
+    this.observePublicWikiLoadSentinel();
+  }
   private readonly localeId = inject(LOCALE_ID);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly atlasService = inject(AtlasService);
+  private readonly cityBoardListingsService = inject(CityBoardListingsService);
   private readonly authService = inject(AuthService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -575,6 +595,8 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
   readonly activeCategory = signal<PublicWikiCategory>(CITIES_CATEGORY);
   readonly activeSort = signal<PublicWikiSortMode>('population');
   readonly visibleWikiLimit = signal(HOME_SECTION_PAGE_SIZE);
+  readonly publicWikiAutoLoading = signal(false);
+  readonly landingFeaturedBoards = signal<CityBoardListing[]>([]);
   readonly mobileSectionLimits = signal<Record<string, number>>({});
   readonly mobileDiscoverLimit = signal(HOME_SECTION_PAGE_SIZE);
   readonly mobileFeaturedCityLimit = signal(HOME_SECTION_PAGE_SIZE);
@@ -614,6 +636,8 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
   private homeRailLayoutCheckQueued = false;
   private discoverLoadSentinelElement: HTMLElement | null = null;
   private discoverLoadObserver: IntersectionObserver | null = null;
+  private publicWikiLoadSentinelElement: HTMLElement | null = null;
+  private publicWikiLoadObserver: IntersectionObserver | null = null;
 
   readonly publicWikis = computed(() => this.liveWikis());
 
@@ -940,6 +964,7 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
             ?? (atlas.university_config?.country_code === 'US' ? 'United States' : null),
 	      }));
 	      this.liveWikis.set(liveWikis);
+      void this.loadLandingFeaturedBoards(atlases);
       this.validateHomePreferences();
       if (this.activeSort() === 'temp') {
         void this.ensureTemperatures();
@@ -966,6 +991,8 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
   ngOnDestroy(): void {
     this.discoverLoadObserver?.disconnect();
     this.discoverLoadObserver = null;
+    this.publicWikiLoadObserver?.disconnect();
+    this.publicWikiLoadObserver = null;
   }
 
   @HostListener('window:hashchange')
@@ -1098,6 +1125,24 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
 
   showMoreWikis(): void {
     this.visibleWikiLimit.update((currentLimit) => currentLimit + HOME_SECTION_PAGE_SIZE);
+  }
+
+  async onPublicWikiLoadSentinelIntersection(isIntersecting: boolean): Promise<void> {
+    if (!shouldAutoLoadPublicWikis({
+      isIntersecting,
+      hasMore: this.hasMoreWikis(),
+      loading: this.publicWikiAutoLoading(),
+    })) {
+      return;
+    }
+
+    this.publicWikiAutoLoading.set(true);
+    try {
+      this.showMoreWikis();
+    } finally {
+      this.publicWikiAutoLoading.set(false);
+    }
+    this.queuePublicWikiLoadIfSentinelStillNearViewport();
   }
 
   clearFilters(): void {
@@ -1403,6 +1448,36 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
     this.discoverLoadObserver.observe(this.discoverLoadSentinelElement);
   }
 
+  private observePublicWikiLoadSentinel(): void {
+    this.publicWikiLoadObserver?.disconnect();
+    this.publicWikiLoadObserver = null;
+    if (!this.isBrowser || !this.publicWikiLoadSentinelElement) {
+      return;
+    }
+    this.publicWikiLoadObserver = new IntersectionObserver((entries) => {
+      void this.onPublicWikiLoadSentinelIntersection(entries.some((entry) => entry.isIntersecting));
+    }, {
+      root: null,
+      rootMargin: `${PUBLIC_WIKI_AUTOLOAD_ROOT_MARGIN_PX}px 0px`,
+      threshold: 0,
+    });
+    this.publicWikiLoadObserver.observe(this.publicWikiLoadSentinelElement);
+  }
+
+  private queuePublicWikiLoadIfSentinelStillNearViewport(): void {
+    if (!this.isBrowser || !this.publicWikiLoadSentinelElement || !this.hasMoreWikis()) {
+      return;
+    }
+    requestAnimationFrame(() => {
+      const sentinel = this.publicWikiLoadSentinelElement;
+      if (!sentinel) return;
+      const bounds = sentinel.getBoundingClientRect();
+      const nearViewport = bounds.top <= window.innerHeight + PUBLIC_WIKI_AUTOLOAD_ROOT_MARGIN_PX
+        && bounds.bottom >= -PUBLIC_WIKI_AUTOLOAD_ROOT_MARGIN_PX;
+      if (nearViewport) void this.onPublicWikiLoadSentinelIntersection(true);
+    });
+  }
+
   private queueDiscoverLoadIfSentinelStillNearViewport(): void {
     if (!this.isBrowser || !this.discoverLoadSentinelElement || !this.hasMoreMobileDiscoverBoards()) {
       return;
@@ -1496,6 +1571,57 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
     } finally {
       this.mobileBoardsLoadingMore.set(false);
     }
+  }
+
+  private async loadLandingFeaturedBoards(atlases: AtlasItem[]): Promise<void> {
+    const sanFrancisco = atlases.find((atlas) =>
+      atlas.slug?.trim().toLowerCase() === 'my-living-wiki-san-francisco',
+    ) ?? atlases.find((atlas) =>
+      atlas.slug?.trim().toLowerCase() === 'san-francisco',
+    ) ?? atlases.find((atlas) => {
+      const name = this.atlasService.displayName(atlas).trim().toLowerCase();
+      const isCity = atlas.wiki_type === 'city' || atlas.city_config?.enabled === true;
+      return isCity && name.includes('san francisco');
+    });
+    if (!sanFrancisco?.id) {
+      this.landingFeaturedBoards.set([]);
+      return;
+    }
+
+    try {
+      const boards = (await this.cityBoardListingsService.list(sanFrancisco.id, { targetKind: 'city' }))
+        .filter((board) => Boolean(board.imageUrl));
+      const rankedBoards = [...boards].sort((left, right) =>
+        this.landingBoardFlavorScore(right) - this.landingBoardFlavorScore(left)
+        || left.featuredRank - right.featuredRank
+        || left.title.localeCompare(right.title));
+      const foodBoard = rankedBoards.find((board) =>
+        /\b(food|dish|dishes|eat|restaurant|cafe|coffee|bakery|market|drink)\b/i.test(
+          `${board.categoryId} ${board.title} ${board.description} ${board.topicIds.join(' ')}`,
+        ));
+      const localLifeBoard = rankedBoards.find((board) =>
+        board.id !== foodBoard?.id
+        && /\b(local|locals|linger|hidden|free|neighborhood|guidebook|places|park|street|weekend)\b/i.test(
+          `${board.categoryId} ${board.title} ${board.description} ${board.topicIds.join(' ')}`,
+        ));
+      const selected = [foodBoard, localLifeBoard].filter((board): board is CityBoardListing => Boolean(board));
+      for (const board of rankedBoards) {
+        if (selected.length >= 2) break;
+        if (!selected.some((item) => item.id === board.id)) selected.push(board);
+      }
+      this.landingFeaturedBoards.set(selected.slice(0, 2));
+    } catch {
+      this.landingFeaturedBoards.set([]);
+    }
+  }
+
+  private landingBoardFlavorScore(board: CityBoardListing): number {
+    const text = `${board.categoryId} ${board.title} ${board.description} ${board.topicIds.join(' ')}`.toLowerCase();
+    let score = Math.max(0, 40 - Math.min(board.featuredRank, 40));
+    if (/\b(food|dish|dishes|eat|restaurant|cafe|coffee|bakery|market|drink)\b/.test(text)) score += 90;
+    if (/\b(local|locals|linger|hidden|free|neighborhood|guidebook|places|park|street|weekend)\b/.test(text)) score += 65;
+    if (board.imageUrl) score += 25;
+    return score;
   }
 
   private async loadMobileDiscoverBoards(): Promise<void> {
