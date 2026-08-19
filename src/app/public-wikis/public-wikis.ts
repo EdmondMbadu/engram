@@ -968,6 +968,7 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
 
     await this.authService.waitForReady();
     this.loadHomePreferences();
+    this.positionSignedInDirectory();
 
     this.loadBoardActionState();
     void this.loadMobileBoards();
@@ -1251,6 +1252,13 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
 
   private scrollHomeTargetIntoView(targetId: string): void {
     document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  private positionSignedInDirectory(): void {
+    if (!this.isBrowser || !this.isSignedIn() || !this.isDirectoryRoute() || window.location.hash) return;
+    requestAnimationFrame(() => {
+      document.getElementById('public-directory')?.scrollIntoView({ behavior: 'auto', block: 'start' });
+    });
   }
 
   private homeRailElement(railId: string): HTMLElement | null {
