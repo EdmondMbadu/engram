@@ -76,9 +76,10 @@ a { color: inherit; text-decoration: none; }
 .hero h1 span { position: relative; color: var(--green); font-size: 1.2em; letter-spacing: -.06em; }
 .hero h1 span::after { content: ''; position: absolute; left: 0; right: 0; bottom: -6px; height: 4px; border-radius: 50%; background: var(--green); transform: rotate(-1.5deg); }
 .hero-lede { max-width: 600px; margin: 34px 0 24px; font-size: 18px; line-height: 1.47; }
-.positioning { display: flex; align-items: center; gap: 15px; max-width: 610px; }
-.positioning p { margin: 0; font-size: 15px; line-height: 1.4; }
-.play-mark { display: grid; flex: 0 0 48px; height: 48px; place-items: center; border: 2px solid var(--green); border-radius: 50%; color: var(--green); font-size: 26px; }
+.positioning { display: flex; align-items: center; gap: 15px; max-width: 620px; padding: 12px 16px 12px 12px; border: 1px solid #c9e3d6; border-radius: 15px; background: linear-gradient(105deg, #f1faf5, rgba(255,255,255,.86)); box-shadow: 0 12px 28px rgba(13,107,72,.08); }
+.positioning p { margin: 0; color: #18352c; font-size: 16.5px; font-weight: 560; line-height: 1.43; letter-spacing: -.01em; }
+.positioning strong { color: var(--green-dark); font-weight: 850; }
+.play-mark { display: grid; flex: 0 0 50px; height: 50px; place-items: center; border: 2px solid var(--green); border-radius: 50%; background: #fff; color: var(--green); font-size: 27px; box-shadow: 0 6px 14px rgba(13,107,72,.1); }
 
 .hero-features { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 34px; max-width: 650px; }
 .hero-features > div { display: flex; min-height: 88px; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 2px 14px; text-align: center; border-right: 1px solid #d6ded9; }
@@ -201,7 +202,7 @@ a { color: inherit; text-decoration: none; }
 
 @media (max-width: 680px) {
   .site-header { padding: 9px 18px; }.brand img { width: 142px; }.button { min-height: 39px; padding: 0 14px; font-size: 12px; }
-  .hero-copy { padding: 35px 19px 0; }.hero h1 { font-size: 45px; }.hero-lede { margin-top: 26px; font-size: 16px; }.positioning p { font-size: 13px; }.play-mark { flex-basis: 42px; height: 42px; }
+  .hero-copy { padding: 35px 19px 0; }.hero h1 { font-size: 45px; }.hero-lede { margin-top: 26px; font-size: 16px; }.positioning { padding: 10px 12px 10px 10px; }.positioning p { font-size: 14px; }.play-mark { flex-basis: 42px; height: 42px; font-size: 23px; }
   .hero-features { grid-template-columns: repeat(2, 1fr); }.hero-features > div:nth-child(2) { border-right: 0; }.hero-features > div:nth-child(-n+2) { border-bottom: 1px solid #d6ded9; }
   .product-collage { width: 650px; height: 395px; margin-left: 50%; transform: translateX(-50%) scale(.68); transform-origin: top center; }
   .section-shell { padding-right: 14px; padding-left: 14px; }.section-title { font-size: 23px; }.audience-card { grid-template-columns: 1fr; }.reel { height: 420px; }.audience-copy { padding: 10px 20px 20px; }
