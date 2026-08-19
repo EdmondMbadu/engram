@@ -2593,22 +2593,6 @@ button.mobile-talk-action {
   white-space: nowrap;
 }
 
-.public-landing-collage__board > span {
-  display: flex;
-  flex-direction: column;
-  gap: 0.18rem;
-}
-
-.public-landing-collage__board > span small {
-  color: rgba(255, 255, 255, 0.72);
-  font-family: ui-sans-serif, system-ui, sans-serif;
-  font-size: 0.55rem;
-  font-weight: 750;
-  letter-spacing: 0.16em;
-  line-height: 1;
-  text-transform: uppercase;
-}
-
 .public-landing-collage__primary {
   grid-row: 1 / 3;
 }

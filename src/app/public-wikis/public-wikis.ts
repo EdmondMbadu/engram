@@ -19,10 +19,6 @@ import { httpsCallable, type Functions } from 'firebase/functions';
 import { AtlasService } from '../atlas.service';
 import type { AtlasItem } from '../atlas.models';
 import { AuthService } from '../auth.service';
-import {
-  CityBoardListingsService,
-  type CityBoardListing,
-} from '../city-board-listings.service';
 import { getFirebaseFirestore, getFirebaseFunctions } from '../firebase.client';
 import {
   buildPublicWikiLiveItem,
@@ -572,7 +568,6 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
   private readonly localeId = inject(LOCALE_ID);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly atlasService = inject(AtlasService);
-  private readonly cityBoardListingsService = inject(CityBoardListingsService);
   private readonly authService = inject(AuthService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -596,7 +591,6 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
   readonly activeSort = signal<PublicWikiSortMode>('population');
   readonly visibleWikiLimit = signal(HOME_SECTION_PAGE_SIZE);
   readonly publicWikiAutoLoading = signal(false);
-  readonly landingFeaturedBoards = signal<CityBoardListing[]>([]);
   readonly mobileSectionLimits = signal<Record<string, number>>({});
   readonly mobileDiscoverLimit = signal(HOME_SECTION_PAGE_SIZE);
   readonly mobileFeaturedCityLimit = signal(HOME_SECTION_PAGE_SIZE);
@@ -964,7 +958,6 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
             ?? (atlas.university_config?.country_code === 'US' ? 'United States' : null),
 	      }));
 	      this.liveWikis.set(liveWikis);
-      void this.loadLandingFeaturedBoards(atlases);
       this.validateHomePreferences();
       if (this.activeSort() === 'temp') {
         void this.ensureTemperatures();
@@ -1571,57 +1564,6 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
     } finally {
       this.mobileBoardsLoadingMore.set(false);
     }
-  }
-
-  private async loadLandingFeaturedBoards(atlases: AtlasItem[]): Promise<void> {
-    const sanFrancisco = atlases.find((atlas) =>
-      atlas.slug?.trim().toLowerCase() === 'my-living-wiki-san-francisco',
-    ) ?? atlases.find((atlas) =>
-      atlas.slug?.trim().toLowerCase() === 'san-francisco',
-    ) ?? atlases.find((atlas) => {
-      const name = this.atlasService.displayName(atlas).trim().toLowerCase();
-      const isCity = atlas.wiki_type === 'city' || atlas.city_config?.enabled === true;
-      return isCity && name.includes('san francisco');
-    });
-    if (!sanFrancisco?.id) {
-      this.landingFeaturedBoards.set([]);
-      return;
-    }
-
-    try {
-      const boards = (await this.cityBoardListingsService.list(sanFrancisco.id, { targetKind: 'city' }))
-        .filter((board) => Boolean(board.imageUrl));
-      const rankedBoards = [...boards].sort((left, right) =>
-        this.landingBoardFlavorScore(right) - this.landingBoardFlavorScore(left)
-        || left.featuredRank - right.featuredRank
-        || left.title.localeCompare(right.title));
-      const foodBoard = rankedBoards.find((board) =>
-        /\b(food|dish|dishes|eat|restaurant|cafe|coffee|bakery|market|drink)\b/i.test(
-          `${board.categoryId} ${board.title} ${board.description} ${board.topicIds.join(' ')}`,
-        ));
-      const localLifeBoard = rankedBoards.find((board) =>
-        board.id !== foodBoard?.id
-        && /\b(local|locals|linger|hidden|free|neighborhood|guidebook|places|park|street|weekend)\b/i.test(
-          `${board.categoryId} ${board.title} ${board.description} ${board.topicIds.join(' ')}`,
-        ));
-      const selected = [foodBoard, localLifeBoard].filter((board): board is CityBoardListing => Boolean(board));
-      for (const board of rankedBoards) {
-        if (selected.length >= 2) break;
-        if (!selected.some((item) => item.id === board.id)) selected.push(board);
-      }
-      this.landingFeaturedBoards.set(selected.slice(0, 2));
-    } catch {
-      this.landingFeaturedBoards.set([]);
-    }
-  }
-
-  private landingBoardFlavorScore(board: CityBoardListing): number {
-    const text = `${board.categoryId} ${board.title} ${board.description} ${board.topicIds.join(' ')}`.toLowerCase();
-    let score = Math.max(0, 40 - Math.min(board.featuredRank, 40));
-    if (/\b(food|dish|dishes|eat|restaurant|cafe|coffee|bakery|market|drink)\b/.test(text)) score += 90;
-    if (/\b(local|locals|linger|hidden|free|neighborhood|guidebook|places|park|street|weekend)\b/.test(text)) score += 65;
-    if (board.imageUrl) score += 25;
-    return score;
   }
 
   private async loadMobileDiscoverBoards(): Promise<void> {
