@@ -319,7 +319,7 @@ export async function fetchBitmap(value) {
   for (let redirect = 0; redirect <= 3; redirect += 1) {
     response = await fetch(current, {
       redirect: 'manual', signal: AbortSignal.timeout(20_000),
-      headers: { accept: 'image/avif,image/webp,image/png,image/jpeg,*/*;q=0.7', 'user-agent': userAgent },
+      headers: { accept: 'image/webp,image/png,image/jpeg,*/*;q=0.7', 'user-agent': userAgent },
     });
     if (response.status < 300 || response.status >= 400) break;
     const location = response.headers.get('location');
@@ -861,11 +861,25 @@ export async function uploadBitmap(admin, bitmap, storagePath, provenance, bucke
 
 function schoolSearchVariants(schoolName) {
   const value = clean(schoolName, 180);
+  const withoutCampusSuffix = value
+    .replace(/-(?:Main|Pittsburgh|Fort Collins|New York|Seattle) Campus$/i, '')
+    .replace(/-Main Campus$/i, '')
+    .replace(/\s+at Raleigh$/i, '')
+    .trim();
+  const beforeLocationSuffix = value.includes('-') ? value.split('-')[0].trim() : '';
+  const aliases = [];
+  if (/^North Carolina State University/i.test(value)) aliases.push('NC State University');
+  if (/^University of Illinois Chicago$/i.test(value)) aliases.push('UIC campus');
+  if (/^Cal Poly Maritime Academy$/i.test(value)) aliases.push('California State University Maritime Academy');
+  if (/^The Catholic University of America$/i.test(value)) aliases.push('Catholic University of America');
   return [...new Set([
     value,
+    withoutCampusSuffix,
+    beforeLocationSuffix,
     value.replace(/^CUNY\s+/i, '').replace(/\s+Campus Immersion$/i, '').trim(),
     value.replace(/\s+in the City of New York$/i, '').trim(),
     value.replace(/^The\s+/i, '').trim(),
+    ...aliases,
   ].filter((item) => item.length >= 4))];
 }
 
@@ -904,13 +918,13 @@ function campusCandidateFromPage(page, target, mode) {
 export async function universityCampusFallbackCandidates(target) {
   const pages = [];
   for (const query of schoolSearchVariants(target.schoolName)) {
-    try {
+    for (const searchTerm of [`\"${query}\"`, `\"${query}\" campus`]) try {
       const url = new URL('https://commons.wikimedia.org/w/api.php');
       url.searchParams.set('action', 'query');
       url.searchParams.set('format', 'json');
       url.searchParams.set('formatversion', '2');
       url.searchParams.set('generator', 'search');
-      url.searchParams.set('gsrsearch', `\"${query}\"`);
+      url.searchParams.set('gsrsearch', searchTerm);
       url.searchParams.set('gsrnamespace', '6');
       url.searchParams.set('gsrlimit', '100');
       url.searchParams.set('prop', 'imageinfo|coordinates');

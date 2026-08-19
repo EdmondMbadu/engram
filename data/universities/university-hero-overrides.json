@@ -1,0 +1,119 @@
+{
+  "131283": {
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/CUA_campus_1.JPG/1920px-CUA_campus_1.JPG",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:CUA_campus_1.JPG",
+    "provider": "wikimedia-manual-campus-override",
+    "license": "CC0",
+    "title": "Catholic University of America campus",
+    "width": 1920,
+    "height": 1440
+  },
+  "197735": {
+    "imageUrl": "https://img1.wsimg.com/isteam/ip/1c7e1d31-6d53-47be-9233-392312a7611a/15%20Elyon%20Rd.jpg/:/cr=t:5.36%25,l:5.36%25,w:89.29%25,h:89.29%25/rs=w:1200,cg:true,m",
+    "sourceUrl": "https://yeshivathviznitz.org/",
+    "provider": "official-manual-campus-override",
+    "license": null,
+    "title": "Yeshivath Viznitz at 15 Elyon Road",
+    "width": 1200,
+    "height": 402
+  },
+  "204176": {
+    "imageUrl": "https://www.mccn.edu/images/about/locations.jpg",
+    "sourceUrl": "https://www.mccn.edu/about/locations",
+    "provider": "official-manual-campus-override",
+    "license": null,
+    "title": "Mount Carmel College of Nursing main campus",
+    "width": 920,
+    "height": 460
+  },
+  "212054": {
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Main_Building_-_Drexel_University_%2853590618820%29.jpg/1920px-Main_Building_-_Drexel_University_%2853590618820%29.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Main_Building_-_Drexel_University_(53590618820).jpg",
+    "provider": "wikimedia-manual-campus-override",
+    "license": "CC BY 2.0",
+    "title": "Main Building at Drexel University",
+    "width": 1920,
+    "height": 1080
+  },
+  "446604": {
+    "imageUrl": "https://utam.edu/building.jpg",
+    "sourceUrl": "https://utam.edu/",
+    "provider": "official-manual-campus-override",
+    "license": null,
+    "title": "Uta Mesivta of Kiryas Joel building",
+    "width": 576,
+    "height": 196
+  },
+  "111188": {
+    "imageUrl": "https://maritime.calpoly.edu/sites/default/files/styles/width_1936/public/2025-05/20250325-Maritime-JJ0663-min.webp?itok=ymq1iMv2",
+    "sourceUrl": "https://maritime.calpoly.edu/",
+    "provider": "official-manual-campus-override",
+    "license": null,
+    "title": "Cal Poly Maritime Academy",
+    "width": 1936,
+    "height": 1089
+  },
+  "192703": {
+    "imageUrl": "https://manhattan.edu/sites/default/files/styles/4_3_1254w/public/media/2026-06/campus-outside-quad-3000x2000.jpg?h=c6980913&itok=tJnlCIDm",
+    "sourceUrl": "https://manhattan.edu/",
+    "provider": "official-manual-campus-override",
+    "license": null,
+    "title": "Manhattan University campus quad",
+    "width": 1254,
+    "height": 940
+  },
+  "219356": {
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Administration_Building_SDSU_2.JPG/1920px-Administration_Building_SDSU_2.JPG",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Administration_Building_SDSU_2.JPG",
+    "provider": "wikimedia-manual-campus-override",
+    "license": "CC BY-SA 3.0",
+    "title": "South Dakota State University Administration Building",
+    "width": 1920,
+    "height": 1225
+  },
+  "232681": {
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/George_Washington_Hall.JPG/1920px-George_Washington_Hall.JPG",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:George_Washington_Hall.JPG",
+    "provider": "wikimedia-manual-campus-override",
+    "license": "CC BY-SA 3.0",
+    "title": "George Washington Hall at the University of Mary Washington",
+    "width": 1920,
+    "height": 1280
+  },
+  "237066": {
+    "imageUrl": "https://www.whitworth.edu/cms/media/whitworth/images/administration/university-events/university-events-hero.jpg",
+    "sourceUrl": "https://www.whitworth.edu/cms/administration/events-and-entertainment-technology/",
+    "provider": "official-manual-campus-override",
+    "license": null,
+    "title": "Whitworth University campus",
+    "width": 1800,
+    "height": 750
+  },
+  "455257": {
+    "imageUrl": "/assets/university-heroes/455257.svg",
+    "sourceUrl": "https://yeshivaofmachzikaihadas.com/",
+    "provider": "university-identity-fallback",
+    "license": null,
+    "title": "Yeshiva of Machzikai Hadas campus guide",
+    "width": 1600,
+    "height": 900
+  },
+  "147660": {
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/0/0d/Wentz_Hall.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Wentz_Hall.jpg",
+    "provider": "wikimedia-manual-campus-override",
+    "license": "CC BY-SA 3.0",
+    "title": "Wentz Hall at North Central College",
+    "width": 1280,
+    "height": 960
+  },
+  "180878": {
+    "imageUrl": "https://451.imgix.net/bryanhealth/public/files/AJJzCI2YvaHYLDGChl7W/BRYAN_23_002-06810.jpg?h=1080&q=80&rect=0%2C208%2C7008%2C3945&w=1920",
+    "sourceUrl": "https://visit.bryanhealthcollege.edu/lincoln-campus-visit",
+    "provider": "official-manual-campus-override",
+    "license": null,
+    "title": "Bryan College of Health Sciences Lincoln campus",
+    "width": 1919,
+    "height": 1080
+  }
+}

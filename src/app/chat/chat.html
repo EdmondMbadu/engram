@@ -574,7 +574,7 @@
                 }
 
                 @if (currentWikiGuide(); as guide) {
-                  @if (guide.banner_url) {
+                  @if (guide.banner_url && !isCityLandingPage()) {
                     <div class="mt-3 w-full max-w-2xl overflow-hidden rounded-[1.25rem] border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-soft)]">
                       <img [src]="guide.banner_url" alt="" class="h-24 w-full object-cover sm:h-32" />
                     </div>
@@ -697,15 +697,15 @@
                         <img
                           class="chat-city-landing-hero__image"
                           [src]="heroImage"
-                          [alt]="currentWikiName() + ' city view'"
+                          [alt]="landingHeroImageAlt()"
                           (error)="handleCityHeroImageError()"
                         />
                       }
                       <span class="chat-city-landing-hero__wash" aria-hidden="true"></span>
                       <div class="chat-city-landing-hero__content">
-                        <p class="chat-city-landing-hero__eyebrow" i18n>LivingWiki city guide</p>
+                        <p class="chat-city-landing-hero__eyebrow">{{ landingHeroEyebrow() }}</p>
                         <h2>{{ currentWikiName() || uiText('askThisWiki') }}</h2>
-                        <p class="chat-city-landing-hero__tagline" i18n>Ask the city. Explore what locals know.</p>
+                        <p class="chat-city-landing-hero__tagline">{{ landingHeroTagline() }}</p>
 
                         @if (cityHeroFacts().length) {
                           <div class="chat-city-landing-hero__facts" [attr.aria-label]="'Facts about ' + currentWikiName()">

@@ -23,6 +23,8 @@
     "university-boards:set-worker": "npm --prefix functions run build && node scripts/run-university-board-set-worker.mjs",
     "university-boards:free-worker": "npm --prefix functions run build && node scripts/run-university-board-set-worker.mjs",
     "university-boards:images": "node scripts/enrich-university-board-images.mjs",
+    "universities:heroes": "node scripts/enrich-university-hero-catalog.mjs",
+    "universities:heroes:sync": "node scripts/sync-university-hero-catalog.mjs",
     "university-boards:publish": "node scripts/publish-university-boards.mjs",
     "university-boards:catalog": "node scripts/reconcile-university-board-catalog.mjs",
     "university-boards:promote-recovered": "node scripts/promote-recovered-university-boards.mjs",

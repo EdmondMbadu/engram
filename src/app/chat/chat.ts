@@ -655,7 +655,14 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         || atlas?.wiki_type === 'university'
         || atlas?.university_config?.enabled === true);
   });
-  readonly isCityLandingPage = computed(() => this.isBoardShelfPage() && !this.isUniversityPage());
+  readonly isCityLandingPage = computed(() => this.isBoardShelfPage());
+  readonly landingHeroEyebrow = computed(() => this.isUniversityPage()
+    ? 'LivingWiki university guide'
+    : 'LivingWiki city guide');
+  readonly landingHeroTagline = computed(() => this.isUniversityPage()
+    ? 'Ask the campus. Explore what official sources and the community know.'
+    : 'Ask the city. Explore what locals know.');
+  readonly landingHeroImageAlt = computed(() => `${this.currentWikiName() || 'LivingWiki'} ${this.isUniversityPage() ? 'campus' : 'city'} view`);
   readonly boardShelfEyebrow = computed(() => this.isUniversityPage() ? 'Explore campus life' : 'Explore the city');
   readonly boardShelfDescription = computed(() => this.isUniversityPage()
     ? 'Source-backed collections for campus traditions, shared spaces, food, study, and the college town.'
@@ -977,7 +984,14 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     return stickers.slice(0, 4);
   });
   readonly chatCityMoodStickers = computed<ChatCityMoodSticker[]>(() => {
-    if (this.isUniversityPage()) return [];
+    if (this.isUniversityPage()) {
+      return [
+        { label: 'Academics', icon: 'menu_book', palette: 'yellow' },
+        { label: 'Admissions', icon: 'how_to_reg', palette: 'coral' },
+        { label: 'Campus life', icon: 'groups', palette: 'green' },
+        { label: 'Outcomes', icon: 'workspace_premium', palette: 'purple' },
+      ];
+    }
     const options: ChatCityMoodSticker[] = [
       { label: 'Food', icon: 'restaurant', palette: 'coral' },
       { label: 'Markets', icon: 'storefront', palette: 'yellow' },
@@ -999,7 +1013,10 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   });
   readonly cityHeroFacts = computed(() => {
     const facts = this.chatCityStickers();
-    const prioritized = ['region', 'population', 'time']
+    const prioritizedIds = this.isUniversityPage()
+      ? ['campus', 'enrollment', 'control']
+      : ['region', 'population', 'time'];
+    const prioritized = prioritizedIds
       .map((id) => facts.find((fact) => fact.id === id))
       .filter((fact): fact is ChatCitySticker => !!fact);
     if (prioritized.length >= 3) return prioritized.slice(0, 3);
