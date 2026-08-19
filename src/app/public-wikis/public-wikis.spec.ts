@@ -85,6 +85,24 @@ describe('PublicWikisComponent home pagination', () => {
     expect(component.hasMoreMobileSection(section)).toBeFalse();
   });
 
+  it('shows saved videos in a dedicated home section that links to My Videos', () => {
+    const component = createComponent();
+    component.mobileVideos.set([{
+      id: 'video-1',
+      sourceTitle: 'Philadelphia neighborhood guide',
+      videoKind: 'full',
+      posterUrl: '/poster.jpg',
+    } as any]);
+
+    const section = component.mobileSections().find((item) => item.id === 'videos')!;
+    expect(section.label).toBe('My Videos');
+    expect(section.cards.length).toBe(1);
+    expect(section.cards[0].title).toBe('Philadelphia neighborhood guide');
+    expect(section.cards[0].imageUrl).toBe('/poster.jpg');
+    expect(section.cards[0].link).toBe('/videos');
+    expect(component.mobileSectionViewAllLink(section)).toBe('/videos');
+  });
+
   it('uses the same 10-item reveal behavior for discover boards', async () => {
     const component = createComponent();
     component.mobileDiscoverBoards.set(Array.from({ length: 25 }, (_, index) => board(index)));

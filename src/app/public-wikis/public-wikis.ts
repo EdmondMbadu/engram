@@ -1,5 +1,5 @@
 import { DecimalPipe, isPlatformBrowser } from '@angular/common';
-import { AfterViewChecked, Component, computed, ElementRef, HostListener, inject, LOCALE_ID, OnDestroy, OnInit, PLATFORM_ID, signal, ViewChild, type WritableSignal } from '@angular/core';
+import { AfterViewChecked, Component, computed, ElementRef, HostListener, inject, Injector, LOCALE_ID, OnDestroy, OnInit, PLATFORM_ID, signal, ViewChild, type WritableSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
@@ -29,6 +29,7 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { AccountMenuComponent } from '../account-menu/account-menu';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 import { LanguageSwitcherComponent } from '../language-switcher/language-switcher';
+import type { VideoLibraryItem } from '../video-library/video-library.models';
 
 const CITIES_CATEGORY = 'Cities';
 const UNIVERSITIES_CATEGORY = 'Universities';
@@ -569,6 +570,7 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
   private readonly platformId = inject(PLATFORM_ID);
   private readonly atlasService = inject(AtlasService);
   private readonly authService = inject(AuthService);
+  private readonly injector = inject(Injector);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
@@ -580,9 +582,11 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
   readonly mobileBoards = signal<MobileBoard[]>([]);
   readonly mobileDiscoverBoards = signal<MobileBoard[]>([]);
   readonly mobileFriends = signal<MobileFriend[]>([]);
+  readonly mobileVideos = signal<VideoLibraryItem[]>([]);
   readonly mobileBoardsLoading = signal(false);
   readonly mobileDiscoverLoading = signal(false);
   readonly mobileFriendsLoading = signal(false);
+  readonly mobileVideosLoading = signal(false);
   readonly likedBoardIds = signal<Set<string>>(new Set());
   readonly savedBoardIds = signal<Set<string>>(new Set());
   readonly isLoadingLiveWikis = signal(true);
@@ -689,12 +693,25 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
       .filter((board) => this.isTripBoard(board))
       .map((board) => this.mobileCardFromBoard(board, 'trip')),
   );
+  readonly allMobileVideoCards = computed(() =>
+    this.mobileVideos().map((video) => ({
+      id: video.id,
+      title: video.sourceTitle,
+      chip: video.videoKind === 'trailer' ? 'Board trailer' : 'Full video',
+      icon: 'smart_display',
+      accent: '#365f52',
+      link: '/videos',
+      imageUrl: video.posterUrl || undefined,
+      imageAlt: video.sourceTitle,
+    })),
+  );
   readonly mobileSections = computed<MobileHomeSection[]>(() => {
     const savedCards = this.allMobileSavedBoardCards();
     const boardCards = this.allMobileBoardCards();
     const songCards = this.allMobileSongCards();
     const friendCards = this.allMobileFriendCards();
     const tripCards = this.allMobileTripCards();
+    const videoCards = this.allMobileVideoCards();
 
     return [
       ...(savedCards.length
@@ -727,6 +744,15 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
         addLink: '/songs',
         cards: songCards.slice(0, this.mobileSectionLimit('songs')),
         totalCount: songCards.length,
+      },
+      {
+        id: 'videos',
+        label: $localize`My Videos`,
+        icon: 'video_library',
+        addLabel: $localize`My Videos`,
+        addLink: '/videos',
+        cards: videoCards.slice(0, this.mobileSectionLimit('videos')),
+        totalCount: videoCards.length,
       },
       {
         id: 'friends',
@@ -946,6 +972,9 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
     this.loadBoardActionState();
     void this.loadMobileBoards();
     void this.loadMobileDiscoverBoards();
+    if (this.isSignedIn() && this.isHomeRoute()) {
+      void this.loadMobileVideos();
+    }
     this.scheduleMobileFriendsLoad();
     void this.handleMobileHomeHash();
     this.isLoadingLiveWikis.set(true);
@@ -1321,6 +1350,7 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
   mobileSectionViewAllLink(section: MobileHomeSection): string | null {
     if (section.id === 'boards') return '/boards';
     if (section.id === 'songs') return '/songs';
+    if (section.id === 'videos') return '/videos';
     if (section.id === 'friends') return '/friends';
     if (section.id === 'trips') return '/trips';
     return null;
@@ -1499,7 +1529,21 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
     if (sectionId === 'songs') return this.allMobileSongCards().length;
     if (sectionId === 'friends') return this.allMobileFriendCards().length;
     if (sectionId === 'trips') return this.allMobileTripCards().length;
+    if (sectionId === 'videos') return this.allMobileVideoCards().length;
     return 0;
+  }
+
+  private async loadMobileVideos(): Promise<void> {
+    if (!this.isBrowser || this.mobileVideosLoading()) return;
+    this.mobileVideosLoading.set(true);
+    try {
+      const { VideoLibraryService } = await import('../video-library/video-library.service');
+      this.mobileVideos.set(await this.injector.get(VideoLibraryService).loadItems());
+    } catch {
+      this.mobileVideos.set([]);
+    } finally {
+      this.mobileVideosLoading.set(false);
+    }
   }
 
   private isDesktopHomeShell(): boolean {
