@@ -617,6 +617,26 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
 
   readonly publicWikis = computed(() => this.liveWikis());
 
+  readonly landingSpotlightWikis = computed(() => {
+    const withImages = this.publicWikis().filter((wiki) => wiki.status === 'live' && Boolean(wiki.heroUrl));
+    const preferredNames = ['san francisco', 'drexel university', 'tokyo'];
+    const selected: PublicWikiCatalogItem[] = [];
+
+    for (const preferredName of preferredNames) {
+      const match = withImages.find(
+        (wiki) => this.cityDisplayName(wiki).trim().toLowerCase() === preferredName,
+      );
+      if (match && !selected.includes(match)) selected.push(match);
+    }
+
+    for (const wiki of withImages) {
+      if (selected.length >= 3) break;
+      if (!selected.includes(wiki)) selected.push(wiki);
+    }
+
+    return selected.slice(0, 3);
+  });
+
   readonly liveCount = computed(() => this.liveWikis().length);
   readonly allMobileBoardCards = computed(() =>
     this.mobileBoards()

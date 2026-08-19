@@ -527,171 +527,114 @@
   }
 
   <div class="min-w-0 flex-1" [class.overflow-y-auto]="isSignedIn()">
-  <nav class="theme-nav sticky top-0 z-50 w-full border-b backdrop-blur-2xl">
-    <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4 lg:px-10">
-      <a routerLink="/home" class="flex items-center text-lg font-bold tracking-tighter text-[var(--text)]" (click)="showSignedInHome()">
+  <nav class="public-editorial-nav theme-nav sticky top-0 z-50 w-full border-b backdrop-blur-2xl">
+    <div class="public-editorial-nav__inner">
+      <a routerLink="/home" class="public-editorial-nav__brand" (click)="showSignedInHome()">
         <span class="public-livingwiki-brand">
           <img src="/assets/image/lucky-paper-crane.png" alt="" />
           <span><b>Living</b>Wiki</span>
         </span>
       </a>
 
-      <div class="flex items-center gap-2 sm:gap-3">
+      <div class="public-editorial-nav__links" aria-label="Primary navigation">
+        <a href="#public-directory">Explore</a>
+        <a routerLink="/dymaxion">Map</a>
+        <a routerLink="/business">For business</a>
+        <a routerLink="/pricing">Pricing</a>
+      </div>
+
+      <div class="public-editorial-nav__actions">
         <app-language-switcher></app-language-switcher>
-        <a
-          routerLink="/dymaxion"
-          class="group hidden items-center gap-1.5 rounded-full border border-[var(--accent)]/25 bg-[var(--accent)]/[0.08] px-3 py-2 text-[11px] font-black uppercase tracking-[0.14em] text-[var(--accent)] shadow-[0_10px_26px_-20px_rgba(59,175,98,0.9)] transition-all hover:-translate-y-0.5 hover:border-[var(--accent)]/55 hover:bg-[var(--accent)]/[0.14] hover:shadow-[0_18px_34px_-22px_rgba(59,175,98,1)] min-[430px]:inline-flex"
-        >
-          <span class="material-symbols-outlined text-[1rem] transition-transform group-hover:scale-110">travel_explore</span>
-          <span i18n>Map</span>
-        </a>
-        <a
-          routerLink="/business"
-          class="group hidden items-center gap-1.5 rounded-full border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-[11px] font-black uppercase tracking-[0.14em] text-[var(--text)] shadow-[var(--shadow-floating)] transition-all hover:-translate-y-0.5 hover:border-[var(--accent)]/45 hover:bg-[color-mix(in_srgb,var(--accent)_8%,var(--surface))] hover:text-[var(--accent)] min-[520px]:inline-flex"
-        >
-          <span class="material-symbols-outlined text-[1rem] text-[var(--accent)] transition-transform group-hover:scale-110">storefront</span>
-          <span i18n>Business</span>
-        </a>
-        @if (showUpgradePrompt()) {
-          <a
-            routerLink="/pricing"
-            class="group inline-flex items-center gap-1.5 rounded-full border border-[var(--accent)]/35 bg-[var(--accent)] px-3 py-2 text-[11px] font-black uppercase tracking-[0.14em] text-[var(--accent-contrast)] shadow-[0_14px_30px_-20px_rgba(59,175,98,1)] transition-all hover:-translate-y-0.5 hover:shadow-[0_20px_38px_-22px_rgba(59,175,98,1)]"
-          >
-            <span class="material-symbols-outlined text-[1rem] transition-transform group-hover:scale-110">upgrade</span>
-            <span class="hidden sm:inline" i18n>Upgrade</span>
-          </a>
-        }
         <app-theme-toggle></app-theme-toggle>
         <app-account-menu></app-account-menu>
+        <a routerLink="/landing" class="public-editorial-nav__create">Create a LivingWiki</a>
       </div>
     </div>
   </nav>
 
   <main>
-    <section class="relative overflow-hidden border-b border-[var(--line)]">
-      <div class="absolute inset-0 -z-10 bg-[linear-gradient(to_bottom,var(--soft-fill),transparent_42%),linear-gradient(to_right,var(--line)_1px,transparent_1px),linear-gradient(to_bottom,var(--line)_1px,transparent_1px)] bg-[size:auto,72px_72px,72px_72px] opacity-60"></div>
-
-      <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-10">
-        <div class="mx-auto max-w-4xl text-center">
-          <div class="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-4 py-1.5 shadow-[var(--shadow-floating)]">
-            <span class="h-1.5 w-1.5 rounded-full bg-[var(--accent)]"></span>
-            <span class="text-[10px] font-bold uppercase tracking-[0.28em] text-[var(--accent)]" i18n>Public LivingWiki Pages</span>
-          </div>
-          <h1 class="mx-auto mt-4 max-w-4xl text-5xl font-black leading-[0.98] tracking-normal text-[var(--accent-soft)] sm:text-7xl" i18n>
-            Find what lights you up.
-          </h1>
-          <p class="mx-auto mt-4 max-w-2xl text-base font-normal leading-7 text-[var(--muted)] sm:text-lg" i18n>
-            LivingWiki.com is like having a friend who knows everything about your city.
+    <section class="public-landing-hero">
+      <div class="public-landing-hero__inner">
+        <div class="public-landing-hero__copy">
+          <p class="public-landing-eyebrow">Public knowledge, made living</p>
+          <h1>Find what<br />lights you up.</h1>
+          <p class="public-landing-hero__lede">
+            Ask a city. Explore a campus. Discover the boards people make about the places and ideas they know.
           </p>
-
-          <div class="mt-6 flex justify-center">
-            <button
-              type="button"
-              (click)="openProductVideo()"
-              class="group inline-flex items-center gap-3 rounded-full border border-[var(--accent)]/45 bg-[linear-gradient(135deg,_var(--accent),_color-mix(in_srgb,_var(--accent)_72%,_#0f1720_28%))] py-2 pl-2 pr-5 text-left text-[var(--accent-contrast)] shadow-[0_22px_46px_-24px_rgba(59,175,98,0.95)] transition-all hover:-translate-y-0.5 hover:shadow-[0_28px_54px_-26px_rgba(59,175,98,1)]"
-            >
-              <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/18 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.25)] transition-transform group-hover:scale-105">
-                <span class="material-symbols-outlined text-xl">play_arrow</span>
-              </span>
-              <span class="flex flex-col">
-                <span class="text-sm font-black tracking-tight sm:text-base" i18n>What is the LivingWiki platform?</span>
-                <span class="text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--accent-contrast)]/80" i18n>Watch the 60-second intro</span>
-              </span>
+          <div class="public-landing-hero__actions">
+            <a href="#public-directory" class="public-landing-primary-cta">Explore LivingWiki</a>
+            <button type="button" (click)="openProductVideo()" class="public-landing-video-cta">
+              <span class="material-symbols-outlined">play_arrow</span>
+              <span>See how it works</span>
             </button>
           </div>
-
-          <!--
-          <div class="mx-auto mt-4 grid max-w-xl gap-3 sm:grid-cols-2">
-            <a
-              routerLink="/dymaxion"
-              class="group flex items-center gap-3 rounded-2xl border border-[var(--accent)]/30 bg-[linear-gradient(135deg,color-mix(in_srgb,var(--accent)_16%,var(--surface)),var(--surface))] px-4 py-3 text-left shadow-[0_18px_38px_-30px_rgba(59,175,98,0.95)] transition-all hover:-translate-y-0.5 hover:border-[var(--accent)]/55 hover:shadow-[0_24px_48px_-32px_rgba(59,175,98,1)]"
-            >
-              <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[var(--accent)] text-[var(--accent-contrast)] shadow-[0_14px_28px_-18px_rgba(59,175,98,1)]">
-                <span class="material-symbols-outlined text-xl">travel_explore</span>
-              </span>
-              <span class="min-w-0">
-                <span class="block text-sm font-black tracking-tight text-[var(--text)]">Open the map</span>
-                <span class="mt-0.5 block text-[10px] font-black uppercase tracking-[0.16em] text-[var(--muted)]">Explore city wikis</span>
-              </span>
-              <span class="material-symbols-outlined ml-auto text-base text-[var(--accent)] transition-transform group-hover:translate-x-0.5">arrow_forward</span>
-            </a>
-            <a
-              routerLink="/business"
-              class="group flex items-center gap-3 rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 text-left shadow-[var(--shadow-floating)] transition-all hover:-translate-y-0.5 hover:border-[var(--accent)]/45 hover:bg-[color-mix(in_srgb,var(--accent)_8%,var(--surface))]"
-            >
-              <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[var(--accent)]/20 bg-[var(--accent)]/[0.1] text-[var(--accent)]">
-                <span class="material-symbols-outlined text-xl">storefront</span>
-              </span>
-              <span class="min-w-0">
-                <span class="block text-sm font-black tracking-tight text-[var(--text)]">For business</span>
-                <span class="mt-0.5 block text-[10px] font-black uppercase tracking-[0.16em] text-[var(--muted)]">Claim a local profile</span>
-              </span>
-              <span class="material-symbols-outlined ml-auto text-base text-[var(--accent)] transition-transform group-hover:translate-x-0.5">arrow_forward</span>
-            </a>
-          </div>
-          -->
         </div>
 
-        <div class="mx-auto mt-6 max-w-5xl rounded-[1.5rem] border border-[var(--line)] bg-[var(--surface)]/95 p-3 shadow-[var(--shadow-elevated)] backdrop-blur-xl">
-          <label class="group relative block">
-            <span class="material-symbols-outlined pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-[var(--muted)] transition-colors group-focus-within:text-[var(--accent)]">search</span>
+        <div class="public-landing-collage" aria-label="Featured LivingWiki pages">
+          @if (landingSpotlightWikis()[0]; as spotlight) {
+            <a [routerLink]="spotlight.link || '/chat'" class="public-landing-collage__primary">
+              <img [src]="spotlight.heroUrl" [alt]="displayWikiTitle(spotlight)" />
+              <span>{{ cityDisplayName(spotlight) }}</span>
+            </a>
+          } @else {
+            <div class="public-landing-collage__primary public-landing-collage__placeholder"></div>
+          }
+          @if (landingSpotlightWikis()[1]; as spotlight) {
+            <a [routerLink]="spotlight.link || '/chat'" class="public-landing-collage__secondary public-landing-collage__secondary--top">
+              <img [src]="spotlight.heroUrl" [alt]="displayWikiTitle(spotlight)" />
+              <span>{{ cityDisplayName(spotlight) }}</span>
+            </a>
+          } @else {
+            <div class="public-landing-collage__secondary public-landing-collage__secondary--top public-landing-collage__placeholder"></div>
+          }
+          @if (landingSpotlightWikis()[2]; as spotlight) {
+            <a [routerLink]="spotlight.link || '/chat'" class="public-landing-collage__secondary public-landing-collage__secondary--bottom">
+              <img [src]="spotlight.heroUrl" [alt]="displayWikiTitle(spotlight)" />
+              <span>{{ cityDisplayName(spotlight) }}</span>
+            </a>
+          } @else {
+            <div class="public-landing-collage__secondary public-landing-collage__secondary--bottom public-landing-collage__placeholder"></div>
+          }
+          <div class="public-landing-collage__count">
+            <span class="material-symbols-outlined">groups</span>
+            <strong>{{ liveCount() }}</strong> public LivingWiki pages
+          </div>
+        </div>
+
+        <div class="public-landing-search">
+          <label class="public-landing-search__field">
+            <span class="material-symbols-outlined">search</span>
             <input
               type="text"
               [ngModel]="searchTerm()"
               (ngModelChange)="onSearchInput($event)"
               placeholder="Search cities, universities, neighborhoods, and public LivingWiki pages..."
-              class="w-full rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] py-4 pl-14 pr-12 text-sm text-[var(--text)] placeholder:text-[var(--muted)] outline-none transition-colors focus:border-[var(--accent)]"
-             />
+            />
             @if (searchTerm()) {
-              <button
-                type="button"
-                (click)="onSearchInput('')"
-                aria-label="Clear search"
-                class="absolute right-4 top-1/2 -translate-y-1/2 rounded-full border border-[var(--line)] p-1 text-[var(--muted)] transition-colors hover:border-[var(--accent)]/40 hover:text-[var(--text)]"
-               i18n-aria-label>
-                <span class="material-symbols-outlined text-sm">close</span>
+              <button type="button" (click)="onSearchInput('')" aria-label="Clear search" i18n-aria-label>
+                <span class="material-symbols-outlined">close</span>
               </button>
             }
           </label>
-
-          <div class="mt-3 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-            <div class="flex flex-wrap justify-center gap-2 lg:justify-start">
+          <div class="public-landing-search__categories">
+            <div class="public-landing-search__tabs">
               @for (cat of categories(); track cat) {
-                @if (activeCategory() === cat) {
-                  <button
-                    type="button"
-                    (click)="setCategory(cat)"
-                    class="rounded-full border border-[var(--accent)] bg-[var(--accent)] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--accent-contrast)]"
-                  >
-                    {{ categoryLabel(cat) }}
-                    <span class="ml-1.5 rounded-full bg-[var(--accent-contrast)]/20 px-1.5 py-0.5 text-[10px]">{{ categoryCounts()[cat] }}</span>
-                  </button>
-                } @else {
-                  <button
-                    type="button"
-                    (click)="setCategory(cat)"
-                    class="rounded-full border border-[var(--line)] bg-transparent px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--muted)] transition-colors hover:border-[var(--accent)]/50 hover:text-[var(--text)]"
-                  >
-                    {{ categoryLabel(cat) }}
-                    <span class="ml-1.5 text-[10px] opacity-60">{{ categoryCounts()[cat] }}</span>
-                  </button>
-                }
+                <button
+                  type="button"
+                  (click)="setCategory(cat)"
+                  [class.is-active]="activeCategory() === cat"
+                >
+                  {{ categoryLabel(cat) }} <span>{{ categoryCounts()[cat] }}</span>
+                </button>
               }
             </div>
-
-            <div class="flex flex-wrap items-center justify-center gap-2 lg:justify-end">
-              <div class="flex items-center rounded-full border border-[var(--line)] bg-[var(--soft-fill)] text-[10px] font-bold uppercase tracking-[0.16em]">
-                <span class="px-3 py-2 text-[var(--text)] sm:px-4" i18n>
-                  <span class="text-[var(--accent)]">{{ liveCount() }}</span> Live
-                </span>
-              </div>
-            </div>
+            <p><strong>{{ liveCount() }}</strong> live</p>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
+    <section id="public-directory" class="public-directory mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
       <div class="py-8">
         @if (isOthersCategory()) {
           <section class="mb-6 overflow-hidden rounded-[1.5rem] border border-[var(--line)] bg-[var(--surface)] shadow-[0_24px_80px_-58px_rgba(15,23,42,0.45)]">
@@ -738,42 +681,30 @@
           </section>
         }
 
-        <div class="mb-5 flex flex-col gap-4 border-b border-[var(--line)] pb-4 lg:flex-row lg:items-end lg:justify-between">
-          <div class="order-1 lg:order-2 lg:text-right">
-            <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--accent)]" i18n>Directory</p>
-            <h2 class="mt-1 text-2xl font-black tracking-tight text-[var(--text)] sm:text-3xl">
-              {{ activeCategoryTitle() }}
-            </h2>
+        <div class="public-directory__header">
+          <div class="public-directory__title">
+            <p>Explore LivingWiki</p>
+            <h2>{{ activeCategoryTitle() }}</h2>
           </div>
-          <div class="order-2 flex flex-wrap items-center gap-2 lg:order-1">
+          <div class="public-directory__controls">
             @if (activeCategory() === 'Cities') {
-              <div class="flex flex-wrap items-center gap-1.5 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] p-1">
+              <div class="public-directory__sorts" aria-label="Sort city LivingWiki pages">
                 @for (sort of sortOptions(); track sort.value) {
-                  @if (activeSort() === sort.value) {
-                    <button
-                      type="button"
-                      (click)="setSort(sort.value)"
-                      class="rounded-xl bg-[var(--accent)] px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--accent-contrast)] transition-colors"
-                    >
-                      {{ sort.label }}
-                    </button>
-                  } @else {
-                    <button
-                      type="button"
-                      (click)="setSort(sort.value)"
-                      class="rounded-xl px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--muted)] transition-colors hover:bg-[var(--surface)] hover:text-[var(--text)]"
-                    >
-                      {{ sort.label }}
-                    </button>
-                  }
+                  <button
+                    type="button"
+                    (click)="setSort(sort.value)"
+                    [class.is-active]="activeSort() === sort.value"
+                  >
+                    {{ sort.label }}
+                  </button>
                 }
               </div>
             }
-            <p class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>
+            <p class="public-directory__count" i18n>
               <span class="text-[var(--text)]">{{ filteredWikis().length }}</span> shown
             </p>
             @if (temperatureStatusLabel()) {
-              <p class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--muted)]">
+              <p class="public-directory__count">
                 {{ temperatureStatusLabel() }}
               </p>
             }
@@ -862,7 +793,7 @@
                   </div>
                 }
                 @if (isDensitySort()) {
-                  <div class="border-y border-white/15 px-5 py-3 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.22)]" [style.background]="densityBandBackground(wiki)">
+                  <div class="public-wiki-metric-band border-y border-white/15 px-5 py-3 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.22)]" [style.background]="densityBandBackground(wiki)">
                     <div class="flex items-center justify-between gap-4">
                       <span class="flex min-w-0 items-center gap-2 text-3xl font-black leading-none tracking-normal drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] sm:text-4xl" [attr.aria-label]="densityLabel(wiki) ? densityLabel(wiki) + ' people per square kilometer' : null">
                         <span class="truncate">{{ densityHeroLabel(wiki) }}</span>
@@ -879,7 +810,7 @@
                     </div>
                   </div>
                 } @else if (isPopulationSort()) {
-                  <div class="border-y border-white/15 px-5 py-3 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.22)]" [style.background]="populationBandBackground()">
+                  <div class="public-wiki-metric-band border-y border-white/15 px-5 py-3 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.22)]" [style.background]="populationBandBackground()">
                     <div class="flex items-center justify-between gap-4">
                       <span class="text-3xl font-black leading-none tracking-normal drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] sm:text-4xl">
                         {{ populationHeroLabel(wiki) }}
@@ -890,7 +821,7 @@
                     </div>
                   </div>
                 } @else if (isTimeSort()) {
-                  <div class="border-y border-white/15 px-4 py-3 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.22)]" [style.background]="timeBandBackground(wiki)">
+                  <div class="public-wiki-metric-band border-y border-white/15 px-4 py-3 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.22)]" [style.background]="timeBandBackground(wiki)">
                     <div class="flex items-center justify-between gap-3">
                       <div class="flex min-w-0 items-center gap-3">
                         <span class="text-4xl font-black leading-none tracking-normal drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] sm:text-5xl">
@@ -908,7 +839,7 @@
                     </div>
                   </div>
                 } @else if (isTemperatureSort()) {
-                  <div class="border-y border-white/15 px-5 py-3 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]" [style.background]="temperatureBandBackground(wiki)">
+                  <div class="public-wiki-metric-band border-y border-white/15 px-5 py-3 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]" [style.background]="temperatureBandBackground(wiki)">
                     <div class="flex items-end justify-between gap-4">
                       <span class="text-4xl font-black leading-none tracking-normal drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] sm:text-5xl">
                         {{ temperatureHeroLabel(wiki) }}
