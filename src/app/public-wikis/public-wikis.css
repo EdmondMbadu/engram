@@ -1730,8 +1730,15 @@ button.mobile-talk-action {
   }
 
   .mobile-city-block--top {
+    position: relative;
+    z-index: 30;
+    overflow: visible;
     border-bottom: 1px solid rgba(13, 56, 35, 0.08);
     border-radius: 1.4rem;
+  }
+
+  .mobile-directory-suggestions {
+    z-index: 40;
   }
 
   .mobile-city-row {

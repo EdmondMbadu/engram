@@ -967,6 +967,10 @@
     "source": "Previous languages",
     "file": "src/app/business-detail/business-detail.html"
   },
+  "1585852459260032270": {
+    "source": "Video library summary",
+    "file": "src/app/video-library/video-library.html"
+  },
   "159056361923511723": {
     "source": "Neighborhood or address",
     "file": "src/app/business-claim/business-claim.html"
@@ -1098,6 +1102,10 @@
   "1706773921329146569": {
     "source": " Saved persona can be this long. For speed, each reply uses the first {$INTERPOLATION} characters plus the wiki's guide identity. ",
     "file": "src/app/atlas-persona/atlas-persona.html"
+  },
+  "1707894732689029747": {
+    "source": "Latest render from each board",
+    "file": "src/app/video-library/video-library.html"
   },
   "1711637338791541973": {
     "source": "{$START_TAG_SPAN}storefront{$CLOSE_TAG_SPAN} Business ",
@@ -1302,6 +1310,10 @@
   "1849656919910332085": {
     "source": "Use Wiki",
     "file": "src/app/atlas-manage/atlas-manage.html"
+  },
+  "1852164487280647902": {
+    "source": "Your videos",
+    "file": "src/app/video-library/video-library.html"
   },
   "1853193197906343122": {
     "source": "Verification email sent. Check your inbox and spam folder.",
@@ -2757,7 +2769,7 @@
   },
   "2849750161085431718": {
     "source": "Upgrade",
-    "file": "src/app/public-wikis/public-wikis.html"
+    "file": "src/app/wiki-home/wiki-home.html"
   },
   "284984515138746555": {
     "source": "Jane Smith",
@@ -5515,10 +5527,6 @@
     "source": "Show card front",
     "file": "src/app/boards/boards.html"
   },
-  "4613803682867911450": {
-    "source": " LivingWiki.com is like having a friend who knows everything about your city. ",
-    "file": "src/app/public-wikis/public-wikis.html"
-  },
   "4616485461593672955": {
     "source": "Sharing...",
     "file": "src/app/chat/chat.ts"
@@ -6367,6 +6375,10 @@
     "source": "LLM Knowledge Bases & the Karpathy Pattern",
     "file": "src/app/public-wiki-catalog.ts"
   },
+  "5178138591256693636": {
+    "source": "videos",
+    "file": "src/app/video-library/video-library.html"
+  },
   "5178279567184039683": {
     "source": "Americas",
     "file": "src/app/atlas-manage/atlas-manage.html"
@@ -6486,10 +6498,6 @@
   "5253319724755084164": {
     "source": "{$START_TAG_SPAN}01{$CLOSE_TAG_SPAN} Key Takeaways",
     "file": "src/app/answer-card/answer-card.html"
-  },
-  "5256256049865563765": {
-    "source": "Directory",
-    "file": "src/app/public-wikis/public-wikis.html"
   },
   "5256376152662558291": {
     "source": "Check square",
@@ -6619,10 +6627,6 @@
     "source": "Subscribe for weekly updates, or sign in to keep exploring the Philly guide.",
     "file": "src/app/atlas-landing/atlas-landing.html"
   },
-  "5324339397222499756": {
-    "source": "Ask the city. Explore what locals know.",
-    "file": "src/app/chat/chat.html"
-  },
   "5327783398991797788": {
     "source": "No account needed. We use your email only for this plan and its updates.",
     "file": "src/app/boards/boards.html"
@@ -6706,10 +6710,6 @@
   "5374948793948746137": {
     "source": "Sends the full board—not the Stack or video.",
     "file": "src/app/boards/boards.html"
-  },
-  "5376278527160123538": {
-    "source": "Find what lights you up!",
-    "file": "src/app/public-wikis/public-wikis.html"
   },
   "5377288695600634859": {
     "source": "Your generated videos will appear here automatically.",
@@ -7319,10 +7319,6 @@
     "source": "Middle East",
     "file": "src/app/dymaxion/dymaxion.ts"
   },
-  "5764418230351686332": {
-    "source": "{$START_TAG_SPAN}{$INTERPOLATION}{$CLOSE_TAG_SPAN} Live ",
-    "file": "src/app/public-wikis/public-wikis.html"
-  },
   "5765832794884380721": {
     "source": "Getting a precise GPS fix…",
     "file": "src/app/boards/boards.ts"
@@ -7534,10 +7530,6 @@
   "590685240033023104": {
     "source": "Wiki not found",
     "file": "src/app/atlas-landing/atlas-landing.html"
-  },
-  "5910873236588481730": {
-    "source": "Watch the 60-second intro",
-    "file": "src/app/public-wikis/public-wikis.html"
   },
   "5911629878274755333": {
     "source": "{$INTERPOLATION} sources",
@@ -9171,10 +9163,6 @@
     "source": "Pathways",
     "file": "src/app/green-jobs/green-jobs.html"
   },
-  "6972760944859470754": {
-    "source": "LivingWiki city guide",
-    "file": "src/app/chat/chat.html"
-  },
   "69750652428701466": {
     "source": "Add the business admin name before checkout so the payment is tied to the right account owner.",
     "file": "src/app/business-claim/business-claim.ts"
@@ -9290,10 +9278,6 @@
   "7046682610560834138": {
     "source": "Choose when you’re going first.",
     "file": "src/app/boards/boards.ts"
-  },
-  "7049787008165800439": {
-    "source": "One home for every story you render.",
-    "file": "src/app/video-library/video-library.html"
   },
   "7051535332948231705": {
     "source": " Refresh official city metrics, inspect the stored snapshot, and validate what the public landing page will render. ",
@@ -11163,10 +11147,6 @@
     "source": "Search articles",
     "file": "src/app/wiki/wiki.html"
   },
-  "8382226728259549695": {
-    "source": "Your latest generated videos",
-    "file": "src/app/video-library/video-library.html"
-  },
   "8383265682711941087": {
     "source": "Discovery preview",
     "file": "src/app/web-scraper/web-scraper.html"
@@ -11307,6 +11287,10 @@
     "source": "Direct Connection",
     "file": "src/app/business-detail/business-detail.html"
   },
+  "8480565674614212553": {
+    "source": "saved videos",
+    "file": "src/app/video-library/video-library.html"
+  },
   "8483200992106367473": {
     "source": " Sign in to explore ",
     "file": "src/app/atlas-landing/atlas-landing.html"
@@ -11422,10 +11406,6 @@
   "8585558416935641261": {
     "source": "Ask up to 5 questions without signing in. {count} remaining.",
     "file": "src/app/chat/chat.ts"
-  },
-  "8591471764727823432": {
-    "source": " Find what lights you up. ",
-    "file": "src/app/public-wikis/public-wikis.html"
   },
   "8602268970635203462": {
     "source": "LivingWiki collections",
@@ -11905,7 +11885,7 @@
   },
   "8936704404804793618": {
     "source": "Videos",
-    "file": "src/app/boards/boards.ts"
+    "file": "src/app/video-library/video-library.html"
   },
   "8938925228574395120": {
     "source": "Current Business",
@@ -12418,10 +12398,6 @@
   "946937662146994749": {
     "source": "#{$INTERPOLATION} of {$INTERPOLATION_1}",
     "file": "src/app/boards/boards.html"
-  },
-  "948027380109019327": {
-    "source": "Public LivingWiki Pages",
-    "file": "src/app/public-wikis/public-wikis.html"
   },
   "952673535148558625": {
     "source": "Queueing URL for background ingestion",

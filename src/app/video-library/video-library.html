@@ -3,29 +3,40 @@
     <app-workspace-sidebar active="videos" [rail]="true"></app-workspace-sidebar>
 
     <main class="theme-shell relative flex min-w-0 flex-1 flex-col">
-      <header class="theme-nav sticky top-0 z-40 flex h-20 items-center justify-between border-b px-5 backdrop-blur-xl md:px-8">
-        <div class="flex min-w-0 items-center gap-3">
+      <header class="video-library-topbar theme-nav sticky top-0 z-40 border-b backdrop-blur-xl">
+        <div class="video-library-topbar__brand">
           <app-mobile-menu activePage="videos"></app-mobile-menu>
-          <div class="min-w-0">
-            <h1 class="truncate text-2xl font-black tracking-[-0.05em]" i18n>My Videos</h1>
-            <p class="hidden text-xs uppercase tracking-[0.18em] text-[var(--muted)] sm:block" i18n>Your latest generated videos</p>
-          </div>
+          <a routerLink="/home" aria-label="LivingWiki home" i18n-aria-label>
+            <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki" />
+          </a>
         </div>
-        <div class="flex items-center gap-2 sm:gap-3">
+        <div class="video-library-topbar__title">
+          <span class="material-symbols-outlined">smart_display</span>
+          <span i18n>Videos</span>
+        </div>
+        <div class="video-library-topbar__actions">
           <app-theme-toggle></app-theme-toggle>
           <app-account-menu></app-account-menu>
         </div>
       </header>
 
       <div class="flex-1 overflow-y-auto" (scroll)="onLibraryScroll($event)">
-        <div class="mx-auto w-full max-w-7xl px-5 py-8 pb-24 md:px-8 md:py-10 lg:px-12">
+        <div class="video-library-shell">
           <section class="video-library-hero">
-            <div>
+            <span class="video-library-hero__mark" aria-hidden="true">
+              <span class="material-symbols-outlined">video_library</span>
+            </span>
+            <div class="video-library-hero__body">
               <p class="video-library-eyebrow" i18n>Video library</p>
-              <h2 i18n>One home for every story you render.</h2>
+              <h1 i18n>My Videos</h1>
               <p i18n>
                 The latest video from each board is saved here automatically. Regenerating replaces the previous version without creating duplicates.
               </p>
+              <div class="video-library-hero__stats" aria-label="Video library summary" i18n-aria-label>
+                <span><strong>{{ items().length }}</strong> <span i18n>saved videos</span></span>
+                <i aria-hidden="true"></i>
+                <span i18n>Latest render from each board</span>
+              </div>
             </div>
             <a routerLink="/boards" class="primary-btn inline-flex shrink-0 items-center gap-2 !px-4 !py-2.5 text-sm">
               <span class="material-symbols-outlined text-base">dashboard_customize</span>
@@ -63,24 +74,30 @@
               <a routerLink="/boards" class="primary-btn inline-flex !px-4 !py-2.5 text-sm" i18n>Create a board video</a>
             </section>
           } @else {
-            <section class="video-library-toolbar" aria-label="Video library controls" i18n-aria-label>
-              <label>
-                <span class="material-symbols-outlined">search</span>
-                <input
-                  type="search"
-                  [value]="search()"
-                  (input)="setSearch($any($event.target).value)"
-                  placeholder="Search videos"
-                  aria-label="Search videos"
-                  i18n-placeholder
-                  i18n-aria-label
-                />
-              </label>
-              <select [value]="sort()" (change)="setSort($any($event.target).value)" aria-label="Sort videos" i18n-aria-label>
-                <option value="newest" i18n>Newest first</option>
-                <option value="oldest" i18n>Oldest first</option>
-                <option value="title" i18n>Board title</option>
-              </select>
+            <section class="video-library-feed-head" aria-label="Video library controls" i18n-aria-label>
+              <div class="video-library-feed-head__copy">
+                <h2 i18n>Your videos</h2>
+                <p><span>{{ visibleItems().length }}</span> <span i18n>videos</span></p>
+              </div>
+              <div class="video-library-toolbar">
+                <label>
+                  <span class="material-symbols-outlined">search</span>
+                  <input
+                    type="search"
+                    [value]="search()"
+                    (input)="setSearch($any($event.target).value)"
+                    placeholder="Search videos"
+                    aria-label="Search videos"
+                    i18n-placeholder
+                    i18n-aria-label
+                  />
+                </label>
+                <select [value]="sort()" (change)="setSort($any($event.target).value)" aria-label="Sort videos" i18n-aria-label>
+                  <option value="newest" i18n>Newest first</option>
+                  <option value="oldest" i18n>Oldest first</option>
+                  <option value="title" i18n>Board title</option>
+                </select>
+              </div>
             </section>
 
             @if (!visibleItems().length) {
