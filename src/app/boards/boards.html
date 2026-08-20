@@ -433,6 +433,16 @@
           </div>
         </div>
       </section>
+    } @else if (boardRouteUnavailable()) {
+      <section class="boards-empty-state" aria-label="Board unavailable" i18n-aria-label>
+        <span class="material-symbols-outlined">link_off</span>
+        <h2 i18n>Board unavailable</h2>
+        <p i18n>This board could not be opened. It may have been removed or made private.</p>
+        <a class="boards-primary-action" href="/boards" style="text-decoration: none;" i18n>
+          <span class="material-symbols-outlined">dashboard_customize</span>
+          See other boards
+        </a>
+      </section>
     } @else if (!selectedBoard()) {
       @if (!friendsPage()) {
         <section class="boards-profile" aria-label="Boards profile" i18n-aria-label>

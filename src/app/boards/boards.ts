@@ -89,6 +89,7 @@ import {
 } from './board-wizard-draft-persistence';
 import { appendBoardCards } from './board-batch';
 import { compareBoardsByCreatedDate } from './board-gallery-order';
+import { resetBoardRouteViewport } from './board-route-scroll';
 import {
   BOARD_NARRATION_STYLES,
   DEFAULT_BOARD_NARRATION_STYLE_ID,
@@ -1945,6 +1946,12 @@ export class BoardsComponent implements OnDestroy {
     && this.boardsLoading()
     && !this.privateBoardBlocked(),
   );
+  readonly boardRouteUnavailable = computed(() =>
+    !!this.selectedBoardId()
+    && !this.originalSelectedBoard()
+    && !this.boardsLoading()
+    && !this.privateBoardBlocked(),
+  );
   readonly selectedBoardParent = computed(() => {
     const board = this.originalSelectedBoard();
     return board?.parentBoardId
@@ -2616,6 +2623,9 @@ export class BoardsComponent implements OnDestroy {
         this.relatedCardsReturnSearch = '';
       }
       this.selectedBoardId.set(selectedBoardId);
+      if (boardId) {
+        this.resetBoardRouteScroll();
+      }
       if (this.boardTranslationResult()?.boardId !== selectedBoardId) {
         this.boardTranslationResult.set(null);
         this.boardTranslationVersion.set('');
@@ -2649,6 +2659,9 @@ export class BoardsComponent implements OnDestroy {
         this.syncBoardLearnDirectView();
         void this.syncRequestedBoardTranslation();
         this.canonicalizeBoardsRootRoute(boardId, ownerKey);
+        if (boardId) {
+          this.resetBoardRouteScroll();
+        }
         if (this.isBrowser && this.boardFriendsFocusRequested()) {
           window.setTimeout(() => this.scrollToBoardFriends(), 80);
         }
@@ -3047,7 +3060,18 @@ export class BoardsComponent implements OnDestroy {
       this.suppressNextBoardOpen = false;
       return;
     }
+    this.resetBoardRouteScroll();
     void this.router.navigate([this.boardRouteRoot(), boardId]);
+  }
+
+  private resetBoardRouteScroll(): void {
+    if (!this.isBrowser) {
+      return;
+    }
+    resetBoardRouteViewport(
+      () => this.boardsScrollViewport?.nativeElement ?? null,
+      window,
+    );
   }
 
   closeBoardDetail(): void {

@@ -51,6 +51,7 @@ import {
   type BoardTranslationSegment,
 } from './board-translation';
 import { db, storage } from './firebase';
+import { publicBoardRouteKey } from './custom-public-routes';
 export {
   cleanupDeletedBoardPublicRoutes,
   cleanupDeletedCollectionPublicRoutes,
@@ -3495,9 +3496,7 @@ export const shareBoardByEmail = onCall(
     if (board.visibility !== 'public') {
       throw new HttpsError('failed-precondition', 'Only public boards can be emailed.');
     }
-    const boardRouteKey = typeof board.custom_slug === 'string' && board.custom_slug.trim()
-      ? board.custom_slug.trim()
-      : boardId;
+    const boardRouteKey = publicBoardRouteKey(boardId, board.custom_slug);
 
     await consumeBoardEmailShareQuota(senderUserId);
 
@@ -3873,7 +3872,8 @@ export const notifyBoardFriendsOnCreate = onDocumentCreated(
     const friendName = typeof data.owner_display_name === 'string' && data.owner_display_name.trim()
       ? data.owner_display_name.trim()
       : 'A LivingWiki friend';
-    const boardUrl = `${publicAppUrl}/boards/${encodeURIComponent(boardId)}`;
+    const boardRouteKey = publicBoardRouteKey(boardId, data.custom_slug);
+    const boardUrl = `${publicAppUrl}/boards/${encodeURIComponent(boardRouteKey)}`;
     const friendIds = friendshipsSnapshot.docs
       .map((doc) => (doc.data().user_ids as unknown[] | undefined)?.find((id) => typeof id === 'string' && id !== ownerUserId))
       .filter((id): id is string => typeof id === 'string');

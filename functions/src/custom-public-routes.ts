@@ -37,6 +37,12 @@ export function customPublicRouteSlugError(value: unknown): string | null {
   return null;
 }
 
+export function publicBoardRouteKey(boardIdValue: unknown, customSlugValue: unknown): string {
+  const boardId = typeof boardIdValue === 'string' ? boardIdValue.trim().slice(0, 180) : '';
+  const customSlug = normalizeCustomPublicRouteSlug(customSlugValue);
+  return customSlug && customPublicRouteSlugError(customSlug) === null ? customSlug : boardId;
+}
+
 function hasActivePaidPlan(profile: Record<string, unknown> | undefined): boolean {
   const plan = String(profile?.['pricingPlan'] ?? profile?.['pricing_plan'] ?? '').trim().toLowerCase();
   const status = String(profile?.['subscriptionStatus'] ?? profile?.['subscription_status'] ?? '').trim().toLowerCase();
