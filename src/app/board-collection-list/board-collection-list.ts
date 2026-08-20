@@ -17,6 +17,9 @@ export class BoardCollectionListComponent {
   @Output() createRequested = new EventEmitter<void>();
 
   collectionRoute(collectionItem: BoardCollection): string[] {
+    if (collectionItem.customSlug) {
+      return ['/collections', collectionItem.customSlug];
+    }
     return ['/boards/u', collectionItem.ownerPublicSlug, 'collections', collectionItem.slug];
   }
 }

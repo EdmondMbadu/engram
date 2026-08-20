@@ -17,6 +17,13 @@
         </a>
       </div>
       <div class="collection-nav__actions">
+        @if (canManageCollection()) {
+          <button type="button" class="collection-nav__custom-url" (click)="openCustomUrlDialog()">
+            <span class="material-symbols-outlined" aria-hidden="true">link</span>
+            <span>Set custom URL</span>
+            @if (!customUrlEligible()) { <small>Plus</small> }
+          </button>
+        }
         @if (collectionAvailable()) {
           <a [routerLink]="parentLink()" class="collection-nav__city-link">
             <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
@@ -327,4 +334,19 @@
     }
   </div>
 </main>
+
+@if (customUrlDialogOpen()) {
+  @if (userCollection(); as collection) {
+    <app-custom-public-url-dialog
+      resourceType="collection"
+      [resourceId]="collection.id"
+      [resourceTitle]="collection.title"
+      [currentSlug]="collection.customSlug"
+      [eligible]="customUrlEligible()"
+      [publicResource]="collection.visibility === 'public'"
+      (closed)="closeCustomUrlDialog()"
+      (saved)="handleCustomUrlSaved($event)"
+    ></app-custom-public-url-dialog>
+  }
+}
 </div>

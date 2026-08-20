@@ -8,6 +8,8 @@ import type { AtlasItem } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
 import { AuthService } from '../auth.service';
 import { BoardCollectionsService, type BoardCollection } from '../board-collections.service';
+import { CustomPublicUrlDialogComponent } from '../custom-public-url-dialog/custom-public-url-dialog';
+import type { SetCustomPublicUrlResult } from '../custom-public-url';
 import {
   CITY_BOARD_CATEGORIES,
   cityBoardCategory,
@@ -32,7 +34,7 @@ const SPOTLIGHT_ROTATION_MS = 5_000;
 
 @Component({
   selector: 'app-city-board-collection',
-  imports: [RouterLink, ThemeToggleComponent, MobileMenuComponent, WorkspaceSidebarComponent],
+  imports: [RouterLink, ThemeToggleComponent, MobileMenuComponent, WorkspaceSidebarComponent, CustomPublicUrlDialogComponent],
   templateUrl: './city-board-collection.html',
   styleUrl: './city-board-collection.css',
 })
@@ -63,6 +65,7 @@ export class CityBoardCollectionComponent implements OnDestroy {
     { initialValue: this.route.snapshot.paramMap.get('ownerKey')?.trim() || '' },
   );
   readonly isUserCollection = this.route.snapshot.data['userCollection'] === true;
+  readonly isCustomCollection = this.route.snapshot.data['customCollection'] === true;
   readonly atlas = signal<AtlasItem | null>(null);
   readonly userCollection = signal<BoardCollection | null>(null);
   readonly atlasLoading = signal(true);
@@ -75,8 +78,18 @@ export class CityBoardCollectionComponent implements OnDestroy {
   readonly searchQuery = signal('');
   readonly railState = signal<Record<string, RailState>>({});
   readonly spotlightPaused = signal(false);
+  readonly customUrlDialogOpen = signal(false);
   readonly spotlightProgress = signal(0);
   readonly isSignedIn = computed(() => !!this.authService.uid());
+  readonly canManageCollection = computed(() => {
+    const collection = this.userCollection();
+    return !!collection
+      && (collection.ownerUserId === this.authService.uid() || this.authService.isAdmin());
+  });
+  readonly customUrlEligible = computed(() =>
+    this.canManageCollection()
+    && (this.authService.isAdmin() || this.authService.hasActivePersonalWikiPlan()),
+  );
   readonly isUniversity = computed(() => {
     const atlas = this.atlas();
     return atlas?.wiki_type === 'university' || atlas?.university_config?.enabled === true;
@@ -352,6 +365,24 @@ export class CityBoardCollectionComponent implements OnDestroy {
     void this.loadCollection(this.routeSlug());
   }
 
+  openCustomUrlDialog(): void {
+    if (this.canManageCollection()) this.customUrlDialogOpen.set(true);
+  }
+
+  closeCustomUrlDialog(): void {
+    this.customUrlDialogOpen.set(false);
+  }
+
+  handleCustomUrlSaved(result: SetCustomPublicUrlResult): void {
+    const collection = this.userCollection();
+    if (!collection || result.resourceType !== 'collection' || result.resourceId !== collection.id) return;
+    this.userCollection.set({ ...collection, customSlug: result.slug });
+    void this.router.navigate(['/collections', result.slug], {
+      replaceUrl: true,
+      queryParamsHandling: 'preserve',
+    });
+  }
+
   private async loadCollection(slug: string): Promise<void> {
     const sequence = ++this.loadSequence;
     this.atlas.set(null);
@@ -373,7 +404,9 @@ export class CityBoardCollectionComponent implements OnDestroy {
     try {
       if (this.isUserCollection) {
         this.boardsLoading.set(true);
-        const loaded = await this.boardCollectionsService.getPublic(this.ownerKey(), slug);
+        const loaded = this.isCustomCollection
+          ? await this.boardCollectionsService.getPublicByCustomSlug(slug)
+          : await this.boardCollectionsService.getPublic(this.ownerKey(), slug);
         if (sequence !== this.loadSequence) return;
         if (!loaded) {
           this.atlasError.set('This public board collection could not be found.');

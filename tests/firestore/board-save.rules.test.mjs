@@ -428,6 +428,43 @@ test('another user cannot replace an owners board collection', async () => {
   ));
 });
 
+test('public route documents are readable but never client-writable', async () => {
+  await testEnvironment.withSecurityRulesDisabled(async (context) => {
+    await setDoc(doc(context.firestore(), 'public_board_routes', 'cape-may-gems'), {
+      slug: 'cape-may-gems',
+      resource_type: 'board',
+      target_id: 'wizard-board-1',
+      owner_user_id: ownerUid,
+      primary: true,
+    });
+  });
+  const visitorDatabase = testEnvironment.unauthenticatedContext().firestore();
+  await assertSucceeds(getDoc(doc(visitorDatabase, 'public_board_routes', 'cape-may-gems')));
+
+  const ownerDatabase = testEnvironment.authenticatedContext(ownerUid).firestore();
+  await assertFails(setDoc(doc(ownerDatabase, 'public_board_routes', 'another-name'), {
+    target_id: 'wizard-board-1',
+  }));
+});
+
+test('normal board saves preserve but cannot change a server-managed custom slug', async () => {
+  await testEnvironment.withSecurityRulesDisabled(async (context) => {
+    await setDoc(
+      doc(context.firestore(), 'boards', 'wizard-board-1'),
+      personalWizardBoard({ custom_slug: 'cape-may-gems', server_updated_at: new Date() }),
+    );
+  });
+  const database = testEnvironment.authenticatedContext(ownerUid).firestore();
+  await assertSucceeds(setDoc(
+    doc(database, 'boards', 'wizard-board-1'),
+    personalWizardBoard({ custom_slug: 'cape-may-gems', title: 'Updated title' }),
+  ));
+  await assertFails(setDoc(
+    doc(database, 'boards', 'wizard-board-1'),
+    personalWizardBoard({ custom_slug: 'stolen-or-unregistered' }),
+  ));
+});
+
 test('collection writes require at least one selected board', async () => {
   const database = testEnvironment.authenticatedContext(ownerUid).firestore();
 

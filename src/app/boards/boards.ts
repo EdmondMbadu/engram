@@ -11,6 +11,8 @@ import { AtlasService } from '../atlas.service';
 import { AuthService } from '../auth.service';
 import { BoardCollectionCreateComponent } from '../board-collection-create/board-collection-create';
 import { BoardCollectionListComponent } from '../board-collection-list/board-collection-list';
+import { CustomPublicUrlDialogComponent } from '../custom-public-url-dialog/custom-public-url-dialog';
+import { normalizeCustomPublicUrlSlug, type SetCustomPublicUrlResult } from '../custom-public-url';
 import {
   BoardCollectionsService,
   type BoardCollection,
@@ -364,6 +366,7 @@ type BoardCard = {
 
 type Board = {
   id: string;
+  customSlug?: string;
   kind: BoardKind;
   sortOrder: number;
   ownerUserId: string;
@@ -583,7 +586,8 @@ type BoardFriendsState = {
 };
 type BoardFriendsSort = 'name' | 'email';
 
-type BoardRecord = Omit<Board, 'createdAt' | 'updatedAt'> & {
+type BoardRecord = Omit<Board, 'createdAt' | 'updatedAt' | 'customSlug'> & {
+  custom_slug?: string;
   owner_user_id: string;
   owner_public_slug: string;
   owner_display_name: string;
@@ -1315,7 +1319,7 @@ type BoardLoadContext = {
 
 @Component({
   selector: 'app-boards',
-  imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink, BoardCollectionCreateComponent, BoardCollectionListComponent],
+  imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink, BoardCollectionCreateComponent, BoardCollectionListComponent, CustomPublicUrlDialogComponent],
   templateUrl: './boards.html',
   styleUrls: ['./boards.css', './board-wizard-drafts.css', './board-wizard-media-mode.css', './board-narration-style.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css', './stack-script.css', './stack-cover-final.css', './board-city-tag.css'],
 })
@@ -1512,6 +1516,7 @@ export class BoardsComponent implements OnDestroy {
   readonly tourStopSaving = signal(false);
   readonly exploredRelatedCardParentId = signal<string | null>(null);
   readonly boardDeleteCandidate = signal<Board | null>(null);
+  readonly customUrlBoard = signal<Board | null>(null);
   readonly draggedBoardId = signal<string | null>(null);
   readonly boardDropTargetId = signal<string | null>(null);
   readonly boardDropPosition = signal<ReorderDropPosition | null>(null);
@@ -2619,8 +2624,9 @@ export class BoardsComponent implements OnDestroy {
         if (!boardId && !this.friendsPage()) {
           void this.loadBoardCollections(ownerKey || ownerSlug || this.currentPublicOwnerKey());
         }
-        if (this.selectedBoardId() === boardId) {
-          this.watchSelectedBoard(boardId);
+        const resolvedBoard = boardId ? this.originalSelectedBoard() : null;
+        if (!boardId || resolvedBoard) {
+          this.watchSelectedBoard(resolvedBoard?.id ?? null);
         }
         this.syncStackDirectView();
         this.syncRequestedStackStudio();
@@ -5077,6 +5083,39 @@ export class BoardsComponent implements OnDestroy {
       return;
     }
     this.boardDeleteCandidate.set(board);
+  }
+
+  openCustomUrlDialog(board: Board, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (!this.canEditBoard(board)) {
+      this.boardsSyncError.set('Only the board owner can set its custom URL.');
+      return;
+    }
+    this.customUrlBoard.set(board);
+  }
+
+  closeCustomUrlDialog(): void {
+    this.customUrlBoard.set(null);
+  }
+
+  customUrlEligible(board: Board): boolean {
+    return this.canEditBoard(board)
+      && (this.isPlatformAdmin() || this.authService.hasActivePersonalWikiPlan());
+  }
+
+  handleCustomUrlSaved(result: SetCustomPublicUrlResult): void {
+    const board = this.customUrlBoard();
+    if (!board || result.resourceType !== 'board' || result.resourceId !== board.id) return;
+    this.boards.update((boards) => boards.map((item) => item.id === board.id
+      ? { ...item, customSlug: result.slug }
+      : item));
+    this.customUrlBoard.set({ ...board, customSlug: result.slug });
+    const routeRoot = this.boardRouteRoot(board);
+    void this.router.navigate([routeRoot, result.slug], {
+      replaceUrl: true,
+      queryParamsHandling: 'preserve',
+    });
   }
 
   openBoardAdmin(board: Board, event?: Event): void {
@@ -11459,7 +11498,10 @@ export class BoardsComponent implements OnDestroy {
 
   private boardPagePath(board: Board): string {
     const route = this.boardRouteRoot(board).slice(1);
-    return `/${route}/${encodeURIComponent(board.id)}`;
+    const routeKey = board.visibility === 'public' && board.customSlug
+      ? board.customSlug
+      : board.id;
+    return `/${route}/${encodeURIComponent(routeKey)}`;
   }
 
   boardPageUrl(board: Board): string {
@@ -16673,6 +16715,9 @@ export class BoardsComponent implements OnDestroy {
           if (sharedBoard) {
             loaded.unshift(sharedBoard);
             this.boards.set(loaded);
+            if (sharedBoard.id !== boardId && this.selectedBoardId() === boardId) {
+              this.selectedBoardId.set(sharedBoard.id);
+            }
           }
         } catch (error) {
           if (this.isPermissionDeniedError(error)) {
@@ -16897,12 +16942,20 @@ export class BoardsComponent implements OnDestroy {
     if (!this.firestore) {
       return null;
     }
-
-    const snapshot = await getDoc(doc(this.firestore, 'boards', boardId));
-    if (!snapshot.exists()) {
-      return null;
+    const slug = normalizeCustomPublicUrlSlug(boardId);
+    if (slug && !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(boardId)) {
+      const routeSnapshot = await getDoc(doc(this.firestore, 'public_board_routes', slug));
+      const targetId = routeSnapshot.exists() && typeof routeSnapshot.data()['target_id'] === 'string'
+        ? routeSnapshot.data()['target_id'].trim()
+        : '';
+      if (targetId) {
+        const targetSnapshot = await getDoc(doc(this.firestore, 'boards', targetId));
+        if (!targetSnapshot.exists()) return null;
+        return this.boardFromRecord(targetSnapshot.id, targetSnapshot.data());
+      }
     }
-    return this.boardFromRecord(snapshot.id, snapshot.data());
+    const snapshot = await getDoc(doc(this.firestore, 'boards', boardId));
+    return snapshot.exists() ? this.boardFromRecord(snapshot.id, snapshot.data()) : null;
   }
 
   private async loadCities(): Promise<void> {
@@ -17128,6 +17181,7 @@ export class BoardsComponent implements OnDestroy {
     const prepared = await this.prepareBoardImagesForFirebase({ ...boardWithOwner, ownerPublicSlug: resolvedOwnerPublicSlug }, storageOwnerId);
     const record: BoardRecord & { server_updated_at: unknown } = {
       ...prepared,
+      ...(prepared.customSlug ? { custom_slug: prepared.customSlug } : {}),
       owner_user_id: prepared.ownerUserId || uid,
       owner_public_slug: prepared.ownerPublicSlug,
       owner_display_name: prepared.ownerDisplayName,
@@ -17148,6 +17202,7 @@ export class BoardsComponent implements OnDestroy {
       ownerPhotoUrl,
       ownerProfileIcon,
       ownerProfilePictureType,
+      customSlug: _customSlug,
       atlasId,
       generatedForAtlasId,
       ...persistable
@@ -17160,6 +17215,7 @@ export class BoardsComponent implements OnDestroy {
       ownerPhotoUrl?: string;
       ownerProfileIcon?: string;
       ownerProfilePictureType?: 'icon' | 'image' | null;
+      customSlug?: string;
       atlasId?: string;
       generatedForAtlasId?: string;
       server_updated_at: unknown;
@@ -17277,6 +17333,9 @@ export class BoardsComponent implements OnDestroy {
     const rawCards = Array.isArray(data['cards']) ? data['cards'] : [];
     return {
       id,
+      customSlug: typeof data['custom_slug'] === 'string'
+        ? normalizeCustomPublicUrlSlug(data['custom_slug'])
+        : '',
       kind: this.isBoardKind(data['kind']) ? data['kind'] : 'standard',
       sortOrder: this.normalizeBoardSortOrder(data['sortOrder'], typeof data['created_at_iso'] === 'string' ? data['created_at_iso'] : ''),
       ownerUserId: typeof data['owner_user_id'] === 'string' ? data['owner_user_id'] : '',

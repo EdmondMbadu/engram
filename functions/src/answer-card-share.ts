@@ -58,6 +58,7 @@ interface BoardShareQuiz {
 
 interface BoardShare {
   id: string;
+  customSlug: string;
   title: string;
   description: string;
   ownerName: string;
@@ -416,6 +417,7 @@ async function loadBoardShare(boardId: string): Promise<BoardShare | null> {
 
   return {
     id: snapshot.id,
+    customSlug: cleanText(data.custom_slug, 60),
     title,
     description: cleanText(data.description, 320),
     ownerName: cleanText(data.owner_display_name, 100) || 'LivingWiki curator',
@@ -846,7 +848,7 @@ function buildBoardSharePageHtml(
   }
   const localePrefix = uiLanguage === 'en' ? '' : `/${uiLanguage}`;
   const shareUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}?${shareQuery.toString()}`;
-  const appBoardUrl = `${appUrl}${localePrefix}/${route}/${encodeURIComponent(board.id)}${appQuery.size ? `?${appQuery.toString()}` : ''}`;
+  const appBoardUrl = `${appUrl}${localePrefix}/${route}/${encodeURIComponent(board.customSlug || board.id)}${appQuery.size ? `?${appQuery.toString()}` : ''}`;
   const imageCacheKey = encodeURIComponent(`${board.updatedAt ?? 'board'}-${imageVersion}`);
   const ogImage = `${appUrl}/share/board/${encodeURIComponent(board.id)}/og.png?v=${imageCacheKey}${sharedQuiz ? '&learn=quiz' : ''}`;
 
@@ -908,7 +910,7 @@ function buildBoardVideoSharePageHtml(board: BoardShare, kind: 'video' | 'traile
   const version = boardVideoVersion(board, kind);
   const shareUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/${kind}?v=${version}`;
   const playerUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/${kind}/player?v=${version}`;
-  const boardUrl = `${appUrl}/${boardShareRoute(board)}/${encodeURIComponent(board.id)}?view=stack`;
+  const boardUrl = `${appUrl}/${boardShareRoute(board)}/${encodeURIComponent(board.customSlug || board.id)}?view=stack`;
   const imageCacheKey = encodeURIComponent(`${board.updatedAt ?? 'board'}-${imageVersion}`);
   const posterUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/og.png?v=${imageCacheKey}`;
   const videoUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/${kind}.mp4?v=${version}`;

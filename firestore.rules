@@ -22,8 +22,8 @@ service cloud.firestore {
     function hasActivePersonalWikiPlan() {
       return isSignedIn()
         && (
-          userProfile().pricingPlan in ['personal_plus', 'creator']
-          || userProfile().pricing_plan in ['personal_plus', 'creator']
+          userProfile().pricingPlan in ['personal_plus', 'creator', 'explorer', 'lifetime']
+          || userProfile().pricing_plan in ['personal_plus', 'creator', 'explorer', 'lifetime']
         )
         && (
           userProfile().subscriptionStatus in ['active', 'trialing', 'paid']
@@ -120,6 +120,7 @@ service cloud.firestore {
         'owner_photo_url',
         'owner_profile_icon',
         'owner_profile_picture_type',
+        'custom_slug',
         'forkedFromBoardId',
         'forkedFromTitle',
         'forkedFromOwnerUserId',
@@ -187,6 +188,7 @@ service cloud.firestore {
       return [
         'id',
         'slug',
+        'custom_slug',
         'owner_user_id',
         'owner_public_slug',
         'owner_display_name',
@@ -205,7 +207,23 @@ service cloud.firestore {
 
     function isValidBoardCollection(data, collectionId) {
       return data.keys().hasOnly(boardCollectionKeys())
-        && data.keys().hasAll(boardCollectionKeys())
+        && data.keys().hasAll([
+          'id',
+          'slug',
+          'owner_user_id',
+          'owner_public_slug',
+          'owner_display_name',
+          'owner_photo_url',
+          'owner_profile_icon',
+          'owner_profile_picture_type',
+          'visibility',
+          'title',
+          'description',
+          'board_ids',
+          'created_at_iso',
+          'updated_at_iso',
+          'server_updated_at'
+        ])
         && data.id == collectionId
         && data.owner_user_id is string
         && data.owner_user_id == request.auth.uid
@@ -217,6 +235,24 @@ service cloud.firestore {
         && data.slug.size() >= 1
         && data.slug.size() <= 80
         && data.slug.matches('^[a-z0-9]+(-[a-z0-9]+)*$')
+        && (
+          !data.keys().hasAny(['custom_slug'])
+          || (
+            data.custom_slug is string
+            && data.custom_slug.size() >= 3
+            && data.custom_slug.size() <= 60
+            && data.custom_slug.matches('^[a-z0-9]+(-[a-z0-9]+)*$')
+          )
+        )
+        && (
+          request.method == 'create'
+            ? !data.keys().hasAny(['custom_slug'])
+            : (
+              resource.data.keys().hasAny(['custom_slug'])
+                ? data.keys().hasAny(['custom_slug']) && data.custom_slug == resource.data.custom_slug
+                : !data.keys().hasAny(['custom_slug'])
+            )
+        )
         && data.owner_display_name is string
         && data.owner_display_name.size() <= 120
         && data.owner_photo_url is string
@@ -648,6 +684,16 @@ service cloud.firestore {
         || isPlatformAdmin();
     }
 
+    match /public_board_routes/{slug} {
+      allow get: if true;
+      allow list, create, update, delete: if false;
+    }
+
+    match /public_collection_routes/{slug} {
+      allow get: if true;
+      allow list, create, update, delete: if false;
+    }
+
     match /boards/{boardId} {
       allow get: if resource.data.visibility == 'public'
         || (isSignedIn() && resource.data.owner_user_id == request.auth.uid)
@@ -716,6 +762,25 @@ service cloud.firestore {
         && request.resource.data.owner_public_slug.size() >= 2
         && request.resource.data.owner_public_slug.size() <= 80
         && request.resource.data.owner_public_slug.matches('^[a-z0-9]+(-[a-z0-9]+)*$')
+        && (
+          !request.resource.data.keys().hasAny(['custom_slug'])
+          || (
+            request.resource.data.custom_slug is string
+            && request.resource.data.custom_slug.size() >= 3
+            && request.resource.data.custom_slug.size() <= 60
+            && request.resource.data.custom_slug.matches('^[a-z0-9]+(-[a-z0-9]+)*$')
+          )
+        )
+        && (
+          request.method == 'create'
+            ? !request.resource.data.keys().hasAny(['custom_slug'])
+            : (
+              resource.data.keys().hasAny(['custom_slug'])
+                ? request.resource.data.keys().hasAny(['custom_slug'])
+                  && request.resource.data.custom_slug == resource.data.custom_slug
+                : !request.resource.data.keys().hasAny(['custom_slug'])
+            )
+        )
         && request.resource.data.owner_display_name is string
         && request.resource.data.owner_display_name.size() <= 120
         && request.resource.data.owner_photo_url is string

@@ -24,6 +24,7 @@ describe('board collections', () => {
       owner_profile_icon: 'person',
       owner_profile_picture_type: 'icon',
       slug: 'favorite-places',
+      custom_slug: 'cape-may-gems',
       visibility: 'public',
       title: 'Favorite Places',
       description: 'Three boards in a deliberate order.',
@@ -34,6 +35,7 @@ describe('board collections', () => {
 
     expect(result?.boardIds).toEqual(['third', 'first', 'second']);
     expect(result?.title).toBe('Favorite Places');
+    expect(result?.customSlug).toBe('cape-may-gems');
   });
 
   it('rejects private or empty collections', () => {

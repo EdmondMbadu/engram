@@ -1202,3 +1202,7 @@
   .collection-spotlight__picker-progress i { transition: none; }
   .collection-board-rail { scroll-behavior: auto; }
 }
+.collection-nav__custom-url { display: inline-flex; min-height: 38px; align-items: center; gap: 7px; padding: 0 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); color: var(--text); font: inherit; font-size: 12px; font-weight: 800; cursor: pointer; }
+.collection-nav__custom-url .material-symbols-outlined { font-size: 18px; color: #16815a; }
+.collection-nav__custom-url small { padding: 2px 5px; border-radius: 999px; background: #eadff8; color: #68429c; font-size: 8px; text-transform: uppercase; }
+@media (max-width: 650px) { .collection-nav__custom-url > span:nth-child(2), .collection-nav__custom-url small { display: none; } }

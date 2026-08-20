@@ -51,6 +51,11 @@ import {
   type BoardTranslationSegment,
 } from './board-translation';
 import { db, storage } from './firebase';
+export {
+  cleanupDeletedBoardPublicRoutes,
+  cleanupDeletedCollectionPublicRoutes,
+  setCustomPublicUrl,
+} from './custom-public-routes';
 import { handleAnswerCardShare, handleBoardShare, handleTravelCardShare } from './answer-card-share';
 import { buildDirectBoardShareEmail, safeBoardShareImageUrl } from './board-share-email';
 import { resolveSpotifyOAuthRedirectUri } from './spotify-oauth';
@@ -3489,6 +3494,9 @@ export const shareBoardByEmail = onCall(
     if (board.visibility !== 'public') {
       throw new HttpsError('failed-precondition', 'Only public boards can be emailed.');
     }
+    const boardRouteKey = typeof board.custom_slug === 'string' && board.custom_slug.trim()
+      ? board.custom_slug.trim()
+      : boardId;
 
     await consumeBoardEmailShareQuota(senderUserId);
 
@@ -3506,7 +3514,7 @@ export const shareBoardByEmail = onCall(
       boardTitle: typeof board.title === 'string' ? board.title.slice(0, 120) : 'LivingWiki board',
       boardDescription: typeof board.description === 'string' ? board.description.slice(0, 600) : '',
       boardCoverImageUrl: safeBoardShareImageUrl(board.imageUrl),
-      boardUrl: `${publicAppUrl}/boards/${encodeURIComponent(boardId)}`,
+      boardUrl: `${publicAppUrl}/boards/${encodeURIComponent(boardRouteKey)}`,
     });
     await sendBoardFriendEmail({ recipientEmail, ...email });
     logger.info('Public board shared by email.', { boardId, senderUserId });

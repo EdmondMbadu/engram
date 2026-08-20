@@ -1379,6 +1379,13 @@
                       </button>
                     }
                     @if (canEditBoard(board)) {
+                      <button type="button" (click)="openCustomUrlDialog(board, $event)">
+                        <span class="material-symbols-outlined" aria-hidden="true">link</span>
+                        <span>Set custom URL</span>
+                        @if (!customUrlEligible(board)) {
+                          <small class="board-editorial-hero__paid-label">Plus</small>
+                        }
+                      </button>
                       <button type="button" (click)="openEditBoard(board, $event)">
                         <span class="material-symbols-outlined" aria-hidden="true">edit_square</span>
                         <span>Edit cover</span>
@@ -8493,6 +8500,19 @@
     (closed)="closeCreateCollection()"
     (created)="onCollectionCreated($event)"
   ></app-board-collection-create>
+}
+
+@if (customUrlBoard(); as customBoard) {
+  <app-custom-public-url-dialog
+    resourceType="board"
+    [resourceId]="customBoard.id"
+    [resourceTitle]="customBoard.title"
+    [currentSlug]="customBoard.customSlug || ''"
+    [eligible]="customUrlEligible(customBoard)"
+    [publicResource]="customBoard.visibility === 'public'"
+    (closed)="closeCustomUrlDialog()"
+    (saved)="handleCustomUrlSaved($event)"
+  ></app-custom-public-url-dialog>
 }
 
 @if (relatedCardEditorOpen() && relatedCardEditorParent(); as relatedParent) {

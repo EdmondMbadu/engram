@@ -32,6 +32,7 @@ export type BoardCollectionChoice = {
 export type BoardCollection = {
   id: string;
   slug: string;
+  customSlug: string;
   ownerUserId: string;
   ownerPublicSlug: string;
   ownerDisplayName: string;
@@ -121,6 +122,7 @@ export function boardCollectionFromData(id: string, value: unknown): BoardCollec
   return {
     id,
     slug,
+    customSlug: stringValue(data['custom_slug'], 60),
     ownerUserId,
     ownerPublicSlug,
     ownerDisplayName: stringValue(data['owner_display_name'], 120) || 'LivingWiki curator',
@@ -209,7 +211,26 @@ export class BoardCollectionsService {
     ));
     const document = snapshot.docs[0];
     const result = document ? boardCollectionFromData(document.id, document.data()) : null;
-    if (!result) return null;
+    return result ? this.loadCollectionBoards(result) : null;
+  }
+
+  async getPublicByCustomSlug(collectionSlug: string): Promise<LoadedBoardCollection | null> {
+    if (!this.firestore) return null;
+    const slug = boardCollectionSlug(collectionSlug).slice(0, 60);
+    if (!slug) return null;
+    const routeSnapshot = await getDoc(doc(this.firestore, 'public_collection_routes', slug));
+    const targetId = routeSnapshot.exists() && typeof routeSnapshot.data()['target_id'] === 'string'
+      ? routeSnapshot.data()['target_id'].trim()
+      : '';
+    if (!targetId) return null;
+    const collectionSnapshot = await getDoc(doc(this.firestore, 'board_collections', targetId));
+    const result = collectionSnapshot.exists()
+      ? boardCollectionFromData(collectionSnapshot.id, collectionSnapshot.data())
+      : null;
+    return result ? this.loadCollectionBoards(result) : null;
+  }
+
+  private async loadCollectionBoards(result: BoardCollection): Promise<LoadedBoardCollection> {
     const boards = (await Promise.all(result.boardIds.map(async (boardId, index) => {
       try {
         const boardSnapshot = await getDoc(doc(this.firestore!, 'boards', boardId));

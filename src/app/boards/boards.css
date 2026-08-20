@@ -9601,3 +9601,14 @@
     animation: none;
   }
 }
+.board-editorial-hero__paid-label {
+  margin-left: auto;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: #eadff8;
+  color: #68429c;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}

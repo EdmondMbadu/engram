@@ -1,0 +1,80 @@
+<div class="custom-url-backdrop" role="presentation" (mousedown)="$event.target === $event.currentTarget && close()">
+  <section class="custom-url-dialog" role="dialog" aria-modal="true" aria-labelledby="custom-url-title" (keydown)="onDialogKeydown($event)">
+    <header>
+      <span class="custom-url-dialog__icon material-symbols-outlined" aria-hidden="true">link</span>
+      <span>
+        <small>Share with a memorable link</small>
+        <h2 id="custom-url-title">Set custom URL</h2>
+      </span>
+      <button type="button" class="custom-url-dialog__close" aria-label="Close custom URL dialog" [disabled]="saving()" (click)="close()">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </header>
+
+    @if (!eligible()) {
+      <div class="custom-url-dialog__notice custom-url-dialog__notice--upgrade">
+        <span class="material-symbols-outlined">workspace_premium</span>
+        <span><strong>Custom URLs are a paid feature.</strong><small>Your existing link will keep working. Upgrade to choose a memorable one.</small></span>
+      </div>
+      <a routerLink="/pricing" class="custom-url-dialog__upgrade">View membership options</a>
+    } @else if (!publicResource()) {
+      <div class="custom-url-dialog__notice">
+        <span class="material-symbols-outlined">visibility_off</span>
+        <span><strong>Make this {{ resourceLabel() }} public first.</strong><small>Custom URLs are public links and cannot point to private content.</small></span>
+      </div>
+    } @else {
+      <p>Choose the address people will use to open <strong>{{ resourceTitle() }}</strong>.</p>
+      <label class="custom-url-field">
+        <span>Custom address</span>
+        <span class="custom-url-field__control">
+          <span>{{ prefix() }}</span>
+          <input
+            #slugInput
+            type="text"
+            inputmode="url"
+            autocomplete="off"
+            maxlength="60"
+            aria-describedby="custom-url-status"
+            [value]="value()"
+            [disabled]="saving()"
+            (input)="updateValue($any($event.target).value)"
+          />
+        </span>
+      </label>
+      <div id="custom-url-status" class="custom-url-dialog__status" aria-live="polite">
+        @if (validationError()) {
+          <span class="is-error"><span class="material-symbols-outlined">error</span>{{ validationError() }}</span>
+        } @else if (availability() === 'checking') {
+          <span><span class="material-symbols-outlined custom-url-spin">progress_activity</span>Checking availability…</span>
+        } @else if (availability() === 'taken') {
+          <span class="is-error"><span class="material-symbols-outlined">cancel</span>That address is already taken.</span>
+        } @else if (availability() === 'available') {
+          <span class="is-available"><span class="material-symbols-outlined">check_circle</span>This address is available.</span>
+        }
+      </div>
+      <div class="custom-url-dialog__assurance">
+        <span class="material-symbols-outlined">verified</span>
+        <span>Your original system link will continue to work. If you rename this URL later, previously shared custom links will still open this {{ resourceLabel() }}.</span>
+      </div>
+      @if (savedResult()) {
+        <div class="custom-url-dialog__success">
+          <span class="material-symbols-outlined">celebration</span>
+          <span><strong>Your custom URL is ready.</strong><small>{{ prefix() }}{{ savedResult()!.slug }}</small></span>
+          <button type="button" (click)="copy()"><span class="material-symbols-outlined">content_copy</span>Copy</button>
+        </div>
+      }
+      @if (error()) {
+        <p class="custom-url-dialog__error" [class.custom-url-dialog__error--success]="error() === 'Custom link copied.'" role="status">{{ error() }}</p>
+      }
+      <footer>
+        <button type="button" class="custom-url-dialog__cancel" [disabled]="saving()" (click)="close()">{{ savedResult() ? 'Done' : 'Cancel' }}</button>
+        @if (!savedResult()) {
+          <button type="button" class="custom-url-dialog__save" [disabled]="!canSave()" (click)="save()">
+            <span class="material-symbols-outlined">{{ saving() ? 'progress_activity' : 'link' }}</span>
+            {{ saving() ? 'Saving…' : currentSlug() ? 'Update URL' : 'Set URL' }}
+          </button>
+        }
+      </footer>
+    }
+  </section>
+</div>
