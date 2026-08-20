@@ -109,6 +109,8 @@ export function rankNearbyGemCandidates(
   details = '',
   limit = 8,
 ): NearbyGemCandidate[] {
+  const resultLimit = Math.max(1, Math.trunc(limit) || 8);
+  const minimumResultCount = Math.min(5, resultLimit);
   const terms = normalizedTerms(details);
   const unique = new Map<string, NearbyGemCandidate>();
   for (const candidate of candidates) {
@@ -117,13 +119,8 @@ export function rankNearbyGemCandidates(
     if (!current || candidate.ratingCount > current.ratingCount) unique.set(candidate.id, candidate);
   }
 
-  const eligible = Array.from(unique.values()).filter((candidate) => {
-    if ((candidate.straightLineMeters ?? Infinity) > preset.radiusMeters) return false;
-    const duration = candidate.routeDurationSeconds;
-    return duration == null || duration <= preset.maxDurationSeconds;
-  });
-
-  const scored = eligible.map((candidate) => {
+  const scored = Array.from(unique.values()).filter((candidate) =>
+    (candidate.straightLineMeters ?? Infinity) <= preset.radiusMeters).map((candidate) => {
     const rating = Math.max(0, Math.min(5, candidate.rating || 0));
     const confidence = Math.min(1, Math.log10(Math.max(1, candidate.ratingCount)) / 3);
     const quality = (rating * confidence) + (3.7 * (1 - confidence));
@@ -136,19 +133,35 @@ export function rankNearbyGemCandidates(
     return { candidate, score: quality + popularity + proximity + detailMatch + categoryBonus };
   }).sort((left, right) => right.score - left.score);
 
+  const preferred = scored.filter(({ candidate }) => {
+    const duration = candidate.routeDurationSeconds;
+    return duration == null || duration <= preset.maxDurationSeconds;
+  });
+
   const selected: NearbyGemCandidate[] = [];
   const categoryCounts = new Map<string, number>();
-  for (const item of scored) {
+  for (const item of preferred) {
     const category = nearbyGemCategory(item.candidate);
-    if ((categoryCounts.get(category) ?? 0) >= 3 && selected.length < Math.min(limit, 6)) continue;
+    if ((categoryCounts.get(category) ?? 0) >= 3 && selected.length < Math.min(resultLimit, 6)) continue;
     selected.push(item.candidate);
     categoryCounts.set(category, (categoryCounts.get(category) ?? 0) + 1);
-    if (selected.length >= limit) break;
+    if (selected.length >= resultLimit) break;
   }
-  if (selected.length < limit) {
+  if (selected.length < resultLimit) {
+    for (const item of preferred) {
+      if (!selected.some((candidate) => candidate.id === item.candidate.id)) selected.push(item.candidate);
+      if (selected.length >= resultLimit) break;
+    }
+  }
+
+  // Travel time is the preferred boundary, but real-world routing can be sparse or
+  // unexpectedly slow. If fewer than five matches meet it, fill only to five with
+  // the best remaining places inside the user's chosen mileage radius. Cards still
+  // display the actual travel time, so the fallback remains transparent.
+  if (selected.length < minimumResultCount) {
     for (const item of scored) {
       if (!selected.some((candidate) => candidate.id === item.candidate.id)) selected.push(item.candidate);
-      if (selected.length >= limit) break;
+      if (selected.length >= minimumResultCount) break;
     }
   }
   return selected;

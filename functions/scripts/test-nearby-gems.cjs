@@ -59,8 +59,25 @@ const ranked = rankNearbyGemCandidates([
   { ...candidate('too-far', 'park', 500), straightLineMeters: 4000 },
 ], NEARBY_GEM_PRESETS.walk, '', 8);
 
-assert.deepEqual(new Set(ranked.map((item) => item.id)), new Set(['museum-1', 'park-1', 'cafe-1', 'book-1']));
+assert.deepEqual(new Set(ranked.map((item) => item.id)), new Set(['museum-1', 'park-1', 'cafe-1', 'book-1', 'too-slow']));
 assert.equal(ranked.filter((item) => item.id === 'museum-1').length, 1);
+assert.ok(!ranked.some((item) => item.id === 'too-far'));
+
+const minimumRanked = rankNearbyGemCandidates([
+  candidate('within-time', 'park', 500),
+  candidate('slower-1', 'museum', 1850),
+  candidate('slower-2', 'cafe', 1900),
+  candidate('slower-3', 'book_store', 2000),
+  candidate('slower-4', 'historical_landmark', 2100),
+  candidate('slower-5', 'botanical_garden', 2200),
+], NEARBY_GEM_PRESETS.walk, '', 8);
+assert.equal(minimumRanked.length, 5);
+assert.ok(minimumRanked.every((item) => item.straightLineMeters <= NEARBY_GEM_PRESETS.walk.radiusMeters));
+
+const onlyOneAvailable = rankNearbyGemCandidates([
+  candidate('only-result', 'park', 500),
+], NEARBY_GEM_PRESETS.walk, '', 8);
+assert.deepEqual(onlyOneAvailable.map((item) => item.id), ['only-result']);
 
 const preferenceRanked = rankNearbyGemCandidates([
   { ...candidate('history', 'historical_landmark', 500, 4.2, 25), editorialSummary: 'A quiet local history monument' },

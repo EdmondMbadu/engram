@@ -6244,8 +6244,9 @@ type NearbyPlacesApiPlace = {
 
 const nearbyGemPlaceTypeGroups = [
   ['tourist_attraction', 'museum', 'art_gallery', 'historical_place', 'cultural_landmark', 'monument'],
-  ['hiking_area', 'botanical_garden', 'state_park', 'beach', 'nature_preserve', 'scenic_spot'],
-  ['cafe', 'bakery', 'book_store', 'coffee_shop'],
+  ['park', 'city_park', 'hiking_area', 'botanical_garden', 'state_park', 'beach', 'nature_preserve', 'scenic_spot'],
+  ['book_store', 'library'],
+  ['cafe', 'bakery', 'coffee_shop', 'restaurant'],
 ] as const;
 
 function finiteNearbyCoordinate(value: unknown, minimum: number, maximum: number): number | null {
@@ -6378,8 +6379,7 @@ async function searchNearbyGemCandidates(
   }));
 
   const places = responses.flatMap((result) => result.status === 'fulfilled' ? result.value : []);
-  if (!places.length) return searchLegacyNearbyGemCandidates(origin, preset, apiKey);
-  return places.flatMap((place): NearbyGemCandidate[] => {
+  const parsedModernCandidates = places.flatMap((place): NearbyGemCandidate[] => {
     const id = stringOrEmpty(place.id);
     const name = stringOrEmpty(place.displayName?.text).slice(0, 120);
     const lat = finiteNearbyCoordinate(place.location?.latitude, -90, 90);
@@ -6401,6 +6401,29 @@ async function searchNearbyGemCandidates(
       straightLineMeters: haversineMeters(origin, { lat, lng }),
     }];
   });
+  const modernCandidates = Array.from(new Map(
+    parsedModernCandidates.map((candidate) => [candidate.id, candidate]),
+  ).values());
+
+  // A single successful Places request can conceal failures in the other type
+  // groups. Treat a small modern response as partial and supplement it with the
+  // legacy search instead of returning a one-card board.
+  if (modernCandidates.length >= 12) return modernCandidates;
+  try {
+    const legacyCandidates = await searchLegacyNearbyGemCandidates(origin, preset, apiKey);
+    return Array.from(new Map(
+      [...legacyCandidates, ...modernCandidates].map((candidate) => [candidate.id, candidate]),
+    ).values());
+  } catch (error) {
+    if (modernCandidates.length) {
+      logger.warn('Nearby gems legacy search failed; continuing with modern Places results.', {
+        modernCandidateCount: modernCandidates.length,
+        errorMessage: error instanceof Error ? error.message : String(error),
+      });
+      return modernCandidates;
+    }
+    throw error;
+  }
 }
 
 async function searchLegacyNearbyGemCandidates(
@@ -6638,7 +6661,7 @@ export const discoverNearbyGems = onCall(
     return {
       board: {
         title: `Gems near ${locationLabel}`.slice(0, 90),
-        description: `${candidates.length} interesting places within ${preset.description.toLocaleLowerCase()} of ${locationLabel}. Review, edit, and keep only the gems that fit you.`.slice(0, 500),
+        description: `${candidates.length} interesting places around ${locationLabel}, prioritized for ${preset.description.toLocaleLowerCase()}. Review, edit, and keep only the gems that fit you.`.slice(0, 500),
         icon: 'explore_nearby',
         tone: 'green',
         kind: 'standard',

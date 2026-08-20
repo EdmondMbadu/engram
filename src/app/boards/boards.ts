@@ -90,6 +90,7 @@ import {
 import { appendBoardCards } from './board-batch';
 import { compareBoardsByCreatedDate } from './board-gallery-order';
 import { beginBoardRouteLoad, completeBoardRouteLoad } from './board-route-load-state';
+import { shouldCanonicalizeBoardsRootRoute } from './board-root-route';
 import { resetBoardRouteViewport } from './board-route-scroll';
 import {
   BOARD_NARRATION_STYLES,
@@ -14771,7 +14772,16 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   }
 
   private canonicalizeBoardsRootRoute(boardId: string | null, ownerKey: string | null): void {
-    if (!this.isBrowser || this.friendsPage() || this.songsPage() || this.tripsPage() || boardId || ownerKey !== null || !this.authService.uid()) {
+    if (!shouldCanonicalizeBoardsRootRoute({
+      isBrowser: this.isBrowser,
+      isFriendsPage: this.friendsPage(),
+      isSongsPage: this.songsPage(),
+      isTripsPage: this.tripsPage(),
+      boardId,
+      ownerKey,
+      userId: this.authService.uid(),
+      createQuery: this.route.snapshot.queryParamMap.get('create'),
+    })) {
       return;
     }
 
