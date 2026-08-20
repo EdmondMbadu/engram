@@ -74,14 +74,25 @@ function normalizedCampaignPart(value: string, fallback: string): string {
     .slice(0, 64) || fallback;
 }
 
+function trackingMediumForSource(source: string): string {
+  const normalized = normalizedCampaignPart(source, 'shared');
+  if (normalized === 'email') return 'newsletter';
+  if (normalized === 'whatsapp' || normalized === 'text-message') return 'messaging';
+  if (normalized === 'qr-code') return 'qr';
+  if (normalized === 'partner-website') return 'referral';
+  if (['facebook', 'instagram', 'linkedin', 'x-twitter'].includes(normalized)) return 'social';
+  return 'shared';
+}
+
 export function buildTrackedBoardUrl(
   baseUrl: string,
   source: string,
   campaign: string,
 ): string {
   const url = new URL(baseUrl);
-  url.searchParams.set('utm_source', normalizedCampaignPart(source, 'shared'));
-  url.searchParams.set('utm_medium', 'social');
+  const normalizedSource = normalizedCampaignPart(source, 'shared');
+  url.searchParams.set('utm_source', normalizedSource);
+  url.searchParams.set('utm_medium', trackingMediumForSource(normalizedSource));
   url.searchParams.set('utm_campaign', normalizedCampaignPart(campaign, 'board-share'));
   return url.toString();
 }

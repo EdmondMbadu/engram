@@ -14,7 +14,19 @@ export const BOARD_ANALYTICS_EVENT_TYPES = [
 ] as const;
 
 export type BoardAnalyticsEventType = typeof BOARD_ANALYTICS_EVENT_TYPES[number];
-export type BoardAnalyticsSource = 'direct' | 'facebook' | 'google' | 'livingwiki' | 'email' | 'other';
+export type BoardAnalyticsSource =
+  | 'direct'
+  | 'facebook'
+  | 'instagram'
+  | 'linkedin'
+  | 'x-twitter'
+  | 'whatsapp'
+  | 'qr-code'
+  | 'partner-website'
+  | 'google'
+  | 'livingwiki'
+  | 'email'
+  | 'other';
 
 type NumericMap = Record<string, number>;
 
@@ -70,7 +82,13 @@ export function classifyBoardAnalyticsSource(
   const utmMedium = cleanText(utmMediumValue, 80).toLowerCase();
   const referrer = safeUrl(referrerValue)?.hostname.toLowerCase() ?? '';
   const signal = `${utmSource} ${utmMedium} ${referrer}`;
-  if (/facebook|fb\.com|instagram|threads/.test(signal)) return 'facebook';
+  if (/instagram/.test(signal)) return 'instagram';
+  if (/facebook|fb\.com|threads/.test(signal)) return 'facebook';
+  if (/linkedin/.test(signal)) return 'linkedin';
+  if (/(?:^|\s)(?:x-twitter|twitter|x\.com)(?:\s|$)/.test(signal)) return 'x-twitter';
+  if (/whatsapp|text-message|messaging/.test(signal)) return 'whatsapp';
+  if (/qr-code|\sqr\s/.test(` ${signal} `)) return 'qr-code';
+  if (/partner-website/.test(signal)) return 'partner-website';
   if (/google|bing|duckduckgo|yahoo|search/.test(signal)) return 'google';
   if (/email|newsletter|mail/.test(signal)) return 'email';
   if (/livingwiki|living-wiki|localhost|127\.0\.0\.1/.test(signal)) return 'livingwiki';

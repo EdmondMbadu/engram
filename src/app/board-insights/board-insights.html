@@ -56,15 +56,37 @@
 
       <section class="insights-grid insights-grid--lead">
         <article class="insights-panel insights-panel--trend">
-          <header><div><small>Movement</small><h2>Views over time</h2></div><span>{{ report.range.from | date:'MMM d' }}–{{ report.range.to | date:'MMM d, y' }}</span></header>
+          <header><div><small>Movement</small><h2>Views over time</h2><p class="insights-panel__subtitle">Daily public board views · hover or focus a bar for exact activity</p></div><span>{{ report.range.from | date:'MMM d' }}–{{ report.range.to | date:'MMM d, y' }}</span></header>
           @if (report.totals.views) {
-            <div class="insights-bars" role="img" aria-label="Daily board views bar chart">
-              @for (day of report.daily; track day.day) {
-                <div class="insights-bar" [title]="(day.day | date:'MMM d') + ': ' + day.views + ' views'">
-                  <span [style.height.%]="dailyBarHeight(day.views)"></span>
-                  @if ($index === 0 || $index === report.daily.length - 1 || report.daily.length <= 7) { <small>{{ day.day | date:'MMM d' }}</small> }
+            <div class="trend-chart" aria-label="Daily board views chart">
+              <span class="trend-chart__axis-title" aria-hidden="true">Views</span>
+              <div class="trend-y-axis" aria-hidden="true">
+                @for (tick of dailyYAxisTicks(); track tick) {
+                  <span>{{ formatAxisValue(tick) }}</span>
+                }
+              </div>
+              <div class="trend-plot">
+                <div class="trend-gridlines" aria-hidden="true">
+                  @for (tick of dailyYAxisTicks(); track tick) { <span></span> }
                 </div>
-              }
+                <div class="insights-bars">
+                  @for (day of report.daily; track day.day) {
+                    <button
+                      type="button"
+                      class="insights-bar"
+                      [attr.aria-label]="(day.day | date:'MMMM d, y') + ': ' + day.views + ' views, ' + day.uniqueVisitors + ' unique visitors, ' + day.engagedVisits + ' engaged visits'"
+                    >
+                      <span class="insights-bar__fill" [style.height.%]="dailyBarHeight(day.views)"></span>
+                      <span class="insights-bar__tooltip" role="tooltip">
+                        <small>{{ day.day | date:'EEEE, MMM d' }}</small>
+                        <strong>{{ day.views | number }} {{ day.views === 1 ? 'view' : 'views' }}</strong>
+                        <span>{{ day.uniqueVisitors | number }} unique · {{ day.engagedVisits | number }} engaged</span>
+                      </span>
+                      @if (showDailyLabel($index, report.daily.length)) { <small class="insights-bar__date">{{ day.day | date:'MMM d' }}</small> }
+                    </button>
+                  }
+                </div>
+              </div>
             </div>
           } @else {
             <div class="insights-empty"><span class="material-symbols-outlined">monitoring</span><strong>Tracking is ready</strong><p>New visitor activity will appear here after this analytics release is deployed.</p></div>
@@ -77,7 +99,7 @@
             <div class="source-list">
               @for (item of report.sources; track item.source) {
                 <div class="source-row">
-                  <span><strong>{{ sourceLabel(item.source) }}</strong><small>{{ item.views | number }} views</small></span>
+                  <span><strong>{{ sourceLabel(item.source) }}</strong><small>{{ item.views | number }} views · {{ sourceShare(item.views) | number:'1.0-0' }}%</small></span>
                   <i><b [style.width.%]="sourceBarWidth(item.views)"></b></i>
                 </div>
               }
@@ -88,19 +110,34 @@
         </article>
       </section>
 
-      <section class="insights-grid">
+      <section class="insights-grid insights-grid--campaigns">
         <article class="insights-panel insights-panel--campaign">
-          <header><div><small>Attribution</small><h2>Create a tracked link</h2></div><span>Recommended for Facebook posts</span></header>
-          <p class="insights-panel__intro">Campaign tags survive custom URL redirects and identify traffic even when a social app hides its referrer.</p>
-          <div class="campaign-fields">
-            <label><span>Source</span><select [value]="source()" (change)="setSource($any($event.target).value)"><option value="facebook">Facebook</option><option value="instagram">Instagram</option><option value="email">Email</option><option value="linkedin">LinkedIn</option><option value="other">Other</option></select></label>
-            <label><span>Campaign name</span><input type="text" maxlength="80" [value]="campaign()" (input)="setCampaign($any($event.target).value)" /></label>
+          <header><div><small>Attribution</small><h2>Create a tracked link</h2><p class="insights-panel__subtitle">Make a unique link for each post, group, newsletter, QR code, or partner.</p></div><span class="insights-panel__badge"><span class="material-symbols-outlined">verified</span> Custom-URL safe</span></header>
+          <div class="campaign-builder">
+            <div class="campaign-builder__controls">
+              <div class="campaign-step"><b>1</b><span><strong>Choose where you will share it</strong><small>This becomes the traffic source in your dashboard.</small></span></div>
+              <label class="campaign-field"><span>Source</span><select [value]="source()" (change)="setSource($any($event.target).value)">@for (option of trackingSources; track option.value) { <option [value]="option.value">{{ option.label }}</option> }</select><small>{{ selectedTrackingSource().description }}</small></label>
+              <div class="campaign-step"><b>2</b><span><strong>Name this specific promotion</strong><small>Use a recognizable name, such as the group, audience, or placement.</small></span></div>
+              <label class="campaign-field"><span>Campaign name</span><input type="text" maxlength="80" [value]="campaign()" (input)="setCampaign($any($event.target).value)" placeholder="Example: Cape May Facebook group" /><small>The name is normalized in the URL and grouped in campaign results.</small></label>
+            </div>
+            <aside class="campaign-preview">
+              <span class="campaign-preview__eyebrow"><span class="material-symbols-outlined">link</span> Your tracked link</span>
+              <h3>Ready to share</h3>
+              <p>Anyone opening this link lands on the normal board. The tags only help you understand where the visit came from.</p>
+              <textarea readonly rows="3" aria-label="Tracked board URL" [value]="trackedUrl()" (focus)="$any($event.target).select()"></textarea>
+              <div class="campaign-preview__actions">
+                <button type="button" (click)="copyTrackedLink()"><span class="material-symbols-outlined">{{ copied() ? 'check' : 'content_copy' }}</span>{{ copied() ? 'Copied to clipboard' : 'Copy tracked link' }}</button>
+                <a [href]="trackedUrl()" target="_blank" rel="noopener"><span class="material-symbols-outlined">open_in_new</span> Test link</a>
+              </div>
+              @if (copyError()) { <p class="tracked-link__error" role="alert">{{ copyError() }}</p> }
+              <div class="tracking-parameters" aria-label="Tracking details">
+                @for (parameter of trackedParameters(); track parameter.label) {
+                  <span><small>{{ parameter.label }}</small><strong>{{ parameter.value }}</strong></span>
+                }
+              </div>
+            </aside>
           </div>
-          <div class="tracked-link"><input type="text" readonly aria-label="Tracked board URL" [value]="trackedUrl()" (focus)="$any($event.target).select()" /><button type="button" (click)="copyTrackedLink()"><span class="material-symbols-outlined">{{ copied() ? 'check' : 'content_copy' }}</span>{{ copied() ? 'Copied' : 'Copy tracked link' }}</button></div>
-          @if (copyError()) { <p class="tracked-link__error" role="alert">{{ copyError() }}</p> }
-          @if (report.campaigns.length) {
-            <div class="campaign-results"><h3>Tracked campaigns</h3>@for (item of report.campaigns; track item.campaign) { <span><strong>{{ sourceLabel(item.campaign) }}</strong><b>{{ item.views | number }} views</b></span> }</div>
-          }
+          <div class="campaign-results"><header><div><h3>Campaign results</h3><p>Visits from links created here, ranked by tracked views.</p></div>@if (report.campaigns.length) { <strong>{{ trackedCampaignViews() | number }} tracked views</strong> }</header>@if (report.campaigns.length) { @for (item of report.campaigns; track item.campaign) { <div class="campaign-result"><span><strong>{{ campaignLabel(item.campaign) }}</strong><small>{{ item.views | number }} views · {{ campaignShare(item.views) | number:'1.0-0' }}%</small></span><i><b [style.width.%]="campaignBarWidth(item.views)"></b></i></div> } } @else { <div class="campaign-results__empty"><span class="material-symbols-outlined">conversion_path</span><p>Your first tracked visit will appear here with its campaign name.</p></div> }</div>
         </article>
 
         <article class="insights-panel">

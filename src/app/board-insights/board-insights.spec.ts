@@ -62,8 +62,28 @@ describe('BoardInsightsComponent', () => {
     expect(analytics.getInsights).toHaveBeenCalledWith('board-1', 30);
     expect(fixture.nativeElement.textContent).toContain('Cape May Gems');
     expect(fixture.nativeElement.textContent).toContain('120');
-    expect(fixture.nativeElement.textContent).toContain('Facebook / Instagram');
+    expect(fixture.nativeElement.textContent).toContain('Facebook');
     expect(fixture.nativeElement.textContent).toContain('Sunset Beach');
     expect(fixture.componentInstance.trackedUrl()).toContain('utm_source=facebook');
+    expect(fixture.componentInstance.dailyYAxisTicks()).toEqual([120, 90, 60, 30, 0]);
+    expect(fixture.nativeElement.querySelector('.trend-y-axis').textContent).toContain('90');
+    expect(fixture.nativeElement.querySelector('.insights-bar').getAttribute('aria-label')).toContain('120 views');
+    expect(fixture.nativeElement.querySelector('.insights-bar__tooltip').textContent).toContain('120 views');
+    expect(fixture.nativeElement.querySelector('textarea[aria-label="Tracked board URL"]').value)
+      .toContain('/boards/cape-may-gems?utm_source=facebook&utm_medium=social');
+    expect(fixture.nativeElement.textContent).toContain('Choose where you will share it');
+    expect(fixture.nativeElement.textContent).toContain('Campaign results');
+  });
+
+  it('updates the attribution medium when the share source changes', async () => {
+    const fixture = TestBed.createComponent(BoardInsightsComponent);
+    fixture.detectChanges();
+    await fixture.componentInstance['load']();
+    fixture.componentInstance.setSource('email');
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.trackedUrl()).toContain('utm_source=email');
+    expect(fixture.componentInstance.trackedUrl()).toContain('utm_medium=newsletter');
+    expect(fixture.nativeElement.textContent).toContain('Campaigns and personal email');
   });
 });
