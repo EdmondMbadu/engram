@@ -1368,7 +1368,7 @@ type BoardLoadContext = {
   selector: 'app-boards',
   imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink, BoardCollectionCreateComponent, BoardCollectionListComponent, CustomPublicUrlDialogComponent],
   templateUrl: './boards.html',
-  styleUrls: ['./boards.css', './tour-experience.css', './board-wizard-drafts.css', './board-wizard-media-mode.css', './board-narration-style.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css', './stack-script.css', './stack-cover-final.css', './board-city-tag.css'],
+  styleUrls: ['./boards.css', './tour-experience.css', './board-wizard-drafts.css', './board-wizard-media-mode.css', './board-narration-style.css', './board-wizard-redesign.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css', './stack-script.css', './stack-cover-final.css', './board-city-tag.css'],
 })
 export class BoardsComponent implements AfterViewInit, OnDestroy {
   private readonly localeId = inject(LOCALE_ID);
@@ -2424,6 +2424,20 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     const board = this.wizardLockedTargetBoard();
     return board ? this.boardBuildModes(board) : this.wizardModes;
   });
+  readonly wizardIdeaModes = computed(() => this.wizardAvailableModes()
+    .filter((mode) => mode.id === 'describe' || mode.id === 'manual')
+    .sort((left, right) => Number(left.id === 'manual') - Number(right.id === 'manual')));
+  readonly wizardMaterialModes = computed(() => this.wizardAvailableModes()
+    .filter((mode) => mode.id === 'paste' || mode.id === 'photos' || mode.id === 'url'));
+  readonly wizardPlaceModes = computed(() => this.wizardAvailableModes()
+    .filter((mode) => mode.id === 'nearby-gems'
+      || mode.id === 'walking-tour'
+      || mode.id === 'driving-tour'
+      || mode.id === 'off-grid'));
+  readonly wizardMediaModeLabel = computed(() => this.wizardMediaModes
+    .find((mode) => mode.id === this.wizardMediaMode())?.label ?? 'Images only');
+  readonly wizardDefaultTypeLabel = computed(() => this.cardTypes
+    .find((type) => type.id === this.wizardDefaultType())?.label ?? 'Place');
   readonly wizardContributionBoard = computed(() => {
     const boardId = this.wizardContributionBoardId();
     return boardId ? this.boards().find((board) => board.id === boardId) ?? null : null;

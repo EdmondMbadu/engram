@@ -4372,6 +4372,8 @@
       <section
         class="boards-modal boards-modal--wizard"
         [class.boards-modal--nearby-gems]="wizardMode() === 'nearby-gems' && wizardStep() === 'configure'"
+        [class.boards-modal--wizard-choose]="wizardStep() === 'choose'"
+        [class.boards-modal--wizard-configure]="wizardStep() === 'configure' && wizardMode() === 'describe'"
         role="dialog"
         aria-modal="true"
         [attr.aria-labelledby]="wizardMode() === 'nearby-gems' && wizardStep() === 'configure' ? 'nearby-gems-modal-title' : 'board-wizard-modal-title'"
@@ -4383,6 +4385,12 @@
             @if (wizardMode() === 'nearby-gems' && wizardStep() === 'configure') {
               <h3 id="nearby-gems-modal-title">Gems near me</h3>
               <span class="nearby-gems-modal__subtitle">Pick how far you feel like going. We’ll turn nearby places into editable cards.</span>
+            } @else if (wizardStep() === 'choose' && !wizardLockedTargetBoard()) {
+              <h3 id="board-wizard-modal-title">What would you like to make?</h3>
+              <span class="boards-wizard-modal__subtitle">Start with an idea, something you have, or a place to explore.</span>
+            } @else if (wizardStep() === 'configure' && wizardMode() === 'describe' && !wizardLockedTargetBoard()) {
+              <h3 id="board-wizard-modal-title">Describe your board</h3>
+              <span class="boards-wizard-modal__subtitle">Tell us what you want. You can review every card before saving.</span>
             } @else {
               <h3 id="board-wizard-modal-title">{{ wizardStep() === 'choose' ? (wizardLockedTargetBoard() ? 'Choose how to add cards' : 'Choose how to start') : wizardModeLabel() }}</h3>
             }
@@ -4399,49 +4407,101 @@
         </div>
 
         @if (wizardStep() === 'choose') {
-          <div class="boards-wizard">
-            <div class="boards-wizard__intro">
-              <span class="material-symbols-outlined">auto_awesome</span>
-              <div>
-                <h4>{{ wizardLockedTargetBoard() ? 'Add one card or several at once to ' + wizardTargetBoardTitle() + '.' : 'Build a board from whatever you already have.' }}</h4>
-                <p>Everything opens as an editable preview before it is saved.</p>
-              </div>
-            </div>
+          <div class="boards-wizard boards-wizard--choose">
             @if (!wizardLockedTargetBoard() && wizardDrafts()[0]; as recentDraft) {
               <div class="boards-wizard-resume-draft">
                 <span class="material-symbols-outlined">history</span>
                 <div>
-                  <strong>Continue your latest draft?</strong>
+                  <strong>Continue your latest draft</strong>
                   <small>{{ recentDraft.result.board.title }} · {{ recentDraft.result.cards.length }} cards</small>
                 </div>
                 <button type="button" class="boards-primary-action" (click)="resumeWizardDraft(recentDraft)">Resume draft</button>
               </div>
             }
-            <div class="boards-wizard-mode-grid">
-              @for (mode of wizardAvailableModes(); track mode.id) {
-                <button
-                  type="button"
-                  class="boards-wizard-mode"
-                  [class.boards-wizard-mode--off-grid]="mode.id === 'off-grid'"
-                  (click)="chooseWizardMode(mode.id)"
-                >
-                  <span class="material-symbols-outlined">{{ mode.icon }}</span>
-                  <strong>{{ wizardLockedTargetBoard() && mode.id === 'manual' ? 'Add one card manually' : mode.label }}</strong>
-                  <small>{{ wizardLockedTargetBoard() && mode.id === 'manual' ? 'Create one card with the standard card editor.' : mode.description }}</small>
-                </button>
-              }
-            </div>
+            @if (wizardIdeaModes().length) {
+              <section class="boards-wizard-mode-group boards-wizard-mode-group--idea">
+                <h4><span class="material-symbols-outlined">auto_awesome</span> Start with an idea</h4>
+                <div class="boards-wizard-mode-grid boards-wizard-mode-grid--idea">
+                  @for (mode of wizardIdeaModes(); track mode.id) {
+                    <button
+                      type="button"
+                      class="boards-wizard-mode"
+                      [class.boards-wizard-mode--recommended]="mode.id === 'describe' && !wizardLockedTargetBoard()"
+                      (click)="chooseWizardMode(mode.id)"
+                    >
+                      <span class="boards-wizard-mode__icon material-symbols-outlined">{{ mode.icon }}</span>
+                      <span class="boards-wizard-mode__copy">
+                        @if (mode.id === 'describe' && !wizardLockedTargetBoard()) {
+                          <em>Recommended</em>
+                        }
+                        <strong>{{ wizardLockedTargetBoard() && mode.id === 'manual' ? 'Add one card manually' : mode.label }}</strong>
+                        <small>{{ wizardLockedTargetBoard() && mode.id === 'manual' ? 'Create one card with the standard card editor.' : mode.description }}</small>
+                      </span>
+                      <span class="boards-wizard-mode__arrow material-symbols-outlined">arrow_forward</span>
+                    </button>
+                  }
+                </div>
+              </section>
+            }
+            @if (wizardMaterialModes().length) {
+              <section class="boards-wizard-mode-group">
+                <h4><span class="material-symbols-outlined">description</span> Use what you have</h4>
+                <div class="boards-wizard-mode-grid boards-wizard-mode-grid--material">
+                  @for (mode of wizardMaterialModes(); track mode.id) {
+                    <button type="button" class="boards-wizard-mode" (click)="chooseWizardMode(mode.id)">
+                      <span class="boards-wizard-mode__icon material-symbols-outlined">{{ mode.icon }}</span>
+                      <span class="boards-wizard-mode__copy">
+                        <strong>{{ mode.label }}</strong>
+                        <small>{{ mode.description }}</small>
+                      </span>
+                      <span class="boards-wizard-mode__arrow material-symbols-outlined">arrow_forward</span>
+                    </button>
+                  }
+                </div>
+              </section>
+            }
+            @if (wizardPlaceModes().length) {
+              <section class="boards-wizard-mode-group">
+                <h4><span class="material-symbols-outlined">location_on</span> Explore a place</h4>
+                <div class="boards-wizard-mode-grid boards-wizard-mode-grid--place">
+                  @for (mode of wizardPlaceModes(); track mode.id) {
+                    <button
+                      type="button"
+                      class="boards-wizard-mode"
+                      [class.boards-wizard-mode--off-grid]="mode.id === 'off-grid'"
+                      (click)="chooseWizardMode(mode.id)"
+                    >
+                      <span class="boards-wizard-mode__icon material-symbols-outlined">{{ mode.icon }}</span>
+                      <span class="boards-wizard-mode__copy">
+                        <strong>{{ mode.label }}</strong>
+                        <small>{{ mode.description }}</small>
+                      </span>
+                      <span class="boards-wizard-mode__arrow material-symbols-outlined">arrow_forward</span>
+                    </button>
+                  }
+                </div>
+              </section>
+            }
             @if (wizardLockedTargetBoard()?.cards?.length) {
               <small>Walking tours, driving tours, and off-grid structure are available before the board’s first card is added.</small>
             }
           </div>
         } @else if (wizardStep() === 'configure') {
-          <form class="boards-form boards-wizard" (submit)="submitWizardConfigure($event)">
+          <form class="boards-form boards-wizard boards-wizard--configure" (submit)="submitWizardConfigure($event)">
+            @if (wizardMode() === 'describe') {
+              <ol class="boards-wizard-steps" aria-label="Board creation progress">
+                <li class="boards-wizard-steps__active"><span>1</span> Describe</li>
+                <li><span>2</span> Preview</li>
+                <li><span>3</span> Save</li>
+              </ol>
+            }
+            <div class="boards-wizard-config-layout">
             <section
               class="boards-form-section boards-form-section--feature"
               [class.boards-form-section--nearby-gems]="wizardMode() === 'nearby-gems'"
+              [class.boards-form-section--describe]="wizardMode() === 'describe'"
             >
-              @if (wizardMode() !== 'nearby-gems') {
+              @if (wizardMode() !== 'nearby-gems' && wizardMode() !== 'describe') {
                 <div class="boards-form-section__head">
                   <span class="material-symbols-outlined">tune</span>
                   <div>
@@ -4535,10 +4595,10 @@
                   }
                 </div>
               } @else if (wizardMode() === 'describe') {
-                <label>
-                  <span>{{ wizardLockedTargetBoard() ? 'Describe the cards you want to add' : 'Describe the board' }}</span>
+                <label class="boards-wizard-prompt">
+                  <span>{{ wizardLockedTargetBoard() ? 'Describe the cards you want to add' : 'What should this board include?' }}</span>
                   <textarea
-                    rows="5"
+                    rows="4"
                     maxlength="2000"
                     [placeholder]="wizardInputPlaceholder()"
                     [value]="wizardPrompt()"
@@ -4551,6 +4611,23 @@
                     </small>
                   }
                 </label>
+                <small class="boards-wizard-prompt__help">Include names, order, location, tone, or anything that matters.</small>
+                @if (!wizardLockedTargetBoard()) {
+                  <div class="boards-wizard-prompt__examples" aria-label="Prompt examples">
+                    <button type="button" (click)="wizardPrompt.set('A weekend in Cape May')">
+                      <span class="material-symbols-outlined">location_on</span>
+                      A weekend in Cape May
+                    </button>
+                    <button type="button" (click)="wizardPrompt.set('Books that changed modern design')">
+                      <span class="material-symbols-outlined">menu_book</span>
+                      Books that changed modern design
+                    </button>
+                    <button type="button" (click)="wizardPrompt.set('Hidden gardens in Philadelphia')">
+                      <span class="material-symbols-outlined">eco</span>
+                      Hidden gardens in Philadelphia
+                    </button>
+                  </div>
+                }
               } @else if (wizardMode() === 'paste') {
                 <label>
                   <span i18n>Paste text or a list</span>
@@ -5013,7 +5090,10 @@
               }
             </section>
 
-            <section class="boards-wizard-config" [hidden]="wizardMode() === 'nearby-gems'">
+            <aside class="boards-wizard-config" [hidden]="wizardMode() === 'nearby-gems'">
+              @if (wizardMode() === 'describe') {
+                <h4>Board shape</h4>
+              }
               @if (wizardContributionBoard(); as contributionBoard) {
                 <div class="off-grid-contribution-target">
                   <span class="material-symbols-outlined">group</span>
@@ -5043,8 +5123,35 @@
               }
               @if (wizardMode() !== 'off-grid') {
               <label>
-                <span>{{ isTourWizardMode() ? 'How many stops' : 'How many cards' }}</span>
+                <span>{{ isTourWizardMode() ? 'Number of stops' : 'Number of cards' }}</span>
+                @if (wizardMode() === 'describe') {
                 <div class="boards-wizard-count">
+                  <div class="boards-wizard-count__number">
+                    <button
+                      type="button"
+                      aria-label="Use one fewer card"
+                      [disabled]="wizardCount() <= 1 || wizardMode() === 'photos' || (wizardMode() === 'paste' && wizardDetectedPasteCount() > 0)"
+                      (click)="setWizardCount(wizardCount() - 1)"
+                    >
+                      <span class="material-symbols-outlined">remove</span>
+                    </button>
+                    <input
+                      type="number"
+                      min="1"
+                      max="100"
+                      [disabled]="wizardMode() === 'photos' || (wizardMode() === 'paste' && wizardDetectedPasteCount() > 0)"
+                      [value]="wizardCount()"
+                      (input)="setWizardCount($any($event.target).value)"
+                    />
+                    <button
+                      type="button"
+                      aria-label="Use one more card"
+                      [disabled]="wizardCount() >= 100 || wizardMode() === 'photos' || (wizardMode() === 'paste' && wizardDetectedPasteCount() > 0)"
+                      (click)="setWizardCount(wizardCount() + 1)"
+                    >
+                      <span class="material-symbols-outlined">add</span>
+                    </button>
+                  </div>
                   <input
                     type="range"
                     min="1"
@@ -5053,18 +5160,49 @@
                     [value]="wizardCount()"
                     (input)="setWizardCount($any($event.target).value)"
                   />
-                  <input
-                    type="number"
-                    min="1"
-                    max="100"
-                    [disabled]="wizardMode() === 'photos' || (wizardMode() === 'paste' && wizardDetectedPasteCount() > 0)"
-                    [value]="wizardCount()"
-                    (input)="setWizardCount($any($event.target).value)"
-                  />
                 </div>
+                <small class="boards-wizard-count__recommendation">Recommended: 8–16</small>
+                } @else {
+                  <div class="boards-wizard-count">
+                    <input
+                      type="range"
+                      min="1"
+                      max="100"
+                      [disabled]="wizardMode() === 'photos' || (wizardMode() === 'paste' && wizardDetectedPasteCount() > 0)"
+                      [value]="wizardCount()"
+                      (input)="setWizardCount($any($event.target).value)"
+                    />
+                    <input
+                      type="number"
+                      min="1"
+                      max="100"
+                      [disabled]="wizardMode() === 'photos' || (wizardMode() === 'paste' && wizardDetectedPasteCount() > 0)"
+                      [value]="wizardCount()"
+                      (input)="setWizardCount($any($event.target).value)"
+                    />
+                  </div>
+                }
               </label>
               }
-            </section>
+              @if (wizardMode() === 'describe') {
+              <div class="boards-wizard-config__reassurance">
+                <span class="material-symbols-outlined">check_circle</span>
+                Everything stays editable before you save.
+              </div>
+              @if (wizardMode() !== 'off-grid') {
+                <div class="boards-wizard-config__summary">
+                  <span class="material-symbols-outlined">dashboard_customize</span>
+                  <strong>
+                    {{ wizardCount() }} {{ isTourWizardMode() ? 'stops' : 'cards' }}
+                    @if (!isTourWizardMode() && wizardMode() !== 'photos') {
+                      · {{ wizardMediaModeLabel() }} · {{ wizardDefaultTypeLabel() }}
+                    }
+                  </strong>
+                </div>
+              }
+              }
+            </aside>
+            </div>
 
             @if (wizardMode() !== 'photos' && wizardMode() !== 'off-grid' && wizardMode() !== 'nearby-gems') {
               <section class="boards-wizard-media">
@@ -5200,9 +5338,18 @@
                   </button>
                 }
               } @else {
-                <button type="submit" class="boards-primary-action" [disabled]="!wizardCanGenerate()" i18n>
+                @if (wizardMode() === 'describe') {
+                <small class="boards-wizard-publish-note">
+                  <span class="material-symbols-outlined">lock</span>
+                  Nothing is published until you save.
+                </small>
+                }
+                <button type="submit" class="boards-primary-action" [disabled]="!wizardCanGenerate()">
                   <span class="material-symbols-outlined">auto_awesome</span>
-                  {{ wizardMode() === 'off-grid' ? 'Preview card' : 'Generate preview' }}
+                  {{ wizardMode() === 'off-grid' ? 'Preview card' : wizardMode() === 'describe' ? 'Create preview' : 'Generate preview' }}
+                  @if (wizardMode() === 'describe') {
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                  }
                 </button>
               }
             </div>

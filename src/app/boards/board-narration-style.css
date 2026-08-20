@@ -18,3 +18,22 @@
 
 @media(max-width:820px){.boards-wizard-narration__grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:460px){.boards-wizard-narration__head{align-items:start;flex-direction:column;gap:.3rem}.boards-wizard-narration__head>small{text-align:left}.boards-wizard-narration__grid{grid-template-columns:1fr}.boards-wizard-narration__grid>button{min-height:0}}
+
+.boards-modal--wizard-configure .boards-wizard-narration{gap:.45rem}
+.boards-modal--wizard-configure .boards-wizard-narration__head{align-items:center}
+.boards-modal--wizard-configure .boards-wizard-narration__head>small{font-size:.68rem;font-weight:700}
+.boards-modal--wizard-configure .boards-wizard-narration__grid{gap:.45rem}
+.boards-modal--wizard-configure .boards-wizard-narration__grid>button{min-height:5.7rem;gap:.45rem;border-radius:.75rem;padding:.62rem}
+.boards-modal--wizard-configure .boards-wizard-narration__grid>button.boards-wizard-narration__option--active{border-width:1px;box-shadow:none;padding:.62rem}
+.boards-modal--wizard-configure .boards-wizard-narration__icon{width:2rem;height:2rem;border-radius:.55rem;font-size:1.05rem}
+.boards-modal--wizard-configure .boards-wizard-narration__copy{gap:.25rem}
+.boards-modal--wizard-configure .boards-wizard-narration__title{gap:.08rem;padding-right:.7rem}
+.boards-modal--wizard-configure .boards-wizard-narration__title strong{font-size:.73rem}
+.boards-modal--wizard-configure .boards-wizard-narration__title small{font-size:.56rem}
+.boards-modal--wizard-configure .boards-wizard-narration__description{display:none}
+.boards-modal--wizard-configure .boards-wizard-narration__voice{font-size:.6rem;font-weight:750}
+.boards-modal--wizard-configure .boards-wizard-narration__voice .material-symbols-outlined{display:none}
+.boards-modal--wizard-configure .boards-wizard-narration__check{top:.42rem;right:.42rem;font-size:.95rem}
+
+@media(max-width:980px){.boards-modal--wizard-configure .boards-wizard-narration__grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:620px){.boards-modal--wizard-configure .boards-wizard-narration__head{align-items:start;flex-direction:column;gap:.25rem}.boards-modal--wizard-configure .boards-wizard-narration__head>small{text-align:left}.boards-modal--wizard-configure .boards-wizard-narration__grid{grid-template-columns:1fr}.boards-modal--wizard-configure .boards-wizard-narration__grid>button{min-height:0}}

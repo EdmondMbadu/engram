@@ -19,3 +19,16 @@
 
 @media(max-width:760px){.boards-wizard-media__grid{grid-template-columns:1fr}.boards-wizard-media__option{min-height:0}}
 @media(max-width:520px){.boards-wizard-media__head{align-items:start;flex-direction:column;gap:.3rem}.boards-wizard-media__head>small{text-align:left}}
+
+.boards-modal--wizard-configure .boards-wizard-media{gap:.45rem}
+.boards-modal--wizard-configure .boards-wizard-media__head{align-items:center}
+.boards-modal--wizard-configure .boards-wizard-media__head>small{font-size:.68rem;font-weight:700}
+.boards-modal--wizard-configure .boards-wizard-media__grid{gap:.5rem}
+.boards-modal--wizard-configure .boards-wizard-media__option{min-height:6rem;gap:.55rem;border-radius:.78rem;padding:.7rem}
+.boards-modal--wizard-configure .boards-wizard-media__option.boards-wizard-media__option--active{border-width:1px;box-shadow:none;padding:.7rem}
+.boards-modal--wizard-configure .boards-wizard-media__icon{width:2.2rem;height:2.2rem;border-radius:.62rem;font-size:1.15rem}
+.boards-modal--wizard-configure .boards-wizard-media__copy{gap:.3rem}
+.boards-modal--wizard-configure .boards-wizard-media__title strong{font-size:.78rem}
+.boards-modal--wizard-configure .boards-wizard-media__copy>small{font-size:.66rem;line-height:1.35}
+
+@media(max-width:760px){.boards-modal--wizard-configure .boards-wizard-media__option{min-height:0}}
