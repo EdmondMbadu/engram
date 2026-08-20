@@ -36,17 +36,22 @@ export class CustomPublicUrlDialogComponent implements OnInit, AfterViewInit, On
   readonly availability = signal<'idle' | 'checking' | 'available' | 'taken'>('idle');
   readonly saving = signal(false);
   readonly error = signal<string | null>(null);
+  readonly copyState = signal<'idle' | 'copied' | 'failed'>('idle');
   readonly savedResult = signal<SetCustomPublicUrlResult | null>(null);
   readonly normalizedSlug = computed(() => normalizeCustomPublicUrlSlug(this.value()));
   readonly validationError = computed(() => customPublicUrlSlugError(this.normalizedSlug()));
   readonly resourceLabel = computed(() => this.resourceType() === 'board' ? 'board' : 'collection');
   readonly prefix = computed(() => this.resourceType() === 'board' ? 'livingwiki.com/boards/' : 'livingwiki.com/collections/');
   readonly previewPath = computed(() => customPublicUrlPath(this.resourceType(), this.normalizedSlug()));
+  readonly activeSlug = computed(() => this.savedResult()?.slug || normalizeCustomPublicUrlSlug(this.currentSlug()));
+  readonly activePath = computed(() => this.activeSlug()
+    ? customPublicUrlPath(this.resourceType(), this.activeSlug())
+    : '');
   readonly canSave = computed(() =>
     this.eligible()
     && this.publicResource()
     && !this.validationError()
-    && this.availability() === 'available'
+    && this.availability() !== 'taken'
     && !this.saving(),
   );
 
@@ -79,8 +84,12 @@ export class CustomPublicUrlDialogComponent implements OnInit, AfterViewInit, On
   }
 
   updateValue(value: string): void {
-    this.value.set(normalizeCustomPublicUrlSlug(value));
+    // Keep the user's text intact while they type. Normalizing on every
+    // keystroke strips a trailing space/hyphen before the next word arrives,
+    // which makes a value such as "cape may" collapse into "capemay".
+    this.value.set(value);
     this.error.set(null);
+    this.copyState.set('idle');
     this.savedResult.set(null);
     this.scheduleAvailabilityCheck();
   }
@@ -107,22 +116,29 @@ export class CustomPublicUrlDialogComponent implements OnInit, AfterViewInit, On
     }
   }
 
-  async copy(): Promise<void> {
-    const result = this.savedResult();
-    if (!result || typeof navigator === 'undefined') return;
-    const url = `${window.location.origin}${result.path}`;
+  async copyCurrentUrl(): Promise<void> {
+    const path = this.activePath();
+    if (!path || typeof navigator === 'undefined' || typeof window === 'undefined') return;
+    const url = `${window.location.origin}${path}`;
     try {
       await navigator.clipboard.writeText(url);
-      this.error.set('Custom link copied.');
+      this.copyState.set('copied');
+      this.error.set(null);
     } catch {
-      this.error.set('Copy was blocked. Select the link from your address bar.');
+      if (this.copyWithSelectionFallback(url)) {
+        this.copyState.set('copied');
+        this.error.set(null);
+      } else {
+        this.copyState.set('failed');
+        this.error.set('Copy was blocked. Select the link shown above and copy it manually.');
+      }
     }
   }
 
   private scheduleAvailabilityCheck(): void {
     if (this.availabilityTimer) clearTimeout(this.availabilityTimer);
     const run = ++this.availabilityRun;
-    if (this.validationError()) {
+    if (!this.eligible() || !this.publicResource() || this.validationError()) {
       this.availability.set('idle');
       return;
     }
@@ -138,7 +154,25 @@ export class CustomPublicUrlDialogComponent implements OnInit, AfterViewInit, On
             this.error.set('Availability could not be checked. Try again.');
           }
         });
-    }, 350);
+    }, 220);
+  }
+
+  private copyWithSelectionFallback(value: string): boolean {
+    if (typeof document === 'undefined') return false;
+    const input = document.createElement('textarea');
+    input.value = value;
+    input.setAttribute('readonly', '');
+    input.style.position = 'fixed';
+    input.style.opacity = '0';
+    document.body.appendChild(input);
+    input.select();
+    try {
+      return document.execCommand('copy');
+    } catch {
+      return false;
+    } finally {
+      input.remove();
+    }
   }
 
   private errorMessage(error: unknown): string {

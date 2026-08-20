@@ -52,4 +52,38 @@ describe('CustomPublicUrlDialogComponent', () => {
     expect(fixture.nativeElement.textContent).toContain('Custom URLs are a paid feature.');
     expect(fixture.nativeElement.querySelector('.custom-url-dialog__save')).toBeNull();
   });
+
+  it('keeps natural typing intact while previewing and saving the normalized URL', async () => {
+    const fixture = TestBed.createComponent(CustomPublicUrlDialogComponent);
+    fixture.componentRef.setInput('resourceType', 'board');
+    fixture.componentRef.setInput('resourceId', 'board-1');
+    fixture.componentRef.setInput('resourceTitle', 'Original board');
+    fixture.componentRef.setInput('eligible', true);
+    fixture.componentRef.setInput('publicResource', true);
+    fixture.detectChanges();
+
+    fixture.componentInstance.updateValue('Cape May Gems');
+    expect(fixture.componentInstance.value()).toBe('Cape May Gems');
+    expect(fixture.componentInstance.normalizedSlug()).toBe('cape-may-gems');
+    // Saving stays responsive while the non-authoritative availability hint is running.
+    expect(fixture.componentInstance.canSave()).toBeTrue();
+
+    await fixture.componentInstance.save();
+    expect(customUrls.set).toHaveBeenCalledWith('board', 'board-1', 'cape-may-gems');
+  });
+
+  it('always exposes a copy action when a custom URL already exists', () => {
+    const fixture = TestBed.createComponent(CustomPublicUrlDialogComponent);
+    fixture.componentRef.setInput('resourceType', 'board');
+    fixture.componentRef.setInput('resourceId', 'board-1');
+    fixture.componentRef.setInput('resourceTitle', 'Cape May Gems');
+    fixture.componentRef.setInput('currentSlug', 'cape-may-gems');
+    fixture.componentRef.setInput('eligible', true);
+    fixture.componentRef.setInput('publicResource', true);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.textContent).toContain('Current custom link');
+    expect(fixture.nativeElement.textContent).toContain('livingwiki.com/boards/cape-may-gems');
+    expect(fixture.nativeElement.querySelector('.custom-url-dialog__current button')).not.toBeNull();
+  });
 });
