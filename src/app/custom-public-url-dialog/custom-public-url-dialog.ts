@@ -29,6 +29,7 @@ export class CustomPublicUrlDialogComponent implements OnInit, AfterViewInit, On
   readonly currentSlug = input('');
   readonly eligible = input(false);
   readonly publicResource = input(true);
+  readonly insightsPath = input('');
   @Output() closed = new EventEmitter<void>();
   @Output() saved = new EventEmitter<SetCustomPublicUrlResult>();
 

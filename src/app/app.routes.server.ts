@@ -35,6 +35,7 @@ export const serverRoutes: ServerRoute[] = [
   { path: 'boards/u/:ownerKey', renderMode: RenderMode.Client },
   { path: 'boards/u/:ownerKey/collections/:slug', renderMode: RenderMode.Client },
   { path: 'collections/:slug', renderMode: RenderMode.Client },
+  { path: 'manage/boards/:boardId/insights', renderMode: RenderMode.Client },
   { path: 'boards/:boardId', renderMode: RenderMode.Client },
   { path: 'songs/:boardId', renderMode: RenderMode.Client },
   { path: 'trips/:boardId', renderMode: RenderMode.Client },

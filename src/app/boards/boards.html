@@ -1379,6 +1379,10 @@
                       </button>
                     }
                     @if (canEditBoard(board)) {
+                      <button type="button" (click)="openBoardInsights(board, $event)">
+                        <span class="material-symbols-outlined" aria-hidden="true">monitoring</span>
+                        <span>View insights</span>
+                      </button>
                       <button type="button" (click)="openCustomUrlDialog(board, $event)">
                         <span class="material-symbols-outlined" aria-hidden="true">link</span>
                         <span>Set custom URL</span>
@@ -2156,6 +2160,7 @@
                       <article
                         class="tour-stop-card"
                         [id]="'tour-stop-' + card.id"
+                        [attr.data-analytics-card-id]="card.id"
                         [class.tour-stop-card--active]="selectedTourCardId() === card.id"
                         [class.tour-stop-card--dragging]="isDraggingCard(card.id)"
                         [class.tour-stop-card--drop-target]="isCardDropTarget(card.id)"
@@ -2659,7 +2664,7 @@
                     </button>
 
                     @if (selectedSongCard(); as song) {
-                      <article class="song-player-card">
+                      <article class="song-player-card" [attr.data-analytics-card-id]="selectedSongCard()!.id">
                         <div class="song-player-card__art">
                           @if (songArtwork(song, board)) {
                             <img [src]="songArtwork(song, board)" [alt]="song.title + ' cover art'" />
@@ -2812,6 +2817,7 @@
               @for (card of filteredCards(); track card.id) {
                 <article
                   class="detail-card"
+                  [attr.data-analytics-card-id]="card.id"
                   [class.detail-card--favorite]="card.status === 'favorite'"
                   [class.detail-card--selected]="isCardSelected(card.id)"
                   [class.detail-card--managing]="!exploredRelatedCardParent() && !isAlongsideInnerCard(board, card) && isManagingBoard(board.id)"
@@ -8508,6 +8514,7 @@
     [resourceId]="customBoard.id"
     [resourceTitle]="customBoard.title"
     [currentSlug]="customBoard.customSlug || ''"
+    [insightsPath]="'/manage/boards/' + customBoard.id + '/insights'"
     [eligible]="customUrlEligible(customBoard)"
     [publicResource]="customBoard.visibility === 'public'"
     (closed)="closeCustomUrlDialog()"

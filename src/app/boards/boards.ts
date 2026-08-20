@@ -11,6 +11,7 @@ import { AtlasService } from '../atlas.service';
 import { AuthService } from '../auth.service';
 import { BoardCollectionCreateComponent } from '../board-collection-create/board-collection-create';
 import { BoardCollectionListComponent } from '../board-collection-list/board-collection-list';
+import { BoardAnalyticsService } from '../board-analytics.service';
 import { CustomPublicUrlDialogComponent } from '../custom-public-url-dialog/custom-public-url-dialog';
 import { normalizeCustomPublicUrlSlug, type SetCustomPublicUrlResult } from '../custom-public-url';
 import {
@@ -1328,6 +1329,7 @@ export class BoardsComponent implements OnDestroy {
   private readonly atlasService = inject(AtlasService);
   private readonly authService = inject(AuthService);
   private readonly boardCollectionsService = inject(BoardCollectionsService);
+  private readonly boardAnalytics = inject(BoardAnalyticsService);
   private readonly googleMapsService = inject(GoogleMapsService);
   private readonly placeReviewsService = inject(PlaceReviewsService);
   private readonly route = inject(ActivatedRoute);
@@ -2588,6 +2590,7 @@ export class BoardsComponent implements OnDestroy {
       this.songsPage.set(routePath.startsWith('songs'));
       this.tripsPage.set(routePath.startsWith('trips'));
       const boardId = params.get('boardId');
+      if (!boardId) this.boardAnalytics.stopBoardSession();
       const ownerKey = params.get('ownerKey');
       const ownerUid = this.publicOwnerUidFromKey(ownerKey);
       const ownerSlug = this.publicOwnerSlugFromKey(ownerKey);
@@ -2831,6 +2834,7 @@ export class BoardsComponent implements OnDestroy {
     this.stopPersonalVoiceRecording(true);
     this.stopTourSpeech();
     this.stopStackPlayback();
+    this.boardAnalytics.stopBoardSession();
     this.disposeStackNarrationAudio();
     if (this.boardFriendSearchTimer) {
       clearTimeout(this.boardFriendSearchTimer);
@@ -3246,6 +3250,9 @@ export class BoardsComponent implements OnDestroy {
 
   toggleCardFlip(cardId: string, event?: Event): void {
     this.keepScrollPosition(event);
+    if (!this.flippedCardIds().has(cardId)) {
+      this.boardAnalytics.trackCardOpen(cardId);
+    }
     this.flippedCardIds.update((flipped) => {
       const next = new Set(flipped);
       if (next.has(cardId)) {
@@ -5095,6 +5102,13 @@ export class BoardsComponent implements OnDestroy {
     this.customUrlBoard.set(board);
   }
 
+  openBoardInsights(board: Board, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (!this.canEditBoard(board) && !this.isPlatformAdmin()) return;
+    void this.router.navigate(['/manage/boards', board.id, 'insights']);
+  }
+
   closeCustomUrlDialog(): void {
     this.customUrlBoard.set(null);
   }
@@ -5548,6 +5562,7 @@ export class BoardsComponent implements OnDestroy {
   async openBoardInside(card: BoardCard, event?: Event, parentBoardOverride?: Board): Promise<void> {
     event?.preventDefault();
     event?.stopPropagation();
+    this.boardAnalytics.trackCardOpen(card.id);
     const parentBoard = parentBoardOverride ?? this.originalSelectedBoard();
     if (!parentBoard) {
       return;
@@ -7682,7 +7697,10 @@ export class BoardsComponent implements OnDestroy {
     event?.stopPropagation();
     this.stopSongPreview();
     const lastIndex = Math.max(0, this.selectedSongCards().length - 1);
-    this.songDeckIndex.set(Math.max(0, Math.min(index, lastIndex)));
+    const selectedIndex = Math.max(0, Math.min(index, lastIndex));
+    this.songDeckIndex.set(selectedIndex);
+    const card = this.selectedSongCards()[selectedIndex];
+    if (card) this.boardAnalytics.trackCardOpen(card.id);
   }
 
   stepSongCard(direction: number, event?: Event): void {
@@ -9080,6 +9098,7 @@ export class BoardsComponent implements OnDestroy {
     if (!this.canGoThere(card)) {
       return;
     }
+    this.boardAnalytics.trackCardOpen(card.id);
     if (context === 'board' && !this.authService.isAuthenticated()) {
       void this.router.navigate(['/sign-in'], { queryParams: { redirectTo: this.router.url } });
       return;
@@ -9975,6 +9994,7 @@ export class BoardsComponent implements OnDestroy {
     event?.preventDefault();
     event?.stopPropagation();
     if (!this.hasYoutubeVideo(card)) return;
+    this.boardAnalytics.trackCardOpen(card.id);
     this.closeCardPhotoViewer();
     this.cardVideoRepairNotice.set(null);
     this.cardVideoViewerCardId.set(card.id);
@@ -10114,6 +10134,7 @@ export class BoardsComponent implements OnDestroy {
     if (!this.cardImages(card).length) {
       return;
     }
+    this.boardAnalytics.trackCardOpen(card.id);
     const photos = this.cardImages(card);
     const current = Math.min(this.cardPhotoIndexes()[card.id] ?? 0, photos.length - 1);
     this.cardPhotoViewerIndex.set(current);
@@ -10234,10 +10255,22 @@ export class BoardsComponent implements OnDestroy {
     }
   }
 
-  @HostListener('document:click')
-  closeCardActionMenuOnOutsideClick(): void {
+  @HostListener('document:click', ['$event'])
+  closeCardActionMenuOnOutsideClick(event?: MouseEvent): void {
     this.closeCardActionMenu();
     this.closeBoardTranslationMenu();
+    const target = event?.target;
+    if (!(target instanceof Element)) return;
+    const anchor = target.closest<HTMLAnchorElement>('app-boards a[href]');
+    if (!anchor) return;
+    try {
+      const destination = new URL(anchor.href, window.location.origin);
+      if (destination.origin === window.location.origin) return;
+      const cardId = anchor.closest<HTMLElement>('[data-analytics-card-id]')?.dataset['analyticsCardId'] ?? '';
+      this.boardAnalytics.trackOutboundClick(cardId, destination.toString());
+    } catch {
+      // Analytics must never interfere with navigation.
+    }
   }
 
   cardDraftImages(draft: CardDraft = this.cardDraft()): string[] {
@@ -11588,6 +11621,7 @@ export class BoardsComponent implements OnDestroy {
 
     const url = this.boardShareUrl(board);
     if (await this.copyTextToClipboard(url)) {
+      this.boardAnalytics.trackShare('custom_link_copy');
       this.setShareMessage('Board link copied.');
     } else {
       this.setShareMessage('Copy blocked. The link is visible here.');
@@ -11633,6 +11667,7 @@ export class BoardsComponent implements OnDestroy {
           text: board.description || 'LivingWiki board',
           url,
         });
+        this.boardAnalytics.trackShare('board_share');
         this.setShareMessage('Share sheet opened.');
         return;
       }
@@ -16732,7 +16767,18 @@ export class BoardsComponent implements OnDestroy {
         const routedBoard = loaded.find((board) => board.id === resolvedBoardId)
           ?? loaded.find((board) => board.id === boardId)
           ?? null;
-        if (routedBoard) this.canonicalizeBoardPublicUrl(routedBoard, boardId);
+        if (routedBoard) {
+          this.boardAnalytics.startBoardSession({
+            boardId: routedBoard.id,
+            boardTitle: routedBoard.title,
+            customSlug: routedBoard.customSlug || '',
+            visibility: routedBoard.visibility,
+            ownerUserId: routedBoard.ownerUserId,
+            currentUserId: uid || '',
+            requestedRouteKey: boardId,
+          });
+          this.canonicalizeBoardPublicUrl(routedBoard, boardId);
+        }
       }
 
       if (!loaded.length && !publicOwnerRouteActive && uid && this.loadedStoredLocalBoards) {

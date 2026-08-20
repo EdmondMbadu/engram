@@ -56,6 +56,7 @@ export {
   cleanupDeletedCollectionPublicRoutes,
   setCustomPublicUrl,
 } from './custom-public-routes';
+export { getBoardInsights, recordBoardAnalyticsEvent } from './board-analytics';
 import { handleAnswerCardShare, handleBoardShare, handleTravelCardShare } from './answer-card-share';
 import { buildDirectBoardShareEmail, safeBoardShareImageUrl } from './board-share-email';
 import { resolveSpotifyOAuthRedirectUri } from './spotify-oauth';

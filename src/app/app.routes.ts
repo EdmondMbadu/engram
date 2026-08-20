@@ -139,6 +139,12 @@ export const routes: Routes = [
     data: { userCollection: true, customCollection: true },
   },
   {
+    path: 'manage/boards/:boardId/insights',
+    loadComponent: () => import('./board-insights/board-insights').then((m) => m.BoardInsightsComponent),
+    title: 'Board Insights | LivingWiki',
+    canActivate: [authGuard],
+  },
+  {
     path: 'boards/:boardId',
     loadComponent: loadBoardsComponent,
     title: $localize`Board | LivingWiki`,

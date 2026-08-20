@@ -1671,6 +1671,25 @@ service cloud.firestore {
       ) || isPlatformAdmin();
     }
 
+    // Analytics are written and read only through validated Cloud Functions.
+    // Keeping these collections opaque prevents authors from inflating counters
+    // or discovering another board's traffic details with direct SDK calls.
+    match /board_analytics_daily_shards/{documentId} {
+      allow read, write: if false;
+    }
+
+    match /board_analytics_event_receipts/{documentId} {
+      allow read, write: if false;
+    }
+
+    match /board_analytics_unique_receipts/{documentId} {
+      allow read, write: if false;
+    }
+
+    match /board_analytics_rate_limits/{documentId} {
+      allow read, write: if false;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }

@@ -210,6 +210,27 @@ test('legacy wizard drafts remain writable without media preferences', async () 
   ));
 });
 
+test('analytics collections cannot be read or written directly by any client', async () => {
+  await testEnvironment.withSecurityRulesDisabled(async (context) => {
+    await setDoc(doc(context.firestore(), 'board_analytics_daily_shards', 'wizard-board-1__2026-08-19__0'), {
+      board_id: 'wizard-board-1',
+      day: '2026-08-19',
+      counts: { views: 4 },
+    });
+    await setDoc(doc(context.firestore(), 'users', 'admin-user'), { role: 'admin' });
+  });
+
+  for (const database of [
+    testEnvironment.unauthenticatedContext().firestore(),
+    testEnvironment.authenticatedContext(ownerUid).firestore(),
+    testEnvironment.authenticatedContext('admin-user').firestore(),
+  ]) {
+    const reference = doc(database, 'board_analytics_daily_shards', 'wizard-board-1__2026-08-19__0');
+    await assertFails(getDoc(reference));
+    await assertFails(setDoc(reference, { counts: { views: 999 } }));
+  }
+});
+
 test('older clients may save a personal board with null city metadata', async () => {
   const database = testEnvironment.authenticatedContext(ownerUid).firestore();
 

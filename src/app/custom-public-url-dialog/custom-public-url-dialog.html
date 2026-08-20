@@ -36,6 +36,13 @@
           </button>
         </div>
       }
+      @if (insightsPath()) {
+        <a class="custom-url-dialog__insights" [routerLink]="insightsPath()" (click)="close()">
+          <span class="material-symbols-outlined">monitoring</span>
+          <span><strong>View board insights</strong><small>See views, referrals, clicks, and tracked campaigns.</small></span>
+          <span class="material-symbols-outlined">arrow_forward</span>
+        </a>
+      }
       <label class="custom-url-field">
         <span>{{ currentSlug() ? 'Change custom address' : 'Custom address' }}</span>
         <span class="custom-url-field__control">
