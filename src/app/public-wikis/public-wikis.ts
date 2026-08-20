@@ -881,9 +881,6 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
   readonly mobileDirectoryPreference = computed(() =>
     this.mobileDirectoryIsUniversities() ? this.mobileSelectedUniversity() : this.mobileSelectedCity(),
   );
-  readonly mobileDirectoryPreferenceLabel = computed(() =>
-    this.mobileDirectoryIsUniversities() ? 'My University' : 'My City',
-  );
   readonly mobileDirectoryPreferenceName = computed(() => {
     const selected = this.mobileDirectoryPreference();
     if (selected) return this.cityDisplayName(selected);

@@ -98,8 +98,8 @@
             </span>
           }
           <div class="mobile-city-identity">
+            <span class="mobile-city-label">Your place</span>
             <div class="mobile-city-identity__line">
-              <span class="mobile-city-label">{{ mobileDirectoryPreferenceLabel() }}</span>
               <button
                 type="button"
                 class="mobile-city-select"
@@ -107,11 +107,13 @@
                 (click)="beginChangingHomeDirectoryPreference()"
               >
                 <span>{{ mobileDirectoryPreferenceName() }}</span>
-                <span class="material-symbols-outlined">edit</span>
               </button>
-              <button type="button" class="mobile-all-cities-link" (click)="openHomeDirectory()">
-                {{ mobileDirectoryIsUniversities() ? 'All Universities' : 'All Cities' }}
+              <button type="button" class="mobile-city-change" (click)="beginChangingHomeDirectoryPreference()">
+                {{ mobileDirectoryPreference() ? 'Change' : 'Choose' }}
               </button>
+              @if (mobileDirectoryIsUniversities() && mobileDirectoryPreference()) {
+                <button type="button" class="mobile-city-clear" (click)="clearHomeDirectoryPreference()">Clear</button>
+              }
             </div>
           </div>
         </div>
@@ -138,6 +140,19 @@
               <span>Universities</span>
             </button>
           </div>
+
+          <button
+            type="button"
+            class="mobile-all-cities-link"
+            (click)="openHomeDirectory()"
+            [attr.aria-label]="mobileDirectoryIsUniversities() ? 'Browse all universities' : 'Browse all cities'"
+          >
+            <span class="mobile-directory-browse-label">Browse</span>
+            <span class="mobile-directory-browse-value">
+              All {{ mobileDirectoryIsUniversities() ? 'universities' : 'cities' }}
+              <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+            </span>
+          </button>
 
           <div class="mobile-directory-search-wrap">
           <label class="mobile-directory-search" role="combobox" [attr.aria-expanded]="directoryAutocompleteOpen()" aria-haspopup="listbox" aria-controls="home-directory-suggestions">
@@ -210,8 +225,7 @@
             <a [routerLink]="preferenceLink" class="mobile-talk-action">
               <span class="material-symbols-outlined">graphic_eq</span>
               <span>
-                <b>Open {{ mobileDirectoryIsUniversities() ? 'my university' : 'my city' }}</b>
-                <small>{{ mobileDirectoryPreferenceName() }}</small>
+                <b>Open {{ mobileDirectoryPreferenceName() }}</b>
               </span>
             </a>
             <a
@@ -223,10 +237,6 @@
               <span class="material-symbols-outlined" aria-hidden="true">explore_nearby</span>
               <span>Nearby gems</span>
             </a>
-            <button type="button" class="mobile-preference-action" (click)="beginChangingHomeDirectoryPreference()">Change</button>
-            @if (mobileDirectoryIsUniversities()) {
-              <button type="button" class="mobile-preference-action mobile-preference-action--quiet" (click)="clearHomeDirectoryPreference()">Clear</button>
-            }
           } @else {
             <button type="button" class="mobile-talk-action mobile-talk-action--empty" (click)="beginChangingHomeDirectoryPreference()">
               <span class="material-symbols-outlined">school</span>
