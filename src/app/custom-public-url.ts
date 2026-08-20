@@ -69,6 +69,18 @@ export function customPublicUrlPath(type: CustomPublicUrlResourceType, slug: str
     : `/collections/${encodeURIComponent(slug)}`;
 }
 
+export function customPublicUrlRouteMatches(
+  routeKey: string,
+  resourceId: string,
+  customSlug: string,
+): boolean {
+  const requested = routeKey.trim().toLowerCase();
+  if (!requested) return false;
+  if (requested === resourceId.trim().toLowerCase()) return true;
+  const slug = normalizeCustomPublicUrlSlug(customSlug);
+  return !!slug && normalizeCustomPublicUrlSlug(requested) === slug;
+}
+
 export function customPublicUrlRouteCollection(type: CustomPublicUrlResourceType): string {
   return type === 'board' ? 'public_board_routes' : 'public_collection_routes';
 }

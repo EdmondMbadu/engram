@@ -13,7 +13,11 @@ import { BoardCollectionCreateComponent } from '../board-collection-create/board
 import { BoardCollectionListComponent } from '../board-collection-list/board-collection-list';
 import { BoardAnalyticsService } from '../board-analytics.service';
 import { CustomPublicUrlDialogComponent } from '../custom-public-url-dialog/custom-public-url-dialog';
-import { normalizeCustomPublicUrlSlug, type SetCustomPublicUrlResult } from '../custom-public-url';
+import {
+  customPublicUrlRouteMatches,
+  normalizeCustomPublicUrlSlug,
+  type SetCustomPublicUrlResult,
+} from '../custom-public-url';
 import {
   BoardCollectionsService,
   type BoardCollection,
@@ -2591,10 +2595,18 @@ export class BoardsComponent implements OnDestroy {
       this.tripsPage.set(routePath.startsWith('trips'));
       const boardId = params.get('boardId');
       if (!boardId) this.boardAnalytics.stopBoardSession();
+      const loadedRouteBoard = boardId
+        ? this.boards().find((board) => customPublicUrlRouteMatches(
+          boardId,
+          board.id,
+          board.customSlug ?? '',
+        )) ?? null
+        : null;
+      const selectedBoardId = loadedRouteBoard?.id ?? boardId;
       const ownerKey = params.get('ownerKey');
       const ownerUid = this.publicOwnerUidFromKey(ownerKey);
       const ownerSlug = this.publicOwnerSlugFromKey(ownerKey);
-      if (this.selectedBoardId() !== boardId) {
+      if (this.selectedBoardId() !== selectedBoardId) {
         this.activeAlongsideBoardIds.set(new Set());
         this.exploredRelatedCardParentId.set(null);
         this.relatedCardEditorOpen.set(false);
@@ -2603,8 +2615,8 @@ export class BoardsComponent implements OnDestroy {
         this.relatedCardDeleteCandidateId.set(null);
         this.relatedCardsReturnSearch = '';
       }
-      this.selectedBoardId.set(boardId);
-      if (this.boardTranslationResult()?.boardId !== boardId) {
+      this.selectedBoardId.set(selectedBoardId);
+      if (this.boardTranslationResult()?.boardId !== selectedBoardId) {
         this.boardTranslationResult.set(null);
         this.boardTranslationVersion.set('');
         this.boardTranslationError.set(null);
@@ -16743,15 +16755,21 @@ export class BoardsComponent implements OnDestroy {
         this.boardsHasMore.set(false);
       }
 
-      if (boardId && !loaded.some((board) => board.id === boardId)) {
+      let routedBoard = boardId
+        ? loaded.find((board) => customPublicUrlRouteMatches(
+          boardId,
+          board.id,
+          board.customSlug ?? '',
+        )) ?? null
+        : null;
+
+      if (boardId && !routedBoard) {
         try {
           const sharedBoard = await this.loadBoardById(boardId);
           if (sharedBoard) {
             loaded.unshift(sharedBoard);
             this.boards.set(loaded);
-            if (sharedBoard.id !== boardId && this.selectedBoardId() === boardId) {
-              this.selectedBoardId.set(sharedBoard.id);
-            }
+            routedBoard = sharedBoard;
           }
         } catch (error) {
           if (this.isPermissionDeniedError(error)) {
@@ -16763,11 +16781,10 @@ export class BoardsComponent implements OnDestroy {
       }
 
       if (boardId) {
-        const resolvedBoardId = this.selectedBoardId();
-        const routedBoard = loaded.find((board) => board.id === resolvedBoardId)
-          ?? loaded.find((board) => board.id === boardId)
-          ?? null;
         if (routedBoard) {
+          if (this.selectedBoardId() !== routedBoard.id) {
+            this.selectedBoardId.set(routedBoard.id);
+          }
           this.boardAnalytics.startBoardSession({
             boardId: routedBoard.id,
             boardTitle: routedBoard.title,
