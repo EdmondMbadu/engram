@@ -25,4 +25,22 @@ describe('resetBoardRouteViewport', () => {
     expect(targetWindow.scrollTo).toHaveBeenCalledTimes(3);
     expect(targetWindow.scrollTo).toHaveBeenCalledWith({ top: 0, left: 0, behavior: 'auto' });
   });
+
+  it('resets a viewport that appears after the route subscription runs', () => {
+    const frames: FrameRequestCallback[] = [];
+    const targetWindow = {
+      requestAnimationFrame: (callback: FrameRequestCallback) => {
+        frames.push(callback);
+        return frames.length;
+      },
+      scrollTo: jasmine.createSpy('scrollTo'),
+    };
+    let viewport: { scrollTop: number; scrollLeft: number } | null = null;
+
+    resetBoardRouteViewport(() => viewport, targetWindow);
+    viewport = { scrollTop: 720, scrollLeft: 16 };
+    frames.shift()?.(0);
+
+    expect(viewport).toEqual({ scrollTop: 0, scrollLeft: 0 });
+  });
 });

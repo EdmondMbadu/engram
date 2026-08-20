@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, computed, effect, ElementRef, HostListener, inject, LOCALE_ID, OnDestroy, PLATFORM_ID, signal, ViewChild, type WritableSignal } from '@angular/core';
+import { AfterViewInit, Component, computed, effect, ElementRef, HostListener, inject, LOCALE_ID, OnDestroy, PLATFORM_ID, signal, ViewChild, type WritableSignal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DomSanitizer, type SafeResourceUrl } from '@angular/platform-browser';
 import { FirebaseError } from 'firebase/app';
@@ -89,6 +89,7 @@ import {
 } from './board-wizard-draft-persistence';
 import { appendBoardCards } from './board-batch';
 import { compareBoardsByCreatedDate } from './board-gallery-order';
+import { beginBoardRouteLoad, completeBoardRouteLoad } from './board-route-load-state';
 import { resetBoardRouteViewport } from './board-route-scroll';
 import {
   BOARD_NARRATION_STYLES,
@@ -1329,7 +1330,7 @@ type BoardLoadContext = {
   templateUrl: './boards.html',
   styleUrls: ['./boards.css', './board-wizard-drafts.css', './board-wizard-media-mode.css', './board-narration-style.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css', './stack-script.css', './stack-cover-final.css', './board-city-tag.css'],
 })
-export class BoardsComponent implements OnDestroy {
+export class BoardsComponent implements AfterViewInit, OnDestroy {
   private readonly localeId = inject(LOCALE_ID);
   private readonly atlasService = inject(AtlasService);
   private readonly authService = inject(AuthService);
@@ -1428,6 +1429,7 @@ export class BoardsComponent implements OnDestroy {
   private boardPageCursor: QueryDocumentSnapshot<DocumentData> | null = null;
   private boardLoadContext: BoardLoadContext | null = null;
   private boardLoadSequence = 0;
+  private boardRouteLoadSequence = 0;
   private collectionLoadSequence = 0;
 
   @ViewChild('boardsScrollViewport')
@@ -1940,16 +1942,17 @@ export class BoardsComponent implements OnDestroy {
     const selectedId = this.selectedBoardId();
     return this.boards().find((board) => board.id === selectedId) ?? null;
   });
+  private readonly boardRouteLoadState = signal(beginBoardRouteLoad(0, null));
   readonly boardRouteLoading = computed(() =>
     !!this.selectedBoardId()
     && !this.originalSelectedBoard()
-    && this.boardsLoading()
+    && !this.boardRouteLoadState().complete
     && !this.privateBoardBlocked(),
   );
   readonly boardRouteUnavailable = computed(() =>
     !!this.selectedBoardId()
     && !this.originalSelectedBoard()
-    && !this.boardsLoading()
+    && this.boardRouteLoadState().complete
     && !this.privateBoardBlocked(),
   );
   readonly selectedBoardParent = computed(() => {
@@ -2601,6 +2604,8 @@ export class BoardsComponent implements OnDestroy {
       this.songsPage.set(routePath.startsWith('songs'));
       this.tripsPage.set(routePath.startsWith('trips'));
       const boardId = params.get('boardId');
+      const boardRouteLoadId = ++this.boardRouteLoadSequence;
+      this.boardRouteLoadState.set(beginBoardRouteLoad(boardRouteLoadId, boardId));
       if (!boardId) this.boardAnalytics.stopBoardSession();
       const loadedRouteBoard = boardId
         ? this.boards().find((board) => customPublicUrlRouteMatches(
@@ -2646,6 +2651,13 @@ export class BoardsComponent implements OnDestroy {
       // silently so its unsaved-draft safeguard cannot leak onto another page.
       this.closeStackStudioImmediately();
       void this.loadBoards(boardId, ownerUid, ownerSlug, ownerKey !== null).then(() => {
+        // Server rendering cannot resolve Firestore-backed board routes. Keep the
+        // neutral loading shell in SSR output so hydration never flashes a false
+        // "Board unavailable" message before the browser lookup begins.
+        if (!this.isBrowser || boardRouteLoadId !== this.boardRouteLoadSequence) {
+          return;
+        }
+        this.boardRouteLoadState.update((state) => completeBoardRouteLoad(state, boardRouteLoadId));
         if (!boardId && !this.friendsPage()) {
           void this.loadBoardCollections(ownerKey || ownerSlug || this.currentPublicOwnerKey());
         }
@@ -2847,9 +2859,27 @@ export class BoardsComponent implements OnDestroy {
     });
   }
 
+  ngAfterViewInit(): void {
+    // On an initial page load the route subscription can run before the desktop
+    // scroll viewport exists. Reset again once ViewChild is guaranteed to exist.
+    if (this.selectedBoardId()) {
+      this.resetBoardRouteScroll();
+    }
+  }
+
+  @HostListener('window:pageshow')
+  onBoardRoutePageShow(): void {
+    // Browsers can restore an element's saved scroll position after Angular's
+    // first render, especially when opening an email link or restoring from BFCache.
+    if (this.selectedBoardId()) {
+      this.resetBoardRouteScroll();
+    }
+  }
+
   ngOnDestroy(): void {
     this.wizardOffGridLocationRun += 1;
     this.boardLoadSequence += 1;
+    this.boardRouteLoadSequence += 1;
     this.collectionLoadSequence += 1;
     this.selectedBoardUnsubscribe?.();
     this.selectedBoardUnsubscribe = null;
