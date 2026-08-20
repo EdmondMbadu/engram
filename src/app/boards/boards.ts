@@ -5111,10 +5111,10 @@ export class BoardsComponent implements OnDestroy {
       ? { ...item, customSlug: result.slug }
       : item));
     this.customUrlBoard.set({ ...board, customSlug: result.slug });
-    const routeRoot = this.boardRouteRoot(board);
-    void this.router.navigate([routeRoot, result.slug], {
+    void this.router.navigate(['/boards', result.slug], {
       replaceUrl: true,
       queryParamsHandling: 'preserve',
+      preserveFragment: true,
     });
   }
 
@@ -11497,11 +11497,10 @@ export class BoardsComponent implements OnDestroy {
   }
 
   private boardPagePath(board: Board): string {
-    const route = this.boardRouteRoot(board).slice(1);
-    const routeKey = board.visibility === 'public' && board.customSlug
-      ? board.customSlug
-      : board.id;
-    return `/${route}/${encodeURIComponent(routeKey)}`;
+    if (board.visibility === 'public' && board.customSlug) {
+      return `/boards/${encodeURIComponent(board.customSlug)}`;
+    }
+    return `${this.boardRouteRoot(board)}/${encodeURIComponent(board.id)}`;
   }
 
   boardPageUrl(board: Board): string {
@@ -16728,6 +16727,14 @@ export class BoardsComponent implements OnDestroy {
         }
       }
 
+      if (boardId) {
+        const resolvedBoardId = this.selectedBoardId();
+        const routedBoard = loaded.find((board) => board.id === resolvedBoardId)
+          ?? loaded.find((board) => board.id === boardId)
+          ?? null;
+        if (routedBoard) this.canonicalizeBoardPublicUrl(routedBoard, boardId);
+      }
+
       if (!loaded.length && !publicOwnerRouteActive && uid && this.loadedStoredLocalBoards) {
         await Promise.all(storedBoards.map((board) => this.persistBoard(board)));
         const migrated = await this.loadUserBoards(uid);
@@ -16956,6 +16963,20 @@ export class BoardsComponent implements OnDestroy {
     }
     const snapshot = await getDoc(doc(this.firestore, 'boards', boardId));
     return snapshot.exists() ? this.boardFromRecord(snapshot.id, snapshot.data()) : null;
+  }
+
+  private canonicalizeBoardPublicUrl(board: Board, requestedRouteKey: string): void {
+    if (!this.isBrowser || board.visibility !== 'public' || !board.customSlug) return;
+    const requestedSlug = normalizeCustomPublicUrlSlug(requestedRouteKey);
+    const alreadyCanonical = !this.songsPage()
+      && !this.tripsPage()
+      && requestedSlug === board.customSlug;
+    if (alreadyCanonical) return;
+    void this.router.navigate(['/boards', board.customSlug], {
+      replaceUrl: true,
+      queryParamsHandling: 'preserve',
+      preserveFragment: true,
+    });
   }
 
   private async loadCities(): Promise<void> {

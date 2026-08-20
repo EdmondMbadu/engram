@@ -380,6 +380,7 @@ export class CityBoardCollectionComponent implements OnDestroy {
     void this.router.navigate(['/collections', result.slug], {
       replaceUrl: true,
       queryParamsHandling: 'preserve',
+      preserveFragment: true,
     });
   }
 
@@ -413,6 +414,7 @@ export class CityBoardCollectionComponent implements OnDestroy {
           return;
         }
         this.userCollection.set(loaded.collection);
+        this.canonicalizeCollectionPublicUrl(loaded.collection, slug);
         this.boards.set(loaded.boards);
         this.selectedFeaturedId.set(selectFeaturedCityBoards(loaded.boards, 5)[0]?.id ?? '');
         this.titleService.setTitle(`${loaded.collection.title} | LivingWiki`);
@@ -460,6 +462,18 @@ export class CityBoardCollectionComponent implements OnDestroy {
         if (this.isUserCollection) this.boardsLoading.set(false);
       }
     }
+  }
+
+  private canonicalizeCollectionPublicUrl(collection: BoardCollection, requestedSlug: string): void {
+    const customSlug = collection.customSlug.trim().toLowerCase();
+    if (!this.isBrowser || !customSlug) return;
+    const requestedCustomSlug = requestedSlug.trim().toLowerCase();
+    if (this.isCustomCollection && requestedCustomSlug === customSlug) return;
+    void this.router.navigate(['/collections', customSlug], {
+      replaceUrl: true,
+      queryParamsHandling: 'preserve',
+      preserveFragment: true,
+    });
   }
 
   private syncAllRails(): void {
