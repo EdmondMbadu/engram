@@ -8,11 +8,16 @@ import {
   isBoardWizardFictionalCharacter,
 } from './board-wizard-image-quality';
 import { boardWizardResearchMode, shouldGroundAndVerifyBoardWizardBatch } from './board-wizard-generation-quality';
+import type { BoardWizardCountPolicy } from './board-wizard-count-policy';
 import type { BoardWizardSourceManifest } from './board-wizard-article';
 import {
   boardNarrationPromptInstructions,
   type BoardNarrationStyleId,
 } from './board-wizard-narration';
+import {
+  boardNarrationLengthPromptInstructions,
+  normalizeBoardNarrationSeconds,
+} from './board-narration-length';
 import {
   normalizeTranslatedBoardSegments,
   type BoardTranslationLanguage,
@@ -43,6 +48,27 @@ const boardTrailerScriptSchema = {
     script: { type: 'string' },
   },
   required: ['script'],
+} as const;
+
+const boardWizardCompleteSetManifestSchema = {
+  type: 'object',
+  properties: {
+    title: { type: 'string' },
+    status: { type: 'string', enum: ['complete', 'ambiguous', 'too-large'] },
+    message: { type: 'string' },
+    items: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          title: { type: 'string' },
+          context: { type: 'string' },
+        },
+        required: ['title', 'context'],
+      },
+    },
+  },
+  required: ['title', 'status', 'message', 'items'],
 } as const;
 
 const boardTranslationSchema = {
@@ -535,6 +561,15 @@ export type GeneratedBoardWizardBatch = {
   };
   cards: GeneratedBoardWizardCard[];
   sourceReport?: GeneratedBoardWizardSourceReport;
+  generation?: {
+    countPolicy: BoardWizardCountPolicy;
+    targetCount: number;
+    resolvedCount: number;
+    completeSet: boolean;
+    message: string;
+    narrationSecondsPerCard: number;
+    targetWordsPerCard: number;
+  };
 };
 export type GeneratedBoardWizardSourceReport = {
   status: 'exact' | 'recovered' | 'partial';
@@ -551,6 +586,65 @@ export type GeneratedBoardWizardSourceReport = {
   snapshotDate: string;
   message: string;
 };
+
+export type BoardWizardCompleteSetManifest = {
+  title: string;
+  status: 'complete' | 'ambiguous' | 'too-large';
+  message: string;
+  items: Array<{ title: string; context: string }>;
+};
+
+export async function resolveBoardWizardCompleteSetManifest(input: {
+  prompt: string;
+  targetBoardTitle?: string | null;
+}): Promise<BoardWizardCompleteSetManifest> {
+  const response = await generateContentWithRetry({
+    model,
+    contents: [
+      'Resolve the canonical membership of a closed real-world set for a LivingWiki board.',
+      'Use Google Search. Return only JSON matching the schema.',
+      'Include every actual member exactly once, in the order requested or the most canonical order.',
+      'Do not include related locations, institutions, resources, action cards, or generic facts.',
+      'If the scope has multiple defensible interpretations, choose the interpretation most directly supported by the wording and explain it briefly in message.',
+      'Use status "ambiguous" only when no responsible interpretation can be chosen without user input.',
+      'Use status "too-large" when the complete set exceeds 100 members. Do not silently return only the first 100.',
+      `Treat ${new Date().toISOString().slice(0, 10)} as the current date for changing memberships.`,
+      `Request: ${input.prompt.slice(0, 4000)}`,
+      input.targetBoardTitle ? `Board context: ${input.targetBoardTitle.slice(0, 120)}` : '',
+    ].filter(Boolean).join('\n'),
+    config: {
+      tools: [{ googleSearch: {} }],
+      responseMimeType: 'application/json',
+      responseJsonSchema: boardWizardCompleteSetManifestSchema,
+      temperature: 0,
+      maxOutputTokens: 8192,
+      thinkingConfig: { thinkingBudget: 1024 },
+    },
+  });
+  const data = parseJsonResponse<unknown>(response.text ?? '{}');
+  const record = data && typeof data === 'object' ? data as Record<string, unknown> : {};
+  const items = Array.isArray(record.items)
+    ? record.items.flatMap((value): Array<{ title: string; context: string }> => {
+        const item = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+        const title = cleanLine(item.title, '', 100);
+        return title ? [{ title, context: cleanLine(item.context, '', 240) }] : [];
+      })
+    : [];
+  const uniqueItems = Array.from(new Map(items.map((item) => [item.title.toLowerCase(), item])).values());
+  const rawStatus = record.status;
+  const status: BoardWizardCompleteSetManifest['status'] = rawStatus === 'too-large'
+    ? 'too-large'
+    : rawStatus === 'ambiguous' ? 'ambiguous' : 'complete';
+  if (status === 'complete' && (!uniqueItems.length || uniqueItems.length > 100)) {
+    throw new Error('The complete set could not be resolved within the supported 100-card limit. Narrow the request or split it into multiple boards.');
+  }
+  return {
+    title: cleanLine(record.title, input.targetBoardTitle || 'Complete set', 120),
+    status,
+    message: cleanLine(record.message, '', 500),
+    items: uniqueItems.slice(0, 100),
+  };
+}
 
 type BoardWizardPhotoInput = {
   index: number;
@@ -1470,8 +1564,10 @@ export async function generateBoardWizardBatch(params: {
   defaultType: GeneratedBoardWizardCard['type'];
   count: number;
   countIsExplicit?: boolean;
+  countPolicy?: BoardWizardCountPolicy;
   vibe: BoardWizardVibe;
   narrationStyle: BoardNarrationStyleId;
+  narrationSecondsPerCard?: number;
   tourOptions?: {
     voiceStyle?: GeneratedBoardTourVoiceStyle;
     paceOrRouteStyle?: string;
@@ -1480,6 +1576,7 @@ export async function generateBoardWizardBatch(params: {
   existingCards?: Array<{ title: string; subtitle?: string; tags?: string[] }>;
   singleTourStop?: boolean;
   sourceManifest?: BoardWizardSourceManifest | null;
+  completeSetManifest?: BoardWizardCompleteSetManifest | null;
   verificationFailureMode?: 'draft' | 'error';
   /**
    * Bulk generation already starts from provider-verified identities. It can use
@@ -1571,6 +1668,7 @@ function shouldVerifyBoardWizardBatch(
     pastedList?: string;
     targetBoardTitle?: string | null;
     sourceManifest?: BoardWizardSourceManifest | null;
+    completeSetManifest?: BoardWizardCompleteSetManifest | null;
   },
   count: number,
 ): boolean {
@@ -1586,8 +1684,11 @@ async function verifyBoardWizardBatch(
     defaultType: GeneratedBoardWizardCard['type'];
     vibe: BoardWizardVibe;
     narrationStyle: BoardNarrationStyleId;
+    narrationSecondsPerCard?: number;
+    countPolicy?: BoardWizardCountPolicy;
     countIsExplicit?: boolean;
     sourceManifest?: BoardWizardSourceManifest | null;
+    completeSetManifest?: BoardWizardCompleteSetManifest | null;
   },
   draft: GeneratedBoardWizardBatch,
   targetCount: number,
@@ -1611,6 +1712,7 @@ async function verifyBoardWizardBatch(
       ? 'The supplied source manifest or pasted source is authoritative for membership, order, titles, viewpoint, and notes. Do not replace its selections or rewrite away its voice; only repair metadata and clearly unsupported factual errors.'
       : '',
     boardNarrationPromptInstructions(params.narrationStyle),
+    boardNarrationLengthPromptInstructions(params.narrationSecondsPerCard),
     'For a closed or complete real-world set, completeness and the evidence-backed cardinality override the UI target count unless the user explicitly supplied a numeric count.',
     params.countIsExplicit
       ? `The user explicitly requested ${targetCount} cards. Return exactly that many in the requested scope.`
@@ -1682,9 +1784,11 @@ function buildBoardWizardPrompt(params: {
   defaultType: GeneratedBoardWizardCard['type'];
   count: number;
   countIsExplicit?: boolean;
+  countPolicy?: BoardWizardCountPolicy;
   verificationRequired?: boolean;
   vibe: BoardWizardVibe;
   narrationStyle: BoardNarrationStyleId;
+  narrationSecondsPerCard?: number;
   tourOptions?: {
     voiceStyle?: GeneratedBoardTourVoiceStyle;
     paceOrRouteStyle?: string;
@@ -1693,6 +1797,7 @@ function buildBoardWizardPrompt(params: {
   existingCards?: Array<{ title: string; subtitle?: string; tags?: string[] }>;
   singleTourStop?: boolean;
   sourceManifest?: BoardWizardSourceManifest | null;
+  completeSetManifest?: BoardWizardCompleteSetManifest | null;
 }): string {
   const numberedSource = params.mode === 'paste' ? parseNumberedBoardSource(params.pastedList ?? '') : null;
   const vibeInstructions: Record<BoardWizardVibe, string> = {
@@ -1733,6 +1838,14 @@ function buildBoardWizardPrompt(params: {
           'If a source image is supplied, preserve it in imageUrl with imageSource "source-page". Do not substitute a different image.',
         ].join('\n')
       : '',
+    params.completeSetManifest
+      ? [
+          'VERIFIED COMPLETE-SET MANIFEST: This membership list is authoritative.',
+          `Return exactly ${params.completeSetManifest.items.length} cards, one for each manifest member in this exact order.`,
+          'Use each manifest title as the card title. Never omit, merge, replace, reorder, pad, or invent members.',
+          'Use the member context to disambiguate identities, then research accurate card details.',
+        ].join('\n')
+      : '',
     'For a shopping, collection, category, or merchant homepage, return only concrete products whose membership on that exact page is supported by the supplied extraction context or grounded search.',
     'For every shopping product, set entity_type to "product", image_intent to "product", type to "shop", productUrl and place_query to the exact official product-detail URL, and sourceUrl to the submitted page URL.',
     'When grounded search exposes an exact official product image URL, put it in imageUrl and set imageSource to "product-page". Never synthesize an image URL from a naming pattern and never substitute a boutique, logo, campaign, category, or merely similar product image. Leave imageUrl empty when an exact image cannot be verified.',
@@ -1767,7 +1880,7 @@ function buildBoardWizardPrompt(params: {
           `Guide voice: ${params.tourOptions?.voiceStyle ?? 'historian'}.`,
           'The requested destination is authoritative. Do not replace it with a suggested nearby stop and do not repeat these instructions as card content.',
           'Resolve the canonical real place. Use its proper name, precise navigable address, latitude, longitude, and a specific image query.',
-          'Write a concise factual description and polished standalone spoken guide narration of roughly 90-160 words, with no markdown.',
+          'Write a concise factual description and polished standalone spoken guide narration that follows the narration length target, with no markdown.',
           'Set tour.sequence to 1 and tour.legToNext to null. Route insertion and neighboring legs are calculated separately after saving.',
           'Use type "place", scope "place", status "planned" or "saved", and tags including "tour-stop".',
         ].join('\n')
@@ -1782,7 +1895,7 @@ function buildBoardWizardPrompt(params: {
           'When the input contains a resolved Google Maps route, use only its authoritative ordered stops. Never replace the route with another city or add unrelated stops. The country and full addresses in that route override every guess or prior assumption.',
           'Set board.kind to "walking-tour" or "driving-tour". Set board.tourMeta with mode, voiceStyle, paceOrRouteStyle, extras, and showWayfindersDefault false.',
           'Every tour card must include tour.sequence, tour.address if known, tour.guideScript, and tour.legToNext for every card except the final stop.',
-          'guideScript should be polished spoken narration, roughly 90-160 words, with concrete details and no markdown.',
+          'guideScript should be polished spoken narration following the narration length target, with concrete details and no markdown.',
           'legToNext.instruction should be a concise direction summary. legToNext.navScript should be a spoken bridge from this stop to the next.',
           'Use type "place", scope "place", status "planned" or "saved", and tags including "tour-stop".',
         ].join('\n')
@@ -1801,13 +1914,16 @@ function buildBoardWizardPrompt(params: {
     'When video_intent is true, set video_search_query to a precise YouTube lookup such as "Prince Super Bowl XLI halftime show official NFL". Never invent or return a YouTube URL or video ID; LivingWiki resolves and verifies it separately. When false, use an empty string.',
     'The entity fields are authoritative for image selection. Incidental nouns in notes must never replace the entity being depicted.',
     'place_query should be a Google Places-style lookup query when the item is a real place; otherwise use the title.',
-    params.countIsExplicit
-      ? `Generate exactly ${params.count} cards because the user explicitly supplied that count.`
-      : `Use ${params.count} cards as the UI target. If the user requests a complete real-world set, return the evidence-backed complete set instead and never pad or truncate it to this target.`,
+    params.countPolicy === 'complete-set'
+      ? `COMPLETE-SET MODE: determine the evidence-backed membership and return every actual member, up to the supported maximum of 100. The UI target of ${params.count} is only a fallback and must not truncate the set. Never add filler to reach a number.`
+      : params.countIsExplicit
+        ? `Generate exactly ${params.count} cards because the source, request, or deliberate limit supplied that count.`
+        : `Use ${params.count} cards as the UI target. If the user requests a complete real-world set, return the evidence-backed complete set instead and never pad or truncate it to this target.`,
     params.verificationRequired ? 'This factual/list request will be verified after generation. Favor canonical names, explicit dates, and zero filler.' : '',
     `Default card type: ${params.defaultType}.`,
     `Vibe: ${params.vibe} (${vibeInstructions[params.vibe]}).`,
     boardNarrationPromptInstructions(params.narrationStyle),
+    boardNarrationLengthPromptInstructions(params.narrationSecondsPerCard),
     params.targetBoardTitle ? `Target board title: ${params.targetBoardTitle}` : 'Create a clear board title.',
     params.existingCards?.length ? 'Avoid duplicating these existing cards:' : '',
     params.existingCards?.length ? JSON.stringify(params.existingCards.slice(0, 40)) : '',
@@ -1833,6 +1949,8 @@ function buildBoardWizardPrompt(params: {
       })) ?? [],
       tourOptions: params.tourOptions ?? null,
       narrationStyle: params.narrationStyle,
+      narrationSecondsPerCard: normalizeBoardNarrationSeconds(params.narrationSecondsPerCard),
+      countPolicy: params.countPolicy ?? 'target-count',
       sourceManifest: params.sourceManifest ? {
         sourceUrl: params.sourceManifest.sourceUrl,
         pageTitle: params.sourceManifest.pageTitle,
@@ -1845,6 +1963,7 @@ function buildBoardWizardPrompt(params: {
           sourceIndex: item.sourceIndex,
         })),
       } : null,
+      completeSetManifest: params.completeSetManifest ?? null,
     }),
   ].filter(Boolean).join('\n');
 }

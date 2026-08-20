@@ -112,9 +112,11 @@ import {
   generateBoardCardImageAsset,
   generateBoardTrailerScript,
   generateBoardWizardBatch as generateBoardWizardBatchWithGemini,
+  resolveBoardWizardCompleteSetManifest,
   translateBoardTextSegments,
   generateVoiceConversationRecap,
   type BoardWizardMode,
+  type BoardWizardCompleteSetManifest,
   type BoardWizardVibe,
   type GeneratedBoardCardTour,
   type GeneratedBoardTourLeg,
@@ -142,7 +144,16 @@ import {
   boardNarrationFallbackDescription,
   boardNarrationFallbackNotes,
   normalizeBoardNarrationStyle,
+  type BoardNarrationStyleId,
 } from './board-wizard-narration';
+import {
+  resolveBoardWizardCount,
+  type BoardWizardCountPolicy,
+} from './board-wizard-count-policy';
+import {
+  boardNarrationTargetWords,
+  normalizeBoardNarrationSeconds,
+} from './board-narration-length';
 import {
   getStoredCityPulseSnapshot,
   listEnabledCityAtlasIds,
@@ -5218,9 +5229,11 @@ type BoardWizardCallableData = {
   targetBoardTitle?: unknown;
   defaultType?: unknown;
   count?: unknown;
+  countMode?: unknown;
   vibe?: unknown;
   mediaMode?: unknown;
   narrationStyle?: unknown;
+  narrationSecondsPerCard?: unknown;
   tourOptions?: unknown;
   existingCards?: unknown;
   singleTourStop?: unknown;
@@ -5284,6 +5297,94 @@ type BoardWizardCurrentCard = {
   extractionConfidence?: number;
   extractedAt?: string;
 };
+
+async function generateCompleteSetWizardBatch(options: {
+  manifest: BoardWizardCompleteSetManifest;
+  mode: BoardWizardMode;
+  prompt: string;
+  targetBoardTitle: string;
+  defaultType: GeneratedBoardWizardCard['type'];
+  vibe: BoardWizardVibe;
+  narrationStyle: BoardNarrationStyleId;
+  narrationSecondsPerCard: number;
+  existingCards: Array<{ title: string; subtitle?: string; tags?: string[] }>;
+}): Promise<GeneratedBoardWizardBatch> {
+  const targetWords = boardNarrationTargetWords(options.narrationSecondsPerCard);
+  // Keep each grounded request below the model's practical output ceiling while
+  // avoiding dozens of tiny calls when the user selects longer narration.
+  const chunkSize = Math.max(3, Math.min(12, Math.floor(2_500 / targetWords)));
+  const chunks: Array<{ offset: number; items: BoardWizardCompleteSetManifest['items'] }> = [];
+  for (let offset = 0; offset < options.manifest.items.length; offset += chunkSize) {
+    chunks.push({ offset, items: options.manifest.items.slice(offset, offset + chunkSize) });
+  }
+
+  const generatedChunks: GeneratedBoardWizardBatch[] = [];
+  for (let index = 0; index < chunks.length; index += 2) {
+    const group = chunks.slice(index, index + 2);
+    const results = await Promise.all(group.map(async (chunk) => {
+      const chunkManifest: BoardWizardCompleteSetManifest = {
+        ...options.manifest,
+        items: chunk.items,
+        message: `${options.manifest.message} Members ${chunk.offset + 1}-${chunk.offset + chunk.items.length} of ${options.manifest.items.length}.`.trim(),
+      };
+      const batch = await generateBoardWizardBatchWithGemini({
+        mode: options.mode,
+        prompt: options.prompt,
+        targetBoardTitle: options.targetBoardTitle,
+        defaultType: options.defaultType,
+        count: chunk.items.length,
+        countIsExplicit: true,
+        countPolicy: 'source-exact',
+        vibe: options.vibe,
+        narrationStyle: options.narrationStyle,
+        narrationSecondsPerCard: options.narrationSecondsPerCard,
+        existingCards: options.existingCards,
+        completeSetManifest: chunkManifest,
+        verificationPass: false,
+        researchGrounding: true,
+      });
+      if (batch.cards.length !== chunk.items.length) {
+        throw new Error(
+          `The verified complete set returned ${batch.cards.length} of ${chunk.items.length} cards in one generation batch. Please try again; no incomplete board was saved.`,
+        );
+      }
+      const unusedCards = [...batch.cards];
+      const orderedCards = chunk.items.map((member) => {
+        const memberKey = normalizeBoardWizardSourceTitle(member.title);
+        const matchIndex = unusedCards.findIndex((card) => {
+          const candidateKeys = [card.entity_name, card.title]
+            .map((value) => normalizeBoardWizardSourceTitle(value ?? ''))
+            .filter(Boolean);
+          return candidateKeys.some((candidateKey) =>
+            candidateKey === memberKey
+            || candidateKey.startsWith(`${memberKey} `)
+            || candidateKey.endsWith(` ${memberKey}`),
+          );
+        });
+        if (matchIndex < 0) {
+          throw new Error(
+            `The verified member "${member.title}" was not represented by the generated cards. Please try again; no incomplete board was saved.`,
+          );
+        }
+        const [card] = unusedCards.splice(matchIndex, 1);
+        return { ...card, title: member.title };
+      });
+      return { ...batch, cards: orderedCards };
+    }));
+    generatedChunks.push(...results);
+  }
+
+  const first = generatedChunks[0];
+  if (!first) throw new Error('The verified complete set did not contain any members.');
+  const cards = generatedChunks.flatMap((batch) => batch.cards);
+  if (cards.length !== options.manifest.items.length) {
+    throw new Error('The complete set could not be generated without omissions. Please try again; no incomplete board was saved.');
+  }
+  return {
+    board: first.board,
+    cards,
+  };
+}
 
 type BoardWizardMenuItem = {
   title: string;
@@ -7065,9 +7166,15 @@ export const generateBoardWizardBatch = onCall(
       ? normalizeBoardWizardSourceManifest(data.sourceManifest, url)
       : null;
     const numberedSource = mode === 'paste' ? parseNumberedBoardSource(pastedList) : null;
-    const explicitCount = inferBoardWizardRequestedCount([prompt, pastedList, targetBoardTitle].join(' '));
-    const requestedCount = numberedSource?.items.length ?? explicitCount ?? (Number(data.count) || 12);
-    const count = Math.max(1, Math.min(100, requestedCount));
+    const countResolution = resolveBoardWizardCount({
+      text: [prompt, pastedList, targetBoardTitle].join(' '),
+      submittedCount: data.count,
+      countMode: data.countMode,
+      sourceCount: numberedSource?.items.length,
+    });
+    const explicitCount = countResolution.explicitCount;
+    const count = countResolution.targetCount;
+    const narrationSecondsPerCard = normalizeBoardNarrationSeconds(data.narrationSecondsPerCard);
     const photoNames = Array.isArray(data.photoNames)
       ? data.photoNames.map((name) => stringOrEmpty(name).slice(0, 180)).filter(Boolean).slice(0, 100)
       : [];
@@ -7307,11 +7414,47 @@ export const generateBoardWizardBatch = onCall(
     const mapsTourStopCount = mapsTourContext
       ? (mapsTourContext.match(/^\d+\. /gm)?.length ?? 0)
       : 0;
-    const generationCount = numberedSource?.items.length || articleManifest?.items.length || mapsTourStopCount || photos.length || count;
-
     if (!effectivePrompt && !pastedList && photoNames.length === 0 && photos.length === 0 && !url) {
       throw new HttpsError('invalid-argument', 'Describe the board, paste a list, choose photos, or provide a URL.');
     }
+
+    let completeSetManifest: BoardWizardCompleteSetManifest | null = null;
+    if (countResolution.completeSet && !usesUrlSource && !numberedSource && !photos.length) {
+      try {
+        completeSetManifest = await resolveBoardWizardCompleteSetManifest({
+          prompt: effectivePrompt || prompt,
+          targetBoardTitle,
+        });
+      } catch (error) {
+        logger.warn('Board wizard complete-set manifest resolution failed.', {
+          userId,
+          errorMessage: error instanceof Error ? error.message : String(error),
+        });
+        throw new HttpsError(
+          'unavailable',
+          error instanceof Error ? error.message : 'The complete set could not be verified. Narrow the request and try again.',
+        );
+      }
+      if (completeSetManifest.status !== 'complete') {
+        throw new HttpsError(
+          'invalid-argument',
+          completeSetManifest.message
+            || (completeSetManifest.status === 'too-large'
+              ? 'This complete set exceeds 100 cards. Narrow it or split it into multiple boards.'
+              : 'This complete set has more than one responsible interpretation. Clarify who or what should be included.'),
+        );
+      }
+    }
+
+    const generationCount = completeSetManifest?.items.length
+      || numberedSource?.items.length
+      || articleManifest?.items.length
+      || mapsTourStopCount
+      || photos.length
+      || count;
+    const generationCountPolicy: BoardWizardCountPolicy = numberedSource || articleManifest || mapsTourStopCount || photos.length
+      ? 'source-exact'
+      : countResolution.policy;
 
     const generationUsesNarrationPrompt = !commerceExtraction
       && !accommodationExtraction
@@ -7337,6 +7480,18 @@ export const generateBoardWizardBatch = onCall(
             targetBoardTitle,
             count,
           })
+        : completeSetManifest
+        ? await generateCompleteSetWizardBatch({
+            manifest: completeSetManifest,
+            mode: generationMode,
+            prompt: effectivePrompt || prompt,
+            targetBoardTitle,
+            defaultType,
+            vibe,
+            narrationStyle,
+            narrationSecondsPerCard,
+            existingCards,
+          })
         : await generateBoardWizardBatchWithGemini({
             mode: generationMode,
             prompt: effectivePrompt || url || photoNames.join(', '),
@@ -7347,13 +7502,18 @@ export const generateBoardWizardBatch = onCall(
             targetBoardTitle,
             defaultType,
             count: generationCount,
-            countIsExplicit: !!numberedSource || !!articleManifest || explicitCount !== null || photoNames.length > 0 || photos.length > 0,
+            countIsExplicit: generationCountPolicy === 'source-exact'
+              || generationCountPolicy === 'prompt-exact'
+              || explicitCount !== null,
+            countPolicy: generationCountPolicy,
             vibe,
             narrationStyle,
+            narrationSecondsPerCard,
             tourOptions: isBoardWizardTourMode(mode) ? tourOptions : null,
             existingCards,
             singleTourStop,
             sourceManifest: articleManifest,
+            completeSetManifest,
           });
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
@@ -7437,6 +7597,25 @@ export const generateBoardWizardBatch = onCall(
         }
       : mediaReadyResult;
 
+    const resultWithGenerationSummary: GeneratedBoardWizardBatch = {
+      ...resultWithSourceReport,
+      generation: {
+        countPolicy: generationCountPolicy,
+        targetCount: generationCount,
+        resolvedCount: resultWithSourceReport.cards.length,
+        completeSet: generationCountPolicy === 'complete-set',
+        message: generationCountPolicy === 'complete-set'
+          ? `Verified complete set with ${resultWithSourceReport.cards.length} cards.`
+          : generationCountPolicy === 'prompt-exact'
+            ? `Created the ${resultWithSourceReport.cards.length} cards requested in the description.`
+            : generationCountPolicy === 'source-exact'
+              ? `Created one card for each of the ${resultWithSourceReport.cards.length} source items.`
+              : `Created ${resultWithSourceReport.cards.length} cards from the selected target.`,
+        narrationSecondsPerCard,
+        targetWordsPerCard: boardNarrationTargetWords(narrationSecondsPerCard),
+      },
+    };
+
     await db.collection('board_wizard_batches').add({
       owner_user_id: userId,
       mode,
@@ -7447,15 +7626,18 @@ export const generateBoardWizardBatch = onCall(
       media_mode: mediaMode,
       narration_style: narrationStyle,
       requested_count: generationCount,
-      generated_count: resultWithSourceReport.cards.length,
+      count_policy: generationCountPolicy,
+      generated_count: resultWithGenerationSummary.cards.length,
+      narration_seconds_per_card: narrationSecondsPerCard,
+      narration_target_words_per_card: boardNarrationTargetWords(narrationSecondsPerCard),
       prompt_preview: (prompt || pastedList || url || photoNames.join(', ')).slice(0, 500),
-      board_title: resultWithSourceReport.board.title,
-      card_titles: resultWithSourceReport.cards.map((card) => card.title).slice(0, 100),
-      source_report: resultWithSourceReport.sourceReport ?? null,
+      board_title: resultWithGenerationSummary.board.title,
+      card_titles: resultWithGenerationSummary.cards.map((card) => card.title).slice(0, 100),
+      source_report: resultWithGenerationSummary.sourceReport ?? null,
       created_at: FieldValue.serverTimestamp(),
     });
 
-    return resultWithSourceReport;
+    return resultWithGenerationSummary;
   },
 );
 
@@ -13858,44 +14040,6 @@ function inferBoardWizardPlaceContext(prompt: string, boardTitle: string): strin
     return explicitNear[1].replace(/[,.!?].*$/, '').trim();
   }
   return boardTitle;
-}
-
-function inferBoardWizardRequestedCount(text: string): number | null {
-  const normalized = text.replace(/\s+/g, ' ').trim().toLowerCase();
-  if (!normalized) {
-    return null;
-  }
-
-  const numericPatterns = [
-    /\b(?:make|create|build|generate|include|with|top|best)\s+(?:a\s+board\s+(?:with|of)\s+)?(\d{1,3})\b/,
-    /\b(\d{1,3})\s+(?:signers|people|persons|destinations|places|restaurants|cards|items|facts|rooms|amenities|cities)\b/,
-  ];
-  for (const pattern of numericPatterns) {
-    const match = normalized.match(pattern);
-    const count = match?.[1] ? Number(match[1]) : 0;
-    if (Number.isInteger(count) && count >= 1 && count <= 100) {
-      return count;
-    }
-  }
-
-  const words: Record<string, number> = {
-    one: 1,
-    two: 2,
-    three: 3,
-    four: 4,
-    five: 5,
-    six: 6,
-    seven: 7,
-    eight: 8,
-    nine: 9,
-    ten: 10,
-    eleven: 11,
-    twelve: 12,
-    fifteen: 15,
-    twenty: 20,
-  };
-  const wordMatch = normalized.match(/\b(?:top|best|include|with|make|create|build|generate)\s+(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fifteen|twenty)\b/);
-  return wordMatch?.[1] ? words[wordMatch[1]] ?? null : null;
 }
 
 function shapeNumberedSourceWizardBatch(

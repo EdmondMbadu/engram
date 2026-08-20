@@ -2,6 +2,11 @@ import {
   normalizeBoardWizardMediaMode,
   type BoardWizardMediaMode,
 } from './board-wizard-media-mode';
+import {
+  DEFAULT_BOARD_NARRATION_SECONDS_PER_CARD,
+  normalizeBoardNarrationSeconds,
+} from './board-narration-length';
+import type { BoardWizardCountMode } from './board-wizard-count-policy';
 
 export const BOARD_WIZARD_PREFERENCES_FIELD = 'wizard_preferences';
 
@@ -36,6 +41,8 @@ export const BOARD_WIZARD_DRAFT_STABLE_TOP_LEVEL_FIELDS = [
 
 type PersistedWizardPreferences = {
   media_mode: BoardWizardMediaMode;
+  count_mode: BoardWizardCountMode;
+  narration_seconds_per_card: number;
 };
 
 /**
@@ -48,6 +55,10 @@ export function boardWizardDraftPayloadWithPreferences<
 >(
   payload: Record<string, unknown> & { result: TResult },
   mediaMode: BoardWizardMediaMode,
+  preferences: {
+    countMode?: BoardWizardCountMode;
+    narrationSecondsPerCard?: number;
+  } = {},
 ): Record<string, unknown> & { result: TResult & { wizard_preferences: PersistedWizardPreferences } } {
   const stablePayload: Record<string, unknown> = {};
   for (const field of BOARD_WIZARD_DRAFT_STABLE_TOP_LEVEL_FIELDS) {
@@ -65,6 +76,10 @@ export function boardWizardDraftPayloadWithPreferences<
           ? payload.result[BOARD_WIZARD_PREFERENCES_FIELD] as Record<string, unknown>
           : {}),
         media_mode: mediaMode,
+        count_mode: preferences.countMode === 'fixed' ? 'fixed' : 'auto',
+        narration_seconds_per_card: normalizeBoardNarrationSeconds(
+          preferences.narrationSecondsPerCard ?? DEFAULT_BOARD_NARRATION_SECONDS_PER_CARD,
+        ),
       },
     },
   };
@@ -84,4 +99,28 @@ export function boardWizardDraftMediaMode(value: Record<string, unknown>): Board
     ? result[BOARD_WIZARD_PREFERENCES_FIELD] as Record<string, unknown>
     : {};
   return normalizeBoardWizardMediaMode(preferences['media_mode']);
+}
+
+function boardWizardDraftPreferences(value: Record<string, unknown>): Record<string, unknown> {
+  const result = value['result'] && typeof value['result'] === 'object'
+    ? value['result'] as Record<string, unknown>
+    : {};
+  return result[BOARD_WIZARD_PREFERENCES_FIELD]
+    && typeof result[BOARD_WIZARD_PREFERENCES_FIELD] === 'object'
+    ? result[BOARD_WIZARD_PREFERENCES_FIELD] as Record<string, unknown>
+    : {};
+}
+
+export function boardWizardDraftCountMode(value: Record<string, unknown>): BoardWizardCountMode {
+  const temporary = value['count_mode'];
+  if (temporary === 'fixed' || temporary === 'auto') return temporary;
+  return boardWizardDraftPreferences(value)['count_mode'] === 'fixed' ? 'fixed' : 'auto';
+}
+
+export function boardWizardDraftNarrationSeconds(value: Record<string, unknown>): number {
+  const temporary = value['narration_seconds_per_card'];
+  if (typeof temporary === 'number') return normalizeBoardNarrationSeconds(temporary);
+  return normalizeBoardNarrationSeconds(
+    boardWizardDraftPreferences(value)['narration_seconds_per_card'],
+  );
 }

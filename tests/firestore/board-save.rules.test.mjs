@@ -55,6 +55,7 @@ function personalWizardBoard(overrides = {}) {
     socialVideoClosingImage: 'cover',
     socialVideoClosingCustomImageUrl: '',
     socialVideoClosingDurationSeconds: 3,
+    narrationSecondsPerCard: 30,
     stickers: [],
     cards: [],
     created_at_iso: '2026-08-12T00:00:00.000Z',
@@ -160,6 +161,24 @@ test('owner can atomically save a personal wizard board and remove its draft', a
     assert.equal((await getDoc(doc(context.firestore(), 'boards', 'wizard-board-1'))).exists(), true);
     assert.equal((await getDoc(doc(context.firestore(), 'users', ownerUid, 'board_wizard_drafts', 'wizard-board-1'))).exists(), false);
   });
+});
+
+test('board narration length accepts supported timing and rejects out-of-range values', async () => {
+  const database = testEnvironment.authenticatedContext(ownerUid).firestore();
+
+  for (const seconds of [5, 30, 180]) {
+    await assertSucceeds(setDoc(
+      doc(database, 'boards', `narration-${seconds}`),
+      personalWizardBoard({ id: `narration-${seconds}`, narrationSecondsPerCard: seconds }),
+    ));
+  }
+
+  for (const seconds of [4, 181]) {
+    await assertFails(setDoc(
+      doc(database, 'boards', `narration-invalid-${seconds}`),
+      personalWizardBoard({ id: `narration-invalid-${seconds}`, narrationSecondsPerCard: seconds }),
+    ));
+  }
 });
 
 test('owner can save each media preference without adding a top-level draft field', async () => {

@@ -6,6 +6,11 @@ const {
   defaultBoardNarrationStyleId,
   normalizeBoardNarrationStyle,
 } = require('../lib/board-wizard-narration.js');
+const {
+  boardNarrationLengthPromptInstructions,
+  boardNarrationTargetWords,
+  normalizeBoardNarrationSeconds,
+} = require('../lib/board-narration-length.js');
 
 assert.equal(defaultBoardNarrationStyleId, 'storyteller');
 assert.equal(normalizeBoardNarrationStyle(undefined), 'storyteller');
@@ -40,5 +45,14 @@ assert.equal(
   boardNarrationFallbackDescription('storyteller', 'Summer Festivals', 'Five celebrations worth seeing.'),
   'Five celebrations worth seeing.',
 );
+
+assert.equal(normalizeBoardNarrationSeconds(undefined), 30);
+assert.equal(normalizeBoardNarrationSeconds(43), 45);
+assert.equal(normalizeBoardNarrationSeconds(240), 180);
+assert.equal(boardNarrationTargetWords(5), 12);
+assert.equal(boardNarrationTargetWords(30), 71);
+assert.equal(boardNarrationTargetWords(180), 423);
+assert.match(boardNarrationLengthPromptInstructions(30), /approximately 71 spoken words/i);
+assert.match(boardNarrationLengthPromptInstructions(5), /one crisp, self-contained sentence/i);
 
 console.log('Board wizard narration checks passed.');

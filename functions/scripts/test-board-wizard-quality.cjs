@@ -19,6 +19,28 @@ const {
   boardWizardResearchMode,
 } = require('../lib/board-wizard-generation-quality.js');
 const { resolveBoardWizardMediaKind } = require('../lib/board-wizard-media-quality.js');
+const {
+  isBoardWizardCompleteSetRequest,
+  resolveBoardWizardCount,
+} = require('../lib/board-wizard-count-policy.js');
+
+assert.equal(isBoardWizardCompleteSetRequest('List all people who signed the US Constitution'), true);
+assert.equal(isBoardWizardCompleteSetRequest('Find all interesting places in America'), false);
+assert.deepEqual(resolveBoardWizardCount({
+  text: 'List all people who signed the US Constitution',
+  submittedCount: 12,
+  countMode: 'auto',
+}), { policy: 'complete-set', targetCount: 12, explicitCount: null, completeSet: true });
+assert.deepEqual(resolveBoardWizardCount({
+  text: 'Create the top 20 museums',
+  submittedCount: 12,
+  countMode: 'auto',
+}), { policy: 'prompt-exact', targetCount: 20, explicitCount: 20, completeSet: false });
+assert.deepEqual(resolveBoardWizardCount({
+  text: 'List all members',
+  submittedCount: 10,
+  countMode: 'fixed',
+}), { policy: 'target-count', targetCount: 10, explicitCount: 10, completeSet: false });
 
 const score = (query, pageTitle, candidates) =>
   wikipediaPageTitleMatchScore(query, pageTitle, candidates);

@@ -5130,7 +5130,7 @@
                     <button
                       type="button"
                       aria-label="Use one fewer card"
-                      [disabled]="wizardCount() <= 1 || wizardMode() === 'photos' || (wizardMode() === 'paste' && wizardDetectedPasteCount() > 0)"
+                      [disabled]="wizardCount() <= 1 || wizardCountIsPromptControlled() || wizardMode() === 'photos' || (wizardMode() === 'paste' && wizardDetectedPasteCount() > 0)"
                       (click)="setWizardCount(wizardCount() - 1)"
                     >
                       <span class="material-symbols-outlined">remove</span>
@@ -5139,14 +5139,14 @@
                       type="number"
                       min="1"
                       max="100"
-                      [disabled]="wizardMode() === 'photos' || (wizardMode() === 'paste' && wizardDetectedPasteCount() > 0)"
+                      [disabled]="wizardCountIsPromptControlled() || wizardMode() === 'photos' || (wizardMode() === 'paste' && wizardDetectedPasteCount() > 0)"
                       [value]="wizardCount()"
                       (input)="setWizardCount($any($event.target).value)"
                     />
                     <button
                       type="button"
                       aria-label="Use one more card"
-                      [disabled]="wizardCount() >= 100 || wizardMode() === 'photos' || (wizardMode() === 'paste' && wizardDetectedPasteCount() > 0)"
+                      [disabled]="wizardCount() >= 100 || wizardCountIsPromptControlled() || wizardMode() === 'photos' || (wizardMode() === 'paste' && wizardDetectedPasteCount() > 0)"
                       (click)="setWizardCount(wizardCount() + 1)"
                     >
                       <span class="material-symbols-outlined">add</span>
@@ -5156,19 +5156,35 @@
                     type="range"
                     min="1"
                     max="100"
-                    [disabled]="wizardMode() === 'photos' || (wizardMode() === 'paste' && wizardDetectedPasteCount() > 0)"
+                    [disabled]="wizardCountIsPromptControlled() || wizardMode() === 'photos' || (wizardMode() === 'paste' && wizardDetectedPasteCount() > 0)"
                     [value]="wizardCount()"
                     (input)="setWizardCount($any($event.target).value)"
                   />
                 </div>
-                <small class="boards-wizard-count__recommendation">Recommended: 8–16</small>
+                <div class="boards-wizard-count-intent" [class.boards-wizard-count-intent--complete]="wizardCountIntent().policy === 'complete-set'">
+                  <span class="material-symbols-outlined">
+                    {{ wizardCountIntent().policy === 'complete-set' ? 'verified' : wizardCountIntent().policy === 'target-count' ? 'tune' : 'format_list_numbered' }}
+                  </span>
+                  <span>
+                    <strong>{{ wizardCountStatusTitle() }}</strong>
+                    <small>{{ wizardCountStatusDetail() }}</small>
+                  </span>
+                  @if (wizardCountIsPromptControlled()) {
+                    <button type="button" (click)="useWizardCountLimit()">Set a limit</button>
+                  } @else if (wizardCountMode() === 'fixed' && wizardCountIntent().policy === 'target-count') {
+                    <button type="button" (click)="useWizardAutomaticCount()">Let request decide</button>
+                  }
+                </div>
+                @if (wizardCountIntent().policy === 'target-count') {
+                  <small class="boards-wizard-count__recommendation">Recommended: 8–16</small>
+                }
                 } @else {
                   <div class="boards-wizard-count">
                     <input
                       type="range"
                       min="1"
                       max="100"
-                      [disabled]="wizardMode() === 'photos' || (wizardMode() === 'paste' && wizardDetectedPasteCount() > 0)"
+                      [disabled]="wizardCountIsPromptControlled() || wizardMode() === 'photos' || (wizardMode() === 'paste' && wizardDetectedPasteCount() > 0)"
                       [value]="wizardCount()"
                       (input)="setWizardCount($any($event.target).value)"
                     />
@@ -5176,7 +5192,7 @@
                       type="number"
                       min="1"
                       max="100"
-                      [disabled]="wizardMode() === 'photos' || (wizardMode() === 'paste' && wizardDetectedPasteCount() > 0)"
+                      [disabled]="wizardCountIsPromptControlled() || wizardMode() === 'photos' || (wizardMode() === 'paste' && wizardDetectedPasteCount() > 0)"
                       [value]="wizardCount()"
                       (input)="setWizardCount($any($event.target).value)"
                     />
@@ -5193,7 +5209,11 @@
                 <div class="boards-wizard-config__summary">
                   <span class="material-symbols-outlined">dashboard_customize</span>
                   <strong>
-                    {{ wizardCount() }} {{ isTourWizardMode() ? 'stops' : 'cards' }}
+                    @if (wizardCountIntent().policy === 'complete-set') {
+                      Complete verified set
+                    } @else {
+                      {{ wizardEffectiveCount() }} {{ isTourWizardMode() ? 'stops' : 'cards' }}
+                    }
                     @if (!isTourWizardMode() && wizardMode() !== 'photos') {
                       · {{ wizardMediaModeLabel() }} · {{ wizardDefaultTypeLabel() }}
                     }
@@ -5314,7 +5334,113 @@
                   }
                 </div>
               </section>
+
+              <section class="boards-wizard-length">
+                <div class="boards-wizard-narration__head">
+                  <span class="boards-wizard-label">Narration length</span>
+                  <small>Choose how much should be said about each card. Actual voice timing may vary slightly.</small>
+                </div>
+                <div class="boards-wizard-length__presets" role="radiogroup" aria-label="Narration length">
+                  @for (preset of wizardNarrationLengthPresets; track preset.seconds) {
+                    <button
+                      type="button"
+                      role="radio"
+                      [class.boards-wizard-length__preset--active]="wizardNarrationSecondsPerCard() === preset.seconds"
+                      [attr.aria-checked]="wizardNarrationSecondsPerCard() === preset.seconds"
+                      (click)="setWizardNarrationSeconds(preset.seconds)"
+                    >
+                      <span class="material-symbols-outlined">
+                        {{ preset.seconds === 5 ? 'bolt' : preset.seconds === 30 ? 'auto_stories' : 'menu_book' }}
+                      </span>
+                      <span>
+                        <strong>{{ preset.label }}</strong>
+                        <small>{{ preset.seconds < 60 ? preset.seconds + ' sec' : '3 min' }} · ~{{ preset.seconds === 5 ? 12 : preset.seconds === 30 ? 71 : 423 }} words</small>
+                        <em>{{ preset.description }}</em>
+                      </span>
+                      @if (wizardNarrationSecondsPerCard() === preset.seconds) {
+                        <span class="material-symbols-outlined boards-wizard-length__check">check_circle</span>
+                      }
+                    </button>
+                  }
+                </div>
+                <div class="boards-wizard-length__custom">
+                  <label>
+                    <span>Custom length</span>
+                    <strong>{{ wizardNarrationSecondsPerCard() < 60 ? wizardNarrationSecondsPerCard() + ' seconds' : (wizardNarrationSecondsPerCard() / 60) + ' minutes' }} per card</strong>
+                  </label>
+                  <input
+                    type="range"
+                    [min]="wizardNarrationMinSeconds"
+                    [max]="wizardNarrationMaxSeconds"
+                    step="5"
+                    [value]="wizardNarrationSecondsPerCard()"
+                    (input)="setWizardNarrationSeconds($any($event.target).value)"
+                  />
+                  <span>~{{ wizardNarrationWordsPerCard() }} words per card</span>
+                </div>
+                <div class="boards-wizard-length__summary" [class.boards-wizard-length__summary--long]="wizardNarrationTotalSeconds() > 1200">
+                  <span class="material-symbols-outlined">schedule</span>
+                  <strong>{{ wizardNarrationDurationSummary() }}</strong>
+                  @if (wizardNarrationTotalSeconds() > 1200) {
+                    <small>This will be a substantial listening experience and may take longer to generate.</small>
+                  }
+                </div>
+              </section>
             }
+            }
+
+            @if (isTourWizardMode() && wizardTargetBoardId() === 'new') {
+              <section class="boards-wizard-length">
+                <div class="boards-wizard-narration__head">
+                  <span class="boards-wizard-label">Narration length</span>
+                  <small>Choose how much should be said at each stop. Actual voice timing may vary slightly.</small>
+                </div>
+                <div class="boards-wizard-length__presets" role="radiogroup" aria-label="Narration length">
+                  @for (preset of wizardNarrationLengthPresets; track preset.seconds) {
+                    <button
+                      type="button"
+                      role="radio"
+                      [class.boards-wizard-length__preset--active]="wizardNarrationSecondsPerCard() === preset.seconds"
+                      [attr.aria-checked]="wizardNarrationSecondsPerCard() === preset.seconds"
+                      (click)="setWizardNarrationSeconds(preset.seconds)"
+                    >
+                      <span class="material-symbols-outlined">
+                        {{ preset.seconds === 5 ? 'bolt' : preset.seconds === 30 ? 'auto_stories' : 'menu_book' }}
+                      </span>
+                      <span>
+                        <strong>{{ preset.label }}</strong>
+                        <small>{{ preset.seconds < 60 ? preset.seconds + ' sec' : '3 min' }} · ~{{ preset.seconds === 5 ? 12 : preset.seconds === 30 ? 71 : 423 }} words</small>
+                        <em>{{ preset.description }}</em>
+                      </span>
+                      @if (wizardNarrationSecondsPerCard() === preset.seconds) {
+                        <span class="material-symbols-outlined boards-wizard-length__check">check_circle</span>
+                      }
+                    </button>
+                  }
+                </div>
+                <div class="boards-wizard-length__custom">
+                  <label>
+                    <span>Custom length</span>
+                    <strong>{{ wizardNarrationSecondsPerCard() < 60 ? wizardNarrationSecondsPerCard() + ' seconds' : (wizardNarrationSecondsPerCard() / 60) + ' minutes' }} per stop</strong>
+                  </label>
+                  <input
+                    type="range"
+                    [min]="wizardNarrationMinSeconds"
+                    [max]="wizardNarrationMaxSeconds"
+                    step="5"
+                    [value]="wizardNarrationSecondsPerCard()"
+                    (input)="setWizardNarrationSeconds($any($event.target).value)"
+                  />
+                  <span>~{{ wizardNarrationWordsPerCard() }} words per stop</span>
+                </div>
+                <div class="boards-wizard-length__summary" [class.boards-wizard-length__summary--long]="wizardNarrationTotalSeconds() > 1200">
+                  <span class="material-symbols-outlined">schedule</span>
+                  <strong>{{ wizardNarrationDurationSummary() }}</strong>
+                  @if (wizardNarrationTotalSeconds() > 1200) {
+                    <small>This will be a substantial listening experience and may take longer to generate.</small>
+                  }
+                </div>
+              </section>
             }
 
             @if (wizardError()) {
@@ -5421,6 +5547,18 @@
                 <button type="button" class="boards-ghost-action" (click)="clearWizardSelection()" i18n>Clear</button>
               </div>
             </div>
+
+            @if (wizardResult()?.generation; as generation) {
+              <section class="boards-wizard-generation-summary" [class.boards-wizard-generation-summary--complete]="generation.completeSet">
+                <span class="material-symbols-outlined">{{ generation.completeSet ? 'verified' : 'schedule' }}</span>
+                <span>
+                  <strong>{{ generation.message }}</strong>
+                  <small>
+                    {{ generation.resolvedCount }} cards · about {{ generation.narrationSecondsPerCard }} seconds and {{ generation.targetWordsPerCard }} words per card
+                  </small>
+                </span>
+              </section>
+            }
 
             @if (wizardProductCount()) {
               <section class="boards-wizard__intro" aria-label="Product import audit" i18n-aria-label>

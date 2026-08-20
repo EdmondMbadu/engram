@@ -62,6 +62,15 @@ service cloud.firestore {
       ];
     }
 
+    function hasValidBoardNarrationLength(data) {
+      return !data.keys().hasAny(['narrationSecondsPerCard'])
+        || (
+          data.narrationSecondsPerCard is number
+          && data.narrationSecondsPerCard >= 5
+          && data.narrationSecondsPerCard <= 180
+        );
+    }
+
     function hasValidSocialVideoClosingScreen(data) {
       return (
           !data.keys().hasAny(['socialVideoClosingHeadline'])
@@ -165,6 +174,7 @@ service cloud.firestore {
         'trailerVideoCardIds',
         'trailerVideoDurationSeconds',
         'narrationStyle',
+        'narrationSecondsPerCard',
         'stackNarratorVoiceId',
         'stickers',
         'tourMeta',
@@ -820,6 +830,7 @@ service cloud.firestore {
         && request.resource.data.socialVideoUpdatedAt.size() <= 80
         && request.resource.data.socialVideoRatio in ['vertical', 'square', 'landscape']
         && hasValidSocialVideoClosingScreen(request.resource.data)
+        && hasValidBoardNarrationLength(request.resource.data)
         && request.resource.data.stickers is list
         && request.resource.data.stickers.size() <= 48
         && request.resource.data.cards is list
@@ -888,6 +899,7 @@ service cloud.firestore {
           'trailerVideoCardIds',
           'trailerVideoDurationSeconds',
           'narrationStyle',
+          'narrationSecondsPerCard',
           'stackNarratorVoiceId',
           'stickers',
           'tourMeta',
@@ -947,6 +959,7 @@ service cloud.firestore {
         && request.resource.data.trailerVideoCardIds is list
         && request.resource.data.trailerVideoCardIds.size() == 0
         && request.resource.data.trailerVideoDurationSeconds == 0
+        && hasValidBoardNarrationLength(request.resource.data)
         && isValidStackNarratorVoiceId(request.resource.data.stackNarratorVoiceId)
         && request.resource.data.parentBoardId == ''
         && request.resource.data.parentCardId == ''
@@ -1087,6 +1100,7 @@ service cloud.firestore {
           'trailerVideoCardIds',
           'trailerVideoDurationSeconds',
           'narrationStyle',
+          'narrationSecondsPerCard',
           'stackNarratorVoiceId',
           'stickers',
           'tourMeta',
@@ -1331,6 +1345,7 @@ service cloud.firestore {
           !request.resource.data.keys().hasAny(['narrationStyle'])
           || isValidBoardNarrationStyle(request.resource.data.narrationStyle)
         )
+        && hasValidBoardNarrationLength(request.resource.data)
         && (
           !request.resource.data.keys().hasAny(['stackNarratorVoiceId'])
           || isValidStackNarratorVoiceId(request.resource.data.stackNarratorVoiceId)

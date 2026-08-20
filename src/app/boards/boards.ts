@@ -84,9 +84,16 @@ import {
   type BoardWizardMediaMode,
 } from './board-wizard-media-mode';
 import {
+  boardWizardDraftCountMode,
   boardWizardDraftMediaMode,
+  boardWizardDraftNarrationSeconds,
   boardWizardDraftPayloadWithPreferences,
 } from './board-wizard-draft-persistence';
+import {
+  resolveBoardWizardCountIntent,
+  type BoardWizardCountMode,
+  type BoardWizardCountPolicy,
+} from './board-wizard-count-policy';
 import { appendBoardCards } from './board-batch';
 import { compareBoardsByCreatedDate } from './board-gallery-order';
 import { beginBoardRouteLoad, completeBoardRouteLoad } from './board-route-load-state';
@@ -100,6 +107,16 @@ import {
   normalizeBoardNarrationStyleId,
   type BoardNarrationStyleId,
 } from './board-narration-style';
+import {
+  BOARD_NARRATION_LENGTH_PRESETS,
+  DEFAULT_BOARD_NARRATION_SECONDS_PER_CARD,
+  MAX_BOARD_NARRATION_SECONDS_PER_CARD,
+  MIN_BOARD_NARRATION_SECONDS_PER_CARD,
+  boardNarrationDurationLabel,
+  boardNarrationEstimatedTotalSeconds,
+  boardNarrationTargetWords,
+  normalizeBoardNarrationSeconds,
+} from './board-narration-length';
 import {
   cardsForBoardInsideDisplay,
   normalizeBoardInsideDisplay,
@@ -427,6 +444,7 @@ type Board = {
   trailerVideoCardIds: string[];
   trailerVideoDurationSeconds: number;
   narrationStyle: BoardNarrationStyleId;
+  narrationSecondsPerCard?: number;
   stackNarratorVoiceId: string;
   stickers: BoardSticker[];
   tourMeta: BoardTourMeta | null;
@@ -683,6 +701,17 @@ type BoardWizardGeneratedBatch = {
   };
   cards: BoardWizardGeneratedCard[];
   sourceReport?: BoardWizardSourceReport;
+  generation?: BoardWizardGenerationSummary;
+};
+
+type BoardWizardGenerationSummary = {
+  countPolicy: BoardWizardCountPolicy;
+  targetCount: number;
+  resolvedCount: number;
+  completeSet: boolean;
+  message: string;
+  narrationSecondsPerCard: number;
+  targetWordsPerCard: number;
 };
 
 type BoardWizardSourceReport = {
@@ -741,9 +770,11 @@ type BoardWizardDraft = {
   contributionBoardId: string;
   defaultType: BoardCardType;
   count: number;
+  countMode: BoardWizardCountMode;
   vibe: BoardWizardVibe;
   mediaMode: BoardWizardMediaMode;
   narrationStyle: BoardNarrationStyleId;
+  narrationSecondsPerCard: number;
   prompt: string;
   pastedList: string;
   sourceUrl: string;
@@ -1506,6 +1537,9 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly wizardVibes = BOARD_WIZARD_VIBES;
   readonly wizardMediaModes = BOARD_WIZARD_MEDIA_MODES;
   readonly wizardNarrationStyles = BOARD_NARRATION_STYLES;
+  readonly wizardNarrationLengthPresets = BOARD_NARRATION_LENGTH_PRESETS;
+  readonly wizardNarrationMinSeconds = MIN_BOARD_NARRATION_SECONDS_PER_CARD;
+  readonly wizardNarrationMaxSeconds = MAX_BOARD_NARRATION_SECONDS_PER_CARD;
   readonly wizardNarrationVoiceName = defaultNarratorVoiceNameForStyle;
   readonly tourVoiceStyles = TOUR_VOICE_STYLES;
   readonly stackFormats = STACK_FORMATS;
@@ -1678,9 +1712,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly wizardContributionBoardId = signal<string | null>(null);
   readonly wizardDefaultType = signal<BoardCardType>('place');
   readonly wizardCount = signal(12);
+  readonly wizardCountMode = signal<BoardWizardCountMode>('auto');
   readonly wizardVibe = signal<BoardWizardVibe>('playful');
   readonly wizardMediaMode = signal<BoardWizardMediaMode>(DEFAULT_BOARD_WIZARD_MEDIA_MODE);
   readonly wizardNarrationStyle = signal<BoardNarrationStyleId>(DEFAULT_BOARD_NARRATION_STYLE_ID);
+  readonly wizardNarrationSecondsPerCard = signal(DEFAULT_BOARD_NARRATION_SECONDS_PER_CARD);
   readonly wizardPrompt = signal('');
   readonly wizardPastedList = signal('');
   readonly wizardPasteMaxLength = BOARD_WIZARD_PASTE_MAX_LENGTH;
@@ -1699,6 +1735,29 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   ));
   readonly wizardSourceManifest = signal<BoardWizardSourceManifest | null>(null);
   readonly wizardSourceImageCount = computed(() => this.wizardSourceManifest()?.items.filter((item) => !!item.imageUrl).length ?? 0);
+  readonly wizardCountIntent = computed(() => resolveBoardWizardCountIntent({
+    prompt: [this.wizardPrompt(), this.wizardMode() === 'paste' ? this.wizardPastedList() : '']
+      .filter(Boolean)
+      .join(' '),
+    targetBoardTitle: this.wizardTargetBoardTitle(),
+    sourceCount: this.wizardDetectedPasteCount() || this.wizardSourceManifest()?.items.length || 0,
+    countMode: this.wizardCountMode(),
+    targetCount: this.wizardCount(),
+  }));
+  readonly wizardCountIsPromptControlled = computed(() => {
+    const policy = this.wizardCountIntent().policy;
+    return policy === 'prompt-exact' || policy === 'complete-set';
+  });
+  readonly wizardEffectiveCount = computed(() => this.wizardCountIntent().count ?? this.wizardCount());
+  readonly wizardNarrationWordsPerCard = computed(() =>
+    boardNarrationTargetWords(this.wizardNarrationSecondsPerCard()),
+  );
+  readonly wizardNarrationTotalSeconds = computed(() =>
+    boardNarrationEstimatedTotalSeconds(
+      this.wizardCountIntent().count ?? 0,
+      this.wizardNarrationSecondsPerCard(),
+    ),
+  );
   readonly wizardSourceReviewUrl = signal('');
   readonly wizardSourceReviewExact = signal(false);
   readonly wizardSourceReviewWarning = signal('');
@@ -3822,9 +3881,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.wizardContributionBoardId.set(draft.contributionBoardId || null);
     this.wizardDefaultType.set(draft.defaultType);
     this.wizardCount.set(draft.count);
+    this.wizardCountMode.set(draft.countMode);
     this.wizardVibe.set(draft.vibe);
     this.wizardMediaMode.set(draft.mediaMode);
     this.wizardNarrationStyle.set(draft.narrationStyle);
+    this.wizardNarrationSecondsPerCard.set(draft.narrationSecondsPerCard);
     this.wizardPrompt.set(draft.prompt);
     this.wizardPastedList.set(draft.pastedList);
     this.wizardUrl.set(draft.sourceUrl);
@@ -3936,9 +3997,52 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  setWizardCount(value: string | number): void {
+  setWizardCount(value: string | number, userInitiated = true): void {
     const count = typeof value === 'number' ? value : Number.parseInt(value, 10);
     this.wizardCount.set(Math.max(1, Math.min(100, Number.isFinite(count) ? count : 12)));
+    if (userInitiated) this.wizardCountMode.set('fixed');
+  }
+
+  useWizardAutomaticCount(): void {
+    this.wizardCountMode.set('auto');
+  }
+
+  useWizardCountLimit(): void {
+    this.wizardCountMode.set('fixed');
+  }
+
+  wizardCountStatusTitle(): string {
+    const intent = this.wizardCountIntent();
+    if (intent.policy === 'complete-set') return 'Complete set detected';
+    if (intent.policy === 'prompt-exact') return 'The request sets the count';
+    if (intent.policy === 'source-exact') return 'The source sets the count';
+    return 'Target number of cards';
+  }
+
+  wizardCountStatusDetail(): string {
+    const intent = this.wizardCountIntent();
+    if (intent.policy === 'complete-set') {
+      return 'We’ll verify the real membership and use the complete count.';
+    }
+    if (intent.policy === 'prompt-exact') return `${intent.count} cards requested in your description.`;
+    if (intent.policy === 'source-exact') return `${intent.count} source items will become cards.`;
+    return 'Used when your description does not specify a count.';
+  }
+
+  setWizardNarrationSeconds(value: string | number): void {
+    this.wizardNarrationSecondsPerCard.set(normalizeBoardNarrationSeconds(value));
+  }
+
+  wizardNarrationDurationSummary(): string {
+    const intent = this.wizardCountIntent();
+    if (intent.policy === 'complete-set' && intent.count === null) {
+      return 'Total updates after the complete set is verified.';
+    }
+    const count = intent.count ?? this.wizardCount();
+    const itemLabel = this.isTourWizardMode()
+      ? count === 1 ? 'stop' : 'stops'
+      : count === 1 ? 'card' : 'cards';
+    return `${count} ${itemLabel} · ${boardNarrationDurationLabel(this.wizardNarrationTotalSeconds())} · ~${this.wizardNarrationWordsPerCard() * count} words`;
   }
 
   updateWizardPastedList(value: string): void {
@@ -3948,7 +4052,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       ?? parseNumberedBoardSource(pastedText)?.items.length
       ?? 0;
     if (detectedCount) {
-      this.setWizardCount(detectedCount);
+      this.setWizardCount(detectedCount, false);
     }
   }
 
@@ -3966,36 +4070,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       return null;
     }
 
-    const numericPatterns = [
-      /\b(?:make|create|build|generate|include|with|top|best)\s+(?:a\s+board\s+(?:with|of)\s+)?(\d{1,3})\b/,
-      /\b(\d{1,3})\s+(?:signers|people|persons|destinations|places|restaurants|cards|items|facts|rooms|amenities|cities)\b/,
-    ];
-    for (const pattern of numericPatterns) {
-      const match = text.match(pattern);
-      const count = match?.[1] ? Number(match[1]) : 0;
-      if (Number.isInteger(count) && count >= 1 && count <= 100) {
-        return count;
-      }
-    }
-
-    const wordCounts: Record<string, number> = {
-      one: 1,
-      two: 2,
-      three: 3,
-      four: 4,
-      five: 5,
-      six: 6,
-      seven: 7,
-      eight: 8,
-      nine: 9,
-      ten: 10,
-      eleven: 11,
-      twelve: 12,
-      fifteen: 15,
-      twenty: 20,
-    };
-    const wordMatch = text.match(/\b(?:top|best|include|with|make|create|build|generate)\s+(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fifteen|twenty)\b/);
-    return wordMatch?.[1] ? wordCounts[wordMatch[1]] ?? null : null;
+    return resolveBoardWizardCountIntent({ prompt: text, targetCount: this.wizardCount() }).count;
   }
 
   wizardPhotoNamesList(): string[] {
@@ -4340,7 +4415,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       if (data['requiresReview'] === true && manifest) {
         this.wizardSourceManifest.set(manifest);
         this.wizardSourceConfirmedUrl.set('');
-        this.setWizardCount(manifest.items.length);
+        this.setWizardCount(manifest.items.length, false);
         this.wizardStep.set('source-review');
         this.wizardLoadingTask.set(null);
         return true;
@@ -4418,9 +4493,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       await this.generateWhat3WordsWizardPreview(this.what3WordsSourceFromOffGridWizard(), true);
       return;
     }
-    const inferredCount = this.wizardMode() === 'photos' ? this.wizardPhotos().length : this.inferWizardRequestedCount();
+    const inferredCount = this.wizardMode() === 'photos'
+      ? this.wizardPhotos().length
+      : this.wizardCountMode() === 'auto' ? this.inferWizardRequestedCount() : null;
     if (inferredCount) {
-      this.setWizardCount(inferredCount);
+      this.setWizardCount(inferredCount, false);
     }
     const previousResult = this.wizardResult();
     const previousPreviewCards = this.wizardPreviewCards();
@@ -4510,9 +4587,9 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
   async addMoreWizardCards(): Promise<void> {
     const previousCount = this.wizardCount();
-    this.setWizardCount(Math.min(100, previousCount + 5));
+    this.setWizardCount(Math.min(100, previousCount + 5), false);
     await this.generateWizardBatch('Add five more cards that do not duplicate the current preview.');
-    this.setWizardCount(previousCount);
+    this.setWizardCount(previousCount, false);
   }
 
   openWizardCardEditor(cardId: string, section: WizardCardEditorSection = 'details'): void {
@@ -4722,7 +4799,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.wizardRedoingCardIds.update((ids) => new Set(ids).add(cardId));
     this.wizardError.set(null);
     const previousCount = this.wizardCount();
-    this.setWizardCount(1);
+    this.setWizardCount(1, false);
     try {
       const batch = await this.requestWizardBatch(`Replace only this card with a better alternative: ${card.title}.`);
       const placeEnrichedCards = await this.enrichWizardCards(batch.cards.slice(0, 1));
@@ -4753,7 +4830,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         ),
       );
     } finally {
-      this.setWizardCount(previousCount);
+      this.setWizardCount(previousCount, false);
       this.wizardRedoingCardIds.update((ids) => {
         const next = new Set(ids);
         next.delete(cardId);
@@ -5189,6 +5266,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
           trailerVideoCardIds: [],
           trailerVideoDurationSeconds: 0,
           narrationStyle: this.wizardNarrationStyle(),
+          narrationSecondsPerCard: this.wizardNarrationSecondsPerCard(),
           stackNarratorVoiceId: defaultNarratorVoiceIdForStyle(this.wizardNarrationStyle()),
           forkedFromBoardId: '',
           forkedFromTitle: '',
@@ -6154,8 +6232,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         targetBoardTitle: board.title,
         defaultType: draft.type,
         count: 1,
+        countMode: 'fixed',
         vibe: draft.type === 'memory' ? 'memory' : 'curator',
         narrationStyle: board.narrationStyle,
+        narrationSecondsPerCard: normalizeBoardNarrationSeconds(board.narrationSecondsPerCard),
         existingCards: this.explicitRelatedCards(parent).slice(0, 40).map((card) => ({
           title: card.title,
           subtitle: card.subtitle,
@@ -6516,7 +6596,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
           targetBoardTitle: board.title,
           defaultType: 'place',
           count: 1,
+          countMode: 'fixed',
           vibe: 'traveler',
+          narrationStyle: board.narrationStyle,
+          narrationSecondsPerCard: normalizeBoardNarrationSeconds(board.narrationSecondsPerCard),
           tourOptions: {
             voiceStyle: board.tourMeta?.voiceStyle ?? 'local',
             paceOrRouteStyle: board.tourMeta?.paceOrRouteStyle ?? (board.kind === 'driving-tour' ? 'Balanced' : 'Standard'),
@@ -9190,8 +9273,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         targetBoardTitle: contextTitle,
         defaultType: likelyFood ? 'food' : draft.type,
         count: 1,
+        countMode: 'fixed',
         vibe: this.wizardVibe(),
         narrationStyle: board.narrationStyle,
+        narrationSecondsPerCard: normalizeBoardNarrationSeconds(board.narrationSecondsPerCard),
         existingCards: contextCards.slice(0, 80).map((card) => ({
           title: card.title,
           subtitle: card.subtitle,
@@ -15309,6 +15394,14 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     return normalizeBoardNarrationStyleId(targetBoard?.narrationStyle);
   }
 
+  private wizardNarrationSecondsForGeneration(): number {
+    if (this.wizardTargetBoardId() === 'new') {
+      return this.wizardNarrationSecondsPerCard();
+    }
+    const targetBoard = this.boards().find((board) => board.id === this.wizardTargetBoardId());
+    return normalizeBoardNarrationSeconds(targetBoard?.narrationSecondsPerCard);
+  }
+
   private wizardOffGridLocationError(error: unknown): string {
     const code = error && typeof error === 'object' && 'code' in error
       ? Number((error as { code?: unknown }).code)
@@ -15340,9 +15433,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       contributionBoardId: this.wizardContributionBoardId(),
       defaultType: this.wizardDefaultType(),
       count: this.wizardCount(),
+      countMode: this.wizardCountMode(),
       vibe: this.wizardVibe(),
       mediaMode: this.wizardMediaMode(),
       narrationStyle: this.wizardNarrationStyle(),
+      narrationSecondsPerCard: this.wizardNarrationSecondsPerCard(),
       prompt: this.wizardPrompt(),
       pastedList: this.wizardPastedList(),
       sourceUrl: this.wizardUrl(),
@@ -15443,9 +15538,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         contributionBoardId: this.wizardContributionBoardId() ?? '',
         defaultType: this.wizardDefaultType(),
         count: this.wizardCount(),
+        countMode: this.wizardCountMode(),
         vibe: this.wizardVibe(),
         mediaMode: this.wizardMediaMode(),
         narrationStyle: this.wizardNarrationStyle(),
+        narrationSecondsPerCard: this.wizardNarrationSecondsPerCard(),
         prompt: this.wizardPrompt(),
         pastedList: this.wizardPastedList(),
         sourceUrl: this.wizardUrl(),
@@ -15489,7 +15586,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         created_at_iso: draft.createdAt,
         updated_at_iso: draft.updatedAt,
         server_updated_at: serverTimestamp(),
-      }, draft.mediaMode);
+      }, draft.mediaMode, {
+        countMode: draft.countMode,
+        narrationSecondsPerCard: draft.narrationSecondsPerCard,
+      });
       await setDoc(
         doc(this.firestore, 'users', uid, 'board_wizard_drafts', draftId),
         omitUndefinedDeep(persistedDraftPayload),
@@ -15577,6 +15677,8 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         : 'playful';
       const narrationStyle = normalizeBoardNarrationStyleId(value['narration_style']);
       const mediaMode = boardWizardDraftMediaMode(value);
+      const countMode = boardWizardDraftCountMode(value);
+      const narrationSecondsPerCard = boardWizardDraftNarrationSeconds(value);
       const tourVoiceValue = value['tour_voice_style'];
       const tourVoiceStyle: BoardTourVoiceStyle = tourVoiceValue === 'local' || tourVoiceValue === 'kid-friendly'
         ? tourVoiceValue
@@ -15590,9 +15692,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         contributionBoardId: this.stringValue(value['contribution_board_id'], '', 180),
         defaultType,
         count: Math.round(this.numberValue(value['count'], cards.length, 1, 100)),
+        countMode,
         vibe,
         mediaMode,
         narrationStyle,
+        narrationSecondsPerCard,
         prompt: this.stringValue(value['prompt'], '', 2000),
         pastedList: this.stringValue(value['pasted_list'], '', BOARD_WIZARD_PASTE_MAX_LENGTH),
         sourceUrl: this.stringValue(value['source_url'], '', 2000),
@@ -15629,9 +15733,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.wizardContributionBoardId.set(null);
     this.wizardDefaultType.set('place');
     this.wizardCount.set(12);
+    this.wizardCountMode.set('auto');
     this.wizardVibe.set('playful');
     this.wizardMediaMode.set(DEFAULT_BOARD_WIZARD_MEDIA_MODE);
     this.wizardNarrationStyle.set(DEFAULT_BOARD_NARRATION_STYLE_ID);
+    this.wizardNarrationSecondsPerCard.set(DEFAULT_BOARD_NARRATION_SECONDS_PER_CARD);
     this.wizardPrompt.set('');
     this.wizardPastedList.set('');
     this.wizardUrl.set('');
@@ -15797,9 +15903,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       targetBoardTitle: targetBoard?.title ?? '',
       defaultType: this.wizardDefaultType(),
       count: this.wizardCount(),
+      countMode: this.wizardCountMode(),
       vibe: this.wizardVibe(),
       mediaMode: this.wizardMediaMode(),
       narrationStyle: this.wizardNarrationStyleForGeneration(),
+      narrationSecondsPerCard: this.wizardNarrationSecondsForGeneration(),
       tourOptions: this.isTourWizardMode(this.wizardMode())
         ? {
             voiceStyle: this.wizardTourVoiceStyle(),
@@ -15845,6 +15953,35 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       // Do not truncate a verified complete set back to the UI's default count.
       cards: cards.slice(0, 100),
       sourceReport: this.normalizeWizardSourceReport(data['sourceReport']),
+      generation: this.normalizeWizardGenerationSummary(data['generation'], cards.length),
+    };
+  }
+
+  private normalizeWizardGenerationSummary(
+    value: unknown,
+    fallbackCount: number,
+  ): BoardWizardGenerationSummary | undefined {
+    if (!value || typeof value !== 'object') return undefined;
+    const data = value as Record<string, unknown>;
+    const countPolicy: BoardWizardCountPolicy = data['countPolicy'] === 'source-exact'
+      || data['countPolicy'] === 'prompt-exact'
+      || data['countPolicy'] === 'complete-set'
+      ? data['countPolicy']
+      : 'target-count';
+    const narrationSecondsPerCard = normalizeBoardNarrationSeconds(data['narrationSecondsPerCard']);
+    return {
+      countPolicy,
+      targetCount: Math.round(this.numberValue(data['targetCount'], fallbackCount, 1, 100)),
+      resolvedCount: Math.round(this.numberValue(data['resolvedCount'], fallbackCount, 1, 100)),
+      completeSet: data['completeSet'] === true,
+      message: this.stringValue(data['message'], '', 500),
+      narrationSecondsPerCard,
+      targetWordsPerCard: Math.round(this.numberValue(
+        data['targetWordsPerCard'],
+        boardNarrationTargetWords(narrationSecondsPerCard),
+        1,
+        600,
+      )),
     };
   }
 
@@ -16395,7 +16532,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       targetBoardTitle,
       defaultType: card.type,
       count: 1,
+      countMode: 'fixed',
       vibe: this.wizardVibe(),
+      narrationStyle: this.wizardNarrationStyleForGeneration(),
+      narrationSecondsPerCard: this.wizardNarrationSecondsPerCard(),
     });
     return this.normalizeWizardBatch(response.data).cards[0] ?? null;
   }
@@ -17614,6 +17754,9 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
             ? Math.max(0, board.trailerVideoDurationSeconds)
             : 0,
           narrationStyle: normalizeBoardNarrationStyleId((board as Partial<Board>).narrationStyle),
+          narrationSecondsPerCard: normalizeBoardNarrationSeconds(
+            (board as Partial<Board>).narrationSecondsPerCard,
+          ),
           stackNarratorVoiceId: normalizeStackNarratorVoiceId(
             (board as Partial<Board>).stackNarratorVoiceId,
           ),
@@ -17965,6 +18108,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         ? Math.max(0, data['trailerVideoDurationSeconds'])
         : 0,
       narrationStyle: normalizeBoardNarrationStyleId(data['narrationStyle']),
+      narrationSecondsPerCard: normalizeBoardNarrationSeconds(data['narrationSecondsPerCard']),
       stackNarratorVoiceId: normalizeStackNarratorVoiceId(data['stackNarratorVoiceId']),
       stickers: this.normalizeStickers(data['stickers']),
       tourMeta: this.normalizeTourMeta(data['tourMeta']),
