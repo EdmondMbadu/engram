@@ -386,6 +386,7 @@ service cloud.firestore {
           'paste',
           'photos',
           'off-grid',
+          'nearby-gems',
           'url',
           'walking-tour',
           'driving-tour'

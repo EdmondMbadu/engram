@@ -214,6 +214,15 @@
                 <small>{{ mobileDirectoryPreferenceName() }}</small>
               </span>
             </a>
+            <a
+              routerLink="/boards"
+              [queryParams]="{ create: 'gems' }"
+              class="mobile-nearby-gems-action"
+              aria-label="Find nearby gems and create a board"
+            >
+              <span class="material-symbols-outlined" aria-hidden="true">explore_nearby</span>
+              <span>Nearby gems</span>
+            </a>
             <button type="button" class="mobile-preference-action" (click)="beginChangingHomeDirectoryPreference()">Change</button>
             @if (mobileDirectoryIsUniversities()) {
               <button type="button" class="mobile-preference-action mobile-preference-action--quiet" (click)="clearHomeDirectoryPreference()">Clear</button>

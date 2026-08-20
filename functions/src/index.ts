@@ -51,6 +51,17 @@ import {
   type BoardTranslationSegment,
 } from './board-translation';
 import { db, storage } from './firebase';
+import {
+  broadLocationLabel,
+  formatNearbyGemDuration,
+  haversineMeters,
+  googleDurationSeconds,
+  nearbyGemCategory,
+  nearbyGemPreset,
+  rankNearbyGemCandidates,
+  type NearbyGemCandidate,
+  type NearbyGemPreset,
+} from './nearby-gems';
 import { publicBoardRouteKey } from './custom-public-routes';
 export {
   cleanupDeletedBoardPublicRoutes,
@@ -6216,6 +6227,436 @@ function decodeBoardWizardHtmlEntities(value: string): string {
     .replace(/&nbsp;/g, ' ');
 }
 
+type NearbyPlacesApiPlace = {
+  id?: string;
+  displayName?: { text?: string };
+  formattedAddress?: string;
+  location?: { latitude?: number; longitude?: number };
+  types?: string[];
+  primaryType?: string;
+  rating?: number;
+  userRatingCount?: number;
+  googleMapsUri?: string;
+  businessStatus?: string;
+  editorialSummary?: { text?: string };
+  photos?: Array<{ name?: string }>;
+};
+
+const nearbyGemPlaceTypeGroups = [
+  ['tourist_attraction', 'museum', 'art_gallery', 'historical_place', 'cultural_landmark', 'monument'],
+  ['hiking_area', 'botanical_garden', 'state_park', 'beach', 'nature_preserve', 'scenic_spot'],
+  ['cafe', 'bakery', 'book_store', 'coffee_shop'],
+] as const;
+
+function finiteNearbyCoordinate(value: unknown, minimum: number, maximum: number): number | null {
+  const number = typeof value === 'number' ? value : Number(value);
+  return Number.isFinite(number) && number >= minimum && number <= maximum ? number : null;
+}
+
+async function consumeNearbyGemQuota(userId: string): Promise<void> {
+  const hour = Math.floor(Date.now() / 3_600_000);
+  const reference = db.collection('nearby_gem_quotas').doc(userId);
+  await db.runTransaction(async (transaction) => {
+    const snapshot = await transaction.get(reference);
+    const data = snapshot.data() ?? {};
+    const currentHour = Number(data['hour']);
+    const count = currentHour === hour ? Math.max(0, Number(data['count']) || 0) : 0;
+    if (count >= 20) {
+      throw new HttpsError('resource-exhausted', 'You have made several nearby searches. Please try again in a little while.');
+    }
+    transaction.set(reference, {
+      hour,
+      count: count + 1,
+      updated_at: FieldValue.serverTimestamp(),
+    }, { merge: true });
+  });
+}
+
+async function geocodeNearbyGemOrigin(query: string, apiKey: string): Promise<{ lat: number; lng: number }> {
+  try {
+    const url = new URL('https://maps.googleapis.com/maps/api/geocode/json');
+    url.searchParams.set('address', query);
+    url.searchParams.set('key', apiKey);
+    const response = await fetch(url, { signal: AbortSignal.timeout(12_000) });
+    const data = await response.json() as {
+      status?: string;
+      results?: Array<{ geometry?: { location?: { lat?: number; lng?: number } } }>;
+    };
+    const location = data.results?.[0]?.geometry?.location;
+    const lat = finiteNearbyCoordinate(location?.lat, -90, 90);
+    const lng = finiteNearbyCoordinate(location?.lng, -180, 180);
+    if (response.ok && data.status === 'OK' && lat != null && lng != null) return { lat, lng };
+  } catch {
+    // Fall through to the Places text-search geocoder below.
+  }
+  try {
+    const placeUrl = new URL('https://maps.googleapis.com/maps/api/place/textsearch/json');
+    placeUrl.searchParams.set('query', query);
+    placeUrl.searchParams.set('key', apiKey);
+    const placeResponse = await fetch(placeUrl, { signal: AbortSignal.timeout(12_000) });
+    const placeData = await placeResponse.json() as {
+      status?: string;
+      results?: Array<{ geometry?: { location?: { lat?: number; lng?: number } } }>;
+    };
+    const placeLocation = placeData.results?.[0]?.geometry?.location;
+    const placeLat = finiteNearbyCoordinate(placeLocation?.lat, -90, 90);
+    const placeLng = finiteNearbyCoordinate(placeLocation?.lng, -180, 180);
+    if (placeResponse.ok && placeData.status === 'OK' && placeLat != null && placeLng != null) {
+      return { lat: placeLat, lng: placeLng };
+    }
+  } catch {
+    // The final message below is intentionally the same for either geocoder.
+  }
+  throw new HttpsError('not-found', 'We could not find that starting place. Try a city, neighborhood, or full address.');
+}
+
+async function reverseGeocodeNearbyGemLabel(
+  origin: { lat: number; lng: number },
+  apiKey: string,
+): Promise<string> {
+  try {
+    const url = new URL('https://maps.googleapis.com/maps/api/geocode/json');
+    url.searchParams.set('latlng', `${origin.lat},${origin.lng}`);
+    url.searchParams.set('result_type', 'locality|postal_town|administrative_area_level_1|country');
+    url.searchParams.set('key', apiKey);
+    const response = await fetch(url, { signal: AbortSignal.timeout(10_000) });
+    const data = await response.json() as {
+      results?: Array<{ address_components?: Array<{ long_name?: string; types?: string[] }> }>;
+    };
+    const components = data.results?.flatMap((result) => result.address_components ?? []) ?? [];
+    return broadLocationLabel(components.map((component) => ({
+      longText: component.long_name,
+      types: component.types,
+    })));
+  } catch {
+    return 'your area';
+  }
+}
+
+async function searchNearbyGemCandidates(
+  origin: { lat: number; lng: number },
+  preset: NearbyGemPreset,
+  apiKey: string,
+): Promise<NearbyGemCandidate[]> {
+  const responses = await Promise.allSettled(nearbyGemPlaceTypeGroups.map(async (includedTypes) => {
+    const response = await fetch('https://places.googleapis.com/v1/places:searchNearby', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Goog-Api-Key': apiKey,
+        'X-Goog-FieldMask': [
+          'places.id',
+          'places.displayName',
+          'places.formattedAddress',
+          'places.location',
+          'places.types',
+          'places.primaryType',
+          'places.rating',
+          'places.userRatingCount',
+          'places.googleMapsUri',
+          'places.businessStatus',
+          'places.editorialSummary',
+          'places.photos',
+        ].join(','),
+      },
+      body: JSON.stringify({
+        includedTypes,
+        maxResultCount: 20,
+        rankPreference: 'POPULARITY',
+        locationRestriction: {
+          circle: {
+            center: { latitude: origin.lat, longitude: origin.lng },
+            radius: preset.radiusMeters,
+          },
+        },
+      }),
+      signal: AbortSignal.timeout(15_000),
+    });
+    const data = await response.json() as { places?: NearbyPlacesApiPlace[]; error?: { message?: string } };
+    if (!response.ok) throw new Error(data.error?.message || `Places request failed (${response.status}).`);
+    return data.places ?? [];
+  }));
+
+  const places = responses.flatMap((result) => result.status === 'fulfilled' ? result.value : []);
+  if (!places.length) return searchLegacyNearbyGemCandidates(origin, preset, apiKey);
+  return places.flatMap((place): NearbyGemCandidate[] => {
+    const id = stringOrEmpty(place.id);
+    const name = stringOrEmpty(place.displayName?.text).slice(0, 120);
+    const lat = finiteNearbyCoordinate(place.location?.latitude, -90, 90);
+    const lng = finiteNearbyCoordinate(place.location?.longitude, -180, 180);
+    if (!id || !name || lat == null || lng == null || (place.businessStatus && place.businessStatus !== 'OPERATIONAL')) return [];
+    return [{
+      id,
+      name,
+      address: stringOrEmpty(place.formattedAddress).slice(0, 240),
+      lat,
+      lng,
+      types: Array.isArray(place.types) ? place.types.map(stringOrEmpty).filter(Boolean).slice(0, 20) : [],
+      primaryType: stringOrEmpty(place.primaryType),
+      rating: Math.max(0, Math.min(5, Number(place.rating) || 0)),
+      ratingCount: Math.max(0, Math.trunc(Number(place.userRatingCount) || 0)),
+      googleMapsUrl: stringOrEmpty(place.googleMapsUri).slice(0, 1000) || `https://www.google.com/maps/search/?api=1&query_place_id=${encodeURIComponent(id)}`,
+      photoName: stringOrEmpty(place.photos?.[0]?.name).slice(0, 1200),
+      editorialSummary: stringOrEmpty(place.editorialSummary?.text).slice(0, 600),
+      straightLineMeters: haversineMeters(origin, { lat, lng }),
+    }];
+  });
+}
+
+async function searchLegacyNearbyGemCandidates(
+  origin: { lat: number; lng: number },
+  preset: NearbyGemPreset,
+  apiKey: string,
+): Promise<NearbyGemCandidate[]> {
+  const keywords = ['local attractions museums history', 'parks gardens scenic nature', 'independent cafes bakeries bookstores'];
+  const responses = await Promise.allSettled(keywords.map(async (keyword) => {
+    const url = new URL('https://maps.googleapis.com/maps/api/place/nearbysearch/json');
+    url.searchParams.set('location', `${origin.lat},${origin.lng}`);
+    url.searchParams.set('radius', String(Math.round(preset.radiusMeters)));
+    url.searchParams.set('keyword', keyword);
+    url.searchParams.set('key', apiKey);
+    const response = await fetch(url, { signal: AbortSignal.timeout(15_000) });
+    const data = await response.json() as {
+      status?: string;
+      error_message?: string;
+      results?: Array<{
+        place_id?: string;
+        name?: string;
+        vicinity?: string;
+        geometry?: { location?: { lat?: number; lng?: number } };
+        types?: string[];
+        rating?: number;
+        user_ratings_total?: number;
+        business_status?: string;
+        photos?: Array<{ photo_reference?: string }>;
+      }>;
+    };
+    if (!response.ok || (data.status !== 'OK' && data.status !== 'ZERO_RESULTS')) {
+      throw new Error(data.error_message || `Legacy Places request failed (${response.status}).`);
+    }
+    return data.results ?? [];
+  }));
+  const results = responses.flatMap((result) => result.status === 'fulfilled' ? result.value : []);
+  if (!results.length && responses.every((result) => result.status === 'rejected')) {
+    throw new HttpsError('unavailable', 'Nearby place search is temporarily unavailable. Please try again.');
+  }
+  return results.flatMap((place): NearbyGemCandidate[] => {
+    const id = stringOrEmpty(place.place_id);
+    const name = stringOrEmpty(place.name).slice(0, 120);
+    const lat = finiteNearbyCoordinate(place.geometry?.location?.lat, -90, 90);
+    const lng = finiteNearbyCoordinate(place.geometry?.location?.lng, -180, 180);
+    if (!id || !name || lat == null || lng == null || (place.business_status && place.business_status !== 'OPERATIONAL')) return [];
+    const types = Array.isArray(place.types) ? place.types.map(stringOrEmpty).filter(Boolean).slice(0, 20) : [];
+    return [{
+      id,
+      name,
+      address: stringOrEmpty(place.vicinity).slice(0, 240),
+      lat,
+      lng,
+      types,
+      primaryType: types[0] ?? '',
+      rating: Math.max(0, Math.min(5, Number(place.rating) || 0)),
+      ratingCount: Math.max(0, Math.trunc(Number(place.user_ratings_total) || 0)),
+      googleMapsUrl: `https://www.google.com/maps/search/?api=1&query_place_id=${encodeURIComponent(id)}`,
+      photoName: '',
+      photoReference: stringOrEmpty(place.photos?.[0]?.photo_reference).slice(0, 1200),
+      editorialSummary: '',
+      straightLineMeters: haversineMeters(origin, { lat, lng }),
+    }];
+  });
+}
+
+async function attachNearbyGemRoutes(
+  candidates: NearbyGemCandidate[],
+  origin: { lat: number; lng: number },
+  preset: NearbyGemPreset,
+  apiKey: string,
+): Promise<NearbyGemCandidate[]> {
+  if (!candidates.length) return candidates;
+  try {
+    const response = await fetch('https://routes.googleapis.com/distanceMatrix/v2:computeRouteMatrix', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Goog-Api-Key': apiKey,
+        'X-Goog-FieldMask': 'originIndex,destinationIndex,status,condition,distanceMeters,duration',
+      },
+      body: JSON.stringify({
+        origins: [{ waypoint: { location: { latLng: { latitude: origin.lat, longitude: origin.lng } } } }],
+        destinations: candidates.slice(0, 50).map((candidate) => ({
+          waypoint: { location: { latLng: { latitude: candidate.lat, longitude: candidate.lng } } },
+        })),
+        travelMode: preset.travelMode,
+        ...(preset.travelMode === 'DRIVE' ? { routingPreference: 'TRAFFIC_UNAWARE' } : {}),
+      }),
+      signal: AbortSignal.timeout(20_000),
+    });
+    if (!response.ok) throw new Error(`Route matrix failed (${response.status}).`);
+    const rows = await response.json() as Array<{
+      destinationIndex?: number;
+      condition?: string;
+      distanceMeters?: number;
+      duration?: string;
+    }>;
+    const routes = new Map(rows.flatMap((row) => {
+      const index = Number(row.destinationIndex);
+      const duration = googleDurationSeconds(row.duration);
+      return Number.isInteger(index) && row.condition === 'ROUTE_EXISTS' && duration != null
+        ? [[index, { duration, distance: Math.max(0, Number(row.distanceMeters) || 0) }] as const]
+        : [];
+    }));
+    const metersPerSecond = preset.travelMode === 'WALK' ? 1.35 : 10;
+    return candidates.map((candidate, index) => {
+      const route = routes.get(index);
+      if (route) return { ...candidate, routeDurationSeconds: route.duration, routeDistanceMeters: route.distance };
+      const estimatedDistance = Math.round((candidate.straightLineMeters ?? 0) * 1.25);
+      return {
+        ...candidate,
+        routeDistanceMeters: estimatedDistance,
+        routeDurationSeconds: Math.round(estimatedDistance / metersPerSecond) + (preset.travelMode === 'DRIVE' ? 120 : 0),
+      };
+    });
+  } catch (error) {
+    logger.warn('Nearby gems route filtering fell back to distance estimates.', {
+      travelMode: preset.travelMode,
+      candidateCount: candidates.length,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+    const metersPerSecond = preset.travelMode === 'WALK' ? 1.35 : 10;
+    return candidates.map((candidate) => ({
+      ...candidate,
+      routeDistanceMeters: Math.round((candidate.straightLineMeters ?? 0) * 1.25),
+      routeDurationSeconds: Math.round((candidate.straightLineMeters ?? 0) * 1.25 / metersPerSecond)
+        + (preset.travelMode === 'DRIVE' ? 120 : 0),
+    }));
+  }
+}
+
+function nearbyGemCard(candidate: NearbyGemCandidate, index: number): GeneratedBoardWizardCard {
+  const category = nearbyGemCategory(candidate);
+  const duration = formatNearbyGemDuration(candidate.routeDurationSeconds);
+  const ratingDetail = candidate.rating > 0
+    ? `${candidate.rating.toFixed(1)} stars${candidate.ratingCount ? ` from ${candidate.ratingCount.toLocaleString('en-US')} reviews` : ''}`
+    : '';
+  const notes = candidate.editorialSummary
+    || [
+      `${candidate.name} is a ${category.toLocaleLowerCase()} find worth considering nearby.`,
+      ratingDetail ? `It is rated ${ratingDetail}.` : '',
+      candidate.address ? `Find it at ${candidate.address}.` : '',
+    ].filter(Boolean).join(' ');
+  return {
+    title: candidate.name,
+    subtitle: `${duration} · ${category}`,
+    notes,
+    type: category === 'Food & drink' ? 'food' : category === 'Curious corner' ? 'shop' : 'place',
+    scope: 'place',
+    status: 'saved',
+    rating: Math.max(1, Math.min(5, Math.round(candidate.rating || 4))),
+    tags: ['nearby gem', category.toLocaleLowerCase(), presetTagFromDuration(candidate.routeDurationSeconds)].filter(Boolean).slice(0, 6),
+    image_query: `${candidate.name} ${candidate.address} photo`.trim(),
+    place_query: `${candidate.name} ${candidate.address}`.trim(),
+    entity_name: candidate.name,
+    entity_type: 'place',
+    image_intent: category === 'Food & drink' ? 'food' : 'place',
+    image_context: `${candidate.name}, ${candidate.address}`.slice(0, 600),
+    media_kind: 'none',
+    short_summary: `${category} · ${duration}`,
+    rank: index + 1,
+    imageUrl: candidate.photoName
+      ? `${publicFunctionsBaseUrl}/boardPlacePhoto?name=${encodeURIComponent(candidate.photoName)}`
+      : candidate.photoReference
+        ? `${publicFunctionsBaseUrl}/boardPlacePhoto?ref=${encodeURIComponent(candidate.photoReference)}`
+        : undefined,
+    placeId: candidate.id,
+    googleMapsUrl: candidate.googleMapsUrl,
+    locationLat: candidate.lat,
+    locationLng: candidate.lng,
+    sourceUrl: candidate.googleMapsUrl,
+    imageSource: candidate.photoName || candidate.photoReference ? 'search' : 'missing',
+    extractionConfidence: 1,
+    extractedAt: new Date().toISOString(),
+    tour: null,
+  };
+}
+
+function presetTagFromDuration(seconds: number | undefined): string {
+  if (!Number.isFinite(seconds)) return 'nearby';
+  return `${Math.max(1, Math.round((seconds ?? 0) / 60))} min away`;
+}
+
+export const discoverNearbyGems = onCall(
+  {
+    region: callableRegion,
+    cors: true,
+    timeoutSeconds: 60,
+    memory: '1GiB',
+    concurrency: 8,
+    maxInstances: 30,
+    secrets: [googlePlacesApiKey],
+  },
+  async (request) => {
+    const userId = request.auth?.uid;
+    if (!userId) throw new HttpsError('unauthenticated', 'Sign in to find nearby gems.');
+    const data = request.data && typeof request.data === 'object' ? request.data as Record<string, unknown> : {};
+    const preset = nearbyGemPreset(data['range']);
+    if (!preset) throw new HttpsError('invalid-argument', 'Choose a valid travel range.');
+    const apiKey = googlePlacesApiKey.value();
+    if (!apiKey) throw new HttpsError('failed-precondition', 'Nearby place search is not configured.');
+    await consumeNearbyGemQuota(userId);
+
+    const manualLocation = stringOrEmpty(data['manualLocation']).trim().slice(0, 240);
+    const latitude = finiteNearbyCoordinate(data['latitude'], -90, 90);
+    const longitude = finiteNearbyCoordinate(data['longitude'], -180, 180);
+    const origin = manualLocation
+      ? await geocodeNearbyGemOrigin(manualLocation, apiKey)
+      : latitude != null && longitude != null
+        ? { lat: latitude, lng: longitude }
+        : null;
+    if (!origin) throw new HttpsError('invalid-argument', 'Allow location access or enter a starting place.');
+
+    const startedAt = Date.now();
+    const [rawCandidates, locationLabel] = await Promise.all([
+      searchNearbyGemCandidates(origin, preset, apiKey),
+      reverseGeocodeNearbyGemLabel(origin, apiKey),
+    ]);
+    const routedCandidates = await attachNearbyGemRoutes(rawCandidates, origin, preset, apiKey);
+    const details = stringOrEmpty(data['details']).trim().slice(0, 500);
+    const requestedCount = Math.max(6, Math.min(10, Math.trunc(Number(data['count']) || 8)));
+    const candidates = rankNearbyGemCandidates(routedCandidates, preset, details, requestedCount);
+    if (!candidates.length) {
+      throw new HttpsError('not-found', `No strong matches were found within ${preset.description.toLocaleLowerCase()}. Try another range or starting place.`);
+    }
+
+    logger.info('Nearby gems discovery completed.', {
+      userId,
+      range: preset.id,
+      sourceCandidateCount: rawCandidates.length,
+      selectedCount: candidates.length,
+      usedManualLocation: !!manualLocation,
+      durationMs: Date.now() - startedAt,
+    });
+    return {
+      board: {
+        title: `Gems near ${locationLabel}`.slice(0, 90),
+        description: `${candidates.length} interesting places within ${preset.description.toLocaleLowerCase()} of ${locationLabel}. Review, edit, and keep only the gems that fit you.`.slice(0, 500),
+        icon: 'explore_nearby',
+        tone: 'green',
+        kind: 'standard',
+        tourMeta: null,
+      },
+      cards: candidates.map(nearbyGemCard),
+      locationLabel,
+      searchMeta: {
+        range: preset.id,
+        rangeLabel: preset.label,
+        candidateCount: rawCandidates.length,
+        selectedCount: candidates.length,
+        routeFiltered: routedCandidates.some((candidate) => candidate.routeDurationSeconds != null),
+      },
+    } satisfies GeneratedBoardWizardBatch & Record<string, unknown>;
+  },
+);
+
 export const boardPlacePhoto = onRequest(
   {
     region: callableRegion,
@@ -6226,7 +6667,8 @@ export const boardPlacePhoto = onRequest(
   },
   async (request, response) => {
     const photoReference = textFromUnknown(request.query['ref']).slice(0, 1200);
-    if (!photoReference) {
+    const photoName = textFromUnknown(request.query['name']).slice(0, 1200);
+    if (!photoReference && !photoName) {
       response.status(400).send('Missing photo reference.');
       return;
     }
@@ -6238,9 +6680,20 @@ export const boardPlacePhoto = onRequest(
     }
 
     try {
-      const url = new URL('https://maps.googleapis.com/maps/api/place/photo');
-      url.searchParams.set('maxwidth', '1000');
-      url.searchParams.set('photo_reference', photoReference);
+      const safePhotoName = /^places\/[A-Za-z0-9_-]+\/photos\/[A-Za-z0-9_-]+$/.test(photoName) ? photoName : '';
+      if (photoName && !safePhotoName) {
+        response.status(400).send('Invalid photo name.');
+        return;
+      }
+      const url = safePhotoName
+        ? new URL(`https://places.googleapis.com/v1/${safePhotoName}/media`)
+        : new URL('https://maps.googleapis.com/maps/api/place/photo');
+      if (safePhotoName) {
+        url.searchParams.set('maxWidthPx', '1000');
+      } else {
+        url.searchParams.set('maxwidth', '1000');
+        url.searchParams.set('photo_reference', photoReference);
+      }
       url.searchParams.set('key', apiKey);
       const upstream = await fetch(url.toString(), {
         redirect: 'follow',

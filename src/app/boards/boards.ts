@@ -228,9 +228,11 @@ type StickerSurface = 'board' | 'card';
 type CardImageToolMode = 'generate' | 'search' | null;
 type WizardCardEditorSection = 'details' | 'image';
 type OffGridLocationSource = 'spot' | 'words';
-type BoardWizardMode = 'describe' | 'paste' | 'photos' | 'off-grid' | 'url' | 'walking-tour' | 'driving-tour';
+type BoardWizardMode = 'describe' | 'paste' | 'photos' | 'off-grid' | 'nearby-gems' | 'url' | 'walking-tour' | 'driving-tour';
 type BoardWizardStep = 'choose' | 'configure' | 'loading' | 'source-review' | 'preview' | 'done';
 type BoardWizardVibe = 'playful' | 'foodie' | 'traveler' | 'curator' | 'memory';
+type NearbyGemRange = 'walk' | 'quick-drive' | 'adventure';
+type NearbyGemLocation = { latitude: number; longitude: number; accuracy: number };
 type WizardLoadingTask = {
   message: string;
   progress: number;
@@ -916,6 +918,12 @@ const BOARD_WIZARD_MODES: Array<{
     icon: 'location_on',
   },
   {
+    id: 'nearby-gems',
+    label: 'Find gems near me',
+    description: 'Use your location to build an editable board of interesting places within reach.',
+    icon: 'explore_nearby',
+  },
+  {
     id: 'walking-tour',
     label: $localize`Walking tour`,
     description: $localize`Generate ordered stops, guide scripts, a route, and wayfinder cards.`,
@@ -941,6 +949,36 @@ const BOARD_WIZARD_VIBES: Array<{ id: BoardWizardVibe; label: string; icon: stri
   { id: 'traveler', label: $localize`Traveler`, icon: 'travel_explore' },
   { id: 'curator', label: $localize`Curator`, icon: 'interests' },
   { id: 'memory', label: $localize`Memory`, icon: 'auto_stories' },
+];
+
+const NEARBY_GEM_RANGES: Array<{
+  id: NearbyGemRange;
+  label: string;
+  description: string;
+  detail: string;
+  icon: string;
+}> = [
+  {
+    id: 'walk',
+    label: 'Walk nearby',
+    description: 'Best for a spontaneous stroll',
+    detail: '30 min · up to 2 mi',
+    icon: 'directions_walk',
+  },
+  {
+    id: 'quick-drive',
+    label: 'Quick drive',
+    description: 'Close, easy, worthwhile',
+    detail: '10 min · up to 10 mi',
+    icon: 'directions_car',
+  },
+  {
+    id: 'adventure',
+    label: 'Explore farther',
+    description: 'A small adventure',
+    detail: '20 min · up to 20 mi',
+    icon: 'explore',
+  },
 ];
 
 const BOARD_WIZARD_MEDIA_MODES: Array<{
@@ -1432,6 +1470,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   private boardLoadSequence = 0;
   private boardRouteLoadSequence = 0;
   private boardRouteUnavailableTimer: ReturnType<typeof setTimeout> | null = null;
+  private nearbyGemsQueryConsumed = false;
   private collectionLoadSequence = 0;
 
   @ViewChild('boardsScrollViewport')
@@ -1462,6 +1501,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly cardScopes = CARD_SCOPES;
   readonly cardStatuses = CARD_STATUSES;
   readonly wizardModes = BOARD_WIZARD_MODES;
+  readonly nearbyGemRanges = NEARBY_GEM_RANGES;
   readonly wizardVibes = BOARD_WIZARD_VIBES;
   readonly wizardMediaModes = BOARD_WIZARD_MEDIA_MODES;
   readonly wizardNarrationStyles = BOARD_NARRATION_STYLES;
@@ -1684,6 +1724,13 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly wizardOffGridAccuracy = signal<number | null>(null);
   readonly wizardOffGridStatus = signal('');
   readonly wizardOffGridError = signal<string | null>(null);
+  readonly nearbyGemRange = signal<NearbyGemRange>('walk');
+  readonly nearbyGemLocation = signal<NearbyGemLocation | null>(null);
+  readonly nearbyGemManualLocation = signal('');
+  readonly nearbyGemDetails = signal('');
+  readonly nearbyGemUseManualLocation = signal(false);
+  readonly nearbyGemLocating = signal(false);
+  readonly nearbyGemLocationError = signal<string | null>(null);
   readonly wizardRefineText = signal('');
   readonly wizardStackCtaLabel = signal('');
   readonly wizardStackCtaUrl = signal('');
@@ -2579,6 +2626,9 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     if (mode === 'url') {
       return /^https?:\/\/\S+/i.test(this.wizardUrl().trim());
     }
+    if (mode === 'nearby-gems') {
+      return this.nearbyGemManualLocation().trim().length >= 2 && !this.nearbyGemLocating();
+    }
     if (mode === 'off-grid') {
       if (this.wizardOffGridSource() === 'spot') {
         return this.wizardOffGridName().trim().length >= 2
@@ -2715,6 +2765,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       const view = params.get('view') ?? params.get('stack');
       const wantsFriends = params.get('friends') === '1';
       const wantsStack = view === 'stack' || view === 'reel';
+      if (params.get('create') === 'gems' && !this.nearbyGemsQueryConsumed) {
+        this.nearbyGemsQueryConsumed = true;
+        if (this.isBrowser) void this.openNearbyGemsWizard();
+      }
       this.stackAutoplayRequested.set(params.get('autoplay') === '1');
       this.stackStudioDirectRequested = params.get('studio') === 'video';
       if (!this.stackStudioDirectRequested) {
@@ -3445,6 +3499,25 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.wizardOpen.set(true);
   }
 
+  async openNearbyGemsWizard(): Promise<void> {
+    await this.authService.waitForReady();
+    if (this.route.snapshot.queryParamMap.get('create') !== 'gems' && this.nearbyGemsQueryConsumed) {
+      return;
+    }
+    if (!this.canCreateBoard()) {
+      this.boardsSyncError.set('Sign in to create a nearby gems board.');
+      return;
+    }
+    this.resetBoardWizard();
+    this.wizardOpen.set(true);
+    this.chooseWizardMode('nearby-gems');
+    if (this.isBrowser) {
+      window.setTimeout(() => {
+        window.document.querySelector<HTMLElement>('.nearby-gems-wizard__range')?.focus();
+      }, 0);
+    }
+  }
+
   openBoardBuilder(
     board: Board,
     event?: Event,
@@ -3471,6 +3544,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     }
     return this.wizardModes.filter((mode) =>
       mode.id !== 'off-grid'
+      && mode.id !== 'nearby-gems'
       && mode.id !== 'walking-tour'
       && mode.id !== 'driving-tour');
   }
@@ -3513,6 +3587,15 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       return;
     }
     this.wizardMode.set(mode);
+    if (mode === 'nearby-gems') {
+      this.wizardTargetBoardId.set('new');
+      this.wizardDefaultType.set('place');
+      this.wizardVibe.set('traveler');
+      this.wizardMediaMode.set('images');
+      this.wizardCount.set(8);
+      this.wizardStep.set('configure');
+      return;
+    }
     if (mode === 'off-grid') {
       this.wizardMediaMode.set(DEFAULT_BOARD_WIZARD_MEDIA_MODE);
       this.wizardDefaultType.set('place');
@@ -3540,6 +3623,121 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.wizardDefaultType.set(mode === 'photos' ? 'memory' : mode === 'paste' ? 'place' : this.wizardDefaultType());
     this.wizardVibe.set(mode === 'photos' ? 'memory' : mode === 'url' ? 'curator' : this.wizardVibe());
     this.wizardStep.set('configure');
+  }
+
+  async findNearbyGems(range: NearbyGemRange): Promise<void> {
+    if (this.nearbyGemLocating()) return;
+    this.nearbyGemRange.set(range);
+    this.nearbyGemLocationError.set(null);
+    this.wizardError.set(null);
+    this.nearbyGemLocating.set(true);
+    try {
+      const location = await this.currentNearbyGemLocation();
+      this.nearbyGemLocation.set(location);
+      await this.requestNearbyGems({
+        range,
+        latitude: location.latitude,
+        longitude: location.longitude,
+      });
+    } catch (error) {
+      this.nearbyGemUseManualLocation.set(true);
+      this.nearbyGemLocationError.set(this.nearbyGemErrorMessage(error));
+      this.wizardStep.set('configure');
+    } finally {
+      this.nearbyGemLocating.set(false);
+    }
+  }
+
+  async findNearbyGemsFromManualLocation(): Promise<void> {
+    const manualLocation = this.nearbyGemManualLocation().trim();
+    if (manualLocation.length < 2 || this.nearbyGemLocating()) return;
+    this.nearbyGemLocationError.set(null);
+    this.wizardError.set(null);
+    this.nearbyGemLocating.set(true);
+    try {
+      await this.requestNearbyGems({
+        range: this.nearbyGemRange(),
+        manualLocation,
+      });
+    } catch (error) {
+      this.nearbyGemLocationError.set(this.nearbyGemErrorMessage(error));
+      this.wizardStep.set('configure');
+    } finally {
+      this.nearbyGemLocating.set(false);
+    }
+  }
+
+  toggleNearbyGemManualLocation(): void {
+    this.nearbyGemUseManualLocation.update((value) => !value);
+    this.nearbyGemLocationError.set(null);
+  }
+
+  submitWizardConfigure(event: Event): void {
+    event.preventDefault();
+    if (this.wizardMode() === 'nearby-gems') {
+      void this.findNearbyGemsFromManualLocation();
+      return;
+    }
+    void this.generateWizardBatch();
+  }
+
+  private currentNearbyGemLocation(): Promise<NearbyGemLocation> {
+    if (!this.isBrowser || !navigator.geolocation) {
+      return Promise.reject(new Error('Location is not available in this browser. Enter a starting place instead.'));
+    }
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(
+        (position) => resolve({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          accuracy: Math.max(0, position.coords.accuracy || 0),
+        }),
+        reject,
+        { enableHighAccuracy: false, timeout: 12_000, maximumAge: 300_000 },
+      );
+    });
+  }
+
+  private async requestNearbyGems(origin: {
+    range: NearbyGemRange;
+    latitude?: number;
+    longitude?: number;
+    manualLocation?: string;
+  }): Promise<void> {
+    if (!this.functions) throw new Error('Nearby search is not ready. Refresh and try again.');
+    this.wizardStep.set('loading');
+    this.wizardLoadingTask.set({ message: 'Finding genuinely interesting places within reach', progress: 24 });
+    const callable = httpsCallable<Record<string, unknown>, unknown>(this.functions, 'discoverNearbyGems', {
+      timeout: 55_000,
+    });
+    const response = await callable({
+      ...origin,
+      details: this.nearbyGemDetails().trim(),
+      count: 8,
+    });
+    this.wizardLoadingTask.set({ message: 'Preparing your editable gem cards', progress: 82 });
+    const batch = this.normalizeWizardBatch(response.data);
+    const previewCards = await this.enrichWizardCards(batch.cards);
+    this.wizardResult.set({ ...batch, cards: previewCards });
+    this.wizardPreviewCards.set(previewCards);
+    this.wizardSelectedCardIds.set(new Set(previewCards.map((card) => card.id)));
+    this.wizardLoadingTask.set(null);
+    this.wizardStep.set('preview');
+  }
+
+  private nearbyGemErrorMessage(error: unknown): string {
+    const geolocationError = error as Partial<GeolocationPositionError> | null;
+    if (geolocationError?.code === 1) {
+      return 'Location access was not allowed. Enter a city, neighborhood, or address instead.';
+    }
+    if (geolocationError?.code === 2) {
+      return 'Your location could not be determined. Enter a starting place instead.';
+    }
+    if (geolocationError?.code === 3) {
+      return 'Location took too long. Try again or enter a starting place.';
+    }
+    const message = error instanceof Error ? error.message.replace(/^Firebase:\s*/i, '').trim() : '';
+    return message || 'Nearby gems could not be loaded. Try again or enter another starting place.';
   }
 
   openManualBoard(): void {
@@ -3586,6 +3784,14 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.wizardContributionBoardId.set(null);
     this.wizardError.set(null);
     this.wizardSaving.set(false);
+    if (this.route.snapshot.queryParamMap.get('create') === 'gems') {
+      await this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { create: null },
+        queryParamsHandling: 'merge',
+        replaceUrl: true,
+      });
+    }
   }
 
   resumeWizardDraft(draft: BoardWizardDraft): void {
@@ -3700,6 +3906,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   backWizardStep(): void {
     const step = this.wizardStep();
     if (step === 'configure') {
+      if (this.wizardMode() === 'nearby-gems' && this.route.snapshot.queryParamMap.get('create') === 'gems') {
+        void this.closeBoardWizard();
+        return;
+      }
       if (this.wizardContributionBoardId()) {
         this.closeBoardWizard();
         return;
@@ -4251,6 +4461,32 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   async refineWizardBatch(): Promise<void> {
     const refinement = this.wizardRefineText().trim();
     if (!refinement) {
+      return;
+    }
+    if (this.wizardMode() === 'nearby-gems') {
+      this.nearbyGemDetails.set(refinement);
+      this.wizardRefineText.set('');
+      this.nearbyGemLocating.set(true);
+      try {
+        const manualLocation = this.nearbyGemManualLocation().trim();
+        const location = this.nearbyGemLocation();
+        if (manualLocation && this.nearbyGemUseManualLocation()) {
+          await this.requestNearbyGems({ range: this.nearbyGemRange(), manualLocation });
+        } else if (location) {
+          await this.requestNearbyGems({
+            range: this.nearbyGemRange(),
+            latitude: location.latitude,
+            longitude: location.longitude,
+          });
+        } else {
+          throw new Error('Choose a travel range again so we can use your location.');
+        }
+      } catch (error) {
+        this.wizardError.set(this.nearbyGemErrorMessage(error));
+        this.wizardStep.set('preview');
+      } finally {
+        this.nearbyGemLocating.set(false);
+      }
       return;
     }
     await this.generateWizardBatch(refinement);
@@ -10388,6 +10624,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     if (this.collectionCreateOpen()) {
       return;
     }
+    if (event.key === 'Escape' && this.wizardOpen()) {
+      event.preventDefault();
+      void this.closeBoardWizard();
+      return;
+    }
     if (event.key === 'Escape' && this.stackVoiceLibraryOpen()) {
       event.preventDefault();
       event.stopPropagation();
@@ -15301,7 +15542,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         };
       });
       const modeValue = value['mode'];
-      const mode: BoardWizardMode = modeValue === 'paste' || modeValue === 'photos' || modeValue === 'off-grid'
+      const mode: BoardWizardMode = modeValue === 'paste' || modeValue === 'photos' || modeValue === 'off-grid' || modeValue === 'nearby-gems'
         || modeValue === 'url' || modeValue === 'walking-tour' || modeValue === 'driving-tour'
         ? modeValue
         : 'describe';
@@ -15392,6 +15633,13 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.wizardOffGridAccuracy.set(null);
     this.wizardOffGridStatus.set('');
     this.wizardOffGridError.set(null);
+    this.nearbyGemRange.set('walk');
+    this.nearbyGemLocation.set(null);
+    this.nearbyGemManualLocation.set('');
+    this.nearbyGemDetails.set('');
+    this.nearbyGemUseManualLocation.set(false);
+    this.nearbyGemLocating.set(false);
+    this.nearbyGemLocationError.set(null);
     this.wizardRefineText.set('');
     this.wizardStackCtaLabel.set(editableSelectedBoard?.stackCtaLabel ?? '');
     this.wizardStackCtaUrl.set(editableSelectedBoard?.stackCtaUrl ?? '');

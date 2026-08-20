@@ -183,6 +183,35 @@ test('owner can save each media preference without adding a top-level draft fiel
   }
 });
 
+test('nearby gems drafts and boards save without persisting an origin', async () => {
+  const database = testEnvironment.authenticatedContext(ownerUid).firestore();
+  const draftId = 'nearby-gems-draft';
+  const draft = personalWizardDraft({
+    id: draftId,
+    mode: 'nearby-gems',
+    count: 8,
+    vibe: 'traveler',
+    prompt: '',
+  });
+  assert.equal('latitude' in draft, false);
+  assert.equal('longitude' in draft, false);
+  assert.equal('manual_location' in draft, false);
+  await assertSucceeds(setDoc(
+    doc(database, 'users', ownerUid, 'board_wizard_drafts', draftId),
+    draft,
+  ));
+
+  const board = personalWizardBoard({
+    id: draftId,
+    visibility: 'public',
+    title: 'Gems near Cape May, New Jersey',
+  });
+  const batch = writeBatch(database);
+  batch.set(doc(database, 'boards', draftId), board);
+  batch.delete(doc(database, 'users', ownerUid, 'board_wizard_drafts', draftId));
+  await assertSucceeds(batch.commit());
+});
+
 test('wizard draft media mode cannot bypass its allowlist or ownership', async () => {
   const ownerDatabase = testEnvironment.authenticatedContext(ownerUid).firestore();
   await assertFails(setDoc(

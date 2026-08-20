@@ -23,6 +23,7 @@
     "test:custom-public-routes": "npm run build && node scripts/test-custom-public-routes.cjs",
     "test:board-analytics": "npm run build && node scripts/test-board-analytics.cjs",
     "test:city-place-search": "npm run build && node scripts/test-city-place-search.cjs",
+    "test:nearby-gems": "npm run build && node scripts/test-nearby-gems.cjs",
     "test:bulk-board-generation": "npm run build && node scripts/test-bulk-board-generation.cjs",
     "test:university-board-generation": "npm run build && node scripts/test-university-board-generation.cjs",
     "test:city-board-listing": "npm run build && node scripts/test-city-board-listing.cjs",

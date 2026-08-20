@@ -809,6 +809,38 @@
   color: #607066;
 }
 
+.mobile-nearby-gems-action {
+  display: inline-flex;
+  min-height: 3.4rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.42rem;
+  border: 1.5px solid rgba(13, 56, 35, 0.2);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--mobile-deep);
+  padding: 0.6rem 0.9rem;
+  font-size: 0.78rem;
+  font-weight: 950;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: border-color 150ms ease, background 150ms ease, transform 150ms ease;
+}
+
+.mobile-nearby-gems-action:hover,
+.mobile-nearby-gems-action:focus-visible {
+  border-color: var(--mobile-green);
+  background: #f2faf4;
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.mobile-nearby-gems-action .material-symbols-outlined {
+  color: var(--mobile-green);
+  font-size: 1.15rem;
+  font-variation-settings: 'FILL' 1;
+}
+
 .mobile-talk-action,
 .mobile-join-action {
   display: flex;
@@ -1656,8 +1688,19 @@ button.mobile-talk-action {
     grid-template-columns: 1fr;
   }
 
+  .mobile-talk-action,
+  .mobile-nearby-gems-action {
+    grid-column: 1;
+  }
+
   .mobile-join-action {
     width: 100%;
+  }
+}
+
+@media (min-width: 371px) and (max-width: 767px) {
+  .mobile-talk-action {
+    grid-column: 1 / -1;
   }
 }
 
@@ -1794,7 +1837,7 @@ button.mobile-talk-action {
   }
 
   .mobile-primary-actions {
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr) auto auto;
     gap: 0.85rem;
     padding: 0.9rem 1.2rem 1.15rem;
   }
@@ -2167,6 +2210,12 @@ button.mobile-talk-action {
     border: 0;
     background: transparent;
     color: #4d7b4b;
+  }
+
+  .mobile-nearby-gems-action {
+    min-height: 3.8rem;
+    border-color: rgba(31, 60, 44, 0.16);
+    padding-inline: 1rem;
   }
 
   .mobile-discover-section,
