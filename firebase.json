@@ -88,6 +88,15 @@
     ],
     "headers": [
       {
+        "source": "/boards{,/**}",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache,max-age=0,must-revalidate"
+          }
+        ]
+      },
+      {
         "source": "**/*.@(js|css|png|jpg|jpeg|svg|webp|ico)",
         "headers": [
           {

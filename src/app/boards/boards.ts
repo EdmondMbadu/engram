@@ -1315,6 +1315,7 @@ const STACK_LINK_SHARE_TARGETS: Array<{ id: StackLinkShareTarget; label: string;
 
 const STACK_VIDEO_MAX_CARDS = 30;
 const BOARD_GALLERY_PAGE_SIZE = DEFAULT_INCREMENTAL_PAGE_SIZE;
+const BOARD_ROUTE_UNAVAILABLE_GRACE_MS = 1500;
 const STACK_VOICE_LIBRARY_PAGE_SIZE = 12;
 
 type BoardLoadContext = {
@@ -1430,6 +1431,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   private boardLoadContext: BoardLoadContext | null = null;
   private boardLoadSequence = 0;
   private boardRouteLoadSequence = 0;
+  private boardRouteUnavailableTimer: ReturnType<typeof setTimeout> | null = null;
   private collectionLoadSequence = 0;
 
   @ViewChild('boardsScrollViewport')
@@ -1943,16 +1945,18 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     return this.boards().find((board) => board.id === selectedId) ?? null;
   });
   private readonly boardRouteLoadState = signal(beginBoardRouteLoad(0, null));
+  private readonly boardRouteUnavailableReady = signal(false);
   readonly boardRouteLoading = computed(() =>
     !!this.selectedBoardId()
     && !this.originalSelectedBoard()
-    && !this.boardRouteLoadState().complete
+    && (!this.boardRouteLoadState().complete || !this.boardRouteUnavailableReady())
     && !this.privateBoardBlocked(),
   );
   readonly boardRouteUnavailable = computed(() =>
     !!this.selectedBoardId()
     && !this.originalSelectedBoard()
     && this.boardRouteLoadState().complete
+    && this.boardRouteUnavailableReady()
     && !this.privateBoardBlocked(),
   );
   readonly selectedBoardParent = computed(() => {
@@ -2605,6 +2609,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       this.tripsPage.set(routePath.startsWith('trips'));
       const boardId = params.get('boardId');
       const boardRouteLoadId = ++this.boardRouteLoadSequence;
+      this.cancelBoardRouteUnavailableReveal();
       this.boardRouteLoadState.set(beginBoardRouteLoad(boardRouteLoadId, boardId));
       if (!boardId) this.boardAnalytics.stopBoardSession();
       const loadedRouteBoard = boardId
@@ -2662,6 +2667,9 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
           void this.loadBoardCollections(ownerKey || ownerSlug || this.currentPublicOwnerKey());
         }
         const resolvedBoard = boardId ? this.originalSelectedBoard() : null;
+        if (boardId && !resolvedBoard && !this.privateBoardBlocked()) {
+          this.scheduleBoardRouteUnavailableReveal(boardRouteLoadId);
+        }
         if (!boardId || resolvedBoard) {
           this.watchSelectedBoard(resolvedBoard?.id ?? null);
         }
@@ -2881,6 +2889,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.boardLoadSequence += 1;
     this.boardRouteLoadSequence += 1;
     this.collectionLoadSequence += 1;
+    this.cancelBoardRouteUnavailableReveal();
     this.selectedBoardUnsubscribe?.();
     this.selectedBoardUnsubscribe = null;
     this.stopSongPreview();
@@ -3102,6 +3111,30 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       () => this.boardsScrollViewport?.nativeElement ?? null,
       window,
     );
+  }
+
+  private cancelBoardRouteUnavailableReveal(): void {
+    if (this.boardRouteUnavailableTimer) {
+      clearTimeout(this.boardRouteUnavailableTimer);
+      this.boardRouteUnavailableTimer = null;
+    }
+    this.boardRouteUnavailableReady.set(false);
+  }
+
+  private scheduleBoardRouteUnavailableReveal(boardRouteLoadId: number): void {
+    this.cancelBoardRouteUnavailableReveal();
+    this.boardRouteUnavailableTimer = setTimeout(() => {
+      this.boardRouteUnavailableTimer = null;
+      if (
+        boardRouteLoadId === this.boardRouteLoadSequence
+        && this.boardRouteLoadState().complete
+        && !!this.selectedBoardId()
+        && !this.originalSelectedBoard()
+        && !this.privateBoardBlocked()
+      ) {
+        this.boardRouteUnavailableReady.set(true);
+      }
+    }, BOARD_ROUTE_UNAVAILABLE_GRACE_MS);
   }
 
   closeBoardDetail(): void {
