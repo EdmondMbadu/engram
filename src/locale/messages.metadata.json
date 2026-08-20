@@ -9539,6 +9539,10 @@
     "source": "Translation is temporarily busy. Please try again in a little while.",
     "file": "src/app/boards/boards.ts"
   },
+  "7272427198205991641": {
+    "source": "This board could not be opened. It may have been removed or made private.",
+    "file": "src/app/boards/boards.html"
+  },
   "7272825947268421273": {
     "source": "You have used the anonymous question limit for this atlas. Sign in to keep the conversation going.",
     "file": "src/app/chat/chat.ts"
