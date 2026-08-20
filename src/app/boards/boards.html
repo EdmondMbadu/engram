@@ -401,7 +401,11 @@
         </div>
       </header>
 
-      <main class="boards-shell" [class.boards-shell--detail]="!!selectedBoard() || boardRouteLoading()">
+      <main
+        class="boards-shell"
+        [class.boards-shell--detail]="!!selectedBoard() || boardRouteLoading()"
+        [class.boards-shell--tour]="isTourBoard(selectedBoard()) && tourBoardView() === 'route' && !exploredRelatedCardParent()"
+      >
     @if (boardsSyncError() && !privateBoardBlocked()) {
       <div class="boards-sync-banner">
         <span class="material-symbols-outlined">cloud_off</span>
@@ -1205,6 +1209,8 @@
         <section
           class="board-detail"
           [class.board-detail--song]="isSongBoard(board)"
+          [class.board-detail--tour]="isTourBoard(board)"
+          [class.board-detail--tour-studio]="tourStudioActive()"
           [style.--board-accent]="toneAccent(board.tone)"
           [style.--board-soft]="toneSoft(board.tone)"
         >
@@ -1774,6 +1780,7 @@
           </div>
           }
 
+          @if (!isTourBoard(board) || tourBoardView() === 'cards') {
           <div class="board-editorial-utility">
             <label class="board-editorial-search">
               <span class="material-symbols-outlined" aria-hidden="true">search</span>
@@ -1792,10 +1799,11 @@
               }
             </label>
           </div>
+          }
 
           <span id="board-content" class="board-editorial-content-anchor" aria-hidden="true"></span>
 
-          @if (!isSongBoard(board)) {
+          @if (!isSongBoard(board) && (!isTourBoard(board) || tourBoardView() === 'cards')) {
           <div class="board-detail__toolbar">
             @if (!exploredRelatedCardParent() && (board.cards.length || canEditBoard(board) || board.kind === 'off-grid')) {
               <div class="board-detail__actions">
@@ -1951,7 +1959,7 @@
             </div>
           }
 
-          @if (isTourBoard(board) && !exploredRelatedCardParent()) {
+          @if (isTourBoard(board) && !exploredRelatedCardParent() && tourBoardView() === 'cards') {
             <section class="tour-view-bar" aria-label="Tour viewing options" i18n-aria-label>
               <div class="tour-view-switch" role="group" aria-label="Choose tour view" i18n-aria-label>
                 <button
@@ -2102,325 +2110,496 @@
               </header>
             }
             @if (isTourBoard(board) && tourBoardView() === 'route' && !exploredRelatedCardParent()) {
-              <section class="tour-board">
-                <div class="tour-board__summary">
-                  <div>
-                    <span class="tour-board__eyebrow">
-                      <span class="material-symbols-outlined">{{ tourModeIcon(board) }}</span>
-                      {{ tourModeText(board) }}
-                    </span>
-                    <h2>{{ board.title }}</h2>
-                    <p>{{ board.description }}</p>
-                  </div>
-                  <div class="tour-board__stats">
-                    <span i18n><strong>{{ selectedBoardTourCards().length }}</strong> Stops</span>
-                    @if (board.tourMeta?.totalDistanceText) {
-                      <span i18n><strong>{{ board.tourMeta?.totalDistanceText }}</strong> Route</span>
-                    }
-                    @if (board.tourMeta?.totalDurationText) {
-                      <span i18n><strong>{{ board.tourMeta?.totalDurationText }}</strong> Time</span>
-                    }
-                    <span i18n><strong>{{ board.tourMeta?.voiceStyle || 'guide' }}</strong> Voice</span>
-                  </div>
-                </div>
-
-                <div class="tour-board__layout">
-                  <aside class="tour-board__map">
-                    <div #tourMapCanvas class="tour-board__map-canvas" role="application" [attr.aria-label]="board.title + ' stops map'"></div>
-                    <div class="tour-board__map-actions">
-                      <a [href]="tourRouteUrl(board)" target="_blank" rel="noopener" i18n>
-                        <span class="material-symbols-outlined">map</span>
-                        Open route
-                      </a>
-                      <button type="button" (click)="openTourGuide(0)" i18n>
-                        <span class="material-symbols-outlined">play_arrow</span>
-                        Play tour
-                      </button>
+              @if (tourStudioActive()) {
+                <section class="tour-studio" aria-label="Tour Studio">
+                  <header class="tour-studio__header">
+                    <div class="tour-studio__identity">
+                      <span class="tour-studio__mark material-symbols-outlined">route</span>
+                      <span>
+                        <small>Tour Studio</small>
+                        <strong>{{ board.title }}</strong>
+                      </span>
+                      <em>
+                        <span class="material-symbols-outlined">cloud_done</span>
+                        {{ tourRouteUpdating() ? 'Saving route…' : 'All changes saved' }}
+                      </em>
                     </div>
-                  </aside>
-
-                  <div class="tour-board__itinerary">
-                    <div class="tour-board__tools">
-                      @if (canEditBoard(board)) {
-                        <button
-                          type="button"
-                          class="boards-primary-action tour-board__add-stop"
-                          [disabled]="tourRouteUpdating()"
-                          (click)="openAppendTourStop(board, $event)"
-                          i18n
-                        >
-                          <span class="material-symbols-outlined">add_location_alt</span>
-                          Add stop
-                        </button>
-                      }
-                      <button type="button" class="boards-ghost-action" (click)="toggleTourWayfinders()">
-                        <span class="material-symbols-outlined">assistant_direction</span>
-                        {{ tourWayfindersShown() ? 'Hide wayfinders' : 'Show wayfinders' }}
-                      </button>
-                      <small i18n>Bridge cards show the path from each stop to the next.</small>
-                    </div>
-                    @if (tourAudioNotice()) {
-                      <p class="tour-board__audio-notice">
-                        <span class="material-symbols-outlined">campaign</span>
-                        {{ tourAudioNotice() }}
-                      </p>
-                    }
-
-                    @for (card of selectedBoardTourCards(); track card.id) {
-                      <article
-                        class="tour-stop-card"
-                        [id]="'tour-stop-' + card.id"
-                        [attr.data-analytics-card-id]="card.id"
-                        [class.tour-stop-card--active]="selectedTourCardId() === card.id"
-                        [class.tour-stop-card--dragging]="isDraggingCard(card.id)"
-                        [class.tour-stop-card--drop-target]="isCardDropTarget(card.id)"
-                        [class.tour-stop-card--drop-before]="isCardDropBefore(card.id)"
-                        [class.tour-stop-card--drop-after]="isCardDropAfter(card.id)"
-                        [class.tour-stop-card--menu-open]="isCardActionMenuOpen('tour:' + card.id)"
-                        (dragover)="dragCardOver($event, board, card)"
-                        (dragleave)="dragCardLeave($event, card)"
-                        (dragend)="clearCardReorderDrag()"
-                        (drop)="dropCardOnCard($event, board, card)"
+                    <div class="tour-studio__header-actions">
+                      <button
+                        type="button"
+                        class="tour-studio__settings"
+                        [class.tour-studio__settings--active]="isManagingBoard(board.id)"
+                        (click)="toggleCardManageMode(board, $event)"
                       >
-                        <div class="tour-stop-card__media">
-                          @if (cardMediaPoster(card)) {
+                        <span class="material-symbols-outlined">tune</span>
+                        {{ isManagingBoard(board.id) ? 'Close settings' : 'Tour settings' }}
+                      </button>
+                      <button type="button" class="tour-studio__preview" (click)="previewTourExperience($event)">
+                        <span class="material-symbols-outlined">visibility</span>
+                        Preview tour
+                      </button>
+                      <button
+                        type="button"
+                        class="tour-studio__publish"
+                        title="Changes save automatically. Open the published tour."
+                        (click)="previewTourExperience($event)"
+                      >
+                        <span class="material-symbols-outlined">publish</span>
+                        Publish changes
+                      </button>
+                    </div>
+                  </header>
+
+                  @if (tourRouteUpdating() || tourRouteError()) {
+                    <div
+                      class="tour-studio__route-state"
+                      [class.tour-studio__route-state--error]="!!tourRouteError()"
+                      role="status"
+                      aria-live="polite"
+                    >
+                      <span class="material-symbols-outlined">{{ tourRouteError() ? 'error' : 'progress_activity' }}</span>
+                      <span>{{ tourRouteError() || 'Updating the map and directions…' }}</span>
+                    </div>
+                  }
+
+                  <div class="tour-studio__workspace">
+                    <aside class="tour-studio__sequence" aria-label="Tour stop order">
+                      <header class="tour-studio__sequence-head">
+                        <span>
+                          <strong>{{ selectedBoardTourCards().length }} stops</strong>
+                          <small>Drag to reorder</small>
+                        </span>
+                        <span class="material-symbols-outlined" aria-hidden="true">sort</span>
+                      </header>
+
+                      <div class="tour-studio__stop-list">
+                        @for (card of selectedBoardTourCards(); track card.id) {
+                          <article
+                            class="tour-studio__stop"
+                            [id]="'tour-stop-' + card.id"
+                            [attr.data-analytics-card-id]="card.id"
+                            [class.tour-studio__stop--active]="selectedTourCard().id === card.id"
+                            [class.tour-studio__stop--dragging]="isDraggingCard(card.id)"
+                            [class.tour-studio__stop--drop-target]="isCardDropTarget(card.id)"
+                            [class.tour-studio__stop--drop-before]="isCardDropBefore(card.id)"
+                            [class.tour-studio__stop--drop-after]="isCardDropAfter(card.id)"
+                            (dragover)="dragCardOver($event, board, card)"
+                            (dragleave)="dragCardLeave($event, card)"
+                            (dragend)="clearCardReorderDrag()"
+                            (drop)="dropCardOnCard($event, board, card)"
+                          >
                             <button
                               type="button"
-                              class="tour-stop-card__photo-button"
-                              [class.card-video-trigger]="hasYoutubeVideo(card)"
-                              [attr.aria-label]="hasYoutubeVideo(card) ? 'Play ' + card.title + ' video' : 'Open ' + card.title + ' photos full screen'"
-                              (click)="hasYoutubeVideo(card) ? openCardVideoViewer(card, $event) : openCardPhotoViewer(card, $event)"
+                              class="tour-studio__drag"
+                              draggable="true"
+                              aria-label="Drag to reorder stop"
+                              title="Drag to reorder"
+                              (dragstart)="beginCardReorderDrag($event, board, card)"
+                              (dragend)="clearCardReorderDrag()"
                             >
-                              <img
-                                [src]="cardMediaPoster(card)"
-                                [alt]="hasYoutubeVideo(card) ? card.title + ' video thumbnail' : card.title + ' photo ' + currentCardPhotoPosition(card)"
-                                loading="lazy"
-                              />
-                              <span class="tour-stop-card__photo-hint" aria-hidden="true">
-                                <span class="material-symbols-outlined">{{ hasYoutubeVideo(card) ? 'play_arrow' : 'fullscreen' }}</span>
+                              <span class="material-symbols-outlined">drag_indicator</span>
+                            </button>
+                            <span class="tour-studio__stop-number">{{ card.tour?.sequence }}</span>
+                            <button
+                              type="button"
+                              class="tour-studio__stop-main"
+                              [attr.aria-label]="'Select stop ' + card.tour?.sequence + ': ' + card.title"
+                              (click)="focusTourStop(card, false)"
+                            >
+                              @if (cardMediaPoster(card)) {
+                                <img [src]="cardMediaPoster(card)" [alt]="card.title" loading="lazy" />
+                              } @else {
+                                <span class="tour-studio__stop-fallback material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
+                              }
+                              <span class="tour-studio__stop-copy">
+                                <strong>{{ card.title }}</strong>
+                                <small>{{ tourStopTravelLabel(card) }}</small>
                               </span>
                             </button>
-                          } @else {
-                            <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
-                          }
-                          @if (boardShowsCardNumbers(board)) {
-                            <span class="tour-stop-card__sequence">{{ card.tour?.sequence }}</span>
-                          }
-                          @if (hasBoardInside(card) || relatedCardCount(card) > 0) {
-                            <button
-                              type="button"
-                              class="tour-stop-card__memory-summary"
-                              [attr.aria-label]="'Open board inside ' + card.title"
-                              (click)="openBoardInside(card, $event)"
+                            <span
+                              class="tour-studio__readiness"
+                              [class.tour-studio__readiness--complete]="tourStopReadyPercent(card) === 100"
+                              [attr.aria-label]="tourStopReadyPercent(card) + '% ready'"
                             >
-                              <span class="material-symbols-outlined">account_tree</span>
-                              <span>{{ boardInsideTitle(card) }}</span>
-                              <span class="material-symbols-outlined">arrow_forward</span>
-                            </button>
-                          }
-                        </div>
-                        <div class="tour-stop-card__body">
-                          <div class="tour-stop-card__head">
-                            <div role="button" tabindex="0" (click)="focusTourStop(card, false)" (keydown.enter)="focusTourStop(card, false)">
-                              <h3>{{ card.title }}</h3>
-                              <p>{{ card.tour?.address || card.subtitle }}</p>
-                            </div>
-                            @if (canEditBoard(board)) {
-                              <div class="tour-stop-card__order-actions">
-                                <button
-                                  type="button"
-                                  aria-label="Move stop earlier"
-                                  title="Move earlier"
-                                  [disabled]="!canMoveTourStop(card, -1)"
-                                  (click)="moveTourStop(card, -1, $event)"
-                                  i18n-aria-label i18n-title
-                                >
-                                  <span class="material-symbols-outlined">arrow_upward</span>
-                                </button>
-                                <button
-                                  type="button"
-                                  aria-label="Move stop later"
-                                  title="Move later"
-                                  [disabled]="!canMoveTourStop(card, 1)"
-                                  (click)="moveTourStop(card, 1, $event)"
-                                  i18n-aria-label i18n-title
-                                >
-                                  <span class="material-symbols-outlined">arrow_downward</span>
-                                </button>
-                                <span
-                                  class="tour-stop-card__drag-handle"
-                                  role="button"
-                                  tabindex="0"
-                                  draggable="true"
-                                  aria-label="Drag to reorder stop"
-                                  title="Drag to reorder"
-                                  (dragstart)="beginCardReorderDrag($event, board, card)"
-                                  (dragend)="clearCardReorderDrag()"
-                                  i18n-aria-label i18n-title
-                                >
-                                  <span class="material-symbols-outlined">drag_indicator</span>
-                                </span>
-                                <div
-                                  class="card-action-menu tour-stop-card__action-menu"
-                                  [class.card-action-menu--open]="isCardActionMenuOpen('tour:' + card.id)"
-                                >
-                                  <button
-                                    type="button"
-                                    class="card-action-menu__trigger"
-                                    aria-label="Stop actions"
-                                    aria-haspopup="menu"
-                                    [attr.aria-expanded]="isCardActionMenuOpen('tour:' + card.id)"
-                                    [attr.aria-controls]="'card-action-menu-tour:' + card.id"
-                                    (click)="toggleCardActionMenu('tour:' + card.id, $event)"
-                                    i18n-aria-label
-                                  >
-                                    <span class="material-symbols-outlined">more_horiz</span>
-                                  </button>
-                                  @if (isCardActionMenuOpen('tour:' + card.id)) {
-                                    <div
-                                      class="card-action-menu__panel"
-                                      [id]="'card-action-menu-tour:' + card.id"
-                                      role="menu"
-                                      (click)="$event.stopPropagation()"
-                                    >
-                                      <button type="button" role="menuitem" (click)="closeCardActionMenu(); openEditCard(card)">
-                                        <span class="material-symbols-outlined">edit</span>
-                                        <span i18n>Edit stop</span>
-                                      </button>
-                                      <button type="button" role="menuitem" (click)="openAddTourStop(card.id, $event)">
-                                        <span class="material-symbols-outlined">add_location_alt</span>
-                                        <span i18n>Add next stop</span>
-                                      </button>
-                                      <button type="button" role="menuitem" (click)="closeCardActionMenu(); openBoardInside(card, $event)">
-                                        <span class="material-symbols-outlined">account_tree</span>
-                                        <span>Board inside</span>
-                                      </button>
-                                      <button type="button" role="menuitem" class="card-action-menu__danger" (click)="closeCardActionMenu(); deleteCard(card, $event)">
-                                        <span class="material-symbols-outlined">delete</span>
-                                        <span i18n>Delete stop</span>
-                                      </button>
-                                    </div>
-                                  }
-                                </div>
-                              </div>
-                            }
-                          </div>
-                          @if (cardMemoryCount(card) > 0 && isCardMemoryGalleryOpen(card.id)) {
-                            <section
-                              class="tour-stop-card__memories"
-                              [id]="'tour-card-memory-panel-' + card.id"
-                              aria-label="Memories from this stop"
-                             i18n-aria-label>
-                              <div class="tour-stop-card__memories-head">
-                                <span i18n>
-                                  <span class="material-symbols-outlined">auto_awesome</span>
-                                  Memories from this stop
-                                </span>
-                                <button
-                                  type="button"
-                                  aria-label="Hide memories"
-                                  (click)="toggleCardMemoryGallery(card.id, $event)"
-                                 i18n-aria-label>
-                                  <span class="material-symbols-outlined">close</span>
-                                </button>
-                              </div>
-                              <div class="tour-stop-card__memory-thumbs">
-                                <button
-                                  type="button"
-                                  class="tour-stop-card__memory-thumb tour-stop-card__memory-thumb--cover"
-                                  [class.tour-stop-card__memory-thumb--active]="currentCardPhotoPosition(card) === 1"
-                                  aria-label="Open cover photo full screen"
-                                  [attr.aria-pressed]="currentCardPhotoPosition(card) === 1"
-                                  (click)="openCardPhotoViewerAt(card, 0, $event)"
-                                 i18n-aria-label>
-                                  <img [src]="cardImages(card)[0]" alt="" loading="lazy" />
-                                  <span i18n>Cover</span>
-                                </button>
-                                @for (photo of cardMemoryImages(card); track photo; let memoryIndex = $index) {
-                                  <button
-                                    type="button"
-                                    class="tour-stop-card__memory-thumb"
-                                    [class.tour-stop-card__memory-thumb--active]="currentCardPhotoPosition(card) === memoryIndex + 2"
-                                    [attr.aria-label]="'Open memory ' + (memoryIndex + 1) + ' of ' + cardMemoryCount(card) + ' full screen'"
-                                    [attr.aria-pressed]="currentCardPhotoPosition(card) === memoryIndex + 2"
-                                    (click)="openCardPhotoViewerAt(card, memoryIndex + 1, $event)"
-                                  >
-                                    <img [src]="photo" alt="" loading="lazy" />
-                                  </button>
-                                }
-                              </div>
-                            </section>
-                          }
-                          <p>{{ card.notes }}</p>
-                          @if (card.tour?.guideScript) {
-                            <div class="tour-stop-card__script">
-                              <span class="material-symbols-outlined">headphones</span>
-                              <p>{{ card.tour?.guideScript }}</p>
-                            </div>
-                          }
-                          <div class="tour-stop-card__actions">
-                            <button type="button" (click)="speakTourFrame({ kind: 'stop', card, nextCard: null, index: 0, total: 1 })" i18n>
-                              <span class="material-symbols-outlined">{{ tourAudioLoadingKey() === 'stop:' + card.id + ':stop' ? 'progress_activity' : 'volume_up' }}</span>
-                              Preview voice
-                            </button>
-                            @if (canEditBoard(board)) {
+                              <span class="material-symbols-outlined">{{ tourStopReadyPercent(card) === 100 ? 'check_circle' : 'progress_activity' }}</span>
+                              {{ tourStopReadyPercent(card) }}%
+                            </span>
+                            <div class="tour-studio__stop-actions">
                               <button
                                 type="button"
-                                class="tour-stop-card__add-next"
-                                [disabled]="tourRouteUpdating()"
-                                (click)="openAddTourStop(card.id, $event)"
-                                i18n
+                                aria-label="Move stop earlier"
+                                title="Move earlier"
+                                [disabled]="!canMoveTourStop(card, -1)"
+                                (click)="moveTourStop(card, -1, $event)"
                               >
-                                <span class="material-symbols-outlined">add_location_alt</span>
-                                Add next stop
+                                <span class="material-symbols-outlined">arrow_upward</span>
                               </button>
-                            }
-                            @if (card.googleMapsUrl) {
-                              <a [href]="card.googleMapsUrl" target="_blank" rel="noopener" i18n>
-                                <span class="material-symbols-outlined">place</span>
-                                Open place
-                              </a>
-                            }
-                          </div>
-                        </div>
-                      </article>
-
-                      @if (nextTourCard(card); as nextCard) {
-                        @if (tourWayfindersShown() && tourLegToNext(card, nextCard); as leg) {
-                          <article class="tour-wayfinder-card">
-                            <div class="tour-wayfinder-card__map">
-                              <iframe
-                                [src]="tourLegMapEmbedUrl(card, nextCard)"
-                                [title]="card.title + ' to ' + nextCard.title"
-                                loading="lazy"
-                                referrerpolicy="no-referrer-when-downgrade"
-                              ></iframe>
-                            </div>
-                            <div>
-                              <span class="tour-wayfinder-card__pill">
-                                <span class="material-symbols-outlined">{{ board.kind === 'driving-tour' ? 'directions_car' : 'directions_walk' }}</span>
-                                {{ leg.durationText }} · {{ leg.distanceText }}
-                              </span>
-                              <h3 i18n>To {{ nextCard.title }}</h3>
-                              <p>{{ leg.instruction }}</p>
-                              <div class="tour-stop-card__actions">
-                                <button type="button" (click)="speakTourFrame({ kind: 'leg', card, nextCard, index: 0, total: 1 })" i18n>
-                                  <span class="material-symbols-outlined">{{ tourAudioLoadingKey() === 'leg:' + card.id + ':' + nextCard.id ? 'progress_activity' : 'volume_up' }}</span>
-                                  Navigate
+                              <button
+                                type="button"
+                                aria-label="Move stop later"
+                                title="Move later"
+                                [disabled]="!canMoveTourStop(card, 1)"
+                                (click)="moveTourStop(card, 1, $event)"
+                              >
+                                <span class="material-symbols-outlined">arrow_downward</span>
+                              </button>
+                              <div
+                                class="card-action-menu tour-studio__stop-menu"
+                                [class.card-action-menu--open]="isCardActionMenuOpen('tour-studio:' + card.id)"
+                              >
+                                <button
+                                  type="button"
+                                  class="card-action-menu__trigger"
+                                  aria-label="Stop actions"
+                                  aria-haspopup="menu"
+                                  [attr.aria-expanded]="isCardActionMenuOpen('tour-studio:' + card.id)"
+                                  (click)="toggleCardActionMenu('tour-studio:' + card.id, $event)"
+                                >
+                                  <span class="material-symbols-outlined">more_horiz</span>
                                 </button>
-                                <a [href]="tourLegDirectionsUrl(board, card)" target="_blank" rel="noopener" i18n>
-                                  <span class="material-symbols-outlined">near_me</span>
-                                  Open directions
-                                </a>
+                                @if (isCardActionMenuOpen('tour-studio:' + card.id)) {
+                                  <div class="card-action-menu__panel" role="menu" (click)="$event.stopPropagation()">
+                                    <button type="button" role="menuitem" (click)="closeCardActionMenu(); openEditCard(card)">
+                                      <span class="material-symbols-outlined">edit</span>
+                                      <span>Edit stop</span>
+                                    </button>
+                                    <button type="button" role="menuitem" (click)="openAddTourStop(card.id, $event)">
+                                      <span class="material-symbols-outlined">add_location_alt</span>
+                                      <span>Add next stop</span>
+                                    </button>
+                                    <button type="button" role="menuitem" (click)="closeCardActionMenu(); openBoardInside(card, $event)">
+                                      <span class="material-symbols-outlined">account_tree</span>
+                                      <span>Board inside</span>
+                                    </button>
+                                    <button type="button" role="menuitem" class="card-action-menu__danger" (click)="closeCardActionMenu(); deleteCard(card, $event)">
+                                      <span class="material-symbols-outlined">delete</span>
+                                      <span>Delete stop</span>
+                                    </button>
+                                  </div>
+                                }
                               </div>
                             </div>
                           </article>
                         }
+                      </div>
+
+                      <button
+                        type="button"
+                        class="tour-studio__add-stop"
+                        [disabled]="tourRouteUpdating()"
+                        (click)="openAppendTourStop(board, $event)"
+                      >
+                        <span class="material-symbols-outlined">add_circle</span>
+                        Add stop
+                      </button>
+                    </aside>
+
+                    <section class="tour-studio__map" aria-label="Tour route map">
+                      <div class="tour-studio__map-toolbar">
+                        <span>
+                          <span class="material-symbols-outlined">{{ tourModeIcon(board) }}</span>
+                          {{ tourModeText(board) }}
+                        </span>
+                        <span class="tour-studio__map-toolbar-actions">
+                          <button type="button" (click)="toggleTourWayfinders()">
+                            <span class="material-symbols-outlined">assistant_direction</span>
+                            {{ tourWayfindersShown() ? 'Hide wayfinders' : 'Wayfinders' }}
+                          </button>
+                          <a [href]="tourRouteUrl(board)" target="_blank" rel="noopener">
+                            <span class="material-symbols-outlined">open_in_new</span>
+                            Open route
+                          </a>
+                        </span>
+                      </div>
+                      <div
+                        #tourMapCanvas
+                        class="tour-studio__map-canvas"
+                        role="application"
+                        [attr.aria-label]="board.title + ' editable stops map'"
+                      ></div>
+                      @if (tourRouteUpdating()) {
+                        <div class="tour-studio__map-updating">
+                          <span class="material-symbols-outlined">progress_activity</span>
+                          Recalculating route…
+                        </div>
                       }
+                    </section>
+
+                    <aside class="tour-studio__inspector" aria-label="Selected stop details">
+                      @if (selectedTourCard(); as card) {
+                        <header class="tour-studio__inspector-head">
+                          <span>
+                            <small>Stop {{ card.tour?.sequence }}</small>
+                            <strong>{{ tourStopPositionLabel() }}</strong>
+                          </span>
+                          <span class="tour-studio__inspector-nav">
+                            <button
+                              type="button"
+                              aria-label="Previous stop"
+                              [disabled]="!canSelectTourStopOffset(-1)"
+                              (click)="selectTourStopOffset(-1, $event)"
+                            >
+                              <span class="material-symbols-outlined">chevron_left</span>
+                            </button>
+                            <button
+                              type="button"
+                              aria-label="Next stop"
+                              [disabled]="!canSelectTourStopOffset(1)"
+                              (click)="selectTourStopOffset(1, $event)"
+                            >
+                              <span class="material-symbols-outlined">chevron_right</span>
+                            </button>
+                          </span>
+                        </header>
+
+                        <div class="tour-studio__inspector-media">
+                          @if (cardMediaPoster(card)) {
+                            <button
+                              type="button"
+                              [attr.aria-label]="'Open ' + card.title + ' photo'"
+                              (click)="openCardPhotoViewer(card, $event)"
+                            >
+                              <img [src]="cardMediaPoster(card)" [alt]="card.title" />
+                              <span class="material-symbols-outlined">fullscreen</span>
+                            </button>
+                          } @else {
+                            <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
+                          }
+                          <button type="button" class="tour-studio__replace-photo" (click)="openEditCard(card)">
+                            <span class="material-symbols-outlined">photo_camera</span>
+                            Replace photo
+                          </button>
+                        </div>
+
+                        <div class="tour-studio__inspector-copy">
+                          <h2>{{ card.title }}</h2>
+                          <p class="tour-studio__address">
+                            <span class="material-symbols-outlined">location_on</span>
+                            {{ card.tour?.address || card.subtitle }}
+                          </p>
+                          <div class="tour-studio__story">
+                            <p>{{ card.notes || 'Add a concise story for this stop.' }}</p>
+                            <button type="button" (click)="openEditCard(card)">
+                              <span class="material-symbols-outlined">edit</span>
+                              Edit story
+                            </button>
+                          </div>
+                        </div>
+
+                        <div class="tour-studio__inspector-row">
+                          <span class="material-symbols-outlined">graphic_eq</span>
+                          <span>
+                            <strong>Narration</strong>
+                            <small>{{ card.tour?.guideScript ? 'Ready' : 'Needs a script' }}</small>
+                          </span>
+                          <button
+                            type="button"
+                            [disabled]="!card.tour?.guideScript"
+                            (click)="speakTourFrame({ kind: 'stop', card, nextCard: null, index: 0, total: 1 })"
+                          >
+                            <span class="material-symbols-outlined">{{ tourAudioLoadingKey() === 'stop:' + card.id + ':stop' ? 'progress_activity' : 'play_arrow' }}</span>
+                            Preview voice
+                          </button>
+                        </div>
+
+                        @if (tourWayfindersShown() && nextTourCard(card); as nextCard) {
+                          @if (tourLegToNext(card, nextCard); as leg) {
+                            <div class="tour-studio__wayfinder">
+                              <span class="material-symbols-outlined">{{ tourModeIcon(board) }}</span>
+                              <span>
+                                <strong>To {{ nextCard.title }}</strong>
+                                <small>{{ leg.durationText }} · {{ leg.distanceText }}</small>
+                                <p>{{ leg.instruction }}</p>
+                              </span>
+                              <a [href]="tourLegDirectionsUrl(board, card)" target="_blank" rel="noopener" aria-label="Open directions">
+                                <span class="material-symbols-outlined">near_me</span>
+                              </a>
+                            </div>
+                          }
+                        }
+
+                        <section class="tour-studio__ready" aria-label="Stop readiness">
+                          <strong>Stop ready</strong>
+                          <div>
+                            @for (item of tourStopReadyItems(card); track item.label) {
+                              <span [class.tour-studio__ready-item--missing]="!item.ready">
+                                <span class="material-symbols-outlined">{{ item.ready ? 'check_circle' : 'radio_button_unchecked' }}</span>
+                                {{ item.label }}
+                              </span>
+                            }
+                          </div>
+                        </section>
+
+                        <div class="tour-studio__inspector-actions">
+                          <button type="button" (click)="openAddTourStop(card.id, $event)">
+                            <span class="material-symbols-outlined">add_location_alt</span>
+                            Add next
+                          </button>
+                          @if (hasBoardInside(card) || relatedCardCount(card) > 0) {
+                            <button type="button" (click)="openBoardInside(card, $event)">
+                              <span class="material-symbols-outlined">account_tree</span>
+                              Board inside
+                            </button>
+                          }
+                          <button type="button" class="tour-studio__delete" (click)="deleteCard(card, $event)">
+                            <span class="material-symbols-outlined">delete</span>
+                            Delete
+                          </button>
+                        </div>
+                      }
+                    </aside>
+                  </div>
+
+                  <footer class="tour-studio__footer">
+                    <span class="tour-studio__health">
+                      <span class="material-symbols-outlined">verified_user</span>
+                      <strong>
+                        {{ selectedBoardTourCards().length }} stops
+                        @if (board.tourMeta?.totalDurationText) { · {{ board.tourMeta?.totalDurationText }} }
+                        @if (board.tourMeta?.totalDistanceText) { · {{ board.tourMeta?.totalDistanceText }} }
+                      </strong>
+                      <em>{{ tourRouteError() ? 'Route needs attention' : 'Route is ready' }}</em>
+                    </span>
+                    <span class="tour-studio__footer-note">
+                      <span class="material-symbols-outlined">drag_indicator</span>
+                      Drag any stop to update the route automatically.
+                    </span>
+                  </footer>
+                </section>
+              } @else {
+                <section class="tour-experience" aria-label="Tour map experience">
+                  <div class="tour-experience__map-shell">
+                    <div
+                      #tourMapCanvas
+                      class="tour-experience__map-canvas"
+                      role="application"
+                      [attr.aria-label]="board.title + ' stops map'"
+                    ></div>
+
+                    <div class="tour-experience__topbar">
+                      <span class="tour-experience__mode">
+                        <span class="material-symbols-outlined">{{ tourModeIcon(board) }}</span>
+                        <span>
+                          <small>{{ tourModeText(board) }}</small>
+                          <strong>{{ selectedBoardTourCards().length }} stops</strong>
+                        </span>
+                      </span>
+                      <span class="tour-experience__map-actions">
+                        @if (canEditBoard(board) && tourPublicPreview()) {
+                          <button type="button" class="tour-experience__studio-return" (click)="returnToTourStudio($event)">
+                            <span class="material-symbols-outlined">edit_location_alt</span>
+                            Return to Studio
+                          </button>
+                        }
+                        <button type="button" (click)="setTourBoardView('cards', $event)">
+                          <span class="material-symbols-outlined">grid_view</span>
+                          All stops
+                        </button>
+                        <a [href]="tourRouteUrl(board)" target="_blank" rel="noopener">
+                          <span class="material-symbols-outlined">open_in_new</span>
+                          Open route
+                        </a>
+                      </span>
+                    </div>
+
+                    @if (selectedTourCard(); as card) {
+                      <article
+                        class="tour-experience__story-card"
+                        [attr.data-analytics-card-id]="card.id"
+                        aria-live="polite"
+                      >
+                        <div class="tour-experience__story-media">
+                          @if (cardMediaPoster(card)) {
+                            <button
+                              type="button"
+                              [attr.aria-label]="'Open ' + card.title + ' photos full screen'"
+                              (click)="openCardPhotoViewer(card, $event)"
+                            >
+                              <img [src]="cardMediaPoster(card)" [alt]="card.title" />
+                              <span class="material-symbols-outlined">fullscreen</span>
+                            </button>
+                          } @else {
+                            <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
+                          }
+                        </div>
+                        <div class="tour-experience__story-body">
+                          <span class="tour-experience__story-kicker">
+                            <b>{{ card.tour?.sequence }}</b>
+                            Stop {{ card.tour?.sequence }}
+                          </span>
+                          <h2>{{ card.title }}</h2>
+                          <p>{{ card.notes || card.subtitle }}</p>
+                          <div class="tour-experience__story-actions">
+                            <button type="button" class="tour-experience__play" (click)="openTourGuideForCard(card)">
+                              <span class="material-symbols-outlined">play_arrow</span>
+                              <span>
+                                <strong>Play story</strong>
+                                <small>{{ card.tour?.guideScript ? 'Narrated stop' : 'Open stop' }}</small>
+                              </span>
+                            </button>
+                            <a [href]="tourLegDirectionsUrl(board, card)" target="_blank" rel="noopener">
+                              <span class="material-symbols-outlined">near_me</span>
+                              <span>
+                                <strong>Directions</strong>
+                                <small>{{ tourStopTravelLabel(card) }}</small>
+                              </span>
+                            </a>
+                          </div>
+                          @if (hasBoardInside(card) || relatedCardCount(card) > 0) {
+                            <button type="button" class="tour-experience__inside" (click)="openBoardInside(card, $event)">
+                              <span class="material-symbols-outlined">account_tree</span>
+                              Explore {{ boardInsideTitle(card) }}
+                              <span class="material-symbols-outlined">arrow_forward</span>
+                            </button>
+                          }
+                        </div>
+                      </article>
+                    }
+
+                    <button type="button" class="tour-experience__start" (click)="openTourGuide(0)">
+                      <span class="material-symbols-outlined">{{ tourModeIcon(board) }}</span>
+                      Start tour
+                    </button>
+
+                    <nav class="tour-experience__progress" aria-label="Tour stop navigation">
+                      <button
+                        type="button"
+                        aria-label="Previous stop"
+                        [disabled]="!canSelectTourStopOffset(-1)"
+                        (click)="selectTourStopOffset(-1, $event)"
+                      >
+                        <span class="material-symbols-outlined">chevron_left</span>
+                      </button>
+                      <span>
+                        <strong>{{ tourStopPositionLabel() }}</strong>
+                        <small>{{ board.tourMeta?.totalDurationText || 'Self-paced' }}</small>
+                      </span>
+                      <button
+                        type="button"
+                        aria-label="Next stop"
+                        [disabled]="!canSelectTourStopOffset(1)"
+                        (click)="selectTourStopOffset(1, $event)"
+                      >
+                        <span class="material-symbols-outlined">chevron_right</span>
+                      </button>
+                    </nav>
+
+                    @if (tourRouteUpdating()) {
+                      <div class="tour-experience__updating" role="status">
+                        <span class="material-symbols-outlined">progress_activity</span>
+                        Updating tour…
+                      </div>
                     }
                   </div>
-                </div>
-              </section>
+
+                  @if (tourAudioNotice()) {
+                    <p class="tour-board__audio-notice">
+                      <span class="material-symbols-outlined">campaign</span>
+                      {{ tourAudioNotice() }}
+                    </p>
+                  }
+                </section>
+              }
             } @else if (isSongBoard(board)) {
               <section class="song-board" aria-label="SuprrrJuke song board" i18n-aria-label>
                 <div class="song-board__hero">

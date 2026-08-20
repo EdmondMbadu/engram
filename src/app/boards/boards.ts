@@ -1329,7 +1329,7 @@ type BoardLoadContext = {
   selector: 'app-boards',
   imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink, BoardCollectionCreateComponent, BoardCollectionListComponent, CustomPublicUrlDialogComponent],
   templateUrl: './boards.html',
-  styleUrls: ['./boards.css', './board-wizard-drafts.css', './board-wizard-media-mode.css', './board-narration-style.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css', './stack-script.css', './stack-cover-final.css', './board-city-tag.css'],
+  styleUrls: ['./boards.css', './tour-experience.css', './board-wizard-drafts.css', './board-wizard-media-mode.css', './board-narration-style.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css', './stack-script.css', './stack-cover-final.css', './board-city-tag.css'],
 })
 export class BoardsComponent implements AfterViewInit, OnDestroy {
   private readonly localeId = inject(LOCALE_ID);
@@ -1445,7 +1445,13 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild('tourMapCanvas')
   set tourMapCanvasRef(value: ElementRef<HTMLElement> | undefined) {
-    this.tourMapElement = value?.nativeElement ?? null;
+    const nextElement = value?.nativeElement ?? null;
+    if (nextElement !== this.tourMapElement) {
+      this.clearTourMapOverlays();
+      this.tourMap = null;
+      this.tourMapBoardId = null;
+    }
+    this.tourMapElement = nextElement;
     if (this.tourMapElement && this.isBrowser) {
       window.setTimeout(() => void this.renderTourMap(), 0);
     }
@@ -1800,6 +1806,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly stackActiveFrameDurationMs = signal(this.stackFrameDurationMs);
   readonly tourWayfindersShown = signal(false);
   readonly tourBoardView = signal<TourBoardView>('route');
+  readonly tourPublicPreview = signal(false);
   readonly tourRouteUpdating = signal(false);
   readonly tourRouteError = signal<string | null>(null);
   readonly tourGuideOpen = signal(false);
@@ -2526,6 +2533,21 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   });
   readonly stackTourNarrationConsent = signal(false);
   readonly selectedBoardTourCards = computed(() => this.tourCards(this.selectedBoard()));
+  readonly selectedTourCard = computed(() => {
+    const cards = this.selectedBoardTourCards();
+    const selectedId = this.selectedTourCardId();
+    return cards.find((card) => card.id === selectedId) ?? cards[0] ?? null;
+  });
+  readonly selectedTourCardIndex = computed(() => {
+    const selected = this.selectedTourCard();
+    return selected
+      ? Math.max(0, this.selectedBoardTourCards().findIndex((card) => card.id === selected.id))
+      : -1;
+  });
+  readonly tourStudioActive = computed(() => {
+    const board = this.selectedBoard();
+    return this.isTourBoard(board) && this.canEditBoard(board) && !this.tourPublicPreview();
+  });
   readonly tourDeckFrames = computed<TourDeckFrame[]>(() => {
     const cards = this.selectedBoardTourCards();
     const frames: TourDeckFrame[] = [];
@@ -2609,6 +2631,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       this.tripsPage.set(routePath.startsWith('trips'));
       const boardId = params.get('boardId');
       const boardRouteLoadId = ++this.boardRouteLoadSequence;
+      this.tourPublicPreview.set(false);
       this.cancelBoardRouteUnavailableReveal();
       this.boardRouteLoadState.set(beginBoardRouteLoad(boardRouteLoadId, boardId));
       if (!boardId) this.boardAnalytics.stopBoardSession();
@@ -2771,6 +2794,19 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         STORAGE_KEY,
         JSON.stringify(boards.filter((board) => this.canStoreBoardLocally(board))),
       );
+    });
+
+    effect(() => {
+      const board = this.selectedBoard();
+      const cards = this.tourCards(board);
+      const selectedId = this.selectedTourCardId();
+      if (!this.isTourBoard(board)) {
+        if (selectedId) this.selectedTourCardId.set(null);
+        return;
+      }
+      if (!cards.some((card) => card.id === selectedId)) {
+        this.selectedTourCardId.set(cards[0]?.id ?? null);
+      }
     });
 
     effect(() => {
@@ -7776,12 +7812,85 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       return;
     }
     this.tourBoardView.set(view);
+    if (view === 'cards') {
+      this.tourPublicPreview.set(false);
+    }
     this.tourRouteError.set(null);
     void this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { view: view === 'cards' ? 'cards' : null },
       queryParamsHandling: 'merge',
     });
+  }
+
+  previewTourExperience(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.tourPublicPreview.set(true);
+    this.tourBoardView.set('route');
+    this.tourRouteError.set(null);
+    if (this.isBrowser) {
+      window.setTimeout(() => void this.renderTourMap(), 0);
+    }
+  }
+
+  returnToTourStudio(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.tourPublicPreview.set(false);
+    this.tourBoardView.set('route');
+    this.tourRouteError.set(null);
+    if (this.isBrowser) {
+      window.setTimeout(() => void this.renderTourMap(), 0);
+    }
+  }
+
+  selectTourStopOffset(direction: -1 | 1, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const cards = this.selectedBoardTourCards();
+    if (!cards.length) return;
+    const currentIndex = this.selectedTourCardIndex();
+    const nextIndex = Math.max(0, Math.min(cards.length - 1, currentIndex + direction));
+    const card = cards[nextIndex];
+    if (card) void this.focusTourStop(card, false);
+  }
+
+  canSelectTourStopOffset(direction: -1 | 1): boolean {
+    const index = this.selectedTourCardIndex();
+    const count = this.selectedBoardTourCards().length;
+    return index >= 0 && index + direction >= 0 && index + direction < count;
+  }
+
+  tourStopPositionLabel(): string {
+    const index = this.selectedTourCardIndex();
+    const count = this.selectedBoardTourCards().length;
+    return count && index >= 0 ? `${index + 1} of ${count}` : `0 of ${count}`;
+  }
+
+  tourStopTravelLabel(card: BoardCard): string {
+    const next = this.nextTourCard(card);
+    if (!next) return 'End of tour';
+    return card.tour?.legToNext?.durationText
+      ? `${card.tour.legToNext.durationText} to next stop`
+      : 'Next stop ready';
+  }
+
+  tourStopReadyItems(card: BoardCard): Array<{ label: string; ready: boolean }> {
+    return [
+      {
+        label: 'Location',
+        ready: this.hasTourCoordinates(card) || !!card.tour?.address?.trim() || !!card.subtitle.trim(),
+      },
+      { label: 'Photo', ready: !!this.cardMediaPoster(card) },
+      { label: 'Story', ready: !!card.notes.trim() },
+      { label: 'Audio', ready: !!card.tour?.guideScript?.trim() },
+    ];
+  }
+
+  tourStopReadyPercent(card: BoardCard): number {
+    const items = this.tourStopReadyItems(card);
+    return Math.round(items.filter((item) => item.ready).length / items.length * 100);
   }
 
   songCards(board: Board | null): BoardCard[] {
@@ -8476,7 +8585,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
           return;
         }
         const addListener = (marker as { addListener?: (name: string, listener: () => void) => void }).addListener;
-        addListener?.call(marker, 'click', () => void this.focusTourStop(card, true));
+        addListener?.call(marker, 'click', () => void this.focusTourStop(card, false));
         this.tourMapMarkers.push(marker);
       });
 
@@ -8565,7 +8674,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     marker.addEventListener('click', (event) => {
       event.preventDefault();
       event.stopPropagation();
-      void this.focusTourStop(card, true);
+      void this.focusTourStop(card, false);
     });
     return marker;
   }
