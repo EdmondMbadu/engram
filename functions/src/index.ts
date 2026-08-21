@@ -63,6 +63,11 @@ import {
   type NearbyGemPreset,
 } from './nearby-gems';
 import { publicBoardRouteKey } from './custom-public-routes';
+import {
+  optimizePublicBoardCover,
+  publicBoardSummaryFromBoard,
+  type OptimizedBoardCover,
+} from './public-board-summary';
 export {
   cleanupDeletedBoardPublicRoutes,
   cleanupDeletedCollectionPublicRoutes,
@@ -22684,6 +22689,101 @@ export const syncPublicCityBoardListing = onDocumentWritten(
     }
     if (hasMutation) {
       await batch.commit();
+    }
+  },
+);
+
+export const syncPublicBoardSummary = onDocumentWritten(
+  {
+    region: callableRegion,
+    document: 'boards/{boardId}',
+    timeoutSeconds: 120,
+    memory: '1GiB',
+  },
+  async (event) => {
+    const boardId = textFromUnknown(event.params.boardId);
+    if (!boardId || !event.data) return;
+
+    const boardRef = db.collection('boards').doc(boardId);
+    const summaryRef = db.collection('public_board_summaries').doc(boardId);
+    // Triggers can arrive out of order. Always project the canonical board and
+    // retain its Firestore update time so a slower image conversion cannot put
+    // an older board version back into the public shelf.
+    const boardSnapshot = await boardRef.get();
+    if (!boardSnapshot.exists) {
+      await summaryRef.delete();
+      return;
+    }
+
+    const board = boardSnapshot.data() as Record<string, unknown>;
+    if (board.visibility !== 'public' || textFromUnknown(board.parentCardId)) {
+      await summaryRef.delete();
+      return;
+    }
+    const boardUpdateMs = boardSnapshot.updateTime?.toMillis() ?? Date.now();
+    const writeSummary = async (
+      currentBoard: Record<string, unknown>,
+      currentCover: OptimizedBoardCover | null,
+      sourceBoardUpdateMs: number,
+    ): Promise<boolean> => db.runTransaction(async (transaction) => {
+      const currentSummary = await transaction.get(summaryRef);
+      const currentSummaryUpdateMs = Number(currentSummary.data()?.source_board_update_ms) || 0;
+      if (currentSummaryUpdateMs > sourceBoardUpdateMs) return false;
+      transaction.set(summaryRef, {
+        ...publicBoardSummaryFromBoard(boardId, currentBoard, currentCover),
+        source_board_update_ms: sourceBoardUpdateMs,
+        server_updated_at: FieldValue.serverTimestamp(),
+      });
+      return true;
+    });
+
+    const sourceImageUrl = textFromUnknown(board.imageUrl).slice(0, 2_000);
+    const existingSnapshot = await summaryRef.get();
+    const existing = existingSnapshot.data() as Record<string, unknown> | undefined;
+    let cover: OptimizedBoardCover | null = null;
+    if (
+      sourceImageUrl
+      && existing?.source_image_url === sourceImageUrl
+      && typeof existing.imageUrl === 'string'
+      && existing.imageUrl
+      && typeof existing.image_webp_srcset === 'string'
+      && existing.image_webp_srcset
+    ) {
+      cover = {
+        sourceImageUrl,
+        imageUrl: existing.imageUrl,
+        webpSrcset: existing.image_webp_srcset,
+        width: Math.max(0, Number(existing.image_width) || 0),
+        height: Math.max(0, Number(existing.image_height) || 0),
+      };
+    }
+
+    const summaryWritten = await writeSummary(board, cover, boardUpdateMs);
+
+    if (!summaryWritten || !sourceImageUrl || cover) return;
+    try {
+      const optimized = await optimizePublicBoardCover(storage.bucket(), boardId, sourceImageUrl);
+      const latestBoardSnapshot = await boardRef.get();
+      const latestBoard = latestBoardSnapshot.data() as Record<string, unknown> | undefined;
+      if (
+        !latestBoardSnapshot.exists
+        || latestBoard?.visibility !== 'public'
+        || textFromUnknown(latestBoard.parentCardId)
+        || textFromUnknown(latestBoard.imageUrl).slice(0, 2_000) !== sourceImageUrl
+      ) return;
+      await writeSummary(
+        latestBoard,
+        optimized,
+        latestBoardSnapshot.updateTime?.toMillis() ?? boardUpdateMs,
+      );
+    } catch (error) {
+      logger.warn('Public board cover optimization failed.', {
+        boardId,
+        sourceHost: (() => {
+          try { return new URL(sourceImageUrl).hostname; } catch { return ''; }
+        })(),
+        errorMessage: error instanceof Error ? error.message : String(error),
+      });
     }
   },
 );

@@ -620,6 +620,12 @@
   height: 100%;
   transform-style: preserve-3d;
   transition: transform 480ms cubic-bezier(0.3, 0.9, 0.3, 1);
+  will-change: auto;
+}
+
+.board-square:hover .board-square__rotor,
+.board-square:focus-within .board-square__rotor,
+.board-square--flipped .board-square__rotor {
   will-change: transform;
 }
 

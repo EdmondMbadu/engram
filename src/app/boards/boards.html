@@ -923,8 +923,24 @@
                 <div class="board-square__rotor">
                   <button type="button" class="board-square__open board-square__face board-square__face--front" (click)="selectBoard(board.id)">
                     <span class="board-square__media">
-                      @if (board.imageUrl) {
-                        <img class="board-square__image" [src]="board.imageUrl" [alt]="board.title + ' cover image'" loading="lazy" />
+                      @if (board.imageUrl && !boardCoverFailed(board.id)) {
+                        <picture>
+                          @if (board.imageWebpSrcset) {
+                            <source type="image/webp" [attr.srcset]="board.imageWebpSrcset" sizes="(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw" />
+                          }
+                          <img
+                            class="board-square__image"
+                            [src]="board.imageUrl"
+                            [alt]="board.title + ' cover image'"
+                            [attr.width]="board.imageWidth || 960"
+                            [attr.height]="board.imageHeight || 540"
+                            [attr.loading]="$index < 3 ? 'eager' : 'lazy'"
+                            [attr.fetchpriority]="$index < 3 ? 'high' : 'auto'"
+                            decoding="async"
+                            (load)="handleBoardCoverLoad(board.id)"
+                            (error)="handleBoardCoverError(board.id)"
+                          />
+                        </picture>
                       } @else {
                         <span class="board-square__media-fallback" aria-hidden="true">
                           <span class="material-symbols-outlined">{{ boardDisplayIcon(board) }}</span>
@@ -965,7 +981,7 @@
                       <span class="board-square__footer-meta">
                         <small>
                           <span class="material-symbols-outlined" aria-hidden="true">library_books</span>
-                          {{ board.cards.length }} cards
+                          {{ boardCardCount(board) }} cards
                         </small>
                         <small>Updated {{ boardUpdatedLabel(board) }}</small>
                       </span>
@@ -978,7 +994,7 @@
                     </span>
                     <span class="board-square__meta board-square__meta--back">
                       <strong>{{ board.backNote || board.description || 'Add a secret note, a memory, or a tiny fun fact for this collection.' }}</strong>
-                      <small i18n>{{ board.cards.length }} cards · {{ boardUpdatedLabel(board) }}</small>
+                      <small i18n>{{ boardCardCount(board) }} cards · {{ boardUpdatedLabel(board) }}</small>
                     </span>
                     <span class="board-square__stack" aria-hidden="true">
                       <i>

@@ -2,6 +2,11 @@ rules_version = '2';
 
 service firebase.storage {
   match /b/{bucket}/o {
+    match /public-board-covers/{boardId}/{fileName=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+
     match /app-assets/stack-audio/{fileName} {
       allow read: if true;
       allow write: if false;

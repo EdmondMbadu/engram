@@ -14,7 +14,7 @@
     "i18n:check": "node scripts/check-angular-catalogs.mjs",
     "build:ios:web": "ng build --configuration production",
     "ios:sync": "npx cap sync ios",
-    "build:hosting": "npm run i18n:check && ng build --configuration production",
+    "build:hosting": "npm run i18n:check && ng build --configuration production && node scripts/check-board-performance.mjs",
     "deploy:hosting": "npm run build:hosting && firebase deploy --only hosting",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",

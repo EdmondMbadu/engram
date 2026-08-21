@@ -279,6 +279,47 @@ test('analytics collections cannot be read or written directly by any client', a
   }
 });
 
+test('public board summaries are public-read and server-write only', async () => {
+  await testEnvironment.withSecurityRulesDisabled(async (context) => {
+    const database = context.firestore();
+    await setDoc(doc(database, 'public_board_summaries', 'public-board'), {
+      id: 'public-board',
+      visibility: 'public',
+      owner_public_slug: 'board-owner',
+      is_root: true,
+      created_at_iso: '2026-08-21T00:00:00.000Z',
+    });
+    await setDoc(doc(database, 'public_board_summaries', 'private-board'), {
+      id: 'private-board',
+      visibility: 'private',
+      owner_public_slug: 'board-owner',
+      is_root: true,
+      created_at_iso: '2026-08-21T00:00:00.000Z',
+    });
+  });
+
+  const anonymous = testEnvironment.unauthenticatedContext().firestore();
+  await assertSucceeds(getDoc(doc(anonymous, 'public_board_summaries', 'public-board')));
+  await assertFails(getDoc(doc(anonymous, 'public_board_summaries', 'private-board')));
+  const publicQuery = query(
+    collection(anonymous, 'public_board_summaries'),
+    where('visibility', '==', 'public'),
+    limit(10),
+  );
+  const publicResults = await assertSucceeds(getDocs(publicQuery));
+  assert.equal(publicResults.size, 1);
+
+  for (const database of [
+    testEnvironment.unauthenticatedContext().firestore(),
+    testEnvironment.authenticatedContext(ownerUid).firestore(),
+  ]) {
+    await assertFails(setDoc(doc(database, 'public_board_summaries', 'client-write'), {
+      id: 'client-write',
+      visibility: 'public',
+    }));
+  }
+});
+
 test('older clients may save a personal board with null city metadata', async () => {
   const database = testEnvironment.authenticatedContext(ownerUid).firestore();
 

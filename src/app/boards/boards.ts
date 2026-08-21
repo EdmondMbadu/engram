@@ -3,7 +3,7 @@ import { AfterViewInit, Component, computed, effect, ElementRef, HostListener, i
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DomSanitizer, type SafeResourceUrl } from '@angular/platform-browser';
 import { FirebaseError } from 'firebase/app';
-import { collection, deleteDoc, doc, getDoc, getDocs, limit, onSnapshot, orderBy, query, serverTimestamp, setDoc, startAfter, updateDoc, where, writeBatch, type DocumentData, type Firestore, type QueryConstraint, type QueryDocumentSnapshot, type Unsubscribe } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDoc, getDocs, limit, onSnapshot, orderBy, query, serverTimestamp, setDoc, startAfter, updateDoc, where, writeBatch, type DocumentData, type Firestore, type QueryConstraint, type QueryDocumentSnapshot, type QuerySnapshot, type Unsubscribe } from 'firebase/firestore';
 import { httpsCallable, type Functions } from 'firebase/functions';
 import { deleteObject, getDownloadURL, ref as storageRef, uploadBytes, type FirebaseStorage } from 'firebase/storage';
 import { AccountMenuComponent } from '../account-menu/account-menu';
@@ -413,6 +413,13 @@ type Board = {
   icon: string;
   tone: BoardTone;
   imageUrl: string;
+  imageWebpSrcset?: string;
+  imageWidth?: number;
+  imageHeight?: number;
+  summaryCardCount?: number;
+  summaryFavoriteCardCount?: number;
+  summarySearchText?: string;
+  isSummary?: boolean;
   logoUrl: string;
   logoLinkUrl: string;
   stackCtaLabel: string;
@@ -1505,6 +1512,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   private boardRouteUnavailableTimer: ReturnType<typeof setTimeout> | null = null;
   private nearbyGemsQueryConsumed = false;
   private collectionLoadSequence = 0;
+  private citiesLoadPromise: Promise<void> | null = null;
 
   @ViewChild('boardsScrollViewport')
   private boardsScrollViewport?: ElementRef<HTMLElement>;
@@ -1582,6 +1590,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly publicOwnerUid = signal<string | null>(null);
   readonly publicOwnerSlug = signal<string | null>(null);
   readonly flippedBoardIds = signal<Set<string>>(new Set());
+  readonly failedBoardCoverIds = signal<Set<string>>(new Set());
   readonly flippedCardIds = signal<Set<string>>(new Set());
   readonly openCardActionMenuKey = signal<string | null>(null);
   readonly expandedCardIds = signal<Set<string>>(new Set());
@@ -2339,7 +2348,13 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     }
 
     return boards.filter((board) =>
-      [board.title, board.description, board.backNote, board.cards.map((card) => card.title).join(' ')]
+      [
+        board.title,
+        board.description,
+        board.backNote,
+        board.summarySearchText,
+        board.cards.map((card) => card.title).join(' '),
+      ]
         .join(' ')
         .toLowerCase()
         .includes(query),
@@ -2441,11 +2456,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly totalCards = computed(() =>
     this.boards()
       .filter((board) => !board.parentCardId)
-      .reduce((total, board) => total + board.cards.length, 0),
+      .reduce((total, board) => total + this.boardCardCount(board), 0),
   );
   readonly favoriteCards = computed(() =>
     this.boards().filter((board) => !board.parentCardId).reduce(
-      (total, board) => total + board.cards.filter((card) => card.status === 'favorite').length,
+      (total, board) => total + this.boardFavoriteCardCount(board),
       0,
     ),
   );
@@ -2749,7 +2764,6 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   constructor() {
     this.loadBoardActionState();
     this.loadLocalBoards();
-    void this.loadCities();
     this.route.paramMap.subscribe((params) => {
       const routePath = this.route.snapshot.routeConfig?.path ?? '';
       this.friendsPage.set(routePath === 'friends');
@@ -3096,7 +3110,33 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.activeGalleryTab.set(tab);
     this.boardSearch.set('');
     this.galleryVisibleLimit.set(BOARD_GALLERY_PAGE_SIZE);
+    if (tab === 'cards' || tab === 'favorites') {
+      void this.hydratePublicSummaryBoards();
+    }
     this.scheduleGalleryViewportCheck();
+  }
+
+  private async hydratePublicSummaryBoards(): Promise<void> {
+    if (!this.boards().some((board) => board.isSummary)) return;
+    this.boardsLoading.set(true);
+    try {
+      while (this.boardsHasMore()) {
+        const loaded = await this.loadNextBoardPage();
+        if (!loaded) break;
+      }
+      const summaries = this.boards().filter((board) => board.isSummary);
+      for (let index = 0; index < summaries.length; index += 4) {
+        const batch = summaries.slice(index, index + 4);
+        const hydrated = (await Promise.all(batch.map((board) => this.loadBoardById(board.id).catch(() => null))))
+          .filter((board): board is Board => !!board);
+        if (!hydrated.length) continue;
+        const hydratedById = new Map(hydrated.map((board) => [board.id, board]));
+        this.boards.update((boards) => boards.map((board) => hydratedById.get(board.id) ?? board));
+      }
+    } finally {
+      this.boardsLoading.set(false);
+      this.scheduleGalleryViewportCheck();
+    }
   }
 
   setBoardGallerySort(value: string): void {
@@ -3575,6 +3615,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       this.boardsSyncError.set($localize`Sign in to create a board.`);
       return;
     }
+    void this.ensureCitiesLoaded();
     this.resetBoardWizard();
     this.wizardOpen.set(true);
   }
@@ -5827,6 +5868,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       this.boardsSyncError.set($localize`Only the board owner can add cards.`);
       return;
     }
+    void this.ensureCitiesLoaded();
     const songMode = this.isSongBoard(board);
     this.selectedBoardId.set(boardId);
     this.imageUploadError.set(null);
@@ -5888,6 +5930,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       this.boardsSyncError.set($localize`Only the board owner can edit cards.`);
       return;
     }
+    void this.ensureCitiesLoaded();
     this.relatedCardParentId.set(null);
     this.relatedCardEditingId.set(null);
     this.editingCardId.set(card.id);
@@ -11703,6 +11746,16 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     return this.formatDate(board.updatedAt);
   }
 
+  boardCardCount(board: Board): number {
+    return board.isSummary ? board.summaryCardCount ?? 0 : board.cards.length;
+  }
+
+  boardFavoriteCardCount(board: Board): number {
+    return board.isSummary
+      ? board.summaryFavoriteCardCount ?? 0
+      : board.cards.filter((card) => card.status === 'favorite').length;
+  }
+
   cardUpdatedLabel(card: BoardCard): string {
     return this.formatDate(card.updatedAt);
   }
@@ -11844,6 +11897,23 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     event?.stopPropagation();
     this.toggleActionSet(this.likedBoardIds, board.id);
     this.saveBoardActionState();
+  }
+
+  boardCoverFailed(boardId: string): boolean {
+    return this.failedBoardCoverIds().has(boardId);
+  }
+
+  handleBoardCoverError(boardId: string): void {
+    this.failedBoardCoverIds.update((failed) => new Set(failed).add(boardId));
+  }
+
+  handleBoardCoverLoad(boardId: string): void {
+    if (!this.failedBoardCoverIds().has(boardId)) return;
+    this.failedBoardCoverIds.update((failed) => {
+      const next = new Set(failed);
+      next.delete(boardId);
+      return next;
+    });
   }
 
   toggleBoardSave(board: Board, event?: Event): void {
@@ -17346,7 +17416,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.privateBoardBlocked.set(false);
     this.boardPageCursor = null;
     this.boardLoadContext = null;
-    await this.authService.waitForReady();
+    // Public owner shelves do not require identity. Start their compact public
+    // query immediately and let authentication hydrate owner-only actions later.
+    if (!publicOwnerRouteActive) {
+      await this.authService.waitForReady();
+    }
     if (loadSequence !== this.boardLoadSequence) {
       return;
     }
@@ -17447,45 +17521,72 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       return false;
     }
 
-    const constraints: QueryConstraint[] = [];
-    if (context.publicOwnerRouteActive || context.publicOwnerUid) {
-      if (context.publicOwnerUid) {
-        constraints.push(where('owner_user_id', '==', context.publicOwnerUid));
-      } else if (context.publicOwnerSlug) {
-        constraints.push(where('owner_public_slug', '==', context.publicOwnerSlug));
+    const usePublicSummaries = !this.selectedBoardId()
+      && (context.publicOwnerRouteActive || !context.uid);
+    const buildConstraints = (summaryQuery: boolean): QueryConstraint[] => {
+      const constraints: QueryConstraint[] = [];
+      if (context.publicOwnerRouteActive || context.publicOwnerUid) {
+        if (context.publicOwnerUid) {
+          constraints.push(where('owner_user_id', '==', context.publicOwnerUid));
+        } else if (context.publicOwnerSlug) {
+          constraints.push(where('owner_public_slug', '==', context.publicOwnerSlug));
+        } else {
+          return [];
+        }
+        constraints.push(where('visibility', '==', 'public'));
+      } else if (context.uid) {
+        constraints.push(where('owner_user_id', '==', context.uid));
       } else {
-        this.boardsHasMore.set(false);
-        return false;
+        constraints.push(where('visibility', '==', 'public'));
       }
-      constraints.push(where('visibility', '==', 'public'));
-    } else if (context.uid) {
-      constraints.push(where('owner_user_id', '==', context.uid));
-    } else {
-      constraints.push(where('visibility', '==', 'public'));
+      if (summaryQuery) constraints.push(where('is_root', '==', true));
+      if (context.publicOwnerRouteActive || summaryQuery) {
+        constraints.push(orderBy('created_at_iso', 'desc'));
+      }
+      if (this.boardPageCursor) constraints.push(startAfter(this.boardPageCursor));
+      constraints.push(limit(BOARD_GALLERY_PAGE_SIZE));
+      return constraints;
+    };
+    const primaryConstraints = buildConstraints(usePublicSummaries);
+    if (!primaryConstraints.length) {
+      this.boardsHasMore.set(false);
+      return false;
     }
-    if (context.publicOwnerRouteActive) {
-      constraints.push(orderBy('created_at_iso', 'desc'));
-    }
-    if (this.boardPageCursor) {
-      constraints.push(startAfter(this.boardPageCursor));
-    }
-    constraints.push(limit(BOARD_GALLERY_PAGE_SIZE));
 
     this.boardsLoadingMore.set(true);
     try {
-      const snapshot = await getDocs(query(collection(this.firestore, 'boards'), ...constraints));
+      let summaryPage = usePublicSummaries;
+      let snapshot: QuerySnapshot<DocumentData>;
+      try {
+        snapshot = await getDocs(query(
+          collection(this.firestore, summaryPage ? 'public_board_summaries' : 'boards'),
+          ...primaryConstraints,
+        ));
+      } catch (error) {
+        if (!summaryPage || this.boardPageCursor) throw error;
+        summaryPage = false;
+        snapshot = await getDocs(query(collection(this.firestore, 'boards'), ...buildConstraints(false)));
+      }
+      // Until the server-owned projection has been backfilled, an empty summary
+      // collection automatically falls back to the established full-board query.
+      if (summaryPage && snapshot.empty && replace && !this.boardPageCursor) {
+        summaryPage = false;
+        snapshot = await getDocs(query(collection(this.firestore, 'boards'), ...buildConstraints(false)));
+      }
       if (loadSequence !== this.boardLoadSequence) {
         return false;
       }
       const page = snapshot.docs
-        .map((boardDoc) => this.boardFromRecord(boardDoc.id, boardDoc.data()))
+        .map((boardDoc) => summaryPage
+          ? this.boardSummaryFromRecord(boardDoc.id, boardDoc.data())
+          : this.boardFromRecord(boardDoc.id, boardDoc.data()))
         .filter((board): board is Board => !!board);
       // A route change can refresh the gallery before a board that lives beyond
       // page one is fetched by id. Retain that board so the detail view never
       // collapses back into the gallery during the refresh.
       const selectedId = this.selectedBoardId();
       const selectedBoard = replace && selectedId
-        ? this.boards().find((board) => board.id === selectedId) ?? null
+        ? this.boards().find((board) => board.id === selectedId && !board.isSummary) ?? null
         : null;
       const current = replace ? (selectedBoard ? [selectedBoard] : []) : this.boards();
       const boardsById = new Map(current.map((board) => [board.id, board]));
@@ -17673,6 +17774,14 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         this.schedulePlaceSearch();
       }
     }
+  }
+
+  private ensureCitiesLoaded(): Promise<void> {
+    if (this.publicCities().length) return Promise.resolve();
+    this.citiesLoadPromise ??= this.loadCities().finally(() => {
+      this.citiesLoadPromise = null;
+    });
+    return this.citiesLoadPromise;
   }
 
   private parseBoards(raw: string): Board[] | null {
@@ -18024,6 +18133,21 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     } catch {
       this.boardsSyncError.set($localize`Removed locally, but Firebase delete failed.`);
     }
+  }
+
+  private boardSummaryFromRecord(id: string, data: Record<string, unknown>): Board | null {
+    const board = this.boardFromRecord(id, { ...data, cards: [] });
+    if (!board) return null;
+    return {
+      ...board,
+      isSummary: true,
+      summaryCardCount: this.numberValue(data['card_count'], 0, 0, 100_000),
+      summaryFavoriteCardCount: this.numberValue(data['favorite_card_count'], 0, 0, 100_000),
+      summarySearchText: this.stringValue(data['search_text'], '', 8_000),
+      imageWebpSrcset: this.stringValue(data['image_webp_srcset'], '', 8_000),
+      imageWidth: this.numberValue(data['image_width'], 0, 0, 10_000),
+      imageHeight: this.numberValue(data['image_height'], 0, 0, 10_000),
+    };
   }
 
   private boardFromRecord(id: string, data: Record<string, unknown>): Board | null {
@@ -18552,9 +18676,32 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
     const response = await fetch(imageUrl);
     const blob = await response.blob();
-    const ref = storageRef(this.storage, path);
-    await uploadBytes(ref, blob, { contentType: blob.type || 'image/jpeg' });
+    const versioned = await this.versionedImageStoragePath(path, blob);
+    const ref = storageRef(this.storage, versioned.path);
+    await uploadBytes(ref, blob, {
+      contentType: blob.type || 'image/jpeg',
+      cacheControl: versioned.immutable
+        ? 'public,max-age=31536000,immutable'
+        : 'public,max-age=3600,stale-while-revalidate=86400',
+    });
     return getDownloadURL(ref);
+  }
+
+  private async versionedImageStoragePath(path: string, blob: Blob): Promise<{ path: string; immutable: boolean }> {
+    try {
+      const digest = await window.crypto.subtle.digest('SHA-256', await blob.arrayBuffer());
+      const hash = Array.from(new Uint8Array(digest).slice(0, 12))
+        .map((byte) => byte.toString(16).padStart(2, '0'))
+        .join('');
+      return {
+        path: /\.[a-z0-9]+$/i.test(path)
+          ? path.replace(/(\.[a-z0-9]+)$/i, `-${hash}$1`)
+          : `${path}-${hash}`,
+        immutable: true,
+      };
+    } catch {
+      return { path, immutable: false };
+    }
   }
 
   private isBoardTone(value: unknown): value is BoardTone {
