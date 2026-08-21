@@ -1668,9 +1668,9 @@ button.mobile-talk-action {
     --mobile-shell: min(100% - 2rem, 58rem);
     min-height: 100vh;
     background:
-      linear-gradient(90deg, rgba(13, 56, 35, 0.05) 1px, transparent 1px),
-      linear-gradient(rgba(13, 56, 35, 0.05) 1px, transparent 1px),
-      #eef9f2;
+      linear-gradient(90deg, var(--home-line) 1px, transparent 1px),
+      linear-gradient(var(--home-line) 1px, transparent 1px),
+      var(--home-bg);
     background-size: 28px 28px, 28px 28px, auto;
   }
 
@@ -1686,7 +1686,7 @@ button.mobile-talk-action {
     width: 3rem;
     height: 3rem;
     border-radius: 0.9rem;
-    background: #ffffff;
+    background: var(--home-control);
   }
 
   .mobile-brand {
@@ -1716,17 +1716,26 @@ button.mobile-talk-action {
   .mobile-city-block,
   .mobile-search-wrap,
   .mobile-row-section,
-  .mobile-game-section,
   .mobile-home-footer {
-    border-right: 1px solid rgba(13, 56, 35, 0.08);
-    border-left: 1px solid rgba(13, 56, 35, 0.08);
-    background: #ffffff;
-    box-shadow: 0 18px 50px rgba(13, 56, 35, 0.08);
+    border-right: 1px solid var(--home-line);
+    border-left: 1px solid var(--home-line);
+    background: var(--home-surface);
+    box-shadow: var(--home-shadow);
+  }
+
+  .mobile-game-section {
+    border-right: 1px solid var(--home-line);
+    border-left: 1px solid var(--home-line);
+    background: var(--mobile-deep);
+    background-image: radial-gradient(rgba(217, 242, 226, 0.06) 1.2px, transparent 1.2px);
+    background-size: 26px 26px;
+    box-shadow: var(--home-shadow);
+    color: #ffffff;
   }
 
   .mobile-city-block {
     overflow: hidden;
-    border-top: 1px solid rgba(13, 56, 35, 0.08);
+    border-top: 1px solid var(--home-line);
     border-radius: 1.4rem 1.4rem 0 0;
     padding-top: 0.35rem;
   }
@@ -1735,7 +1744,7 @@ button.mobile-talk-action {
     position: relative;
     z-index: 30;
     overflow: visible;
-    border-bottom: 1px solid rgba(13, 56, 35, 0.08);
+    border-bottom: 1px solid var(--home-line);
     border-radius: 1.4rem;
   }
 
