@@ -2,10 +2,11 @@ import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { SpotifyPlayerComponent } from './spotify-player/spotify-player';
 import { ThemeService } from './theme.service';
+import { WorkspaceNavigationOverlayComponent } from './workspace-navigation/workspace-navigation-overlay';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, SpotifyPlayerComponent],
+  imports: [RouterOutlet, SpotifyPlayerComponent, WorkspaceNavigationOverlayComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

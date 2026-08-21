@@ -1,5 +1,8 @@
+<div class="insights-workspace">
+<app-workspace-sidebar active="boards" [rail]="true"></app-workspace-sidebar>
 <div class="insights-shell">
   <header class="insights-topbar">
+    <app-mobile-menu activePage="boards"></app-mobile-menu>
     <a routerLink="/boards" class="insights-brand" aria-label="LivingWiki boards">
       <span class="material-symbols-outlined">travel_explore</span>
       <strong>LivingWiki</strong>
@@ -162,4 +165,5 @@
       </footer>
     }
   </main>
+</div>
 </div>

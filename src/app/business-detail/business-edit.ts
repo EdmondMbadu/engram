@@ -9,6 +9,7 @@ import { BusinessClaimService, type BusinessClaimWorkspaceRecord, type BusinessC
 import { generateQrSvg } from '../qr-code';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
+import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { AccountMenuComponent } from '../account-menu/account-menu';
 import { BUSINESS_BADGE_ICONS } from '../business-badge-icons';
 
@@ -30,7 +31,7 @@ type BusinessEditDraft = {
 
 @Component({
   selector: 'app-business-edit',
-  imports: [RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent, AccountMenuComponent],
+  imports: [RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent, AccountMenuComponent, MobileMenuComponent],
   templateUrl: './business-edit.html',
 })
 export class BusinessEditComponent {

@@ -6,6 +6,7 @@ import { businessBadgeEmoji } from '../business-badge-icons';
 import { generateQrSvgDataUrl } from '../qr-code';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
+import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { AccountMenuComponent } from '../account-menu/account-menu';
 
 type BillingCycle = 'monthly' | 'annual';
@@ -70,7 +71,7 @@ const BUSINESS_CATEGORY_ICON_BY_NAME: Record<string, string> = {
 
 @Component({
   selector: 'app-business',
-  imports: [RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent, AccountMenuComponent],
+  imports: [RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent, AccountMenuComponent, MobileMenuComponent],
   templateUrl: './business.html',
 })
 export class BusinessComponent {

@@ -1,155 +1,102 @@
-<!-- Hamburger button — only visible on mobile -->
 <button
+  #menuTrigger
   type="button"
-  class="flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--line)] bg-[var(--soft-fill)] text-[var(--muted)] transition-colors duration-200 hover:bg-[var(--soft-fill-strong)] hover:text-[var(--text)]"
+  class="workspace-menu-trigger"
   (click)="toggleMenu()"
+  [attr.aria-expanded]="menuOpen()"
+  aria-controls="workspace-mobile-drawer"
   aria-label="Open menu"
- i18n-aria-label>
-  <span class="material-symbols-outlined text-xl">menu</span>
+  i18n-aria-label
+>
+  <span></span>
+  <span></span>
+  <span></span>
 </button>
 
-<!-- Backdrop + Drawer -->
 @if (menuOpen()) {
-  <!-- Backdrop -->
-  <div
-    class="fixed inset-0 bg-black/60 backdrop-blur-sm animate-fade-in"
-    style="z-index: 9998;"
-    (click)="closeMenu()"
-  ></div>
-
-  <!-- Drawer -->
-  <aside
-    class="fixed inset-y-0 left-0 flex w-72 max-w-[88vw] flex-col bg-[var(--sidebar)] border-r border-[var(--line)] shadow-[var(--shadow-elevated)] animate-slide-in-left"
-    style="z-index: 9999;"
-  >
-    <!-- Header -->
-    <div class="flex items-center justify-between px-5 py-5">
-      <a routerLink="/" class="flex items-center" (click)="closeMenu()">
-        <div class="flex h-10 w-40 items-center justify-start">
-          <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo" class="h-full w-full object-contain"  i18n-alt/>
-        </div>
+  <div class="workspace-mobile-veil" (click)="closeMenu()"></div>
+  <aside id="workspace-mobile-drawer" class="workspace-mobile-drawer" aria-label="LivingWiki menu" i18n-aria-label>
+    <header class="workspace-mobile-drawer__header">
+      <a routerLink="/home" class="workspace-mobile-drawer__brand" (click)="closeMenu()">
+        <img src="/assets/image/lucky-paper-crane.png" alt="" />
+        <span><b>Living</b>Wiki</span>
       </a>
-      <button
-        type="button"
-        class="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--line)] bg-[var(--soft-fill)] text-[var(--muted)] transition-colors hover:text-[var(--text)]"
-        (click)="closeMenu()"
-        aria-label="Close menu"
-       i18n-aria-label>
-        <span class="material-symbols-outlined text-lg">close</span>
+      <button type="button" class="workspace-mobile-drawer__close" aria-label="Close menu" (click)="closeMenu()" i18n-aria-label>
+        <span class="material-symbols-outlined">close</span>
       </button>
-    </div>
+    </header>
 
-    <!-- Navigation -->
-    <nav class="flex-1 space-y-1 px-4 pt-2 text-sm overflow-y-auto">
-      @if (adminNavigation()) {
-        <a
-          [routerLink]="homeLink()"
-          class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]"
-          (click)="closeMenu()"
+    <nav class="workspace-mobile-drawer__nav" aria-label="Workspace navigation" i18n-aria-label>
+      @if (canonicalWorkspace()) {
+        @for (item of navigation.primaryItems(); track item.key) {
+          <a
+            [routerLink]="item.route"
+            [fragment]="item.fragment"
+            class="workspace-mobile-item"
+            [class.is-active]="navigation.isActive(item.key)"
+            [class.workspace-mobile-item--trove]="item.key === 'trove'"
+            [attr.aria-current]="navigation.isActive(item.key) ? 'page' : null"
+            (click)="closeMenu()"
+          >
+            @if (item.iconImageUrl) {
+              <img [src]="item.iconImageUrl" alt="" />
+            } @else {
+              <span class="material-symbols-outlined">{{ item.icon }}</span>
+            }
+            <span>{{ item.label }}</span>
+          </a>
+        }
+        <button type="button" class="workspace-mobile-item" (click)="openAbout()">
+          <span class="material-symbols-outlined">info</span>
+          <span i18n>About</span>
+        </button>
+        <button
+          type="button"
+          class="workspace-mobile-item workspace-mobile-item--more"
+          [class.is-active]="navigation.moreActive()"
+          aria-haspopup="dialog"
+          (click)="openMore()"
         >
+          <span class="material-symbols-outlined">apps</span>
+          <span i18n>More</span>
+          <span class="material-symbols-outlined workspace-mobile-item__arrow">arrow_outward</span>
+        </button>
+      } @else {
+        <a routerLink="/" class="workspace-mobile-item" (click)="closeMenu()">
           <span class="material-symbols-outlined">home</span>
           <span i18n>Home</span>
         </a>
-      }
-      @for (item of primaryNavItems; track item.key) {
-        @if (shouldShowItem(item.key, item.workspaceOnly)) {
-        @if (activePage() === item.key) {
-          <a
-            [routerLink]="routeFor(item.key, item.route)"
-            class="flex items-center gap-3 rounded-xl border border-[var(--line-strong)] bg-white/5 px-3 py-3 font-bold text-[var(--accent)] shadow-[inset_0_0_0_1px_rgba(59,175,98,0.08)] transition-colors duration-200"
-            (click)="closeMenu()"
-          >
-            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">{{ item.icon }}</span>
-            <span>{{ item.label }}</span>
-          </a>
-        } @else {
-          <a
-            [routerLink]="routeFor(item.key, item.route)"
-            class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]"
-            (click)="closeMenu()"
-          >
-            <span class="material-symbols-outlined">{{ item.icon }}</span>
-            <span>{{ item.label }}</span>
-          </a>
-        }
-        }
-      }
-
-      @if (hasVisibleMoreItems()) {
-        <div class="mt-3 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] p-1.5">
-          <button
-            type="button"
-            class="flex w-full items-center gap-3 rounded-xl px-2.5 py-2.5 text-left text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]"
-            [class.bg-white/5]="showMoreItems()"
-            [class.text-[var(--accent)]]="moreActive()"
-            [attr.aria-expanded]="showMoreItems()"
-            aria-controls="mobile-more-items"
-            (click)="toggleMore()"
-          >
-            <span class="material-symbols-outlined">menu</span>
-            <span class="min-w-0 flex-1" i18n>More</span>
-            <span
-              class="material-symbols-outlined text-base transition-transform"
-              [class.rotate-180]="showMoreItems()"
+        @for (item of publicPrimaryItems; track item.key) {
+          @if (shouldShowPublicItem(item.key)) {
+            <a
+              [routerLink]="publicRouteFor(item.key, item.route)"
+              class="workspace-mobile-item"
+              [class.is-active]="activePage() === item.key"
+              (click)="closeMenu()"
             >
-              expand_more
-            </span>
-          </button>
-
-          @if (showMoreItems()) {
-            <div id="mobile-more-items" class="mt-1 grid gap-0.5 border-t border-[var(--line)] pt-1.5">
-              @for (item of moreNavItems; track item.key) {
-                @if (shouldShowItem(item.key, item.workspaceOnly)) {
-                  @if (activePage() === item.key) {
-                    <a
-                      [routerLink]="routeFor(item.key, item.route)"
-                      class="flex items-center gap-2.5 rounded-xl border border-[var(--line-strong)] bg-white/5 px-2.5 py-2 text-xs font-black text-[var(--accent)] shadow-[inset_0_0_0_1px_rgba(59,175,98,0.08)] transition-colors duration-200"
-                      (click)="closeMenu()"
-                    >
-                      <span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1">{{ item.icon }}</span>
-                      <span class="min-w-0 truncate">{{ item.label }}</span>
-                    </a>
-                  } @else {
-                    <a
-                      [routerLink]="routeFor(item.key, item.route)"
-                      class="flex items-center gap-2.5 rounded-xl border border-transparent px-2.5 py-2 text-xs font-black text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]"
-                      (click)="closeMenu()"
-                    >
-                      <span class="material-symbols-outlined text-base">{{ item.icon }}</span>
-                      <span class="min-w-0 truncate">{{ item.label }}</span>
-                    </a>
-                  }
-                }
-              }
-            </div>
+              <span class="material-symbols-outlined">{{ item.icon }}</span>
+              <span>{{ item.label }}</span>
+            </a>
           }
-        </div>
+        }
       }
     </nav>
 
-    <!-- Bottom -->
-    <div class="mt-auto space-y-2 border-t border-[var(--line)] px-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-4">
-      @if (showJoinAction()) {
-        <button
-          type="button"
-          class="primary-btn flex w-full items-center justify-center gap-2 !px-4 !py-3 text-sm"
-          (click)="openJoin()"
-        >
-          <span class="material-symbols-outlined text-[1.1rem]">mark_email_read</span>
-          <span>{{ joinLabel() }}</span>
-        </button>
-      }
-      @if (showSignInAction()) {
-        <a
-          routerLink="/sign-in"
-          [queryParams]="signInQueryParams()"
-          class="ghost-btn flex w-full items-center justify-center gap-2 !px-4 !py-3 text-sm"
-          (click)="closeMenu()"
-        >
-          <span class="material-symbols-outlined text-[1.1rem]">login</span>
-          <span i18n>Sign in</span>
-        </a>
-      }
-    </div>
+    @if (showJoinAction() || showSignInAction()) {
+      <footer class="workspace-mobile-drawer__footer">
+        @if (showJoinAction()) {
+          <button type="button" class="workspace-mobile-action workspace-mobile-action--primary" (click)="openJoin()">
+            <span class="material-symbols-outlined">mark_email_read</span>
+            <span>{{ joinLabel() }}</span>
+          </button>
+        }
+        @if (showSignInAction()) {
+          <a routerLink="/sign-in" [queryParams]="signInQueryParams()" class="workspace-mobile-action" (click)="closeMenu()">
+            <span class="material-symbols-outlined">login</span>
+            <span i18n>Sign in</span>
+          </a>
+        }
+      </footer>
+    }
   </aside>
 }

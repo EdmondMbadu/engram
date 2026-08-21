@@ -11,6 +11,7 @@ import { getGoogleAdSenseConfig } from '../firebase.config';
 import { GoogleAdSenseService } from '../google-adsense.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
+import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { AccountMenuComponent } from '../account-menu/account-menu';
 
 interface CityDetailSticker {
@@ -31,7 +32,7 @@ interface CityMoodSticker {
 
 @Component({
   selector: 'app-atlas-landing',
-  imports: [FormsModule, RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent, AccountMenuComponent],
+  imports: [FormsModule, RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent, AccountMenuComponent, MobileMenuComponent],
   templateUrl: './atlas-landing.html',
   styleUrl: './atlas-landing.css',
 })

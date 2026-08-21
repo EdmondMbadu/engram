@@ -11908,6 +11908,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       savedBoardIds: [...this.savedBoardIds()],
       likedCardIds: [...this.likedCardIds()],
     }));
+    window.dispatchEvent(new Event('livingwiki:saved-boards-changed'));
   }
 
   private boardActionStorageKey(): string {

@@ -1,4 +1,48 @@
 {
+  "2940010916792941547": {
+    "source": "My City",
+    "file": "src/app/workspace-navigation/workspace-navigation.ts"
+  },
+  "431524018496586400": {
+    "source": "Close More menu",
+    "file": "src/app/workspace-navigation/workspace-navigation-overlay.html"
+  },
+  "4403242770642133191": {
+    "source": "More workspace navigation",
+    "file": "src/app/workspace-navigation/workspace-navigation-overlay.html"
+  },
+  "4704052443330157891": {
+    "source": "Choose a city",
+    "file": "src/app/workspace-navigation/workspace-navigation.ts"
+  },
+  "5537070833438696340": {
+    "source": "My Trove · Starfold City",
+    "file": "src/app/workspace-navigation/workspace-navigation.ts"
+  },
+  "6278157756138747696": {
+    "source": "Current business",
+    "file": "src/app/workspace-navigation/workspace-navigation-overlay.html"
+  },
+  "6350663456736239353": {
+    "source": "LivingWiki workspace",
+    "file": "src/app/workspace-navigation/workspace-navigation-overlay.html"
+  },
+  "6432591717588484003": {
+    "source": "Knowledge tools",
+    "file": "src/app/workspace-navigation/workspace-navigation-overlay.html"
+  },
+  "6750688162598228087": {
+    "source": "LivingWiki workspace navigation",
+    "file": "src/app/workspace-sidebar/workspace-sidebar.html"
+  },
+  "7723284561762033621": {
+    "source": "Current business navigation",
+    "file": "src/app/workspace-navigation/workspace-navigation-overlay.html"
+  },
+  "8838644041016899774": {
+    "source": "LivingWiki menu",
+    "file": "src/app/mobile-menu/mobile-menu.html"
+  },
   "1001680708304794443": {
     "source": "Try a place name, neighborhood, suburb, or nearby town...",
     "file": "src/app/city-places/city-places.html"

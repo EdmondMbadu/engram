@@ -1,15 +1,21 @@
-import { Component, HostListener, computed, inject, input, output, signal } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild, computed, inject, input, output, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AtlasService } from '../atlas.service';
+import { AuthService } from '../auth.service';
+import {
+  WorkspaceNavigationOverlayService,
+  WorkspaceNavigationService,
+} from '../workspace-navigation/workspace-navigation';
 
 @Component({
   selector: 'app-mobile-menu',
   imports: [RouterLink],
   templateUrl: './mobile-menu.html',
-  host: { class: 'md:hidden' },
+  styleUrl: './mobile-menu.css',
+  host: { class: 'lg:hidden' },
 })
 export class MobileMenuComponent {
-  /** Which nav item is currently active */
+  @ViewChild('menuTrigger') private menuTrigger?: ElementRef<HTMLButtonElement>;
   readonly activePage = input<string>('home');
   readonly publicSlug = input<string | null>(null);
   readonly hidePublicKnowledgeSurfaces = input<boolean>(false);
@@ -24,45 +30,43 @@ export class MobileMenuComponent {
   readonly moreOpen = signal(false);
 
   private readonly atlasService = inject(AtlasService);
+  private readonly authService = inject(AuthService);
+  readonly navigation = inject(WorkspaceNavigationService);
+  readonly overlay = inject(WorkspaceNavigationOverlayService);
+  readonly canonicalWorkspace = computed(() =>
+    this.authService.isAuthenticated() && this.adminNavigation() && !this.publicSlug()?.trim(),
+  );
   readonly atlasWikiLink = this.atlasService.activeAtlasWikiLink;
 
-  readonly primaryNavItems = [
-    { route: '/wikis', icon: 'dashboard', label: $localize`Wikis`, key: 'wikis', workspaceOnly: true },
+  readonly publicPrimaryItems = [
     { route: '/chat', icon: 'chat', label: $localize`Chat`, key: 'chat' },
-    { route: '/business', icon: 'storefront', label: $localize`Business`, key: 'business', workspaceOnly: true },
-  ];
-
-  readonly moreNavItems = [
-    { route: '/dymaxion', icon: 'public', label: $localize`World Map`, key: 'dymaxion', workspaceOnly: true },
-    { route: '/videos', icon: 'video_library', label: $localize`My Videos`, key: 'videos', workspaceOnly: true },
     { route: '/upload', icon: 'neurology', label: $localize`Upload`, key: 'upload' },
     { route: '/library', icon: 'library_books', label: $localize`Source Files`, key: 'library' },
-    { route: '/scrapper', icon: 'travel_explore', label: $localize`Scraper`, key: 'scrapper', workspaceOnly: true },
     { route: '/wiki', icon: 'menu_book', label: $localize`Wiki`, key: 'wiki' },
-    { route: '/profile', icon: 'account_circle', label: $localize`Profile`, key: 'profile', workspaceOnly: true },
-    { route: '/atlases', icon: 'settings', label: $localize`Settings`, key: 'settings', workspaceOnly: true },
   ];
-
-  readonly moreActive = computed(() =>
-    this.moreNavItems.some(
-      (item) => this.activePage() === item.key && this.shouldShowItem(item.key, item.workspaceOnly),
-    ),
-  );
-  readonly showMoreItems = computed(() => this.moreOpen() || this.moreActive());
-  readonly hasVisibleMoreItems = computed(() =>
-    this.moreNavItems.some((item) => this.shouldShowItem(item.key, item.workspaceOnly)),
-  );
 
   toggleMenu(): void {
     this.menuOpen.update((open) => !open);
-  }
-
-  toggleMore(): void {
-    this.moreOpen.update((open) => !open);
+    if (!this.menuOpen()) this.moreOpen.set(false);
   }
 
   closeMenu(): void {
     this.menuOpen.set(false);
+    this.moreOpen.set(false);
+  }
+
+  openMore(): void {
+    if (!this.canonicalWorkspace()) {
+      this.moreOpen.update((open) => !open);
+      return;
+    }
+    this.closeMenu();
+    this.overlay.openMore(this.menuTrigger?.nativeElement);
+  }
+
+  openAbout(): void {
+    this.closeMenu();
+    this.overlay.openAbout(this.menuTrigger?.nativeElement);
   }
 
   openJoin(): void {
@@ -70,33 +74,19 @@ export class MobileMenuComponent {
     this.join.emit();
   }
 
-  shouldShowItem(key: string, workspaceOnly?: boolean): boolean {
-    if (!this.adminNavigation()) {
-      return key === 'chat';
-    }
-
-    if (this.publicSlug() && workspaceOnly) {
-      return false;
-    }
-
-    if (this.hidePublicKnowledgeSurfaces() && key === 'library') {
-      return false;
-    }
-
+  shouldShowPublicItem(key: string): boolean {
+    if (!this.adminNavigation()) return key === 'chat';
+    if (this.hidePublicKnowledgeSurfaces() && key === 'library') return false;
     return true;
   }
 
-  routeFor(key: string, fallbackRoute: string): string {
+  publicRouteFor(key: string, fallbackRoute: string): string {
     const slug = this.publicSlug()?.trim();
     if (slug) {
       if (key === 'wiki') return `/wiki/${slug}`;
       return `/${key}/${slug}`;
     }
     return key === 'wiki' ? this.atlasWikiLink() : fallbackRoute;
-  }
-
-  homeLink(): string {
-    return '/';
   }
 
   @HostListener('document:keydown.escape')

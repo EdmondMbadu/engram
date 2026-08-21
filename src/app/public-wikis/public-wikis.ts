@@ -29,6 +29,7 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { AccountMenuComponent } from '../account-menu/account-menu';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 import { LanguageSwitcherComponent } from '../language-switcher/language-switcher';
+import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import type { VideoLibraryItem } from '../video-library/video-library.models';
 
 const CITIES_CATEGORY = 'Cities';
@@ -550,6 +551,7 @@ interface PublicWikiFeelingSticker {
     AccountMenuComponent,
     WorkspaceSidebarComponent,
     LanguageSwitcherComponent,
+    MobileMenuComponent,
   ],
   templateUrl: './public-wikis.html',
   styleUrl: './public-wikis.css',
@@ -603,7 +605,6 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
   readonly mobileDiscoverHasMore = signal(false);
   readonly mobileBoardsLoadingMore = signal(false);
   readonly mobileDiscoverLoadingMore = signal(false);
-  readonly mobileDrawerOpen = signal(false);
   readonly desktopSidebarClosed = signal(false);
   readonly mobileAllCitiesOpen = signal(false);
   readonly directoryAutocompleteOpen = signal(false);
@@ -1184,39 +1185,7 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
   }
 
   toggleHomeMenu(): void {
-    if (this.isDesktopHomeShell()) {
-      this.desktopSidebarClosed.update((closed) => !closed);
-      return;
-    }
-    this.mobileDrawerOpen.update((open) => !open);
-  }
-
-  closeMobileDrawer(): void {
-    if (this.isDesktopHomeShell()) {
-      return;
-    }
-    this.mobileDrawerOpen.set(false);
-  }
-
-  scrollToHomeSection(sectionId: string): void {
-    this.closeMobileDrawer();
-    if (sectionId === 'songs' || sectionId === 'trips') {
-      void this.router.navigate([`/${sectionId}`]);
-      return;
-    }
-    if (!this.isBrowser) {
-      return;
-    }
-
-    const targetId = sectionId.startsWith('mobile-') ? sectionId : `mobile-${sectionId}`;
-    const scrollToTarget = () => this.scrollHomeTargetIntoView(targetId);
-
-    if (window.location.pathname !== '/home') {
-      void this.router.navigate(['/home']).then(() => setTimeout(scrollToTarget, 0));
-      return;
-    }
-
-    requestAnimationFrame(scrollToTarget);
+    this.desktopSidebarClosed.update((closed) => !closed);
   }
 
   private async handleMobileHomeHash(): Promise<void> {
@@ -1551,10 +1520,6 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
     }
   }
 
-  private isDesktopHomeShell(): boolean {
-    return this.isBrowser && window.matchMedia('(min-width: 1024px)').matches;
-  }
-
   private async loadMobileBoards(): Promise<void> {
     if (!this.isBrowser) {
       return;
@@ -1758,6 +1723,7 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
       l: [...this.likedBoardIds()],
       s: [...this.savedBoardIds()],
     }));
+    window.dispatchEvent(new Event('livingwiki:saved-boards-changed'));
   }
 
   private boardActionStorageKey(): string {

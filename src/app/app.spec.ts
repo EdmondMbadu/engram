@@ -2,6 +2,9 @@ import { provideZonelessChangeDetection, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { App } from './app';
 import { SpotifyPlaybackService } from './spotify-playback.service';
+import { provideRouter } from '@angular/router';
+import { AuthService } from './auth.service';
+import { AtlasService } from './atlas.service';
 
 describe('App', () => {
   beforeEach(async () => {
@@ -9,6 +12,20 @@ describe('App', () => {
       imports: [App],
       providers: [
         provideZonelessChangeDetection(),
+        provideRouter([]),
+        {
+          provide: AuthService,
+          useValue: {
+            uid: signal(''),
+            profile: signal(null),
+            isAuthenticated: signal(false),
+            signOut: jasmine.createSpy('signOut').and.resolveTo(),
+          },
+        },
+        {
+          provide: AtlasService,
+          useValue: { activeAtlasWikiLink: signal('/wiki') },
+        },
         {
           provide: SpotifyPlaybackService,
           useValue: {

@@ -11,6 +11,8 @@ import {
   type BoardInsightsRange,
 } from '../board-analytics.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
+import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
+import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 
 type TrackingSourceOption = {
   value: string;
@@ -20,7 +22,7 @@ type TrackingSourceOption = {
 
 @Component({
   selector: 'app-board-insights',
-  imports: [RouterLink, DatePipe, DecimalPipe, ThemeToggleComponent],
+  imports: [RouterLink, DatePipe, DecimalPipe, ThemeToggleComponent, WorkspaceSidebarComponent, MobileMenuComponent],
   templateUrl: './board-insights.html',
   styleUrl: './board-insights.css',
 })

@@ -1,10 +1,13 @@
 <div class="min-h-screen bg-[var(--bg)] text-[var(--text)]">
   <header class="border-b border-[var(--line)] bg-[var(--surface)]">
     <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+      <div class="flex min-w-0 items-center gap-3">
+      @if (authService.isAuthenticated()) { <app-mobile-menu activePage="business"></app-mobile-menu> }
       <a [routerLink]="detailPath()" class="flex min-w-0 items-center gap-3">
         <span class="material-symbols-outlined text-[var(--accent)]">arrow_back</span>
         <span class="truncate text-sm font-black" i18n>Back to {{ businessName() }}</span>
       </a>
+      </div>
       <div class="flex items-center gap-2">
         <a [routerLink]="detailPath()" class="hidden rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-sm font-bold text-[var(--text)] sm:inline-flex" i18n>View page</a>
         <app-theme-toggle></app-theme-toggle>

@@ -4,6 +4,8 @@
 
     <main class="theme-shell relative flex min-w-0 flex-1 flex-col overflow-y-auto">
       <header class="theme-nav sticky top-0 z-40 flex h-20 items-center justify-between border-b px-5 backdrop-blur-xl md:px-8">
+        <div class="flex min-w-0 items-center gap-3">
+        <app-mobile-menu activePage="settings"></app-mobile-menu>
         <a routerLink="/wikis" class="flex min-w-0 items-center gap-4">
           <div class="flex h-10 w-40 shrink-0 items-center justify-start">
             <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo" class="h-full w-full object-contain"  i18n-alt/>
@@ -13,6 +15,7 @@
             <h1 class="truncate text-xl font-black tracking-tighter" i18n>Wiki Admin</h1>
           </div>
         </a>
+        </div>
 
         <div class="flex items-center gap-3">
           <a

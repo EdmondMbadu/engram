@@ -1,13 +1,16 @@
 <div class="min-h-screen bg-[var(--bg)] text-[var(--text)] selection:bg-[var(--accent)] selection:text-[var(--accent-contrast)]">
   @if (isSignedIn() && (isHomeRoute() || isDiscoverRoute())) {
   <div class="mobile-public-home" [class.sidebar-closed]="desktopSidebarClosed()">
+    <app-workspace-sidebar active="home" [rail]="true" [collapsed]="desktopSidebarClosed()"></app-workspace-sidebar>
+    <div class="mobile-home-surface">
     <header class="mobile-home-header">
+      <app-mobile-menu activePage="home"></app-mobile-menu>
       <button
         type="button"
-        class="mobile-burger"
-        aria-label="Open menu"
+        class="mobile-burger mobile-burger--desktop"
+        [attr.aria-label]="desktopSidebarClosed() ? 'Open sidebar' : 'Close sidebar'"
         (click)="toggleHomeMenu()"
-       i18n-aria-label>
+      >
         <span></span>
         <span></span>
         <span></span>
@@ -27,52 +30,6 @@
         <app-account-menu></app-account-menu>
       </div>
     </header>
-
-    <div
-      class="mobile-veil"
-      [class.open]="mobileDrawerOpen()"
-      (click)="closeMobileDrawer()"
-    ></div>
-    <aside class="mobile-drawer" [class.open]="mobileDrawerOpen()" [class.desktop-closed]="desktopSidebarClosed()" aria-label="Mobile menu" i18n-aria-label>
-      <div class="mobile-drawer-brand">
-        <img src="/assets/image/lucky-paper-crane.png" alt="" />
-        <div>
-          <b><span>Living</span>Wiki</b>
-        </div>
-      </div>
-      <nav>
-        <button type="button" (click)="scrollToHomeSection('discover')" i18n>
-          <span class="material-symbols-outlined">travel_explore</span>
-          Discover
-        </button>
-        <button type="button" (click)="scrollToHomeSection('city')" i18n>
-          <img [src]="homeIconUrls.cities" alt="" class="mobile-drawer-icon-image" />
-          My City · {{ mobileSelectedCityName() }}
-        </button>
-        @for (section of mobileSections(); track section.id) {
-          <button type="button" (click)="scrollToHomeSection(section.id)">
-            @if (section.iconImageUrl) {
-              <img [src]="section.iconImageUrl" alt="" class="mobile-drawer-icon-image" />
-            } @else {
-              <span class="material-symbols-outlined">{{ section.icon }}</span>
-            }
-            {{ section.label }}
-          </button>
-        }
-        <a routerLink="/trove" class="mobile-drawer-game" (click)="closeMobileDrawer()" i18n>
-          <img [src]="homeIconUrls.trove" alt="" class="mobile-drawer-icon-image" />
-          My Trove · Starfold City
-        </a>
-        <a routerLink="/business" (click)="closeMobileDrawer()" i18n>
-          <span class="material-symbols-outlined">storefront</span>
-          Business
-        </a>
-        <button type="button" (click)="openProductVideo(); closeMobileDrawer()" i18n>
-          <span class="material-symbols-outlined">info</span>
-          About
-        </button>
-      </nav>
-    </aside>
 
     @if (isHomeRoute()) {
     <main class="mobile-home-main">
@@ -544,6 +501,7 @@
       </section>
     </main>
     }
+    </div>
   </div>
   } @else {
 

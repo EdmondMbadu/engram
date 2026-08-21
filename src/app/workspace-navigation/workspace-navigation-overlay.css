@@ -1,0 +1,216 @@
+:host {
+  position: relative;
+  z-index: 1000;
+}
+
+.workspace-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  overflow-y: auto;
+  background: rgba(6, 26, 16, 0.66);
+  padding: 1.25rem;
+  backdrop-filter: blur(12px);
+}
+
+.workspace-dialog {
+  width: min(100%, 58rem);
+  max-height: min(88vh, 52rem);
+  overflow: hidden;
+  border: 1px solid rgba(31, 60, 44, 0.18);
+  border-radius: 1.6rem;
+  background: #fbfaf5;
+  box-shadow: 0 34px 100px rgba(4, 24, 13, 0.34);
+  color: #173a29;
+  outline: none;
+}
+
+.workspace-dialog__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid rgba(31, 60, 44, 0.12);
+  padding: 1.25rem 1.4rem;
+}
+
+.workspace-dialog__header p,
+.workspace-dialog__section h3,
+.workspace-dialog__business-heading small {
+  margin: 0;
+  color: #3f7245;
+  font-size: 0.67rem;
+  font-weight: 950;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.workspace-dialog__header h2 {
+  margin: 0.25rem 0 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.65rem, 4vw, 2.35rem);
+  line-height: 1;
+}
+
+.workspace-dialog__close {
+  display: inline-grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid rgba(31, 60, 44, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.8);
+  color: inherit;
+  cursor: pointer;
+}
+
+.workspace-dialog__body {
+  display: grid;
+  gap: 1.4rem;
+  max-height: calc(88vh - 6.25rem);
+  overflow-y: auto;
+  padding: 1.4rem;
+}
+
+.workspace-dialog__section h3 {
+  margin-bottom: 0.7rem;
+}
+
+.workspace-dialog__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.workspace-dialog__item,
+.workspace-dialog__signout {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.75rem;
+  border: 1px solid rgba(31, 60, 44, 0.13);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.78);
+  color: #244f35;
+  padding: 0.9rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 850;
+  text-align: left;
+  text-decoration: none;
+  transition: border-color 140ms ease, background-color 140ms ease, transform 140ms ease;
+}
+
+.workspace-dialog__item:hover,
+.workspace-dialog__item:focus-visible,
+.workspace-dialog__item.is-active {
+  border-color: rgba(30, 166, 74, 0.48);
+  background: #eef6eb;
+  color: #285b35;
+  transform: translateY(-1px);
+}
+
+.workspace-dialog__item > span:nth-child(2) {
+  min-width: 0;
+  flex: 1;
+}
+
+.workspace-dialog__item > .material-symbols-outlined:first-child {
+  color: #1ea64a;
+}
+
+.workspace-dialog__arrow {
+  color: #718077;
+  font-size: 1rem;
+}
+
+.workspace-dialog__business {
+  border-top: 1px solid rgba(31, 60, 44, 0.12);
+  padding-top: 1.25rem;
+}
+
+.workspace-dialog__business-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.workspace-dialog__business-heading strong,
+.workspace-dialog__business-heading span {
+  display: block;
+}
+
+.workspace-dialog__business-heading > span:last-child {
+  color: #718077;
+  font-size: 0.75rem;
+  font-weight: 750;
+}
+
+.workspace-dialog__account {
+  border-top: 1px solid rgba(31, 60, 44, 0.12);
+  padding-top: 1.25rem;
+}
+
+.workspace-dialog__signout {
+  width: 100%;
+  justify-content: center;
+  color: #a33434;
+  cursor: pointer;
+}
+
+.workspace-dialog__signout:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+.workspace-dialog--video {
+  width: min(100%, 64rem);
+  background: #000;
+  color: #fff;
+}
+
+.workspace-dialog__header--dark {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.92);
+}
+
+.workspace-dialog__header--dark p {
+  color: #8be4a2;
+}
+
+.workspace-dialog__header--dark .workspace-dialog__close {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.workspace-dialog__video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  object-fit: contain;
+}
+
+@media (max-width: 640px) {
+  .workspace-overlay {
+    align-items: end;
+    padding: 0;
+  }
+
+  .workspace-dialog {
+    max-height: 92vh;
+    border-radius: 1.5rem 1.5rem 0 0;
+  }
+
+  .workspace-dialog__body {
+    max-height: calc(92vh - 5.75rem);
+  }
+
+  .workspace-dialog__grid {
+    grid-template-columns: 1fr;
+  }
+}

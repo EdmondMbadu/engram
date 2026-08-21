@@ -9,6 +9,7 @@ import { BusinessClaimService, type BusinessClaimWorkspaceRecord } from '../busi
 import { generateQrSvg } from '../qr-code';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
+import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { AccountMenuComponent } from '../account-menu/account-menu';
 
 const BADGE_RING_IMAGE_URL = '/assets/image/ring-countries.png';
@@ -77,7 +78,7 @@ const BUSINESS_LANGUAGES: BusinessLanguage[] = [
 
 @Component({
   selector: 'app-business-detail',
-  imports: [RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent, AccountMenuComponent],
+  imports: [RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent, AccountMenuComponent, MobileMenuComponent],
   templateUrl: './business-detail.html',
   styleUrl: './business-detail.css',
 })

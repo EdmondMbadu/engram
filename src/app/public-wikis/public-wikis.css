@@ -48,7 +48,7 @@
   --mobile-mint: #d9f2e2;
   --mobile-paper: #eef9f2;
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow-x: clip;
   background: #ffffff;
   color: var(--mobile-deep);
   font-family: Inter, system-ui, sans-serif;
@@ -86,6 +86,10 @@
 .mobile-burger {
   flex-direction: column;
   gap: 0.3rem;
+}
+
+.mobile-burger--desktop {
+  display: none;
 }
 
 .mobile-burger span {
@@ -168,113 +172,6 @@
   color: var(--mobile-deep);
   font-size: 0.68rem;
   font-weight: 950;
-}
-
-.mobile-veil {
-  position: fixed;
-  inset: 0;
-  z-index: 90;
-  display: none;
-  background: rgba(6, 26, 16, 0.5);
-}
-
-.mobile-veil.open {
-  display: block;
-}
-
-.mobile-drawer {
-  position: fixed;
-  inset: 0 auto 0 0;
-  z-index: 100;
-  width: min(18.5rem, 82vw);
-  overflow-y: auto;
-  background: #ffffff;
-  box-shadow: 14px 0 40px rgba(0, 0, 0, 0.25);
-  padding: 1rem;
-  transform: translateX(-100%);
-  transition: transform 220ms ease;
-}
-
-.mobile-drawer.open {
-  transform: translateX(0);
-}
-
-.mobile-drawer-brand {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  margin-bottom: 0.9rem;
-}
-
-.mobile-drawer-brand img {
-  width: 2.6rem;
-  height: auto;
-}
-
-.mobile-drawer-brand b {
-  display: block;
-}
-
-.mobile-drawer-brand b {
-  color: var(--text, var(--mobile-deep));
-  font-size: 1rem;
-  font-weight: 950;
-}
-
-.mobile-drawer-brand b span {
-  color: var(--mobile-green);
-}
-
-.mobile-drawer nav {
-  display: grid;
-  gap: 0.25rem;
-}
-
-.mobile-drawer a,
-.mobile-drawer button {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  gap: 0.75rem;
-  border: 0;
-  border-radius: 0.8rem;
-  background: transparent;
-  color: var(--mobile-deep);
-  padding: 0.7rem 0.6rem;
-  text-align: left;
-  text-decoration: none;
-  font: inherit;
-  font-size: 0.95rem;
-  font-weight: 850;
-}
-
-.mobile-drawer a:hover,
-.mobile-drawer button:hover {
-  background: var(--mobile-paper);
-}
-
-.mobile-drawer .material-symbols-outlined {
-  width: 2.2rem;
-  text-align: center;
-  color: var(--mobile-green);
-  font-variation-settings: 'FILL' 1;
-}
-
-.mobile-drawer-icon-image {
-  width: 2.2rem;
-  height: 2.2rem;
-  flex: 0 0 2.2rem;
-  object-fit: contain;
-}
-
-.mobile-drawer-game {
-  margin-top: 0.4rem;
-  background: var(--mobile-deep) !important;
-  color: var(--mobile-yellow) !important;
-}
-
-.mobile-drawer-game .material-symbols-outlined {
-  color: var(--mobile-yellow);
 }
 
 .mobile-home-main {
@@ -2031,42 +1928,38 @@ button.mobile-talk-action {
 
 @media (min-width: 1024px) {
   .mobile-public-home {
+    display: flex;
+    padding-left: 0 !important;
+  }
+
+  .mobile-home-surface {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .mobile-burger--desktop {
+    display: inline-flex;
+  }
+
+  .mobile-public-home {
     --mobile-sidebar: 18rem;
-    --mobile-shell: min(calc(100% - var(--mobile-sidebar) - 2rem), 58rem);
-    padding-left: var(--mobile-sidebar);
-    transition: padding-left 220ms ease;
+    --mobile-shell: min(calc(100% - 2rem), 58rem);
+    padding-left: 0;
   }
 
   .mobile-public-home.sidebar-closed {
     padding-left: 0;
   }
 
-  .mobile-drawer {
-    z-index: 70;
-    width: var(--mobile-sidebar);
-    border-right: 1px solid rgba(13, 56, 35, 0.08);
-    box-shadow: 10px 0 34px rgba(13, 56, 35, 0.12);
-    transform: translateX(0);
-  }
-
-  .mobile-drawer.desktop-closed {
-    transform: translateX(-100%);
-  }
-
-  .mobile-veil.open {
-    display: none;
-  }
-
   .mobile-home-header {
-    left: var(--mobile-sidebar);
-    width: calc(100% - var(--mobile-sidebar));
+    left: auto;
+    width: 100%;
     padding-right: max(1.5rem, calc((100vw - var(--mobile-sidebar) - var(--mobile-shell)) / 2));
     padding-left: max(1.5rem, calc((100vw - var(--mobile-sidebar) - var(--mobile-shell)) / 2));
     transition: left 220ms ease, width 220ms ease;
   }
 
   .mobile-public-home.sidebar-closed .mobile-home-header {
-    left: 0;
     width: 100%;
   }
 
@@ -2124,29 +2017,6 @@ button.mobile-talk-action {
     grid-column: 3;
     justify-self: end;
     margin: 0;
-  }
-
-  .mobile-drawer {
-    width: var(--mobile-sidebar);
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.6), transparent 42%),
-      #faf9f4;
-    padding: 1.1rem 1rem 13rem;
-  }
-
-  .mobile-drawer a,
-  .mobile-drawer button {
-    font-size: 0.9rem;
-  }
-
-  .mobile-drawer nav > button:first-child {
-    background: linear-gradient(90deg, #eef2e8, rgba(238, 242, 232, 0.5));
-    color: #35643f;
-  }
-
-  .mobile-drawer-game {
-    background: #f7f1e3 !important;
-    color: #9a711c !important;
   }
 
   .mobile-home-main {

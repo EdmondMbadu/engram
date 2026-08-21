@@ -1872,3 +1872,7 @@ body .chat-suggestion-card__icon {
   .song-player-card__spotify-badge { display: none; }
   .song-player-card__actions, .song-player-card__actions a, .song-preview-button--juke, .song-player-card__actions .spotify-full-play { width: 100%; }
 }
+html.workspace-overlay-open,
+html.workspace-overlay-open body {
+  overflow: hidden;
+}

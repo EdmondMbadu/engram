@@ -1,169 +1,50 @@
 <aside
-  class="hidden shrink-0 border-[var(--line)] bg-[var(--surface)]"
-  [class.theme-sidebar]="rail()"
-  [class.h-screen]="rail()"
-  [class.w-72]="rail()"
-  [class.border-r]="rail()"
-  [class.px-5]="rail()"
-  [class.py-6]="rail()"
-  [class.md:sticky]="rail()"
-  [class.md:top-0]="rail()"
-  [class.md:self-start]="rail()"
-  [class.md:max-h-screen]="rail()"
-  [class.overflow-y-auto]="rail()"
-  [class.md:flex]="rail()"
-  [class.md:flex-col]="rail()"
-  [class.h-max]="!rail()"
-  [class.rounded-3xl]="!rail()"
-  [class.border]="!rail()"
-  [class.p-4]="!rail()"
-  [class.shadow-[var(--shadow-floating)]]="!rail()"
-  [class.lg:sticky]="!rail()"
-  [class.lg:top-6]="!rail()"
-  [class.lg:block]="!rail()"
+  class="workspace-sidebar"
+  [class.workspace-sidebar--rail]="rail()"
+  [class.workspace-sidebar--card]="!rail()"
+  [class.workspace-sidebar--collapsed]="collapsed()"
+  aria-label="LivingWiki workspace navigation"
+  i18n-aria-label
 >
-  <div class="px-2 py-2">
-    <a routerLink="/home" class="flex items-center">
-      <span class="inline-flex min-w-0 items-center gap-2 text-[1.25rem] font-black leading-none tracking-normal text-[var(--text)]">
-        <img src="/assets/image/lucky-paper-crane.png" alt="" class="h-10 w-auto shrink-0 object-contain" />
-        <span class="truncate"><span class="text-[var(--accent)]">Living</span>Wiki</span>
-      </span>
-    </a>
-  </div>
+  <a routerLink="/home" class="workspace-sidebar__brand" aria-label="LivingWiki home" i18n-aria-label>
+    <img src="/assets/image/lucky-paper-crane.png" alt="" />
+    <span><b>Living</b>Wiki</span>
+  </a>
 
-  <div class="mt-5 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] p-2.5">
-    <app-atlas-switcher></app-atlas-switcher>
-  </div>
-
-  <section class="mt-5">
-    <p class="px-2 text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]" i18n>Workspace</p>
-    <nav class="mt-2 grid gap-1 text-sm font-bold" aria-label="Workspace navigation" i18n-aria-label>
-      @for (item of workspacePrimaryItems(); track item.key) {
-        <a
-          [routerLink]="item.route"
-          class="flex items-center gap-3 rounded-2xl border border-transparent px-3 py-3 transition hover:border-[var(--line)] hover:bg-[var(--soft-fill)] hover:text-[var(--text)]"
-          [class.bg-[var(--soft-fill)]]="isPrimaryActive(item.key)"
-          [class.text-[var(--accent)]]="isPrimaryActive(item.key)"
-          [class.text-[var(--muted)]]="!isPrimaryActive(item.key)"
-        >
-          <span class="material-symbols-outlined text-[1.1rem]">{{ item.icon }}</span>
-          <span>{{ item.label }}</span>
-        </a>
-      }
-
-      <div class="mt-2 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] p-1.5">
-        <button
-          type="button"
-          class="flex w-full items-center gap-3 rounded-xl px-2.5 py-2.5 text-left transition hover:bg-[var(--surface)] hover:text-[var(--text)]"
-          [class.bg-[var(--surface)]]="showMoreItems()"
-          [class.text-[var(--accent)]]="moreActive()"
-          [class.text-[var(--muted)]]="!moreActive()"
-          [attr.aria-expanded]="showMoreItems()"
-          aria-controls="workspace-more-items"
-          (click)="toggleMore()"
-        >
-          <span class="material-symbols-outlined text-[1.1rem]">menu</span>
-          <span class="min-w-0 flex-1" i18n>More</span>
-          <span
-            class="material-symbols-outlined text-[1rem] transition-transform"
-            [class.rotate-180]="showMoreItems()"
-          >
-            expand_more
-          </span>
-        </button>
-
-        @if (showMoreItems()) {
-          <div id="workspace-more-items" class="mt-1 grid gap-0.5 border-t border-[var(--line)] pt-1.5">
-            @for (item of workspaceMoreItems(); track item.key) {
-              <a
-                [routerLink]="item.route"
-                class="flex items-center gap-2.5 rounded-xl border border-transparent px-2.5 py-2 text-xs font-black transition hover:border-[var(--line)] hover:bg-[var(--surface)] hover:text-[var(--text)]"
-                [class.border-[var(--accent)]]="isActive(item.key)"
-                [class.bg-[var(--surface)]]="isActive(item.key)"
-                [class.text-[var(--accent)]]="isActive(item.key)"
-                [class.text-[var(--muted)]]="!isActive(item.key)"
-              >
-                <span class="material-symbols-outlined text-[1rem]">{{ item.icon }}</span>
-                <span class="min-w-0 truncate">{{ item.label }}</span>
-              </a>
-            }
-          </div>
-        }
-      </div>
-    </nav>
-  </section>
-
-  @if (showBusinessSection()) {
-    <section class="mt-5 border-t border-[var(--line)] pt-5">
-      <div class="rounded-2xl border border-[var(--accent)]/25 bg-[var(--soft-fill)] p-3">
-        <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--accent)]" i18n>Current Business</p>
-        <h2 class="mt-2 truncate text-base font-black tracking-tight">{{ businessName() }}</h2>
-        <div class="mt-1 flex items-center gap-2 text-xs font-bold text-[var(--muted)]">
-          @if (businessCity()) {
-            <span class="truncate">{{ businessCity() }}</span>
-          }
-          @if (businessStatus()) {
-            <span class="h-1 w-1 rounded-full bg-[var(--muted)]"></span>
-            <span class="shrink-0">{{ businessStatus() }}</span>
-          }
-        </div>
-      </div>
-
-      <nav class="mt-2 grid gap-1 text-sm font-bold" aria-label="Business navigation" i18n-aria-label>
-        @for (item of businessItems(); track item.key) {
-          <a
-            [routerLink]="item.route"
-            class="flex items-center gap-3 rounded-2xl border border-transparent px-3 py-3 transition hover:border-[var(--line)] hover:bg-[var(--soft-fill)] hover:text-[var(--text)]"
-            [class.bg-[var(--soft-fill)]]="isActive(item.key)"
-            [class.text-[var(--accent)]]="isActive(item.key)"
-            [class.text-[var(--muted)]]="!isActive(item.key)"
-          >
-            <span class="material-symbols-outlined text-[1.1rem]">{{ item.icon }}</span>
-            <span>{{ item.label }}</span>
-          </a>
-        }
-        @if (businessChatGuidePath()) {
-          <a
-            [routerLink]="businessChatGuidePath()"
-            [queryParams]="businessChatGuideQueryParams()"
-            class="mt-2 flex items-center justify-center gap-2 rounded-2xl bg-[var(--accent)] px-3 py-3 text-sm font-black text-[var(--accent-contrast)] transition hover:opacity-90"
-          >
-            <span class="material-symbols-outlined text-[1rem]">graphic_eq</span>
-            <span i18n>Test live guide</span>
-          </a>
-        }
-      </nav>
-    </section>
-  }
-
-  <section class="mt-5 border-t border-[var(--line)] pt-5">
-    <div class="flex items-center gap-3 px-2">
-      <span class="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[var(--line)] bg-[var(--soft-fill)] text-sm font-black text-[var(--accent)]">
-        @if (userPhotoUrl()) {
-          <img [src]="userPhotoUrl()" [alt]="userName() + ' profile photo'" class="h-full w-full object-cover" />
+  <nav class="workspace-sidebar__nav" aria-label="Workspace navigation" i18n-aria-label>
+    @for (item of navigation.primaryItems(); track item.key) {
+      <a
+        [routerLink]="item.route"
+        [fragment]="item.fragment"
+        class="workspace-sidebar__item"
+        [class.is-active]="navigation.isActive(item.key)"
+        [class.workspace-sidebar__item--trove]="item.key === 'trove'"
+        [attr.aria-current]="navigation.isActive(item.key) ? 'page' : null"
+      >
+        @if (item.iconImageUrl) {
+          <img [src]="item.iconImageUrl" alt="" class="workspace-sidebar__icon-image" />
         } @else {
-          <span
-            class="flex h-full w-full items-center justify-center"
-            [style.background]="'radial-gradient(circle at 28% 22%, rgba(255,255,255,0.84), transparent 30%), linear-gradient(135deg, ' + userIcon().from + ', ' + userIcon().to + ')'"
-          >
-            <span class="material-symbols-outlined text-[1.35rem]" [style.color]="userIcon().ink">{{ userIcon().icon }}</span>
-          </span>
+          <span class="material-symbols-outlined">{{ item.icon }}</span>
         }
-      </span>
-      <span class="min-w-0">
-        <span class="block truncate text-sm font-black text-[var(--text)]">{{ userName() }}</span>
-        <span class="mt-0.5 block truncate text-xs text-[var(--muted)]">{{ userEmail() }}</span>
-      </span>
-    </div>
+        <span>{{ item.label }}</span>
+      </a>
+    }
+
+    <button type="button" class="workspace-sidebar__item" (click)="openAbout($event)">
+      <span class="material-symbols-outlined">info</span>
+      <span i18n>About</span>
+    </button>
 
     <button
       type="button"
-      class="mt-4 flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-left text-sm font-bold text-[var(--muted)] transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)] disabled:cursor-wait disabled:opacity-60"
-      [disabled]="signingOut()"
-      (click)="signOut()"
+      class="workspace-sidebar__item workspace-sidebar__more"
+      [class.is-active]="navigation.moreActive()"
+      aria-haspopup="dialog"
+      (click)="openMore($event)"
     >
-      <span class="material-symbols-outlined text-[1.1rem]">logout</span>
-      <span>{{ signingOut() ? 'Signing out...' : 'Sign out' }}</span>
+      <span class="material-symbols-outlined">apps</span>
+      <span i18n>More</span>
+      <span class="material-symbols-outlined workspace-sidebar__more-arrow">arrow_outward</span>
     </button>
-  </section>
+  </nav>
 </aside>

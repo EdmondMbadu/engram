@@ -1,0 +1,113 @@
+@if (overlay.moreOpen()) {
+  <div class="workspace-overlay" (click)="onBackdropClick($event)">
+    <section
+      #dialogPanel
+      class="workspace-dialog workspace-dialog--more"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="workspace-more-title"
+      tabindex="-1"
+      (keydown)="onDialogKeydown($event)"
+    >
+      <header class="workspace-dialog__header">
+        <div>
+          <p i18n>LivingWiki workspace</p>
+          <h2 id="workspace-more-title" i18n>More</h2>
+        </div>
+        <button type="button" class="workspace-dialog__close" aria-label="Close More menu" (click)="close()" i18n-aria-label>
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </header>
+
+      <div class="workspace-dialog__body">
+        <section class="workspace-dialog__section">
+          <h3 i18n>Knowledge tools</h3>
+          <nav class="workspace-dialog__grid" aria-label="More workspace navigation" i18n-aria-label>
+            @for (item of navigation.moreItems(); track item.key) {
+              <a
+                [routerLink]="item.route"
+                class="workspace-dialog__item"
+                [class.is-active]="navigation.isActive(item.key)"
+                (click)="close()"
+              >
+                <span class="material-symbols-outlined">{{ item.icon }}</span>
+                <span>{{ item.label }}</span>
+                <span class="material-symbols-outlined workspace-dialog__arrow">arrow_forward</span>
+              </a>
+            }
+          </nav>
+        </section>
+
+        @if (navigation.businessContext(); as business) {
+          <section class="workspace-dialog__section workspace-dialog__business">
+            <div class="workspace-dialog__business-heading">
+              <span>
+                <small i18n>Current business</small>
+                <strong>{{ business.name }}</strong>
+              </span>
+              @if (business.city || business.status) {
+                <span>{{ business.city }} @if (business.city && business.status) { · } {{ business.status }}</span>
+              }
+            </div>
+            <nav class="workspace-dialog__grid" aria-label="Current business navigation" i18n-aria-label>
+              @for (item of navigation.businessItems(); track item.key) {
+                <a
+                  [routerLink]="item.route"
+                  [queryParams]="item.queryParams"
+                  class="workspace-dialog__item"
+                  (click)="close()"
+                >
+                  <span class="material-symbols-outlined">{{ item.icon }}</span>
+                  <span>{{ item.label }}</span>
+                  <span class="material-symbols-outlined workspace-dialog__arrow">arrow_forward</span>
+                </a>
+              }
+            </nav>
+          </section>
+        }
+
+        <section class="workspace-dialog__section workspace-dialog__account">
+          <h3 i18n>Account</h3>
+          <button type="button" class="workspace-dialog__signout" [disabled]="signingOut()" (click)="signOut()">
+            <span class="material-symbols-outlined">logout</span>
+            <span>{{ signingOut() ? 'Signing out...' : 'Sign out' }}</span>
+          </button>
+        </section>
+      </div>
+    </section>
+  </div>
+}
+
+@if (overlay.aboutOpen()) {
+  <div class="workspace-overlay" (click)="onBackdropClick($event)">
+    <section
+      #dialogPanel
+      class="workspace-dialog workspace-dialog--video"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="workspace-about-title"
+      tabindex="-1"
+      (keydown)="onDialogKeydown($event)"
+    >
+      <header class="workspace-dialog__header workspace-dialog__header--dark">
+        <div>
+          <p i18n>Product explainer</p>
+          <h2 id="workspace-about-title" i18n>What is the LivingWiki platform?</h2>
+        </div>
+        <button type="button" class="workspace-dialog__close" aria-label="Close video" (click)="close()" i18n-aria-label>
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </header>
+      <video
+        class="workspace-dialog__video"
+        [src]="productVideoUrl"
+        controls
+        autoplay
+        playsinline
+        preload="metadata"
+        aria-label="Video explaining the LivingWiki platform"
+        i18n-aria-label
+      ></video>
+    </section>
+  </div>
+}

@@ -6,6 +6,7 @@ import { AuthService } from '../auth.service';
 import { getFirebaseFunctions } from '../firebase.client';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
+import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 
 type PricingAudience = 'general' | 'business';
 type BillingCycle = 'monthly' | 'annual';
@@ -34,7 +35,7 @@ type PricingPlan = {
 
 @Component({
   selector: 'app-pricing',
-  imports: [RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent, AccountMenuComponent],
+  imports: [RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent, AccountMenuComponent, MobileMenuComponent],
   templateUrl: './pricing.html',
   styleUrl: './pricing.css',
 })

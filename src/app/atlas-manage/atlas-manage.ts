@@ -8,6 +8,7 @@ import { BusinessClaimService, type BusinessClaimWorkspaceRecord, type BusinessC
 import { CITY_ATLAS_TEMPLATES, type CityAtlasTemplate } from '../city-atlas-templates';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
+import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { AccountMenuComponent } from '../account-menu/account-menu';
 
 interface CityConfigDraft {
@@ -203,7 +204,7 @@ function parseOptionalPositiveNumber(value: string): number | null {
 
 @Component({
   selector: 'app-atlas-manage',
-  imports: [FormsModule, RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent, AccountMenuComponent],
+  imports: [FormsModule, RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent, AccountMenuComponent, MobileMenuComponent],
   templateUrl: './atlas-manage.html',
 })
 export class AtlasManageComponent {

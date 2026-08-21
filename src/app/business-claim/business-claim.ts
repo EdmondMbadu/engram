@@ -14,6 +14,7 @@ import {
   type BusinessClaimRegistryRecord,
 } from './business-claim.service';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
+import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { AccountMenuComponent } from '../account-menu/account-menu';
 
 type DecalLanguage = {
@@ -79,7 +80,7 @@ type StoredClaimDraft = {
 
 @Component({
   selector: 'app-business-claim',
-  imports: [RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent, AccountMenuComponent],
+  imports: [RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent, AccountMenuComponent, MobileMenuComponent],
   templateUrl: './business-claim.html',
   styleUrl: './business-claim.css',
 })

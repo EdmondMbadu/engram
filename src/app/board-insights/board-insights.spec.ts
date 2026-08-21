@@ -1,9 +1,10 @@
 import { convertToParamMap } from '@angular/router';
-import { provideZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, provideRouter } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { AuthService } from '../auth.service';
+import { AtlasService } from '../atlas.service';
 import { BoardAnalyticsService, type BoardInsights } from '../board-analytics.service';
 import { BoardInsightsComponent } from './board-insights';
 
@@ -37,7 +38,13 @@ describe('BoardInsightsComponent', () => {
   const analytics = {
     getInsights: jasmine.createSpy('getInsights').and.resolveTo(report),
   };
-  const auth = { waitForReady: jasmine.createSpy('waitForReady').and.resolveTo() };
+  const auth = {
+    waitForReady: jasmine.createSpy('waitForReady').and.resolveTo(),
+    uid: signal('user-1'),
+    profile: signal({ preferredCitySlug: 'philly' }),
+    isAuthenticated: signal(true),
+    signOut: jasmine.createSpy('signOut').and.resolveTo(),
+  };
 
   beforeEach(async () => {
     analytics.getInsights.calls.reset();
@@ -49,6 +56,7 @@ describe('BoardInsightsComponent', () => {
         { provide: ActivatedRoute, useValue: { paramMap } },
         { provide: BoardAnalyticsService, useValue: analytics },
         { provide: AuthService, useValue: auth },
+        { provide: AtlasService, useValue: { activeAtlasWikiLink: signal('/wiki/philly') } },
       ],
     }).compileComponents();
   });

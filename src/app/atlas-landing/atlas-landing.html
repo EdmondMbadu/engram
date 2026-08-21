@@ -7,11 +7,14 @@
   <div class="flex min-w-0 flex-1 flex-col" [class.overflow-y-auto]="isSignedIn()">
   <!-- TopAppBar -->
   <header class="theme-nav sticky top-0 z-50 flex h-16 w-full items-center justify-between border-b px-4 backdrop-blur-xl md:px-8">
+    <div class="flex min-w-0 items-center gap-3">
+    @if (isSignedIn()) { <app-mobile-menu activePage="home"></app-mobile-menu> }
     <a [routerLink]="isSignedIn() ? '/home' : '/'" class="flex items-center">
       <div class="flex h-10 w-36 sm:h-12 sm:w-48 items-center justify-start">
         <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo" class="h-full w-full object-contain"  i18n-alt/>
       </div>
     </a>
+    </div>
     <div class="flex items-center gap-3">
       <app-theme-toggle></app-theme-toggle>
       <app-account-menu signInClass="primary-btn !py-2 !px-4 text-sm" signInLabel="Sign in"></app-account-menu>
