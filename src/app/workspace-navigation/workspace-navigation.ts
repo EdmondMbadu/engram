@@ -7,6 +7,7 @@ import { AtlasService } from '../atlas.service';
 import { AuthService } from '../auth.service';
 
 export type WorkspaceNavigationKey =
+  | 'home'
   | 'discover'
   | 'city'
   | 'saved'
@@ -86,6 +87,7 @@ export class WorkspaceNavigationService {
 
   readonly primaryItems = computed<WorkspaceNavigationItem[]>(() => {
     const items: WorkspaceNavigationItem[] = [
+      { key: 'home', label: $localize`Home`, route: '/home', icon: 'home' },
       { key: 'discover', label: $localize`Discover`, route: '/discover', icon: 'travel_explore' },
       {
         key: 'city',
@@ -174,6 +176,8 @@ export class WorkspaceNavigationService {
     const [path] = url.split(/[?#]/, 1);
 
     switch (key) {
+      case 'home':
+        return path === '/home' && !url.includes('#mobile-saved');
       case 'discover':
         return path === '/discover';
       case 'city':

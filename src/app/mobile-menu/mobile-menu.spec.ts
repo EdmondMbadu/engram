@@ -49,6 +49,7 @@ describe('MobileMenuComponent', () => {
     ).map((element) => element.textContent?.trim());
 
     expect(labels).toEqual([
+      'Home',
       'Discover',
       'My City Las Vegas',
       'My Boards',

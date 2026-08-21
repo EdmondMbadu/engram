@@ -46,6 +46,7 @@ describe('WorkspaceNavigationService', () => {
     const service = TestBed.inject(WorkspaceNavigationService);
 
     expect(service.primaryItems().map((item) => item.label)).toEqual([
+      'Home',
       'Discover',
       'My City Las Vegas',
       'My Boards',
@@ -87,6 +88,18 @@ describe('WorkspaceNavigationService', () => {
 
     expect(service.isActive('songs')).toBeTrue();
     expect(service.isActive('boards')).toBeFalse();
+  });
+
+  it('keeps Home active without competing with the Saved Boards anchor', async () => {
+    const service = TestBed.inject(WorkspaceNavigationService);
+    const router = TestBed.inject(Router);
+
+    await router.navigateByUrl('/home');
+    expect(service.isActive('home')).toBeTrue();
+
+    await router.navigateByUrl('/home#mobile-saved');
+    expect(service.isActive('home')).toBeFalse();
+    expect(service.isActive('saved')).toBeTrue();
   });
 
   it('keeps business tools contextual and out of the primary list', () => {
