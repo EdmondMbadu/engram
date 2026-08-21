@@ -744,7 +744,6 @@ body .chat-suggestion-card__icon {
   transform: translate(-50%, 0) scale(1);
 }
 
-:root,
 :root[data-theme='dark'] {
   --bg: #0a0a0b;
   --bg-alt: #111215;
@@ -786,6 +785,7 @@ body .chat-suggestion-card__icon {
   --font-display: 'Inter', -apple-system, sans-serif;
 }
 
+:root,
 :root[data-theme='light'] {
   --bg: #ffffff;
   --bg-alt: #ffffff;
@@ -828,11 +828,11 @@ body .chat-suggestion-card__icon {
 
 @layer base {
   html {
-    color-scheme: dark;
+    color-scheme: light;
   }
 
-  html[data-theme='light'] {
-    color-scheme: light;
+  html[data-theme='dark'] {
+    color-scheme: dark;
   }
 
   body {

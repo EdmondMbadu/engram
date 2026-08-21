@@ -5,7 +5,7 @@ export type Theme = 'light' | 'dark';
 
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
-  readonly currentTheme = signal<Theme>('dark');
+  readonly currentTheme = signal<Theme>('light');
 
   private readonly document = inject(DOCUMENT);
   private readonly platformId = inject(PLATFORM_ID);
@@ -36,7 +36,7 @@ export class ThemeService {
 
   private getInitialTheme(): Theme {
     if (!this.isBrowser) {
-      return 'dark';
+      return 'light';
     }
 
     const savedTheme = window.localStorage.getItem('living-atlast-theme');
@@ -44,6 +44,6 @@ export class ThemeService {
       return savedTheme;
     }
 
-    return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    return 'light';
   }
 }

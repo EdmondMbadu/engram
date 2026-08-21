@@ -11,10 +11,10 @@
   align-items: center;
   justify-content: center;
   gap: 0.3rem;
-  border: 1.5px solid #dfe7e2;
+  border: 1.5px solid var(--line-strong);
   border-radius: 0.7rem;
-  background: #fafcfa;
-  color: #111;
+  background: var(--surface);
+  color: var(--text);
   cursor: pointer;
 }
 
@@ -48,12 +48,12 @@
   width: min(19.25rem, 88vw);
   flex-direction: column;
   overflow-y: auto;
-  border-right: 1px solid rgba(13, 56, 35, 0.08);
+  border-right: 1px solid var(--line);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.65), transparent 42%),
-    #faf9f4;
+    linear-gradient(180deg, color-mix(in srgb, var(--surface) 65%, transparent), transparent 42%),
+    var(--sidebar);
   box-shadow: 14px 0 40px rgba(0, 0, 0, 0.25);
-  color: #0d3823;
+  color: var(--text);
   padding: 1rem;
   animation: workspace-drawer-in 180ms ease-out;
 }
@@ -75,7 +75,7 @@
   display: flex;
   align-items: center;
   gap: 0.55rem;
-  color: #111;
+  color: var(--text);
   font-size: 1.06rem;
   font-weight: 950;
   text-decoration: none;
@@ -95,9 +95,9 @@
   width: 2.5rem;
   height: 2.5rem;
   place-items: center;
-  border: 1px solid rgba(13, 56, 35, 0.12);
+  border: 1px solid var(--line-strong);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.75);
+  background: var(--soft-fill);
   color: inherit;
   cursor: pointer;
 }
@@ -116,7 +116,7 @@
   border: 1px solid transparent;
   border-radius: 0.85rem;
   background: transparent;
-  color: #0d3823;
+  color: var(--text);
   padding: 0.58rem 0.6rem;
   text-align: left;
   text-decoration: none;
@@ -128,9 +128,9 @@
 
 .workspace-mobile-item:hover,
 .workspace-mobile-item.is-active {
-  border-color: rgba(30, 166, 74, 0.14);
-  background: #eef2e8;
-  color: #35643f;
+  border-color: color-mix(in srgb, var(--accent) 28%, var(--line));
+  background: color-mix(in srgb, var(--accent) 10%, var(--soft-fill));
+  color: var(--accent-soft);
 }
 
 .workspace-mobile-item > img,
@@ -168,15 +168,15 @@
 
 .workspace-mobile-item--more {
   margin-top: 0.45rem;
-  border-color: rgba(13, 56, 35, 0.11);
-  background: rgba(255, 255, 255, 0.62);
+  border-color: var(--line-strong);
+  background: var(--soft-fill);
 }
 
 .workspace-mobile-item__arrow {
   width: auto !important;
   height: auto !important;
   flex: 0 0 auto !important;
-  color: #718077 !important;
+  color: var(--muted) !important;
   font-size: 1rem !important;
 }
 
@@ -184,7 +184,7 @@
   display: grid;
   gap: 0.55rem;
   margin-top: auto;
-  border-top: 1px solid rgba(13, 56, 35, 0.1);
+  border-top: 1px solid var(--line);
   padding-top: 1rem;
 }
 
@@ -193,10 +193,10 @@
   align-items: center;
   justify-content: center;
   gap: 0.55rem;
-  border: 1px solid rgba(13, 56, 35, 0.14);
+  border: 1px solid var(--line-strong);
   border-radius: 0.9rem;
-  background: #fff;
-  color: #0d3823;
+  background: var(--surface);
+  color: var(--text);
   padding: 0.8rem 1rem;
   font-size: 0.88rem;
   font-weight: 850;
