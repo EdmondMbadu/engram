@@ -1,48 +1,4 @@
 {
-  "2940010916792941547": {
-    "source": "My City",
-    "file": "src/app/workspace-navigation/workspace-navigation.ts"
-  },
-  "431524018496586400": {
-    "source": "Close More menu",
-    "file": "src/app/workspace-navigation/workspace-navigation-overlay.html"
-  },
-  "4403242770642133191": {
-    "source": "More workspace navigation",
-    "file": "src/app/workspace-navigation/workspace-navigation-overlay.html"
-  },
-  "4704052443330157891": {
-    "source": "Choose a city",
-    "file": "src/app/workspace-navigation/workspace-navigation.ts"
-  },
-  "5537070833438696340": {
-    "source": "My Trove · Starfold City",
-    "file": "src/app/workspace-navigation/workspace-navigation.ts"
-  },
-  "6278157756138747696": {
-    "source": "Current business",
-    "file": "src/app/workspace-navigation/workspace-navigation-overlay.html"
-  },
-  "6350663456736239353": {
-    "source": "LivingWiki workspace",
-    "file": "src/app/workspace-navigation/workspace-navigation-overlay.html"
-  },
-  "6432591717588484003": {
-    "source": "Knowledge tools",
-    "file": "src/app/workspace-navigation/workspace-navigation-overlay.html"
-  },
-  "6750688162598228087": {
-    "source": "LivingWiki workspace navigation",
-    "file": "src/app/workspace-sidebar/workspace-sidebar.html"
-  },
-  "7723284561762033621": {
-    "source": "Current business navigation",
-    "file": "src/app/workspace-navigation/workspace-navigation-overlay.html"
-  },
-  "8838644041016899774": {
-    "source": "LivingWiki menu",
-    "file": "src/app/mobile-menu/mobile-menu.html"
-  },
   "1001680708304794443": {
     "source": "Try a place name, neighborhood, suburb, or nearby town...",
     "file": "src/app/city-places/city-places.html"
@@ -271,6 +227,10 @@
     "source": "Completed",
     "file": "src/app/boards/boards.html"
   },
+  "1161329270796264420": {
+    "source": "Search friends",
+    "file": "src/app/boards/boards.html"
+  },
   "1167656259347983543": {
     "source": "Saved videos",
     "file": "src/app/video-library/video-library.html"
@@ -431,10 +391,6 @@
     "source": "Create Account",
     "file": "src/app/legal/legal.html"
   },
-  "1269749137625787923": {
-    "source": "Business navigation",
-    "file": "src/app/workspace-sidebar/workspace-sidebar.html"
-  },
   "1270265962973334330": {
     "source": "Asthma Alley concentrates waste transfer stations, peaker power plants, and relentless truck traffic in one of the poorest congressional districts.",
     "file": "src/app/fence-line/fence-line.ts"
@@ -447,8 +403,16 @@
     "source": "{$START_TAG_SPAN}group{$CLOSE_TAG_SPAN} Admin users ",
     "file": "src/app/account-menu/account-menu.html"
   },
+  "1280874996029392343": {
+    "source": "No pending invitations",
+    "file": "src/app/boards/boards.html"
+  },
   "1283415712586391060": {
     "source": " Next {$START_TAG_SPAN}chevron_right{$CLOSE_TAG_SPAN}",
+    "file": "src/app/boards/boards.html"
+  },
+  "12866864607023392": {
+    "source": "{$START_TAG_SPAN}progress_activity{$CLOSE_TAG_SPAN} Loading friends… ",
     "file": "src/app/boards/boards.html"
   },
   "1286969159206910806": {
@@ -506,10 +470,6 @@
   "1312779946545312155": {
     "source": "Story flow",
     "file": "src/app/boards/boards.ts"
-  },
-  "1313427361117980099": {
-    "source": "Mobile menu",
-    "file": "src/app/public-wikis/public-wikis.html"
   },
   "1315625787188038913": {
     "source": "Video library controls",
@@ -643,10 +603,6 @@
     "source": "Open public video link",
     "file": "src/app/video-library/video-library.html"
   },
-  "1404563908210027739": {
-    "source": "Move stop earlier",
-    "file": "src/app/boards/boards.html"
-  },
   "1405156865820683072": {
     "source": "Confirm your inbox",
     "file": "src/app/verify-email/verify-email.html"
@@ -691,6 +647,10 @@
     "source": " No businesses match \"{$INTERPOLATION}\". ",
     "file": "src/app/atlas-manage/atlas-manage.html"
   },
+  "1425852148933287283": {
+    "source": "No new requests",
+    "file": "src/app/boards/boards.html"
+  },
   "1431416938026210429": {
     "source": "Password",
     "file": "src/app/create-account/create-account.html"
@@ -729,7 +689,7 @@
   },
   "144166923857649929": {
     "source": "Scraper",
-    "file": "src/app/mobile-menu/mobile-menu.ts"
+    "file": "src/app/workspace-navigation/workspace-navigation.ts"
   },
   "1446768985954212859": {
     "source": "Sign in to email this board",
@@ -1067,10 +1027,6 @@
     "source": "Make any changes before it joins the route.",
     "file": "src/app/boards/boards.html"
   },
-  "1630112391999908058": {
-    "source": "Search by name or email",
-    "file": "src/app/boards/boards.html"
-  },
   "1631022541256535742": {
     "source": "Incinerator closed in 2019 after more than 30 years of community pressure.",
     "file": "src/app/fence-line/fence-line.ts"
@@ -1115,6 +1071,10 @@
     "source": "Resolved from the map location",
     "file": "src/app/boards/boards.html"
   },
+  "1678244099443135752": {
+    "source": "Friendship views",
+    "file": "src/app/boards/boards.html"
+  },
   "1686251725256647635": {
     "source": "Images and your selected background music are embedded in the downloaded video.",
     "file": "src/app/boards/boards.html"
@@ -1122,10 +1082,6 @@
   "1693937864227883367": {
     "source": " Open in Spotify {$START_TAG_SPAN}open_in_new{$CLOSE_TAG_SPAN}",
     "file": "src/app/spotify-player/spotify-player.html"
-  },
-  "1699576322323865032": {
-    "source": "{$START_TAG_SPAN}sync{$CLOSE_TAG_SPAN} Refresh ",
-    "file": "src/app/boards/boards.html"
   },
   "1699656696201330584": {
     "source": "Open places board",
@@ -1250,10 +1206,6 @@
   "1798373699506341277": {
     "source": "Personalized local answers for visitors, customers, and residents through LivingWiki.",
     "file": "src/app/business-detail/business-detail.html"
-  },
-  "1801780989328253304": {
-    "source": "{$START_TAG_SPAN}info{$CLOSE_TAG_SPAN} About ",
-    "file": "src/app/public-wikis/public-wikis.html"
   },
   "1804950221689774480": {
     "source": "Climate Context",
@@ -1407,10 +1359,6 @@
     "source": "Sign in to upload",
     "file": "src/app/landing/landing.html"
   },
-  "1888707463420044781": {
-    "source": "{$START_TAG_SPAN}map{$CLOSE_TAG_SPAN} Open route ",
-    "file": "src/app/boards/boards.html"
-  },
   "1888880364826197170": {
     "source": "Answers — choose the correct one",
     "file": "src/app/boards/boards.html"
@@ -1433,10 +1381,6 @@
   },
   "1910853702226231310": {
     "source": "{$START_TAG_SPAN}more_horiz{$CLOSE_TAG_SPAN} More sharing options ",
-    "file": "src/app/boards/boards.html"
-  },
-  "1913846141774600880": {
-    "source": "{$START_TAG_SPAN}progress_activity{$CLOSE_TAG_SPAN} Searching people... ",
     "file": "src/app/boards/boards.html"
   },
   "1914853322914971772": {
@@ -1791,10 +1735,6 @@
     "source": "Map could not be loaded.",
     "file": "src/app/chat-location-map/chat-location-map.ts"
   },
-  "214903402866249858": {
-    "source": "{$START_TAG_SPAN}{$INTERPOLATION}{$CLOSE_TAG_SPAN} Navigate ",
-    "file": "src/app/boards/boards.html"
-  },
   "2151467888156932118": {
     "source": "The 2014 water switch exposed roughly 100,000 residents to lead.",
     "file": "src/app/fence-line/fence-line.ts"
@@ -2067,10 +2007,6 @@
     "source": "Keep exploring",
     "file": "src/app/boards/boards.html"
   },
-  "2336399506345743944": {
-    "source": "{$START_TAG_STRONG}{$INTERPOLATION}{$CLOSE_TAG_STRONG} Route",
-    "file": "src/app/boards/boards.html"
-  },
   "2337581978129772028": {
     "source": "Additional QR",
     "file": "src/app/business-detail/business-detail.html"
@@ -2159,10 +2095,6 @@
     "source": "notification needs",
     "file": "src/app/boards/boards.ts"
   },
-  "2387804651041584804": {
-    "source": "{$START_TAG_STRONG}{$INTERPOLATION}{$CLOSE_TAG_STRONG} Time",
-    "file": "src/app/boards/boards.html"
-  },
   "2391298050084782128": {
     "source": "{$START_TAG_SPAN}refresh{$CLOSE_TAG_SPAN} Clear search ",
     "file": "src/app/wiki-home/wiki-home.html"
@@ -2178,6 +2110,10 @@
   "2395974536790751613": {
     "source": " Use the most recent email. Older verification links can expire or become invalid after a newer message is sent. ",
     "file": "src/app/verify-email/verify-email.html"
+  },
+  "2398407606701767789": {
+    "source": "Requests",
+    "file": "src/app/boards/boards.html"
   },
   "2398471558173492687": {
     "source": "Semantic entities and logic chains mapped in real-time.",
@@ -2303,10 +2239,6 @@
     "source": "Artist",
     "file": "src/app/boards/boards.html"
   },
-  "2493709947946741315": {
-    "source": "{$START_TAG_SPAN}near_me{$CLOSE_TAG_SPAN} Open directions ",
-    "file": "src/app/boards/boards.html"
-  },
   "2496406326342613055": {
     "source": "No matching languages.",
     "file": "src/app/business-detail/business-detail.html"
@@ -2398,6 +2330,10 @@
   "2555853257286023739": {
     "source": " Claim your business {$START_TAG_SPAN}arrow_forward{$CLOSE_TAG_SPAN}",
     "file": "src/app/business/business.html"
+  },
+  "2557623954339695776": {
+    "source": "Connections",
+    "file": "src/app/boards/boards.html"
   },
   "2558114491742664616": {
     "source": "Could not copy the webhook URL.",
@@ -2673,7 +2609,7 @@
   },
   "272550364756496496": {
     "source": "World Map",
-    "file": "src/app/mobile-menu/mobile-menu.ts"
+    "file": "src/app/workspace-navigation/workspace-navigation.ts"
   },
   "2726676194908708302": {
     "source": "The hub city",
@@ -2935,6 +2871,10 @@
     "source": "will be removed from My Videos. Its source board will not be deleted.",
     "file": "src/app/video-library/video-library.html"
   },
+  "2940010916792941547": {
+    "source": "My City",
+    "file": "src/app/workspace-navigation/workspace-navigation.ts"
+  },
   "2940597258261263177": {
     "source": "Creating a useful title and description. You can edit everything afterward.",
     "file": "src/app/boards/boards.html"
@@ -3130,6 +3070,10 @@
   "3049102040877914333": {
     "source": " {$INTERPOLATION} / {$INTERPOLATION_1} shown ",
     "file": "src/app/dymaxion/dymaxion.html"
+  },
+  "3056679708387222057": {
+    "source": "We’ll update this when they respond.",
+    "file": "src/app/boards/boards.html"
   },
   "3059442226224028515": {
     "source": "العربية",
@@ -3379,10 +3323,6 @@
     "source": "Chat threads",
     "file": "src/app/atlas-landing/atlas-landing.html"
   },
-  "3200046156232192306": {
-    "source": "Board friends",
-    "file": "src/app/boards/boards.html"
-  },
   "3203494904289225925": {
     "source": "Recap sent",
     "file": "src/app/chat/chat.ts"
@@ -3602,6 +3542,10 @@
   "3331005967509711928": {
     "source": "2026 FIFA World Cup",
     "file": "src/app/public-wiki-catalog.ts"
+  },
+  "3331280808802941569": {
+    "source": "Invite a friend",
+    "file": "src/app/boards/boards.html"
   },
   "3331829946188989470": {
     "source": "Could not render the badge PNG.",
@@ -4411,10 +4355,6 @@
     "source": "Only the tour owner can add stops.",
     "file": "src/app/boards/boards.ts"
   },
-  "3832305623035212899": {
-    "source": "Delete stop",
-    "file": "src/app/boards/boards.html"
-  },
   "3832759023700428927": {
     "source": "Speak to me in {language}",
     "file": "src/app/chat/chat.ts"
@@ -4577,10 +4517,6 @@
   },
   "3944437374520392539": {
     "source": "Verify coordinates",
-    "file": "src/app/boards/boards.html"
-  },
-  "3946910937029262546": {
-    "source": "{$START_TAG_STRONG}{$INTERPOLATION}{$CLOSE_TAG_STRONG} Voice",
     "file": "src/app/boards/boards.html"
   },
   "3947882792779801286": {
@@ -4777,7 +4713,7 @@
   },
   "4086606389696938932": {
     "source": "Account",
-    "file": "src/app/profile/profile.ts"
+    "file": "src/app/workspace-navigation/workspace-navigation-overlay.html"
   },
   "4088025409846902554": {
     "source": "Shown in the business guide chat module.",
@@ -4798,6 +4734,10 @@
   "4100067899555498514": {
     "source": "Business workspace",
     "file": "src/app/business/business.html"
+  },
+  "4100925776513097522": {
+    "source": "New friend requests will appear here.",
+    "file": "src/app/boards/boards.html"
   },
   "4101941266124151376": {
     "source": "on",
@@ -4958,10 +4898,6 @@
   "4191387612262981045": {
     "source": "Start with the place name",
     "file": "src/app/city-places/city-places.html"
-  },
-  "4192845139199036935": {
-    "source": "Requests waiting",
-    "file": "src/app/boards/boards.html"
   },
   "4197649613867030676": {
     "source": "Previous song",
@@ -5139,6 +5075,10 @@
     "source": "{$START_TAG_SPAN}photo_camera{$CLOSE_TAG_SPAN} Change image ",
     "file": "src/app/boards/boards.html"
   },
+  "431524018496586400": {
+    "source": "Close More menu",
+    "file": "src/app/workspace-navigation/workspace-navigation-overlay.html"
+  },
   "4317403937819279479": {
     "source": "Location: Local Node 077",
     "file": "src/app/landing/landing.html"
@@ -5149,10 +5089,6 @@
   },
   "4323470180912194028": {
     "source": "Copy",
-    "file": "src/app/boards/boards.html"
-  },
-  "4326429380167861565": {
-    "source": "Bridge cards show the path from each stop to the next.",
     "file": "src/app/boards/boards.html"
   },
   "4328638021908943937": {
@@ -5231,10 +5167,6 @@
     "source": "Snapshot status",
     "file": "src/app/city-pulse-admin/city-pulse-admin.html"
   },
-  "4386618710844012350": {
-    "source": "To {$INTERPOLATION}",
-    "file": "src/app/boards/boards.html"
-  },
   "4386977525322322103": {
     "source": "Additional QR code saved.",
     "file": "src/app/business-detail/business-edit.ts"
@@ -5259,6 +5191,10 @@
     "source": "/km²",
     "file": "src/app/atlas-manage/atlas-manage.html"
   },
+  "4403242770642133191": {
+    "source": "More workspace navigation",
+    "file": "src/app/workspace-navigation/workspace-navigation-overlay.html"
+  },
   "4406690216520918190": {
     "source": "I scored",
     "file": "src/app/boards/boards.ts"
@@ -5282,10 +5218,6 @@
   "4423700486312526884": {
     "source": "Upload | LivingWiki",
     "file": "src/app/app.routes.ts"
-  },
-  "442705616784111098": {
-    "source": "Refine",
-    "file": "src/app/boards/boards.html"
   },
   "4427613987103852244": {
     "source": "Post my score",
@@ -5325,7 +5257,7 @@
   },
   "4457078765960547082": {
     "source": "Test live guide",
-    "file": "src/app/workspace-sidebar/workspace-sidebar.html"
+    "file": "src/app/workspace-navigation/workspace-navigation.ts"
   },
   "4457143351863870551": {
     "source": "{$START_TAG_SPAN}visibility{$CLOSE_TAG_SPAN} Reveal details ",
@@ -5711,6 +5643,10 @@
     "source": "Profile picture",
     "file": "src/app/business-detail/business-edit.html"
   },
+  "4704052443330157891": {
+    "source": "Choose a city",
+    "file": "src/app/workspace-navigation/workspace-navigation.ts"
+  },
   "4706944862243942841": {
     "source": "Included voices",
     "file": "src/app/boards/boards.html"
@@ -5857,10 +5793,6 @@
   },
   "4784712298351335236": {
     "source": "{$START_TAG_SPAN}add{$CLOSE_TAG_SPAN} Add 5 more ",
-    "file": "src/app/boards/boards.html"
-  },
-  "4786263714681180220": {
-    "source": "Friend's email or name",
     "file": "src/app/boards/boards.html"
   },
   "4786431415373787403": {
@@ -6315,6 +6247,10 @@
     "source": "Failed to delete atlas.",
     "file": "src/app/atlas-manage/atlas-manage.ts"
   },
+  "5087058532570032397": {
+    "source": "Sort friends",
+    "file": "src/app/boards/boards.html"
+  },
   "509090351011426949": {
     "source": "Update available",
     "file": "src/app/video-library/video-library.html"
@@ -6334,10 +6270,6 @@
   "5097667652947355644": {
     "source": " New uploads create document records immediately, then move through pending, processing, and indexed states as the ingestion function compiles knowledge and topic pages. ",
     "file": "src/app/library/library.html"
-  },
-  "5098186893064472809": {
-    "source": "{$START_TAG_SPAN}auto_awesome{$CLOSE_TAG_SPAN} {$INTERPOLATION} ",
-    "file": "src/app/boards/boards.html"
   },
   "5100760148289082697": {
     "source": "Discover. Share. Belong.",
@@ -6515,10 +6447,6 @@
     "source": "Chicago",
     "file": "src/app/atlas-manage/atlas-manage.html"
   },
-  "5237540255835304092": {
-    "source": "{$START_TAG_SPAN}close{$CLOSE_TAG_SPAN} Decline ",
-    "file": "src/app/boards/boards.html"
-  },
   "5245657366616111982": {
     "source": "Story",
     "file": "src/app/answer-card/answer-card.html"
@@ -6566,6 +6494,10 @@
   "5274088121650769883": {
     "source": "Chinese",
     "file": "src/app/business-claim/business-claim.ts"
+  },
+  "5274214200980336634": {
+    "source": "Open friend profile",
+    "file": "src/app/boards/boards.html"
   },
   "527765885738034536": {
     "source": "Ask About This",
@@ -6615,10 +6547,6 @@
     "source": "Pull in live internet context and discussion themes.",
     "file": "src/app/chat/chat.ts"
   },
-  "5293955568342829954": {
-    "source": "{$START_TAG_SPAN}place{$CLOSE_TAG_SPAN} Open place ",
-    "file": "src/app/boards/boards.html"
-  },
   "5294378795267199864": {
     "source": "to send",
     "file": "src/app/chat/chat.ts"
@@ -6634,10 +6562,6 @@
   "5299830934554879298": {
     "source": "SMS",
     "file": "src/app/atlas-manage/atlas-manage.html"
-  },
-  "5302975250493253189": {
-    "source": "{$START_TAG_SPAN}add_location_alt{$CLOSE_TAG_SPAN} Add next stop ",
-    "file": "src/app/boards/boards.html"
   },
   "5305521700224184284": {
     "source": "Also include",
@@ -6723,10 +6647,6 @@
     "source": "Upload a .csv file.",
     "file": "src/app/atlas-manage/atlas-manage.ts"
   },
-  "5347937160582874675": {
-    "source": "Hide memories",
-    "file": "src/app/boards/boards.html"
-  },
   "5352594739600797615": {
     "source": "Chester hub",
     "file": "src/app/fence-line/fence-line.html"
@@ -6734,6 +6654,10 @@
   "535331781746375369": {
     "source": "Invalid link",
     "file": "src/app/auth-action/auth-action.ts"
+  },
+  "5356661079856984326": {
+    "source": "Pending invitation",
+    "file": "src/app/boards/boards.html"
   },
   "5364696931613291610": {
     "source": "Ready to drop",
@@ -6746,10 +6670,6 @@
   "5373471252507137577": {
     "source": "Block-group environmental justice percentiles preserved for community review.",
     "file": "src/app/fence-line/fence-line.html"
-  },
-  "5374040124869117947": {
-    "source": "Drag to reorder stop",
-    "file": "src/app/boards/boards.html"
   },
   "5374090795835297683": {
     "source": " Saved. The next chat reply in this wiki will use this voice. ",
@@ -6971,6 +6891,10 @@
     "source": "Never trust a claim without proof. Every answer highlights the exact source, page, and paragraph it was derived from.",
     "file": "src/app/marketing/marketing.html"
   },
+  "5537070833438696340": {
+    "source": "My Trove · Starfold City",
+    "file": "src/app/workspace-navigation/workspace-navigation.ts"
+  },
   "5541520805706976440": {
     "source": "{$START_TAG_SPAN}select_all{$CLOSE_TAG_SPAN} Select all ",
     "file": "src/app/boards/boards.html"
@@ -7181,7 +7105,7 @@
   },
   "5661190374215062080": {
     "source": "Board unavailable",
-    "file": "src/app/video-library/video-library.html"
+    "file": "src/app/boards/boards.html"
   },
   "5661831613856753923": {
     "source": "Drop a card on {$INTERPOLATION}.",
@@ -7210,14 +7134,6 @@
   "5667900632592970266": {
     "source": "Timestamp",
     "file": "src/app/business-detail/business-activity.html"
-  },
-  "5669523898323978264": {
-    "source": "{$START_TAG_SPAN}play_arrow{$CLOSE_TAG_SPAN} Play tour ",
-    "file": "src/app/boards/boards.html"
-  },
-  "5670251735546841727": {
-    "source": "Drag to reorder",
-    "file": "src/app/boards/boards.html"
   },
   "5672342885880089752": {
     "source": "1 match",
@@ -7313,7 +7229,7 @@
   },
   "5730731256330221398": {
     "source": "Business Page",
-    "file": "src/app/workspace-sidebar/workspace-sidebar.ts"
+    "file": "src/app/workspace-navigation/workspace-navigation.ts"
   },
   "5736481176444461852": {
     "source": "About Us",
@@ -7338,10 +7254,6 @@
   "574465079999990645": {
     "source": "The link is valid, but this thread does not contain any messages yet.",
     "file": "src/app/shared-chat/shared-chat.html"
-  },
-  "57454085804787665": {
-    "source": "{$START_TAG_SPAN}check{$CLOSE_TAG_SPAN} Accept ",
-    "file": "src/app/boards/boards.html"
   },
   "5746525344557064924": {
     "source": "Upload in progress",
@@ -7477,7 +7389,7 @@
   },
   "5842949361840541833": {
     "source": "Edit Page",
-    "file": "src/app/workspace-sidebar/workspace-sidebar.ts"
+    "file": "src/app/workspace-navigation/workspace-navigation.ts"
   },
   "5848422495766466554": {
     "source": "Previous photo",
@@ -7525,7 +7437,7 @@
   },
   "5867579308114836570": {
     "source": "Direct Chat",
-    "file": "src/app/workspace-sidebar/workspace-sidebar.ts"
+    "file": "src/app/workspace-navigation/workspace-navigation.ts"
   },
   "587309546441039591": {
     "source": "Your email has been verified. You can continue to your workspace.",
@@ -7537,10 +7449,6 @@
   },
   "5878305334612867800": {
     "source": "(optional)",
-    "file": "src/app/boards/boards.html"
-  },
-  "5881758175018584835": {
-    "source": "Edit stop",
     "file": "src/app/boards/boards.html"
   },
   "5882923490690313525": {
@@ -7567,10 +7475,6 @@
     "source": "This board is not open for Off-grid contributions.",
     "file": "src/app/boards/boards.ts"
   },
-  "5904884274970660140": {
-    "source": "{$START_TAG_SPAN}progress_activity{$CLOSE_TAG_SPAN} Loading friends... ",
-    "file": "src/app/boards/boards.html"
-  },
   "590616917486584580": {
     "source": "Make cover",
     "file": "src/app/boards/boards.html"
@@ -7594,10 +7498,6 @@
   "5922127287100253967": {
     "source": "Cities coming online",
     "file": "src/app/business/business.html"
-  },
-  "5925509353518968307": {
-    "source": "Move earlier",
-    "file": "src/app/boards/boards.html"
   },
   "5932584363984732247": {
     "source": "Incinerator debt",
@@ -7814,10 +7714,6 @@
   "6074302300349219019": {
     "source": "Select a city",
     "file": "src/app/business-claim/business-claim.html"
-  },
-  "6078463484652257809": {
-    "source": "{$START_TAG_SPAN}travel_explore{$CLOSE_TAG_SPAN} Discover ",
-    "file": "src/app/public-wikis/public-wikis.html"
   },
   "6083129071796346170": {
     "source": "Business detail page",
@@ -8047,6 +7943,10 @@
     "source": "X video",
     "file": "src/app/boards/boards.ts"
   },
+  "6225084413213622241": {
+    "source": "Keep up with the people you learn, explore, and build with.",
+    "file": "src/app/boards/boards.html"
+  },
   "6227175936817543454": {
     "source": "Generate a dedicated link for this conversation.",
     "file": "src/app/chat/chat.ts"
@@ -8095,6 +7995,10 @@
     "source": "Trove controls",
     "file": "src/app/trove/trove.html"
   },
+  "6253996192976706839": {
+    "source": "Would like to connect",
+    "file": "src/app/boards/boards.html"
+  },
   "6254459922754143568": {
     "source": "Replace",
     "file": "src/app/atlas-landing/atlas-landing.html"
@@ -8130,6 +8034,10 @@
   "6278130351544603773": {
     "source": "{$START_TAG_SPAN}explore{$CLOSE_TAG_SPAN} Field guide ",
     "file": "src/app/shared-chat/shared-chat.html"
+  },
+  "6278157756138747696": {
+    "source": "Current business",
+    "file": "src/app/workspace-navigation/workspace-navigation-overlay.html"
   },
   "6281347408714210277": {
     "source": "{$START_TAG_SPAN}edit{$CLOSE_TAG_SPAN} Edit quiz ",
@@ -8239,6 +8147,10 @@
     "source": "Download PNG",
     "file": "src/app/business-detail/business-detail.html"
   },
+  "6350663456736239353": {
+    "source": "LivingWiki workspace",
+    "file": "src/app/workspace-navigation/workspace-navigation-overlay.html"
+  },
   "6353018307824157180": {
     "source": "Your quiz is live for everyone who can view this board.",
     "file": "src/app/boards/boards.html"
@@ -8295,10 +8207,6 @@
     "source": "Open jobs",
     "file": "src/app/green-jobs/green-jobs.html"
   },
-  "6388481387858277680": {
-    "source": "Move stop later",
-    "file": "src/app/boards/boards.html"
-  },
   "6389196264600918974": {
     "source": "Major open-source projects, their maintainers, funding models, license types, and community health — the living map of open-source.",
     "file": "src/app/public-wiki-catalog.ts"
@@ -8351,10 +8259,6 @@
     "source": "WhatsApp opened with your challenge.",
     "file": "src/app/boards/boards.ts"
   },
-  "6410644807984501295": {
-    "source": "Memories from this stop",
-    "file": "src/app/boards/boards.html"
-  },
   "6411069345315897122": {
     "source": "Translate this board",
     "file": "src/app/boards/boards.html"
@@ -8402,6 +8306,10 @@
   "6430736772377396814": {
     "source": " This path drifted off the atlas. ",
     "file": "src/app/not-found/not-found.html"
+  },
+  "6432591717588484003": {
+    "source": "Knowledge tools",
+    "file": "src/app/workspace-navigation/workspace-navigation-overlay.html"
   },
   "6435787049526690021": {
     "source": "{$INTERPOLATION} questions",
@@ -8659,10 +8567,6 @@
     "source": " Annual {$START_TAG_SPAN} Save ~17% {$CLOSE_TAG_SPAN}",
     "file": "src/app/business/business.html"
   },
-  "6574085075535594523": {
-    "source": "Open friend boards",
-    "file": "src/app/boards/boards.html"
-  },
   "6576743647713644286": {
     "source": "The address is recognized and can still be linked.",
     "file": "src/app/boards/boards.ts"
@@ -8690,6 +8594,10 @@
   "6591145847695231359": {
     "source": "City places are only available for public city wikis.",
     "file": "src/app/city-places/city-places.ts"
+  },
+  "6591626578910403125": {
+    "source": "Friends and invitations",
+    "file": "src/app/boards/boards.html"
   },
   "6597415671768542274": {
     "source": "Table tent 4x6\"",
@@ -8750,10 +8658,6 @@
   "6614712330369849731": {
     "source": "Badge and QR code",
     "file": "src/app/business-detail/business-detail.html"
-  },
-  "6618372277040341316": {
-    "source": "{$START_TAG_SPAN}{$INTERPOLATION}{$CLOSE_TAG_SPAN} Preview voice ",
-    "file": "src/app/boards/boards.html"
   },
   "6620000610425232245": {
     "source": " LivingWiki answers are generated from available source material and may require human review. ",
@@ -8922,6 +8826,10 @@
   "6750430928738330891": {
     "source": "Instantly queryable, forever stored in your LivingWiki.",
     "file": "src/app/marketing/marketing.ts"
+  },
+  "6750688162598228087": {
+    "source": "LivingWiki workspace navigation",
+    "file": "src/app/workspace-sidebar/workspace-sidebar.html"
   },
   "6752604898701886526": {
     "source": "Live view",
@@ -9122,6 +9030,10 @@
   "6917980283016202377": {
     "source": " After verification, you will return to the business setup page to finish payment, AI tone, and document upload. ",
     "file": "src/app/verify-email/verify-email.html"
+  },
+  "6920708070230249597": {
+    "source": "Email or name",
+    "file": "src/app/boards/boards.html"
   },
   "6921075755862829702": {
     "source": "Photo of this off-grid place",
@@ -9402,6 +9314,10 @@
   "7143946600215946376": {
     "source": "AI is talking",
     "file": "src/app/chat/chat.ts"
+  },
+  "7146772149869322372": {
+    "source": "{$START_TAG_SPAN}progress_activity{$CLOSE_TAG_SPAN} Searching people… ",
+    "file": "src/app/boards/boards.html"
   },
   "7147051404535399188": {
     "source": " Source URL ",
@@ -9891,6 +9807,10 @@
     "source": "Petrochemical corridor",
     "file": "src/app/fence-line/fence-line.ts"
   },
+  "7481183920179363714": {
+    "source": "Sent",
+    "file": "src/app/boards/boards.html"
+  },
   "7482050624420586131": {
     "source": "Card {$INTERPOLATION} of {$INTERPOLATION_1}",
     "file": "src/app/boards/boards.html"
@@ -10073,7 +9993,7 @@
   },
   "7636615786088374189": {
     "source": "Upload Knowledge",
-    "file": "src/app/workspace-sidebar/workspace-sidebar.ts"
+    "file": "src/app/workspace-navigation/workspace-navigation.ts"
   },
   "7637120458395925772": {
     "source": "Open QR destination",
@@ -10163,10 +10083,6 @@
     "source": "history, champion, 1934",
     "file": "src/app/boards/boards.html"
   },
-  "7699622144571229146": {
-    "source": "Sort by",
-    "file": "src/app/boards/boards.html"
-  },
   "7699728201176067014": {
     "source": "Logo URL fallback",
     "file": "src/app/boards/boards.html"
@@ -10206,6 +10122,10 @@
   "7722986388078080691": {
     "source": "Website, email, or phone",
     "file": "src/app/boards/boards.html"
+  },
+  "7723284561762033621": {
+    "source": "Current business navigation",
+    "file": "src/app/workspace-navigation/workspace-navigation-overlay.html"
   },
   "7733949442202720953": {
     "source": "Existing city profile found.",
@@ -10302,10 +10222,6 @@
   "7780444731963875194": {
     "source": "Could not load Spotify devices.",
     "file": "src/app/spotify-playback.service.ts"
-  },
-  "7782046034071994657": {
-    "source": "Move later",
-    "file": "src/app/boards/boards.html"
   },
   "7784118488244760100": {
     "source": "{$START_TAG_SPAN}ios_share{$CLOSE_TAG_SPAN} Share invite ",
@@ -10427,10 +10343,6 @@
     "source": "Background music",
     "file": "src/app/boards/boards.html"
   },
-  "7873546935822644988": {
-    "source": "Make it more kid-friendly, add cheaper options, remove duplicates...",
-    "file": "src/app/boards/boards.html"
-  },
   "7882010013989109058": {
     "source": "Ingesting document",
     "file": "src/app/library/library.html"
@@ -10502,10 +10414,6 @@
   "7910092621560644776": {
     "source": "Refinery row sits directly across the street from public housing.",
     "file": "src/app/fence-line/fence-line.ts"
-  },
-  "7910130651577877737": {
-    "source": "{$START_TAG_STRONG}{$INTERPOLATION}{$CLOSE_TAG_STRONG} Stops",
-    "file": "src/app/boards/boards.html"
   },
   "7915998431668180872": {
     "source": " Latest stored refresh: {$START_TAG_SPAN}{$INTERPOLATION}{$CLOSE_TAG_SPAN}",
@@ -10815,6 +10723,10 @@
     "source": "Exact spot",
     "file": "src/app/boards/boards.html"
   },
+  "8116175184239166510": {
+    "source": "Decline",
+    "file": "src/app/boards/boards.html"
+  },
   "8118332921722098866": {
     "source": " Guests can update their response from the same invitation. ",
     "file": "src/app/boards/boards.html"
@@ -10830,10 +10742,6 @@
   "8121141462865337916": {
     "source": "Phone number",
     "file": "src/app/atlas-manage/atlas-manage.html"
-  },
-  "8121170194184060012": {
-    "source": "Stop actions",
-    "file": "src/app/boards/boards.html"
   },
   "8121611305404993937": {
     "source": "Name your Wiki",
@@ -11001,7 +10909,7 @@
   },
   "8251803503418061079": {
     "source": "Wiki Reader",
-    "file": "src/app/workspace-sidebar/workspace-sidebar.ts"
+    "file": "src/app/workspace-navigation/workspace-navigation.ts"
   },
   "825196162496122810": {
     "source": "{$START_TAG_SPAN}group{$CLOSE_TAG_SPAN} Friends ",
@@ -11014,6 +10922,10 @@
   "8256594142065137247": {
     "source": "Sort videos",
     "file": "src/app/video-library/video-library.html"
+  },
+  "8259701253624356030": {
+    "source": "Invitations you send will appear here.",
+    "file": "src/app/boards/boards.html"
   },
   "8260151227491194978": {
     "source": "Home | LivingWiki",
@@ -11479,10 +11391,6 @@
     "source": "Review status",
     "file": "src/app/admin-users/admin-users.html"
   },
-  "8616632522552227192": {
-    "source": "{$START_TAG_SPAN}person_add{$CLOSE_TAG_SPAN} Invite friends ",
-    "file": "src/app/boards/boards.html"
-  },
   "861765642897895937": {
     "source": "Start with a neighborhood presence, then grow into featured placement and citywide sponsorship as the public wiki expands.",
     "file": "src/app/business/business.html"
@@ -11591,6 +11499,10 @@
     "source": "Vapi voice agent",
     "file": "src/app/atlas-manage/atlas-manage.html"
   },
+  "8707887448880467422": {
+    "source": "Friends",
+    "file": "src/app/boards/boards.html"
+  },
   "8708309041028579154": {
     "source": "Quiz results",
     "file": "src/app/boards/boards.html"
@@ -11634,10 +11546,6 @@
   "873808459157201959": {
     "source": "Pop",
     "file": "src/app/public-wikis/public-wikis.ts"
-  },
-  "8739000256753452609": {
-    "source": "{$START_TAG_SPAN}auto_awesome{$CLOSE_TAG_SPAN} Memories from this stop ",
-    "file": "src/app/boards/boards.html"
   },
   "8739442281958563044": {
     "source": "Monday",
@@ -11787,6 +11695,10 @@
     "source": "Your free account is active. Upgrade only when you need private spaces, Personal Voice, richer publishing, or local business tools.",
     "file": "src/app/pricing/pricing.ts"
   },
+  "8838644041016899774": {
+    "source": "LivingWiki menu",
+    "file": "src/app/mobile-menu/mobile-menu.html"
+  },
   "8843134590212886305": {
     "source": "Ready to create the page",
     "file": "src/app/business-claim/business-claim.html"
@@ -11823,10 +11735,6 @@
     "source": "Copyright, 2026, Mind Palace, Inc.",
     "file": "src/app/public-wikis/public-wikis.html"
   },
-  "887078969541231330": {
-    "source": "{$TAG_IMG} My City · {$INTERPOLATION} ",
-    "file": "src/app/public-wikis/public-wikis.html"
-  },
   "8876752408632821792": {
     "source": "Surface the unresolved or most-discussed questions.",
     "file": "src/app/chat/chat.ts"
@@ -11854,6 +11762,10 @@
   "8904123080211688242": {
     "source": "Standard video narration is included free",
     "file": "src/app/pricing/pricing.ts"
+  },
+  "8905995985388209337": {
+    "source": "Accept",
+    "file": "src/app/boards/boards.html"
   },
   "8906308433967346612": {
     "source": " Control how the assistant sounds for this Wiki. Grounding, citations, and safety rules still stay automatic. ",
@@ -11934,10 +11846,6 @@
   "8936704404804793618": {
     "source": "Videos",
     "file": "src/app/video-library/video-library.html"
-  },
-  "8938925228574395120": {
-    "source": "Current Business",
-    "file": "src/app/workspace-sidebar/workspace-sidebar.html"
   },
   "893970063345356863": {
     "source": " View full metrics ",
@@ -12071,10 +11979,6 @@
     "source": " I’ll choose a time ",
     "file": "src/app/boards/boards.html"
   },
-  "8994650955745472257": {
-    "source": "Open cover photo full screen",
-    "file": "src/app/boards/boards.html"
-  },
   "899756889340497751": {
     "source": "Add QR code",
     "file": "src/app/business-detail/business-edit.ts"
@@ -12130,10 +12034,6 @@
   "9029468272066757399": {
     "source": "LivingWiki: Philly consolidates the Delaware Valley’s fragmented sustainability and economic data — currently scattered across 60+ agencies, portals, and databases — into the region’s living institutional memory.",
     "file": "src/app/city-atlas-templates.ts"
-  },
-  "9037818534021831746": {
-    "source": "{$TAG_IMG} My Trove · Starfold City ",
-    "file": "src/app/public-wikis/public-wikis.html"
   },
   "9038317138730122649": {
     "source": "Chat with Wiki",
@@ -12207,10 +12107,6 @@
     "source": "Open map",
     "file": "src/app/business-claim/business-claim.html"
   },
-  "9091875393082847753": {
-    "source": " {$INTERPOLATION} shown ",
-    "file": "src/app/boards/boards.html"
-  },
   "9092459562049603266": {
     "source": "{$START_TAG_SPAN}{$CLOSE_TAG_SPAN} City places ",
     "file": "src/app/city-places/city-places.html"
@@ -12269,7 +12165,7 @@
   },
   "9129432453042445064": {
     "source": "Workspace navigation",
-    "file": "src/app/workspace-sidebar/workspace-sidebar.html"
+    "file": "src/app/mobile-menu/mobile-menu.html"
   },
   "9129734193759025482": {
     "source": "Tomorrow",
@@ -12494,10 +12390,6 @@
   "97947237076991101": {
     "source": "Wiki topics",
     "file": "src/app/atlas-landing/atlas-landing.html"
-  },
-  "984203350916114696": {
-    "source": "Pending friend requests",
-    "file": "src/app/boards/boards.html"
   },
   "985253845618865624": {
     "source": "New Wiki",

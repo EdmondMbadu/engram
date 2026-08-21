@@ -613,6 +613,7 @@ type BoardFriendsState = {
   outgoing: BoardFriendRequestSummary[];
 };
 type BoardFriendsSort = 'name' | 'email';
+type BoardFriendsView = 'friends' | 'requests' | 'sent';
 
 type BoardRecord = Omit<Board, 'createdAt' | 'updatedAt' | 'customSlug'> & {
   custom_slug?: string;
@@ -1686,6 +1687,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly boardFriendEmail = signal('');
   readonly boardFriendsSearch = signal('');
   readonly boardFriendsSort = signal<BoardFriendsSort>('name');
+  readonly boardFriendsView = signal<BoardFriendsView>('friends');
   readonly boardFriendsLoading = signal(false);
   readonly boardFriendSending = signal(false);
   readonly boardFriendsMessage = signal<string | null>(null);
@@ -3405,6 +3407,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
   setBoardFriendsSort(value: string): void {
     this.boardFriendsSort.set(value === 'email' ? 'email' : 'name');
+  }
+
+  setBoardFriendsView(value: BoardFriendsView): void {
+    this.boardFriendsView.set(value);
   }
 
   chooseBoardFriendCandidate(candidate: BoardFriendCandidate): void {
