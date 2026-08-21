@@ -298,7 +298,7 @@
       >
         <div class="boards-topbar__brand">
           @if (isSignedIn()) {
-            <app-mobile-menu activePage="home"></app-mobile-menu>
+            <app-mobile-menu [activePage]="friendsPage() ? 'friends' : songsPage() ? 'songs' : tripsPage() ? 'trips' : 'boards'"></app-mobile-menu>
           }
           <a href="/" class="boards-logo" aria-label="LivingWiki home" i18n-aria-label>
             <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo"  i18n-alt/>
@@ -630,7 +630,6 @@
             <p class="boards-friends-feedback boards-friends-feedback--error" role="alert">
               <span class="material-symbols-outlined" aria-hidden="true">error</span>
               {{ boardFriendsError() }}
-              <button type="button" (click)="loadBoardFriends()" [disabled]="boardFriendsLoading()" i18n>Try again</button>
             </p>
           }
 

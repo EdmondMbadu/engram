@@ -5721,56 +5721,6 @@
     flex-direction: column;
   }
 
-  .boards-friends-panel__head,
-  .boards-friend-request {
-    align-items: stretch;
-    flex-direction: column;
-  }
-
-  .boards-friends-panel--directory .boards-friends-panel__head {
-    grid-template-columns: 1fr;
-  }
-
-  .boards-friends-invite {
-    grid-template-columns: 1fr;
-  }
-
-  .boards-friend-request__actions {
-    justify-content: stretch;
-  }
-
-  .boards-friend-request__actions .boards-primary-action,
-  .boards-friend-request__actions .boards-ghost-action {
-    flex: 1;
-  }
-
-  .boards-friends-directory-toolbar,
-  .boards-friend-row {
-    grid-template-columns: 1fr;
-  }
-
-  .boards-friends-sort,
-  .boards-friends-search {
-    width: 100%;
-  }
-
-  .boards-friends-sort {
-    justify-content: space-between;
-  }
-
-  .boards-friends-sort select {
-    flex: 1;
-  }
-
-  .boards-friends-directory-count,
-  .boards-friend-row__actions {
-    justify-self: stretch;
-  }
-
-  .boards-friend-row__actions .boards-ghost-action {
-    flex: 1;
-  }
-
   .boards-feed__toolbar,
   .board-detail__toolbar {
     align-items: stretch;
@@ -9734,18 +9684,6 @@
 .boards-friends-feedback--error {
   background: color-mix(in srgb, #fff0ee 78%, var(--surface));
   color: #9d1d1d;
-}
-
-.boards-friends-feedback button {
-  margin-left: auto;
-  border: 0;
-  background: transparent;
-  color: inherit;
-  cursor: pointer;
-  font: inherit;
-  font-weight: 900;
-  text-decoration: underline;
-  text-underline-offset: 0.16em;
 }
 
 .boards-shell--friends .boards-friends-directory-toolbar {
