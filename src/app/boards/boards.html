@@ -6459,12 +6459,12 @@
                 <button
                   type="button"
                   class="stack-doc-export-trigger"
-                  aria-label="Export to Google Docs"
+                  aria-label="Download as a DOCX document"
                   [disabled]="stackSelectedCount() === 0"
                   (click)="openStackDocsExportDialog(board, $event)"
                 >
                   <span class="material-symbols-outlined">description</span>
-                  <span class="stack-action-label stack-action-label--docs">Export to Docs</span>
+                  <span class="stack-action-label stack-action-label--docs">Download DOCX</span>
                 </button>
                 <button type="button" (click)="openStackView(board, $event)">
                   <span class="material-symbols-outlined">smart_display</span>
@@ -7503,13 +7503,13 @@
         >
           <div class="boards-modal__head">
             <div>
-              <p>Google Docs</p>
-              <h3 id="stack-doc-export-title">Export script and images</h3>
+              <p>Word document</p>
+              <h3 id="stack-doc-export-title">Download script and images</h3>
             </div>
             <button
               type="button"
               class="boards-icon-button"
-              aria-label="Close Google Docs export"
+              aria-label="Close DOCX export"
               [disabled]="stackDocsExporting()"
               (click)="closeStackDocsExportDialog()"
             >
@@ -7521,10 +7521,10 @@
             <div class="stack-doc-export-success">
               <span class="stack-doc-export-success__icon material-symbols-outlined">task_alt</span>
               <div>
-                <h4>Your Google Doc is ready</h4>
+                <h4>Your DOCX has downloaded</h4>
                 <p>
                   {{ result.exportedCardCount }} {{ result.exportedCardCount === 1 ? 'card' : 'cards' }}
-                  and {{ result.exportedImageCount }} {{ result.exportedImageCount === 1 ? 'image' : 'images' }} exported.
+                  and {{ result.exportedImageCount }} {{ result.exportedImageCount === 1 ? 'image' : 'images' }} exported to {{ result.fileName }}.
                 </p>
               </div>
               @if (result.warnings.length) {
@@ -7536,13 +7536,12 @@
                 </details>
               }
               <div class="stack-doc-export-success__actions">
-                <button type="button" class="boards-ghost-action" (click)="copyStackDocsExportResult()">
-                  <span class="material-symbols-outlined">content_copy</span>
-                  Copy link
+                <button type="button" class="boards-ghost-action" (click)="closeStackDocsExportDialog()">
+                  Done
                 </button>
-                <button type="button" class="boards-primary-action" (click)="openStackDocsExportResult()">
-                  <span class="material-symbols-outlined">open_in_new</span>
-                  Open Google Doc
+                <button type="button" class="boards-primary-action" (click)="downloadStackDocxAgain()">
+                  <span class="material-symbols-outlined">download</span>
+                  Download again
                 </button>
               </div>
             </div>
@@ -7551,7 +7550,7 @@
               <div class="stack-doc-export-intro">
                 <span class="material-symbols-outlined">description</span>
                 <div>
-                  <strong>A complete, editable production document</strong>
+                  <strong>A complete, editable Word document</strong>
                   <p>Exports the current cover, selected cards in order, every available script, and the final card.</p>
                 </div>
               </div>
@@ -7619,16 +7618,16 @@
             </div>
 
             <footer class="stack-doc-export-footer">
-              <small><span class="material-symbols-outlined">lock</span>Created privately in your Google Drive</small>
+              <small><span class="material-symbols-outlined">download</span>Downloads directly to this device—no Google permissions</small>
               <button type="button" class="boards-ghost-action" [disabled]="stackDocsExporting()" (click)="closeStackDocsExportDialog()">Cancel</button>
               <button
                 type="button"
                 class="boards-primary-action stack-doc-export-submit"
                 [disabled]="stackDocsExporting() || !stackSelectedCount() || !stackDocsExportDocumentTitle().trim()"
-                (click)="exportStackToGoogleDocs(board)"
+                (click)="exportStackToDocx(board)"
               >
                 <span class="material-symbols-outlined">{{ stackDocsExporting() ? 'progress_activity' : 'description' }}</span>
-                {{ stackDocsExporting() ? stackDocsExportPhaseLabel() : 'Create Google Doc' }}
+                {{ stackDocsExporting() ? stackDocsExportPhaseLabel() : 'Download DOCX' }}
               </button>
             </footer>
           }

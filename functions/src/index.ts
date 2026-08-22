@@ -74,7 +74,7 @@ export {
   setCustomPublicUrl,
 } from './custom-public-routes';
 export { getBoardInsights, recordBoardAnalyticsEvent } from './board-analytics';
-export { exportBoardToGoogleDocs } from './board-doc-export';
+export { exportBoardToDocx } from './board-doc-export';
 import { handleAnswerCardShare, handleBoardShare, handleTravelCardShare } from './answer-card-share';
 import { buildDirectBoardShareEmail, safeBoardShareImageUrl } from './board-share-email';
 import { resolveSpotifyOAuthRedirectUri } from './spotify-oauth';

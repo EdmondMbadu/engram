@@ -349,7 +349,7 @@
   }
 
   .stack-action-label--docs::after {
-    content: 'Docs';
+    content: 'DOCX';
     font-size: 0.72rem;
   }
 

@@ -28,10 +28,10 @@ import { BOARD_ICON_OPTIONS, resolveBoardIcon } from '../board-icon';
 import { getFirebaseFirestore, getFirebaseFunctions, getFirebaseStorage } from '../firebase.client';
 import { GoogleMapsService, type PlaceSearchResult } from '../google-maps.service';
 import {
-  GoogleDocsExportService,
-  type GoogleDocsExportPhase,
-  type GoogleDocsExportResult,
-} from '../google-docs-export.service';
+  DocxExportService,
+  type DocxExportPhase,
+  type DocxExportResult,
+} from '../docx-export.service';
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import type { AtlasItem } from '../atlas.models';
 import { PlaceReviewsService, type CityPlaceCandidate } from '../place-reviews.service';
@@ -1420,7 +1420,7 @@ type BoardLoadContext = {
 @Component({
   selector: 'app-boards',
   imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink, BoardCollectionCreateComponent, BoardCollectionListComponent, CustomPublicUrlDialogComponent],
-  providers: [GoogleDocsExportService],
+  providers: [DocxExportService],
   templateUrl: './boards.html',
   styleUrls: ['./boards.css', './tour-experience.css', './board-wizard-drafts.css', './board-wizard-media-mode.css', './board-narration-style.css', './board-wizard-redesign.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css', './stack-script.css', './stack-cover-final.css', './stack-doc-export.css', './board-city-tag.css'],
 })
@@ -1432,7 +1432,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   private readonly boardAnalytics = inject(BoardAnalyticsService);
   private readonly boardLikes = inject(BoardLikesService);
   private readonly googleMapsService = inject(GoogleMapsService);
-  private readonly googleDocsExportService = inject(GoogleDocsExportService);
+  private readonly docxExportService = inject(DocxExportService);
   private readonly placeReviewsService = inject(PlaceReviewsService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -1909,9 +1909,9 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly stackDocsExportIncludeFinalCard = signal(true);
   readonly stackDocsExportIncludeProductionNotes = signal(false);
   readonly stackDocsExporting = signal(false);
-  readonly stackDocsExportPhase = signal<GoogleDocsExportPhase | null>(null);
+  readonly stackDocsExportPhase = signal<DocxExportPhase | null>(null);
   readonly stackDocsExportError = signal<string | null>(null);
-  readonly stackDocsExportResult = signal<GoogleDocsExportResult | null>(null);
+  readonly stackDocsExportResult = signal<DocxExportResult | null>(null);
   readonly stackFinalScreenHeadline = signal('Keep exploring');
   readonly stackFinalScreenMessage = signal('');
   readonly stackFinalScreenShowQrCode = signal(true);
@@ -3105,6 +3105,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.docxExportService.release(this.stackDocsExportResult());
     this.wizardOffGridLocationRun += 1;
     this.boardLoadSequence += 1;
     this.boardRouteLoadSequence += 1;
@@ -12453,6 +12454,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.stackDocsExportIncludeFinalCard.set(true);
     this.stackDocsExportIncludeProductionNotes.set(false);
     this.stackDocsExportError.set(null);
+    this.docxExportService.release(this.stackDocsExportResult());
     this.stackDocsExportResult.set(null);
     this.stackDocsExportPhase.set(null);
     this.stackDocsExportDialogOpen.set(true);
@@ -12465,6 +12467,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     if (this.stackDocsExporting()) return;
     this.stackDocsExportDialogOpen.set(false);
     this.stackDocsExportError.set(null);
+    this.docxExportService.release(this.stackDocsExportResult());
     this.stackDocsExportResult.set(null);
     this.stackDocsExportPhase.set(null);
     if (this.isBrowser) {
@@ -12489,19 +12492,15 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
   stackDocsExportPhaseLabel(): string {
     switch (this.stackDocsExportPhase()) {
-      case 'authorizing': return 'Connecting to Google…';
       case 'preparing-images': return 'Preparing draft images…';
-      case 'creating-document': return 'Creating and formatting your Doc…';
-      default: return 'Create Google Doc';
+      case 'building-document': return 'Building and formatting your DOCX…';
+      case 'downloading': return 'Starting your download…';
+      default: return 'Download DOCX';
     }
   }
 
-  async exportStackToGoogleDocs(board: Board): Promise<void> {
+  async exportStackToDocx(board: Board): Promise<void> {
     if (this.stackDocsExporting() || !this.stackSelectedCount()) return;
-    if (!this.googleDocsExportService.isConfigured()) {
-      this.stackDocsExportError.set('Google Docs export is not configured yet. Add the Google OAuth client ID to the runtime configuration.');
-      return;
-    }
     const requestId = typeof globalThis.crypto?.randomUUID === 'function'
       ? globalThis.crypto.randomUUID()
       : `docs-${Date.now()}-${Math.random().toString(36).slice(2)}`;
@@ -12510,7 +12509,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.stackDocsExportError.set(null);
     this.stackDocsExportResult.set(null);
     try {
-      const result = await this.googleDocsExportService.export(
+      const result = await this.docxExportService.export(
         snapshot,
         (phase) => this.stackDocsExportPhase.set(phase),
       );
@@ -12518,7 +12517,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       this.stackDocsExportPhase.set(null);
     } catch (error) {
       this.stackDocsExportError.set(
-        error instanceof Error ? error.message : 'The Google Doc could not be created.',
+        error instanceof Error ? error.message : 'The DOCX file could not be created.',
       );
       this.stackDocsExportPhase.set(null);
     } finally {
@@ -12526,20 +12525,9 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  openStackDocsExportResult(): void {
-    const url = this.stackDocsExportResult()?.documentUrl;
-    if (url) window.open(url, '_blank', 'noopener,noreferrer');
-  }
-
-  async copyStackDocsExportResult(): Promise<void> {
-    const url = this.stackDocsExportResult()?.documentUrl;
-    if (!url) return;
-    try {
-      await navigator.clipboard.writeText(url);
-      this.setStackShareMessage('Google Doc link copied.', false);
-    } catch {
-      this.stackDocsExportError.set('The Doc was created, but its link could not be copied.');
-    }
+  downloadStackDocxAgain(): void {
+    const result = this.stackDocsExportResult();
+    if (result) this.docxExportService.downloadAgain(result);
   }
 
   private buildCurrentStackDocsSnapshot(board: Board, requestId: string): StackDocsExportSnapshot {
@@ -12653,6 +12641,8 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.stackVoiceLibraryOpen.set(false);
     this.stackStudioOpen.set(false);
     this.stackDocsExportDialogOpen.set(false);
+    this.docxExportService.release(this.stackDocsExportResult());
+    this.stackDocsExportResult.set(null);
     this.stackScriptDiscardConfirmOpen.set(false);
     this.setStackShareMessage(null);
   }

@@ -1,8 +1,9 @@
 import { lookup } from 'node:dns/promises';
 import { createHash, randomUUID } from 'node:crypto';
 import { isIP } from 'node:net';
-import { HttpsError, onCall } from 'firebase-functions/v2/https';
 import { logger } from 'firebase-functions';
+import { HttpsError, onCall } from 'firebase-functions/v2/https';
+import JSZip from 'jszip';
 import sharp from 'sharp';
 import { db, storage } from './firebase';
 
@@ -30,24 +31,26 @@ type ExportSnapshot = {
   productionNotes: { included: boolean; narrator: string; music: string; format: string; ratio: string; socialCaption: string };
 };
 
-type PreparedImage = { url: string; label: string; widthPt: number };
-type DocumentMarker =
-  | { kind: 'page-break'; startIndex: number; endIndex: number }
-  | { kind: 'image'; startIndex: number; endIndex: number; image: PreparedImage };
-type StyleRange = { startIndex: number; endIndex: number; namedStyleType: 'TITLE' | 'HEADING_1' | 'HEADING_2' };
+type PreparedImage = {
+  buffer: Buffer;
+  extension: 'jpg' | 'png';
+  contentType: 'image/jpeg' | 'image/png';
+  width: number;
+  height: number;
+  label: string;
+  widthPt: number;
+};
 
-const docsApiBaseUrl = 'https://docs.googleapis.com/v1/documents';
 const maxCards = 200;
 const maxImages = 300;
 const maxImageBytes = 20 * 1024 * 1024;
+const docxMimeType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 
-export const exportBoardToGoogleDocs = onCall(
+export const exportBoardToDocx = onCall(
   { region: 'us-central1', timeoutSeconds: 540, memory: '1GiB', cors: true },
   async (request) => {
     const userId = request.auth?.uid ?? '';
-    if (!userId) throw new HttpsError('unauthenticated', 'Sign in before exporting to Google Docs.');
-    const accessToken = safeText(request.data?.accessToken, 4096);
-    if (!accessToken) throw new HttpsError('invalid-argument', 'Google Docs authorization is required.');
+    if (!userId) throw new HttpsError('unauthenticated', 'Sign in before downloading this board as a DOCX file.');
     const snapshot = normalizeSnapshot(request.data?.snapshot);
 
     const boardSnapshot = await db.collection('boards').doc(snapshot.boardId).get();
@@ -68,49 +71,57 @@ export const exportBoardToGoogleDocs = onCall(
     const exportRecordId = createHash('sha256').update(`${userId}:${snapshot.requestId}`).digest('hex');
     const exportRef = db.collection('board_doc_exports').doc(exportRecordId);
     const existing = await exportRef.get();
-    if (existing.data()?.['status'] === 'completed') {
+    if (existing.data()?.['status'] === 'completed' && existing.data()?.['result']) {
       return existing.data()?.['result'];
     }
     const existingUpdatedAt = Date.parse(String(existing.data()?.['updated_at'] ?? ''));
     if (existing.data()?.['status'] === 'processing'
       && Number.isFinite(existingUpdatedAt)
       && Date.now() - existingUpdatedAt < 10 * 60 * 1000) {
-      throw new HttpsError('aborted', 'This Google Docs export is already in progress.');
+      throw new HttpsError('aborted', 'This DOCX export is already in progress.');
     }
     await exportRef.set({
       user_id: userId,
       board_id: snapshot.boardId,
       request_id: snapshot.requestId,
+      format: 'docx',
       status: 'processing',
       updated_at: new Date().toISOString(),
     }, { merge: true });
 
-    const stagedPaths: string[] = [];
-    const warnings: string[] = [];
-    let documentId = '';
     try {
-      const prepared = await prepareSnapshotImages(snapshot, userId, stagedPaths, warnings);
-      documentId = await createGoogleDocument(accessToken, snapshot.documentTitle);
-      const plan = buildDocumentPlan(snapshot, prepared);
-      await populateGoogleDocument(accessToken, documentId, plan, warnings);
+      const warnings: string[] = [];
+      const images = await prepareSnapshotImages(snapshot, warnings);
+      const docx = await createDocxBuffer(snapshot, images);
+      const fileName = docxFileName(snapshot.documentTitle || snapshot.opening.title);
+      const storagePath = `users/${userId}/board-doc-exports/${snapshot.boardId}/${snapshot.requestId}/${fileName}`;
+      const downloadToken = randomUUID();
+      await storage.bucket().file(storagePath).save(docx, {
+        resumable: false,
+        metadata: {
+          contentType: docxMimeType,
+          contentDisposition: `attachment; filename="${fileName.replace(/["\\]/g, '')}"`,
+          metadata: { firebaseStorageDownloadTokens: downloadToken },
+        },
+      });
+      const downloadUrl = `https://firebasestorage.googleapis.com/v0/b/${encodeURIComponent(storage.bucket().name)}/o/${encodeURIComponent(storagePath)}?alt=media&token=${encodeURIComponent(downloadToken)}`;
       const result = {
         requestId: snapshot.requestId,
-        documentId,
-        documentUrl: `https://docs.google.com/document/d/${encodeURIComponent(documentId)}/edit`,
+        fileName,
+        storagePath,
+        downloadUrl,
         exportedCardCount: snapshot.cards.length,
-        exportedImageCount: plan.markers.filter((marker) => marker.kind === 'image').length,
+        exportedImageCount: images.size,
         warnings,
       };
       await exportRef.set({ status: 'completed', result, updated_at: new Date().toISOString() }, { merge: true });
       return result;
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Google Docs export failed.';
-      logger.error('Board Google Docs export failed.', { userId, boardId: snapshot.boardId, requestId: snapshot.requestId, documentId, message });
-      await exportRef.set({ status: 'failed', document_id: documentId || null, error_message: message.slice(0, 500), updated_at: new Date().toISOString() }, { merge: true });
+      const message = error instanceof Error ? error.message : 'DOCX export failed.';
+      logger.error('Board DOCX export failed.', { userId, boardId: snapshot.boardId, requestId: snapshot.requestId, message });
+      await exportRef.set({ status: 'failed', error_message: message.slice(0, 500), updated_at: new Date().toISOString() }, { merge: true });
       if (error instanceof HttpsError) throw error;
       throw new HttpsError('unavailable', message);
-    } finally {
-      await Promise.allSettled(stagedPaths.map((path) => storage.bucket().file(path).delete({ ignoreNotFound: true })));
     }
   },
 );
@@ -128,14 +139,14 @@ function normalizeSnapshot(value: unknown): ExportSnapshot {
       position: index + 1,
       title: safeText(card['title'], 300) || `Card ${index + 1}`,
       narration,
-      imageUrls: uniqueStrings(card['imageUrls'], maxImages + 1).map((url) => safeImageUrl(url)).filter(Boolean),
+      imageUrls: uniqueStrings(card['imageUrls'], maxImages + 1).map(safeImageUrl).filter(Boolean),
       sourceUrl: safeOptionalHttpsUrl(card['sourceUrl']),
       wordCount: narration.split(/\s+/).filter(Boolean).length,
       estimatedSeconds: narration ? Math.max(1, Math.ceil(narration.split(/\s+/).filter(Boolean).length / 2.35)) : 0,
     };
   });
   if (!cards.length) throw new HttpsError('invalid-argument', 'Select at least one card before exporting.');
-  if (cards.length > maxCards) throw new HttpsError('invalid-argument', `Google Docs export supports up to ${maxCards} selected cards at a time.`);
+  if (cards.length > maxCards) throw new HttpsError('invalid-argument', `DOCX export supports up to ${maxCards} selected cards at a time.`);
   const totalImages = cards.reduce((total, card) => total + card.imageUrls.length, 0)
     + (opening['coverImageUrl'] ? 1 : 0) + (closing['imageUrl'] ? 1 : 0) + (closing['qrImageUrl'] ? 1 : 0);
   if (totalImages > maxImages) throw new HttpsError('invalid-argument', `This export has ${totalImages} images; the current limit is ${maxImages}.`);
@@ -170,58 +181,161 @@ function normalizeSnapshot(value: unknown): ExportSnapshot {
   };
 }
 
-async function prepareSnapshotImages(
-  snapshot: ExportSnapshot,
-  userId: string,
-  stagedPaths: string[],
-  warnings: string[],
-): Promise<Map<string, PreparedImage>> {
-  const requestedByUrl = new Map<string, { url: string; label: string; widthPt: number }>();
-  const requestImage = (url: string, label: string, widthPt: number) => {
+async function prepareSnapshotImages(snapshot: ExportSnapshot, warnings: string[]): Promise<Map<string, PreparedImage>> {
+  const requested = new Map<string, { label: string; widthPt: number }>();
+  const add = (url: string, label: string, widthPt: number) => {
     if (!url) return;
-    const existing = requestedByUrl.get(url);
-    if (!existing || existing.widthPt < widthPt) requestedByUrl.set(url, { url, label, widthPt });
+    const existing = requested.get(url);
+    if (!existing || existing.widthPt < widthPt) requested.set(url, { label, widthPt });
   };
-  requestImage(snapshot.opening.coverImageUrl, 'Cover image', 450);
+  add(snapshot.opening.coverImageUrl, 'Cover image', 450);
   for (const card of snapshot.cards) {
-    card.imageUrls.forEach((url, index) => requestImage(url, `${card.position}. ${card.title}${index ? ` image ${index + 1}` : ' image'}`, index ? 300 : 430));
+    card.imageUrls.forEach((url, index) => add(url, `${card.position}. ${card.title}${index ? ` image ${index + 1}` : ' image'}`, index ? 300 : 430));
   }
-  if (snapshot.closing.included) requestImage(snapshot.closing.imageUrl, 'Final card image', 430);
-  if (snapshot.closing.included) requestImage(snapshot.closing.qrImageUrl, 'Board QR code', 120);
-  const requested = [...requestedByUrl.values()];
+  if (snapshot.closing.included) add(snapshot.closing.imageUrl, 'Final card image', 430);
+  if (snapshot.closing.included) add(snapshot.closing.qrImageUrl, 'Board QR code', 120);
 
   const prepared = new Map<string, PreparedImage>();
-  for (let offset = 0; offset < requested.length; offset += 4) {
-    const batch = requested.slice(offset, offset + 4);
-    const results = await Promise.all(batch.map(async (image, batchIndex) => {
+  const entries = [...requested.entries()];
+  for (let offset = 0; offset < entries.length; offset += 4) {
+    const results = await Promise.all(entries.slice(offset, offset + 4).map(async ([url, details]) => {
       try {
-        const normalized = await normalizeImage(image.url);
-        const storagePath = `board-doc-exports/${userId}/${snapshot.requestId}/${offset + batchIndex}.${normalized.extension}`;
-        const token = randomUUID();
-        await storage.bucket().file(storagePath).save(normalized.buffer, {
-          resumable: false,
-          metadata: { contentType: normalized.contentType, metadata: { firebaseStorageDownloadTokens: token } },
-        });
-        stagedPaths.push(storagePath);
-        const url = `https://firebasestorage.googleapis.com/v0/b/${encodeURIComponent(storage.bucket().name)}/o/${encodeURIComponent(storagePath)}?alt=media&token=${encodeURIComponent(token)}`;
-        return { sourceUrl: image.url, prepared: { url, label: image.label, widthPt: image.widthPt } };
+        return [url, { ...await normalizeImage(url), ...details }] as const;
       } catch (error) {
-        warnings.push(`${image.label} was skipped: ${error instanceof Error ? error.message : 'image preparation failed'}`);
+        warnings.push(`${details.label} was skipped: ${error instanceof Error ? error.message : 'image preparation failed'}`);
         return null;
       }
     }));
-    for (const result of results) if (result) prepared.set(result.sourceUrl, result.prepared);
+    for (const result of results) if (result) prepared.set(result[0], result[1]);
   }
   return prepared;
 }
 
-async function normalizeImage(url: string): Promise<{ buffer: Buffer; contentType: string; extension: 'jpg' | 'png' }> {
+async function normalizeImage(url: string): Promise<Omit<PreparedImage, 'label' | 'widthPt'>> {
   const input = url.startsWith('data:') ? dataUrlBuffer(url) : await fetchPublicImage(url);
   if (input.byteLength > maxImageBytes) throw new Error('image is larger than 20 MB');
-  const pipeline = sharp(input, { failOn: 'error', limitInputPixels: 25_000_000 }).rotate().resize({ width: 2000, height: 2000, fit: 'inside', withoutEnlargement: true });
+  const pipeline = sharp(input, { failOn: 'error', limitInputPixels: 25_000_000 })
+    .rotate()
+    .resize({ width: 2000, height: 2000, fit: 'inside', withoutEnlargement: true });
   const metadata = await pipeline.metadata();
-  if (metadata.hasAlpha) return { buffer: await pipeline.png({ compressionLevel: 8 }).toBuffer(), contentType: 'image/png', extension: 'png' };
-  return { buffer: await pipeline.jpeg({ quality: 88, mozjpeg: true }).toBuffer(), contentType: 'image/jpeg', extension: 'jpg' };
+  if (metadata.hasAlpha) {
+    const output = await pipeline.png({ compressionLevel: 8 }).toBuffer({ resolveWithObject: true });
+    return { buffer: output.data, extension: 'png', contentType: 'image/png', width: output.info.width, height: output.info.height };
+  }
+  const output = await pipeline.jpeg({ quality: 88, mozjpeg: true }).toBuffer({ resolveWithObject: true });
+  return { buffer: output.data, extension: 'jpg', contentType: 'image/jpeg', width: output.info.width, height: output.info.height };
+}
+
+async function createDocxBuffer(snapshot: ExportSnapshot, images: Map<string, PreparedImage>): Promise<Buffer> {
+  const packageData = buildDocxPackage(snapshot, images);
+  const zip = new JSZip();
+  for (const [path, value] of Object.entries(packageData.files)) zip.file(path, value);
+  for (const media of packageData.media) zip.file(`word/media/${media.fileName}`, media.image.buffer);
+  return await zip.generateAsync({ type: 'nodebuffer', compression: 'DEFLATE', compressionOptions: { level: 6 } });
+}
+
+function buildDocxPackage(snapshot: ExportSnapshot, images: Map<string, PreparedImage>): {
+  files: Record<string, string>;
+  media: Array<{ fileName: string; relationshipId: string; image: PreparedImage }>;
+} {
+  const media: Array<{ fileName: string; relationshipId: string; image: PreparedImage }> = [];
+  const mediaByUrl = new Map<string, { fileName: string; relationshipId: string; image: PreparedImage }>();
+  for (const [url, image] of images) {
+    const index = media.length + 1;
+    const entry = { fileName: `image${index}.${image.extension}`, relationshipId: `rId${index + 1}`, image };
+    media.push(entry);
+    mediaByUrl.set(url, entry);
+  }
+  let drawingId = 1;
+  const body: string[] = [];
+  const paragraph = (text: string, style?: 'Title' | 'Heading1' | 'Heading2' | 'Caption') => body.push(docxParagraph(text, style));
+  const image = (url: string) => {
+    const entry = mediaByUrl.get(url);
+    if (entry) body.push(docxImageParagraph(entry, drawingId++));
+  };
+  const pageBreak = () => body.push('<w:p><w:r><w:br w:type="page"/></w:r></w:p>');
+
+  paragraph(snapshot.opening.title, 'Title');
+  if (snapshot.ownerName) paragraph(`Curated by ${snapshot.ownerName}`, 'Caption');
+  paragraph(`${snapshot.cards.length} selected card${snapshot.cards.length === 1 ? '' : 's'} · Exported ${formatExportDate(snapshot.exportedAt)}`, 'Caption');
+  if (snapshot.sourceUrl) paragraph(snapshot.sourceUrl, 'Caption');
+  image(snapshot.opening.coverImageUrl);
+  paragraph('Board Opening', 'Heading1');
+  paragraph(snapshot.opening.title, 'Heading2');
+  paragraph(snapshot.opening.description || 'No board introduction provided.');
+
+  for (const card of snapshot.cards) {
+    pageBreak();
+    paragraph(`${String(card.position).padStart(2, '0')} · ${card.title}`, 'Heading1');
+    const availableImages = card.imageUrls.filter((url) => mediaByUrl.has(url));
+    if (availableImages.length) availableImages.forEach(image);
+    else paragraph('No image available.', 'Caption');
+    paragraph('Narration Script', 'Heading2');
+    paragraph(card.narration || 'Narration not provided.');
+    paragraph(`${card.wordCount} words · ${durationLabel(card.estimatedSeconds)} estimated narration`, 'Caption');
+    if (card.sourceUrl) paragraph(`Source: ${card.sourceUrl}`, 'Caption');
+  }
+
+  if (snapshot.closing.included) {
+    pageBreak();
+    paragraph('Final Card', 'Heading1');
+    image(snapshot.closing.imageUrl);
+    paragraph(snapshot.closing.headline, 'Heading2');
+    paragraph(snapshot.closing.message || snapshot.opening.title);
+    image(snapshot.closing.qrImageUrl);
+    if (snapshot.sourceUrl) paragraph(`Open the complete board: ${snapshot.sourceUrl}`, 'Caption');
+  }
+
+  if (snapshot.productionNotes.included) {
+    pageBreak();
+    paragraph('Production Notes', 'Heading1');
+    paragraph(`Narrator: ${snapshot.productionNotes.narrator || 'Not selected'}`);
+    paragraph(`Music: ${snapshot.productionNotes.music || 'No music'}`);
+    paragraph(`Format: ${snapshot.productionNotes.format || 'Not selected'}`);
+    paragraph(`Ratio: ${snapshot.productionNotes.ratio || 'Not selected'}`);
+    if (snapshot.productionNotes.socialCaption) {
+      paragraph('Social Caption', 'Heading2');
+      paragraph(snapshot.productionNotes.socialCaption);
+    }
+  }
+
+  const imageRelationships = media.map((entry) =>
+    `<Relationship Id="${entry.relationshipId}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/${entry.fileName}"/>`,
+  ).join('');
+  const createdAt = new Date(snapshot.exportedAt);
+  const coreDate = Number.isNaN(createdAt.getTime()) ? new Date().toISOString() : createdAt.toISOString();
+  return {
+    media,
+    files: {
+      '[Content_Types].xml': `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Default Extension="jpg" ContentType="image/jpeg"/><Default Extension="png" ContentType="image/png"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/><Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/><Override PartName="/docProps/app.xml" ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml"/></Types>`,
+      '_rels/.rels': `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/><Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties" Target="docProps/app.xml"/></Relationships>`,
+      'word/document.xml': `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><w:body>${body.join('')}<w:sectPr><w:pgSz w:w="12240" w:h="15840"/><w:pgMar w:top="1080" w:right="1080" w:bottom="1080" w:left="1080" w:header="720" w:footer="720" w:gutter="0"/></w:sectPr></w:body></w:document>`,
+      'word/styles.xml': docxStylesXml(),
+      'word/_rels/document.xml.rels': `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>${imageRelationships}</Relationships>`,
+      'docProps/core.xml': `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcmitype="http://purl.org/dc/dcmitype/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><dc:title>${xml(snapshot.documentTitle)}</dc:title><dc:creator>${xml(snapshot.ownerName || 'LivingWiki')}</dc:creator><cp:lastModifiedBy>LivingWiki</cp:lastModifiedBy><dcterms:created xsi:type="dcterms:W3CDTF">${coreDate}</dcterms:created><dcterms:modified xsi:type="dcterms:W3CDTF">${new Date().toISOString()}</dcterms:modified></cp:coreProperties>`,
+      'docProps/app.xml': '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties" xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes"><Application>LivingWiki</Application><AppVersion>1.0</AppVersion></Properties>',
+    },
+  };
+}
+
+function docxParagraph(text: string, style?: 'Title' | 'Heading1' | 'Heading2' | 'Caption'): string {
+  const paragraphProperties = style ? `<w:pPr><w:pStyle w:val="${style}"/></w:pPr>` : '';
+  const lines = String(text ?? '').split('\n');
+  const runs = lines.map((line, index) => `${index ? '<w:r><w:br/></w:r>' : ''}<w:r><w:t xml:space="preserve">${xml(line)}</w:t></w:r>`).join('');
+  return `<w:p>${paragraphProperties}${runs}</w:p>`;
+}
+
+function docxImageParagraph(entry: { relationshipId: string; image: PreparedImage }, drawingId: number): string {
+  const widthPt = Math.min(468, Math.max(72, entry.image.widthPt));
+  const heightPt = Math.min(620, widthPt * entry.image.height / Math.max(1, entry.image.width));
+  const cx = Math.round(widthPt * 12_700);
+  const cy = Math.round(heightPt * 12_700);
+  const label = xml(entry.image.label);
+  return `<w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="${cx}" cy="${cy}"/><wp:effectExtent l="0" t="0" r="0" b="0"/><wp:docPr id="${drawingId}" name="LivingWiki image ${drawingId}" descr="${label}"/><wp:cNvGraphicFramePr><a:graphicFrameLocks noChangeAspect="1"/></wp:cNvGraphicFramePr><a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic><pic:nvPicPr><pic:cNvPr id="${drawingId}" name="${label}"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="${entry.relationshipId}"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${cx}" cy="${cy}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r></w:p>`;
+}
+
+function docxStylesXml(): string {
+  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="Aptos" w:hAnsi="Aptos"/><w:sz w:val="22"/><w:color w:val="24372E"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="160" w:line="300" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/></w:style><w:style w:type="paragraph" w:styleId="Title"><w:name w:val="Title"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:pPr><w:spacing w:before="0" w:after="280"/><w:jc w:val="center"/></w:pPr><w:rPr><w:b/><w:color w:val="143F32"/><w:sz w:val="48"/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="Heading1"><w:name w:val="heading 1"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:qFormat/><w:pPr><w:keepNext/><w:spacing w:before="260" w:after="140"/><w:outlineLvl w:val="0"/></w:pPr><w:rPr><w:b/><w:color w:val="143F32"/><w:sz w:val="34"/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="Heading2"><w:name w:val="heading 2"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:qFormat/><w:pPr><w:keepNext/><w:spacing w:before="200" w:after="100"/><w:outlineLvl w:val="1"/></w:pPr><w:rPr><w:b/><w:color w:val="2D6B54"/><w:sz w:val="27"/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="Caption"><w:name w:val="Caption"/><w:basedOn w:val="Normal"/><w:pPr><w:spacing w:after="100"/><w:jc w:val="center"/></w:pPr><w:rPr><w:i/><w:color w:val="617168"/><w:sz w:val="18"/></w:rPr></w:style></w:styles>`;
 }
 
 async function fetchPublicImage(initialUrl: string): Promise<Buffer> {
@@ -232,7 +346,7 @@ async function fetchPublicImage(initialUrl: string): Promise<Buffer> {
     const timeout = setTimeout(() => controller.abort(), 20_000);
     let response: Response;
     try {
-      response = await fetch(url, { redirect: 'manual', signal: controller.signal, headers: { 'User-Agent': 'LivingWiki Google Docs Export/1.0' } });
+      response = await fetch(url, { redirect: 'manual', signal: controller.signal, headers: { 'User-Agent': 'LivingWiki DOCX Export/1.0' } });
     } finally {
       clearTimeout(timeout);
     }
@@ -276,142 +390,16 @@ function dataUrlBuffer(value: string): Buffer {
   return Buffer.from(match[1], 'base64');
 }
 
-function buildDocumentPlan(snapshot: ExportSnapshot, images: Map<string, PreparedImage>): {
-  text: string; styles: StyleRange[]; markers: DocumentMarker[];
-} {
-  let text = '';
-  const styles: StyleRange[] = [];
-  const markers: DocumentMarker[] = [];
-  const append = (value: string, style?: StyleRange['namedStyleType']) => {
-    const startIndex = text.length + 1;
-    text += value;
-    if (style) styles.push({ startIndex, endIndex: text.length + 1, namedStyleType: style });
-  };
-  const marker = (kind: 'page-break' | 'image', image?: PreparedImage) => {
-    const token = `[[LW_${kind === 'image' ? 'IMAGE' : 'PAGE'}_${markers.length}]]`;
-    const startIndex = text.length + 1;
-    text += `${token}\n`;
-    markers.push(kind === 'image'
-      ? { kind, startIndex, endIndex: startIndex + token.length, image: image! }
-      : { kind, startIndex, endIndex: startIndex + token.length });
-  };
-  const appendImage = (url: string) => { const image = images.get(url); if (image) marker('image', image); };
-
-  append(`${snapshot.opening.title}\n`, 'TITLE');
-  if (snapshot.ownerName) append(`Curated by ${snapshot.ownerName}\n`);
-  append(`${snapshot.cards.length} selected card${snapshot.cards.length === 1 ? '' : 's'} · Exported ${formatExportDate(snapshot.exportedAt)}\n`);
-  if (snapshot.sourceUrl) append(`${snapshot.sourceUrl}\n`);
-  append('\n');
-  appendImage(snapshot.opening.coverImageUrl);
-  append('Board Opening\n', 'HEADING_1');
-  append(`${snapshot.opening.title}\n`, 'HEADING_2');
-  append(`${snapshot.opening.description || 'No board introduction provided.'}\n`);
-
-  for (const card of snapshot.cards) {
-    marker('page-break');
-    append(`${String(card.position).padStart(2, '0')} · ${card.title}\n`, 'HEADING_1');
-    const preparedCardImages = card.imageUrls.map((url) => images.get(url)).filter((image): image is PreparedImage => !!image);
-    if (preparedCardImages.length) preparedCardImages.forEach((image) => marker('image', image));
-    else append('No image available.\n');
-    append('Narration Script\n', 'HEADING_2');
-    append(`${card.narration || 'Narration not provided.'}\n`);
-    append(`${card.wordCount} words · ${durationLabel(card.estimatedSeconds)} estimated narration\n`);
-    if (card.sourceUrl) append(`Source: ${card.sourceUrl}\n`);
-  }
-
-  if (snapshot.closing.included) {
-    marker('page-break');
-    append('Final Card\n', 'HEADING_1');
-    appendImage(snapshot.closing.imageUrl);
-    append(`${snapshot.closing.headline}\n`, 'HEADING_2');
-    append(`${snapshot.closing.message || snapshot.opening.title}\n`);
-    appendImage(snapshot.closing.qrImageUrl);
-    if (snapshot.sourceUrl) append(`Open the complete board: ${snapshot.sourceUrl}\n`);
-  }
-
-  if (snapshot.productionNotes.included) {
-    marker('page-break');
-    append('Production Notes\n', 'HEADING_1');
-    append(`Narrator: ${snapshot.productionNotes.narrator || 'Not selected'}\n`);
-    append(`Music: ${snapshot.productionNotes.music || 'No music'}\n`);
-    append(`Format: ${snapshot.productionNotes.format || 'Not selected'}\n`);
-    append(`Ratio: ${snapshot.productionNotes.ratio || 'Not selected'}\n`);
-    if (snapshot.productionNotes.socialCaption) {
-      append('Social Caption\n', 'HEADING_2');
-      append(`${snapshot.productionNotes.socialCaption}\n`);
-    }
-  }
-  return { text, styles, markers };
-}
-
-async function createGoogleDocument(accessToken: string, title: string): Promise<string> {
-  const response = await fetch(docsApiBaseUrl, {
-    method: 'POST', headers: googleHeaders(accessToken), body: JSON.stringify({ title }),
-  });
-  const payload = await googlePayload(response, 'create the Google Doc');
-  const documentId = String(payload['documentId'] ?? '');
-  if (!documentId) throw new Error('Google Docs did not return a document ID.');
-  return documentId;
-}
-
-async function populateGoogleDocument(
-  accessToken: string,
-  documentId: string,
-  plan: ReturnType<typeof buildDocumentPlan>,
-  warnings: string[],
-): Promise<void> {
-  await batchUpdate(accessToken, documentId, [{ insertText: { location: { index: 1 }, text: plan.text } }]);
-  if (plan.styles.length) {
-    await batchUpdate(accessToken, documentId, plan.styles.map((style) => ({
-      updateParagraphStyle: {
-        range: { startIndex: style.startIndex, endIndex: style.endIndex },
-        paragraphStyle: { namedStyleType: style.namedStyleType },
-        fields: 'namedStyleType',
-      },
-    })));
-  }
-  for (const marker of [...plan.markers].sort((a, b) => b.startIndex - a.startIndex)) {
-    const remove = { deleteContentRange: { range: { startIndex: marker.startIndex, endIndex: marker.endIndex } } };
-    if (marker.kind === 'page-break') {
-      await batchUpdate(accessToken, documentId, [remove, { insertPageBreak: { location: { index: marker.startIndex } } }]);
-      continue;
-    }
-    try {
-      await batchUpdate(accessToken, documentId, [remove, {
-        insertInlineImage: {
-          uri: marker.image.url,
-          location: { index: marker.startIndex },
-          objectSize: { width: { magnitude: marker.image.widthPt, unit: 'PT' } },
-        },
-      }]);
-    } catch (error) {
-      warnings.push(`${marker.image.label} could not be inserted into Google Docs.`);
-      await batchUpdate(accessToken, documentId, [remove, { insertText: { location: { index: marker.startIndex }, text: '[Image unavailable]' } }]);
-      logger.warn('Prepared Google Docs image insertion failed.', { documentId, label: marker.image.label, message: error instanceof Error ? error.message : String(error) });
-    }
-  }
-}
-
-async function batchUpdate(accessToken: string, documentId: string, requests: unknown[]): Promise<void> {
-  const response = await fetch(`${docsApiBaseUrl}/${encodeURIComponent(documentId)}:batchUpdate`, {
-    method: 'POST', headers: googleHeaders(accessToken), body: JSON.stringify({ requests }),
-  });
-  await googlePayload(response, 'write the Google Doc');
-}
-
-function googleHeaders(accessToken: string): Record<string, string> {
-  return { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' };
-}
-
-async function googlePayload(response: Response, action: string): Promise<Record<string, unknown>> {
-  const payload = await response.json().catch(() => ({})) as Record<string, unknown>;
-  if (!response.ok) {
-    const error = record(payload['error']);
-    const message = safeText(error['message'], 500) || `Google could not ${action} (${response.status}).`;
-    if (response.status === 401 || response.status === 403) throw new HttpsError('permission-denied', message);
-    throw new Error(message);
-  }
-  return payload;
+function docxFileName(value: string): string {
+  const stem = value.normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\.docx$/i, '')
+    .replace(/[^A-Za-z0-9 _.-]+/g, '')
+    .replace(/\s+/g, ' ')
+    .replace(/[. ]+$/g, '')
+    .trim()
+    .slice(0, 120);
+  return `${stem || 'LivingWiki Script and Images'}.docx`;
 }
 
 function durationLabel(seconds: number): string {
@@ -424,6 +412,10 @@ function durationLabel(seconds: number): string {
 function formatExportDate(value: string): string {
   const date = new Date(value);
   return Number.isNaN(date.getTime()) ? value : date.toISOString().slice(0, 10);
+}
+
+function xml(value: string): string {
+  return String(value ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
 }
 
 function record(value: unknown): Record<string, unknown> {
@@ -461,7 +453,4 @@ function safeImageUrl(value: unknown): string {
   return safeOptionalHttpsUrl(text);
 }
 
-export const boardDocExportTestHelpers = {
-  buildDocumentPlan,
-  privateIp,
-};
+export const boardDocExportTestHelpers = { buildDocxPackage, createDocxBuffer, privateIp };
