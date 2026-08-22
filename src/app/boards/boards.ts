@@ -1907,7 +1907,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly stackDocsExportIncludeCover = signal(true);
   readonly stackDocsExportIncludeAllImages = signal(true);
   readonly stackDocsExportIncludeFinalCard = signal(true);
-  readonly stackDocsExportIncludeProductionNotes = signal(false);
+  readonly stackDocsExportIncludeProductionNotes = signal(true);
   readonly stackDocsExporting = signal(false);
   readonly stackDocsExportPhase = signal<DocxExportPhase | null>(null);
   readonly stackDocsExportError = signal<string | null>(null);
@@ -12452,7 +12452,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.stackDocsExportIncludeCover.set(true);
     this.stackDocsExportIncludeAllImages.set(true);
     this.stackDocsExportIncludeFinalCard.set(true);
-    this.stackDocsExportIncludeProductionNotes.set(false);
+    this.stackDocsExportIncludeProductionNotes.set(true);
     this.stackDocsExportError.set(null);
     this.docxExportService.release(this.stackDocsExportResult());
     this.stackDocsExportResult.set(null);

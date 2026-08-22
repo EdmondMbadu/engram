@@ -7551,7 +7551,7 @@
                 <span class="material-symbols-outlined">description</span>
                 <div>
                   <strong>A complete, editable Word document</strong>
-                  <p>Exports the current cover, selected cards in order, every available script, and the final card.</p>
+                  <p>Exports the current cover, selected cards in order, every complete narration script, production notes, and the final card.</p>
                 </div>
               </div>
 
@@ -7598,7 +7598,7 @@
                 </label>
                 <label>
                   <input type="checkbox" [checked]="stackDocsExportIncludeProductionNotes()" (change)="stackDocsExportIncludeProductionNotes.set($any($event.target).checked)" />
-                  <span><strong>Production notes</strong><small>Narrator, music, format, ratio, and social caption</small></span>
+                  <span><strong>Production notes</strong><small>Included by default: narrator, music, format, ratio, and social caption</small></span>
                 </label>
               </fieldset>
 
