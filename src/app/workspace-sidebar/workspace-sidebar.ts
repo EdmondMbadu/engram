@@ -32,7 +32,6 @@ export class WorkspaceSidebarComponent implements OnDestroy {
   readonly businessChatGuidePath = input<string | null>(null);
   readonly businessChatGuideQueryParams = input<Record<string, string> | null>(null);
   readonly rail = input(false);
-  readonly collapsed = input(false);
 
   readonly navigation = inject(WorkspaceNavigationService);
   readonly overlay = inject(WorkspaceNavigationOverlayService);
@@ -71,5 +70,9 @@ export class WorkspaceSidebarComponent implements OnDestroy {
 
   openAbout(event: MouseEvent): void {
     this.overlay.openAbout(event.currentTarget);
+  }
+
+  toggleSidebar(): void {
+    this.navigation.toggleSidebar();
   }
 }

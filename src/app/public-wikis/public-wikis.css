@@ -42,8 +42,8 @@
 
 .mobile-public-home {
   --home-bg: #ffffff;
-  --home-surface: #ffffff;
-  --home-surface-warm: #fffefa;
+  --home-s: #ffffff;
+  --home-warm: #fffefa;
   --home-control: #fafcfa;
   --home-soft: #f5f5f0;
   --home-soft-hover: #eef8f1;
@@ -52,7 +52,7 @@
   --home-muted: #607066;
   --home-subtle: #718077;
   --home-line: rgba(13, 56, 35, 0.1);
-  --home-line-strong: rgba(13, 56, 35, 0.18);
+  --home-l2: rgba(13, 56, 35, 0.18);
   --home-shadow: 0 12px 30px rgba(13, 56, 35, 0.07);
   --home-hard-shadow: #102018;
   --mobile-deep: #0d3823;
@@ -77,7 +77,7 @@
   gap: 0.5rem;
   min-height: 4rem;
   border-bottom: 1px solid var(--home-line);
-  background: color-mix(in srgb, var(--home-surface) 96%, transparent);
+  background: color-mix(in srgb, var(--home-s) 96%, transparent);
   padding: 0.55rem 0.75rem;
   box-shadow: var(--home-shadow);
   backdrop-filter: blur(16px);
@@ -91,7 +91,7 @@
   flex: 0 0 auto;
   align-items: center;
   justify-content: center;
-  border: 1.5px solid var(--home-line-strong);
+  border: 1.5px solid var(--home-l2);
   border-radius: 0.7rem;
   background: var(--home-control);
   color: var(--home-title);
@@ -233,7 +233,7 @@
   margin-top: 0.3rem;
   border: 1px solid var(--home-line);
   border-radius: 1.1rem;
-  background: var(--home-surface-warm);
+  background: var(--home-warm);
   box-shadow: var(--home-shadow);
 }
 
@@ -247,7 +247,7 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.3rem;
-  border: 1.5px solid var(--home-line-strong);
+  border: 1.5px solid var(--home-l2);
   border-radius: 1rem;
   background: var(--home-soft);
   padding: 0.3rem;
@@ -290,9 +290,9 @@
   min-height: 3.5rem;
   align-items: center;
   gap: 0.55rem;
-  border: 1.5px solid var(--home-line-strong);
+  border: 1.5px solid var(--home-l2);
   border-radius: 1.15rem;
-  background: var(--home-surface);
+  background: var(--home-s);
   box-shadow: none;
   padding: 0.75rem 0.9rem;
   transition: border-color 140ms ease, box-shadow 140ms ease;
@@ -354,9 +354,9 @@
   right: 0;
   left: 0;
   overflow: hidden;
-  border: 2px solid var(--home-line-strong);
+  border: 2px solid var(--home-l2);
   border-radius: 1rem;
-  background: var(--home-surface);
+  background: var(--home-s);
   box-shadow: var(--home-shadow);
   padding: 0.35rem;
 }
@@ -486,7 +486,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border: 1.5px solid var(--home-line-strong);
+  border: 1.5px solid var(--home-l2);
   border-radius: 0.9rem;
   background: linear-gradient(150deg, #1ea64a, #0d3823);
   color: #ffffff;
@@ -566,7 +566,7 @@
   flex-direction: column;
   gap: 0.15rem;
   border: 0;
-  border-left: 1px solid var(--home-line-strong);
+  border-left: 1px solid var(--home-l2);
   background: transparent;
   color: var(--home-ink);
   padding: 0.35rem 0.15rem 0.35rem 0.85rem;
@@ -606,9 +606,9 @@
 
 .mobile-city-panel {
   margin: 0.55rem 0.75rem 0.4rem;
-  border: 2px solid var(--home-line-strong);
+  border: 2px solid var(--home-l2);
   border-radius: 1rem;
-  background: var(--home-surface-warm);
+  background: var(--home-warm);
   box-shadow: var(--home-shadow);
   padding: 0.75rem;
 }
@@ -618,7 +618,7 @@
   align-items: center;
   gap: 0.45rem;
   border-radius: 0.85rem;
-  background: color-mix(in srgb, var(--mobile-green) 18%, var(--home-surface));
+  background: color-mix(in srgb, var(--mobile-green) 18%, var(--home-s));
   padding: 0.75rem;
 }
 
@@ -643,9 +643,9 @@
 }
 
 .mobile-city-sorts button {
-  border: 1.5px solid var(--home-line-strong);
+  border: 1.5px solid var(--home-l2);
   border-radius: 999px;
-  background: var(--home-surface);
+  background: var(--home-s);
   color: var(--home-ink);
   padding: 0.45rem 0.68rem;
   font: inherit;
@@ -683,7 +683,7 @@
   width: 100%;
   border: 1px solid var(--home-line);
   border-radius: 0.75rem;
-  background: var(--home-surface);
+  background: var(--home-s);
   color: var(--home-ink);
   padding: 0.6rem 0.65rem;
   text-align: left;
@@ -760,9 +760,9 @@
   align-items: center;
   justify-content: center;
   gap: 0.42rem;
-  border: 1.5px solid var(--home-line-strong);
+  border: 1.5px solid var(--home-l2);
   border-radius: 1rem;
-  background: var(--home-surface);
+  background: var(--home-s);
   color: var(--home-ink);
   padding: 0.6rem 0.9rem;
   font-size: 0.78rem;
@@ -918,9 +918,9 @@ button.mobile-talk-action {
 .mobile-discover-card,
 .mobile-discover-empty,
 .mobile-discover-page-hero {
-  border: 2px solid var(--home-line-strong);
+  border: 2px solid var(--home-l2);
   border-radius: 0.9rem;
-  background: var(--home-surface);
+  background: var(--home-s);
   box-shadow: var(--home-shadow);
   overflow: hidden;
 }
@@ -985,9 +985,9 @@ button.mobile-talk-action {
   width: 3.35rem;
   height: 3.35rem;
   place-items: center;
-  border: 2px solid var(--home-line-strong);
+  border: 2px solid var(--home-l2);
   border-radius: 45% 55% 50% 50%;
-  background: var(--home-surface);
+  background: var(--home-s);
   box-shadow: var(--home-shadow);
   color: var(--mobile-green);
   font-variation-settings: 'FILL' 1;
@@ -1011,9 +1011,9 @@ button.mobile-talk-action {
 .mobile-discover-card__meta small {
   display: inline-flex;
   margin-top: 0.55rem;
-  border: 2px solid var(--home-line-strong);
+  border: 2px solid var(--home-l2);
   border-radius: 999px;
-  background: var(--home-surface);
+  background: var(--home-s);
   box-shadow: var(--home-shadow);
   color: var(--mobile-green);
   font-size: 0.62rem;
@@ -1037,9 +1037,9 @@ button.mobile-talk-action {
   height: 2.2rem;
   align-items: center;
   justify-content: center;
-  border: 2px solid var(--home-line-strong);
+  border: 2px solid var(--home-l2);
   border-radius: 0.72rem;
-  background: var(--home-surface);
+  background: var(--home-s);
   color: var(--home-title);
   padding: 0;
 }
@@ -1064,7 +1064,7 @@ button.mobile-talk-action {
 }
 
 .mobile-discover-page-hero {
-  background: linear-gradient(135deg, var(--home-surface-warm), color-mix(in srgb, var(--mobile-green) 10%, var(--home-surface)));
+  background: linear-gradient(135deg, var(--home-warm), color-mix(in srgb, var(--mobile-green) 10%, var(--home-s)));
   padding: 1rem;
 }
 
@@ -1073,9 +1073,9 @@ button.mobile-talk-action {
   width: fit-content;
   align-items: center;
   gap: 0.35rem;
-  border: 2px solid var(--home-line-strong);
+  border: 2px solid var(--home-l2);
   border-radius: 999px;
-  background: var(--home-surface);
+  background: var(--home-s);
   box-shadow: var(--home-shadow);
   color: var(--home-title);
   font-size: 0.78rem;
@@ -1090,7 +1090,7 @@ button.mobile-talk-action {
   align-items: center;
   gap: 0.55rem;
   border-radius: 1.15rem;
-  background: color-mix(in srgb, var(--mobile-green) 18%, var(--home-surface));
+  background: color-mix(in srgb, var(--mobile-green) 18%, var(--home-s));
   box-shadow: inset 0 2px 6px rgba(13, 56, 35, 0.12);
   padding: 1rem 1rem;
 }
@@ -1138,7 +1138,7 @@ button.mobile-talk-action {
   justify-content: center;
   border: 1px solid var(--home-line);
   border-radius: 999px;
-  background: color-mix(in srgb, var(--home-surface) 96%, transparent);
+  background: color-mix(in srgb, var(--home-s) 96%, transparent);
   box-shadow: var(--home-shadow);
   color: var(--home-ink);
   padding: 0;
@@ -1147,7 +1147,7 @@ button.mobile-talk-action {
 }
 
 .mobile-rail-arrow:hover:not(:disabled) {
-  background: var(--home-surface);
+  background: var(--home-s);
   box-shadow: 0 10px 28px rgba(13, 56, 35, 0.28);
   color: var(--mobile-green);
   transform: translateY(-58%) scale(1.05);
@@ -1194,9 +1194,9 @@ button.mobile-talk-action {
   align-items: center;
   gap: 0.65rem;
   margin: 0 0.75rem 0.55rem;
-  border: 2px solid var(--home-line-strong);
+  border: 2px solid var(--home-l2);
   border-radius: 0.8rem;
-  background: var(--home-surface);
+  background: var(--home-s);
   color: var(--home-ink);
   padding: 0.58rem 0.85rem;
   font-size: 1rem;
@@ -1217,9 +1217,9 @@ button.mobile-talk-action {
   justify-content: center;
   gap: 0.4rem;
   margin: 0.15rem auto 0.75rem;
-  border: 2px solid var(--home-line-strong);
+  border: 2px solid var(--home-l2);
   border-radius: 999px;
-  background: var(--home-surface);
+  background: var(--home-s);
   box-shadow: var(--home-shadow);
   color: var(--mobile-green);
   padding: 0.62rem 0.9rem;
@@ -1303,9 +1303,9 @@ button.mobile-talk-action {
   align-items: center;
   justify-content: center;
   gap: 0.7rem;
-  border: 2px solid var(--home-line-strong);
+  border: 2px solid var(--home-l2);
   border-radius: 0.68rem;
-  background: var(--home-surface);
+  background: var(--home-s);
   color: var(--home-ink);
 }
 
@@ -1484,7 +1484,7 @@ button.mobile-talk-action {
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  background: var(--home-surface);
+  background: var(--home-s);
   color: var(--home-ink);
   font-size: 0.78rem;
   font-weight: 950;
@@ -1719,7 +1719,7 @@ button.mobile-talk-action {
   .mobile-home-footer {
     border-right: 1px solid var(--home-line);
     border-left: 1px solid var(--home-line);
-    background: var(--home-surface);
+    background: var(--home-s);
     box-shadow: var(--home-shadow);
   }
 
@@ -2022,7 +2022,7 @@ button.mobile-talk-action {
   .mobile-home-header {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
-    background: color-mix(in srgb, var(--home-surface) 94%, transparent);
+    background: color-mix(in srgb, var(--home-s) 94%, transparent);
   }
 
   .mobile-brand {
@@ -2067,7 +2067,7 @@ button.mobile-talk-action {
 
   .mobile-city-block--top {
     border: 1px solid var(--mobile-line);
-    background: color-mix(in srgb, var(--home-surface) 92%, transparent);
+    background: color-mix(in srgb, var(--home-s) 92%, transparent);
     box-shadow: var(--home-shadow);
   }
 
@@ -2136,7 +2136,7 @@ button.mobile-talk-action {
   }
 
   .mobile-directory-switch {
-    border: 1px solid var(--home-line-strong);
+    border: 1px solid var(--home-l2);
     background: var(--home-soft);
   }
 
@@ -2147,8 +2147,8 @@ button.mobile-talk-action {
 
   .mobile-directory-search {
     min-height: 4rem;
-    border: 1px solid var(--home-line-strong);
-    background: var(--home-surface);
+    border: 1px solid var(--home-l2);
+    background: var(--home-s);
     box-shadow: none;
   }
 
@@ -2167,7 +2167,7 @@ button.mobile-talk-action {
 
   .mobile-nearby-gems-action {
     min-height: 4rem;
-    border-color: var(--home-line-strong);
+    border-color: var(--home-l2);
     padding-inline: 1.2rem;
   }
 
@@ -2224,8 +2224,8 @@ button.mobile-talk-action {
   }
 
   .mobile-icon-tile {
-    border: 1px solid var(--home-line-strong);
-    background: color-mix(in srgb, var(--home-surface) 88%, transparent);
+    border: 1px solid var(--home-l2);
+    background: color-mix(in srgb, var(--home-s) 88%, transparent);
   }
 
   .mobile-plus {
@@ -2636,8 +2636,8 @@ button.mobile-talk-action {
 
 :host-context([data-theme='dark']) .mobile-public-home {
   --home-bg: var(--bg);
-  --home-surface: var(--surface);
-  --home-surface-warm: var(--surface);
+  --home-s: var(--surface);
+  --home-warm: var(--surface);
   --home-control: var(--surface);
   --home-soft: var(--soft-fill-strong);
   --home-soft-hover: var(--soft-fill);
@@ -2646,7 +2646,7 @@ button.mobile-talk-action {
   --home-muted: var(--muted);
   --home-subtle: var(--muted);
   --home-line: var(--line);
-  --home-line-strong: var(--line-strong);
+  --home-l2: var(--line-strong);
   --home-shadow: var(--shadow-elevated);
   --home-hard-shadow: #050607;
   --mobile-green: #55d57f;

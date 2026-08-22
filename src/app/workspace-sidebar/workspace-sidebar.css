@@ -1,9 +1,9 @@
 :host {
+  --workspace-sidebar-width: 19.25rem;
   display: contents;
 }
 
 .workspace-sidebar {
-  --workspace-sidebar-width: 19.25rem;
   --workspace-sidebar-shadow: rgba(13, 56, 35, 0.1);
   display: none;
   width: var(--workspace-sidebar-width);
@@ -53,11 +53,24 @@
   transform: translateX(-100%);
 }
 
+.workspace-sidebar__toggle {
+  position: fixed;
+  z-index: 76;
+  top: 1rem;
+  left: calc(var(--workspace-sidebar-width) - 3.6rem);
+  display: none;
+}
+
+.workspace-sidebar__toggle--collapsed {
+  left: 1rem;
+}
+
 .workspace-sidebar__brand {
   display: flex;
   align-items: center;
   gap: 0.55rem;
   margin-bottom: 0.9rem;
+  padding-right: 2.75rem;
   color: var(--text);
   text-decoration: none;
 }
@@ -176,6 +189,10 @@
 @media (min-width: 1024px) {
   .workspace-sidebar {
     display: flex;
+  }
+
+  .workspace-sidebar__toggle {
+    display: inline-flex;
   }
 }
 

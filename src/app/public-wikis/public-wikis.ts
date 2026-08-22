@@ -28,6 +28,7 @@ import {
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { AccountMenuComponent } from '../account-menu/account-menu';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
+import { WorkspaceNavigationService } from '../workspace-navigation/workspace-navigation';
 import { LanguageSwitcherComponent } from '../language-switcher/language-switcher';
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import type { VideoLibraryItem } from '../video-library/video-library.models';
@@ -575,6 +576,7 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
   private readonly injector = inject(Injector);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  readonly workspaceNavigation = inject(WorkspaceNavigationService);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
   private readonly firestore: Firestore | null = this.isBrowser ? getFirebaseFirestore() : null;
   private readonly functions: Functions | null = this.isBrowser ? getFirebaseFunctions() : null;
@@ -605,7 +607,6 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
   readonly mobileDiscoverHasMore = signal(false);
   readonly mobileBoardsLoadingMore = signal(false);
   readonly mobileDiscoverLoadingMore = signal(false);
-  readonly desktopSidebarClosed = signal(false);
   readonly mobileAllCitiesOpen = signal(false);
   readonly directoryAutocompleteOpen = signal(false);
   readonly directoryActiveSuggestionIndex = signal(0);
@@ -1182,10 +1183,6 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
   setMobileSort(mode: MobileCitySortMode): void {
     this.activeCategory.set(CITIES_CATEGORY);
     this.setSort(mode);
-  }
-
-  toggleHomeMenu(): void {
-    this.desktopSidebarClosed.update((closed) => !closed);
   }
 
   private async handleMobileHomeHash(): Promise<void> {

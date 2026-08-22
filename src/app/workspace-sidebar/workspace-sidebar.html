@@ -1,8 +1,18 @@
+<button
+  type="button"
+  class="workspace-sidebar__toggle theme-switcher__button"
+  [class.workspace-sidebar__toggle--collapsed]="navigation.sidebarCollapsed()"
+  [attr.aria-label]="navigation.sidebarCollapsed() ? 'Open sidebar' : 'Close sidebar'"
+  (click)="toggleSidebar()"
+>
+  <span class="material-symbols-outlined">menu</span>
+</button>
+
 <aside
   class="workspace-sidebar"
   [class.workspace-sidebar--rail]="rail()"
   [class.workspace-sidebar--card]="!rail()"
-  [class.workspace-sidebar--collapsed]="collapsed()"
+  [class.workspace-sidebar--collapsed]="navigation.sidebarCollapsed()"
   aria-label="LivingWiki workspace navigation"
   i18n-aria-label
 >

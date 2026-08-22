@@ -1,21 +1,10 @@
 <div class="min-h-screen bg-[var(--bg)] text-[var(--text)] selection:bg-[var(--accent)] selection:text-[var(--accent-contrast)]">
   @if (isSignedIn() && (isHomeRoute() || isDiscoverRoute())) {
-  <div class="mobile-public-home" [class.sidebar-closed]="desktopSidebarClosed()">
-    <app-workspace-sidebar active="home" [rail]="true" [collapsed]="desktopSidebarClosed()"></app-workspace-sidebar>
+  <div class="mobile-public-home" [class.sidebar-closed]="workspaceNavigation.sidebarCollapsed()">
+    <app-workspace-sidebar active="home" [rail]="true"></app-workspace-sidebar>
     <div class="mobile-home-surface">
     <header class="mobile-home-header">
       <app-mobile-menu activePage="home"></app-mobile-menu>
-      <button
-        type="button"
-        class="mobile-burger mobile-burger--desktop"
-        [attr.aria-label]="desktopSidebarClosed() ? 'Open sidebar' : 'Close sidebar'"
-        (click)="toggleHomeMenu()"
-      >
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-
       <a routerLink="/home" class="mobile-brand" aria-label="LivingWiki home" i18n-aria-label>
         <img src="/assets/image/lucky-paper-crane.png" alt="" />
         <span><b>Living</b>Wiki</span>

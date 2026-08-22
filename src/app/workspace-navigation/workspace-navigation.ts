@@ -61,6 +61,7 @@ export interface WorkspaceBusinessNavigationItem {
 const HOME_ICON_ROOT = '/assets/image/home-icons';
 const HOME_BOARD_ACTIONS_STORAGE_PREFIX = 'lw-board-actions';
 const BOARD_ACTIONS_STORAGE_PREFIX = 'livingwiki-board-actions-v1';
+const SIDEBAR_STORAGE_KEY = 'lw-sidebar-collapsed';
 
 @Injectable({ providedIn: 'root' })
 export class WorkspaceNavigationService {
@@ -71,6 +72,9 @@ export class WorkspaceNavigationService {
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
   private readonly savedBoardCount = signal(0);
+  readonly sidebarCollapsed = signal(
+    this.isBrowser && window.localStorage.getItem(SIDEBAR_STORAGE_KEY) === 'true',
+  );
   readonly businessContext = signal<WorkspaceBusinessContext | null>(null);
   readonly currentUrl = toSignal(
     (this.router.events ?? of()).pipe(
@@ -221,6 +225,13 @@ export class WorkspaceNavigationService {
 
   setBusinessContext(context: WorkspaceBusinessContext | null): void {
     this.businessContext.set(context);
+  }
+
+  toggleSidebar(): void {
+    this.sidebarCollapsed.update((collapsed) => !collapsed);
+    if (this.isBrowser) {
+      window.localStorage.setItem(SIDEBAR_STORAGE_KEY, String(this.sidebarCollapsed()));
+    }
   }
 
   refreshSavedBoards(): void {

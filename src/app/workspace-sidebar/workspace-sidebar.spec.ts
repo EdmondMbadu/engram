@@ -12,6 +12,7 @@ describe('WorkspaceSidebarComponent', () => {
   beforeEach(async () => {
     window.localStorage.removeItem('lw-board-actions:sidebar-test-user');
     window.localStorage.removeItem('livingwiki-board-actions-v1:sidebar-test-user');
+    window.localStorage.removeItem('lw-sidebar-collapsed');
 
     await TestBed.configureTestingModule({
       imports: [WorkspaceSidebarComponent],
@@ -69,5 +70,23 @@ describe('WorkspaceSidebarComponent', () => {
 
     expect(overlay.moreOpen()).toBeTrue();
     expect(overlay.aboutOpen()).toBeFalse();
+  });
+
+  it('collapses and reopens from the shared desktop toggle', () => {
+    const host = fixture.nativeElement as HTMLElement;
+    const toggle = host.querySelector<HTMLButtonElement>('.workspace-sidebar__toggle');
+    const sidebar = host.querySelector<HTMLElement>('.workspace-sidebar');
+
+    toggle?.click();
+    fixture.detectChanges();
+    expect(sidebar?.classList.contains('workspace-sidebar--collapsed')).toBeTrue();
+    expect(toggle?.getAttribute('aria-label')).toBe('Open sidebar');
+    expect(window.localStorage.getItem('lw-sidebar-collapsed')).toBe('true');
+
+    toggle?.click();
+    fixture.detectChanges();
+    expect(sidebar?.classList.contains('workspace-sidebar--collapsed')).toBeFalse();
+    expect(toggle?.getAttribute('aria-label')).toBe('Close sidebar');
+    expect(window.localStorage.getItem('lw-sidebar-collapsed')).toBe('false');
   });
 });
