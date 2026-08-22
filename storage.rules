@@ -33,6 +33,15 @@ service firebase.storage {
         && request.resource.size <= 15 * 1024 * 1024;
     }
 
+    match /users/{userId}/board-doc-exports/{fileName=**} {
+      allow read, delete: if request.auth != null && request.auth.uid == userId;
+      allow create, update: if request.auth != null
+        && request.auth.uid == userId
+        && request.resource.contentType.matches('image/.*')
+        && request.resource.size > 0
+        && request.resource.size < 10 * 1024 * 1024;
+    }
+
     match /users/{userId}/video-library/{fileName=**} {
       allow read, delete: if request.auth != null && request.auth.uid == userId;
       allow create, update: if request.auth != null

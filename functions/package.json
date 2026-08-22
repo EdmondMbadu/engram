@@ -29,6 +29,7 @@
     "test:city-board-listing": "npm run build && node scripts/test-city-board-listing.cjs",
     "test:public-board-summary": "npm run build && node scripts/test-public-board-summary.cjs",
     "test:stack-video-narration": "npm run build && node scripts/test-stack-video-narration.cjs",
+    "test:board-doc-export": "npm run build && node scripts/test-board-doc-export.cjs",
     "repair:board-videos": "npm run build && node scripts/repair-board-videos.cjs",
     "backfill:public-board-summaries": "npm run build && node scripts/backfill-public-board-summaries.cjs",
     "city-pulse:refresh": "npm run build && node scripts/refresh-city-pulse.cjs",

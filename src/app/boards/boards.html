@@ -6456,6 +6456,16 @@
                   <span class="material-symbols-outlined">content_copy</span>
                   <span class="stack-action-label" i18n>Copy</span>
                 </button>
+                <button
+                  type="button"
+                  class="stack-doc-export-trigger"
+                  aria-label="Export to Google Docs"
+                  [disabled]="stackSelectedCount() === 0"
+                  (click)="openStackDocsExportDialog(board, $event)"
+                >
+                  <span class="material-symbols-outlined">description</span>
+                  <span class="stack-action-label stack-action-label--docs">Export to Docs</span>
+                </button>
                 <button type="button" (click)="openStackView(board, $event)">
                   <span class="material-symbols-outlined">smart_display</span>
                   <span class="stack-action-label" i18n>Live</span>
@@ -7476,6 +7486,152 @@
               </aside>
             </div>
           </div>
+        </section>
+      </div>
+    }
+  }
+
+  @if (stackStudioOpen() && stackDocsExportDialogOpen()) {
+    @if (stackBoard(); as board) {
+      <div class="boards-modal-backdrop stack-doc-export-backdrop" (click)="closeStackDocsExportDialog()">
+        <section
+          class="boards-modal stack-doc-export-dialog"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="stack-doc-export-title"
+          (click)="$event.stopPropagation()"
+        >
+          <div class="boards-modal__head">
+            <div>
+              <p>Google Docs</p>
+              <h3 id="stack-doc-export-title">Export script and images</h3>
+            </div>
+            <button
+              type="button"
+              class="boards-icon-button"
+              aria-label="Close Google Docs export"
+              [disabled]="stackDocsExporting()"
+              (click)="closeStackDocsExportDialog()"
+            >
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+
+          @if (stackDocsExportResult(); as result) {
+            <div class="stack-doc-export-success">
+              <span class="stack-doc-export-success__icon material-symbols-outlined">task_alt</span>
+              <div>
+                <h4>Your Google Doc is ready</h4>
+                <p>
+                  {{ result.exportedCardCount }} {{ result.exportedCardCount === 1 ? 'card' : 'cards' }}
+                  and {{ result.exportedImageCount }} {{ result.exportedImageCount === 1 ? 'image' : 'images' }} exported.
+                </p>
+              </div>
+              @if (result.warnings.length) {
+                <details class="stack-doc-export-warnings">
+                  <summary>{{ result.warnings.length }} export {{ result.warnings.length === 1 ? 'warning' : 'warnings' }}</summary>
+                  <ul>
+                    @for (warning of result.warnings; track warning) { <li>{{ warning }}</li> }
+                  </ul>
+                </details>
+              }
+              <div class="stack-doc-export-success__actions">
+                <button type="button" class="boards-ghost-action" (click)="copyStackDocsExportResult()">
+                  <span class="material-symbols-outlined">content_copy</span>
+                  Copy link
+                </button>
+                <button type="button" class="boards-primary-action" (click)="openStackDocsExportResult()">
+                  <span class="material-symbols-outlined">open_in_new</span>
+                  Open Google Doc
+                </button>
+              </div>
+            </div>
+          } @else {
+            <div class="stack-doc-export-body">
+              <div class="stack-doc-export-intro">
+                <span class="material-symbols-outlined">description</span>
+                <div>
+                  <strong>A complete, editable production document</strong>
+                  <p>Exports the current cover, selected cards in order, every available script, and the final card.</p>
+                </div>
+              </div>
+
+              <label class="stack-doc-export-title-field">
+                <span>Document name</span>
+                <input
+                  type="text"
+                  maxlength="240"
+                  autofocus
+                  [value]="stackDocsExportDocumentTitle()"
+                  [disabled]="stackDocsExporting()"
+                  (input)="stackDocsExportDocumentTitle.set($any($event.target).value)"
+                />
+              </label>
+
+              <div class="stack-doc-export-summary" aria-label="Export summary">
+                <span><strong>{{ stackSelectedCount() }}</strong><small>Selected cards</small></span>
+                <span><strong>{{ stackDocsExportPreviewImageCount() }}</strong><small>Available images</small></span>
+                <span [class.stack-doc-export-summary__warning]="stackDocsExportPreviewMissingCount() > 0">
+                  <strong>{{ stackDocsExportPreviewMissingCount() }}</strong><small>Missing scripts</small>
+                </span>
+              </div>
+
+              @if (stackStudioDirty()) {
+                <div class="stack-doc-export-draft-note">
+                  <span class="material-symbols-outlined">edit_note</span>
+                  <span><strong>Includes your current unsaved edits</strong><small>Exporting will not save or change the board.</small></span>
+                </div>
+              }
+
+              <fieldset class="stack-doc-export-options" [disabled]="stackDocsExporting()">
+                <legend>Include in this document</legend>
+                <label>
+                  <input type="checkbox" [checked]="stackDocsExportIncludeCover()" (change)="stackDocsExportIncludeCover.set($any($event.target).checked)" />
+                  <span><strong>Cover image</strong><small>The board title and complete opening script are always included</small></span>
+                </label>
+                <label>
+                  <input type="checkbox" [checked]="stackDocsExportIncludeAllImages()" (change)="stackDocsExportIncludeAllImages.set($any($event.target).checked)" />
+                  <span><strong>All card images</strong><small>Turn off to use only the primary image from each card</small></span>
+                </label>
+                <label>
+                  <input type="checkbox" [checked]="stackDocsExportIncludeFinalCard()" (change)="stackDocsExportIncludeFinalCard.set($any($event.target).checked)" />
+                  <span><strong>Final card</strong><small>Closing image, message, board link, and QR code when enabled</small></span>
+                </label>
+                <label>
+                  <input type="checkbox" [checked]="stackDocsExportIncludeProductionNotes()" (change)="stackDocsExportIncludeProductionNotes.set($any($event.target).checked)" />
+                  <span><strong>Production notes</strong><small>Narrator, music, format, ratio, and social caption</small></span>
+                </label>
+              </fieldset>
+
+              @if (stackDocsExportPreviewMissingCount() > 0) {
+                <p class="stack-doc-export-missing-note">
+                  <span class="material-symbols-outlined">info</span>
+                  Cards without narration will still be exported and clearly marked “Narration not provided.”
+                </p>
+              }
+
+              @if (stackDocsExportError()) {
+                <div class="stack-doc-export-error" role="alert">
+                  <span class="material-symbols-outlined">error</span>
+                  <span>{{ stackDocsExportError() }}</span>
+                </div>
+              }
+            </div>
+
+            <footer class="stack-doc-export-footer">
+              <small><span class="material-symbols-outlined">lock</span>Created privately in your Google Drive</small>
+              <button type="button" class="boards-ghost-action" [disabled]="stackDocsExporting()" (click)="closeStackDocsExportDialog()">Cancel</button>
+              <button
+                type="button"
+                class="boards-primary-action stack-doc-export-submit"
+                [disabled]="stackDocsExporting() || !stackSelectedCount() || !stackDocsExportDocumentTitle().trim()"
+                (click)="exportStackToGoogleDocs(board)"
+              >
+                <span class="material-symbols-outlined">{{ stackDocsExporting() ? 'progress_activity' : 'description' }}</span>
+                {{ stackDocsExporting() ? stackDocsExportPhaseLabel() : 'Create Google Doc' }}
+              </button>
+            </footer>
+          }
         </section>
       </div>
     }

@@ -1,0 +1,405 @@
+.stack-studio__context-actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.52;
+  box-shadow: none;
+}
+
+.stack-doc-export-backdrop {
+  z-index: 140;
+}
+
+.stack-doc-export-dialog {
+  width: min(94vw, 39rem);
+  max-height: min(92dvh, 50rem);
+  overflow-y: auto;
+  padding-bottom: 0;
+}
+
+.stack-doc-export-body {
+  display: grid;
+  gap: 0.85rem;
+  padding: 1rem 0;
+}
+
+.stack-doc-export-intro,
+.stack-doc-export-draft-note,
+.stack-doc-export-error,
+.stack-doc-export-missing-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+}
+
+.stack-doc-export-intro {
+  border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--line));
+  border-radius: 0.9rem;
+  background: color-mix(in srgb, var(--accent) 7%, var(--surface));
+  padding: 0.8rem;
+}
+
+.stack-doc-export-intro > .material-symbols-outlined {
+  display: grid;
+  width: 2.4rem;
+  height: 2.4rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 0.72rem;
+  background: var(--accent);
+  color: var(--surface-strong);
+}
+
+.stack-doc-export-intro strong,
+.stack-doc-export-intro p {
+  display: block;
+  margin: 0;
+}
+
+.stack-doc-export-intro strong {
+  color: var(--text);
+  font-size: 0.88rem;
+  font-weight: 950;
+}
+
+.stack-doc-export-intro p {
+  margin-top: 0.18rem;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.stack-doc-export-title-field {
+  display: grid;
+  gap: 0.35rem;
+  color: var(--text);
+  font-size: 0.7rem;
+  font-weight: 900;
+}
+
+.stack-doc-export-title-field input {
+  width: 100%;
+  min-height: 2.65rem;
+  border: 1px solid var(--line);
+  border-radius: 0.72rem;
+  background: var(--surface-strong);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 750;
+  padding: 0.65rem 0.72rem;
+}
+
+.stack-doc-export-title-field input:focus {
+  border-color: var(--accent);
+  outline: 3px solid color-mix(in srgb, var(--accent) 16%, transparent);
+}
+
+.stack-doc-export-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 0.82rem;
+  background: var(--surface);
+}
+
+.stack-doc-export-summary > span {
+  display: grid;
+  gap: 0.14rem;
+  border-right: 1px solid var(--line);
+  padding: 0.64rem;
+  text-align: center;
+}
+
+.stack-doc-export-summary > span:last-child {
+  border-right: 0;
+}
+
+.stack-doc-export-summary strong,
+.stack-doc-export-summary small {
+  color: var(--text);
+}
+
+.stack-doc-export-summary strong {
+  font-size: 1.02rem;
+  font-weight: 950;
+}
+
+.stack-doc-export-summary small {
+  color: var(--muted);
+  font-size: 0.61rem;
+  font-weight: 850;
+}
+
+.stack-doc-export-summary__warning strong,
+.stack-doc-export-summary__warning small {
+  color: #a45a00;
+}
+
+.stack-doc-export-draft-note {
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, #d28a13 13%, var(--surface));
+  color: color-mix(in srgb, #b76b00 78%, var(--text));
+  padding: 0.65rem 0.7rem;
+}
+
+.stack-doc-export-draft-note > span:last-child,
+.stack-doc-export-draft-note strong,
+.stack-doc-export-draft-note small {
+  display: block;
+}
+
+.stack-doc-export-draft-note strong {
+  font-size: 0.72rem;
+  font-weight: 950;
+}
+
+.stack-doc-export-draft-note small {
+  margin-top: 0.1rem;
+  font-size: 0.64rem;
+  font-weight: 750;
+}
+
+.stack-doc-export-options {
+  display: grid;
+  gap: 0.42rem;
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+.stack-doc-export-options legend {
+  margin-bottom: 0.4rem;
+  color: var(--text);
+  font-size: 0.7rem;
+  font-weight: 950;
+}
+
+.stack-doc-export-options label {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 0.62rem;
+  border: 1px solid var(--line);
+  border-radius: 0.72rem;
+  background: var(--surface);
+  color: var(--text);
+  padding: 0.65rem 0.72rem;
+}
+
+.stack-doc-export-options input {
+  width: 1.05rem;
+  height: 1.05rem;
+  margin: 0.1rem 0 0;
+  accent-color: var(--accent);
+}
+
+.stack-doc-export-options strong,
+.stack-doc-export-options small {
+  display: block;
+}
+
+.stack-doc-export-options strong {
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.stack-doc-export-options small {
+  margin-top: 0.12rem;
+  color: var(--muted);
+  font-size: 0.62rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.stack-doc-export-missing-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.66rem;
+  font-weight: 750;
+  line-height: 1.4;
+}
+
+.stack-doc-export-missing-note .material-symbols-outlined {
+  color: var(--accent);
+  font-size: 1.1rem;
+}
+
+.stack-doc-export-error {
+  border: 1px solid color-mix(in srgb, #d84d4d 58%, var(--line));
+  border-radius: 0.72rem;
+  background: color-mix(in srgb, #d84d4d 10%, var(--surface));
+  color: color-mix(in srgb, #d84d4d 72%, var(--text));
+  padding: 0.68rem;
+  font-size: 0.7rem;
+  font-weight: 850;
+  line-height: 1.4;
+}
+
+.stack-doc-export-footer {
+  position: sticky;
+  bottom: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 0.5rem;
+  border-top: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface-strong) 96%, transparent);
+  backdrop-filter: blur(14px);
+  margin: 0 -1rem;
+  padding: 0.75rem 1rem;
+}
+
+.stack-doc-export-footer > small {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  color: var(--muted);
+  font-size: 0.61rem;
+  font-weight: 800;
+}
+
+.stack-doc-export-footer > small .material-symbols-outlined {
+  font-size: 0.9rem;
+}
+
+.stack-doc-export-footer button {
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.stack-doc-export-footer button .material-symbols-outlined {
+  font-size: 1rem;
+}
+
+.stack-doc-export-submit:disabled .material-symbols-outlined {
+  animation: stack-video-spin 0.9s linear infinite;
+}
+
+.stack-doc-export-success {
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+  padding: 2rem 0 1.2rem;
+  text-align: center;
+}
+
+.stack-doc-export-success__icon {
+  display: grid;
+  width: 4rem;
+  height: 4rem;
+  place-items: center;
+  border-radius: 1.1rem;
+  background: color-mix(in srgb, #2f9e63 15%, var(--surface));
+  color: #2f9e63;
+  font-size: 2.5rem;
+}
+
+.stack-doc-export-success h4,
+.stack-doc-export-success p {
+  margin: 0;
+}
+
+.stack-doc-export-success h4 {
+  color: var(--text);
+  font-size: 1.2rem;
+  font-weight: 950;
+}
+
+.stack-doc-export-success p {
+  margin-top: 0.25rem;
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 750;
+}
+
+.stack-doc-export-success__actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.stack-doc-export-warnings {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  background: var(--surface);
+  color: var(--text);
+  padding: 0.65rem;
+  text-align: left;
+}
+
+.stack-doc-export-warnings summary {
+  cursor: pointer;
+  font-size: 0.7rem;
+  font-weight: 900;
+}
+
+.stack-doc-export-warnings ul {
+  margin: 0.5rem 0 0;
+  padding-left: 1.2rem;
+  color: var(--muted);
+  font-size: 0.66rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 600px) {
+  .stack-action-label--docs {
+    font-size: 0;
+  }
+
+  .stack-action-label--docs::after {
+    content: 'Docs';
+    font-size: 0.72rem;
+  }
+
+  .stack-doc-export-backdrop {
+    align-items: stretch;
+    overflow: hidden;
+    padding: 0;
+  }
+
+  .stack-doc-export-dialog {
+    width: 100%;
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow-y: auto;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .stack-doc-export-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .stack-doc-export-summary > span {
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    gap: 0.45rem;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+  }
+
+  .stack-doc-export-summary > span:last-child {
+    border-bottom: 0;
+  }
+
+  .stack-doc-export-footer {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .stack-doc-export-footer > small {
+    grid-column: 1 / -1;
+  }
+
+  .stack-doc-export-footer button {
+    width: 100%;
+  }
+
+  .stack-doc-export-success__actions {
+    width: 100%;
+    flex-direction: column;
+  }
+}

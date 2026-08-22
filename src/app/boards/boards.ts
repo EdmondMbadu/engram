@@ -27,6 +27,11 @@ import {
 import { BOARD_ICON_OPTIONS, resolveBoardIcon } from '../board-icon';
 import { getFirebaseFirestore, getFirebaseFunctions, getFirebaseStorage } from '../firebase.client';
 import { GoogleMapsService, type PlaceSearchResult } from '../google-maps.service';
+import {
+  GoogleDocsExportService,
+  type GoogleDocsExportPhase,
+  type GoogleDocsExportResult,
+} from '../google-docs-export.service';
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import type { AtlasItem } from '../atlas.models';
 import { PlaceReviewsService, type CityPlaceCandidate } from '../place-reviews.service';
@@ -133,6 +138,12 @@ import {
   nextFiniteStackFrameIndex,
   previousFiniteStackFrameIndex,
 } from './stack-card-selection';
+import {
+  buildStackDocsExportSnapshot,
+  stackDocsExportImageCount,
+  stackDocsExportMissingNarrationCount,
+  type StackDocsExportSnapshot,
+} from './stack-doc-export';
 import {
   insertionSortOrder,
   reorderRelativeToTarget,
@@ -1409,8 +1420,9 @@ type BoardLoadContext = {
 @Component({
   selector: 'app-boards',
   imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink, BoardCollectionCreateComponent, BoardCollectionListComponent, CustomPublicUrlDialogComponent],
+  providers: [GoogleDocsExportService],
   templateUrl: './boards.html',
-  styleUrls: ['./boards.css', './tour-experience.css', './board-wizard-drafts.css', './board-wizard-media-mode.css', './board-narration-style.css', './board-wizard-redesign.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css', './stack-script.css', './stack-cover-final.css', './board-city-tag.css'],
+  styleUrls: ['./boards.css', './tour-experience.css', './board-wizard-drafts.css', './board-wizard-media-mode.css', './board-narration-style.css', './board-wizard-redesign.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css', './stack-script.css', './stack-cover-final.css', './stack-doc-export.css', './board-city-tag.css'],
 })
 export class BoardsComponent implements AfterViewInit, OnDestroy {
   private readonly localeId = inject(LOCALE_ID);
@@ -1420,6 +1432,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   private readonly boardAnalytics = inject(BoardAnalyticsService);
   private readonly boardLikes = inject(BoardLikesService);
   private readonly googleMapsService = inject(GoogleMapsService);
+  private readonly googleDocsExportService = inject(GoogleDocsExportService);
   private readonly placeReviewsService = inject(PlaceReviewsService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -1889,6 +1902,16 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly stackScriptPreviewLoadingCardId = signal<string | null>(null);
   readonly stackScriptRegeneratingCardId = signal<string | null>(null);
   readonly stackScriptDiscardConfirmOpen = signal(false);
+  readonly stackDocsExportDialogOpen = signal(false);
+  readonly stackDocsExportDocumentTitle = signal('');
+  readonly stackDocsExportIncludeCover = signal(true);
+  readonly stackDocsExportIncludeAllImages = signal(true);
+  readonly stackDocsExportIncludeFinalCard = signal(true);
+  readonly stackDocsExportIncludeProductionNotes = signal(false);
+  readonly stackDocsExporting = signal(false);
+  readonly stackDocsExportPhase = signal<GoogleDocsExportPhase | null>(null);
+  readonly stackDocsExportError = signal<string | null>(null);
+  readonly stackDocsExportResult = signal<GoogleDocsExportResult | null>(null);
   readonly stackFinalScreenHeadline = signal('Keep exploring');
   readonly stackFinalScreenMessage = signal('');
   readonly stackFinalScreenShowQrCode = signal(true);
@@ -10790,6 +10813,24 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     if (this.collectionCreateOpen()) {
       return;
     }
+    if (this.stackDocsExportDialogOpen()) {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        this.closeStackDocsExportDialog();
+        return;
+      }
+      if (event.key === 'Tab') {
+        const focusable = Array.from(document.querySelectorAll<HTMLElement>(
+          '.stack-doc-export-dialog button:not([disabled]), .stack-doc-export-dialog input:not([disabled]), .stack-doc-export-dialog summary, .stack-doc-export-dialog [tabindex]:not([tabindex="-1"])',
+        )).filter((element) => element.offsetParent !== null);
+        const first = focusable[0];
+        const last = focusable.at(-1);
+        if (first && last && (event.shiftKey ? document.activeElement === first : document.activeElement === last)) {
+          event.preventDefault();
+          (event.shiftKey ? last : first).focus();
+        }
+      }
+    }
     if (event.key === 'Escape' && this.wizardOpen()) {
       event.preventDefault();
       void this.closeBoardWizard();
@@ -12402,6 +12443,146 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     void this.loadPersonalNarratorVoice();
   }
 
+  openStackDocsExportDialog(board: Board, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (!this.canUseStackStudio(board)) return;
+    this.stackDocsExportDocumentTitle.set(`${this.stackScriptBoardTitle().trim() || board.title} — Script & Images`);
+    this.stackDocsExportIncludeCover.set(true);
+    this.stackDocsExportIncludeAllImages.set(true);
+    this.stackDocsExportIncludeFinalCard.set(true);
+    this.stackDocsExportIncludeProductionNotes.set(false);
+    this.stackDocsExportError.set(null);
+    this.stackDocsExportResult.set(null);
+    this.stackDocsExportPhase.set(null);
+    this.stackDocsExportDialogOpen.set(true);
+    if (this.isBrowser) {
+      window.setTimeout(() => document.querySelector<HTMLInputElement>('.stack-doc-export-title-field input')?.focus(), 0);
+    }
+  }
+
+  closeStackDocsExportDialog(): void {
+    if (this.stackDocsExporting()) return;
+    this.stackDocsExportDialogOpen.set(false);
+    this.stackDocsExportError.set(null);
+    this.stackDocsExportResult.set(null);
+    this.stackDocsExportPhase.set(null);
+    if (this.isBrowser) {
+      window.setTimeout(() => document.querySelector<HTMLButtonElement>('.stack-doc-export-trigger')?.focus(), 0);
+    }
+  }
+
+  stackDocsExportPreviewSnapshot(): StackDocsExportSnapshot | null {
+    const board = this.stackBoard();
+    return board ? this.buildCurrentStackDocsSnapshot(board, 'preview-export') : null;
+  }
+
+  stackDocsExportPreviewImageCount(): number {
+    const snapshot = this.stackDocsExportPreviewSnapshot();
+    return snapshot ? stackDocsExportImageCount(snapshot) : 0;
+  }
+
+  stackDocsExportPreviewMissingCount(): number {
+    const snapshot = this.stackDocsExportPreviewSnapshot();
+    return snapshot ? stackDocsExportMissingNarrationCount(snapshot) : 0;
+  }
+
+  stackDocsExportPhaseLabel(): string {
+    switch (this.stackDocsExportPhase()) {
+      case 'authorizing': return 'Connecting to Google…';
+      case 'preparing-images': return 'Preparing draft images…';
+      case 'creating-document': return 'Creating and formatting your Doc…';
+      default: return 'Create Google Doc';
+    }
+  }
+
+  async exportStackToGoogleDocs(board: Board): Promise<void> {
+    if (this.stackDocsExporting() || !this.stackSelectedCount()) return;
+    if (!this.googleDocsExportService.isConfigured()) {
+      this.stackDocsExportError.set('Google Docs export is not configured yet. Add the Google OAuth client ID to the runtime configuration.');
+      return;
+    }
+    const requestId = typeof globalThis.crypto?.randomUUID === 'function'
+      ? globalThis.crypto.randomUUID()
+      : `docs-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    const snapshot = this.buildCurrentStackDocsSnapshot(board, requestId);
+    this.stackDocsExporting.set(true);
+    this.stackDocsExportError.set(null);
+    this.stackDocsExportResult.set(null);
+    try {
+      const result = await this.googleDocsExportService.export(
+        snapshot,
+        (phase) => this.stackDocsExportPhase.set(phase),
+      );
+      this.stackDocsExportResult.set(result);
+      this.stackDocsExportPhase.set(null);
+    } catch (error) {
+      this.stackDocsExportError.set(
+        error instanceof Error ? error.message : 'The Google Doc could not be created.',
+      );
+      this.stackDocsExportPhase.set(null);
+    } finally {
+      this.stackDocsExporting.set(false);
+    }
+  }
+
+  openStackDocsExportResult(): void {
+    const url = this.stackDocsExportResult()?.documentUrl;
+    if (url) window.open(url, '_blank', 'noopener,noreferrer');
+  }
+
+  async copyStackDocsExportResult(): Promise<void> {
+    const url = this.stackDocsExportResult()?.documentUrl;
+    if (!url) return;
+    try {
+      await navigator.clipboard.writeText(url);
+      this.setStackShareMessage('Google Doc link copied.', false);
+    } catch {
+      this.stackDocsExportError.set('The Doc was created, but its link could not be copied.');
+    }
+  }
+
+  private buildCurrentStackDocsSnapshot(board: Board, requestId: string): StackDocsExportSnapshot {
+    const audioTrack = this.stackSelectedAudioTrack();
+    const ratio = this.stackRatios.find((item) => item.id === this.stackRatio());
+    return buildStackDocsExportSnapshot({
+      requestId,
+      boardId: board.id,
+      documentTitle: this.stackDocsExportDocumentTitle().trim() || `${this.stackScriptBoardTitle().trim() || board.title} — Script & Images`,
+      sourceUrl: this.stackShareUrl(board),
+      ownerName: this.ownerName(board),
+      opening: {
+        title: this.stackScriptBoardTitle().trim() || board.title,
+        description: this.stackScriptBoardDescription(),
+        coverImageUrl: this.stackStudioCoverImage(board),
+      },
+      cards: this.stackSelectedCards().map((card) => ({
+        id: card.id,
+        title: this.stackScriptTitle(card),
+        narration: this.stackScriptNarration(card),
+        imageUrls: this.cardImages(card),
+        sourceUrl: card.sourceUrl || card.productUrl || card.googleMapsUrl,
+      })),
+      closing: {
+        included: this.stackDocsExportIncludeFinalCard(),
+        headline: this.stackFinalScreenHeadline(),
+        message: this.stackFinalScreenMessage() || this.stackScriptBoardTitle() || board.title,
+        imageUrl: this.stackFinalScreenPreviewImage(board),
+        qrImageUrl: this.stackFinalScreenShowQrCode() ? this.stackFinalScreenQrImage(board) : '',
+      },
+      productionNotes: {
+        included: this.stackDocsExportIncludeProductionNotes(),
+        narrator: this.stackSelectedNarratorName(),
+        music: audioTrack ? `${audioTrack.mood} · ${audioTrack.title}` : 'No music',
+        format: this.stackFormatLabel(),
+        ratio: ratio?.label || this.stackRatio(),
+        socialCaption: this.stackCaption(),
+      },
+      includeCover: this.stackDocsExportIncludeCover(),
+      includeAllCardImages: this.stackDocsExportIncludeAllImages(),
+    });
+  }
+
   async openStackView(board: Board, event?: Event): Promise<void> {
     event?.preventDefault();
     event?.stopPropagation();
@@ -12471,6 +12652,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.stopStackPlayback();
     this.stackVoiceLibraryOpen.set(false);
     this.stackStudioOpen.set(false);
+    this.stackDocsExportDialogOpen.set(false);
     this.stackScriptDiscardConfirmOpen.set(false);
     this.setStackShareMessage(null);
   }
