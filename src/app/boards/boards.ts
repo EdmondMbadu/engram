@@ -12,6 +12,7 @@ import { AuthService } from '../auth.service';
 import { BoardCollectionCreateComponent } from '../board-collection-create/board-collection-create';
 import { BoardCollectionListComponent } from '../board-collection-list/board-collection-list';
 import { BoardAnalyticsService } from '../board-analytics.service';
+import { BoardLikesService, boardLikeTargetKey, type BoardLikeMetric, type BoardLikeTarget } from '../board-likes.service';
 import { CustomPublicUrlDialogComponent } from '../custom-public-url-dialog/custom-public-url-dialog';
 import {
   customPublicUrlRouteMatches,
@@ -393,6 +394,7 @@ type BoardCard = {
 
 type Board = {
   id: string;
+  likeCount?: number;
   customSlug?: string;
   kind: BoardKind;
   sortOrder: number;
@@ -622,7 +624,8 @@ type BoardFriendsState = {
 type BoardFriendsSort = 'name' | 'email';
 type BoardFriendsView = 'friends' | 'requests' | 'sent';
 
-type BoardRecord = Omit<Board, 'createdAt' | 'updatedAt' | 'customSlug'> & {
+type BoardRecord = Omit<Board, 'createdAt' | 'updatedAt' | 'customSlug' | 'likeCount'> & {
+  like_count: number;
   custom_slug?: string;
   owner_user_id: string;
   owner_public_slug: string;
@@ -884,7 +887,7 @@ type TourMapPoint = {
 };
 
 const STORAGE_KEY = 'livingwiki-boards-v1';
-const BOARD_ACTIONS_STORAGE_KEY = 'livingwiki-board-actions-v1';
+const BOARD_ACTIONS_STORAGE_KEY = 'lw-board-actions';
 const DEMO_BOARD_IDS = new Set(['board-summer-places', 'board-eats', 'board-weekend']);
 const PUBLIC_APP_URL = 'https://www.livingwiki.com';
 
@@ -1415,6 +1418,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   private readonly authService = inject(AuthService);
   private readonly boardCollectionsService = inject(BoardCollectionsService);
   private readonly boardAnalytics = inject(BoardAnalyticsService);
+  private readonly boardLikes = inject(BoardLikesService);
   private readonly googleMapsService = inject(GoogleMapsService);
   private readonly placeReviewsService = inject(PlaceReviewsService);
   private readonly route = inject(ActivatedRoute);
@@ -1441,6 +1445,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   private stackShareMessageTimer: ReturnType<typeof setTimeout> | null = null;
   private boardFriendSearchTimer: ReturnType<typeof setTimeout> | null = null;
   private boardSearchTimer: ReturnType<typeof setTimeout> | null = null;
+  private likeMetricsSignature = '';
   private boardFriendSearchRun = 0;
   private tourMapElement: HTMLElement | null = null;
   private tourMap: unknown | null = null;
@@ -1690,6 +1695,8 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly likedBoardIds = signal<Set<string>>(new Set());
   readonly savedBoardIds = signal<Set<string>>(new Set());
   readonly likedCardIds = signal<Set<string>>(new Set());
+  readonly likeCounts = signal<Record<string, number>>({});
+  readonly pendingLikeIds = signal<Set<string>>(new Set());
   readonly boardsSyncError = signal<string | null>(null);
   readonly privateBoardBlocked = signal(false);
   readonly boardFriends = signal<BoardFriendsState>({ friends: [], incoming: [], outgoing: [] });
@@ -2764,6 +2771,16 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   constructor() {
     this.loadBoardActionState();
     this.loadLocalBoards();
+    effect(() => {
+      const targets = this.boards().flatMap((board) => [
+        { boardId: board.id },
+        ...board.cards.map((card) => ({ boardId: board.id, cardId: card.id })),
+      ] satisfies BoardLikeTarget[]);
+      const signature = targets.map(boardLikeTargetKey).sort().join('|');
+      if (!signature || signature === this.likeMetricsSignature) return;
+      this.likeMetricsSignature = signature;
+      void this.syncLikeMetrics(targets);
+    });
     this.route.paramMap.subscribe((params) => {
       const routePath = this.route.snapshot.routeConfig?.path ?? '';
       this.friendsPage.set(routePath === 'friends');
@@ -11895,8 +11912,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   toggleBoardLike(board: Board, event?: Event): void {
     event?.preventDefault();
     event?.stopPropagation();
-    this.toggleActionSet(this.likedBoardIds, board.id);
-    this.saveBoardActionState();
+    void this.toggleLikeTarget({ boardId: board.id });
   }
 
   boardCoverFailed(boardId: string): boolean {
@@ -11926,8 +11942,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   toggleCardLike(board: Board, card: BoardCard, event?: Event): void {
     event?.preventDefault();
     event?.stopPropagation();
-    this.toggleActionSet(this.likedCardIds, this.cardActionId(board, card));
-    this.saveBoardActionState();
+    void this.toggleLikeTarget({ boardId: board.id, cardId: card.id });
   }
 
   isBoardLiked(board: Board | null | undefined): boolean {
@@ -11940,6 +11955,74 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
   isCardLiked(board: Board | null | undefined, card: BoardCard): boolean {
     return !!board && this.likedCardIds().has(this.cardActionId(board, card));
+  }
+
+  boardLikeCount(board: Board | null | undefined): number {
+    return board ? this.likeCounts()[boardLikeTargetKey({ boardId: board.id })] ?? 0 : 0;
+  }
+
+  cardLikeCount(board: Board | null | undefined, card: BoardCard): number {
+    return board
+      ? this.likeCounts()[boardLikeTargetKey({ boardId: board.id, cardId: card.id })] ?? 0
+      : 0;
+  }
+
+  isLikePending(board: Board, card?: BoardCard): boolean {
+    return this.pendingLikeIds().has(boardLikeTargetKey({ boardId: board.id, cardId: card?.id }));
+  }
+
+  private async syncLikeMetrics(targets: BoardLikeTarget[]): Promise<void> {
+    try {
+      this.applyLikeMetrics(await this.boardLikes.getMetrics(targets));
+    } catch {
+      // The existing local state remains usable when the network is unavailable.
+    }
+  }
+
+  private async toggleLikeTarget(target: BoardLikeTarget): Promise<void> {
+    const targetKey = boardLikeTargetKey(target);
+    if (this.pendingLikeIds().has(targetKey)) return;
+
+    const localId = target.cardId ? `${target.boardId}:${target.cardId}` : target.boardId;
+    const likedSignal = target.cardId ? this.likedCardIds : this.likedBoardIds;
+    const wasLiked = likedSignal().has(localId);
+    const previousCount = this.likeCounts()[targetKey] ?? 0;
+    this.setLikeState(target, !wasLiked, Math.max(0, previousCount + (wasLiked ? -1 : 1)));
+    this.pendingLikeIds.update((ids) => new Set(ids).add(targetKey));
+    this.saveBoardActionState();
+
+    try {
+      this.applyLikeMetrics([await this.boardLikes.toggle(target)]);
+    } catch {
+      this.setLikeState(target, wasLiked, previousCount);
+    } finally {
+      this.pendingLikeIds.update((ids) => {
+        const next = new Set(ids);
+        next.delete(targetKey);
+        return next;
+      });
+      this.saveBoardActionState();
+    }
+  }
+
+  private applyLikeMetrics(metrics: BoardLikeMetric[]): void {
+    metrics.forEach((metric) => this.setLikeState(metric, metric.liked, metric.likeCount));
+    this.saveBoardActionState();
+  }
+
+  private setLikeState(target: BoardLikeTarget, liked: boolean, likeCount: number): void {
+    const localId = target.cardId ? `${target.boardId}:${target.cardId}` : target.boardId;
+    const likedSignal = target.cardId ? this.likedCardIds : this.likedBoardIds;
+    likedSignal.update((ids) => {
+      const next = new Set(ids);
+      if (liked) next.add(localId);
+      else next.delete(localId);
+      return next;
+    });
+    this.likeCounts.update((counts) => ({
+      ...counts,
+      [boardLikeTargetKey(target)]: Math.max(0, Math.trunc(likeCount)),
+    }));
   }
 
   private toggleActionSet(target: WritableSignal<Set<string>>, id: string): void {
@@ -11965,9 +12048,9 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     try {
       const raw = window.localStorage.getItem(this.boardActionStorageKey());
       const data = raw ? JSON.parse(raw) as Record<string, unknown> : {};
-      this.likedBoardIds.set(this.stringSet(data['likedBoardIds']));
-      this.savedBoardIds.set(this.stringSet(data['savedBoardIds']));
-      this.likedCardIds.set(this.stringSet(data['likedCardIds']));
+      this.likedBoardIds.set(this.stringSet(data['l'] ?? data['likedBoardIds']));
+      this.savedBoardIds.set(this.stringSet(data['s'] ?? data['savedBoardIds']));
+      this.likedCardIds.set(this.stringSet(data['c'] ?? data['likedCardIds']));
     } catch {
       this.likedBoardIds.set(new Set());
       this.savedBoardIds.set(new Set());
@@ -11980,9 +12063,9 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       return;
     }
     window.localStorage.setItem(this.boardActionStorageKey(), JSON.stringify({
-      likedBoardIds: [...this.likedBoardIds()],
-      savedBoardIds: [...this.savedBoardIds()],
-      likedCardIds: [...this.likedCardIds()],
+      l: [...this.likedBoardIds()],
+      s: [...this.savedBoardIds()],
+      c: [...this.likedCardIds()],
     }));
     window.dispatchEvent(new Event('livingwiki:saved-boards-changed'));
   }
@@ -17990,8 +18073,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     const storageOwnerId = boardWithOwner.ownerUserId || uid;
     const resolvedOwnerPublicSlug = await this.resolveOwnerPublicSlug(boardWithOwner, storageOwnerId);
     const prepared = await this.prepareBoardImagesForFirebase({ ...boardWithOwner, ownerPublicSlug: resolvedOwnerPublicSlug }, storageOwnerId);
+    const { likeCount, ...preparedFields } = prepared;
     const record: BoardRecord & { server_updated_at: unknown } = {
-      ...prepared,
+      ...preparedFields,
+      like_count: likeCount ?? 0,
       ...(prepared.customSlug ? { custom_slug: prepared.customSlug } : {}),
       owner_user_id: prepared.ownerUserId || uid,
       owner_public_slug: prepared.ownerPublicSlug,
@@ -18159,6 +18244,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     const rawCards = Array.isArray(data['cards']) ? data['cards'] : [];
     return {
       id,
+      likeCount: typeof data['like_count'] === 'number' ? Math.max(0, Math.trunc(data['like_count'])) : 0,
       customSlug: typeof data['custom_slug'] === 'string'
         ? normalizeCustomPublicUrlSlug(data['custom_slug'])
         : '',

@@ -17262,6 +17262,45 @@ function answerCardLikeDocumentId(cardId: string, visitorId: string): string {
   return `${cardId}_${hash}`;
 }
 
+type BoardLikeTarget = {
+  boardId: string;
+  cardId: string | null;
+};
+
+function normalizeBoardLikeIdentifier(value: unknown, label: string): string {
+  const id = textValue(value, 128) ?? '';
+  if (!/^[a-zA-Z0-9_-]{1,128}$/.test(id)) {
+    throw new HttpsError('invalid-argument', `${label} is invalid.`);
+  }
+  return id;
+}
+
+function normalizeBoardLikeTarget(value: unknown): BoardLikeTarget {
+  const data = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+  return {
+    boardId: normalizeBoardLikeIdentifier(data['boardId'], 'boardId'),
+    cardId: data['cardId'] == null || data['cardId'] === ''
+      ? null
+      : normalizeBoardLikeIdentifier(data['cardId'], 'cardId'),
+  };
+}
+
+function boardLikeTargetKey(target: BoardLikeTarget): string {
+  return target.cardId
+    ? `card:${target.boardId}:${target.cardId}`
+    : `board:${target.boardId}`;
+}
+
+function boardLikeMetricDocumentId(target: BoardLikeTarget): string {
+  return createHash('sha256').update(boardLikeTargetKey(target)).digest('hex');
+}
+
+function boardLikeMarkerDocumentId(target: BoardLikeTarget, visitorId: string): string {
+  return createHash('sha256')
+    .update(`${boardLikeTargetKey(target)}:${visitorId}`)
+    .digest('hex');
+}
+
 function getPublicChatVisitorContext(request: {
   auth?: { uid?: string; token?: unknown } | null;
   data?: Record<string, unknown>;
@@ -18509,6 +18548,122 @@ export const getBoardQuizStats = onCall(
   },
 );
 
+export const getBoardLikeMetrics = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 30,
+    memory: '256MiB',
+    cors: true,
+  },
+  async (request) => {
+    const rawTargets = Array.isArray(request.data?.targets) ? request.data.targets.slice(0, 100) : [];
+    const targetsByKey = new Map<string, BoardLikeTarget>();
+    rawTargets.forEach((value: unknown) => {
+      const target = normalizeBoardLikeTarget(value);
+      targetsByKey.set(boardLikeTargetKey(target), target);
+    });
+    const targets = [...targetsByKey.values()];
+    if (!targets.length) return { metrics: [] };
+
+    const visitorId = request.auth?.uid || normalizeAnonymousVisitorId(request.data?.visitorId);
+    if (!visitorId) {
+      throw new HttpsError('invalid-argument', 'visitorId is required.');
+    }
+    const metricRefs = targets.map((target) => db.collection('board_like_metrics').doc(boardLikeMetricDocumentId(target)));
+    const markerRefs = targets.map((target) => db.collection('board_content_likes').doc(boardLikeMarkerDocumentId(target, visitorId)));
+    const [metricSnapshots, markerSnapshots] = await Promise.all([
+      db.getAll(...metricRefs),
+      db.getAll(...markerRefs),
+    ]);
+
+    return {
+      metrics: targets.map((target, index) => ({
+        boardId: target.boardId,
+        cardId: target.cardId,
+        liked: markerSnapshots[index]?.exists === true,
+        likeCount: Math.max(0, Number(metricSnapshots[index]?.data()?.like_count ?? 0) || 0),
+      })),
+    };
+  },
+);
+
+export const toggleBoardLike = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 30,
+    memory: '256MiB',
+    cors: true,
+  },
+  async (request) => {
+    const target = normalizeBoardLikeTarget(request.data);
+    const visitorId = request.auth?.uid || normalizeAnonymousVisitorId(request.data?.visitorId);
+    if (!visitorId) {
+      throw new HttpsError('invalid-argument', 'visitorId is required.');
+    }
+
+    const boardRef = db.collection('boards').doc(target.boardId);
+    const metricRef = db.collection('board_like_metrics').doc(boardLikeMetricDocumentId(target));
+    const markerRef = db.collection('board_content_likes').doc(boardLikeMarkerDocumentId(target, visitorId));
+    return db.runTransaction(async (transaction) => {
+      const [boardSnapshot, metricSnapshot, markerSnapshot] = await Promise.all([
+        transaction.get(boardRef),
+        transaction.get(metricRef),
+        transaction.get(markerRef),
+      ]);
+      if (!boardSnapshot.exists) {
+        throw new HttpsError('not-found', 'Board not found.');
+      }
+      const board = boardSnapshot.data() ?? {};
+      const canAccess = board.visibility === 'public'
+        || (!!request.auth?.uid && board.owner_user_id === request.auth.uid);
+      if (!canAccess) {
+        throw new HttpsError('permission-denied', 'You do not have access to this board.');
+      }
+      if (target.cardId) {
+        const cardExists = (Array.isArray(board.cards) ? board.cards : []).some((card) => (
+          !!card && typeof card === 'object' && (card as Record<string, unknown>).id === target.cardId
+        ));
+        if (!cardExists) {
+          throw new HttpsError('not-found', 'Board card not found.');
+        }
+      }
+
+      const currentCount = Math.max(0, Number(
+        target.cardId ? metricSnapshot.data()?.like_count : board.like_count ?? metricSnapshot.data()?.like_count ?? 0,
+      ) || 0);
+      const liked = !markerSnapshot.exists;
+      const likeCount = Math.max(0, currentCount + (liked ? 1 : -1));
+      if (liked) {
+        transaction.set(markerRef, {
+          target_key: boardLikeTargetKey(target),
+          board_id: target.boardId,
+          card_id: target.cardId,
+          visitor_id_hash: createHash('sha256').update(visitorId).digest('hex'),
+          created_at: FieldValue.serverTimestamp(),
+        });
+      } else {
+        transaction.delete(markerRef);
+      }
+      transaction.set(metricRef, {
+        target_key: boardLikeTargetKey(target),
+        board_id: target.boardId,
+        card_id: target.cardId,
+        like_count: likeCount,
+        updated_at: FieldValue.serverTimestamp(),
+      }, { merge: true });
+      if (!target.cardId) {
+        transaction.update(boardRef, { like_count: likeCount });
+      }
+      return {
+        boardId: target.boardId,
+        cardId: target.cardId,
+        liked,
+        likeCount,
+      };
+    });
+  },
+);
+
 export const getAnswerCard = onCall(
   {
     region: callableRegion,
@@ -18555,7 +18710,12 @@ export const likeAnswerCard = onCall(
 
       const currentCount = Number(cardSnapshot.data()?.like_count ?? 0) || 0;
       if (likeSnapshot.exists) {
-        return { liked: true, likeCount: currentCount };
+        transaction.delete(likeRef);
+        transaction.update(cardRef, {
+          like_count: Math.max(0, currentCount - 1),
+          updated_at: FieldValue.serverTimestamp(),
+        });
+        return { liked: false, likeCount: Math.max(0, currentCount - 1) };
       }
 
       transaction.set(likeRef, {

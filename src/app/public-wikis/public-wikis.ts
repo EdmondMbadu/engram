@@ -116,6 +116,7 @@ interface MobileBoard {
   tone: string;
   imageUrl: string;
   logoUrl: string;
+  likeCount: number;
   cards: MobileBoardCard[];
   createdAt: string;
   updatedAt: string;
@@ -1635,7 +1636,6 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
         } catch (error) {
           if (!shouldFallbackDiscoverNewestFirstQuery(error, !cursor)) throw error;
           this.mobileDiscoverUsesNewestFirstQuery = false;
-          console.warn('Discover newest-first index is not ready; using the compatibility query.', error);
           snapshot = await getDocs(legacyQuery());
         }
         if (!cursor && snapshot.empty) {
@@ -1662,8 +1662,10 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
     }
   }
 
-  toggleBoardLike(boardId: string): void {
-    this.toggleIdSet(this.likedBoardIds, boardId);
+  toggleBoardLike(board: MobileBoard): void {
+    board.likeCount = Math.max(0, board.likeCount + (this.isBoardLiked(board.id) ? -1 : 1));
+    this.toggleIdSet(this.likedBoardIds, board.id);
+    void httpsCallable(this.functions!, 'toggleBoardLike')({ boardId: board.id }).catch(() => 0);
     this.saveBoardActionState();
   }
 
@@ -1676,13 +1678,14 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
     return this.likedBoardIds().has(boardId);
   }
 
+
   isBoardSaved(boardId: string): boolean {
     return this.savedBoardIds().has(boardId);
   }
 
   shareBoard(board: MobileBoard): void {
     const url = location.origin + this.boardViewLink(board);
-    void (navigator.share ? navigator.share({ url }) : navigator.clipboard.writeText(url).then(() => alert('Copied')));
+    void (navigator.share ? navigator.share({ url }) : navigator.clipboard.writeText(url));
   }
 
   private toggleIdSet(target: WritableSignal<Set<string>>, id: string): void {
@@ -1836,6 +1839,7 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
       tone: this.stringField(data, 'tone') || 'teal',
       imageUrl: this.stringField(data, 'imageUrl'),
       logoUrl: this.stringField(data, 'logoUrl'),
+      likeCount: this.numberField(data, 'like_count', 0),
       cards: rawCards
         .map((card) => this.mobileBoardCardFromRecord(card))
         .filter((card): card is MobileBoardCard => !!card),
@@ -2580,8 +2584,8 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
         preferredCitySlug: this.mobileSelectedCitySlug(),
         preferredUniversitySlug: this.mobileSelectedUniversitySlug(),
       });
-    } catch (error) {
-      console.warn('Could not sync home preferences to the account.', error);
+    } catch {
+      // A later preference change will retry the profile sync.
     } finally {
       this.isSavingHomePreference.set(false);
     }
@@ -2734,7 +2738,7 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
 
     const response = await fetch(url.toString());
     if (!response.ok) {
-      throw new Error(`Open-Meteo returned ${response.status}`);
+      throw Error();
     }
 
     const payload = (await response.json()) as OpenMeteoLocationResponse | OpenMeteoLocationResponse[];

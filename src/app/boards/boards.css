@@ -1813,16 +1813,19 @@
   top: 0.65rem;
   right: 6.25rem;
   z-index: 14;
-  display: grid;
-  width: 2.35rem;
+  display: inline-flex;
+  min-width: 2.35rem;
   height: 2.35rem;
-  place-items: center;
+  align-items: center;
+  justify-content: center;
+  gap: 0.12rem;
   border: 2px solid var(--ink);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.92);
   box-shadow: 2px 2px 0 var(--ink);
   color: var(--ink);
   cursor: pointer;
+  padding: 0 0.42rem;
 }
 
 .detail-card__like--active {
@@ -1838,6 +1841,13 @@
 .detail-card__like .material-symbols-outlined {
   font-size: 1.2rem;
   font-variation-settings: 'FILL' 1;
+}
+
+.detail-card__like-count {
+  min-width: 0.55rem;
+  font-size: 0.68rem;
+  font-weight: 950;
+  line-height: 1;
 }
 
 .detail-card__rank {

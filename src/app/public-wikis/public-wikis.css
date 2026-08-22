@@ -1033,7 +1033,7 @@ button.mobile-talk-action {
 
 .mobile-discover-card__actions button {
   display: inline-flex;
-  width: 2.2rem;
+  width: 3rem;
   height: 2.2rem;
   align-items: center;
   justify-content: center;
@@ -1041,7 +1041,6 @@ button.mobile-talk-action {
   border-radius: 0.72rem;
   background: var(--home-s);
   color: var(--home-title);
-  padding: 0;
 }
 
 .mobile-discover-card__actions button.active {

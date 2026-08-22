@@ -115,7 +115,9 @@
               type="button"
               class="answer-card-action"
               [class.answer-card-action--liked]="liked()"
-              [disabled]="liking() || liked()"
+              [disabled]="liking()"
+              [attr.aria-pressed]="liked()"
+              [attr.aria-label]="liked() ? 'Unlike this answer card' : 'Like this answer card'"
               (click)="likeCard()"
             >
               <span class="answer-card-heart" [class.answer-card-heart--liked]="liked()" aria-hidden="true">{{ liked() ? '♥' : '♡' }}</span>

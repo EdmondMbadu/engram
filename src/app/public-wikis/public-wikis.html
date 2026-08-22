@@ -455,10 +455,9 @@
                 <div class="mobile-discover-card__actions">
                   <button
                     [class.active]="isBoardLiked(board.id)"
-                    (click)="toggleBoardLike(board.id)"
-                    title="Like"
-                   i18n-title>
+                    (click)="toggleBoardLike(board)">
                     <span class="material-symbols-outlined">favorite</span>
+                    <span>{{ board.likeCount }}</span>
                   </button>
                   <button
                     [class.active]="isBoardSaved(board.id)"

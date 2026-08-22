@@ -153,7 +153,7 @@ export class AnswerCardComponent {
 
   async likeCard(): Promise<void> {
     const card = this.card();
-    if (!card || this.liking() || this.liked()) {
+    if (!card || this.liking()) {
       return;
     }
 
@@ -163,8 +163,8 @@ export class AnswerCardComponent {
       const result = await this.answerCardService.likeAnswerCard(card.id, visitorId);
       this.liked.set(result.liked);
       this.card.set({ ...card, likeCount: result.likeCount });
-      this.markLiked(card.id);
-      this.shareFeedback.set('Liked');
+      this.markLiked(card.id, result.liked);
+      this.shareFeedback.set(result.liked ? 'Liked' : 'Like removed');
       setTimeout(() => this.shareFeedback.set(null), 1200);
     } catch {
       this.shareFeedback.set('Could not like this card. Try again.');
@@ -269,9 +269,11 @@ export class AnswerCardComponent {
     return this.isBrowser && window.localStorage.getItem(`living-wiki:answer-card-liked:${cardId}`) === 'true';
   }
 
-  private markLiked(cardId: string): void {
+  private markLiked(cardId: string, liked: boolean): void {
     if (this.isBrowser) {
-      window.localStorage.setItem(`living-wiki:answer-card-liked:${cardId}`, 'true');
+      const key = `living-wiki:answer-card-liked:${cardId}`;
+      if (liked) window.localStorage.setItem(key, 'true');
+      else window.localStorage.removeItem(key);
     }
   }
 

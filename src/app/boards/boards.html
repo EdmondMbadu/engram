@@ -1069,10 +1069,11 @@
                     [class.board-square__engage--active]="isBoardLiked(board)"
                     [attr.aria-label]="isBoardLiked(board) ? 'Unlike board' : 'Like board'"
                     [attr.aria-pressed]="isBoardLiked(board)"
+                    [disabled]="isLikePending(board)"
                     (click)="toggleBoardLike(board, $event)"
                   >
                     <span class="material-symbols-outlined">{{ isBoardLiked(board) ? 'favorite' : 'favorite_border' }}</span>
-                    <span i18n>Like</span>
+                    <span><span i18n>Like</span> · {{ boardLikeCount(board) }}</span>
                   </button>
                   <button
                     type="button"
@@ -1400,10 +1401,11 @@
                   type="button"
                   [class.board-editorial-hero__action--active]="isBoardLiked(board)"
                   [attr.aria-pressed]="isBoardLiked(board)"
+                  [disabled]="isLikePending(board)"
                   (click)="toggleBoardLike(board, $event)"
                 >
                   <span class="material-symbols-outlined" aria-hidden="true">{{ isBoardLiked(board) ? 'favorite' : 'favorite_border' }}</span>
-                  <span>{{ isBoardLiked(board) ? 'Liked' : 'Like' }}</span>
+                  <span>{{ isBoardLiked(board) ? 'Liked' : 'Like' }} · {{ boardLikeCount(board) }}</span>
                 </button>
                 <button
                   type="button"
@@ -1560,10 +1562,11 @@
                 class="boards-share-button boards-share-button--engage"
                 [class.boards-share-button--active]="isBoardLiked(board)"
                 [attr.aria-pressed]="isBoardLiked(board)"
+                [disabled]="isLikePending(board)"
                 (click)="toggleBoardLike(board, $event)"
-               i18n>
+              >
                 <span class="material-symbols-outlined">{{ isBoardLiked(board) ? 'favorite' : 'favorite_border' }}</span>
-                Like
+                <span i18n>Like</span> · {{ boardLikeCount(board) }}
               </button>
               <button
                 type="button"
@@ -2665,10 +2668,11 @@
                       class="boards-share-button boards-share-button--engage"
                       [class.boards-share-button--active]="isBoardLiked(board)"
                       [attr.aria-pressed]="isBoardLiked(board)"
+                      [disabled]="isLikePending(board)"
                       (click)="toggleBoardLike(board, $event)"
-                     i18n>
+                    >
                       <span class="material-symbols-outlined">{{ isBoardLiked(board) ? 'favorite' : 'favorite_border' }}</span>
-                      Like
+                      <span i18n>Like</span> · {{ boardLikeCount(board) }}
                     </button>
                     <button
                       type="button"
@@ -2960,10 +2964,11 @@
                               class="song-preview-button song-preview-button--juke"
                               [class.song-preview-button--playing]="isCardLiked(board, song)"
                               [attr.aria-pressed]="isCardLiked(board, song)"
+                              [disabled]="isLikePending(board, song)"
                               (click)="toggleCardLike(board, song, $event)"
                             >
                               <span class="material-symbols-outlined">{{ isCardLiked(board, song) ? 'favorite' : 'favorite_border' }}</span>
-                              <span>{{ isCardLiked(board, song) ? 'Liked' : 'Like card' }}</span>
+                              <span>{{ isCardLiked(board, song) ? 'Liked' : 'Like card' }} · {{ cardLikeCount(board, song) }}</span>
                             </button>
                             @if (song.audioPreviewUrl && !hasSpotifyTrack(song)) {
                               <button
@@ -3120,9 +3125,11 @@
                     [class.detail-card__like--active]="isCardLiked(cardHostBoard(board, card), card)"
                     [attr.aria-label]="isCardLiked(cardHostBoard(board, card), card) ? 'Unlike card' : 'Like card'"
                     [attr.aria-pressed]="isCardLiked(cardHostBoard(board, card), card)"
+                    [disabled]="isLikePending(cardHostBoard(board, card), card)"
                     (click)="toggleCardLike(cardHostBoard(board, card), card, $event)"
                   >
                     <span class="material-symbols-outlined">{{ isCardLiked(cardHostBoard(board, card), card) ? 'favorite' : 'favorite_border' }}</span>
+                    <span class="detail-card__like-count">{{ cardLikeCount(cardHostBoard(board, card), card) }}</span>
                   </button>
                   @if (canEditBoard(cardHostBoard(board, card)) && (!exploredRelatedCardParent() || !isLegacyMemoryRelatedCard(card))) {
                     <div
