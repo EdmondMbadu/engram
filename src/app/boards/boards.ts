@@ -39,6 +39,10 @@ import { profileIconByCode, profileIconForSeed } from '../profile/profile-icons'
 import { generateQrSvgDataUrl } from '../qr-code';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
+import {
+  NearbyGemsBoardComponent,
+  type NearbyGemsBoardCardView,
+} from './nearby-gems-board/nearby-gems-board';
 import { VideoLibraryService } from '../video-library/video-library.service';
 import { SpotifyPlaybackService, type SpotifyTrack } from '../spotify-playback.service';
 import { StackNarrationSessionService } from '../stack-narration-session.service';
@@ -243,7 +247,7 @@ import {
 } from './what3words-source';
 
 type BoardTone = 'teal' | 'coral' | 'yellow' | 'green' | 'blue' | 'sky' | 'purple';
-type BoardKind = 'standard' | 'off-grid' | 'walking-tour' | 'driving-tour';
+type BoardKind = 'standard' | 'nearby-gems' | 'off-grid' | 'walking-tour' | 'driving-tour';
 type BoardVisibility = 'public' | 'private';
 type BoardCardType = 'place' | 'food' | 'memory' | 'idea' | 'shop' | 'note';
 type BoardCardScope = 'place' | 'city' | 'country' | 'region';
@@ -263,6 +267,21 @@ type BoardWizardStep = 'choose' | 'configure' | 'loading' | 'source-review' | 'p
 type BoardWizardVibe = 'playful' | 'foodie' | 'traveler' | 'curator' | 'memory';
 type NearbyGemRange = 'walk' | 'quick-drive' | 'adventure';
 type NearbyGemLocation = { latitude: number; longitude: number; accuracy: number };
+type NearbyGemCardMetrics = {
+  durationSeconds: number;
+  distanceMeters: number;
+  measurement: 'route' | 'estimated';
+  category: string;
+};
+type NearbyGemsBoardMeta = {
+  locationLabel: string;
+  range: NearbyGemRange;
+  travelMode: 'walking' | 'driving';
+  defaultSort: 'travel-time' | 'distance';
+  generatedAt: string;
+  originStored: false;
+  generationGrantId: string;
+};
 type WizardLoadingTask = {
   message: string;
   progress: number;
@@ -359,6 +378,7 @@ type BoardCard = {
   mediaKind?: BoardMediaKind;
   shortSummary?: string;
   rank?: number;
+  nearby?: NearbyGemCardMetrics;
   videoNarrationRevision?: number;
   videoIntent?: boolean;
   videoSearchQuery?: string;
@@ -468,6 +488,7 @@ type Board = {
   stackNarratorVoiceId: string;
   stickers: BoardSticker[];
   tourMeta: BoardTourMeta | null;
+  nearbyGems?: NearbyGemsBoardMeta | null;
   learningQuiz?: BoardLearningQuiz | null;
   parentBoardId?: string;
   parentCardId?: string;
@@ -667,6 +688,7 @@ type BoardWizardGeneratedCard = {
   media_kind?: BoardMediaKind;
   short_summary?: string;
   rank?: number;
+  nearby?: NearbyGemCardMetrics;
   video_intent?: boolean;
   video_search_query?: string;
   youtubeVideoId?: string;
@@ -720,6 +742,7 @@ type BoardWizardGeneratedBatch = {
     tone: BoardTone;
     kind?: BoardKind;
     tourMeta?: BoardTourMeta | null;
+    nearbyGems?: NearbyGemsBoardMeta | null;
   };
   cards: BoardWizardGeneratedCard[];
   sourceReport?: BoardWizardSourceReport;
@@ -1419,10 +1442,10 @@ type BoardLoadContext = {
 
 @Component({
   selector: 'app-boards',
-  imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink, BoardCollectionCreateComponent, BoardCollectionListComponent, CustomPublicUrlDialogComponent],
+  imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink, BoardCollectionCreateComponent, BoardCollectionListComponent, CustomPublicUrlDialogComponent, NearbyGemsBoardComponent],
   providers: [DocxExportService],
   templateUrl: './boards.html',
-  styleUrls: ['./boards.css', './tour-experience.css', './board-wizard-drafts.css', './board-wizard-media-mode.css', './board-narration-style.css', './board-wizard-redesign.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css', './stack-script.css', './stack-cover-final.css', './stack-doc-export.css', './board-city-tag.css', './board-custom-link.css'],
+  styleUrls: ['./boards.css', './tour-experience.css', './board-wizard-drafts.css', './board-wizard-media-mode.css', './board-narration-style.css', './board-wizard-redesign.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css', './stack-script.css', './stack-cover-final.css', './stack-doc-export.css', './board-city-tag.css', './board-custom-link.css', './nearby-gems-gallery.css'],
 })
 export class BoardsComponent implements AfterViewInit, OnDestroy {
   private readonly localeId = inject(LOCALE_ID);
@@ -1616,6 +1639,8 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly activeAlongsideBoardIds = signal<Set<string>>(new Set());
   readonly boardInsideDisplaySavingId = signal<string | null>(null);
   readonly boardCardNumbersSavingId = signal<string | null>(null);
+  readonly nearbyGemsVisibilitySavingId = signal<string | null>(null);
+  readonly nearbyGemsVisibilityMessage = signal('');
   readonly activeGalleryTab = signal<BoardGalleryTab>('boards');
   readonly boardGallerySort = signal<BoardGallerySort>('custom');
   readonly boardSearch = signal('');
@@ -2159,6 +2184,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       return board;
     }
     return applyBoardTranslation(board, result.segments);
+  });
+  readonly selectedNearbyGemsCardViews = computed(() => {
+    const board = this.selectedBoard();
+    return board && this.isNearbyGemsBoard(board) ? this.nearbyGemsCardViews(board) : [];
   });
   readonly exploredRelatedCardParent = computed(() => {
     const parentId = this.exploredRelatedCardParentId();
@@ -3352,6 +3381,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       this.suppressNextBoardOpen = false;
       return;
     }
+    this.nearbyGemsVisibilityMessage.set('');
     this.resetBoardRouteScroll();
     void this.router.navigate([this.boardRouteRoot(), boardId]);
   }
@@ -3391,6 +3421,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   }
 
   closeBoardDetail(): void {
+    this.nearbyGemsVisibilityMessage.set('');
     this.stopSongPreview();
     this.closeTourStopEditor();
     if (this.boardLearnOpen()) {
@@ -3875,11 +3906,14 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     if (!this.functions) throw new Error('Nearby search is not ready. Refresh and try again.');
     this.wizardStep.set('loading');
     this.wizardLoadingTask.set({ message: 'Finding genuinely interesting places within reach', progress: 24 });
+    const boardId = this.wizardActiveDraftId() ?? this.createId();
+    this.wizardActiveDraftId.set(boardId);
     const callable = httpsCallable<Record<string, unknown>, unknown>(this.functions, 'discoverNearbyGems', {
       timeout: 55_000,
     });
     const response = await callable({
       ...origin,
+      boardId,
       details: this.nearbyGemDetails().trim(),
       count: 8,
     });
@@ -5216,7 +5250,9 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
     const draftSaved = await this.flushWizardDraftAutosave();
     if (!draftSaved) {
-      this.wizardError.set('Save and publish is paused because the latest draft could not be synced. Check your connection and try again.');
+      this.wizardError.set(this.wizardMode() === 'nearby-gems'
+        ? 'Saving is paused because the latest private draft could not be synced. Check your connection and try again.'
+        : 'Save and publish is paused because the latest draft could not be synced. Check your connection and try again.');
       this.wizardSaving.set(false);
       return;
     }
@@ -5238,6 +5274,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       mediaKind: card.media_kind ?? 'none',
       shortSummary: card.short_summary?.trim() || card.subtitle.trim(),
       rank: Math.max(0, Math.min(100, Math.trunc(card.rank ?? 0))),
+      nearby: card.nearby ? this.normalizeNearbyGemMetrics(card.nearby) ?? undefined : undefined,
       videoIntent: card.video_intent === true,
       videoSearchQuery: card.video_search_query?.trim() || '',
       youtubeVideoId: card.youtubeVideoId?.trim() || '',
@@ -5366,9 +5403,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
           forkedFromTitle: '',
           forkedFromOwnerUserId: '',
           forkedFromOwnerName: '',
-          visibility: 'public',
+          visibility: this.wizardMode() === 'nearby-gems' ? 'private' : 'public',
           stickers: [],
           tourMeta: result.board.tourMeta ?? this.buildWizardTourMeta(cards),
+          nearbyGems: result.board.nearbyGems ?? null,
           atlasId: '',
           generatedForAtlasId: '',
           insideCardsDisplay: 'nested',
@@ -5485,13 +5523,18 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     if (!title) {
       return;
     }
-    if (draft.visibility === 'private' && !this.canUsePrivateBoards()) {
+    const editingId = this.editingBoardId();
+    const editingBoardForVisibility = editingId
+      ? this.boards().find((board) => board.id === editingId) ?? null
+      : null;
+    if (draft.visibility === 'private'
+      && !this.canUsePrivateBoards()
+      && !this.isNearbyGemsBoard(editingBoardForVisibility)) {
       this.redirectToPrivateBoardsPricing();
       return;
     }
 
     const now = new Date().toISOString();
-    const editingId = this.editingBoardId();
     const insideContext = this.creatingBoardInside();
     let nextBoard: Board | null = null;
     if (editingId) {
@@ -8171,7 +8214,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   }
 
   setBoardDraftVisibility(visibility: BoardVisibility): void {
-    if (visibility === 'private' && !this.canUsePrivateBoards()) {
+    const editingBoard = this.editingBoardId()
+      ? this.boards().find((board) => board.id === this.editingBoardId()) ?? null
+      : null;
+    if (visibility === 'private' && !this.canUsePrivateBoards() && !this.isNearbyGemsBoard(editingBoard)) {
       this.redirectToPrivateBoardsPricing();
       return;
     }
@@ -9645,8 +9691,68 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     return resolveBoardIcon(board.icon, board);
   }
 
+  isNearbyGemsBoard(board: Board | null): boolean {
+    if (!board) return false;
+    if (board.kind === 'nearby-gems') return true;
+    return board.icon === 'explore_nearby'
+      && /nearby-gems/i.test(board.backNote)
+      && board.cards.some((card) => card.tags.some((tag) => tag.toLocaleLowerCase() === 'nearby gem'));
+  }
+
+  nearbyGemsCardViews(board: Board): NearbyGemsBoardCardView[] {
+    return board.cards.map((card, index) => {
+      const legacyDuration = card.tags.map((tag) => tag.match(/^(\d+)\s*min away$/i)?.[1])
+        .find((value): value is string => !!value);
+      const subtitleCategory = card.subtitle.split('·').at(-1)?.trim() || 'Local discovery';
+      return {
+        id: card.id,
+        title: card.title,
+        category: card.nearby?.category || subtitleCategory,
+        imageUrl: card.imageUrl,
+        durationSeconds: card.nearby ? card.nearby.durationSeconds : legacyDuration ? Number(legacyDuration) * 60 : null,
+        distanceMeters: card.nearby ? card.nearby.distanceMeters : null,
+        measurement: card.nearby?.measurement ?? 'estimated',
+        lat: Number.isFinite(card.locationLat) ? card.locationLat as number : null,
+        lng: Number.isFinite(card.locationLng) ? card.locationLng as number : null,
+        googleMapsUrl: card.googleMapsUrl,
+        originalRank: card.rank && card.rank > 0 ? card.rank : index + 1,
+      };
+    });
+  }
+
+  nearbyGemsLocationLabel(board: Board): string {
+    return board.nearbyGems?.locationLabel || board.title.replace(/^Gems near\s+/i, '').trim() || 'your area';
+  }
+
+  async toggleNearbyGemsVisibility(board: Board, event?: Event): Promise<void> {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (!this.canEditBoard(board) || this.nearbyGemsVisibilitySavingId()) return;
+    const nextVisibility: BoardVisibility = board.visibility === 'private' ? 'public' : 'private';
+    if (nextVisibility === 'public' && this.isBrowser) {
+      const confirmed = window.confirm(
+        'Make this Gems board public? Anyone with the link will see the saved places and broad area label. Your precise starting point was never stored.',
+      );
+      if (!confirmed) return;
+    }
+    this.nearbyGemsVisibilitySavingId.set(board.id);
+    this.nearbyGemsVisibilityMessage.set('');
+    const saved = await this.persistAndReplaceBoard({
+      ...board,
+      visibility: nextVisibility,
+      updatedAt: new Date().toISOString(),
+    });
+    this.nearbyGemsVisibilitySavingId.set(null);
+    this.nearbyGemsVisibilityMessage.set(saved
+      ? nextVisibility === 'public'
+        ? 'This board is now public. Your starting point remains private.'
+        : 'This board is private again. Only you can open it.'
+      : 'Visibility could not be changed. Please try again.');
+  }
+
   boardCategoryLabel(board: Board): string {
     if (this.isSongBoard(board)) return 'Music';
+    if (this.isNearbyGemsBoard(board)) return 'Nearby gems';
     if (board.kind === 'walking-tour' || board.kind === 'driving-tour') return 'Tour';
     if (board.kind === 'off-grid') return 'Off-grid';
     return 'Board';
@@ -16316,6 +16422,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         tone: this.isBoardTone(boardData['tone']) ? boardData['tone'] : fallback.board.tone,
         kind: this.isBoardKind(boardData['kind']) ? boardData['kind'] : fallback.board.kind,
         tourMeta: this.normalizeTourMeta(boardData['tourMeta']) ?? fallback.board.tourMeta,
+        nearbyGems: this.normalizeNearbyGemsMeta(boardData['nearbyGems']) ?? fallback.board.nearbyGems,
       },
       // The server owns explicit-count and complete-set cardinality decisions.
       // Do not truncate a verified complete set back to the UI's default count.
@@ -16513,6 +16620,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       media_kind: this.isBoardMediaKind(data['media_kind']) ? data['media_kind'] : 'none',
       short_summary: this.stringValue(data['short_summary'], subtitle, 160),
       rank: this.numberValue(data['rank'], 0, 0, 100),
+      nearby: this.normalizeNearbyGemMetrics(data['nearby']),
       video_intent: data['video_intent'] === true,
       video_search_query: this.stringValue(data['video_search_query'], '', 180),
       youtubeVideoId: youtubeVideoIdFromReference(data['youtubeVideoId']),
@@ -16602,6 +16710,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       extractionConfidence: card.extractionConfidence || 0,
       extractedAt: card.extractedAt || '',
       what3wordsAddress: card.what3wordsAddress || '',
+      nearby: card.nearby,
     };
   }
 
@@ -17436,6 +17545,37 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       .trim();
   }
 
+  private normalizeNearbyGemMetrics(value: unknown): NearbyGemCardMetrics | undefined {
+    if (!value || typeof value !== 'object') return undefined;
+    const data = value as Record<string, unknown>;
+    const durationSeconds = this.numberValue(data['durationSeconds'], Number.NaN, 0, 86_400);
+    const distanceMeters = this.numberValue(data['distanceMeters'], Number.NaN, 0, 2_000_000);
+    if (!Number.isFinite(durationSeconds) && !Number.isFinite(distanceMeters)) return undefined;
+    return {
+      durationSeconds: Number.isFinite(durationSeconds) ? Math.round(durationSeconds) : 0,
+      distanceMeters: Number.isFinite(distanceMeters) ? Math.round(distanceMeters) : 0,
+      measurement: data['measurement'] === 'route' ? 'route' : 'estimated',
+      category: this.stringValue(data['category'], 'Local discovery', 80),
+    };
+  }
+
+  private normalizeNearbyGemsMeta(value: unknown): NearbyGemsBoardMeta | null {
+    if (!value || typeof value !== 'object') return null;
+    const data = value as Record<string, unknown>;
+    const range = data['range'];
+    const generationGrantId = this.stringValue(data['generationGrantId'], '', 180);
+    if ((range !== 'walk' && range !== 'quick-drive' && range !== 'adventure') || !generationGrantId) return null;
+    return {
+      locationLabel: this.stringValue(data['locationLabel'], 'your area', 120),
+      range,
+      travelMode: data['travelMode'] === 'walking' ? 'walking' : 'driving',
+      defaultSort: data['defaultSort'] === 'distance' ? 'distance' : 'travel-time',
+      generatedAt: this.stringValue(data['generatedAt'], new Date().toISOString(), 80),
+      originStored: false,
+      generationGrantId,
+    };
+  }
+
   private normalizeTourMeta(value: unknown): BoardTourMeta | null {
     if (!value || typeof value !== 'object') {
       return null;
@@ -18170,6 +18310,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
           backNote: board.backNote ?? '',
           stickers: this.normalizeStickers((board as Board).stickers),
           tourMeta: this.normalizeTourMeta((board as Board).tourMeta),
+          nearbyGems: this.normalizeNearbyGemsMeta((board as Board).nearbyGems),
           learningQuiz: normalizeBoardLearningQuiz((board as Board).learningQuiz),
           parentBoardId: typeof (board as Board).parentBoardId === 'string' ? (board as Board).parentBoardId : '',
           parentCardId: typeof (board as Board).parentCardId === 'string' ? (board as Board).parentCardId : '',
@@ -18202,6 +18343,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
             videoNarrationRevision: typeof (card as Partial<BoardCard>).videoNarrationRevision === 'number'
               ? Math.max(0, Math.trunc((card as Partial<BoardCard>).videoNarrationRevision!))
               : 0,
+            nearby: this.normalizeNearbyGemMetrics((card as Partial<BoardCard>).nearby),
             stickers: this.normalizeStickers(card.stickers),
             tour: this.normalizeCardTour((card as BoardCard).tour),
             childBoardId: typeof (card as BoardCard).childBoardId === 'string' ? (card as BoardCard).childBoardId : '',
@@ -18537,6 +18679,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       stackNarratorVoiceId: normalizeStackNarratorVoiceId(data['stackNarratorVoiceId']),
       stickers: this.normalizeStickers(data['stickers']),
       tourMeta: this.normalizeTourMeta(data['tourMeta']),
+      nearbyGems: this.normalizeNearbyGemsMeta(data['nearbyGems']),
       learningQuiz: normalizeBoardLearningQuiz(data['learningQuiz']),
       parentBoardId: typeof data['parentBoardId'] === 'string' ? data['parentBoardId'] : '',
       parentCardId: typeof data['parentCardId'] === 'string' ? data['parentCardId'] : '',
@@ -18587,6 +18730,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       mediaKind: this.isBoardMediaKind(data['mediaKind']) ? data['mediaKind'] : 'none',
       shortSummary: typeof data['shortSummary'] === 'string' ? data['shortSummary'] : (typeof data['subtitle'] === 'string' ? data['subtitle'] : ''),
       rank: typeof data['rank'] === 'number' ? Math.max(0, Math.min(100, Math.trunc(data['rank']))) : this.rankFromTags(data['tags']),
+      nearby: this.normalizeNearbyGemMetrics(data['nearby']),
       videoNarrationRevision: typeof data['videoNarrationRevision'] === 'number'
         ? Math.max(0, Math.trunc(data['videoNarrationRevision']))
         : 0,
@@ -19003,7 +19147,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   }
 
   private isBoardKind(value: unknown): value is BoardKind {
-    return value === 'standard' || value === 'off-grid' || value === 'walking-tour' || value === 'driving-tour';
+    return value === 'standard' || value === 'nearby-gems' || value === 'off-grid' || value === 'walking-tour' || value === 'driving-tour';
   }
 
   private isBoardVisibility(value: unknown): value is BoardVisibility {
@@ -19030,7 +19174,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
   private wizardGeneratedBoardKind(): BoardKind {
     const mode = this.wizardMode();
-    return mode === 'off-grid' || mode === 'walking-tour' || mode === 'driving-tour' ? mode : 'standard';
+    return mode === 'nearby-gems' || mode === 'off-grid' || mode === 'walking-tour' || mode === 'driving-tour' ? mode : 'standard';
   }
 
   private isBoardCardType(value: unknown): value is BoardCardType {

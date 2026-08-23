@@ -1,0 +1,149 @@
+<section class="nearby-gems-board" [class.nearby-gems-board--private]="visibility() === 'private'">
+  <header class="nearby-gems-board__header">
+    <button type="button" class="nearby-gems-board__back" aria-label="Back to boards" (click)="backRequested.emit()">
+      <span class="material-symbols-outlined">arrow_back</span>
+    </button>
+    <span class="nearby-gems-board__compass" aria-hidden="true">
+      <span class="material-symbols-outlined">explore</span>
+    </span>
+    <div class="nearby-gems-board__intro">
+      <p>Nearby gems · {{ cards().length }} places</p>
+      <h1>
+        {{ title() }}
+        @if (visibility() === 'private') {
+          <span class="nearby-gems-board__title-lock" title="Private board">
+            <span class="material-symbols-outlined" aria-hidden="true">lock</span>
+            <span>Private</span>
+          </span>
+        }
+      </h1>
+      <span>{{ description() || 'Interesting places ranked by quickest travel time from your starting point.' }}</span>
+      @if (visibility() === 'private') {
+        <div class="nearby-gems-board__privacy" role="status">
+          <span class="material-symbols-outlined" aria-hidden="true">lock</span>
+          <span><strong>Only you can see this board.</strong><small>Your starting point is not stored.</small></span>
+        </div>
+      } @else {
+        <div class="nearby-gems-board__privacy nearby-gems-board__privacy--public" role="status">
+          <span class="material-symbols-outlined" aria-hidden="true">public</span>
+          <span><strong>Public board</strong><small>Anyone with the link can see these saved places.</small></span>
+        </div>
+      }
+    </div>
+    @if (canEdit()) {
+      <div class="nearby-gems-board__owner-actions">
+        <button type="button" class="nearby-gems-board__edit" (click)="settingsRequested.emit()">
+          <span class="material-symbols-outlined">edit</span>
+          Edit gems
+        </button>
+        <details class="nearby-gems-board__more">
+          <summary><span class="material-symbols-outlined">more_horiz</span><span>More</span></summary>
+          <div class="nearby-gems-board__more-menu">
+            <button type="button" (click)="settingsRequested.emit()">
+              <span class="material-symbols-outlined">settings</span>
+              Board settings
+            </button>
+            <button type="button" (click)="addRequested.emit()">
+              <span class="material-symbols-outlined">add_location_alt</span>
+              Add a place
+            </button>
+            @if (visibility() === 'public') {
+              <button type="button" (click)="shareRequested.emit()">
+                <span class="material-symbols-outlined">content_copy</span>
+                Copy public link
+              </button>
+              <button type="button" (click)="customUrlRequested.emit()">
+                <span class="material-symbols-outlined">link</span>
+                Set custom URL
+              </button>
+            }
+            <button type="button" [disabled]="visibilitySaving()" (click)="visibilityRequested.emit()">
+              <span class="material-symbols-outlined">{{ visibilitySaving() ? 'progress_activity' : visibility() === 'private' ? 'public' : 'lock' }}</span>
+              {{ visibilitySaving() ? 'Saving…' : visibility() === 'private' ? 'Make public' : 'Make private' }}
+            </button>
+          </div>
+        </details>
+      </div>
+    } @else if (visibility() === 'public') {
+      <div class="nearby-gems-board__owner-actions">
+        <button type="button" class="nearby-gems-board__edit" (click)="shareRequested.emit()">
+          <span class="material-symbols-outlined">content_copy</span>
+          Copy link
+        </button>
+      </div>
+    }
+    @if (statusMessage()) {
+      <p class="nearby-gems-board__status" aria-live="polite">{{ statusMessage() }}</p>
+    }
+  </header>
+
+  <div class="nearby-gems-board__workspace">
+    <aside class="nearby-gems-board__list" aria-label="Nearby places ranked nearest first">
+      <div class="nearby-gems-board__sort-head">
+        <span><strong>Route order</strong><small>Nearest first</small></span>
+        <div role="group" aria-label="Rank places by">
+          <button type="button" [class.is-active]="sortMode() === 'travel-time'" [attr.aria-pressed]="sortMode() === 'travel-time'" (click)="setSortMode('travel-time')">Travel time</button>
+          <button type="button" [class.is-active]="sortMode() === 'distance'" [attr.aria-pressed]="sortMode() === 'distance'" (click)="setSortMode('distance')">Distance</button>
+        </div>
+      </div>
+
+      <div class="nearby-gems-board__places">
+        @for (card of visibleCards(); track card.id) {
+          <article
+            class="nearby-gems-place"
+            [class.nearby-gems-place--active]="activeCardId() === card.id || (!activeCardId() && rankFor(card) === 1)"
+            tabindex="0"
+            (click)="selectCard(card)"
+            (focus)="selectCard(card)"
+          >
+            <strong class="nearby-gems-place__rank">{{ rankFor(card).toString().padStart(2, '0') }}</strong>
+            @if (card.imageUrl) {
+              <img [src]="card.imageUrl" [alt]="card.title" loading="lazy" />
+            } @else {
+              <span class="nearby-gems-place__fallback material-symbols-outlined" aria-hidden="true">place</span>
+            }
+            <span class="nearby-gems-place__copy"><strong>{{ card.title }}</strong><small>{{ card.category }}</small></span>
+            <span class="nearby-gems-place__metrics">
+              <strong>{{ durationLabel(card.durationSeconds) }}</strong>
+              <small>{{ distanceLabel(card.distanceMeters) }}</small>
+              @if (card.measurement === 'estimated') { <em title="Routing was unavailable, so this is an estimate">Est.</em> }
+            </span>
+            <a [href]="directionsUrl(card)" target="_blank" rel="noopener" [attr.aria-label]="'Directions to ' + card.title" (click)="$event.stopPropagation()">
+              <span class="material-symbols-outlined">chevron_right</span>
+            </a>
+          </article>
+        }
+      </div>
+      @if (orderedCards().length > 4) {
+        <button type="button" class="nearby-gems-board__expand" (click)="expanded.set(!expanded())">
+          {{ expanded() ? 'Show fewer' : (orderedCards().length - 4) + ' more places' }}
+          <span class="material-symbols-outlined">{{ expanded() ? 'expand_less' : 'expand_more' }}</span>
+        </button>
+      }
+    </aside>
+
+    <section class="nearby-gems-board__map" aria-label="Nearby gems map">
+      <div #mapCanvas class="nearby-gems-board__map-canvas" role="application" [attr.aria-label]="title() + ' map with numbered places'"></div>
+      @if (mapLoading()) {
+        <div class="nearby-gems-board__map-state"><span class="material-symbols-outlined">progress_activity</span><span>Preparing map…</span></div>
+      } @else if (mapUnavailable()) {
+        <div class="nearby-gems-board__map-state nearby-gems-board__map-state--unavailable">
+          <span class="material-symbols-outlined">explore</span>
+          <span><strong>Map unavailable</strong><small>The ranked places and directions still work.</small></span>
+        </div>
+      }
+      <div class="nearby-gems-board__map-compass" aria-hidden="true"><b>N</b><span class="material-symbols-outlined">navigation</span><small>W&nbsp;&nbsp;&nbsp;&nbsp;E</small><b>S</b></div>
+      <div class="nearby-gems-board__area-cue"><span class="material-symbols-outlined">lock</span><span>Your area stays hidden</span></div>
+      @if (firstCard(); as first) {
+        <div class="nearby-gems-board__nav-tray">
+          <span class="nearby-gems-board__nav-icon material-symbols-outlined">near_me</span>
+          <span><strong>Navigation view</strong><small>{{ cards().length }} places · nearest first</small></span>
+          <a [href]="directionsUrl(first)" target="_blank" rel="noopener">
+            Start with #1
+            <span class="material-symbols-outlined">arrow_forward</span>
+          </a>
+        </div>
+      }
+    </section>
+  </div>
+</section>

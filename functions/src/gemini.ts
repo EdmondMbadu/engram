@@ -548,6 +548,12 @@ export type GeneratedBoardWizardCard = {
   imageSource?: 'source-page' | 'product-page' | 'search' | 'generated' | 'missing';
   extractionConfidence?: number;
   extractedAt?: string;
+  nearby?: {
+    durationSeconds: number;
+    distanceMeters: number;
+    measurement: 'route' | 'estimated';
+    category: string;
+  };
   tour?: GeneratedBoardCardTour | null;
 };
 export type GeneratedBoardWizardBatch = {
@@ -556,8 +562,17 @@ export type GeneratedBoardWizardBatch = {
     description: string;
     icon: string;
     tone: 'teal' | 'coral' | 'yellow' | 'green' | 'blue' | 'sky' | 'purple';
-    kind?: 'standard' | 'walking-tour' | 'driving-tour';
+    kind?: 'standard' | 'nearby-gems' | 'walking-tour' | 'driving-tour';
     tourMeta?: GeneratedBoardTourMeta | null;
+    nearbyGems?: {
+      locationLabel: string;
+      range: 'walk' | 'quick-drive' | 'adventure';
+      travelMode: 'walking' | 'driving';
+      defaultSort: 'travel-time' | 'distance';
+      generatedAt: string;
+      originStored: false;
+      generationGrantId: string;
+    };
   };
   cards: GeneratedBoardWizardCard[];
   sourceReport?: GeneratedBoardWizardSourceReport;
@@ -2210,8 +2225,13 @@ function boardWizardPersonRoleHint(text: string): string {
   return roles.find((role) => new RegExp(`\\b${role}\\b`, 'i').test(text)) ?? '';
 }
 
-function normalizeBoardWizardKind(value: unknown, fallback?: 'standard' | 'walking-tour' | 'driving-tour'): 'standard' | 'walking-tour' | 'driving-tour' {
-  return value === 'walking-tour' || value === 'driving-tour' || value === 'standard' ? value : fallback ?? 'standard';
+function normalizeBoardWizardKind(
+  value: unknown,
+  fallback?: 'standard' | 'nearby-gems' | 'walking-tour' | 'driving-tour',
+): 'standard' | 'nearby-gems' | 'walking-tour' | 'driving-tour' {
+  return value === 'nearby-gems' || value === 'walking-tour' || value === 'driving-tour' || value === 'standard'
+    ? value
+    : fallback ?? 'standard';
 }
 
 function normalizeBoardTourMeta(value: unknown, fallback?: GeneratedBoardTourMeta | null): GeneratedBoardTourMeta | null {

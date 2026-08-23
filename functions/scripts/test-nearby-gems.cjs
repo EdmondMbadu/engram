@@ -7,6 +7,7 @@ const {
   nearbyGemCategory,
   nearbyGemPreset,
   rankNearbyGemCandidates,
+  sortNearbyGemCandidates,
 } = require('../lib/nearby-gems.js');
 
 assert.equal(nearbyGemPreset('walk').maxDurationSeconds, 1800);
@@ -84,5 +85,15 @@ const preferenceRanked = rankNearbyGemCandidates([
   candidate('popular', 'cafe', 500, 4.8, 1000),
 ], NEARBY_GEM_PRESETS.walk, 'quiet history', 2);
 assert.equal(preferenceRanked[0].id, 'history');
+
+const routeOrdered = sortNearbyGemCandidates([
+  { ...candidate('quality-first', 'museum', 900), routeDistanceMeters: 500 },
+  { ...candidate('nearest', 'park', 240), routeDistanceMeters: 1400 },
+  { ...candidate('middle', 'cafe', 480), routeDistanceMeters: 700 },
+], 'travel-time');
+assert.deepEqual(routeOrdered.map((item) => item.id), ['nearest', 'middle', 'quality-first']);
+
+const distanceOrdered = sortNearbyGemCandidates(routeOrdered, 'distance');
+assert.deepEqual(distanceOrdered.map((item) => item.id), ['quality-first', 'middle', 'nearest']);
 
 console.log('Nearby gems helpers passed.');

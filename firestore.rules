@@ -178,6 +178,7 @@ service cloud.firestore {
         'stackNarratorVoiceId',
         'stickers',
         'tourMeta',
+        'nearbyGems',
         'learningQuiz',
         'parentBoardId',
         'parentCardId',
@@ -193,6 +194,50 @@ service cloud.firestore {
         'updated_at_iso',
         'server_updated_at'
       ];
+    }
+
+    function isValidNearbyGemsMetadata(data) {
+      return data.kind == 'nearby-gems'
+        && data.keys().hasAny(['nearbyGems'])
+        && data.nearbyGems is map
+        && data.nearbyGems.keys().hasOnly([
+          'locationLabel',
+          'range',
+          'travelMode',
+          'defaultSort',
+          'generatedAt',
+          'originStored',
+          'generationGrantId'
+        ])
+        && data.nearbyGems.keys().hasAll([
+          'locationLabel',
+          'range',
+          'travelMode',
+          'defaultSort',
+          'generatedAt',
+          'originStored',
+          'generationGrantId'
+        ])
+        && data.nearbyGems.locationLabel is string
+        && data.nearbyGems.locationLabel.size() >= 1
+        && data.nearbyGems.locationLabel.size() <= 120
+        && data.nearbyGems.range in ['walk', 'quick-drive', 'adventure']
+        && data.nearbyGems.travelMode in ['walking', 'driving']
+        && data.nearbyGems.defaultSort in ['travel-time', 'distance']
+        && data.nearbyGems.generatedAt is string
+        && data.nearbyGems.generatedAt.size() <= 80
+        && data.nearbyGems.originStored == false
+        && data.nearbyGems.generationGrantId is string
+        && data.nearbyGems.generationGrantId.size() >= 20
+        && data.nearbyGems.generationGrantId.size() <= 180;
+    }
+
+    function hasNearbyGemsGenerationGrant(data, boardId, requireFresh) {
+      let grant = get(/databases/$(database)/documents/nearby_gem_generation_grants/$(data.nearbyGems.generationGrantId));
+      return isValidNearbyGemsMetadata(data)
+        && grant.data.owner_user_id == request.auth.uid
+        && grant.data.board_id == boardId
+        && (!requireFresh || grant.data.expires_at > request.time);
     }
 
     function boardCollectionKeys() {
@@ -706,6 +751,10 @@ service cloud.firestore {
       allow create, update, delete: if false;
     }
 
+    match /nearby_gem_generation_grants/{grantId} {
+      allow read, write: if false;
+    }
+
     match /public_collection_routes/{slug} {
       allow get: if true;
       allow list, create, update, delete: if false;
@@ -734,6 +783,37 @@ service cloud.firestore {
       // Personal board saves use a compact validator so they remain below
       // Firestore's 1,000-expression evaluation limit. City publishing fields
       // are never accepted through this owner-controlled path.
+      allow create: if isSignedIn()
+        && request.resource.data.owner_user_id == request.auth.uid
+        && request.resource.data.id == boardId
+        && request.resource.data.visibility == 'private'
+        && hasNearbyGemsGenerationGrant(request.resource.data, boardId, true)
+        && request.resource.data.keys().hasOnly(personalBoardKeys())
+        && hasNoCityPublishingMetadata(request.resource.data)
+        && request.resource.data.title is string
+        && request.resource.data.title.size() >= 1
+        && request.resource.data.title.size() <= 90
+        && request.resource.data.cards is list
+        && request.resource.data.cards.size() <= 200
+        && request.resource.data.server_updated_at == request.time;
+
+      allow update: if isSignedIn()
+        && resource.data.owner_user_id == request.auth.uid
+        && request.resource.data.owner_user_id == resource.data.owner_user_id
+        && request.resource.data.id == boardId
+        && resource.data.kind == 'nearby-gems'
+        && request.resource.data.kind == 'nearby-gems'
+        && request.resource.data.visibility in ['public', 'private']
+        && hasNearbyGemsGenerationGrant(request.resource.data, boardId, false)
+        && request.resource.data.keys().hasOnly(personalBoardKeys())
+        && hasNoCityPublishingMetadata(request.resource.data)
+        && request.resource.data.title is string
+        && request.resource.data.title.size() >= 1
+        && request.resource.data.title.size() <= 90
+        && request.resource.data.cards is list
+        && request.resource.data.cards.size() <= 200
+        && request.resource.data.server_updated_at == request.time;
+
       allow create, update: if isSignedIn()
         && request.resource.data.owner_user_id == request.auth.uid
         && request.resource.data.id == boardId

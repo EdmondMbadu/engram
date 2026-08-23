@@ -1,0 +1,141 @@
+:host { display: block; min-width: 0; }
+
+.nearby-gems-board {
+  --gem-ink: #f8f4e8;
+  --gem-green: #073b31;
+  --gem-green-2: #0b5142;
+  --gem-gold: #d6ad52;
+  min-height: calc(100vh - 2rem);
+  overflow: hidden;
+  border: 1px solid rgba(12, 61, 50, .22);
+  border-radius: 2rem;
+  background: var(--gem-green);
+  box-shadow: 0 24px 70px rgba(7, 37, 31, .18);
+  color: var(--gem-ink);
+}
+
+.nearby-gems-board__header { position: relative; display: grid; grid-template-columns: auto auto minmax(0, 1fr) auto; gap: 1.2rem; align-items: start; padding: 2rem 2.2rem 1.4rem; background: radial-gradient(circle at 74% 0, rgba(64, 138, 108, .22), transparent 38%), linear-gradient(135deg, #073b31, #052e27); }
+.nearby-gems-board__back { display: grid; width: 2.7rem; height: 2.7rem; place-items: center; border: 1px solid rgba(255,255,255,.4); border-radius: 999px; background: rgba(255,255,255,.08); color: white; cursor: pointer; }
+.nearby-gems-board__compass { display: grid; width: 4.8rem; height: 4.8rem; place-items: center; border: 2px solid var(--gem-gold); border-radius: 999px; color: var(--gem-gold); box-shadow: inset 0 0 0 7px rgba(214,173,82,.08); }
+.nearby-gems-board__compass .material-symbols-outlined { font-size: 2.7rem; font-variation-settings: 'FILL' 1; transform: rotate(18deg); }
+.nearby-gems-board__intro { min-width: 0; }
+.nearby-gems-board__intro > p { margin: .25rem 0 .4rem; color: var(--gem-gold); font-size: .76rem; font-weight: 950; letter-spacing: .14em; text-transform: uppercase; }
+.nearby-gems-board__intro h1 { display: flex; align-items: center; flex-wrap: wrap; gap: .75rem; margin: 0; color: #fffdf6; font-family: Georgia, 'Times New Roman', serif; font-size: clamp(2.2rem, 4vw, 4.3rem); line-height: .95; letter-spacing: -.04em; }
+.nearby-gems-board__intro > span { display: block; max-width: 48rem; margin-top: .8rem; color: rgba(255,255,255,.78); font-size: 1rem; line-height: 1.5; }
+.nearby-gems-board__title-lock { display: inline-flex; align-items: center; gap: .32rem; border: 1px solid rgba(255,255,255,.32); border-radius: 999px; background: rgba(255,255,255,.09); color: #fff; font-family: ui-sans-serif, system-ui, sans-serif; font-size: .72rem; font-weight: 900; letter-spacing: .03em; padding: .48rem .68rem; }
+.nearby-gems-board__title-lock .material-symbols-outlined { font-size: 1rem; }
+.nearby-gems-board__privacy { display: inline-flex; align-items: center; gap: .55rem; margin-top: .8rem; border: 1px solid rgba(255,255,255,.25); border-radius: 999px; background: rgba(0,0,0,.12); padding: .5rem .8rem; }
+.nearby-gems-board__privacy > .material-symbols-outlined { color: #cdebd7; font-size: 1.05rem; }
+.nearby-gems-board__privacy > span:last-child { display: flex; align-items: baseline; gap: .4rem; }
+.nearby-gems-board__privacy strong { font-size: .78rem; }
+.nearby-gems-board__privacy small { color: rgba(255,255,255,.66); font-size: .72rem; }
+.nearby-gems-board__privacy--public > .material-symbols-outlined { color: var(--gem-gold); }
+.nearby-gems-board__owner-actions { display: flex; gap: .65rem; align-items: center; }
+.nearby-gems-board__edit, .nearby-gems-board__more summary { display: inline-flex; min-height: 3rem; align-items: center; justify-content: center; gap: .45rem; border: 1px solid rgba(255,255,255,.65); border-radius: .8rem; background: rgba(255,255,255,.06); color: white; font: inherit; font-weight: 850; padding: 0 .9rem; cursor: pointer; }
+.nearby-gems-board__more { position: relative; }
+.nearby-gems-board__more summary { list-style: none; }
+.nearby-gems-board__more summary::-webkit-details-marker { display: none; }
+.nearby-gems-board__more-menu { position: absolute; z-index: 30; top: calc(100% + .5rem); right: 0; display: grid; width: 13.5rem; overflow: hidden; border: 1px solid rgba(7,59,49,.2); border-radius: .9rem; background: #fffdf7; box-shadow: 0 18px 45px rgba(0,0,0,.25); padding: .35rem; }
+.nearby-gems-board__more-menu button { display: flex; align-items: center; gap: .6rem; border: 0; border-radius: .65rem; background: transparent; color: #073b31; font: inherit; font-size: .86rem; font-weight: 800; padding: .7rem; text-align: left; cursor: pointer; }
+.nearby-gems-board__more-menu button:hover { background: #e8f2ec; }
+.nearby-gems-board__more-menu button:disabled { opacity: .55; cursor: progress; }
+.nearby-gems-board__status { grid-column: 3 / -1; margin: 0; color: #d9eddf; font-size: .78rem; text-align: right; }
+
+.nearby-gems-board__workspace { display: grid; grid-template-columns: minmax(22rem, 41%) minmax(0, 59%); min-height: 42rem; border-top: 1px solid rgba(255,255,255,.16); }
+.nearby-gems-board__list { display: flex; min-width: 0; flex-direction: column; background: linear-gradient(180deg, #073b31, #052f28); padding: 1.25rem; }
+.nearby-gems-board__sort-head { display: flex; align-items: end; justify-content: space-between; gap: .8rem; margin-bottom: .9rem; }
+.nearby-gems-board__sort-head > span { display: grid; gap: .18rem; }
+.nearby-gems-board__sort-head > span strong { font-size: .73rem; letter-spacing: .08em; text-transform: uppercase; }
+.nearby-gems-board__sort-head > span small { color: rgba(255,255,255,.64); font-size: .72rem; }
+.nearby-gems-board__sort-head > div { display: grid; grid-template-columns: 1fr 1fr; min-width: 15rem; overflow: hidden; border: 1px solid rgba(255,255,255,.4); border-radius: 999px; }
+.nearby-gems-board__sort-head button { min-height: 2.45rem; border: 0; background: transparent; color: rgba(255,255,255,.82); font: inherit; font-size: .78rem; font-weight: 850; padding: 0 .8rem; cursor: pointer; }
+.nearby-gems-board__sort-head button.is-active { background: #2d735f; color: white; }
+.nearby-gems-board__places { display: grid; gap: .52rem; }
+.nearby-gems-place { display: grid; grid-template-columns: 3.4rem 5.2rem minmax(0,1fr) auto 2rem; gap: .8rem; align-items: center; min-height: 6.3rem; border: 1px solid rgba(255,255,255,.17); border-radius: .75rem; background: rgba(255,255,255,.055); color: white; padding: .5rem .65rem; outline: none; cursor: pointer; transition: transform .18s ease, border-color .18s ease, background .18s ease; }
+.nearby-gems-place:hover, .nearby-gems-place:focus-visible { transform: translateX(3px); border-color: rgba(214,173,82,.6); }
+.nearby-gems-place--active { border-color: var(--gem-gold); background: linear-gradient(90deg, #fff8e9, #f8f6ed); box-shadow: 0 0 0 2px rgba(214,173,82,.24); color: #073b31; }
+.nearby-gems-place__rank { color: var(--gem-gold); font-family: Georgia, serif; font-size: 1.8rem; font-weight: 500; }
+.nearby-gems-place img, .nearby-gems-place__fallback { width: 5.2rem; height: 4.5rem; border-radius: .5rem; object-fit: cover; }
+.nearby-gems-place__fallback { display: grid; place-items: center; background: #dce9df; color: #27604f; font-size: 1.8rem; }
+.nearby-gems-place__copy { display: grid; min-width: 0; gap: .3rem; }
+.nearby-gems-place__copy strong { overflow: hidden; font-size: .98rem; text-overflow: ellipsis; white-space: nowrap; }
+.nearby-gems-place__copy small { color: rgba(255,255,255,.64); font-size: .79rem; }
+.nearby-gems-place--active .nearby-gems-place__copy small { color: #527065; }
+.nearby-gems-place__metrics { display: grid; justify-items: end; gap: .15rem; white-space: nowrap; }
+.nearby-gems-place__metrics strong { font-size: 1rem; }
+.nearby-gems-place__metrics small { color: rgba(255,255,255,.68); font-size: .78rem; }
+.nearby-gems-place--active .nearby-gems-place__metrics small { color: #527065; }
+.nearby-gems-place__metrics em { color: var(--gem-gold); font-size: .62rem; font-style: normal; font-weight: 900; text-transform: uppercase; }
+.nearby-gems-place > a { display: grid; width: 2rem; height: 2rem; place-items: center; border-radius: 999px; color: inherit; text-decoration: none; }
+.nearby-gems-place > a:hover { background: rgba(45,115,95,.14); }
+.nearby-gems-board__expand { display: inline-flex; align-items: center; align-self: center; gap: .3rem; margin-top: .7rem; border: 0; background: transparent; color: rgba(255,255,255,.8); font: inherit; font-size: .8rem; font-weight: 800; cursor: pointer; }
+
+.nearby-gems-board__map { position: relative; min-width: 0; min-height: 42rem; overflow: hidden; background: radial-gradient(circle at 50% 50%, #dce9df, #c6dbd2); }
+.nearby-gems-board__map-canvas { width: 100%; height: 100%; min-height: 42rem; }
+.nearby-gems-board__map-state { position: absolute; z-index: 5; inset: 0; display: flex; align-items: center; justify-content: center; gap: .6rem; background: #dce9df; color: #073b31; font-weight: 850; }
+.nearby-gems-board__map-state > .material-symbols-outlined { animation: nearby-gems-spin 1s linear infinite; }
+.nearby-gems-board__map-state--unavailable { flex-direction: column; background: radial-gradient(circle, rgba(255,255,255,.7), transparent 60%), repeating-radial-gradient(circle, transparent 0 62px, rgba(7,59,49,.12) 63px 64px), #dce9df; text-align: center; }
+.nearby-gems-board__map-state--unavailable > .material-symbols-outlined { color: var(--gem-gold); font-size: 4rem; animation: none; }
+.nearby-gems-board__map-state--unavailable > span:last-child { display: grid; gap: .2rem; }
+.nearby-gems-board__map-state--unavailable small { font-weight: 500; }
+.nearby-gems-board__map-compass { position: absolute; z-index: 6; top: 1.1rem; right: 1.1rem; display: grid; width: 7rem; height: 7rem; place-items: center; border: 2px solid rgba(7,59,49,.19); border-radius: 999px; background: rgba(255,255,255,.75); box-shadow: 0 10px 35px rgba(7,59,49,.12); color: #517b6e; pointer-events: none; }
+.nearby-gems-board__map-compass .material-symbols-outlined { color: var(--gem-gold); font-size: 2.4rem; transform: rotate(0deg); }
+.nearby-gems-board__map-compass b:first-child { position: absolute; top: .45rem; }
+.nearby-gems-board__map-compass b:last-child { position: absolute; bottom: .45rem; }
+.nearby-gems-board__map-compass small { position: absolute; font-weight: 900; letter-spacing: 2.35rem; transform: translateX(1.15rem); }
+.nearby-gems-board__area-cue { position: absolute; z-index: 6; left: 1.1rem; top: 1.1rem; display: inline-flex; align-items: center; gap: .4rem; border-radius: 999px; background: rgba(7,59,49,.9); box-shadow: 0 8px 24px rgba(7,59,49,.2); color: white; font-size: .74rem; font-weight: 850; padding: .55rem .75rem; pointer-events: none; }
+.nearby-gems-board__area-cue .material-symbols-outlined { font-size: 1rem; }
+.nearby-gems-board__nav-tray { position: absolute; z-index: 6; right: 1rem; bottom: 1rem; left: 1rem; display: grid; grid-template-columns: auto minmax(0,1fr) auto; gap: .75rem; align-items: center; border: 1px solid rgba(7,59,49,.12); border-radius: .9rem; background: rgba(255,255,255,.94); box-shadow: 0 15px 40px rgba(7,59,49,.18); color: #073b31; padding: .75rem .9rem; backdrop-filter: blur(12px); }
+.nearby-gems-board__nav-icon { display: grid; width: 2.5rem; height: 2.5rem; place-items: center; border-radius: 999px; background: #073b31; color: white; }
+.nearby-gems-board__nav-tray > span:nth-child(2) { display: grid; gap: .13rem; }
+.nearby-gems-board__nav-tray small { color: #61746d; font-size: .73rem; }
+.nearby-gems-board__nav-tray a { display: inline-flex; min-height: 2.9rem; align-items: center; gap: .5rem; border-radius: .7rem; background: #073b31; color: white; font-size: .84rem; font-weight: 900; padding: 0 1rem; text-decoration: none; }
+
+:host ::ng-deep .nearby-gems-map-marker { position: relative; display: grid; width: 2.45rem; height: 2.45rem; place-items: center; border: 3px solid white; border-radius: 999px; background: #073b31; box-shadow: 0 5px 12px rgba(7,59,49,.32); color: white; font: 900 .9rem/1 ui-sans-serif, system-ui, sans-serif; cursor: pointer; }
+:host ::ng-deep .nearby-gems-map-marker::after { position: absolute; right: .17rem; bottom: -.28rem; width: .65rem; height: .65rem; border-right: 3px solid white; border-bottom: 3px solid white; background: #073b31; content: ''; transform: rotate(45deg); z-index: -1; }
+
+@keyframes nearby-gems-spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 1050px) {
+  .nearby-gems-board__header { grid-template-columns: auto auto minmax(0,1fr); }
+  .nearby-gems-board__owner-actions { grid-column: 3; justify-self: start; }
+  .nearby-gems-board__status { grid-column: 3; text-align: left; }
+  .nearby-gems-board__workspace { grid-template-columns: minmax(20rem, 46%) minmax(0,54%); }
+  .nearby-gems-place { grid-template-columns: 2.5rem 4rem minmax(0,1fr) auto 1.5rem; gap: .55rem; }
+  .nearby-gems-place img, .nearby-gems-place__fallback { width: 4rem; height: 3.8rem; }
+}
+
+@media (max-width: 760px) {
+  .nearby-gems-board { min-height: 0; border-radius: 1.25rem; }
+  .nearby-gems-board__header { grid-template-columns: auto minmax(0,1fr); gap: .8rem; padding: 1rem; }
+  .nearby-gems-board__compass { display: none; }
+  .nearby-gems-board__intro h1 { font-size: clamp(2rem, 10vw, 3rem); }
+  .nearby-gems-board__intro > span { font-size: .88rem; }
+  .nearby-gems-board__privacy { border-radius: .75rem; }
+  .nearby-gems-board__privacy > span:last-child { display: grid; }
+  .nearby-gems-board__owner-actions, .nearby-gems-board__status { grid-column: 2; }
+  .nearby-gems-board__workspace { display: flex; flex-direction: column; }
+  .nearby-gems-board__map { order: 1; min-height: 24rem; }
+  .nearby-gems-board__map-canvas { min-height: 24rem; }
+  .nearby-gems-board__list { order: 2; }
+  .nearby-gems-board__map-compass { width: 5.2rem; height: 5.2rem; }
+  .nearby-gems-board__map-compass small { display: none; }
+  .nearby-gems-board__nav-tray { grid-template-columns: auto minmax(0,1fr); }
+  .nearby-gems-board__nav-tray a { grid-column: 1 / -1; justify-content: center; }
+}
+
+@media (max-width: 520px) {
+  .nearby-gems-board__sort-head { align-items: stretch; flex-direction: column; }
+  .nearby-gems-board__sort-head > div { width: 100%; min-width: 0; }
+  .nearby-gems-place { grid-template-columns: 2.35rem 3.7rem minmax(0,1fr) auto; min-height: 5.2rem; }
+  .nearby-gems-place img, .nearby-gems-place__fallback { width: 3.7rem; height: 3.5rem; }
+  .nearby-gems-place__rank { font-size: 1.4rem; }
+  .nearby-gems-place__metrics { grid-column: 3; grid-row: 2; display: flex; gap: .4rem; justify-self: start; }
+  .nearby-gems-place > a { grid-column: 4; grid-row: 1 / 3; }
+  .nearby-gems-board__edit { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nearby-gems-place { transition: none; }
+  .nearby-gems-board__map-state > .material-symbols-outlined { animation: none; }
+}

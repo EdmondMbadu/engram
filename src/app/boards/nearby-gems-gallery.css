@@ -1,0 +1,16 @@
+.board-square__privacy-lock {
+  display: inline-grid;
+  flex: 0 0 auto;
+  width: 1.65rem;
+  height: 1.65rem;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--ink) 28%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  color: var(--ink);
+}
+
+.board-square__privacy-lock .material-symbols-outlined {
+  font-size: .92rem;
+  font-variation-settings: 'FILL' 1;
+}

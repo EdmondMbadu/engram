@@ -974,6 +974,11 @@
                     <span class="board-square__content">
                       <span class="board-square__title-row">
                         <strong>{{ board.title }}</strong>
+                        @if (board.visibility === 'private') {
+                          <span class="board-square__privacy-lock" title="Private · Only you can see this board" aria-label="Private board">
+                            <span class="material-symbols-outlined" aria-hidden="true">lock</span>
+                          </span>
+                        }
                       </span>
                       <span class="board-square__description">
                         {{ board.description || board.backNote || 'A LivingWiki collection.' }}
@@ -1255,6 +1260,26 @@
       }
     } @else {
       @if (selectedBoard(); as board) {
+        @if (isNearbyGemsBoard(board)) {
+          <app-nearby-gems-board
+            [title]="board.title"
+            [description]="board.description"
+            [locationLabel]="nearbyGemsLocationLabel(board)"
+            [visibility]="board.visibility"
+            [canEdit]="canEditBoard(board)"
+            [cards]="selectedNearbyGemsCardViews()"
+            [travelMode]="board.nearbyGems?.travelMode || 'driving'"
+            [defaultSort]="board.nearbyGems?.defaultSort || 'travel-time'"
+            [visibilitySaving]="nearbyGemsVisibilitySavingId() === board.id"
+            [statusMessage]="nearbyGemsVisibilityMessage()"
+            (backRequested)="closeBoardDetail()"
+            (settingsRequested)="openEditBoard(board)"
+            (addRequested)="openCreateCard(board.id)"
+            (visibilityRequested)="toggleNearbyGemsVisibility(board)"
+            (shareRequested)="copyBoardUrl(board)"
+            (customUrlRequested)="openCustomUrlDialog(board)"
+          />
+        } @else {
         <section
           class="board-detail"
           [class.board-detail--song]="isSongBoard(board)"
@@ -3546,6 +3571,7 @@
             }
           }
         </section>
+        }
       }
     }
       </main>
@@ -6329,7 +6355,7 @@
                   @if (wizardLockedTargetBoard() || wizardContributionBoard()) {
                     <span>Closing keeps this draft. Saving adds the selected cards to the existing board.</span>
                   } @else if (wizardMode() === 'nearby-gems') {
-                    <span>Your starting location is not stored. Publishing saves only the selected public places.</span>
+                    <span>Your starting location is not stored. Saving creates a private board that only you can open.</span>
                   } @else {
                     <span>Closing keeps this draft. Publishing creates the board and notifies your friends.</span>
                   }
@@ -6350,7 +6376,7 @@
                   } @else if (wizardLockedTargetBoard()) {
                     <span>Add {{ wizardSelectedCount() }} {{ wizardSelectedCount() === 1 ? 'card' : 'cards' }}</span>
                   } @else if (wizardMode() === 'nearby-gems') {
-                    <span>Save and publish</span>
+                    <span>Save private board</span>
                   } @else {
                     <span>Save and publish</span>
                   }
@@ -6371,8 +6397,8 @@
               <p>Your selected cards were added without replacing the cards already there.</p>
               <button type="button" class="boards-primary-action" (click)="closeBoardWizard()">See them on the board</button>
             } @else if (wizardMode() === 'nearby-gems') {
-              <h4>Nearby gems board published</h4>
-              <p>It is visible on My Boards and ready for you to edit or share. Your starting location was not saved.</p>
+              <h4>Your private Gems board is ready</h4>
+              <p>Only you can open it until you choose Make public in More or Board settings. Your starting location was not saved.</p>
               <button type="button" class="boards-primary-action" (click)="closeBoardWizard()">Open my board</button>
             } @else {
               <h4>Board published</h4>

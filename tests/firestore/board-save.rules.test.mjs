@@ -203,6 +203,14 @@ test('owner can save each media preference without adding a top-level draft fiel
 });
 
 test('nearby gems drafts and boards save without persisting an origin', async () => {
+  const generationGrantId = 'nearby-generation-grant-123456';
+  await testEnvironment.withSecurityRulesDisabled(async (context) => {
+    await setDoc(doc(context.firestore(), 'nearby_gem_generation_grants', generationGrantId), {
+      owner_user_id: ownerUid,
+      board_id: 'nearby-gems-draft',
+      expires_at: new Date('2099-01-01T00:00:00.000Z'),
+    });
+  });
   const database = testEnvironment.authenticatedContext(ownerUid).firestore();
   const draftId = 'nearby-gems-draft';
   const draft = personalWizardDraft({
@@ -222,13 +230,72 @@ test('nearby gems drafts and boards save without persisting an origin', async ()
 
   const board = personalWizardBoard({
     id: draftId,
-    visibility: 'public',
+    visibility: 'private',
+    kind: 'nearby-gems',
     title: 'Gems near Cape May, New Jersey',
+    nearbyGems: {
+      locationLabel: 'Cape May, New Jersey',
+      range: 'quick-drive',
+      travelMode: 'driving',
+      defaultSort: 'travel-time',
+      generatedAt: '2026-08-22T00:00:00.000Z',
+      originStored: false,
+      generationGrantId,
+    },
   });
   const batch = writeBatch(database);
   batch.set(doc(database, 'boards', draftId), board);
   batch.delete(doc(database, 'users', ownerUid, 'board_wizard_drafts', draftId));
   await assertSucceeds(batch.commit());
+
+  await assertSucceeds(getDoc(doc(database, 'boards', draftId)));
+  await assertFails(getDoc(doc(
+    testEnvironment.authenticatedContext('different-user').firestore(),
+    'boards',
+    draftId,
+  )));
+  await assertFails(getDoc(doc(testEnvironment.unauthenticatedContext().firestore(), 'boards', draftId)));
+
+  await assertSucceeds(setDoc(doc(database, 'boards', draftId), {
+    ...board,
+    visibility: 'public',
+    updated_at_iso: '2026-08-22T01:00:00.000Z',
+    server_updated_at: serverTimestamp(),
+  }));
+  await assertSucceeds(getDoc(doc(testEnvironment.unauthenticatedContext().firestore(), 'boards', draftId)));
+
+  await assertSucceeds(setDoc(doc(database, 'boards', draftId), {
+    ...board,
+    visibility: 'private',
+    updated_at_iso: '2026-08-22T02:00:00.000Z',
+    server_updated_at: serverTimestamp(),
+  }));
+});
+
+test('nearby privacy exception rejects missing or mismatched server grants', async () => {
+  const database = testEnvironment.authenticatedContext(ownerUid).firestore();
+  const metadata = {
+    locationLabel: 'Cape May, New Jersey',
+    range: 'walk',
+    travelMode: 'walking',
+    defaultSort: 'travel-time',
+    generatedAt: '2026-08-22T00:00:00.000Z',
+    originStored: false,
+    generationGrantId: 'missing-generation-grant-123456',
+  };
+  await assertFails(setDoc(
+    doc(database, 'boards', 'fake-nearby-board'),
+    personalWizardBoard({
+      id: 'fake-nearby-board',
+      kind: 'nearby-gems',
+      visibility: 'private',
+      nearbyGems: metadata,
+    }),
+  ));
+  await assertFails(setDoc(
+    doc(database, 'boards', 'ordinary-private-board'),
+    personalWizardBoard({ id: 'ordinary-private-board', visibility: 'private' }),
+  ));
 });
 
 test('wizard draft media mode cannot bypass its allowlist or ownership', async () => {

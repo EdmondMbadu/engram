@@ -59,6 +59,7 @@ import {
   nearbyGemCategory,
   nearbyGemPreset,
   rankNearbyGemCandidates,
+  sortNearbyGemCandidates,
   type NearbyGemCandidate,
   type NearbyGemPreset,
 } from './nearby-gems';
@@ -6638,12 +6639,13 @@ async function attachNearbyGemRoutes(
     const metersPerSecond = preset.travelMode === 'WALK' ? 1.35 : 10;
     return candidates.map((candidate, index) => {
       const route = routes.get(index);
-      if (route) return { ...candidate, routeDurationSeconds: route.duration, routeDistanceMeters: route.distance };
+      if (route) return { ...candidate, routeDurationSeconds: route.duration, routeDistanceMeters: route.distance, routeMeasurement: 'route' as const };
       const estimatedDistance = Math.round((candidate.straightLineMeters ?? 0) * 1.25);
       return {
         ...candidate,
         routeDistanceMeters: estimatedDistance,
         routeDurationSeconds: Math.round(estimatedDistance / metersPerSecond) + (preset.travelMode === 'DRIVE' ? 120 : 0),
+        routeMeasurement: 'estimated' as const,
       };
     });
   } catch (error) {
@@ -6658,6 +6660,7 @@ async function attachNearbyGemRoutes(
       routeDistanceMeters: Math.round((candidate.straightLineMeters ?? 0) * 1.25),
       routeDurationSeconds: Math.round((candidate.straightLineMeters ?? 0) * 1.25 / metersPerSecond)
         + (preset.travelMode === 'DRIVE' ? 120 : 0),
+      routeMeasurement: 'estimated' as const,
     }));
   }
 }
@@ -6702,6 +6705,12 @@ function nearbyGemCard(candidate: NearbyGemCandidate, index: number): GeneratedB
     locationLat: candidate.lat,
     locationLng: candidate.lng,
     sourceUrl: candidate.googleMapsUrl,
+    nearby: {
+      durationSeconds: Math.max(0, Math.round(candidate.routeDurationSeconds ?? 0)),
+      distanceMeters: Math.max(0, Math.round(candidate.routeDistanceMeters ?? candidate.straightLineMeters ?? 0)),
+      measurement: candidate.routeMeasurement === 'route' ? 'route' : 'estimated',
+      category,
+    },
     imageSource: candidate.photoName || candidate.photoReference ? 'search' : 'missing',
     extractionConfidence: 1,
     extractedAt: new Date().toISOString(),
@@ -6737,6 +6746,10 @@ export const discoverNearbyGems = onCall(
     const manualLocation = stringOrEmpty(data['manualLocation']).trim().slice(0, 240);
     const latitude = finiteNearbyCoordinate(data['latitude'], -90, 90);
     const longitude = finiteNearbyCoordinate(data['longitude'], -180, 180);
+    const boardId = stringOrEmpty(data['boardId']).trim().slice(0, 180);
+    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(boardId)) {
+      throw new HttpsError('invalid-argument', 'A valid Nearby Gems draft is required. Close and reopen the finder.');
+    }
     const origin = manualLocation
       ? await geocodeNearbyGemOrigin(manualLocation, apiKey)
       : latitude != null && longitude != null
@@ -6752,7 +6765,8 @@ export const discoverNearbyGems = onCall(
     const routedCandidates = await attachNearbyGemRoutes(rawCandidates, origin, preset, apiKey);
     const details = stringOrEmpty(data['details']).trim().slice(0, 500);
     const requestedCount = Math.max(6, Math.min(10, Math.trunc(Number(data['count']) || 8)));
-    const candidates = rankNearbyGemCandidates(routedCandidates, preset, details, requestedCount);
+    const selectedCandidates = rankNearbyGemCandidates(routedCandidates, preset, details, requestedCount);
+    const candidates = sortNearbyGemCandidates(selectedCandidates, 'travel-time');
     if (!candidates.length) {
       throw new HttpsError('not-found', `No strong matches were found within ${preset.description.toLocaleLowerCase()}. Try another range or starting place.`);
     }
@@ -6765,14 +6779,30 @@ export const discoverNearbyGems = onCall(
       usedManualLocation: !!manualLocation,
       durationMs: Date.now() - startedAt,
     });
+    const generationGrantId = boardId;
+    await db.collection('nearby_gem_generation_grants').doc(generationGrantId).set({
+      owner_user_id: userId,
+      board_id: boardId,
+      created_at: FieldValue.serverTimestamp(),
+      expires_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+    });
     return {
       board: {
         title: `Gems near ${locationLabel}`.slice(0, 90),
         description: `${candidates.length} interesting places around ${locationLabel}, prioritized for ${preset.description.toLocaleLowerCase()}. Review, edit, and keep only the gems that fit you.`.slice(0, 500),
         icon: 'explore_nearby',
         tone: 'green',
-        kind: 'standard',
+        kind: 'nearby-gems',
         tourMeta: null,
+        nearbyGems: {
+          locationLabel,
+          range: preset.id,
+          travelMode: preset.travelMode === 'WALK' ? 'walking' : 'driving',
+          defaultSort: 'travel-time',
+          generatedAt: new Date().toISOString(),
+          originStored: false,
+          generationGrantId,
+        },
       },
       cards: candidates.map(nearbyGemCard),
       locationLabel,

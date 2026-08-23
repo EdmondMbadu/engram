@@ -26,6 +26,7 @@ export type NearbyGemCandidate = {
   straightLineMeters?: number;
   routeDistanceMeters?: number;
   routeDurationSeconds?: number;
+  routeMeasurement?: 'route' | 'estimated';
 };
 
 export const NEARBY_GEM_PRESETS: Record<NearbyGemRange, NearbyGemPreset> = {
@@ -165,6 +166,34 @@ export function rankNearbyGemCandidates(
     }
   }
   return selected;
+}
+
+export function sortNearbyGemCandidates(
+  candidates: NearbyGemCandidate[],
+  mode: 'travel-time' | 'distance' = 'travel-time',
+): NearbyGemCandidate[] {
+  const numberOrLast = (value: number | undefined): number =>
+    Number.isFinite(value) ? value as number : Number.MAX_SAFE_INTEGER;
+  return candidates.map((candidate, originalIndex) => ({ candidate, originalIndex })).sort((left, right) => {
+    const primaryLeft = mode === 'travel-time'
+      ? numberOrLast(left.candidate.routeDurationSeconds)
+      : numberOrLast(left.candidate.routeDistanceMeters);
+    const primaryRight = mode === 'travel-time'
+      ? numberOrLast(right.candidate.routeDurationSeconds)
+      : numberOrLast(right.candidate.routeDistanceMeters);
+    if (primaryLeft !== primaryRight) return primaryLeft - primaryRight;
+    const secondaryLeft = mode === 'travel-time'
+      ? numberOrLast(left.candidate.routeDistanceMeters)
+      : numberOrLast(left.candidate.routeDurationSeconds);
+    const secondaryRight = mode === 'travel-time'
+      ? numberOrLast(right.candidate.routeDistanceMeters)
+      : numberOrLast(right.candidate.routeDurationSeconds);
+    if (secondaryLeft !== secondaryRight) return secondaryLeft - secondaryRight;
+    if (left.candidate.routeMeasurement !== right.candidate.routeMeasurement) {
+      return left.candidate.routeMeasurement === 'route' ? -1 : 1;
+    }
+    return left.originalIndex - right.originalIndex || left.candidate.name.localeCompare(right.candidate.name);
+  }).map(({ candidate }) => candidate);
 }
 
 export function formatNearbyGemDuration(seconds: number | undefined): string {
