@@ -32,11 +32,13 @@ export const serverRoutes: ServerRoute[] = [
   { path: 'songs', renderMode: RenderMode.Client },
   { path: 'trips', renderMode: RenderMode.Client },
   { path: 'friends', renderMode: RenderMode.Client },
-  { path: 'boards/u/:ownerKey', renderMode: RenderMode.Server },
+  // Board data is Firestore-backed and cannot be resolved during SSR. Keep
+  // development behavior aligned with Firebase Hosting's CSR deep-link shell.
+  { path: 'boards/u/:ownerKey', renderMode: RenderMode.Client },
   { path: 'boards/u/:ownerKey/collections/:slug', renderMode: RenderMode.Client },
   { path: 'collections/:slug', renderMode: RenderMode.Client },
   { path: 'manage/boards/:boardId/insights', renderMode: RenderMode.Client },
-  { path: 'boards/:boardId', renderMode: RenderMode.Server },
+  { path: 'boards/:boardId', renderMode: RenderMode.Client },
   { path: 'songs/:boardId', renderMode: RenderMode.Client },
   { path: 'trips/:boardId', renderMode: RenderMode.Client },
   { path: 'upload/:slug', renderMode: RenderMode.Client },

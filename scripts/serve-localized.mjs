@@ -32,9 +32,16 @@ const contentTypes = {
 };
 
 function localeFallback(pathname) {
-  if (pathname === '/fr' || pathname.startsWith('/fr/')) return 'fr/index.html';
-  if (pathname === '/ja' || pathname.startsWith('/ja/')) return 'ja/index.html';
-  return 'index.html';
+  // Match Firebase Hosting: locale landing pages use their prerendered HTML,
+  // while application deep links start from the neutral CSR shell. Serving the
+  // prerendered English homepage for a board URL makes Angular remove that page
+  // before rendering the requested route, which produces a visible flash.
+  if (pathname === '/fr' || pathname === '/fr/') return 'fr/index.html';
+  if (pathname.startsWith('/fr/')) return 'fr/index.csr.html';
+  if (pathname === '/ja' || pathname === '/ja/') return 'ja/index.html';
+  if (pathname.startsWith('/ja/')) return 'ja/index.csr.html';
+  if (pathname === '/') return 'index.html';
+  return 'index.csr.html';
 }
 
 async function resolvedFile(pathname, acceptsHtml) {
