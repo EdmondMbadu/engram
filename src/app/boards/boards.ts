@@ -299,6 +299,7 @@ type StackRatio = 'vertical' | 'square' | 'landscape';
 type StackExportTarget = 'whatsapp' | 'facebook' | 'instagram' | 'tiktok' | 'x' | 'download';
 type VisitPlanContext = 'board' | 'stack';
 type StackShareMode = 'trailer' | 'video' | 'live';
+type StackDeliveryRatio = 'vertical' | 'landscape';
 type StackSoundTab = 'script' | 'voice' | 'music';
 
 type StackScriptCardDraft = {
@@ -306,6 +307,15 @@ type StackScriptCardDraft = {
   narration: string;
 };
 type StackLinkShareTarget = Extract<ShareTarget, 'x' | 'facebook' | 'linkedin' | 'reddit' | 'whatsapp'> | 'more';
+type StackVideoPair = Record<StackDeliveryRatio, StackVideoResult>;
+type PublishedStackVideoVariant = {
+  url: string;
+  mimeType: string;
+  updatedAt: string;
+  renderVersion: string;
+  durationSeconds: number;
+  ratio: StackDeliveryRatio;
+};
 type BoardLearnView = 'menu' | 'study' | 'quiz-edit' | 'quiz-welcome' | 'quiz-play' | 'quiz-result';
 type BoardQuizShareMode = 'invite' | 'score';
 type BoardQuizShareTarget = Extract<ShareTarget, 'whatsapp' | 'facebook' | 'x'>;
@@ -465,6 +475,11 @@ type Board = {
   socialVideoAudioTrackId: string;
   socialVideoAudioVolume: number;
   socialVideoNarrationEnabled?: boolean;
+  socialLandscapeVideoUrl: string;
+  socialLandscapeVideoMimeType: string;
+  socialLandscapeVideoUpdatedAt: string;
+  socialLandscapeVideoRenderVersion?: string;
+  socialLandscapeVideoDurationSeconds: number;
   socialVideoClosingHeadline: string;
   socialVideoClosingMessage: string;
   socialVideoClosingShowQrCode: boolean;
@@ -483,6 +498,11 @@ type Board = {
   trailerVideoSourceFingerprint: string;
   trailerVideoCardIds: string[];
   trailerVideoDurationSeconds: number;
+  trailerLandscapeVideoUrl: string;
+  trailerLandscapeVideoMimeType: string;
+  trailerLandscapeVideoUpdatedAt: string;
+  trailerLandscapeVideoRenderVersion?: string;
+  trailerLandscapeVideoDurationSeconds: number;
   narrationStyle: BoardNarrationStyleId;
   narrationSecondsPerCard?: number;
   stackNarratorVoiceId: string;
@@ -1971,6 +1991,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly stackShareMessage = signal<string | null>(null);
   readonly stackVideoExporting = signal(false);
   readonly stackVideoProgress = signal(0);
+  readonly stackVideoVerticalProgress = signal(0);
+  readonly stackVideoLandscapeProgress = signal(0);
+  readonly stackVideoRenderingRatio = signal<StackDeliveryRatio | null>(null);
+  readonly stackSharePreviewRatio = signal<StackDeliveryRatio>('vertical');
   readonly stackPublishedVideoLoading = signal(false);
   readonly stackPublishedVideoReady = signal(false);
   readonly stackPublishedTrailerLoading = signal(false);
@@ -5481,6 +5505,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
           socialVideoAudioTrackId: DEFAULT_STACK_AUDIO_TRACK_ID,
           socialVideoAudioVolume: DEFAULT_STACK_AUDIO_VOLUME,
           socialVideoNarrationEnabled: true,
+          socialLandscapeVideoUrl: '',
+          socialLandscapeVideoMimeType: '',
+          socialLandscapeVideoUpdatedAt: '',
+          socialLandscapeVideoRenderVersion: '',
+          socialLandscapeVideoDurationSeconds: 0,
           socialVideoClosingHeadline: 'Keep exploring',
           socialVideoClosingMessage: '',
           socialVideoClosingShowQrCode: true,
@@ -5498,6 +5527,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
           trailerVideoSourceFingerprint: '',
           trailerVideoCardIds: [],
           trailerVideoDurationSeconds: 0,
+          trailerLandscapeVideoUrl: '',
+          trailerLandscapeVideoMimeType: '',
+          trailerLandscapeVideoUpdatedAt: '',
+          trailerLandscapeVideoRenderVersion: '',
+          trailerLandscapeVideoDurationSeconds: 0,
           narrationStyle: this.wizardNarrationStyle(),
           narrationSecondsPerCard: this.wizardNarrationSecondsPerCard(),
           stackNarratorVoiceId: defaultNarratorVoiceIdForStyle(this.wizardNarrationStyle()),
@@ -5704,6 +5738,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         socialVideoAudioTrackId: DEFAULT_STACK_AUDIO_TRACK_ID,
         socialVideoAudioVolume: DEFAULT_STACK_AUDIO_VOLUME,
         socialVideoNarrationEnabled: true,
+        socialLandscapeVideoUrl: '',
+        socialLandscapeVideoMimeType: '',
+        socialLandscapeVideoUpdatedAt: '',
+        socialLandscapeVideoRenderVersion: '',
+        socialLandscapeVideoDurationSeconds: 0,
         socialVideoClosingHeadline: 'Keep exploring',
         socialVideoClosingMessage: '',
         socialVideoClosingShowQrCode: true,
@@ -5721,6 +5760,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         trailerVideoSourceFingerprint: '',
         trailerVideoCardIds: [],
         trailerVideoDurationSeconds: 0,
+        trailerLandscapeVideoUrl: '',
+        trailerLandscapeVideoMimeType: '',
+        trailerLandscapeVideoUpdatedAt: '',
+        trailerLandscapeVideoRenderVersion: '',
+        trailerLandscapeVideoDurationSeconds: 0,
         narrationStyle: DEFAULT_BOARD_NARRATION_STYLE_ID,
         stackNarratorVoiceId: DEFAULT_STACK_NARRATOR_VOICE_ID,
         forkedFromBoardId: '',
@@ -5939,7 +5983,8 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       updatedAt: new Date().toISOString(),
     };
     this.boards.update((boards) => boards.map((candidate) => candidate.id === nextBoard.id ? nextBoard : candidate));
-    this.publishedStackVideoFiles.delete(board.id);
+    this.publishedStackVideoFiles.delete(this.stackPublishedFileKey(board.id, 'vertical'));
+    this.publishedStackVideoFiles.delete(this.stackPublishedFileKey(board.id, 'landscape'));
     this.stackPublishedVideoReady.set(false);
     this.boardCardNumbersSavingId.set(board.id);
     try {
@@ -12088,6 +12133,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       socialVideoAudioTrackId: DEFAULT_STACK_AUDIO_TRACK_ID,
       socialVideoAudioVolume: DEFAULT_STACK_AUDIO_VOLUME,
       socialVideoNarrationEnabled: true,
+      socialLandscapeVideoUrl: '',
+      socialLandscapeVideoMimeType: '',
+      socialLandscapeVideoUpdatedAt: '',
+      socialLandscapeVideoRenderVersion: '',
+      socialLandscapeVideoDurationSeconds: 0,
       socialVideoClosingHeadline: 'Keep exploring',
       socialVideoClosingMessage: '',
       socialVideoClosingShowQrCode: true,
@@ -12105,6 +12155,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       trailerVideoSourceFingerprint: '',
       trailerVideoCardIds: [],
       trailerVideoDurationSeconds: 0,
+      trailerLandscapeVideoUrl: '',
+      trailerLandscapeVideoMimeType: '',
+      trailerLandscapeVideoUpdatedAt: '',
+      trailerLandscapeVideoRenderVersion: '',
+      trailerLandscapeVideoDurationSeconds: 0,
       stackNarratorVoiceId: DEFAULT_STACK_NARRATOR_VOICE_ID,
       parentBoardId: '',
       parentCardId: '',
@@ -12901,13 +12956,15 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       this.prepareStackForBoard(board);
     }
     this.stackShareMode.set('trailer');
+    this.stackSharePreviewRatio.set('vertical');
     this.stackShareDialogOpen.set(true);
-    this.stackPublishedVideoReady.set(this.publishedStackVideoFiles.has(board.id));
-    this.stackPublishedTrailerReady.set(this.publishedStackTrailerFiles.has(board.id));
-    if (board.socialVideoUrl && !this.publishedStackVideoFiles.has(board.id)) {
+    const verticalKey = this.stackPublishedFileKey(board.id, 'vertical');
+    this.stackPublishedVideoReady.set(this.publishedStackVideoFiles.has(verticalKey));
+    this.stackPublishedTrailerReady.set(this.publishedStackTrailerFiles.has(verticalKey));
+    if (board.socialVideoUrl && !this.publishedStackVideoFiles.has(verticalKey)) {
       void this.preloadPublishedStackVideo(board);
     }
-    if (board.trailerVideoUrl && !this.publishedStackTrailerFiles.has(board.id)) {
+    if (board.trailerVideoUrl && !this.publishedStackTrailerFiles.has(verticalKey)) {
       void this.preloadPublishedStackTrailer(board);
     }
     void this.preloadStackAudioUrls();
@@ -14379,16 +14436,21 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.setStackShareMessage(null);
     this.stackVideoExporting.set(true);
     this.stackVideoProgress.set(0);
-    this.setStackShareMessage('Preparing your social video…', false);
+    this.setStackShareMessage('Preparing phone and landscape videos…', false);
 
     try {
-      const result = await this.createStackVideo(board);
-      const file = this.stackVideoFile(board, result);
-      const librarySave = await this.saveStackVideoToLibrary(board, result);
+      const { vertical, landscape } = await this.createStackVideoPair(board);
+      const preferredRatio: StackDeliveryRatio = this.stackRatio() === 'landscape' ? 'landscape' : 'vertical';
+      const result = preferredRatio === 'landscape' ? landscape : vertical;
+      const file = this.stackVideoFile(board, result, preferredRatio);
+      const librarySave = await this.saveStackVideoToLibrary(board, vertical, null, 'full', {
+        result: landscape,
+        publicStoragePath: '',
+      });
       const libraryMessage = librarySave === true
-        ? ' Saved to My Videos.'
+        ? ' Both formats were saved to My Videos.'
         : librarySave === false
-          ? ' The video was created, but could not be saved to My Videos.'
+          ? ' The videos were created, but could not be saved to My Videos.'
           : '';
 
       if (target !== 'download' && this.canNativeShareFile(file)) {
@@ -14398,7 +14460,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
             text,
             files: [file],
           });
-          this.setStackShareMessage(`Video shared as native media for inline playback.${libraryMessage}`);
+          this.setStackShareMessage(`${preferredRatio === 'landscape' ? 'Landscape' : 'Phone'} video shared as native media.${libraryMessage}`);
           return;
         } catch (error) {
           if (error instanceof DOMException && error.name === 'AbortError') {
@@ -14409,11 +14471,16 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       }
 
       this.downloadStackVideo(file);
+      if (target === 'download') {
+        this.downloadStackVideo(this.stackVideoFile(
+          board,
+          preferredRatio === 'landscape' ? vertical : landscape,
+          preferredRatio === 'landscape' ? 'vertical' : 'landscape',
+        ));
+      }
       await this.copyTextToClipboard(text);
       if (target === 'download') {
-        this.setStackShareMessage(result.xCompatible
-          ? `MP4 downloaded. It is ready to upload as native social video; the caption is copied.${libraryMessage}`
-          : `Video downloaded as WebM. The caption is copied; convert to MP4 before posting to X for guaranteed compatibility.${libraryMessage}`, false);
+        this.setStackShareMessage(`Phone and landscape videos downloaded; the caption is copied.${libraryMessage}`, false);
       } else {
         this.setStackShareMessage(result.xCompatible
           ? `Video downloaded. Attach it to ${this.stackTargetLabel(target)} for inline playback; the caption is copied.${libraryMessage}`
@@ -14425,6 +14492,9 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     } finally {
       this.stackVideoExporting.set(false);
       this.stackVideoProgress.set(0);
+      this.stackVideoVerticalProgress.set(0);
+      this.stackVideoLandscapeProgress.set(0);
+      this.stackVideoRenderingRatio.set(null);
     }
   }
 
@@ -14537,26 +14607,88 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   }
 
   socialVideoIsCurrent(board: Board): boolean {
-    if (!board.socialVideoUrl || !board.socialVideoUpdatedAt) return false;
+    if (!board.socialVideoUrl || !board.socialVideoUpdatedAt
+      || !board.socialLandscapeVideoUrl || !board.socialLandscapeVideoUpdatedAt) return false;
     if (!stackVideoRenderIsCurrent(board.socialVideoRenderVersion)) return false;
+    if (!stackVideoRenderIsCurrent(board.socialLandscapeVideoRenderVersion)) return false;
     const videoTime = Date.parse(board.socialVideoUpdatedAt);
+    const landscapeVideoTime = Date.parse(board.socialLandscapeVideoUpdatedAt);
     const boardTime = Date.parse(board.updatedAt);
-    return Number.isFinite(videoTime) && Number.isFinite(boardTime) && videoTime >= boardTime;
+    return Number.isFinite(videoTime)
+      && Number.isFinite(landscapeVideoTime)
+      && Number.isFinite(boardTime)
+      && videoTime >= boardTime
+      && landscapeVideoTime >= boardTime;
   }
 
   trailerVideoIsCurrent(board: Board): boolean {
-    if (!board.trailerVideoUrl || !board.trailerVideoUpdatedAt) return false;
+    if (!board.trailerVideoUrl || !board.trailerVideoUpdatedAt
+      || !board.trailerLandscapeVideoUrl || !board.trailerLandscapeVideoUpdatedAt) return false;
     if (board.trailerVideoRenderVersion !== STACK_TRAILER_RENDER_VERSION) return false;
+    if (board.trailerLandscapeVideoRenderVersion !== STACK_TRAILER_RENDER_VERSION) return false;
     const selectedIds = this.stackSelectedCards().slice(0, STACK_VIDEO_MAX_CARDS).map((card) => card.id);
     if (selectedIds.length !== board.trailerVideoCardIds.length
       || selectedIds.some((id, index) => board.trailerVideoCardIds[index] !== id)) return false;
-    if (board.trailerVideoRatio !== this.stackRatio()
-      || board.trailerVideoAudioTrackId !== this.stackAudioTrackId()
+    if (board.trailerVideoAudioTrackId !== this.stackAudioTrackId()
       || Math.abs(board.trailerVideoAudioVolume - this.stackAudioVolume()) > 0.001
       || (board.trailerVideoNarrationEnabled !== false) !== this.stackTrailerNarrationEnabled()) return false;
     const videoTime = Date.parse(board.trailerVideoUpdatedAt);
+    const landscapeVideoTime = Date.parse(board.trailerLandscapeVideoUpdatedAt);
     const boardTime = Date.parse(board.updatedAt);
-    return Number.isFinite(videoTime) && Number.isFinite(boardTime) && videoTime >= boardTime;
+    return Number.isFinite(videoTime)
+      && Number.isFinite(landscapeVideoTime)
+      && Number.isFinite(boardTime)
+      && videoTime >= boardTime
+      && landscapeVideoTime >= boardTime;
+  }
+
+  setStackSharePreviewRatio(ratio: StackDeliveryRatio): void {
+    this.stackSharePreviewRatio.set(ratio);
+  }
+
+  publishedStackVideoVariant(
+    board: Board,
+    videoKind: 'full' | 'trailer',
+    ratio: StackDeliveryRatio,
+  ): PublishedStackVideoVariant | null {
+    if (videoKind === 'trailer') {
+      if (ratio === 'landscape') {
+        return board.trailerLandscapeVideoUrl ? {
+          url: board.trailerLandscapeVideoUrl,
+          mimeType: board.trailerLandscapeVideoMimeType || 'video/mp4',
+          updatedAt: board.trailerLandscapeVideoUpdatedAt,
+          renderVersion: board.trailerLandscapeVideoRenderVersion || '',
+          durationSeconds: board.trailerLandscapeVideoDurationSeconds,
+          ratio,
+        } : null;
+      }
+      return board.trailerVideoUrl ? {
+        url: board.trailerVideoUrl,
+        mimeType: board.trailerVideoMimeType || 'video/mp4',
+        updatedAt: board.trailerVideoUpdatedAt,
+        renderVersion: board.trailerVideoRenderVersion || '',
+        durationSeconds: board.trailerVideoDurationSeconds,
+        ratio,
+      } : null;
+    }
+    if (ratio === 'landscape') {
+      return board.socialLandscapeVideoUrl ? {
+        url: board.socialLandscapeVideoUrl,
+        mimeType: board.socialLandscapeVideoMimeType || 'video/mp4',
+        updatedAt: board.socialLandscapeVideoUpdatedAt,
+        renderVersion: board.socialLandscapeVideoRenderVersion || '',
+        durationSeconds: board.socialLandscapeVideoDurationSeconds,
+        ratio,
+      } : null;
+    }
+    return board.socialVideoUrl ? {
+      url: board.socialVideoUrl,
+      mimeType: board.socialVideoMimeType || 'video/mp4',
+      updatedAt: board.socialVideoUpdatedAt,
+      renderVersion: board.socialVideoRenderVersion || '',
+      durationSeconds: 0,
+      ratio,
+    } : null;
   }
 
   async copySocialVideoUrl(board: Board): Promise<void> {
@@ -14619,59 +14751,49 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.stackVideoProgress.set(0);
     this.setStackShareMessage('Writing the hook and creating your Board Trailer…', false);
     try {
-      const created = await this.createStackTrailer(board);
-      const { result } = created;
-      if (result.blob.size >= 100 * 1024 * 1024) {
+      const created = await this.createStackTrailerPair(board);
+      const { vertical, landscape } = created.results;
+      if (vertical.blob.size >= 100 * 1024 * 1024 || landscape.blob.size >= 100 * 1024 * 1024) {
         throw new Error('The trailer is too large to publish. Select fewer cards and try again.');
       }
-      const file = this.stackTrailerFile(board, result);
       const generatedAt = new Date().toISOString();
-      // Every render gets its own object URL. Overwriting a stable Storage path
-      // can leave browsers and the public video proxy serving the previous
-      // voice/script from cache even after a successful regeneration.
-      const path = publishedStackVideoStoragePath(
-        uid,
-        board.id,
-        'trailer',
-        result.extension,
-        `${Date.now().toString(36)}-${this.createId()}`,
-      );
-      const ref = storageRef(this.storage, path);
-      await uploadBytes(ref, result.blob, {
-        contentType: this.normalizedVideoMimeType(result.mimeType),
-        cacheControl: 'public,max-age=31536000,immutable',
-        contentDisposition: `inline; filename="${file.name}"`,
-        customMetadata: {
-          boardId: board.id,
-          videoKind: 'trailer',
-          generatedAt,
-        },
-      });
-      const videoUrl = await getDownloadURL(ref);
-      this.publishedStackTrailerFiles.set(board.id, file);
+      const [verticalUpload, landscapeUpload] = await Promise.all([
+        this.uploadPublishedStackVariant(uid, board, 'trailer', 'vertical', vertical, generatedAt),
+        this.uploadPublishedStackVariant(uid, board, 'trailer', 'landscape', landscape, generatedAt),
+      ]);
+      this.publishedStackTrailerFiles.set(this.stackPublishedFileKey(board.id, 'vertical'), verticalUpload.file);
+      this.publishedStackTrailerFiles.set(this.stackPublishedFileKey(board.id, 'landscape'), landscapeUpload.file);
       this.stackPublishedTrailerReady.set(true);
       const nextBoard: Board = {
         ...board,
-        trailerVideoUrl: videoUrl,
-        trailerVideoMimeType: this.normalizedVideoMimeType(result.mimeType),
+        trailerVideoUrl: verticalUpload.url,
+        trailerVideoMimeType: this.normalizedVideoMimeType(vertical.mimeType),
         trailerVideoUpdatedAt: generatedAt,
         trailerVideoRenderVersion: STACK_TRAILER_RENDER_VERSION,
-        trailerVideoRatio: this.stackRatio(),
+        trailerVideoRatio: 'vertical',
         trailerVideoAudioTrackId: this.stackAudioTrackId(),
         trailerVideoAudioVolume: this.stackAudioVolume(),
         trailerVideoNarrationEnabled: this.stackTrailerNarrationEnabled(),
         trailerVideoScript: created.script,
         trailerVideoSourceFingerprint: created.fingerprint,
         trailerVideoCardIds: created.cardIds,
-        trailerVideoDurationSeconds: result.durationSeconds,
+        trailerVideoDurationSeconds: vertical.durationSeconds,
+        trailerLandscapeVideoUrl: landscapeUpload.url,
+        trailerLandscapeVideoMimeType: this.normalizedVideoMimeType(landscape.mimeType),
+        trailerLandscapeVideoUpdatedAt: generatedAt,
+        trailerLandscapeVideoRenderVersion: STACK_TRAILER_RENDER_VERSION,
+        trailerLandscapeVideoDurationSeconds: landscape.durationSeconds,
         stackNarratorVoiceId: this.stackNarratorVoiceId(),
       };
       const persisted = await this.persistBoard(nextBoard);
       this.boards.update((boards) => boards.map((item) => item.id === persisted.id ? persisted : item));
-      const librarySave = await this.saveStackVideoToLibrary(persisted, result, {
-        publicStoragePath: path,
+      const librarySave = await this.saveStackVideoToLibrary(persisted, vertical, {
+        publicStoragePath: verticalUpload.path,
         publicShareUrl: this.trailerVideoShareUrl(persisted),
-      }, 'trailer');
+      }, 'trailer', {
+        result: landscape,
+        publicStoragePath: landscapeUpload.path,
+      });
       this.setStackShareMessage(librarySave === false
         ? 'Board Trailer published. My Videos could not be updated, but the trailer link is ready.'
         : 'Board Trailer published and saved to My Videos. It is ready to share.', false);
@@ -14681,24 +14803,27 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     } finally {
       this.stackVideoExporting.set(false);
       this.stackVideoProgress.set(0);
+      this.stackVideoVerticalProgress.set(0);
+      this.stackVideoLandscapeProgress.set(0);
+      this.stackVideoRenderingRatio.set(null);
     }
   }
 
-  async sharePublishedStackTrailer(board: Board, target: StackLinkShareTarget = 'more'): Promise<void> {
-    if (!this.isBrowser || !board.trailerVideoUrl || this.stackVideoExporting()) return;
-    const file = this.publishedStackTrailerFiles.get(board.id);
-    if (!file) {
-      void this.preloadPublishedStackTrailer(board);
-      this.setStackShareMessage('Preparing the trailer file. Tap Share again when it is ready.', false);
-      return;
-    }
+  async sharePublishedStackTrailer(
+    board: Board,
+    target: StackLinkShareTarget = 'more',
+    ratio: StackDeliveryRatio = this.stackSharePreviewRatio(),
+  ): Promise<void> {
+    if (!this.isBrowser || this.stackVideoExporting()) return;
+    const file = await this.preparePublishedStackFile(board, 'trailer', ratio);
+    if (!file) return;
     const caption = this.stackCaption().trim() || `A quick look at ${board.title}.`;
     const boardUrl = this.stackSocialShareUrl(board);
     const shareText = `${caption}\n${boardUrl}`;
     try {
       if (target === 'more' && this.canNativeShareFile(file)) {
         await navigator.share({ title: board.title, text: shareText, files: [file] });
-        this.setStackShareMessage('Board Trailer shared as native video.');
+        this.setStackShareMessage(`${ratio === 'landscape' ? 'Landscape' : 'Phone'} Board Trailer shared as native video.`);
         return;
       }
       this.downloadStackVideo(file);
@@ -14714,24 +14839,15 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  private async preloadPublishedStackTrailer(board: Board): Promise<void> {
-    if (!this.isBrowser || !board.trailerVideoUrl || this.publishedStackTrailerFiles.has(board.id) || this.stackPublishedTrailerLoading()) return;
+  private async preloadPublishedStackTrailer(board: Board, ratio: StackDeliveryRatio = 'vertical'): Promise<void> {
+    const key = this.stackPublishedFileKey(board.id, ratio);
+    if (!this.isBrowser || !this.publishedStackVideoVariant(board, 'trailer', ratio)
+      || this.publishedStackTrailerFiles.has(key) || this.stackPublishedTrailerLoading()) return;
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') return;
     this.stackPublishedTrailerLoading.set(true);
     this.stackPublishedTrailerReady.set(false);
     try {
-      const response = await fetch(this.trailerVideoFileUrl(board), { credentials: 'same-origin' });
-      if (!response.ok) throw new Error('The Board Trailer could not be prepared.');
-      const blob = await response.blob();
-      const extension: StackVideoResult['extension'] = (board.trailerVideoMimeType || blob.type).includes('mp4') ? 'mp4' : 'webm';
-      const result: StackVideoResult = {
-        blob,
-        mimeType: this.normalizedVideoMimeType(board.trailerVideoMimeType || blob.type || `video/${extension}`),
-        extension,
-        xCompatible: extension === 'mp4',
-        durationSeconds: board.trailerVideoDurationSeconds,
-      };
-      this.publishedStackTrailerFiles.set(board.id, this.stackTrailerFile(board, result));
+      await this.preparePublishedStackFile(board, 'trailer', ratio, false);
       this.stackPublishedTrailerReady.set(true);
     } catch (error) {
       this.setStackShareMessage(error instanceof Error ? error.message : 'The Board Trailer could not be prepared.', false);
@@ -14740,8 +14856,8 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  private async createStackTrailer(board: Board): Promise<{
-    result: StackVideoResult;
+  private async createStackTrailerPair(board: Board): Promise<{
+    results: StackVideoPair;
     script: string;
     fingerprint: string;
     cardIds: string[];
@@ -14770,7 +14886,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       if (!audioUrl) throw new Error('The Board Trailer voiceover could not be prepared. Please try again.');
       narration = { audioUrl, script, volume: 1 };
     }
-    const result = await generateStackTrailer({
+    const payload = {
       title: board.title,
       subtitle: this.stackCoverSubtitle().trim() || board.description,
       ownerName: this.ownerName(board),
@@ -14787,8 +14903,26 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         imageUrls: this.cardImages(card),
         tourSequence: card.tour?.sequence ?? null,
       })),
-    }, this.stackRatio(), (progress) => this.stackVideoProgress.set(Math.round(progress * 100)), this.stackVideoBackgroundAudio(), narration);
-    return { result, script, fingerprint: prepared.fingerprint, cardIds: prepared.cardIds };
+    };
+    const backgroundAudio = this.stackVideoBackgroundAudio();
+    this.stackVideoRenderingRatio.set('vertical');
+    const vertical = await generateStackTrailer(payload, 'vertical', (progress) => {
+      const percent = Math.round(progress * 100);
+      this.stackVideoVerticalProgress.set(percent);
+      this.stackVideoProgress.set(Math.round(progress * 50));
+    }, backgroundAudio, narration);
+    this.stackVideoRenderingRatio.set('landscape');
+    const landscape = await generateStackTrailer(payload, 'landscape', (progress) => {
+      const percent = Math.round(progress * 100);
+      this.stackVideoLandscapeProgress.set(percent);
+      this.stackVideoProgress.set(50 + Math.round(progress * 50));
+    }, backgroundAudio, narration);
+    return {
+      results: { vertical, landscape },
+      script,
+      fingerprint: prepared.fingerprint,
+      cardIds: prepared.cardIds,
+    };
   }
 
   async publishStackVideo(board: Board): Promise<void> {
@@ -14820,53 +14954,44 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.stackVideoProgress.set(0);
     this.setStackShareMessage('Creating and publishing your video…', false);
     try {
-      const result = await this.createStackVideo(board);
-      if (result.blob.size >= 100 * 1024 * 1024) {
+      const results = await this.createStackVideoPair(board);
+      const { vertical, landscape } = results;
+      if (vertical.blob.size >= 100 * 1024 * 1024 || landscape.blob.size >= 100 * 1024 * 1024) {
         throw new Error('The video is too large to publish. Select fewer cards and try again.');
       }
-      const file = this.stackVideoFile(board, result);
       const generatedAt = new Date().toISOString();
-      // Use a versioned object instead of overwriting the previous render. A
-      // changed voice must produce a changed URL so no cache can retain the old
-      // video under the same Firebase download URL.
-      const path = publishedStackVideoStoragePath(
-        uid,
-        board.id,
-        'full',
-        result.extension,
-        `${Date.now().toString(36)}-${this.createId()}`,
-      );
-      const ref = storageRef(this.storage, path);
-      await uploadBytes(ref, result.blob, {
-        contentType: this.normalizedVideoMimeType(result.mimeType),
-        cacheControl: 'public,max-age=31536000,immutable',
-        contentDisposition: `inline; filename="${file.name}"`,
-        customMetadata: {
-          boardId: board.id,
-          videoKind: 'full',
-          generatedAt,
-        },
-      });
-      const videoUrl = await getDownloadURL(ref);
-      this.publishedStackVideoFiles.set(board.id, file);
+      const [verticalUpload, landscapeUpload] = await Promise.all([
+        this.uploadPublishedStackVariant(uid, board, 'full', 'vertical', vertical, generatedAt),
+        this.uploadPublishedStackVariant(uid, board, 'full', 'landscape', landscape, generatedAt),
+      ]);
+      this.publishedStackVideoFiles.set(this.stackPublishedFileKey(board.id, 'vertical'), verticalUpload.file);
+      this.publishedStackVideoFiles.set(this.stackPublishedFileKey(board.id, 'landscape'), landscapeUpload.file);
       this.stackPublishedVideoReady.set(true);
       const nextBoard: Board = {
         ...board,
-        socialVideoUrl: videoUrl,
-        socialVideoMimeType: this.normalizedVideoMimeType(result.mimeType),
+        socialVideoUrl: verticalUpload.url,
+        socialVideoMimeType: this.normalizedVideoMimeType(vertical.mimeType),
         socialVideoUpdatedAt: generatedAt,
         socialVideoRenderVersion: STACK_VIDEO_RENDER_VERSION,
-        socialVideoRatio: this.stackRatio(),
+        socialVideoRatio: 'vertical',
         socialVideoAudioTrackId: this.stackAudioTrackId(),
         socialVideoAudioVolume: this.stackAudioVolume(),
         socialVideoNarrationEnabled: this.stackVideoNarrationEnabled(),
+        socialLandscapeVideoUrl: landscapeUpload.url,
+        socialLandscapeVideoMimeType: this.normalizedVideoMimeType(landscape.mimeType),
+        socialLandscapeVideoUpdatedAt: generatedAt,
+        socialLandscapeVideoRenderVersion: STACK_VIDEO_RENDER_VERSION,
+        socialLandscapeVideoDurationSeconds: landscape.durationSeconds,
         stackNarratorVoiceId: this.stackNarratorVoiceId(),
       };
       const persisted = await this.persistBoard(nextBoard);
       this.boards.update((boards) => boards.map((item) => item.id === persisted.id ? persisted : item));
-      const librarySave = await this.saveStackVideoToLibrary(persisted, result, {
-        publicStoragePath: path,
+      const librarySave = await this.saveStackVideoToLibrary(persisted, vertical, {
+        publicStoragePath: verticalUpload.path,
         publicShareUrl: this.socialVideoShareUrl(persisted),
+      }, 'full', {
+        result: landscape,
+        publicStoragePath: landscapeUpload.path,
       });
       this.setStackShareMessage(librarySave === false
         ? 'Permanent video link published, but My Videos could not be updated. You can still copy the link or share the MP4.'
@@ -14877,24 +15002,27 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     } finally {
       this.stackVideoExporting.set(false);
       this.stackVideoProgress.set(0);
+      this.stackVideoVerticalProgress.set(0);
+      this.stackVideoLandscapeProgress.set(0);
+      this.stackVideoRenderingRatio.set(null);
     }
   }
 
-  async sharePublishedStackVideo(board: Board, target: StackLinkShareTarget = 'more'): Promise<void> {
-    if (!this.isBrowser || !board.socialVideoUrl || this.stackVideoExporting()) return;
-    const file = this.publishedStackVideoFiles.get(board.id);
-    if (!file) {
-      void this.preloadPublishedStackVideo(board);
-      this.setStackShareMessage('Preparing the native MP4. Tap the social app again when “Share video file” is ready.', false);
-      return;
-    }
+  async sharePublishedStackVideo(
+    board: Board,
+    target: StackLinkShareTarget = 'more',
+    ratio: StackDeliveryRatio = this.stackSharePreviewRatio(),
+  ): Promise<void> {
+    if (!this.isBrowser || this.stackVideoExporting()) return;
+    const file = await this.preparePublishedStackFile(board, 'full', ratio);
+    if (!file) return;
     const caption = this.stackCaption().trim() || `LivingWiki Stack: ${board.title}`;
     const liveUrl = this.stackSocialShareUrl(board);
     const shareText = `${caption}\n${liveUrl}`;
     try {
       if (target === 'more' && this.canNativeShareFile(file)) {
         await navigator.share({ title: board.title, text: shareText, files: [file] });
-        this.setStackShareMessage('MP4 shared as native media for in-feed playback.');
+        this.setStackShareMessage(`${ratio === 'landscape' ? 'Landscape' : 'Phone'} MP4 shared as native media for in-feed playback.`);
         return;
       }
 
@@ -14933,8 +15061,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     window.open(destination, '_blank', 'noopener');
   }
 
-  private async preloadPublishedStackVideo(board: Board): Promise<void> {
-    if (!this.isBrowser || !board.socialVideoUrl || this.publishedStackVideoFiles.has(board.id) || this.stackPublishedVideoLoading()) {
+  private async preloadPublishedStackVideo(board: Board, ratio: StackDeliveryRatio = 'vertical'): Promise<void> {
+    const key = this.stackPublishedFileKey(board.id, ratio);
+    if (!this.isBrowser || !this.publishedStackVideoVariant(board, 'full', ratio)
+      || this.publishedStackVideoFiles.has(key) || this.stackPublishedVideoLoading()) {
       return;
     }
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
@@ -14943,18 +15073,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.stackPublishedVideoLoading.set(true);
     this.stackPublishedVideoReady.set(false);
     try {
-      const response = await fetch(this.socialVideoFileUrl(board), { credentials: 'same-origin' });
-      if (!response.ok) throw new Error('The permanent video could not be prepared.');
-      const blob = await response.blob();
-      const extension: StackVideoResult['extension'] = (board.socialVideoMimeType || blob.type).includes('mp4') ? 'mp4' : 'webm';
-      const result: StackVideoResult = {
-        blob,
-        mimeType: this.normalizedVideoMimeType(board.socialVideoMimeType || blob.type || `video/${extension}`),
-        extension,
-        xCompatible: extension === 'mp4',
-        durationSeconds: 0,
-      };
-      this.publishedStackVideoFiles.set(board.id, this.stackVideoFile(board, result));
+      await this.preparePublishedStackFile(board, 'full', ratio, false);
       this.stackPublishedVideoReady.set(true);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'The permanent video could not be prepared.';
@@ -14964,7 +15083,100 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  private async preparePublishedStackFile(
+    board: Board,
+    videoKind: 'full' | 'trailer',
+    ratio: StackDeliveryRatio,
+    showError = true,
+  ): Promise<File | null> {
+    const variant = this.publishedStackVideoVariant(board, videoKind, ratio);
+    if (!variant) {
+      if (showError) this.setStackShareMessage(`${ratio === 'landscape' ? 'Landscape' : 'Phone'} version is not available yet.`, false);
+      return null;
+    }
+    const files = videoKind === 'trailer' ? this.publishedStackTrailerFiles : this.publishedStackVideoFiles;
+    const key = this.stackPublishedFileKey(board.id, ratio);
+    const cached = files.get(key);
+    if (cached) return cached;
+    try {
+      const response = await fetch(variant.url);
+      if (!response.ok) throw new Error('The video file could not be prepared.');
+      const blob = await response.blob();
+      const extension: StackVideoResult['extension'] = (variant.mimeType || blob.type).includes('mp4') ? 'mp4' : 'webm';
+      const result: StackVideoResult = {
+        blob,
+        mimeType: this.normalizedVideoMimeType(variant.mimeType || blob.type || `video/${extension}`),
+        extension,
+        xCompatible: extension === 'mp4',
+        durationSeconds: variant.durationSeconds,
+      };
+      const file = videoKind === 'trailer'
+        ? this.stackTrailerFile(board, result, ratio)
+        : this.stackVideoFile(board, result, ratio);
+      files.set(key, file);
+      return file;
+    } catch (error) {
+      if (showError) {
+        this.setStackShareMessage(error instanceof Error ? error.message : 'The video file could not be prepared.', false);
+      }
+      return null;
+    }
+  }
+
+  async downloadPublishedStackVariant(
+    board: Board,
+    videoKind: 'full' | 'trailer',
+    ratio: StackDeliveryRatio,
+  ): Promise<void> {
+    const file = await this.preparePublishedStackFile(board, videoKind, ratio);
+    if (!file) return;
+    this.downloadStackVideo(file);
+    this.setStackShareMessage(`${ratio === 'landscape' ? 'Landscape 16:9' : 'Phone 9:16'} video downloaded.`);
+  }
+
+  async downloadBothPublishedStackVariants(board: Board, videoKind: 'full' | 'trailer'): Promise<void> {
+    const [vertical, landscape] = await Promise.all([
+      this.preparePublishedStackFile(board, videoKind, 'vertical'),
+      this.preparePublishedStackFile(board, videoKind, 'landscape'),
+    ]);
+    if (vertical) this.downloadStackVideo(vertical);
+    if (landscape) this.downloadStackVideo(landscape);
+    if (vertical && landscape) this.setStackShareMessage('Phone and Landscape videos downloaded.');
+  }
+
   private async createStackVideo(board: Board): Promise<StackVideoResult> {
+    const prepared = await this.prepareStackVideoRender(board);
+    return generateStackVideo(
+      prepared.payload,
+      this.stackRatio(),
+      (progress) => this.stackVideoProgress.set(Math.round(progress * 100)),
+      prepared.backgroundAudio,
+      prepared.narration,
+    );
+  }
+
+  private async createStackVideoPair(board: Board): Promise<StackVideoPair> {
+    const prepared = await this.prepareStackVideoRender(board);
+    this.stackVideoRenderingRatio.set('vertical');
+    const vertical = await generateStackVideo(prepared.payload, 'vertical', (progress) => {
+      const percent = Math.round(progress * 100);
+      this.stackVideoVerticalProgress.set(percent);
+      this.stackVideoProgress.set(Math.round(progress * 50));
+    }, prepared.backgroundAudio, prepared.narration);
+    this.stackVideoRenderingRatio.set('landscape');
+    const landscape = await generateStackVideo(prepared.payload, 'landscape', (progress) => {
+      const percent = Math.round(progress * 100);
+      this.stackVideoLandscapeProgress.set(percent);
+      this.stackVideoProgress.set(50 + Math.round(progress * 50));
+    }, prepared.backgroundAudio, prepared.narration);
+    return { vertical, landscape };
+  }
+
+  private async prepareStackVideoRender(board: Board): Promise<{
+    payload: Parameters<typeof generateStackVideo>[0];
+    backgroundAudio: StackVideoBackgroundAudio | null;
+    narration: StackVideoNarration | null;
+  }> {
     if (!this.canEditBoard(board)) {
       throw new Error('Make your own copy of this board before creating a new video.');
     }
@@ -14978,7 +15190,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     const narration = this.stackVideoNarrationEnabled()
       ? await this.stackVideoNarration(selectedCards, board)
       : null;
-    return generateStackVideo({
+    const payload = {
       title: this.stackScriptBoardTitle().trim() || board.title,
       subtitle: this.stackScriptBoardDescription().trim() || board.description,
       ownerName: this.ownerName(board),
@@ -14996,7 +15208,8 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         imageUrls: this.cardImages(card),
         tourSequence: card.tour?.sequence ?? null,
       })),
-    }, this.stackRatio(), (progress) => this.stackVideoProgress.set(Math.round(progress * 100)), backgroundAudio, narration);
+    };
+    return { payload, backgroundAudio, narration };
   }
 
   private async stackVideoNarration(cards: BoardCard[], board: Board): Promise<StackVideoNarration | null> {
@@ -15122,7 +15335,8 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.boards.update((boards) =>
       boards.map((item) => item.id === nextBoard.id ? nextBoard : item),
     );
-    this.publishedStackVideoFiles.delete(board.id);
+    this.publishedStackVideoFiles.delete(this.stackPublishedFileKey(board.id, 'vertical'));
+    this.publishedStackVideoFiles.delete(this.stackPublishedFileKey(board.id, 'landscape'));
     this.stackPublishedVideoReady.set(false);
     void this.persistAndReplaceBoard(nextBoard);
   }
@@ -15140,7 +15354,8 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.boards.update((boards) =>
       boards.map((item) => item.id === nextBoard.id ? nextBoard : item),
     );
-    this.publishedStackVideoFiles.delete(board.id);
+    this.publishedStackVideoFiles.delete(this.stackPublishedFileKey(board.id, 'vertical'));
+    this.publishedStackVideoFiles.delete(this.stackPublishedFileKey(board.id, 'landscape'));
     this.stackPublishedVideoReady.set(false);
     void this.persistStackNarratorPreference(nextBoard).then((saved) => {
       this.stackVoiceError.set(saved
@@ -15174,24 +15389,59 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  private stackVideoFile(board: Board, result: StackVideoResult): File {
+  private stackPublishedFileKey(boardId: string, ratio: StackDeliveryRatio): string {
+    return `${boardId}:${ratio}`;
+  }
+
+  private stackVideoFile(board: Board, result: StackVideoResult, ratio: StackDeliveryRatio = 'vertical'): File {
     const slug = board.title
       .trim()
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-+|-+$/g, '')
       .slice(0, 54) || 'livingwiki-stack';
-    return new File([result.blob], `${slug}.${result.extension}`, { type: this.normalizedVideoMimeType(result.mimeType) });
+    const suffix = ratio === 'landscape' ? 'landscape-16x9' : 'phone-9x16';
+    return new File([result.blob], `${slug}-${suffix}.${result.extension}`, { type: this.normalizedVideoMimeType(result.mimeType) });
   }
 
-  private stackTrailerFile(board: Board, result: StackVideoResult): File {
+  private stackTrailerFile(board: Board, result: StackVideoResult, ratio: StackDeliveryRatio = 'vertical'): File {
     const slug = board.title
       .trim()
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-+|-+$/g, '')
       .slice(0, 46) || 'livingwiki-board';
-    return new File([result.blob], `${slug}-trailer.${result.extension}`, { type: this.normalizedVideoMimeType(result.mimeType) });
+    const suffix = ratio === 'landscape' ? 'landscape-16x9' : 'phone-9x16';
+    return new File([result.blob], `${slug}-trailer-${suffix}.${result.extension}`, { type: this.normalizedVideoMimeType(result.mimeType) });
+  }
+
+  private async uploadPublishedStackVariant(
+    uid: string,
+    board: Board,
+    videoKind: 'full' | 'trailer',
+    ratio: StackDeliveryRatio,
+    result: StackVideoResult,
+    generatedAt: string,
+  ): Promise<{ path: string; url: string; file: File }> {
+    if (!this.storage) throw new Error('Video storage is not ready.');
+    const file = videoKind === 'trailer'
+      ? this.stackTrailerFile(board, result, ratio)
+      : this.stackVideoFile(board, result, ratio);
+    const path = publishedStackVideoStoragePath(
+      uid,
+      board.id,
+      videoKind,
+      result.extension,
+      `${ratio}-${Date.now().toString(36)}-${this.createId()}`,
+    );
+    const ref = storageRef(this.storage, path);
+    await uploadBytes(ref, result.blob, {
+      contentType: this.normalizedVideoMimeType(result.mimeType),
+      cacheControl: 'public,max-age=31536000,immutable',
+      contentDisposition: `inline; filename="${file.name}"`,
+      customMetadata: { boardId: board.id, videoKind, ratio, generatedAt },
+    });
+    return { path, url: await getDownloadURL(ref), file };
   }
 
   private async saveStackVideoToLibrary(
@@ -15199,6 +15449,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     result: StackVideoResult,
     published: { publicStoragePath: string; publicShareUrl: string } | null = null,
     videoKind: 'full' | 'trailer' = 'full',
+    landscape?: { result: StackVideoResult; publicStoragePath: string },
   ): Promise<boolean | null> {
     if (!this.canEditBoard(board) || !this.authService.uid()) {
       return null;
@@ -15214,12 +15465,21 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         blob: result.blob,
         extension: result.extension,
         mimeType: this.normalizedVideoMimeType(result.mimeType),
-        ratio: this.stackRatio(),
+        ratio: landscape ? 'vertical' : this.stackRatio(),
         durationSeconds: result.durationSeconds,
         renderVersion: videoKind === 'trailer' ? STACK_TRAILER_RENDER_VERSION : STACK_VIDEO_RENDER_VERSION,
         narrationEnabled: videoKind === 'trailer' ? this.stackTrailerNarrationEnabled() : this.stackVideoNarrationEnabled(),
         publicStoragePath: published?.publicStoragePath,
         publicShareUrl: published?.publicShareUrl,
+        landscapeVariant: landscape ? {
+          blob: landscape.result.blob,
+          extension: landscape.result.extension,
+          mimeType: this.normalizedVideoMimeType(landscape.result.mimeType),
+          ratio: 'landscape',
+          durationSeconds: landscape.result.durationSeconds,
+          renderVersion: videoKind === 'trailer' ? STACK_TRAILER_RENDER_VERSION : STACK_VIDEO_RENDER_VERSION,
+          publicStoragePath: landscape.publicStoragePath,
+        } : undefined,
       });
       return true;
     } catch (error) {
@@ -18366,6 +18626,13 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
           socialVideoNarrationEnabled: typeof (board as Partial<Board>).socialVideoNarrationEnabled === 'boolean'
             ? (board as Partial<Board>).socialVideoNarrationEnabled
             : undefined,
+          socialLandscapeVideoUrl: typeof board.socialLandscapeVideoUrl === 'string' ? board.socialLandscapeVideoUrl : '',
+          socialLandscapeVideoMimeType: typeof board.socialLandscapeVideoMimeType === 'string' ? board.socialLandscapeVideoMimeType : '',
+          socialLandscapeVideoUpdatedAt: typeof board.socialLandscapeVideoUpdatedAt === 'string' ? board.socialLandscapeVideoUpdatedAt : '',
+          socialLandscapeVideoRenderVersion: typeof board.socialLandscapeVideoRenderVersion === 'string' ? board.socialLandscapeVideoRenderVersion : '',
+          socialLandscapeVideoDurationSeconds: typeof board.socialLandscapeVideoDurationSeconds === 'number' && Number.isFinite(board.socialLandscapeVideoDurationSeconds)
+            ? Math.max(0, board.socialLandscapeVideoDurationSeconds)
+            : 0,
           socialVideoClosingHeadline: typeof (board as Partial<Board>).socialVideoClosingHeadline === 'string'
             ? (board as Partial<Board>).socialVideoClosingHeadline!.slice(0, 72)
             : 'Keep exploring',
@@ -18404,6 +18671,13 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
             : [],
           trailerVideoDurationSeconds: typeof board.trailerVideoDurationSeconds === 'number' && Number.isFinite(board.trailerVideoDurationSeconds)
             ? Math.max(0, board.trailerVideoDurationSeconds)
+            : 0,
+          trailerLandscapeVideoUrl: typeof board.trailerLandscapeVideoUrl === 'string' ? board.trailerLandscapeVideoUrl : '',
+          trailerLandscapeVideoMimeType: typeof board.trailerLandscapeVideoMimeType === 'string' ? board.trailerLandscapeVideoMimeType : '',
+          trailerLandscapeVideoUpdatedAt: typeof board.trailerLandscapeVideoUpdatedAt === 'string' ? board.trailerLandscapeVideoUpdatedAt : '',
+          trailerLandscapeVideoRenderVersion: typeof board.trailerLandscapeVideoRenderVersion === 'string' ? board.trailerLandscapeVideoRenderVersion : '',
+          trailerLandscapeVideoDurationSeconds: typeof board.trailerLandscapeVideoDurationSeconds === 'number' && Number.isFinite(board.trailerLandscapeVideoDurationSeconds)
+            ? Math.max(0, board.trailerLandscapeVideoDurationSeconds)
             : 0,
           narrationStyle: normalizeBoardNarrationStyleId((board as Partial<Board>).narrationStyle),
           narrationSecondsPerCard: normalizeBoardNarrationSeconds(
@@ -18742,6 +19016,13 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       socialVideoNarrationEnabled: typeof data['socialVideoNarrationEnabled'] === 'boolean'
         ? data['socialVideoNarrationEnabled']
         : undefined,
+      socialLandscapeVideoUrl: typeof data['socialLandscapeVideoUrl'] === 'string' ? data['socialLandscapeVideoUrl'] : '',
+      socialLandscapeVideoMimeType: typeof data['socialLandscapeVideoMimeType'] === 'string' ? data['socialLandscapeVideoMimeType'] : '',
+      socialLandscapeVideoUpdatedAt: typeof data['socialLandscapeVideoUpdatedAt'] === 'string' ? data['socialLandscapeVideoUpdatedAt'] : '',
+      socialLandscapeVideoRenderVersion: typeof data['socialLandscapeVideoRenderVersion'] === 'string' ? data['socialLandscapeVideoRenderVersion'] : '',
+      socialLandscapeVideoDurationSeconds: typeof data['socialLandscapeVideoDurationSeconds'] === 'number' && Number.isFinite(data['socialLandscapeVideoDurationSeconds'])
+        ? Math.max(0, data['socialLandscapeVideoDurationSeconds'])
+        : 0,
       socialVideoClosingHeadline: typeof data['socialVideoClosingHeadline'] === 'string'
         ? data['socialVideoClosingHeadline'].slice(0, 72)
         : 'Keep exploring',
@@ -18778,6 +19059,13 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         : [],
       trailerVideoDurationSeconds: typeof data['trailerVideoDurationSeconds'] === 'number' && Number.isFinite(data['trailerVideoDurationSeconds'])
         ? Math.max(0, data['trailerVideoDurationSeconds'])
+        : 0,
+      trailerLandscapeVideoUrl: typeof data['trailerLandscapeVideoUrl'] === 'string' ? data['trailerLandscapeVideoUrl'] : '',
+      trailerLandscapeVideoMimeType: typeof data['trailerLandscapeVideoMimeType'] === 'string' ? data['trailerLandscapeVideoMimeType'] : '',
+      trailerLandscapeVideoUpdatedAt: typeof data['trailerLandscapeVideoUpdatedAt'] === 'string' ? data['trailerLandscapeVideoUpdatedAt'] : '',
+      trailerLandscapeVideoRenderVersion: typeof data['trailerLandscapeVideoRenderVersion'] === 'string' ? data['trailerLandscapeVideoRenderVersion'] : '',
+      trailerLandscapeVideoDurationSeconds: typeof data['trailerLandscapeVideoDurationSeconds'] === 'number' && Number.isFinite(data['trailerLandscapeVideoDurationSeconds'])
+        ? Math.max(0, data['trailerLandscapeVideoDurationSeconds'])
         : 0,
       narrationStyle: normalizeBoardNarrationStyleId(data['narrationStyle']),
       narrationSecondsPerCard: normalizeBoardNarrationSeconds(data['narrationSecondsPerCard']),

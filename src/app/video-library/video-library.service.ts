@@ -46,12 +46,22 @@ type BoardVideoSummary = {
   socialVideoRenderVersion: string;
   socialVideoRatio: 'vertical' | 'square' | 'landscape';
   socialVideoNarrationEnabled: boolean;
+  socialLandscapeVideoUrl: string;
+  socialLandscapeVideoMimeType: string;
+  socialLandscapeVideoUpdatedAt: string;
+  socialLandscapeVideoRenderVersion: string;
+  socialLandscapeVideoDurationSeconds: number;
   trailerVideoUrl: string;
   trailerVideoMimeType: string;
   trailerVideoUpdatedAt: string;
   trailerVideoRenderVersion: string;
   trailerVideoRatio: 'vertical' | 'square' | 'landscape';
   trailerVideoNarrationEnabled: boolean;
+  trailerLandscapeVideoUrl: string;
+  trailerLandscapeVideoMimeType: string;
+  trailerLandscapeVideoUpdatedAt: string;
+  trailerLandscapeVideoRenderVersion: string;
+  trailerLandscapeVideoDurationSeconds: number;
 };
 
 @Injectable({ providedIn: 'root' })
@@ -130,24 +140,44 @@ export class VideoLibraryService {
         : '');
     const generatedAt = new Date().toISOString();
     const version = `${Date.now()}-${crypto.randomUUID().slice(0, 8)}`;
-    const storagePath = `users/${uid}/video-library/boards/${input.boardId}/${input.videoKind}/${version}.${input.extension}`;
+    const storagePath = `users/${uid}/video-library/boards/${input.boardId}/${input.videoKind}/vertical/${version}.${input.extension}`;
     const videoRef = storageRef(this.storage, storagePath);
+    const landscape = input.landscapeVariant;
+    const landscapeStoragePath = landscape
+      ? `users/${uid}/video-library/boards/${input.boardId}/${input.videoKind}/landscape/${version}.${landscape.extension}`
+      : '';
+    const landscapeVideoRef = landscapeStoragePath ? storageRef(this.storage, landscapeStoragePath) : null;
     const safeTitle = this.safeFileName(input.boardTitle);
 
-    await uploadBytes(videoRef, input.blob, {
-      contentType: this.normalizedMimeType(input.mimeType),
-      cacheControl: 'private,max-age=3600',
-      contentDisposition: `inline; filename="${safeTitle}.${input.extension}"`,
-      customMetadata: {
-        sourceType: 'board',
-        sourceId: input.boardId,
-        videoKind: input.videoKind,
-        generatedAt,
-      },
-    });
+    const uploadVariant = (ref: ReturnType<typeof storageRef>, blob: Blob, mimeType: string, fileName: string, ratio: string) =>
+      uploadBytes(ref, blob, {
+        contentType: this.normalizedMimeType(mimeType),
+        cacheControl: 'private,max-age=3600',
+        contentDisposition: `inline; filename="${fileName}"`,
+        customMetadata: {
+          sourceType: 'board',
+          sourceId: input.boardId,
+          videoKind: input.videoKind,
+          ratio,
+          generatedAt,
+        },
+      });
 
     try {
-      const videoUrl = await getDownloadURL(videoRef);
+      await uploadVariant(videoRef, input.blob, input.mimeType, `${safeTitle}-phone.${input.extension}`, 'vertical');
+      if (landscape && landscapeVideoRef) {
+        await uploadVariant(
+          landscapeVideoRef,
+          landscape.blob,
+          landscape.mimeType,
+          `${safeTitle}-landscape.${landscape.extension}`,
+          'landscape',
+        );
+      }
+      const [videoUrl, landscapeVideoUrl] = await Promise.all([
+        getDownloadURL(videoRef),
+        landscapeVideoRef ? getDownloadURL(landscapeVideoRef) : Promise.resolve(''),
+      ]);
       const record: VideoLibraryRecord = {
         id: itemId,
         owner_user_id: uid,
@@ -171,12 +201,23 @@ export class VideoLibraryService {
         render_version: input.renderVersion.slice(0, 64),
         narration_enabled: input.narrationEnabled,
         generated_at_iso: generatedAt,
+        landscape_video_url: landscapeVideoUrl.slice(0, 2500),
+        landscape_storage_path: landscapeStoragePath,
+        landscape_public_storage_path: (landscape?.publicStoragePath ?? '').slice(0, 500),
+        landscape_mime_type: landscape ? this.normalizedMimeType(landscape.mimeType) : '',
+        landscape_duration_seconds: landscape ? Math.max(0, landscape.durationSeconds) : 0,
+        landscape_render_version: landscape?.renderVersion.slice(0, 64) ?? '',
+        landscape_generated_at_iso: landscape ? generatedAt : '',
         updated_at_iso: generatedAt,
         server_updated_at: serverTimestamp(),
       };
       await setDoc(itemRef, record);
       if (previous?.storagePath && previous.storagePath !== storagePath) {
         await this.deleteStoragePath(previous.storagePath).catch(() => undefined);
+      }
+      if (previous?.landscapeVariant?.storagePath
+        && previous.landscapeVariant.storagePath !== landscapeStoragePath) {
+        await this.deleteStoragePath(previous.landscapeVariant.storagePath).catch(() => undefined);
       }
       return {
         ...videoLibraryItemFromRecord(itemId, record)!,
@@ -185,6 +226,7 @@ export class VideoLibraryService {
       };
     } catch (error) {
       await deleteObject(videoRef).catch(() => undefined);
+      if (landscapeVideoRef) await deleteObject(landscapeVideoRef).catch(() => undefined);
       throw error;
     }
   }
@@ -206,6 +248,11 @@ export class VideoLibraryService {
           trailerVideoMimeType: '',
           trailerVideoUpdatedAt: '',
           trailerVideoRenderVersion: '',
+          trailerLandscapeVideoUrl: '',
+          trailerLandscapeVideoMimeType: '',
+          trailerLandscapeVideoUpdatedAt: '',
+          trailerLandscapeVideoRenderVersion: '',
+          trailerLandscapeVideoDurationSeconds: 0,
           updated_at_iso: now,
           server_updated_at: serverTimestamp(),
         } : {
@@ -213,15 +260,28 @@ export class VideoLibraryService {
           socialVideoMimeType: '',
           socialVideoUpdatedAt: '',
           socialVideoRenderVersion: '',
+          socialLandscapeVideoUrl: '',
+          socialLandscapeVideoMimeType: '',
+          socialLandscapeVideoUpdatedAt: '',
+          socialLandscapeVideoRenderVersion: '',
+          socialLandscapeVideoDurationSeconds: 0,
           updated_at_iso: now,
           server_updated_at: serverTimestamp(),
         });
       }
     }
 
-    const paths = new Set([item.storagePath, item.publicStoragePath].filter(Boolean));
+    const paths = new Set([
+      item.storagePath,
+      item.publicStoragePath,
+      item.landscapeVariant?.storagePath,
+      item.landscapeVariant?.publicStoragePath,
+    ].filter((path): path is string => !!path));
     if (!item.storagePath && item.videoUrl) {
       await this.deleteStorageReference(item.videoUrl);
+    }
+    if (item.landscapeVariant && !item.landscapeVariant.storagePath && item.landscapeVariant.videoUrl) {
+      await this.deleteStorageReference(item.landscapeVariant.videoUrl);
     }
     await Promise.all(Array.from(paths, (path) => this.deleteStoragePath(path)));
     await deleteDoc(doc(this.firestore, 'users', uid, 'videos', item.id));
@@ -251,6 +311,13 @@ export class VideoLibraryService {
       render_version: board.socialVideoRenderVersion,
       narration_enabled: board.socialVideoNarrationEnabled,
       generated_at_iso: generatedAt,
+      landscape_video_url: board.socialLandscapeVideoUrl,
+      landscape_storage_path: '',
+      landscape_public_storage_path: '',
+      landscape_mime_type: board.socialLandscapeVideoMimeType,
+      landscape_duration_seconds: board.socialLandscapeVideoDurationSeconds,
+      landscape_render_version: board.socialLandscapeVideoRenderVersion,
+      landscape_generated_at_iso: board.socialLandscapeVideoUpdatedAt,
       updated_at_iso: new Date().toISOString(),
       server_updated_at: serverTimestamp(),
     };
@@ -286,6 +353,13 @@ export class VideoLibraryService {
       render_version: board.trailerVideoRenderVersion,
       narration_enabled: board.trailerVideoNarrationEnabled,
       generated_at_iso: generatedAt,
+      landscape_video_url: board.trailerLandscapeVideoUrl,
+      landscape_storage_path: '',
+      landscape_public_storage_path: '',
+      landscape_mime_type: board.trailerLandscapeVideoMimeType,
+      landscape_duration_seconds: board.trailerLandscapeVideoDurationSeconds,
+      landscape_render_version: board.trailerLandscapeVideoRenderVersion,
+      landscape_generated_at_iso: board.trailerLandscapeVideoUpdatedAt,
       updated_at_iso: new Date().toISOString(),
       server_updated_at: serverTimestamp(),
     };
@@ -322,6 +396,11 @@ export class VideoLibraryService {
         ? data['socialVideoRatio']
         : 'vertical',
       socialVideoNarrationEnabled: data['socialVideoNarrationEnabled'] !== false,
+      socialLandscapeVideoUrl: this.stringValue(data['socialLandscapeVideoUrl']),
+      socialLandscapeVideoMimeType: this.stringValue(data['socialLandscapeVideoMimeType']),
+      socialLandscapeVideoUpdatedAt: this.stringValue(data['socialLandscapeVideoUpdatedAt']),
+      socialLandscapeVideoRenderVersion: this.stringValue(data['socialLandscapeVideoRenderVersion']),
+      socialLandscapeVideoDurationSeconds: this.numberValue(data['socialLandscapeVideoDurationSeconds']),
       trailerVideoUrl: this.stringValue(data['trailerVideoUrl']),
       trailerVideoMimeType: this.stringValue(data['trailerVideoMimeType']),
       trailerVideoUpdatedAt: this.stringValue(data['trailerVideoUpdatedAt']),
@@ -330,6 +409,11 @@ export class VideoLibraryService {
         ? data['trailerVideoRatio']
         : 'vertical',
       trailerVideoNarrationEnabled: data['trailerVideoNarrationEnabled'] !== false,
+      trailerLandscapeVideoUrl: this.stringValue(data['trailerLandscapeVideoUrl']),
+      trailerLandscapeVideoMimeType: this.stringValue(data['trailerLandscapeVideoMimeType']),
+      trailerLandscapeVideoUpdatedAt: this.stringValue(data['trailerLandscapeVideoUpdatedAt']),
+      trailerLandscapeVideoRenderVersion: this.stringValue(data['trailerLandscapeVideoRenderVersion']),
+      trailerLandscapeVideoDurationSeconds: this.numberValue(data['trailerLandscapeVideoDurationSeconds']),
     };
   }
 
@@ -387,5 +471,9 @@ export class VideoLibraryService {
 
   private stringValue(value: unknown): string {
     return typeof value === 'string' ? value.trim() : '';
+  }
+
+  private numberValue(value: unknown): number {
+    return typeof value === 'number' && Number.isFinite(value) ? Math.max(0, value) : 0;
   }
 }

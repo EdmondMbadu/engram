@@ -49,6 +49,7 @@ describe('VideoLibraryComponent', () => {
     renderVersion: 'stack-video-v9',
     narrationEnabled: true,
     generatedAt: '2026-08-06T02:00:00.000Z',
+    landscapeVariant: null,
   };
 
   beforeEach(async () => {
@@ -121,6 +122,35 @@ describe('VideoLibraryComponent', () => {
     expect(fixture.nativeElement.querySelector('a[href="/boards"]')).not.toBeNull();
   });
 
+  it('shows both formats and switches the player to landscape', async () => {
+    loadItems.and.resolveTo([{
+      ...item,
+      landscapeVariant: {
+        videoUrl: 'https://example.com/video-landscape.mp4',
+        storagePath: 'users/user-1/video-library/boards/board-1/landscape/latest.mp4',
+        publicStoragePath: '',
+        mimeType: 'video/mp4',
+        ratio: 'landscape',
+        durationSeconds: 42,
+        renderVersion: 'stack-video-v14',
+        generatedAt: '2026-08-06T02:00:00.000Z',
+      },
+    }]);
+    await createComponent();
+
+    expect(fixture.nativeElement.textContent).toContain('2 formats');
+    fixture.nativeElement.querySelector('.video-library-poster').click();
+    fixture.detectChanges();
+    const formatButtons = fixture.nativeElement.querySelectorAll('.video-library-player__formats button');
+    expect(formatButtons.length).toBe(2);
+    expect(formatButtons[1].disabled).toBeFalse();
+
+    formatButtons[1].click();
+    fixture.detectChanges();
+    const player = fixture.nativeElement.querySelector('.video-library-player video') as HTMLVideoElement;
+    expect(player.getAttribute('src')).toBe('https://example.com/video-landscape.mp4');
+  });
+
   it('contains long titles and keeps every video action inside the card', async () => {
     const longTitle = "Avengers Franchise: The Earth's Mightiest Heroes and Their Greatest Battles";
     loadItems.and.resolveTo([{ ...item, sourceTitle: longTitle }]);
@@ -129,13 +159,13 @@ describe('VideoLibraryComponent', () => {
     const title = fixture.nativeElement.querySelector('.video-library-card__heading h3') as HTMLElement;
     const actions = fixture.nativeElement.querySelector('.video-library-actions') as HTMLElement;
     const buttons = actions.querySelectorAll(':scope > button');
-    const download = buttons.item(2) as HTMLElement;
+    const download = actions.querySelector('.video-library-download') as HTMLElement;
     const titleStyle = getComputedStyle(title);
 
     expect(title.textContent).toContain(longTitle);
     expect(titleStyle.overflow).toBe('hidden');
     expect(titleStyle.getPropertyValue('-webkit-line-clamp')).toBe('2');
-    expect(buttons.length).toBe(3);
+    expect(buttons.length).toBe(2);
     expect(download.textContent).toContain('Download');
     expect(download.getBoundingClientRect().right)
       .toBeLessThanOrEqual(actions.getBoundingClientRect().right + 0.5);

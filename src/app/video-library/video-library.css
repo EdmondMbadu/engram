@@ -293,7 +293,8 @@
 }
 
 .video-library-card:focus-within,
-.video-library-card:has(.video-library-details[open]) {
+.video-library-card:has(.video-library-details[open]),
+.video-library-card:has(.video-library-download[open]) {
   position: relative;
   z-index: 20;
 }
@@ -372,6 +373,20 @@
 .video-library-actions button:disabled { cursor: wait; opacity: .55; }
 .video-library-actions .video-library-actions__primary { border-color: var(--accent); background: var(--accent); color: var(--accent-contrast); }
 .video-library-actions .material-symbols-outlined { font-size: .95rem; }
+
+.video-library-download { position: relative; min-width: 0; }
+.video-library-download > summary { display: flex; height: 100%; min-height: 2.35rem; align-items: center; justify-content: center; gap: .22rem; border: 1px solid var(--accent); border-radius: .64rem; background: var(--accent); color: var(--accent-contrast); cursor: pointer; font-size: .67rem; font-weight: 850; list-style: none; }
+.video-library-download > summary::-webkit-details-marker { display: none; }
+.video-library-download > summary .material-symbols-outlined:last-child { font-size: .8rem; }
+.video-library-download[open] > summary { filter: brightness(.96); }
+.video-library-download__panel { position: absolute; z-index: 35; right: 0; bottom: calc(100% + .55rem); display: grid; width: min(18rem, calc(100vw - 3rem)); overflow: hidden; border: 1px solid var(--line); border-radius: .82rem; background: var(--surface); padding: .38rem; box-shadow: 0 22px 55px color-mix(in srgb, var(--text) 20%, transparent); }
+.video-library-actions .video-library-download__panel button { display: grid; min-height: 3.2rem; grid-template-columns: auto minmax(0, 1fr); justify-content: stretch; gap: .6rem; border: 0; border-radius: .55rem; background: transparent; padding: .55rem .6rem; color: var(--text); text-align: left; }
+.video-library-actions .video-library-download__panel button:hover { background: var(--soft-fill); color: var(--accent); }
+.video-library-actions .video-library-download__panel button:disabled { cursor: not-allowed; opacity: .48; }
+.video-library-download__panel button > span:last-child { display: grid; min-width: 0; gap: .12rem; overflow: visible; white-space: normal; }
+.video-library-download__panel strong { font-size: .72rem; font-weight: 900; }
+.video-library-download__panel small { color: var(--muted); font-size: .61rem; font-weight: 700; }
+.video-library-download__panel .video-library-download__both { border-top: 1px solid var(--line); border-radius: 0 0 .55rem .55rem; }
 
 .video-library-details {
   position: relative;
@@ -485,6 +500,11 @@
 .video-library-player header small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .video-library-player header small { margin-top: .15rem; color: rgba(255,255,255,.6); font-size: .7rem; }
 .video-library-player header button { display: grid; width: 2.25rem; height: 2.25rem; flex: none; place-items: center; border-radius: .7rem; background: rgba(255,255,255,.08); }
+.video-library-player__formats { display: flex; justify-content: center; gap: .4rem; border-top: 1px solid rgba(255,255,255,.08); padding: .55rem .8rem; }
+.video-library-player__formats button { display: inline-flex; min-height: 2.2rem; align-items: center; gap: .3rem; border: 1px solid rgba(255,255,255,.14); border-radius: .65rem; padding: .45rem .7rem; color: rgba(255,255,255,.62); font-size: .7rem; font-weight: 850; }
+.video-library-player__formats button:disabled { opacity: .3; }
+.video-library-player__formats .video-library-player__format--active { border-color: #6ee7a5; background: rgba(41,146,92,.22); color: #b8f5d4; }
+.video-library-player__formats .material-symbols-outlined { font-size: 1rem; }
 .video-library-player video { display: block; width: 100%; max-height: 72dvh; background: black; object-fit: contain; }
 .video-library-player footer { display: flex; justify-content: center; gap: .5rem; padding: .8rem; }
 .video-library-player footer button { display: inline-flex; align-items: center; gap: .35rem; border: 1px solid rgba(255,255,255,.16); border-radius: .75rem; padding: .55rem .8rem; color: rgba(255,255,255,.82); font-size: .75rem; font-weight: 850; }

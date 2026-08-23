@@ -122,6 +122,33 @@ function personalWizardDraft(overrides = {}) {
   };
 }
 
+function videoLibraryRecord(overrides = {}) {
+  return {
+    id: 'board_wizard-board-1',
+    owner_user_id: ownerUid,
+    source_type: 'board',
+    video_kind: 'full',
+    source_id: 'wizard-board-1',
+    source_title: 'My saved board',
+    source_route: '/boards/wizard-board-1',
+    source_updated_at_iso: '2026-08-23T00:00:00.000Z',
+    poster_url: '',
+    video_url: 'https://example.com/phone.mp4',
+    storage_path: 'users/board-owner/video-library/boards/wizard-board-1/full/vertical/render.mp4',
+    public_storage_path: '',
+    public_share_url: '',
+    mime_type: 'video/mp4',
+    ratio: 'vertical',
+    duration_seconds: 24,
+    render_version: 'stack-video-v14',
+    narration_enabled: true,
+    generated_at_iso: '2026-08-23T00:00:00.000Z',
+    updated_at_iso: '2026-08-23T00:00:00.000Z',
+    server_updated_at: serverTimestamp(),
+    ...overrides,
+  };
+}
+
 before(async () => {
   testEnvironment = await initializeTestEnvironment({
     projectId,
@@ -322,6 +349,37 @@ test('legacy wizard drafts remain writable without media preferences', async () 
   await assertSucceeds(setDoc(
     doc(database, 'users', ownerUid, 'board_wizard_drafts', 'media-draft-legacy'),
     legacyDraft,
+  ));
+});
+
+test('video library accepts a complete landscape variant and remains compatible with older records', async () => {
+  const database = testEnvironment.authenticatedContext(ownerUid).firestore();
+  const collectionPath = ['users', ownerUid, 'videos'];
+  await assertSucceeds(setDoc(
+    doc(database, ...collectionPath, 'board_wizard-board-1'),
+    videoLibraryRecord(),
+  ));
+  await assertSucceeds(setDoc(
+    doc(database, ...collectionPath, 'board_wizard-board-2'),
+    videoLibraryRecord({
+      id: 'board_wizard-board-2',
+      source_id: 'wizard-board-2',
+      landscape_video_url: 'https://example.com/landscape.mp4',
+      landscape_storage_path: 'users/board-owner/video-library/boards/wizard-board-2/full/landscape/render.mp4',
+      landscape_public_storage_path: '',
+      landscape_mime_type: 'video/mp4',
+      landscape_duration_seconds: 24,
+      landscape_render_version: 'stack-video-v14',
+      landscape_generated_at_iso: '2026-08-23T00:00:00.000Z',
+    }),
+  ));
+  await assertFails(setDoc(
+    doc(database, ...collectionPath, 'board_wizard-board-3'),
+    videoLibraryRecord({
+      id: 'board_wizard-board-3',
+      source_id: 'wizard-board-3',
+      landscape_video_url: 'https://example.com/incomplete.mp4',
+    }),
   ));
 });
 

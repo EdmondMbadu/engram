@@ -4,6 +4,17 @@ export type VideoLibraryKind = 'full' | 'trailer';
 
 export const LIVINGWIKI_PUBLIC_APP_URL = 'https://www.livingwiki.com';
 
+export interface VideoLibraryVariant {
+  videoUrl: string;
+  storagePath: string;
+  publicStoragePath: string;
+  mimeType: string;
+  ratio: VideoLibraryRatio;
+  durationSeconds: number;
+  renderVersion: string;
+  generatedAt: string;
+}
+
 export interface VideoLibraryItem {
   id: string;
   ownerUserId: string;
@@ -26,6 +37,17 @@ export interface VideoLibraryItem {
   renderVersion: string;
   narrationEnabled: boolean;
   generatedAt: string;
+  landscapeVariant: VideoLibraryVariant | null;
+}
+
+export interface SaveBoardVideoVariantInput {
+  blob: Blob;
+  extension: 'mp4' | 'webm';
+  mimeType: string;
+  ratio: VideoLibraryRatio;
+  durationSeconds: number;
+  renderVersion: string;
+  publicStoragePath?: string;
 }
 
 export interface SaveLatestBoardVideoInput {
@@ -44,6 +66,7 @@ export interface SaveLatestBoardVideoInput {
   narrationEnabled: boolean;
   publicStoragePath?: string;
   publicShareUrl?: string;
+  landscapeVariant?: SaveBoardVideoVariantInput;
 }
 
 export type VideoLibraryRecord = {
@@ -66,6 +89,13 @@ export type VideoLibraryRecord = {
   render_version: string;
   narration_enabled: boolean;
   generated_at_iso: string;
+  landscape_video_url: string;
+  landscape_storage_path: string;
+  landscape_public_storage_path: string;
+  landscape_mime_type: string;
+  landscape_duration_seconds: number;
+  landscape_render_version: string;
+  landscape_generated_at_iso: string;
   updated_at_iso: string;
   server_updated_at?: unknown;
 };
@@ -102,6 +132,17 @@ export function videoLibraryItemFromRecord(
   if (!sourceId || !sourceTitle || !videoUrl) {
     return null;
   }
+  const landscapeVideoUrl = stringValue(value['landscape_video_url'], 2500);
+  const landscapeVariant: VideoLibraryVariant | null = landscapeVideoUrl ? {
+    videoUrl: landscapeVideoUrl,
+    storagePath: stringValue(value['landscape_storage_path'], 500),
+    publicStoragePath: stringValue(value['landscape_public_storage_path'], 500),
+    mimeType: stringValue(value['landscape_mime_type'], 120) || 'video/mp4',
+    ratio: 'landscape',
+    durationSeconds: finiteNumber(value['landscape_duration_seconds']),
+    renderVersion: stringValue(value['landscape_render_version'], 64),
+    generatedAt: stringValue(value['landscape_generated_at_iso'], 80),
+  } : null;
   return {
     id,
     ownerUserId: stringValue(value['owner_user_id'], 128),
@@ -124,6 +165,7 @@ export function videoLibraryItemFromRecord(
     renderVersion: stringValue(value['render_version'], 64),
     narrationEnabled: value['narration_enabled'] !== false,
     generatedAt: stringValue(value['generated_at_iso'], 80),
+    landscapeVariant,
   };
 }
 

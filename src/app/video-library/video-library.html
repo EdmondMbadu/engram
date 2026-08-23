@@ -29,8 +29,8 @@
             <div class="video-library-hero__body">
               <p class="video-library-eyebrow" i18n>Video library</p>
               <h1 i18n>My Videos</h1>
-              <p i18n>
-                The latest video from each board is saved here automatically. Regenerating replaces the previous version without creating duplicates.
+              <p>
+                Every finished video is saved in phone and landscape sizes. Regenerating replaces the previous versions without creating duplicates.
               </p>
               <div class="video-library-hero__stats" aria-label="Video library summary" i18n-aria-label>
                 <span><strong>{{ items().length }}</strong> <span i18n>saved videos</span></span>
@@ -149,7 +149,7 @@
                       </div>
 
                       <div class="video-library-meta">
-                        <span><span class="material-symbols-outlined">aspect_ratio</span>{{ ratioLabel(item) }}</span>
+                        <span><span class="material-symbols-outlined">aspect_ratio</span>{{ formatCount(item) }} {{ formatCount(item) === 1 ? 'format' : 'formats' }}</span>
                         <i aria-hidden="true"></i>
                         <span><span class="material-symbols-outlined">{{ item.narrationEnabled ? 'record_voice_over' : 'music_note' }}</span>{{ item.narrationEnabled ? 'Narrated' : 'No narration' }}</span>
                       </div>
@@ -169,9 +169,20 @@
                         <button type="button" (click)="share(item)" [disabled]="sharingId() === item.id">
                           <span class="material-symbols-outlined">ios_share</span><span>{{ sharingId() === item.id ? 'Preparing…' : 'Share' }}</span>
                         </button>
-                        <button type="button" (click)="download(item)">
-                          <span class="material-symbols-outlined">download</span><span i18n>Download</span>
-                        </button>
+                        <details class="video-library-download">
+                          <summary><span class="material-symbols-outlined">download</span><span i18n>Download</span><span class="material-symbols-outlined">expand_more</span></summary>
+                          <div class="video-library-download__panel">
+                            <button type="button" (click)="download(item, 'vertical')">
+                              <span class="material-symbols-outlined">stay_current_portrait</span><span><strong>Phone · 9:16</strong><small>TikTok, Reels, Shorts</small></span>
+                            </button>
+                            <button type="button" [disabled]="!item.landscapeVariant" (click)="download(item, 'landscape')">
+                              <span class="material-symbols-outlined">desktop_windows</span><span><strong>Landscape · 16:9</strong><small>{{ item.landscapeVariant ? 'YouTube, LinkedIn, Desktop' : 'Create this version from the board' }}</small></span>
+                            </button>
+                            @if (item.landscapeVariant) {
+                              <button type="button" class="video-library-download__both" (click)="downloadBoth(item)"><span class="material-symbols-outlined">download_for_offline</span><span><strong>Download both</strong></span></button>
+                            }
+                          </div>
+                        </details>
                         <details class="video-library-details">
                           <summary aria-label="More actions" i18n-aria-label title="More actions" i18n-title>
                             <span class="material-symbols-outlined">more_horiz</span>
@@ -239,16 +250,23 @@
       <header>
         <div class="min-w-0">
           <strong>{{ video.sourceTitle }}</strong>
-          <small>{{ ratioLabel(video) }} · {{ updatedLabel(video) }}</small>
+          <small>{{ formatCount(video) }} {{ formatCount(video) === 1 ? 'format' : 'formats' }} · {{ updatedLabel(video) }}</small>
         </div>
         <button type="button" (click)="closePlayer()" aria-label="Close video" i18n-aria-label>
           <span class="material-symbols-outlined">close</span>
         </button>
       </header>
-      <video [src]="video.videoUrl" [poster]="video.posterUrl" playsinline controls autoplay preload="metadata"></video>
+      <div class="video-library-player__formats" role="group" aria-label="Choose video size">
+        <button type="button" [class.video-library-player__format--active]="selectedPlayerRatio() === 'vertical'" (click)="selectPlayerRatio('vertical')"><span class="material-symbols-outlined">stay_current_portrait</span>Phone · 9:16</button>
+        <button type="button" [disabled]="!video.landscapeVariant" [class.video-library-player__format--active]="selectedPlayerRatio() === 'landscape'" (click)="selectPlayerRatio('landscape')"><span class="material-symbols-outlined">desktop_windows</span>Landscape · 16:9</button>
+      </div>
+      <video [src]="videoVariant(video, selectedPlayerRatio())?.videoUrl" [poster]="video.posterUrl" playsinline controls autoplay preload="metadata"></video>
       <footer>
-        <button type="button" (click)="share(video)"><span class="material-symbols-outlined">ios_share</span><span i18n>Share</span></button>
-        <button type="button" (click)="download(video)"><span class="material-symbols-outlined">download</span><span i18n>Download</span></button>
+        <button type="button" (click)="share(video, selectedPlayerRatio())"><span class="material-symbols-outlined">ios_share</span><span>Share {{ selectedPlayerRatio() === 'landscape' ? 'landscape' : 'phone' }}</span></button>
+        <button type="button" (click)="download(video, selectedPlayerRatio())"><span class="material-symbols-outlined">download</span><span>Download {{ selectedPlayerRatio() === 'landscape' ? 'landscape' : 'phone' }}</span></button>
+        @if (video.landscapeVariant) {
+          <button type="button" (click)="downloadBoth(video)"><span class="material-symbols-outlined">download_for_offline</span><span>Download both</span></button>
+        }
         @if (video.publicShareUrl) {
           <button type="button" (click)="copyPublicLink(video)"><span class="material-symbols-outlined">content_copy</span><span i18n>Copy public link</span></button>
         }

@@ -28,6 +28,12 @@ describe('video library models', () => {
       duration_seconds: 12.5,
       narration_enabled: false,
       generated_at_iso: '2026-08-06T00:00:00.000Z',
+      landscape_video_url: 'https://example.com/video-landscape.mp4',
+      landscape_storage_path: 'users/user-1/video-library/boards/board-123/full/landscape/render.mp4',
+      landscape_mime_type: 'video/mp4',
+      landscape_duration_seconds: 12.5,
+      landscape_render_version: 'stack-video-v14',
+      landscape_generated_at_iso: '2026-08-06T00:00:00.000Z',
     });
 
     expect(item?.sourceRoute).toBe('/boards/board-123');
@@ -35,6 +41,11 @@ describe('video library models', () => {
     expect(item?.durationSeconds).toBe(12.5);
     expect(item?.narrationEnabled).toBeFalse();
     expect(item?.videoKind).toBe('full');
+    expect(item?.landscapeVariant).toEqual(jasmine.objectContaining({
+      videoUrl: 'https://example.com/video-landscape.mp4',
+      ratio: 'landscape',
+      durationSeconds: 12.5,
+    }));
   });
 
   it('keeps a Board Trailer separate from the full board video', () => {
@@ -46,6 +57,7 @@ describe('video library models', () => {
       video_url: 'https://example.com/trailer.mp4',
     });
     expect(item?.videoKind).toBe('trailer');
+    expect(item?.landscapeVariant).toBeNull();
   });
 
   it('rejects records without a usable video', () => {

@@ -120,6 +120,80 @@ service cloud.firestore {
         );
     }
 
+    function hasValidLandscapeVideoFields(data) {
+      return (
+          !data.keys().hasAny(['socialLandscapeVideoUrl'])
+          || (data.socialLandscapeVideoUrl is string && data.socialLandscapeVideoUrl.size() <= 2500)
+        )
+        && (
+          !data.keys().hasAny(['socialLandscapeVideoMimeType'])
+          || (data.socialLandscapeVideoMimeType is string && data.socialLandscapeVideoMimeType.size() <= 120)
+        )
+        && (
+          !data.keys().hasAny(['socialLandscapeVideoUpdatedAt'])
+          || (data.socialLandscapeVideoUpdatedAt is string && data.socialLandscapeVideoUpdatedAt.size() <= 80)
+        )
+        && (
+          !data.keys().hasAny(['socialLandscapeVideoRenderVersion'])
+          || (data.socialLandscapeVideoRenderVersion is string && data.socialLandscapeVideoRenderVersion.size() <= 64)
+        )
+        && (
+          !data.keys().hasAny(['socialLandscapeVideoDurationSeconds'])
+          || (data.socialLandscapeVideoDurationSeconds is number && data.socialLandscapeVideoDurationSeconds >= 0)
+        )
+        && (
+          !data.keys().hasAny(['trailerLandscapeVideoUrl'])
+          || (data.trailerLandscapeVideoUrl is string && data.trailerLandscapeVideoUrl.size() <= 2500)
+        )
+        && (
+          !data.keys().hasAny(['trailerLandscapeVideoMimeType'])
+          || (data.trailerLandscapeVideoMimeType is string && data.trailerLandscapeVideoMimeType.size() <= 120)
+        )
+        && (
+          !data.keys().hasAny(['trailerLandscapeVideoUpdatedAt'])
+          || (data.trailerLandscapeVideoUpdatedAt is string && data.trailerLandscapeVideoUpdatedAt.size() <= 80)
+        )
+        && (
+          !data.keys().hasAny(['trailerLandscapeVideoRenderVersion'])
+          || (data.trailerLandscapeVideoRenderVersion is string && data.trailerLandscapeVideoRenderVersion.size() <= 64)
+        )
+        && (
+          !data.keys().hasAny(['trailerLandscapeVideoDurationSeconds'])
+          || (data.trailerLandscapeVideoDurationSeconds is number && data.trailerLandscapeVideoDurationSeconds >= 0)
+        );
+    }
+
+    function hasValidLibraryLandscapeVariant(data) {
+      let fields = [
+        'landscape_video_url',
+        'landscape_storage_path',
+        'landscape_public_storage_path',
+        'landscape_mime_type',
+        'landscape_duration_seconds',
+        'landscape_render_version',
+        'landscape_generated_at_iso'
+      ];
+      return !data.keys().hasAny(fields)
+        || (
+          data.keys().hasAll(fields)
+          && data.landscape_video_url is string
+          && data.landscape_video_url.size() <= 2500
+          && data.landscape_storage_path is string
+          && data.landscape_storage_path.size() <= 500
+          && data.landscape_public_storage_path is string
+          && data.landscape_public_storage_path.size() <= 500
+          && data.landscape_mime_type is string
+          && data.landscape_mime_type.size() <= 120
+          && (data.landscape_video_url == '' || data.landscape_mime_type.matches('video/.*'))
+          && data.landscape_duration_seconds is number
+          && data.landscape_duration_seconds >= 0
+          && data.landscape_render_version is string
+          && data.landscape_render_version.size() <= 64
+          && data.landscape_generated_at_iso is string
+          && data.landscape_generated_at_iso.size() <= 80
+        );
+    }
+
     function personalBoardKeys() {
       return [
         'id',
@@ -155,6 +229,11 @@ service cloud.firestore {
         'socialVideoAudioTrackId',
         'socialVideoAudioVolume',
         'socialVideoNarrationEnabled',
+        'socialLandscapeVideoUrl',
+        'socialLandscapeVideoMimeType',
+        'socialLandscapeVideoUpdatedAt',
+        'socialLandscapeVideoRenderVersion',
+        'socialLandscapeVideoDurationSeconds',
         'socialVideoClosingHeadline',
         'socialVideoClosingMessage',
         'socialVideoClosingShowQrCode',
@@ -173,6 +252,11 @@ service cloud.firestore {
         'trailerVideoSourceFingerprint',
         'trailerVideoCardIds',
         'trailerVideoDurationSeconds',
+        'trailerLandscapeVideoUrl',
+        'trailerLandscapeVideoMimeType',
+        'trailerLandscapeVideoUpdatedAt',
+        'trailerLandscapeVideoRenderVersion',
+        'trailerLandscapeVideoDurationSeconds',
         'narrationStyle',
         'narrationSecondsPerCard',
         'stackNarratorVoiceId',
@@ -487,6 +571,13 @@ service cloud.firestore {
           'render_version',
           'narration_enabled',
           'generated_at_iso',
+          'landscape_video_url',
+          'landscape_storage_path',
+          'landscape_public_storage_path',
+          'landscape_mime_type',
+          'landscape_duration_seconds',
+          'landscape_render_version',
+          'landscape_generated_at_iso',
           'updated_at_iso',
           'server_updated_at'
         ])
@@ -526,6 +617,7 @@ service cloud.firestore {
         && request.resource.data.narration_enabled is bool
         && request.resource.data.generated_at_iso is string
         && request.resource.data.generated_at_iso.size() <= 80
+        && hasValidLibraryLandscapeVariant(request.resource.data)
         && request.resource.data.updated_at_iso is string
         && request.resource.data.updated_at_iso.size() <= 80
         && request.resource.data.server_updated_at == request.time;
@@ -966,6 +1058,11 @@ service cloud.firestore {
           'socialVideoAudioTrackId',
           'socialVideoAudioVolume',
           'socialVideoNarrationEnabled',
+          'socialLandscapeVideoUrl',
+          'socialLandscapeVideoMimeType',
+          'socialLandscapeVideoUpdatedAt',
+          'socialLandscapeVideoRenderVersion',
+          'socialLandscapeVideoDurationSeconds',
           'socialVideoClosingHeadline',
           'socialVideoClosingMessage',
           'socialVideoClosingShowQrCode',
@@ -984,6 +1081,11 @@ service cloud.firestore {
           'trailerVideoSourceFingerprint',
           'trailerVideoCardIds',
           'trailerVideoDurationSeconds',
+          'trailerLandscapeVideoUrl',
+          'trailerLandscapeVideoMimeType',
+          'trailerLandscapeVideoUpdatedAt',
+          'trailerLandscapeVideoRenderVersion',
+          'trailerLandscapeVideoDurationSeconds',
           'narrationStyle',
           'narrationSecondsPerCard',
           'stackNarratorVoiceId',
@@ -1082,6 +1184,11 @@ service cloud.firestore {
           'trailerVideoSourceFingerprint',
           'trailerVideoCardIds',
           'trailerVideoDurationSeconds',
+          'trailerLandscapeVideoUrl',
+          'trailerLandscapeVideoMimeType',
+          'trailerLandscapeVideoUpdatedAt',
+          'trailerLandscapeVideoRenderVersion',
+          'trailerLandscapeVideoDurationSeconds',
           'trailerVideoScriptUpdatedAt',
           'stackNarratorVoiceId',
           'updated_at_iso',
@@ -1113,6 +1220,7 @@ service cloud.firestore {
         && request.resource.data.trailerVideoDurationSeconds is number
         && request.resource.data.trailerVideoDurationSeconds >= 0
         && request.resource.data.trailerVideoDurationSeconds <= 30
+        && hasValidLandscapeVideoFields(request.resource.data)
         && isValidStackNarratorVoiceId(request.resource.data.stackNarratorVoiceId)
         && request.resource.data.updated_at_iso is string
         && request.resource.data.server_updated_at == request.time;
@@ -1168,6 +1276,11 @@ service cloud.firestore {
           'socialVideoAudioTrackId',
           'socialVideoAudioVolume',
           'socialVideoNarrationEnabled',
+          'socialLandscapeVideoUrl',
+          'socialLandscapeVideoMimeType',
+          'socialLandscapeVideoUpdatedAt',
+          'socialLandscapeVideoRenderVersion',
+          'socialLandscapeVideoDurationSeconds',
           'socialVideoClosingHeadline',
           'socialVideoClosingMessage',
           'socialVideoClosingShowQrCode',
@@ -1186,6 +1299,11 @@ service cloud.firestore {
           'trailerVideoSourceFingerprint',
           'trailerVideoCardIds',
           'trailerVideoDurationSeconds',
+          'trailerLandscapeVideoUrl',
+          'trailerLandscapeVideoMimeType',
+          'trailerLandscapeVideoUpdatedAt',
+          'trailerLandscapeVideoRenderVersion',
+          'trailerLandscapeVideoDurationSeconds',
           'narrationStyle',
           'narrationSecondsPerCard',
           'stackNarratorVoiceId',

@@ -7573,7 +7573,7 @@
                     <span class="material-symbols-outlined">smart_display</span>
                     <p>
                       <strong i18n>Native social video</strong>
-                      <span i18n>Images and your selected background music are embedded in the downloaded video.</span>
+                      <span>Phone and landscape versions include your images, captions, and selected background music.</span>
                     </p>
                   </div>
                   @if (stackShareMessage()) {
@@ -7918,10 +7918,24 @@
                         @if (!stackTrailerNarrationEnabled()) { <span class="stack-share-sheet__narration-check material-symbols-outlined">check_circle</span> }
                       </button>
                     </div>
+                    <div class="stack-share-formats" aria-label="Included video sizes">
+                      <div class="stack-share-formats__head"><strong>Included video sizes</strong><small>Both included</small></div>
+                      <div class="stack-share-formats__grid">
+                        <span><span class="material-symbols-outlined">stay_current_portrait</span><span><strong>Phone · 9:16</strong><small>TikTok · Reels · Shorts</small></span><span class="material-symbols-outlined">check_circle</span></span>
+                        <span><span class="material-symbols-outlined">desktop_windows</span><span><strong>Landscape · 16:9</strong><small>YouTube · LinkedIn · Desktop</small></span><span class="material-symbols-outlined">check_circle</span></span>
+                      </div>
+                      @if (stackVideoExporting()) {
+                        <div class="stack-share-formats__progress" aria-live="polite">
+                          <span><strong>Phone · 9:16</strong><small>{{ stackVideoVerticalProgress() >= 100 ? 'Ready' : stackVideoRenderingRatio() === 'vertical' ? 'Rendering ' + stackVideoVerticalProgress() + '%' : 'Waiting' }}</small></span>
+                          <span><strong>Landscape · 16:9</strong><small>{{ stackVideoLandscapeProgress() >= 100 ? 'Ready' : stackVideoRenderingRatio() === 'landscape' ? 'Rendering ' + stackVideoLandscapeProgress() + '%' : 'Waiting' }}</small></span>
+                        </div>
+                      }
+                    </div>
                     <button type="button" class="stack-share-sheet__primary stack-share-sheet__primary--trailer" [disabled]="stackVideoExporting() || !stackSelectedCards().length" (click)="publishStackTrailer(board)">
                       <span class="material-symbols-outlined">{{ stackVideoExporting() ? 'progress_activity' : 'auto_awesome' }}</span>
-                      {{ stackVideoExporting() ? 'Creating trailer ' + stackVideoProgress() + '%' : 'Create Board Trailer' }}
+                      {{ stackVideoExporting() ? 'Creating 2 formats · ' + stackVideoProgress() + '%' : 'Create Board Trailer in 2 formats' }}
                     </button>
+                    <small class="stack-share-formats__promise">One script, two ready-to-share videos.</small>
                   } @else {
                     <div class="stack-share-sheet__copy-gate">
                       <span class="material-symbols-outlined">content_copy</span>
@@ -7990,10 +8004,24 @@
                       }
                     </button>
                     </div>
+                    <div class="stack-share-formats" aria-label="Included video sizes">
+                      <div class="stack-share-formats__head"><strong>Included video sizes</strong><small>Both included</small></div>
+                      <div class="stack-share-formats__grid">
+                        <span><span class="material-symbols-outlined">stay_current_portrait</span><span><strong>Phone · 9:16</strong><small>TikTok · Reels · Shorts</small></span><span class="material-symbols-outlined">check_circle</span></span>
+                        <span><span class="material-symbols-outlined">desktop_windows</span><span><strong>Landscape · 16:9</strong><small>YouTube · LinkedIn · Desktop</small></span><span class="material-symbols-outlined">check_circle</span></span>
+                      </div>
+                      @if (stackVideoExporting()) {
+                        <div class="stack-share-formats__progress" aria-live="polite">
+                          <span><strong>Phone · 9:16</strong><small>{{ stackVideoVerticalProgress() >= 100 ? 'Ready' : stackVideoRenderingRatio() === 'vertical' ? 'Rendering ' + stackVideoVerticalProgress() + '%' : 'Waiting' }}</small></span>
+                          <span><strong>Landscape · 16:9</strong><small>{{ stackVideoLandscapeProgress() >= 100 ? 'Ready' : stackVideoRenderingRatio() === 'landscape' ? 'Rendering ' + stackVideoLandscapeProgress() + '%' : 'Waiting' }}</small></span>
+                        </div>
+                      }
+                    </div>
                     <button type="button" class="stack-share-sheet__primary" [disabled]="stackVideoExporting()" (click)="publishStackVideo(board)">
                       <span class="material-symbols-outlined">{{ stackVideoExporting() ? 'progress_activity' : 'movie' }}</span>
-                      {{ stackVideoExporting() ? 'Creating video ' + stackVideoProgress() + '%' : 'Create video' }}
+                      {{ stackVideoExporting() ? 'Creating 2 formats · ' + stackVideoProgress() + '%' : 'Create video in 2 formats' }}
                     </button>
+                    <small class="stack-share-formats__promise">Same cards, captions, music, and voiceover in both sizes.</small>
                   } @else {
                     <div class="stack-share-sheet__copy-gate">
                       <span class="material-symbols-outlined">content_copy</span>
@@ -8018,50 +8046,48 @@
                   }
                 </div>
               } @else {
-                @if (stackShareMode() === 'trailer') {
-                  <div class="stack-share-sheet__video-preview stack-share-sheet__video-preview--trailer">
-                    <video [src]="board.trailerVideoUrl" [poster]="stackCoverImage(board)" playsinline controls preload="metadata"></video>
-                    <span><span class="material-symbols-outlined">check_circle</span> Board Trailer ready · {{ board.trailerVideoDurationSeconds || '15–30' }} sec</span>
-                  </div>
-                  <div class="stack-share-sheet__title">
-                    <p>Share the hook</p>
-                    <span>Use this teaser as native social video, then point people to the full board.</span>
-                  </div>
-                  @if (!trailerVideoIsCurrent(board) && canEditBoard(board)) {
-                    <button type="button" class="stack-share-sheet__primary stack-share-sheet__primary--trailer" [disabled]="stackVideoExporting()" (click)="publishStackTrailer(board)">
-                      <span class="material-symbols-outlined">refresh</span>
-                      {{ stackVideoExporting() ? 'Updating trailer ' + stackVideoProgress() + '%' : 'Update Board Trailer' }}
-                    </button>
-                  } @else {
-                    <button type="button" class="stack-share-sheet__primary stack-share-sheet__primary--trailer" [disabled]="stackPublishedTrailerLoading()" (click)="sharePublishedStackTrailer(board)">
-                      <span class="material-symbols-outlined">ios_share</span>
-                      {{ stackPublishedTrailerLoading() ? 'Preparing trailer…' : stackPublishedTrailerReady() ? 'Share trailer file' : 'Prepare trailer file' }}
-                    </button>
-                  }
-                } @else if (stackShareMode() === 'video') {
-                  <div class="stack-share-sheet__video-preview">
-                    <video [src]="board.socialVideoUrl" [poster]="stackCoverImage(board)" playsinline controls preload="metadata"></video>
-                    <span i18n><span class="material-symbols-outlined">check_circle</span> Permanent video ready</span>
-                  </div>
-                  <div class="stack-share-sheet__title">
-                    <p i18n>Share the video</p>
-                    <span i18n>Share the MP4 for native playback, or open a social app directly with the video link.</span>
-                  </div>
-                  @if (!socialVideoIsCurrent(board) && canEditBoard(board)) {
-                    <button type="button" class="stack-share-sheet__primary" [disabled]="stackVideoExporting()" (click)="publishStackVideo(board)">
-                      <span class="material-symbols-outlined">refresh</span>
-                      @if (stackVideoExporting()) {
-                        <span>{{ 'Updating video ' + stackVideoProgress() + '%' }}</span>
-                      } @else {
-                        <span i18n>Update video first</span>
+                @if (stackShareMode() === 'trailer' || stackShareMode() === 'video') {
+                  <div class="stack-share-pair">
+                    <div class="stack-share-pair__heading">
+                      <div><p>{{ stackShareMode() === 'trailer' ? 'Board Trailer ready' : 'Full video ready' }}</p><span>Same cards, captions, music, and voiceover.</span></div>
+                      <strong><span class="material-symbols-outlined">check_circle</span>2 formats</strong>
+                    </div>
+                    <div class="stack-share-pair__layout">
+                      <div class="stack-share-pair__preview">
+                        <div class="stack-share-pair__tabs" role="group" aria-label="Preview video size">
+                          <button type="button" [class.stack-share-pair__tab--active]="stackSharePreviewRatio() === 'vertical'" (click)="setStackSharePreviewRatio('vertical')"><span class="material-symbols-outlined">stay_current_portrait</span>Phone · 9:16</button>
+                          <button type="button" [class.stack-share-pair__tab--active]="stackSharePreviewRatio() === 'landscape'" [disabled]="!(stackShareMode() === 'trailer' ? board.trailerLandscapeVideoUrl : board.socialLandscapeVideoUrl)" (click)="setStackSharePreviewRatio('landscape')"><span class="material-symbols-outlined">desktop_windows</span>Landscape · 16:9</button>
+                        </div>
+                        <div class="stack-share-pair__video" [class.stack-share-pair__video--landscape]="stackSharePreviewRatio() === 'landscape'">
+                          <video [src]="publishedStackVideoVariant(board, stackShareMode() === 'trailer' ? 'trailer' : 'full', stackSharePreviewRatio())?.url" [poster]="stackCoverImage(board)" playsinline controls preload="metadata"></video>
+                        </div>
+                      </div>
+                      <div class="stack-share-pair__assets">
+                        <div class="stack-share-pair__asset">
+                          <span class="material-symbols-outlined">stay_current_portrait</span>
+                          <span><strong>Phone · 9:16</strong><small>TikTok · Reels · Shorts</small><em><span class="material-symbols-outlined">check_circle</span>Ready</em></span>
+                          <div>
+                            <button type="button" (click)="stackShareMode() === 'trailer' ? sharePublishedStackTrailer(board, 'more', 'vertical') : sharePublishedStackVideo(board, 'more', 'vertical')"><span class="material-symbols-outlined">ios_share</span>Share</button>
+                            <button type="button" class="stack-share-pair__download" (click)="downloadPublishedStackVariant(board, stackShareMode() === 'trailer' ? 'trailer' : 'full', 'vertical')"><span class="material-symbols-outlined">download</span>Download</button>
+                          </div>
+                        </div>
+                        <div class="stack-share-pair__asset" [class.stack-share-pair__asset--missing]="!(stackShareMode() === 'trailer' ? board.trailerLandscapeVideoUrl : board.socialLandscapeVideoUrl)">
+                          <span class="material-symbols-outlined">desktop_windows</span>
+                          <span><strong>Landscape · 16:9</strong><small>YouTube · LinkedIn · Desktop</small><em><span class="material-symbols-outlined">{{ (stackShareMode() === 'trailer' ? board.trailerLandscapeVideoUrl : board.socialLandscapeVideoUrl) ? 'check_circle' : 'warning' }}</span>{{ (stackShareMode() === 'trailer' ? board.trailerLandscapeVideoUrl : board.socialLandscapeVideoUrl) ? 'Ready' : 'Needs update' }}</em></span>
+                          <div>
+                            <button type="button" [disabled]="!(stackShareMode() === 'trailer' ? board.trailerLandscapeVideoUrl : board.socialLandscapeVideoUrl)" (click)="stackShareMode() === 'trailer' ? sharePublishedStackTrailer(board, 'more', 'landscape') : sharePublishedStackVideo(board, 'more', 'landscape')"><span class="material-symbols-outlined">ios_share</span>Share</button>
+                            <button type="button" class="stack-share-pair__download" [disabled]="!(stackShareMode() === 'trailer' ? board.trailerLandscapeVideoUrl : board.socialLandscapeVideoUrl)" (click)="downloadPublishedStackVariant(board, stackShareMode() === 'trailer' ? 'trailer' : 'full', 'landscape')"><span class="material-symbols-outlined">download</span>Download</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="stack-share-pair__footer">
+                      <button type="button" [disabled]="!(stackShareMode() === 'trailer' ? board.trailerLandscapeVideoUrl : board.socialLandscapeVideoUrl)" (click)="downloadBothPublishedStackVariants(board, stackShareMode() === 'trailer' ? 'trailer' : 'full')"><span class="material-symbols-outlined">download</span>Download both</button>
+                      @if ((stackShareMode() === 'trailer' ? !trailerVideoIsCurrent(board) : !socialVideoIsCurrent(board)) && canEditBoard(board)) {
+                        <button type="button" class="stack-share-pair__update" [disabled]="stackVideoExporting()" (click)="stackShareMode() === 'trailer' ? publishStackTrailer(board) : publishStackVideo(board)"><span class="material-symbols-outlined">refresh</span>{{ stackVideoExporting() ? 'Updating 2 formats · ' + stackVideoProgress() + '%' : 'Update both versions' }}</button>
                       }
-                    </button>
-                  } @else {
-                    <button type="button" class="stack-share-sheet__primary" [disabled]="stackPublishedVideoLoading()" (click)="sharePublishedStackVideo(board)">
-                      <span class="material-symbols-outlined">ios_share</span>
-                      {{ stackPublishedVideoLoading() ? 'Preparing video…' : stackPublishedVideoReady() ? 'Share video file' : 'Prepare video file' }}
-                    </button>
-                  }
+                    </div>
+                  </div>
                 } @else {
                   <div class="stack-share-sheet__live-preview">
                     @if (stackCoverImage(board)) {
@@ -8112,8 +8138,8 @@
                   @if (board.trailerVideoUrl) {
                     <button type="button" (click)="copyTrailerVideoFileUrl(board)"><span class="material-symbols-outlined">movie_filter</span> Copy trailer MP4</button>
                   }
-                  @if (canEditBoard(board)) {
-                    <button type="button" [disabled]="stackVideoExporting()" (click)="shareStackTo('download')" i18n><span class="material-symbols-outlined">download</span> Download video</button>
+                  @if (canEditBoard(board) && stackShareMode() !== 'live' && (board.socialVideoUrl || board.trailerVideoUrl)) {
+                    <button type="button" [disabled]="stackVideoExporting()" (click)="downloadBothPublishedStackVariants(board, stackShareMode() === 'trailer' ? 'trailer' : 'full')"><span class="material-symbols-outlined">download</span> Download both formats</button>
                   }
                 </div>
               </details>

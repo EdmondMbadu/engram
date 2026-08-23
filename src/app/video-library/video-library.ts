@@ -13,6 +13,7 @@ import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sideba
 import {
   videoLibraryItemIsCurrent,
   type VideoLibraryItem,
+  type VideoLibraryVariant,
 } from './video-library.models';
 import { VideoLibraryService } from './video-library.service';
 
@@ -43,6 +44,7 @@ export class VideoLibraryComponent {
   readonly search = signal('');
   readonly sort = signal<VideoLibrarySort>('newest');
   readonly selectedVideo = signal<VideoLibraryItem | null>(null);
+  readonly selectedPlayerRatio = signal<'vertical' | 'landscape'>('vertical');
   readonly deleteCandidate = signal<VideoLibraryItem | null>(null);
   readonly deletingId = signal<string | null>(null);
   readonly sharingId = signal<string | null>(null);
@@ -113,8 +115,10 @@ export class VideoLibraryComponent {
     this.visibleLimit.update((current) => nextIncrementalLimit(current, VIDEO_LIBRARY_PAGE_SIZE));
   }
 
-  play(item: VideoLibraryItem): void {
+  play(item: VideoLibraryItem, ratio: 'vertical' | 'landscape' = 'vertical'): void {
+    if (ratio === 'landscape' && !item.landscapeVariant) return;
     this.selectedVideo.set(item);
+    this.selectedPlayerRatio.set(ratio);
   }
 
   closePlayer(): void {
@@ -126,17 +130,25 @@ export class VideoLibraryComponent {
     await this.router.navigate(['/boards', item.sourceId], { queryParams: { share: 'video' } });
   }
 
-  async share(item: VideoLibraryItem): Promise<void> {
+  selectPlayerRatio(ratio: 'vertical' | 'landscape'): void {
+    const item = this.selectedVideo();
+    if (!item || (ratio === 'landscape' && !item.landscapeVariant)) return;
+    this.selectedPlayerRatio.set(ratio);
+  }
+
+  async share(item: VideoLibraryItem, ratio: 'vertical' | 'landscape' = 'vertical'): Promise<void> {
     if (this.sharingId()) return;
+    const variant = this.videoVariant(item, ratio);
+    if (!variant) return;
     this.sharingId.set(item.id);
     this.message.set(null);
     try {
-      const response = await fetch(item.videoUrl);
+      const response = await fetch(variant.videoUrl);
       if (!response.ok) throw new Error('The video file could not be loaded.');
       const blob = await response.blob();
-      const extension = item.mimeType.includes('webm') ? 'webm' : 'mp4';
-      const file = new File([blob], `${this.safeFileName(item.sourceTitle)}.${extension}`, {
-        type: item.mimeType || blob.type || `video/${extension}`,
+      const extension = variant.mimeType.includes('webm') ? 'webm' : 'mp4';
+      const file = new File([blob], this.videoFileName(item, ratio, extension), {
+        type: variant.mimeType || blob.type || `video/${extension}`,
       });
       if (navigator.share && (!navigator.canShare || navigator.canShare({ files: [file] }))) {
         await navigator.share({ title: item.sourceTitle, files: [file] });
@@ -144,7 +156,7 @@ export class VideoLibraryComponent {
         return;
       }
       if (item.publicShareUrl && navigator.share) {
-        await navigator.share({ title: item.sourceTitle, url: item.publicShareUrl });
+        await navigator.share({ title: item.sourceTitle, url: this.publicShareUrlForVariant(item, ratio) });
         this.message.set('Video link shared.');
         return;
       }
@@ -161,19 +173,54 @@ export class VideoLibraryComponent {
     }
   }
 
-  async download(item: VideoLibraryItem): Promise<void> {
+  async download(item: VideoLibraryItem, ratio: 'vertical' | 'landscape' = 'vertical'): Promise<void> {
     this.message.set(null);
+    const variant = this.videoVariant(item, ratio);
+    if (!variant) {
+      this.message.set('That video size is not available yet. Regenerate the video to create it.');
+      return;
+    }
     try {
-      const response = await fetch(item.videoUrl);
+      const response = await fetch(variant.videoUrl);
       if (!response.ok) throw new Error('The video file could not be loaded.');
       const blob = await response.blob();
-      const extension = item.mimeType.includes('webm') ? 'webm' : 'mp4';
-      this.downloadFile(new File([blob], `${this.safeFileName(item.sourceTitle)}.${extension}`, {
-        type: item.mimeType || blob.type || `video/${extension}`,
+      const extension = variant.mimeType.includes('webm') ? 'webm' : 'mp4';
+      this.downloadFile(new File([blob], this.videoFileName(item, ratio, extension), {
+        type: variant.mimeType || blob.type || `video/${extension}`,
       }));
-      this.message.set('Video downloaded.');
+      this.message.set(`${ratio === 'landscape' ? 'Landscape' : 'Phone'} video downloaded.`);
     } catch (error) {
       this.message.set(error instanceof Error ? error.message : 'The video could not be downloaded.');
+    }
+  }
+
+  async downloadBoth(item: VideoLibraryItem): Promise<void> {
+    if (!item.landscapeVariant) {
+      await this.download(item, 'vertical');
+      return;
+    }
+    this.message.set(null);
+    try {
+      const [verticalResponse, landscapeResponse] = await Promise.all([
+        fetch(item.videoUrl),
+        fetch(item.landscapeVariant.videoUrl),
+      ]);
+      if (!verticalResponse.ok || !landscapeResponse.ok) throw new Error('One of the video files could not be loaded.');
+      const [verticalBlob, landscapeBlob] = await Promise.all([
+        verticalResponse.blob(),
+        landscapeResponse.blob(),
+      ]);
+      const verticalExtension = item.mimeType.includes('webm') ? 'webm' : 'mp4';
+      const landscapeExtension = item.landscapeVariant.mimeType.includes('webm') ? 'webm' : 'mp4';
+      this.downloadFile(new File([verticalBlob], this.videoFileName(item, 'vertical', verticalExtension), {
+        type: item.mimeType || verticalBlob.type || `video/${verticalExtension}`,
+      }));
+      this.downloadFile(new File([landscapeBlob], this.videoFileName(item, 'landscape', landscapeExtension), {
+        type: item.landscapeVariant.mimeType || landscapeBlob.type || `video/${landscapeExtension}`,
+      }));
+      this.message.set('Phone and Landscape videos downloaded.');
+    } catch (error) {
+      this.message.set(error instanceof Error ? error.message : 'The videos could not be downloaded.');
     }
   }
 
@@ -238,6 +285,24 @@ export class VideoLibraryComponent {
     return 'Vertical · 9:16';
   }
 
+  formatCount(item: VideoLibraryItem): number {
+    return item.landscapeVariant ? 2 : 1;
+  }
+
+  videoVariant(item: VideoLibraryItem, ratio: 'vertical' | 'landscape'): VideoLibraryVariant | null {
+    if (ratio === 'landscape') return item.landscapeVariant;
+    return {
+      videoUrl: item.videoUrl,
+      storagePath: item.storagePath,
+      publicStoragePath: item.publicStoragePath,
+      mimeType: item.mimeType,
+      ratio: item.ratio,
+      durationSeconds: item.durationSeconds,
+      renderVersion: item.renderVersion,
+      generatedAt: item.generatedAt,
+    };
+  }
+
   updatedLabel(item: VideoLibraryItem): string {
     const date = new Date(item.generatedAt);
     if (!Number.isFinite(date.getTime())) return 'Saved recently';
@@ -271,5 +336,22 @@ export class VideoLibraryComponent {
   private safeFileName(value: string): string {
     return value.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 64)
       || 'livingwiki-video';
+  }
+
+  private videoFileName(item: VideoLibraryItem, ratio: 'vertical' | 'landscape', extension: string): string {
+    const kind = item.videoKind === 'trailer' ? 'trailer' : 'full';
+    const size = ratio === 'landscape' ? 'landscape-16x9' : 'phone-9x16';
+    return `${this.safeFileName(item.sourceTitle)}-${kind}-${size}.${extension}`;
+  }
+
+  private publicShareUrlForVariant(item: VideoLibraryItem, ratio: 'vertical' | 'landscape'): string {
+    if (ratio !== 'landscape' || !item.publicShareUrl) return item.publicShareUrl;
+    try {
+      const url = new URL(item.publicShareUrl);
+      url.searchParams.set('format', 'landscape');
+      return url.toString();
+    } catch {
+      return item.publicShareUrl;
+    }
   }
 }

@@ -69,10 +69,16 @@ interface BoardShare {
   socialVideoMimeType: string;
   socialVideoUpdatedAt: string | null;
   socialVideoRatio: 'vertical' | 'square' | 'landscape';
+  socialLandscapeVideoUrl: string | null;
+  socialLandscapeVideoMimeType: string;
+  socialLandscapeVideoUpdatedAt: string | null;
   trailerVideoUrl: string | null;
   trailerVideoMimeType: string;
   trailerVideoUpdatedAt: string | null;
   trailerVideoRatio: 'vertical' | 'square' | 'landscape';
+  trailerLandscapeVideoUrl: string | null;
+  trailerLandscapeVideoMimeType: string;
+  trailerLandscapeVideoUpdatedAt: string | null;
   quiz: BoardShareQuiz | null;
   cards: BoardShareCard[];
   updatedAt: string | null;
@@ -178,16 +184,16 @@ export async function handleBoardShare(req: Request, res: Response): Promise<voi
   }
 
   if (parsed.rawVideo && parsed.videoKind) {
-    if (!boardVideoAsset(board, parsed.videoKind).url) {
+    if (!boardVideoAsset(board, parsed.videoKind, parsed.videoRatio).url) {
       res.status(404).send('This board does not have a published video yet.');
       return;
     }
-    await proxyBoardVideo(req, res, board, parsed.videoKind);
+    await proxyBoardVideo(req, res, board, parsed.videoKind, parsed.videoRatio);
     return;
   }
 
   if (parsed.videoKind && (parsed.video || parsed.player)) {
-    if (!boardVideoAsset(board, parsed.videoKind).url) {
+    if (!boardVideoAsset(board, parsed.videoKind, parsed.videoRatio).url) {
       res.status(404).send('This board does not have a published video yet.');
       return;
     }
@@ -198,8 +204,8 @@ export async function handleBoardShare(req: Request, res: Response): Promise<voi
       .send(req.method === 'HEAD'
         ? undefined
         : parsed.player
-          ? buildBoardVideoPlayerHtml(board, parsed.videoKind)
-          : buildBoardVideoSharePageHtml(board, parsed.videoKind));
+          ? buildBoardVideoPlayerHtml(board, parsed.videoKind, parsed.videoRatio)
+          : buildBoardVideoSharePageHtml(board, parsed.videoKind, parsed.videoRatio));
     return;
   }
 
@@ -253,6 +259,7 @@ function parseBoardSharePath(url: string): {
   player: boolean;
   rawVideo: boolean;
   videoKind: 'video' | 'trailer' | null;
+  videoRatio: 'vertical' | 'landscape';
   uiLanguage: 'en' | 'fr' | 'ja';
   contentLanguage: 'en' | 'fr' | 'ja' | null;
 } | null {
@@ -274,6 +281,7 @@ function parseBoardSharePath(url: string): {
     player: match[2] === 'video/player' || match[2] === 'trailer/player',
     rawVideo: match[2] === 'video.mp4' || match[2] === 'trailer.mp4',
     videoKind: match[2]?.startsWith('trailer') ? 'trailer' : match[2]?.startsWith('video') ? 'video' : null,
+    videoRatio: queryParams.get('format') === 'landscape' ? 'landscape' : 'vertical',
     uiLanguage,
     contentLanguage,
   };
@@ -283,8 +291,8 @@ function boardShareLanguage(value: string | null): 'en' | 'fr' | 'ja' | null {
   return value === 'en' || value === 'fr' || value === 'ja' ? value : null;
 }
 
-async function proxyBoardVideo(req: Request, res: Response, board: BoardShare, kind: 'video' | 'trailer'): Promise<void> {
-  const asset = boardVideoAsset(board, kind);
+async function proxyBoardVideo(req: Request, res: Response, board: BoardShare, kind: 'video' | 'trailer', ratio: 'vertical' | 'landscape'): Promise<void> {
+  const asset = boardVideoAsset(board, kind, ratio);
   const videoUrl = asset.url;
   if (!videoUrl) {
     res.status(404).send('Video not found.');
@@ -311,7 +319,7 @@ async function proxyBoardVideo(req: Request, res: Response, board: BoardShare, k
     res.set('Content-Type', contentType);
     res.set('Cache-Control', 'public, max-age=3600, s-maxage=86400');
     res.set('Accept-Ranges', upstream.headers.get('accept-ranges') || 'bytes');
-    res.set('Content-Disposition', `inline; filename="${safeFileName(board.title)}${kind === 'trailer' ? '-trailer' : ''}.mp4"`);
+    res.set('Content-Disposition', `inline; filename="${safeFileName(board.title)}${kind === 'trailer' ? '-trailer' : ''}-${ratio === 'landscape' ? 'landscape-16x9' : 'phone-9x16'}.mp4"`);
     for (const header of ['content-range', 'content-length'] as const) {
       const value = upstream.headers.get(header);
       if (value) res.set(header, value);
@@ -430,12 +438,18 @@ async function loadBoardShare(boardId: string): Promise<BoardShare | null> {
     socialVideoRatio: data.socialVideoRatio === 'square' || data.socialVideoRatio === 'landscape'
       ? data.socialVideoRatio
       : 'vertical',
+    socialLandscapeVideoUrl: safeUrl(data.socialLandscapeVideoUrl),
+    socialLandscapeVideoMimeType: cleanText(data.socialLandscapeVideoMimeType, 120) || 'video/mp4',
+    socialLandscapeVideoUpdatedAt: cleanText(data.socialLandscapeVideoUpdatedAt, 80),
     trailerVideoUrl: safeUrl(data.trailerVideoUrl),
     trailerVideoMimeType: cleanText(data.trailerVideoMimeType, 120) || 'video/mp4',
     trailerVideoUpdatedAt: cleanText(data.trailerVideoUpdatedAt, 80),
     trailerVideoRatio: data.trailerVideoRatio === 'square' || data.trailerVideoRatio === 'landscape'
       ? data.trailerVideoRatio
       : 'vertical',
+    trailerLandscapeVideoUrl: safeUrl(data.trailerLandscapeVideoUrl),
+    trailerLandscapeVideoMimeType: cleanText(data.trailerLandscapeVideoMimeType, 120) || 'video/mp4',
+    trailerLandscapeVideoUpdatedAt: cleanText(data.trailerLandscapeVideoUpdatedAt, 80),
     quiz,
     cards,
     updatedAt: cleanText(data.updated_at_iso, 80) || timestampToIso(data.server_updated_at),
@@ -901,19 +915,24 @@ function buildBoardSharePageHtml(
 </html>`;
 }
 
-function buildBoardVideoSharePageHtml(board: BoardShare, kind: 'video' | 'trailer' = 'video'): string {
-  const asset = boardVideoAsset(board, kind);
+function buildBoardVideoSharePageHtml(
+  board: BoardShare,
+  kind: 'video' | 'trailer' = 'video',
+  ratio: 'vertical' | 'landscape' = 'vertical',
+): string {
+  const asset = boardVideoAsset(board, kind, ratio);
   const isTrailer = kind === 'trailer';
   const description = isTrailer
     ? `Watch a quick Board Trailer for ${board.title}, curated by ${board.ownerName}.`
     : `Watch ${board.title}, a LivingWiki video curated by ${board.ownerName}.`;
-  const version = boardVideoVersion(board, kind);
-  const shareUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/${kind}?v=${version}`;
-  const playerUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/${kind}/player?v=${version}`;
+  const version = boardVideoVersion(board, kind, ratio);
+  const formatQuery = ratio === 'landscape' ? '&format=landscape' : '';
+  const shareUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/${kind}?v=${version}${formatQuery}`;
+  const playerUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/${kind}/player?v=${version}${formatQuery}`;
   const boardUrl = `${appUrl}/${boardShareRoute(board)}/${encodeURIComponent(board.customSlug || board.id)}?view=stack`;
   const imageCacheKey = encodeURIComponent(`${board.updatedAt ?? 'board'}-${imageVersion}`);
   const posterUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/og.png?v=${imageCacheKey}`;
-  const videoUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/${kind}.mp4?v=${version}`;
+  const videoUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/${kind}.mp4?v=${version}${formatQuery}`;
   const videoType = asset.mimeType.split(';')[0] || 'video/mp4';
   const sourceDimensions = boardVideoSourceDimensions(asset.ratio);
   const playerDimensions = boardVideoPlayerDimensions(asset.ratio);
@@ -994,9 +1013,14 @@ function buildBoardVideoSharePageHtml(board: BoardShare, kind: 'video' | 'traile
 </html>`;
 }
 
-function buildBoardVideoPlayerHtml(board: BoardShare, kind: 'video' | 'trailer' = 'video'): string {
-  const version = boardVideoVersion(board, kind);
-  const videoUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/${kind}.mp4?v=${version}`;
+function buildBoardVideoPlayerHtml(
+  board: BoardShare,
+  kind: 'video' | 'trailer' = 'video',
+  ratio: 'vertical' | 'landscape' = 'vertical',
+): string {
+  const version = boardVideoVersion(board, kind, ratio);
+  const formatQuery = ratio === 'landscape' ? '&format=landscape' : '';
+  const videoUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/${kind}.mp4?v=${version}${formatQuery}`;
   const imageCacheKey = encodeURIComponent(`${board.updatedAt ?? 'board'}-${imageVersion}`);
   const posterUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/og.png?v=${imageCacheKey}`;
   return `<!doctype html>
@@ -1019,18 +1043,35 @@ function buildBoardVideoPlayerHtml(board: BoardShare, kind: 'video' | 'trailer' 
 </html>`;
 }
 
-function boardVideoVersion(board: BoardShare, kind: 'video' | 'trailer' = 'video'): string {
-  const videoVersion = kind === 'trailer'
-    ? board.trailerVideoUpdatedAt ?? board.updatedAt ?? imageVersion
-    : board.socialVideoUpdatedAt ?? board.updatedAt ?? imageVersion;
+function boardVideoVersion(
+  board: BoardShare,
+  kind: 'video' | 'trailer' = 'video',
+  ratio: 'vertical' | 'landscape' = 'vertical',
+): string {
+  const videoVersion = ratio === 'landscape'
+    ? kind === 'trailer'
+      ? board.trailerLandscapeVideoUpdatedAt ?? board.updatedAt ?? imageVersion
+      : board.socialLandscapeVideoUpdatedAt ?? board.updatedAt ?? imageVersion
+    : kind === 'trailer'
+      ? board.trailerVideoUpdatedAt ?? board.updatedAt ?? imageVersion
+      : board.socialVideoUpdatedAt ?? board.updatedAt ?? imageVersion;
   return encodeURIComponent(`${videoVersion}-${playerCardVersion}`);
 }
 
-function boardVideoAsset(board: BoardShare, kind: 'video' | 'trailer'): {
+function boardVideoAsset(
+  board: BoardShare,
+  kind: 'video' | 'trailer',
+  ratio: 'vertical' | 'landscape' = 'vertical',
+): {
   url: string | null;
   mimeType: string;
   ratio: 'vertical' | 'square' | 'landscape';
 } {
+  if (ratio === 'landscape') {
+    return kind === 'trailer'
+      ? { url: board.trailerLandscapeVideoUrl, mimeType: board.trailerLandscapeVideoMimeType, ratio: 'landscape' }
+      : { url: board.socialLandscapeVideoUrl, mimeType: board.socialLandscapeVideoMimeType, ratio: 'landscape' };
+  }
   return kind === 'trailer'
     ? { url: board.trailerVideoUrl, mimeType: board.trailerVideoMimeType, ratio: board.trailerVideoRatio }
     : { url: board.socialVideoUrl, mimeType: board.socialVideoMimeType, ratio: board.socialVideoRatio };
