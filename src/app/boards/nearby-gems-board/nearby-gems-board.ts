@@ -2,6 +2,7 @@ import { AfterViewInit, Component, ElementRef, ViewChild, computed, effect, inje
 import { GoogleMapsService } from '../../google-maps.service';
 
 export type NearbyGemsSortMode = 'travel-time' | 'distance';
+type ViewerLocationState = 'idle' | 'locating' | 'available' | 'unavailable';
 
 export type NearbyGemsBoardCardView = {
   id: string;
@@ -47,6 +48,7 @@ export class NearbyGemsBoardComponent implements AfterViewInit {
   private readonly googleMaps = inject(GoogleMapsService);
   private map: InstanceType<MapsRuntime['maps']['Map']> | null = null;
   private markers: Array<InstanceType<NonNullable<MapsRuntime['maps']['marker']>['AdvancedMarkerElement']>> = [];
+  private readonly markerElements = new Map<string, HTMLElement>();
   private viewReady = false;
 
   readonly title = input.required<string>();
@@ -72,6 +74,8 @@ export class NearbyGemsBoardComponent implements AfterViewInit {
   readonly mapLoading = signal(true);
   readonly mapUnavailable = signal(false);
   readonly expanded = signal(false);
+  readonly viewerLocation = signal<{ lat: number; lng: number } | null>(null);
+  readonly viewerLocationState = signal<ViewerLocationState>('idle');
 
   readonly orderedCards = computed(() => {
     const mode = this.sortMode();
@@ -91,6 +95,10 @@ export class NearbyGemsBoardComponent implements AfterViewInit {
 
   readonly visibleCards = computed(() => this.expanded() ? this.orderedCards() : this.orderedCards().slice(0, 4));
   readonly firstCard = computed(() => this.orderedCards()[0] ?? null);
+  readonly selectedStartCard = computed(() => {
+    const activeId = this.activeCardId();
+    return this.orderedCards().find((card) => card.id === activeId) ?? this.firstCard();
+  });
 
   @ViewChild('mapCanvas') private mapCanvas?: ElementRef<HTMLElement>;
 
@@ -101,13 +109,28 @@ export class NearbyGemsBoardComponent implements AfterViewInit {
     }, { allowSignalWrites: true });
     effect(() => {
       this.orderedCards();
+      this.viewerLocation();
+      this.visibility();
+      this.canEdit();
       if (this.viewReady) queueMicrotask(() => void this.renderMap());
     });
+    effect(() => {
+      const mayShowLocation = this.visibility() === 'private' && this.canEdit();
+      if (!mayShowLocation) {
+        this.viewerLocation.set(null);
+        this.viewerLocationState.set('idle');
+        return;
+      }
+      if (this.viewReady && this.viewerLocationState() === 'idle') {
+        queueMicrotask(() => this.requestViewerLocation());
+      }
+    }, { allowSignalWrites: true });
   }
 
   ngAfterViewInit(): void {
     this.viewReady = true;
     void this.renderMap();
+    if (this.visibility() === 'private' && this.canEdit()) this.requestViewerLocation();
   }
 
   setSortMode(mode: NearbyGemsSortMode): void {
@@ -117,9 +140,37 @@ export class NearbyGemsBoardComponent implements AfterViewInit {
 
   selectCard(card: NearbyGemsBoardCardView): void {
     this.activeCardId.set(card.id);
+    this.updateActiveMarkerStyles();
     if (this.map && card.lat != null && card.lng != null) {
       this.map.panTo({ lat: card.lat, lng: card.lng });
     }
+  }
+
+  selectedStartRank(): number {
+    const selected = this.selectedStartCard();
+    return selected ? this.rankFor(selected) : 1;
+  }
+
+  requestViewerLocation(): void {
+    if (this.visibility() !== 'private' || !this.canEdit()) return;
+    if (typeof navigator === 'undefined' || !navigator.geolocation) {
+      this.viewerLocationState.set('unavailable');
+      return;
+    }
+    if (this.viewerLocationState() === 'locating') return;
+    this.viewerLocationState.set('locating');
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        if (this.visibility() !== 'private' || !this.canEdit()) return;
+        this.viewerLocation.set({ lat: position.coords.latitude, lng: position.coords.longitude });
+        this.viewerLocationState.set('available');
+      },
+      () => {
+        this.viewerLocation.set(null);
+        this.viewerLocationState.set('unavailable');
+      },
+      { enableHighAccuracy: true, timeout: 12_000, maximumAge: 60_000 },
+    );
   }
 
   directionsUrl(card: NearbyGemsBoardCardView | null): string {
@@ -182,6 +233,7 @@ export class NearbyGemsBoardComponent implements AfterViewInit {
 
       this.markers.forEach((marker) => { marker.map = null; });
       this.markers = [];
+      this.markerElements.clear();
       const bounds = new google.maps.LatLngBounds();
       const Marker = google.maps.marker?.AdvancedMarkerElement;
       cards.forEach((card, index) => {
@@ -194,12 +246,26 @@ export class NearbyGemsBoardComponent implements AfterViewInit {
         content.textContent = String(index + 1);
         content.title = `${index + 1}. ${card.title}`;
         content.setAttribute('aria-label', `${index + 1}. ${card.title}, ${this.durationLabel(card.durationSeconds)}, ${this.distanceLabel(card.distanceMeters)}`);
+        content.classList.toggle('nearby-gems-map-marker--active', this.activeCardId() === card.id || (!this.activeCardId() && index === 0));
         content.addEventListener('click', () => this.selectCard(card));
         const marker = new Marker({ map: this.map, position, content, title: content.title });
         marker.addListener?.('click', () => this.selectCard(card));
         this.markers.push(marker);
+        this.markerElements.set(card.id, content);
       });
-      if (cards.length === 1) {
+      const viewerLocation = this.visibility() === 'private' && this.canEdit() ? this.viewerLocation() : null;
+      if (viewerLocation) {
+        bounds.extend(viewerLocation);
+        if (Marker) {
+          const content = document.createElement('span');
+          content.className = 'nearby-gems-map-marker-you material-symbols-outlined';
+          content.textContent = 'my_location';
+          content.title = 'You are here · live location is not saved';
+          const marker = new Marker({ map: this.map, position: viewerLocation, content, title: content.title });
+          this.markers.push(marker);
+        }
+      }
+      if (cards.length === 1 && !viewerLocation) {
         this.map.setCenter({ lat: cards[0].lat as number, lng: cards[0].lng as number });
         this.map.setZoom(14);
       } else {
@@ -211,5 +277,12 @@ export class NearbyGemsBoardComponent implements AfterViewInit {
     } finally {
       this.mapLoading.set(false);
     }
+  }
+
+  private updateActiveMarkerStyles(): void {
+    const activeId = this.activeCardId() || this.firstCard()?.id || '';
+    this.markerElements.forEach((element, cardId) => {
+      element.classList.toggle('nearby-gems-map-marker--active', cardId === activeId);
+    });
   }
 }

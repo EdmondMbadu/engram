@@ -255,7 +255,7 @@ type BoardCardStatus = 'planned' | 'saved' | 'visited' | 'favorite';
 type BoardEntityType = 'person' | 'fictional_character' | 'place' | 'event' | 'work' | 'product' | 'food' | 'organization' | 'other';
 type BoardImageIntent = 'portrait' | 'character' | 'place' | 'event' | 'cover' | 'product' | 'food' | 'logo' | 'other';
 type BoardMediaKind = 'none' | 'song' | 'album' | 'film' | 'book' | 'tv' | 'game';
-type BoardGalleryTab = 'boards' | 'cards' | 'favorites' | 'collections';
+type BoardGalleryTab = 'boards' | 'cards' | 'favorites' | 'collections' | 'private';
 type BoardGallerySort = 'custom' | 'recent' | 'title';
 type ShareTarget = 'facebook' | 'x' | 'linkedin' | 'whatsapp' | 'reddit' | 'email';
 type StickerSurface = 'board' | 'card';
@@ -2401,8 +2401,12 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     const query = this.boardSearch().trim().toLowerCase();
     const boards = [...this.boards()]
       .filter((board) => !board.parentCardId)
+      .filter((board) => board.visibility === 'public' || this.canEditBoard(board))
       .filter((board) => !this.songsPage() || this.isSongBoard(board))
       .filter((board) => !this.tripsPage() || this.isTourBoard(board))
+      .filter((board) => this.activeGalleryTab() === 'private'
+        ? board.visibility === 'private'
+        : !this.publicOwnerKey() || board.visibility === 'public')
       .sort((a, b) => this.compareBoardGallerySelection(a, b));
     if (!query) {
       return boards;
@@ -2504,11 +2508,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     incrementalSlice(this.visibleGalleryCards(), this.galleryVisibleLimit()),
   );
   readonly galleryHasMore = computed(() => {
-    if (this.activeGalleryTab() === 'collections') return false;
-    const visibleCount = this.activeGalleryTab() === 'boards'
+    if (this.activeGalleryTab() === 'collections' || this.activeGalleryTab() === 'private') return false;
+    const visibleCount = this.activeGalleryTab() === 'boards' || this.activeGalleryTab() === 'private'
       ? this.displayedBoards().length
       : this.displayedGalleryCards().length;
-    const availableCount = this.activeGalleryTab() === 'boards'
+    const availableCount = this.activeGalleryTab() === 'boards' || this.activeGalleryTab() === 'private'
       ? this.filteredBoards().length
       : this.visibleGalleryCards().length;
     return visibleCount < availableCount || this.boardsHasMore();
@@ -3183,13 +3187,47 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   }
 
   setGalleryTab(tab: BoardGalleryTab): void {
+    if (tab === 'private' && this.publicOwnerKey() && !this.canCreateBoard()) return;
     this.activeGalleryTab.set(tab);
     this.boardSearch.set('');
     this.galleryVisibleLimit.set(BOARD_GALLERY_PAGE_SIZE);
     if (tab === 'cards' || tab === 'favorites') {
       void this.hydratePublicSummaryBoards();
+    } else if (tab === 'private') {
+      void this.hydratePrivateBoards();
     }
     this.scheduleGalleryViewportCheck();
+  }
+
+  private async hydratePrivateBoards(): Promise<void> {
+    if (!this.firestore) return;
+    await this.authService.waitForReady();
+    const uid = this.authService.uid();
+    if (!uid || this.activeGalleryTab() !== 'private') return;
+    this.boardsLoading.set(true);
+    try {
+      const snapshot = await getDocs(query(
+        collection(this.firestore, 'boards'),
+        where('owner_user_id', '==', uid),
+        where('visibility', '==', 'private'),
+      ));
+      if (this.activeGalleryTab() !== 'private') return;
+      const privateBoards = snapshot.docs
+        .map((boardDoc) => this.boardFromRecord(boardDoc.id, boardDoc.data()))
+        .filter((board): board is Board => !!board);
+      this.boards.update((boards) => {
+        const boardsById = new Map(boards.map((board) => [board.id, board]));
+        privateBoards.forEach((board) => boardsById.set(board.id, board));
+        return [...boardsById.values()].sort((left, right) => this.compareGalleryBoards(left, right));
+      });
+      this.boardsSyncError.set(null);
+    } catch (error) {
+      console.error('Private boards load failed', error);
+      this.boardsSyncError.set('Private boards could not be loaded. Refresh and try again.');
+    } finally {
+      this.boardsLoading.set(false);
+      this.scheduleGalleryViewportCheck();
+    }
   }
 
   private async hydratePublicSummaryBoards(): Promise<void> {
@@ -3261,7 +3299,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   }
 
   async loadMoreGalleryItems(): Promise<void> {
-    if (this.activeGalleryTab() === 'collections' || this.boardsLoadingMore() || !this.galleryHasMore()) {
+    if (this.activeGalleryTab() === 'collections'
+      || this.activeGalleryTab() === 'private'
+      || this.boardsLoadingMore()
+      || !this.galleryHasMore()) {
       return;
     }
 
@@ -3283,7 +3324,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
   private visibleGalleryItemCount(): number {
     if (this.activeGalleryTab() === 'collections') return this.filteredBoardCollections().length;
-    return this.activeGalleryTab() === 'boards'
+    return this.activeGalleryTab() === 'boards' || this.activeGalleryTab() === 'private'
       ? this.filteredBoards().length
       : this.visibleGalleryCards().length;
   }

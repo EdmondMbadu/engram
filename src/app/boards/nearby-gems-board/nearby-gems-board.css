@@ -85,6 +85,11 @@
 .nearby-gems-board__map-compass small { position: absolute; font-weight: 900; letter-spacing: 2.35rem; transform: translateX(1.15rem); }
 .nearby-gems-board__area-cue { position: absolute; z-index: 6; left: 1.1rem; top: 1.1rem; display: inline-flex; align-items: center; gap: .4rem; border-radius: 999px; background: rgba(7,59,49,.9); box-shadow: 0 8px 24px rgba(7,59,49,.2); color: white; font-size: .74rem; font-weight: 850; padding: .55rem .75rem; pointer-events: none; }
 .nearby-gems-board__area-cue .material-symbols-outlined { font-size: 1rem; }
+.nearby-gems-board__area-cue--live { background: rgba(22, 91, 73, .94); box-shadow: 0 0 0 4px rgba(255,255,255,.72), 0 8px 24px rgba(7,59,49,.24); }
+.nearby-gems-board__area-cue--button { border: 0; font: inherit; cursor: pointer; pointer-events: auto; }
+.nearby-gems-board__area-cue--button:hover { background: #0b5142; }
+.nearby-gems-board__area-cue--button:focus-visible { outline: 3px solid rgba(214,173,82,.82); outline-offset: 2px; }
+.nearby-gems-board__location-spinner { animation: nearby-gems-spin 1s linear infinite; }
 .nearby-gems-board__nav-tray { position: absolute; z-index: 6; right: 1rem; bottom: 1rem; left: 1rem; display: grid; grid-template-columns: auto minmax(0,1fr) auto; gap: .75rem; align-items: center; border: 1px solid rgba(7,59,49,.12); border-radius: .9rem; background: rgba(255,255,255,.94); box-shadow: 0 15px 40px rgba(7,59,49,.18); color: #073b31; padding: .75rem .9rem; backdrop-filter: blur(12px); }
 .nearby-gems-board__nav-icon { display: grid; width: 2.5rem; height: 2.5rem; place-items: center; border-radius: 999px; background: #073b31; color: white; }
 .nearby-gems-board__nav-tray > span:nth-child(2) { display: grid; gap: .13rem; }
@@ -93,6 +98,9 @@
 
 :host ::ng-deep .nearby-gems-map-marker { position: relative; display: grid; width: 2.45rem; height: 2.45rem; place-items: center; border: 3px solid white; border-radius: 999px; background: #073b31; box-shadow: 0 5px 12px rgba(7,59,49,.32); color: white; font: 900 .9rem/1 ui-sans-serif, system-ui, sans-serif; cursor: pointer; }
 :host ::ng-deep .nearby-gems-map-marker::after { position: absolute; right: .17rem; bottom: -.28rem; width: .65rem; height: .65rem; border-right: 3px solid white; border-bottom: 3px solid white; background: #073b31; content: ''; transform: rotate(45deg); z-index: -1; }
+:host ::ng-deep .nearby-gems-map-marker--active { width: 2.8rem; height: 2.8rem; background: var(--gem-gold); box-shadow: 0 0 0 5px rgba(214,173,82,.24), 0 7px 16px rgba(7,59,49,.38); color: #073b31; }
+:host ::ng-deep .nearby-gems-map-marker--active::after { background: var(--gem-gold); }
+:host ::ng-deep .nearby-gems-map-marker-you { display: grid; width: 2.7rem; height: 2.7rem; place-items: center; border: 4px solid white; border-radius: 999px; background: #147b68; box-shadow: 0 0 0 8px rgba(20,123,104,.2), 0 6px 18px rgba(7,59,49,.32); color: white; font-size: 1.3rem; }
 
 @keyframes nearby-gems-spin { to { transform: rotate(360deg); } }
 
@@ -137,5 +145,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .nearby-gems-place { transition: none; }
-  .nearby-gems-board__map-state > .material-symbols-outlined { animation: none; }
+  .nearby-gems-board__map-state > .material-symbols-outlined,
+  .nearby-gems-board__location-spinner { animation: none; }
 }

@@ -790,6 +790,17 @@
           <span class="material-symbols-outlined">collections_bookmark</span>
           Collections
         </button>
+        @if (!publicOwnerKey() || canCreateBoard()) {
+          <button
+            type="button"
+            [class.boards-tabbar__item--active]="activeGalleryTab() === 'private'"
+            class="boards-tabbar__item"
+            (click)="setGalleryTab('private')"
+          >
+            <span class="material-symbols-outlined">lock</span>
+            Private
+          </button>
+        }
       </nav>
 
       @if (canCreateBoard() && activeGalleryTab() === 'boards' && wizardDrafts().length) {
@@ -854,11 +865,13 @@
                     ? 'Your cards'
                     : activeGalleryTab() === 'favorites'
                       ? 'Favorites'
-                      : 'Collections'
+                      : activeGalleryTab() === 'collections'
+                        ? 'Collections'
+                        : 'Private boards'
               }}
             </h2>
             <p>
-              @if (activeGalleryTab() === 'boards') {
+              @if (activeGalleryTab() === 'boards' || activeGalleryTab() === 'private') {
                 {{ filteredBoards().length }} boards
               } @else if (activeGalleryTab() === 'collections') {
                 {{ filteredBoardCollections().length }} collections
@@ -873,12 +886,12 @@
               <input
                 type="search"
                 autocomplete="off"
-                [placeholder]="activeGalleryTab() === 'boards' ? 'Search boards...' : activeGalleryTab() === 'collections' ? 'Search collections...' : 'Search cards...'"
+                [placeholder]="activeGalleryTab() === 'boards' ? 'Search boards...' : activeGalleryTab() === 'private' ? 'Search private boards...' : activeGalleryTab() === 'collections' ? 'Search collections...' : 'Search cards...'"
                 [value]="boardSearch()"
                 (input)="onBoardSearchInput($any($event.target).value)"
               />
             </label>
-            @if (activeGalleryTab() === 'boards') {
+            @if (activeGalleryTab() === 'boards' || activeGalleryTab() === 'private') {
               <label class="boards-sort">
                 <span class="material-symbols-outlined" aria-hidden="true">sort</span>
                 <span class="sr-only">Sort boards</span>
@@ -901,7 +914,7 @@
             [searching]="!!boardSearch().trim()"
             (createRequested)="openCreateCollection()"
           ></app-board-collection-list>
-        } @else if (activeGalleryTab() === 'boards') {
+        } @else if (activeGalleryTab() === 'boards' || activeGalleryTab() === 'private') {
           <div class="boards-grid">
             @for (board of displayedBoards(); track board.id) {
               <article
@@ -913,7 +926,7 @@
                 [class.board-square--drop-after]="isBoardDropAfter(board.id)"
                 [style.--board-accent]="toneAccent(board.tone)"
                 [style.--board-soft]="toneSoft(board.tone)"
-                [attr.draggable]="!publicOwnerKey() && canEditBoard(board) && filteredBoards().length > 1 && boardGallerySort() === 'custom' ? 'true' : null"
+                [attr.draggable]="activeGalleryTab() === 'boards' && !publicOwnerKey() && canEditBoard(board) && filteredBoards().length > 1 && boardGallerySort() === 'custom' ? 'true' : null"
                 (dragstart)="beginBoardReorderDrag($event, board)"
                 (dragover)="dragBoardOver($event, board)"
                 (dragleave)="dragBoardLeave($event, board)"
@@ -1095,9 +1108,9 @@
               </article>
             } @empty {
               <div class="boards-empty-state">
-                <span class="material-symbols-outlined" [class.board-translation-control__spinner]="boardsLoading()">{{ boardsLoading() ? 'progress_activity' : 'dashboard_customize' }}</span>
-                <h2>{{ boardsLoading() ? 'Loading boards…' : publicOwnerKey() ? 'No public boards yet.' : 'No boards yet.' }}</h2>
-                <p>{{ boardsLoading() ? 'Bringing in the first 10 boards.' : publicOwnerKey() ? 'This public boards page is ready, but there are no public boards to show yet.' : 'Create a collection for places, restaurants, memories, ideas, or anything you want to keep together.' }}</p>
+                <span class="material-symbols-outlined" [class.board-translation-control__spinner]="boardsLoading()">{{ boardsLoading() ? 'progress_activity' : activeGalleryTab() === 'private' ? 'lock' : 'dashboard_customize' }}</span>
+                <h2>{{ boardsLoading() ? 'Loading boards…' : activeGalleryTab() === 'private' ? 'No private boards yet.' : publicOwnerKey() ? 'No public boards yet.' : 'No boards yet.' }}</h2>
+                <p>{{ boardsLoading() ? 'Bringing in the first 10 boards.' : activeGalleryTab() === 'private' ? 'Boards you keep for yourself—including Gems Near Me—will appear here.' : publicOwnerKey() ? 'This public boards page is ready, but there are no public boards to show yet.' : 'Create a collection for places, restaurants, memories, ideas, or anything you want to keep together.' }}</p>
                 @if (!boardsLoading() && canCreateBoard()) {
                   <button type="button" class="boards-primary-action" (click)="openCreateBoard()" i18n>
                     <span class="material-symbols-outlined">add</span>

@@ -21,7 +21,7 @@
       @if (visibility() === 'private') {
         <div class="nearby-gems-board__privacy" role="status">
           <span class="material-symbols-outlined" aria-hidden="true">lock</span>
-          <span><strong>Only you can see this board.</strong><small>Your starting point is not stored.</small></span>
+          <span><strong>Only you can see this board.</strong><small>Your live location is shown only on this device and is never saved.</small></span>
         </div>
       } @else {
         <div class="nearby-gems-board__privacy nearby-gems-board__privacy--public" role="status">
@@ -93,8 +93,10 @@
             class="nearby-gems-place"
             [class.nearby-gems-place--active]="activeCardId() === card.id || (!activeCardId() && rankFor(card) === 1)"
             tabindex="0"
+            [attr.aria-label]="'Choose destination ' + rankFor(card) + ': ' + card.title"
             (click)="selectCard(card)"
             (focus)="selectCard(card)"
+            (keydown.enter)="selectCard(card)"
           >
             <strong class="nearby-gems-place__rank">{{ rankFor(card).toString().padStart(2, '0') }}</strong>
             @if (card.imageUrl) {
@@ -133,13 +135,29 @@
         </div>
       }
       <div class="nearby-gems-board__map-compass" aria-hidden="true"><b>N</b><span class="material-symbols-outlined">navigation</span><small>W&nbsp;&nbsp;&nbsp;&nbsp;E</small><b>S</b></div>
-      <div class="nearby-gems-board__area-cue"><span class="material-symbols-outlined">lock</span><span>Your area stays hidden</span></div>
-      @if (firstCard(); as first) {
+      @if (visibility() === 'private' && canEdit()) {
+        @if (viewerLocationState() === 'available') {
+          <div class="nearby-gems-board__area-cue nearby-gems-board__area-cue--live">
+            <span class="material-symbols-outlined">my_location</span><span>You are here · not saved</span>
+          </div>
+        } @else if (viewerLocationState() === 'locating') {
+          <div class="nearby-gems-board__area-cue">
+            <span class="material-symbols-outlined nearby-gems-board__location-spinner">progress_activity</span><span>Finding your location…</span>
+          </div>
+        } @else {
+          <button type="button" class="nearby-gems-board__area-cue nearby-gems-board__area-cue--button" (click)="requestViewerLocation()">
+            <span class="material-symbols-outlined">location_searching</span><span>Show my location</span>
+          </button>
+        }
+      } @else {
+        <div class="nearby-gems-board__area-cue"><span class="material-symbols-outlined">lock</span><span>Starting point hidden</span></div>
+      }
+      @if (selectedStartCard(); as selected) {
         <div class="nearby-gems-board__nav-tray">
           <span class="nearby-gems-board__nav-icon material-symbols-outlined">near_me</span>
-          <span><strong>Navigation view</strong><small>{{ cards().length }} places · nearest first</small></span>
-          <a [href]="directionsUrl(first)" target="_blank" rel="noopener">
-            Start with #1
+          <span><strong>{{ selected.title }}</strong><small>Destination #{{ selectedStartRank() }} selected · choose any place to change it</small></span>
+          <a [href]="directionsUrl(selected)" target="_blank" rel="noopener" [attr.aria-label]="'Start directions with destination ' + selectedStartRank() + ': ' + selected.title">
+            Start with #{{ selectedStartRank() }}
             <span class="material-symbols-outlined">arrow_forward</span>
           </a>
         </div>
