@@ -1585,6 +1585,8 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly cardStatuses = CARD_STATUSES;
   readonly wizardModes = BOARD_WIZARD_MODES;
   readonly nearbyGemRanges = NEARBY_GEM_RANGES;
+  readonly nearbyGemMinCards = 4;
+  readonly nearbyGemMaxCards = 16;
   readonly wizardVibes = BOARD_WIZARD_VIBES;
   readonly wizardMediaModes = BOARD_WIZARD_MEDIA_MODES;
   readonly wizardNarrationStyles = BOARD_NARRATION_STYLES;
@@ -3956,7 +3958,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       ...origin,
       boardId,
       details: this.nearbyGemDetails().trim(),
-      count: 8,
+      count: this.wizardCount(),
     });
     this.wizardLoadingTask.set({ message: 'Preparing your editable gem cards', progress: 82 });
     const batch = this.normalizeWizardBatch(response.data);
@@ -3993,6 +3995,14 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     }
     const message = error instanceof Error ? error.message.replace(/^Firebase:\s*/i, '').trim() : '';
     return message || 'Nearby gems could not be loaded. Try again or enter another starting place.';
+  }
+
+  setNearbyGemCount(value: unknown): void {
+    const count = typeof value === 'number' ? value : Number(value);
+    this.wizardCount.set(Math.max(
+      this.nearbyGemMinCards,
+      Math.min(this.nearbyGemMaxCards, Number.isFinite(count) ? Math.round(count) : 8),
+    ));
   }
 
   openManualBoard(): void {

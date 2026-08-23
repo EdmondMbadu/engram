@@ -86,6 +86,11 @@ const preferenceRanked = rankNearbyGemCandidates([
 ], NEARBY_GEM_PRESETS.walk, 'quiet history', 2);
 assert.equal(preferenceRanked[0].id, 'history');
 
+const scalableCandidates = Array.from({ length: 18 }, (_item, index) =>
+  candidate(`scalable-${index + 1}`, index % 2 ? 'park' : 'museum', 300 + index * 10));
+assert.equal(rankNearbyGemCandidates(scalableCandidates, NEARBY_GEM_PRESETS.walk, '', 4).length, 4);
+assert.equal(rankNearbyGemCandidates(scalableCandidates, NEARBY_GEM_PRESETS.walk, '', 16).length, 16);
+
 const routeOrdered = sortNearbyGemCandidates([
   { ...candidate('quality-first', 'museum', 900), routeDistanceMeters: 500 },
   { ...candidate('nearest', 'park', 240), routeDistanceMeters: 1400 },

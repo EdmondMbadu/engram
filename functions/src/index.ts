@@ -6516,7 +6516,7 @@ async function searchNearbyGemCandidates(
   // A single successful Places request can conceal failures in the other type
   // groups. Treat a small modern response as partial and supplement it with the
   // legacy search instead of returning a one-card board.
-  if (modernCandidates.length >= 12) return modernCandidates;
+  if (modernCandidates.length >= 16) return modernCandidates;
   try {
     const legacyCandidates = await searchLegacyNearbyGemCandidates(origin, preset, apiKey);
     return Array.from(new Map(
@@ -6764,7 +6764,7 @@ export const discoverNearbyGems = onCall(
     ]);
     const routedCandidates = await attachNearbyGemRoutes(rawCandidates, origin, preset, apiKey);
     const details = stringOrEmpty(data['details']).trim().slice(0, 500);
-    const requestedCount = Math.max(6, Math.min(10, Math.trunc(Number(data['count']) || 8)));
+    const requestedCount = Math.max(4, Math.min(16, Math.trunc(Number(data['count']) || 8)));
     const selectedCandidates = rankNearbyGemCandidates(routedCandidates, preset, details, requestedCount);
     const candidates = sortNearbyGemCandidates(selectedCandidates, 'travel-time');
     if (!candidates.length) {

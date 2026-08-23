@@ -4633,7 +4633,38 @@
                     <span class="material-symbols-outlined" aria-hidden="true">explore_nearby</span>
                     <div>
                       <h4>How far should we look?</h4>
-                      <p>Choose one to continue.</p>
+                      <p>Set your board size, then choose a travel range.</p>
+                    </div>
+                  </div>
+
+                  <div class="nearby-gems-wizard__count">
+                    <div class="nearby-gems-wizard__count-head">
+                      <span>
+                        <strong>How many cards?</strong>
+                        <small>We’ll choose the strongest matches available.</small>
+                      </span>
+                      <output [attr.for]="'nearby-gems-card-count'">
+                        <strong>{{ wizardCount() }}</strong>
+                        <span>cards</span>
+                      </output>
+                    </div>
+                    <input
+                      id="nearby-gems-card-count"
+                      type="range"
+                      [min]="nearbyGemMinCards"
+                      [max]="nearbyGemMaxCards"
+                      step="1"
+                      [value]="wizardCount()"
+                      [disabled]="nearbyGemLocating()"
+                      [style.--nearby-count-progress]="((wizardCount() - nearbyGemMinCards) / (nearbyGemMaxCards - nearbyGemMinCards) * 100) + '%'"
+                      [attr.aria-valuetext]="wizardCount() + ' cards'"
+                      aria-label="Number of cards"
+                      (input)="setNearbyGemCount($any($event.target).valueAsNumber)"
+                    />
+                    <div class="nearby-gems-wizard__count-scale" aria-hidden="true">
+                      <span>{{ nearbyGemMinCards }} · Focused</span>
+                      <span>8 · Balanced</span>
+                      <span>{{ nearbyGemMaxCards }} · Expansive</span>
                     </div>
                   </div>
 
