@@ -25,7 +25,7 @@ import { AdminUsersComponent } from './admin-users/admin-users';
 import { CityPlacesComponent } from './city-places/city-places';
 import { BusinessComponent } from './business/business';
 import { NotFoundComponent } from './not-found/not-found';
-import { adminGuard, authGuard, guestOnlyGuard } from './auth.guards';
+import { adminGuard, authGuard, boardsRootRedirectGuard, guestOnlyGuard } from './auth.guards';
 
 const loadBoardsComponent = () => import('./boards/boards').then((m) => m.BoardsComponent);
 
@@ -104,6 +104,7 @@ export const routes: Routes = [
     path: 'boards',
     loadComponent: loadBoardsComponent,
     title: $localize`Boards | LivingWiki`,
+    canActivate: [boardsRootRedirectGuard],
   },
   {
     path: 'songs',

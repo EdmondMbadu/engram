@@ -47,6 +47,19 @@ export const guestOnlyGuard: CanActivateFn = async () => {
     : router.createUrlTree(['/home']);
 };
 
+export const boardsRootRedirectGuard: CanActivateFn = (route) => {
+  const authService = inject(AuthService);
+  if (!authService.isAuthenticated() || route.queryParamMap.get('create') === 'gems') {
+    return true;
+  }
+
+  const ownerHandle = authService.displayName()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+  return inject(Router).createUrlTree(['/boards/u', ownerHandle]);
+};
+
 export const adminGuard: CanActivateFn = async (_route, state) => {
   const platformId = inject(PLATFORM_ID);
   if (!isPlatformBrowser(platformId)) {

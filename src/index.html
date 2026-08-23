@@ -14,8 +14,122 @@
   <link rel="preconnect" href="https://firebasestorage.googleapis.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <style>
+    /* Prevent a blank first paint while the client application is bootstrapping. */
+    .app-bootstrap-shell {
+      position: fixed;
+      z-index: 2147483647;
+      inset: 0;
+      display: grid;
+      min-height: 100vh;
+      min-height: 100dvh;
+      place-items: center;
+      box-sizing: border-box;
+      padding: 3rem 1rem;
+      background: #f8fbf8;
+      color: #17231c;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .app-bootstrap-shell__content {
+      display: grid;
+      width: min(100%, 26rem);
+      justify-items: center;
+      text-align: center;
+    }
+
+    .app-bootstrap-shell__mark {
+      position: relative;
+      display: block;
+      width: 4.75rem;
+      height: 4.75rem;
+      border: 1px solid #b9dbc2;
+      border-radius: 50%;
+      background: #eaf7ed;
+      box-shadow: 0 18px 50px rgb(30 166 74 / 12%);
+      animation: app-bootstrap-breathe 1.8s ease-in-out infinite;
+    }
+
+    .app-bootstrap-shell__mark::before,
+    .app-bootstrap-shell__mark::after {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 1.4rem;
+      height: 1.75rem;
+      border: 2px solid #1ea64a;
+      border-radius: 0.3rem;
+      background: #f8fbf8;
+      content: "";
+    }
+
+    .app-bootstrap-shell__mark::before {
+      transform: translate(-72%, -58%) rotate(-8deg);
+    }
+
+    .app-bootstrap-shell__mark::after {
+      transform: translate(-28%, -42%) rotate(8deg);
+    }
+
+    .app-bootstrap-shell__eyebrow {
+      margin: 1.35rem 0 0;
+      color: #168b3d;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.17em;
+      text-transform: uppercase;
+    }
+
+    .app-bootstrap-shell__title {
+      margin: 0.45rem 0 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.8rem, 4vw, 2.35rem);
+      font-weight: 500;
+      letter-spacing: -0.025em;
+    }
+
+    @keyframes app-bootstrap-breathe {
+      50% { transform: scale(1.045); }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .app-bootstrap-shell {
+        background: #101713;
+        color: #edf5ef;
+      }
+
+      .app-bootstrap-shell__mark {
+        border-color: #315d3d;
+        background: #17271c;
+      }
+
+      .app-bootstrap-shell__mark::before,
+      .app-bootstrap-shell__mark::after {
+        background: #101713;
+      }
+
+      .app-bootstrap-shell__eyebrow {
+        color: #54ce77;
+      }
+
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .app-bootstrap-shell__mark {
+        animation: none;
+      }
+    }
+  </style>
 </head>
 <body>
-  <app-root></app-root>
+  <app-root>
+    <div class="app-bootstrap-shell" role="status" aria-live="polite" aria-label="Opening LivingWiki">
+      <div class="app-bootstrap-shell__content">
+        <span class="app-bootstrap-shell__mark" aria-hidden="true"></span>
+        <p class="app-bootstrap-shell__eyebrow">Opening LivingWiki</p>
+        <p class="app-bootstrap-shell__title">Gathering your stories…</p>
+      </div>
+    </div>
+  </app-root>
 </body>
 </html>

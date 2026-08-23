@@ -1,3 +1,12 @@
-<router-outlet></router-outlet>
+@if (!routeActive) {
+  <div class="app-bootstrap-shell" role="status" aria-live="polite" aria-label="Opening LivingWiki">
+    <div class="app-bootstrap-shell__content">
+      <span class="app-bootstrap-shell__mark" aria-hidden="true"></span>
+      <p class="app-bootstrap-shell__eyebrow">Opening LivingWiki</p>
+      <p class="app-bootstrap-shell__title">Gathering your stories…</p>
+    </div>
+  </div>
+}
+<router-outlet (activate)="routeActive = true"></router-outlet>
 <app-workspace-navigation-overlay />
 <app-spotify-player />

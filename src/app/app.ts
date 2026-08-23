@@ -12,5 +12,6 @@ import { WorkspaceNavigationOverlayComponent } from './workspace-navigation/work
 })
 export class App {
   protected readonly title = $localize`LivingWiki`;
+  protected routeActive = false;
   private readonly themeService = inject(ThemeService);
 }
