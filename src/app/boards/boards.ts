@@ -3919,6 +3919,18 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     });
     this.wizardLoadingTask.set({ message: 'Preparing your editable gem cards', progress: 82 });
     const batch = this.normalizeWizardBatch(response.data);
+    if (batch.board.kind !== 'nearby-gems'
+      || !batch.board.nearbyGems
+      || batch.board.nearbyGems.generationGrantId !== boardId) {
+      console.error('Nearby Gems discovery returned an outdated board payload.', {
+        returnedKind: batch.board.kind,
+        hasNearbyMetadata: !!batch.board.nearbyGems,
+        grantMatchesDraft: batch.board.nearbyGems?.generationGrantId === boardId,
+      });
+      throw new Error(
+        'Nearby Gems is being updated and cannot save the specialized board yet. Refresh and try again shortly.',
+      );
+    }
     const previewCards = await this.enrichWizardCards(batch.cards);
     this.wizardResult.set({ ...batch, cards: previewCards });
     this.wizardPreviewCards.set(previewCards);
@@ -9694,8 +9706,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   isNearbyGemsBoard(board: Board | null): boolean {
     if (!board) return false;
     if (board.kind === 'nearby-gems') return true;
-    return board.icon === 'explore_nearby'
-      && /nearby-gems/i.test(board.backNote)
+    // Boards created by the original Nearby Gems callable were persisted as
+    // `standard`, and icon normalization could replace `explore_nearby`.
+    // The wizard provenance plus its server-authored card tag is the stable
+    // legacy signature and cannot classify an ordinary hand-made board alone.
+    return /\bnearby-gems\b/i.test(board.backNote)
       && board.cards.some((card) => card.tags.some((tag) => tag.toLocaleLowerCase() === 'nearby gem'));
   }
 
