@@ -1422,7 +1422,7 @@ type BoardLoadContext = {
   imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink, BoardCollectionCreateComponent, BoardCollectionListComponent, CustomPublicUrlDialogComponent],
   providers: [DocxExportService],
   templateUrl: './boards.html',
-  styleUrls: ['./boards.css', './tour-experience.css', './board-wizard-drafts.css', './board-wizard-media-mode.css', './board-narration-style.css', './board-wizard-redesign.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css', './stack-script.css', './stack-cover-final.css', './stack-doc-export.css', './board-city-tag.css'],
+  styleUrls: ['./boards.css', './tour-experience.css', './board-wizard-drafts.css', './board-wizard-media-mode.css', './board-narration-style.css', './board-wizard-redesign.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css', './stack-script.css', './stack-cover-final.css', './stack-doc-export.css', './board-city-tag.css', './board-custom-link.css'],
 })
 export class BoardsComponent implements AfterViewInit, OnDestroy {
   private readonly localeId = inject(LOCALE_ID);
@@ -1455,6 +1455,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   private suppressNextBoardOpen = false;
   private stackPlaybackTimer: ReturnType<typeof setInterval> | null = null;
   private shareMessageTimer: ReturnType<typeof setTimeout> | null = null;
+  private customUrlCopiedTimer: ReturnType<typeof setTimeout> | null = null;
   private stackShareMessageTimer: ReturnType<typeof setTimeout> | null = null;
   private boardFriendSearchTimer: ReturnType<typeof setTimeout> | null = null;
   private boardSearchTimer: ReturnType<typeof setTimeout> | null = null;
@@ -1666,6 +1667,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly cardImageApplying = signal(false);
   readonly cardImageToolError = signal<string | null>(null);
   readonly shareMessage = signal<string | null>(null);
+  readonly customUrlCopiedBoardId = signal<string | null>(null);
   readonly boardEmailShareOpenId = signal<string | null>(null);
   readonly boardEmailShareRecipient = signal('');
   readonly boardEmailShareSending = signal(false);
@@ -3140,6 +3142,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     if (this.shareMessageTimer) {
       clearTimeout(this.shareMessageTimer);
       this.shareMessageTimer = null;
+    }
+    if (this.customUrlCopiedTimer) {
+      clearTimeout(this.customUrlCopiedTimer);
+      this.customUrlCopiedTimer = null;
     }
     if (this.stackShareMessageTimer) {
       clearTimeout(this.stackShareMessageTimer);
@@ -12293,6 +12299,36 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       return path;
     }
     return `${window.location.origin}${path}`;
+  }
+
+  boardCustomUrl(board: Board): string {
+    if (board.visibility !== 'public' || !board.customSlug?.trim()) {
+      return '';
+    }
+    return this.boardPageUrl(board);
+  }
+
+  boardCustomUrlDisplay(board: Board): string {
+    return this.boardCustomUrl(board).replace(/^https?:\/\//i, '');
+  }
+
+  async copyCustomBoardUrl(board: Board, event?: Event): Promise<void> {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const url = this.boardCustomUrl(board);
+    if (!url) return;
+
+    if (await this.copyTextToClipboard(url)) {
+      this.boardAnalytics.trackShare('custom_link_copy');
+      this.customUrlCopiedBoardId.set(board.id);
+      if (this.customUrlCopiedTimer) clearTimeout(this.customUrlCopiedTimer);
+      this.customUrlCopiedTimer = setTimeout(() => {
+        this.customUrlCopiedBoardId.set(null);
+        this.customUrlCopiedTimer = null;
+      }, 2200);
+      return;
+    }
+    this.setShareMessage('Copy blocked. Select the custom board link instead.');
   }
 
   boardsProfileShareUrl(): string {

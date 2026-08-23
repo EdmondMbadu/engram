@@ -1366,6 +1366,28 @@
                 <span>Updated {{ board.cards.length ? boardUpdatedLabel(board) : 'today' }}</span>
               </div>
 
+              @if (boardCustomUrl(board); as customUrl) {
+                <div class="board-editorial-hero__custom-link">
+                  <span class="board-editorial-hero__custom-link-icon material-symbols-outlined" aria-hidden="true">link</span>
+                  <span class="board-editorial-hero__custom-link-copy">
+                    <small>Board link</small>
+                    <a [href]="customUrl" [title]="customUrl">{{ boardCustomUrlDisplay(board) }}</a>
+                  </span>
+                  <button
+                    type="button"
+                    [class.board-editorial-hero__custom-link-button--copied]="customUrlCopiedBoardId() === board.id"
+                    [attr.aria-label]="customUrlCopiedBoardId() === board.id ? 'Custom board link copied' : 'Copy custom board link'"
+                    (click)="copyCustomBoardUrl(board, $event)"
+                  >
+                    <span class="material-symbols-outlined" aria-hidden="true">{{ customUrlCopiedBoardId() === board.id ? 'check' : 'content_copy' }}</span>
+                    <span class="board-editorial-hero__custom-link-button-label">{{ customUrlCopiedBoardId() === board.id ? 'Copied' : 'Copy' }}</span>
+                  </button>
+                  <span class="board-editorial-hero__custom-link-status" aria-live="polite">
+                    {{ customUrlCopiedBoardId() === board.id ? 'Custom board link copied.' : '' }}
+                  </span>
+                </div>
+              }
+
               @if (selectedBoardCity(); as city) {
                 <a class="board-editorial-hero__city" [routerLink]="cityBoardLink(city)" [attr.aria-label]="'Open ' + city.name + ' city Wiki'">
                   <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
