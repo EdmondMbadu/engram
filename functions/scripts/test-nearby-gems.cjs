@@ -72,8 +72,23 @@ const minimumRanked = rankNearbyGemCandidates([
   candidate('slower-4', 'historical_landmark', 2100),
   candidate('slower-5', 'botanical_garden', 2200),
 ], NEARBY_GEM_PRESETS.walk, '', 8);
-assert.equal(minimumRanked.length, 5);
+assert.equal(minimumRanked.length, 6);
 assert.ok(minimumRanked.every((item) => item.straightLineMeters <= NEARBY_GEM_PRESETS.walk.radiusMeters));
+
+const requestedSixteenWithSparseTravelTime = rankNearbyGemCandidates(
+  Array.from({ length: 16 }, (_item, index) =>
+    candidate(
+      `sparse-time-${index + 1}`,
+      index % 2 ? 'park' : 'museum',
+      index < 2 ? 900 + index * 100 : 1900 + index * 20,
+    )),
+  NEARBY_GEM_PRESETS.walk,
+  '',
+  16,
+);
+assert.equal(requestedSixteenWithSparseTravelTime.length, 16);
+assert.equal(requestedSixteenWithSparseTravelTime.filter((item) =>
+  (item.routeDurationSeconds ?? 0) <= NEARBY_GEM_PRESETS.walk.maxDurationSeconds).length, 2);
 
 const onlyOneAvailable = rankNearbyGemCandidates([
   candidate('only-result', 'park', 500),

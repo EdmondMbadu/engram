@@ -111,7 +111,6 @@ export function rankNearbyGemCandidates(
   limit = 8,
 ): NearbyGemCandidate[] {
   const resultLimit = Math.max(1, Math.trunc(limit) || 8);
-  const minimumResultCount = Math.min(5, resultLimit);
   const terms = normalizedTerms(details);
   const unique = new Map<string, NearbyGemCandidate>();
   for (const candidate of candidates) {
@@ -155,14 +154,14 @@ export function rankNearbyGemCandidates(
     }
   }
 
-  // Travel time is the preferred boundary, but real-world routing can be sparse or
-  // unexpectedly slow. If fewer than five matches meet it, fill only to five with
-  // the best remaining places inside the user's chosen mileage radius. Cards still
-  // display the actual travel time, so the fallback remains transparent.
-  if (selected.length < minimumResultCount) {
+  // Travel time remains the ranking preference, but the user's chosen board size
+  // is the target. Fill any remaining slots with the strongest places still inside
+  // the selected mileage radius. Cards display their actual travel time, so slower
+  // fallback results remain transparent instead of silently shrinking the board.
+  if (selected.length < resultLimit) {
     for (const item of scored) {
       if (!selected.some((candidate) => candidate.id === item.candidate.id)) selected.push(item.candidate);
-      if (selected.length >= minimumResultCount) break;
+      if (selected.length >= resultLimit) break;
     }
   }
   return selected;
