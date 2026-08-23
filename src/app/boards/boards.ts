@@ -1552,6 +1552,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   private boardLoadSequence = 0;
   private boardRouteLoadSequence = 0;
   private boardRouteUnavailableTimer: ReturnType<typeof setTimeout> | null = null;
+  private publicOwnerRouteEmptyTimer: ReturnType<typeof setTimeout> | null = null;
   private nearbyGemsQueryConsumed = false;
   private collectionLoadSequence = 0;
   private citiesLoadPromise: Promise<void> | null = null;
@@ -2142,6 +2143,16 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     && this.boardRouteLoadState().complete
     && this.boardRouteUnavailableReady()
     && !this.privateBoardBlocked(),
+  );
+  private readonly publicOwnerRouteResolving = signal(false);
+  private readonly publicOwnerRouteEmptyReady = signal(false);
+  readonly publicOwnerRouteLoading = computed(() =>
+    !!this.publicOwnerKey()
+    && (
+      this.publicOwnerRouteResolving()
+      || this.boardsLoading()
+      || (!this.boards().length && !this.publicOwnerRouteEmptyReady())
+    ),
   );
   readonly selectedBoardParent = computed(() => {
     const board = this.originalSelectedBoard();
@@ -2863,6 +2874,9 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       const ownerKey = params.get('ownerKey');
       const ownerUid = this.publicOwnerUidFromKey(ownerKey);
       const ownerSlug = this.publicOwnerSlugFromKey(ownerKey);
+      this.cancelPublicOwnerRouteEmptyReveal();
+      this.publicOwnerRouteResolving.set(ownerKey !== null);
+      this.publicOwnerRouteEmptyReady.set(ownerKey === null);
       if (this.selectedBoardId() !== selectedBoardId) {
         this.activeAlongsideBoardIds.set(new Set());
         this.exploredRelatedCardParentId.set(null);
@@ -2901,6 +2915,13 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         // "Board unavailable" message before the browser lookup begins.
         if (!this.isBrowser || boardRouteLoadId !== this.boardRouteLoadSequence) {
           return;
+        }
+        if (ownerKey !== null) {
+          this.publicOwnerRouteResolving.set(false);
+          this.schedulePublicOwnerRouteEmptyReveal(boardRouteLoadId);
+        } else {
+          this.publicOwnerRouteResolving.set(false);
+          this.publicOwnerRouteEmptyReady.set(true);
         }
         this.boardRouteLoadState.update((state) => completeBoardRouteLoad(state, boardRouteLoadId));
         if (!boardId && !this.friendsPage()) {
@@ -3148,6 +3169,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.boardRouteLoadSequence += 1;
     this.collectionLoadSequence += 1;
     this.cancelBoardRouteUnavailableReveal();
+    this.cancelPublicOwnerRouteEmptyReveal();
     this.selectedBoardUnsubscribe?.();
     this.selectedBoardUnsubscribe = null;
     this.stopSongPreview();
@@ -3459,6 +3481,23 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         && !this.privateBoardBlocked()
       ) {
         this.boardRouteUnavailableReady.set(true);
+      }
+    }, BOARD_ROUTE_UNAVAILABLE_GRACE_MS);
+  }
+
+  private cancelPublicOwnerRouteEmptyReveal(): void {
+    if (this.publicOwnerRouteEmptyTimer) {
+      clearTimeout(this.publicOwnerRouteEmptyTimer);
+      this.publicOwnerRouteEmptyTimer = null;
+    }
+  }
+
+  private schedulePublicOwnerRouteEmptyReveal(boardRouteLoadId: number): void {
+    this.cancelPublicOwnerRouteEmptyReveal();
+    this.publicOwnerRouteEmptyTimer = setTimeout(() => {
+      this.publicOwnerRouteEmptyTimer = null;
+      if (boardRouteLoadId === this.boardRouteLoadSequence && !!this.publicOwnerKey()) {
+        this.publicOwnerRouteEmptyReady.set(true);
       }
     }, BOARD_ROUTE_UNAVAILABLE_GRACE_MS);
   }

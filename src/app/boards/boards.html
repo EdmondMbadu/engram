@@ -427,14 +427,19 @@
           See other boards
         </a>
       </section>
-    } @else if (boardRouteLoading()) {
-      <section class="board-route-loading" role="status" aria-live="polite" aria-label="Loading board">
+    } @else if (boardRouteLoading() || publicOwnerRouteLoading()) {
+      <section
+        class="board-route-loading"
+        role="status"
+        aria-live="polite"
+        [attr.aria-label]="publicOwnerRouteLoading() ? 'Loading public boards' : 'Loading board'"
+      >
         <div class="board-route-loading__content">
           <span class="board-route-loading__mark" aria-hidden="true">
             <span class="material-symbols-outlined">auto_awesome_motion</span>
           </span>
-          <p>Opening board</p>
-          <h1>Gathering its story…</h1>
+          <p>{{ publicOwnerRouteLoading() ? 'Opening boards' : 'Opening board' }}</p>
+          <h1>{{ publicOwnerRouteLoading() ? 'Gathering their stories…' : 'Gathering its story…' }}</h1>
           <div class="board-route-loading__lines" aria-hidden="true">
             <span></span>
             <span></span>
