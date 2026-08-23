@@ -80,6 +80,29 @@ const preparedImages = new Map([
   assert.equal(boardDocExportTestHelpers.privateIp('8.8.8.8'), false);
   assert.equal(boardDocExportTestHelpers.privateIp('::1'), true);
 
+  assert.equal(boardDocExportTestHelpers.isRetryableImageStatus(429), true);
+  assert.equal(boardDocExportTestHelpers.isRetryableImageStatus(503), true);
+  assert.equal(boardDocExportTestHelpers.isRetryableImageStatus(404), false);
+  assert.equal(boardDocExportTestHelpers.imageRetryDelayMs(null, 0), 1_000);
+  assert.equal(boardDocExportTestHelpers.imageRetryDelayMs('3', 0), 3_000);
+  assert.equal(boardDocExportTestHelpers.imageRetryDelayMs('120', 4), 15_000);
+
+  let fetchAttempts = 0;
+  const retryDelays = [];
+  const response = await boardDocExportTestHelpers.fetchImageResponse(
+    new URL('https://images.example/photo.jpg'),
+    async () => {
+      fetchAttempts += 1;
+      return fetchAttempts < 3
+        ? new Response('', { status: fetchAttempts === 1 ? 429 : 503 })
+        : new Response(pixel, { status: 200, headers: { 'content-type': 'image/png' } });
+    },
+    async (milliseconds) => { retryDelays.push(milliseconds); },
+  );
+  assert.equal(response.status, 200);
+  assert.equal(fetchAttempts, 3);
+  assert.deepEqual(retryDelays, [1_000, 2_000]);
+
   console.log('Board DOCX export tests passed.');
 })().catch((error) => {
   console.error(error);

@@ -44,6 +44,10 @@ type PreparedImage = {
 const maxCards = 200;
 const maxImages = 300;
 const maxImageBytes = 20 * 1024 * 1024;
+const maxImageFetchAttempts = 5;
+const imageFetchTimeoutMs = 20_000;
+const imageFetchBaseRetryMs = 1_000;
+const imageFetchMaxRetryMs = 15_000;
 const docxMimeType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 
 export const exportBoardToDocx = onCall(
@@ -197,16 +201,15 @@ async function prepareSnapshotImages(snapshot: ExportSnapshot, warnings: string[
 
   const prepared = new Map<string, PreparedImage>();
   const entries = [...requested.entries()];
-  for (let offset = 0; offset < entries.length; offset += 4) {
-    const results = await Promise.all(entries.slice(offset, offset + 4).map(async ([url, details]) => {
-      try {
-        return [url, { ...await normalizeImage(url), ...details }] as const;
-      } catch (error) {
-        warnings.push(`${details.label} was skipped: ${error instanceof Error ? error.message : 'image preparation failed'}`);
-        return null;
-      }
-    }));
-    for (const result of results) if (result) prepared.set(result[0], result[1]);
+  // Many image CDNs (notably Wikimedia) rate-limit short concurrent bursts. Keep
+  // downloads sequential so a larger board does not lose every image after the
+  // first few, and let fetchPublicImage retry temporary responses below.
+  for (const [url, details] of entries) {
+    try {
+      prepared.set(url, { ...await normalizeImage(url), ...details });
+    } catch (error) {
+      warnings.push(`${details.label} was skipped: ${error instanceof Error ? error.message : 'image preparation failed'}`);
+    }
   }
   return prepared;
 }
@@ -342,14 +345,7 @@ async function fetchPublicImage(initialUrl: string): Promise<Buffer> {
   let url = new URL(initialUrl);
   for (let redirects = 0; redirects <= 3; redirects += 1) {
     await assertPublicHttpsUrl(url);
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 20_000);
-    let response: Response;
-    try {
-      response = await fetch(url, { redirect: 'manual', signal: controller.signal, headers: { 'User-Agent': 'LivingWiki DOCX Export/1.0' } });
-    } finally {
-      clearTimeout(timeout);
-    }
+    const response = await fetchImageResponse(url);
     if (response.status >= 300 && response.status < 400) {
       const location = response.headers.get('location');
       if (!location) throw new Error('image redirect was incomplete');
@@ -362,6 +358,65 @@ async function fetchPublicImage(initialUrl: string): Promise<Buffer> {
     return Buffer.from(await response.arrayBuffer());
   }
   throw new Error('image redirected too many times');
+}
+
+async function fetchImageResponse(
+  url: URL,
+  fetcher: typeof fetch = fetch,
+  pause: (milliseconds: number) => Promise<void> = sleep,
+): Promise<Response> {
+  let lastResponse: Response | null = null;
+  for (let attempt = 0; attempt < maxImageFetchAttempts; attempt += 1) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), imageFetchTimeoutMs);
+    try {
+      lastResponse = await fetcher(url, {
+        redirect: 'manual',
+        signal: controller.signal,
+        headers: { 'User-Agent': 'LivingWiki DOCX Export/1.1 (https://livingwiki.com)' },
+      });
+    } catch (error) {
+      if (attempt >= maxImageFetchAttempts - 1 || !isRetryableImageError(error)) throw error;
+      await pause(imageRetryDelayMs(null, attempt));
+      continue;
+    } finally {
+      clearTimeout(timeout);
+    }
+
+    if (!isRetryableImageStatus(lastResponse.status) || attempt >= maxImageFetchAttempts - 1) {
+      return lastResponse;
+    }
+    await lastResponse.body?.cancel();
+    await pause(imageRetryDelayMs(lastResponse.headers.get('retry-after'), attempt));
+  }
+  return lastResponse!;
+}
+
+function isRetryableImageStatus(status: number): boolean {
+  return status === 408 || status === 425 || status === 429 || status === 500
+    || status === 502 || status === 503 || status === 504;
+}
+
+function isRetryableImageError(error: unknown): boolean {
+  return error instanceof TypeError || (error instanceof Error && error.name === 'AbortError');
+}
+
+function imageRetryDelayMs(retryAfter: string | null, attempt: number): number {
+  const exponentialDelay = imageFetchBaseRetryMs * (2 ** attempt);
+  let requestedDelay = 0;
+  if (retryAfter) {
+    const seconds = Number(retryAfter);
+    if (Number.isFinite(seconds) && seconds >= 0) requestedDelay = seconds * 1_000;
+    else {
+      const retryAt = Date.parse(retryAfter);
+      if (Number.isFinite(retryAt)) requestedDelay = Math.max(0, retryAt - Date.now());
+    }
+  }
+  return Math.min(imageFetchMaxRetryMs, Math.max(exponentialDelay, requestedDelay));
+}
+
+function sleep(milliseconds: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
 
 async function assertPublicHttpsUrl(url: URL): Promise<void> {
@@ -453,4 +508,11 @@ function safeImageUrl(value: unknown): string {
   return safeOptionalHttpsUrl(text);
 }
 
-export const boardDocExportTestHelpers = { buildDocxPackage, createDocxBuffer, privateIp };
+export const boardDocExportTestHelpers = {
+  buildDocxPackage,
+  createDocxBuffer,
+  fetchImageResponse,
+  imageRetryDelayMs,
+  isRetryableImageStatus,
+  privateIp,
+};
