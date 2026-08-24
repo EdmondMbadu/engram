@@ -10,7 +10,9 @@ import {
   stackVideoCardVisibleText,
   stackVideoCardImageCandidates,
   stackVideoClosingDurationMs,
+  stackVideoContainRect,
   stackVideoFrameAtElapsed,
+  stackVideoLandscapeLayout,
   stackVideoNarrationFrameDurationMs,
   stackVideoNarrationIsComplete,
   stackVideoRenderIsCurrent,
@@ -24,8 +26,8 @@ describe('Stack video card images', () => {
     expect(STACK_VIDEO_BRAND_URL).toBe('LivingWiki.com');
   });
 
-  it('marks the corrected closing-card layout as a new trailer render', () => {
-    expect(STACK_TRAILER_RENDER_VERSION).toBe('board-trailer-v2');
+  it('marks the subject-safe landscape layout as a new trailer render', () => {
+    expect(STACK_TRAILER_RENDER_VERSION).toBe('board-trailer-v3');
   });
 
   it('publishes each video do-over at a distinct cache-safe URL', () => {
@@ -100,7 +102,44 @@ describe('Stack video card images', () => {
     expect(stackVideoRenderIsCurrent('stack-video-v11')).toBeFalse();
     expect(stackVideoRenderIsCurrent('stack-video-v12')).toBeFalse();
     expect(stackVideoRenderIsCurrent('stack-video-v13')).toBeFalse();
-    expect(stackVideoRenderIsCurrent('stack-video-v14')).toBeTrue();
+    expect(stackVideoRenderIsCurrent('stack-video-v14')).toBeFalse();
+    expect(stackVideoRenderIsCurrent('stack-video-v15')).toBeTrue();
+  });
+
+  it('contains portrait artwork without cropping it in a landscape image panel', () => {
+    const layout = stackVideoLandscapeLayout(1280, 720);
+    const contained = stackVideoContainRect(600, 900, layout.image);
+
+    expect(contained.width / contained.height).toBeCloseTo(2 / 3, 5);
+    expect(contained.height).toBeCloseTo(layout.image.height, 5);
+    expect(contained.x).toBeGreaterThan(layout.image.x);
+    expect(contained.y).toBeCloseTo(layout.image.y, 5);
+    expect(contained.x + contained.width).toBeLessThanOrEqual(layout.image.x + layout.image.width);
+    expect(contained.y + contained.height).toBeLessThanOrEqual(layout.image.y + layout.image.height);
+  });
+
+  it('contains square and wide artwork inside the landscape image panel', () => {
+    const layout = stackVideoLandscapeLayout(1280, 720);
+    for (const [sourceWidth, sourceHeight] of [[900, 900], [1600, 900]]) {
+      const contained = stackVideoContainRect(sourceWidth, sourceHeight, layout.image);
+      expect(contained.width / contained.height).toBeCloseTo(sourceWidth / sourceHeight, 5);
+      expect(contained.x).toBeGreaterThanOrEqual(layout.image.x);
+      expect(contained.y).toBeGreaterThanOrEqual(layout.image.y);
+      expect(contained.x + contained.width).toBeLessThanOrEqual(layout.image.x + layout.image.width);
+      expect(contained.y + contained.height).toBeLessThanOrEqual(layout.image.y + layout.image.height);
+    }
+  });
+
+  it('reserves separate non-overlapping image and text-safe areas in landscape', () => {
+    const layout = stackVideoLandscapeLayout(1280, 720);
+
+    expect(layout.image.x).toBeGreaterThan(0);
+    expect(layout.image.y).toBeGreaterThan(0);
+    expect(layout.image.x + layout.image.width).toBeLessThan(layout.content.x);
+    expect(layout.content.x + layout.content.width).toBeLessThan(1280);
+    expect(layout.image.y + layout.image.height).toBeLessThan(720);
+    expect(layout.content.y + layout.content.height).toBeLessThan(720);
+    expect(layout.content.width).toBeGreaterThan(400);
   });
 
   it('normalizes safe final-screen defaults and duration bounds', () => {

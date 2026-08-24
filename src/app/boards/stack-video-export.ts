@@ -63,6 +63,18 @@ export type StackTrailerPlan = {
   cardDurationMs: number;
 };
 
+export type StackVideoRect = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+};
+
+export type StackVideoLandscapeLayout = {
+  image: StackVideoRect;
+  content: StackVideoRect;
+};
+
 type LoadedImage = {
   source: CanvasImageSource;
   width: number;
@@ -95,8 +107,8 @@ const DEFAULT_CLOSING_DURATION_SECONDS = 3;
 const NARRATION_LEAD_MS = 100;
 const NARRATION_TAIL_MS = 350;
 
-export const STACK_VIDEO_RENDER_VERSION = 'stack-video-v14';
-export const STACK_TRAILER_RENDER_VERSION = 'board-trailer-v2';
+export const STACK_VIDEO_RENDER_VERSION = 'stack-video-v15';
+export const STACK_TRAILER_RENDER_VERSION = 'board-trailer-v3';
 export const STACK_VIDEO_BRAND_URL = 'LivingWiki.com';
 
 export function publishedStackVideoStoragePath(
@@ -161,6 +173,43 @@ export function stackTrailerCaptionChunks(script: string, maxWords = 9): string[
 
 export function stackVideoRenderIsCurrent(version: unknown): boolean {
   return version === STACK_VIDEO_RENDER_VERSION;
+}
+
+export function stackVideoContainRect(
+  sourceWidth: number,
+  sourceHeight: number,
+  target: StackVideoRect,
+): StackVideoRect {
+  if (sourceWidth <= 0 || sourceHeight <= 0 || target.width <= 0 || target.height <= 0) {
+    return { ...target, width: 0, height: 0 };
+  }
+  const scale = Math.min(target.width / sourceWidth, target.height / sourceHeight);
+  const width = sourceWidth * scale;
+  const height = sourceHeight * scale;
+  return {
+    x: target.x + (target.width - width) / 2,
+    y: target.y + (target.height - height) / 2,
+    width,
+    height,
+  };
+}
+
+export function stackVideoLandscapeLayout(width: number, height: number): StackVideoLandscapeLayout {
+  const margin = height * 0.067;
+  const gap = height * 0.05;
+  const top = height * 0.08;
+  const panelHeight = height * 0.84;
+  const availableWidth = Math.max(0, width - margin * 2 - gap);
+  const imageWidth = availableWidth * 0.6;
+  return {
+    image: { x: margin, y: top, width: imageWidth, height: panelHeight },
+    content: {
+      x: margin + imageWidth + gap,
+      y: top,
+      width: availableWidth - imageWidth,
+      height: panelHeight,
+    },
+  };
 }
 
 export function normalizeStackVideoClosingScreen(
@@ -877,6 +926,10 @@ function drawTrailerCoverFrame(
   image: LoadedImage | undefined,
   progress: number,
 ): void {
+  if (isLandscapeFrame(width, height)) {
+    drawLandscapeCoverFrame(context, width, height, board, image, progress, true);
+    return;
+  }
   if (image) drawCoverImage(context, image, width, height, 1.04 + progress * 0.035);
   drawShade(context, width, height, image ? 0.88 : 0.4);
   drawBrandPill(context, width, height);
@@ -909,6 +962,10 @@ function drawTrailerCardFrame(
   image: LoadedImage | undefined,
   progress: number,
 ): void {
+  if (isLandscapeFrame(width, height)) {
+    drawLandscapeCardFrame(context, width, height, card, image, progress, cardIndex, cardCount);
+    return;
+  }
   if (image) drawCoverImage(context, image, width, height, 1.06 + progress * 0.045);
   drawShade(context, width, height, image ? 0.82 : 0.36);
   drawBrandPill(context, width, height);
@@ -934,6 +991,10 @@ function drawTrailerMontageFrame(
   images: Map<string, LoadedImage>,
   progress: number,
 ): void {
+  if (isLandscapeFrame(width, height)) {
+    drawLandscapeTrailerMontageFrame(context, width, height, cards, images, progress);
+    return;
+  }
   const columns = 3;
   const rows = 3;
   const gap = width * 0.018;
@@ -980,6 +1041,10 @@ function drawTrailerClosingFrame(
   board: StackVideoBoard,
   progress: number,
 ): void {
+  if (isLandscapeFrame(width, height)) {
+    drawLandscapeTrailerClosingFrame(context, width, height, board, progress);
+    return;
+  }
   const reveal = easeOut(Math.min(1, progress * 2.8));
   context.save();
   context.globalAlpha = reveal;
@@ -1012,6 +1077,32 @@ function drawTrailerCaption(
   height: number,
   caption: string,
 ): void {
+  if (isLandscapeFrame(width, height)) {
+    const padding = width * 0.12;
+    const boxHeight = height * 0.13;
+    const y = height - boxHeight - height * 0.035;
+    roundedRect(context, padding, y, width - padding * 2, boxHeight, height * 0.035);
+    context.fillStyle = 'rgba(4,18,14,.9)';
+    context.fill();
+    context.strokeStyle = 'rgba(189,251,227,.42)';
+    context.lineWidth = 2;
+    context.stroke();
+    context.fillStyle = '#ffffff';
+    context.font = `850 ${Math.round(height * 0.041)}px Inter, Arial, sans-serif`;
+    context.textAlign = 'center';
+    drawWrappedText(
+      context,
+      caption,
+      padding + height * 0.04,
+      y + height * 0.055,
+      width - padding * 2 - height * 0.08,
+      height * 0.045,
+      2,
+      'center',
+    );
+    context.textAlign = 'left';
+    return;
+  }
   const padding = width * 0.08;
   const y = height * 0.87;
   roundedRect(context, padding, y, width - padding * 2, height * 0.085, width * 0.025);
@@ -1079,6 +1170,10 @@ function drawCoverFrame(
   image: LoadedImage | undefined,
   progress: number,
 ): void {
+  if (isLandscapeFrame(width, height)) {
+    drawLandscapeCoverFrame(context, width, height, board, image, progress, false);
+    return;
+  }
   if (image) drawCoverImage(context, image, width, height, 1.03 + progress * 0.025);
   drawShade(context, width, height, image ? 0.82 : 0.34);
   drawBrandPill(context, width, height);
@@ -1110,6 +1205,10 @@ function drawCardFrame(
   image: LoadedImage | undefined,
   progress: number,
 ): void {
+  if (isLandscapeFrame(width, height)) {
+    drawLandscapeCardFrame(context, width, height, card, image, progress);
+    return;
+  }
   if (image) drawCoverImage(context, image, width, height, 1.02 + progress * 0.03);
   drawShade(context, width, height, image ? 0.86 : 0.38);
   drawBrandPill(context, width, height);
@@ -1135,6 +1234,10 @@ function drawClosingFrame(
   qrImage: LoadedImage | undefined,
   progress: number,
 ): void {
+  if (isLandscapeFrame(width, height)) {
+    drawLandscapeClosingFrame(context, width, height, board, closing, image, qrImage, progress);
+    return;
+  }
   if (image) drawCoverImage(context, image, width, height, 1.03 + progress * 0.025);
   drawShade(context, width, height, image ? 0.9 : 0.4);
   const reveal = easeOut(Math.min(1, progress * 2.5));
@@ -1164,6 +1267,334 @@ function drawClosingFrame(
   context.font = `900 ${Math.round(width * 0.027)}px Inter, Arial, sans-serif`;
   context.fillText(STACK_VIDEO_BRAND_URL, width / 2, height * 0.93);
   context.restore();
+}
+
+function drawLandscapeCoverFrame(
+  context: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  board: StackVideoBoard,
+  image: LoadedImage | undefined,
+  progress: number,
+  trailer: boolean,
+): void {
+  const layout = stackVideoLandscapeLayout(width, height);
+  drawLandscapeImageScene(context, width, height, layout.image, image);
+  drawLandscapeBrandPill(context, layout.content, height);
+  const reveal = easeOut(Math.min(1, progress * (trailer ? 3.2 : 2.8)));
+  context.save();
+  context.globalAlpha = reveal;
+  context.translate((1 - reveal) * height * 0.035, 0);
+  context.fillStyle = '#bdfbe3';
+  context.font = `900 ${Math.round(height * 0.035)}px Inter, Arial, sans-serif`;
+  context.letterSpacing = `${Math.round(height * 0.004)}px`;
+  context.fillText(
+    trailer ? 'A BOARD WORTH OPENING' : 'A LIVINGWIKI STACK',
+    layout.content.x,
+    layout.content.y + height * 0.18,
+  );
+  context.letterSpacing = '0px';
+  context.fillStyle = '#ffffff';
+  context.font = `950 ${Math.round(height * 0.073)}px Inter, Arial, sans-serif`;
+  const titleBottom = drawWrappedText(
+    context,
+    board.title,
+    layout.content.x,
+    layout.content.y + height * 0.265,
+    layout.content.width,
+    height * 0.081,
+    4,
+  );
+  if (!trailer && board.subtitle.trim()) {
+    context.fillStyle = 'rgba(255,255,255,.8)';
+    context.font = `750 ${Math.round(height * 0.034)}px Inter, Arial, sans-serif`;
+    drawWrappedText(
+      context,
+      board.subtitle,
+      layout.content.x,
+      Math.min(titleBottom + height * 0.07, layout.content.y + height * 0.61),
+      layout.content.width,
+      height * 0.045,
+      2,
+    );
+  }
+  context.fillStyle = 'rgba(255,255,255,.78)';
+  context.font = `800 ${Math.round(height * 0.029)}px Inter, Arial, sans-serif`;
+  const cardLabel = `${board.cards.length} ${board.cards.length === 1 ? 'card' : 'cards'}`;
+  context.fillText(
+    `${cardLabel}${trailer ? ' · one LivingWiki' : ''}`,
+    layout.content.x,
+    layout.content.y + layout.content.height - height * 0.035,
+  );
+  context.restore();
+}
+
+function drawLandscapeCardFrame(
+  context: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  card: StackVideoCard,
+  image: LoadedImage | undefined,
+  progress: number,
+  cardIndex?: number,
+  cardCount?: number,
+): void {
+  const layout = stackVideoLandscapeLayout(width, height);
+  drawLandscapeImageScene(context, width, height, layout.image, image);
+  drawLandscapeBrandPill(context, layout.content, height);
+  const reveal = easeOut(Math.min(1, progress * 3.5));
+  context.save();
+  context.globalAlpha = reveal;
+  context.translate((1 - reveal) * height * 0.04, 0);
+  if (cardIndex !== undefined && cardCount !== undefined) {
+    context.fillStyle = '#bdfbe3';
+    context.font = `900 ${Math.round(height * 0.038)}px Inter, Arial, sans-serif`;
+    context.fillText(
+      `${String(cardIndex + 1).padStart(2, '0')} / ${String(cardCount).padStart(2, '0')}`,
+      layout.content.x,
+      layout.content.y + height * 0.2,
+    );
+  }
+  const [title] = stackVideoCardVisibleText(card);
+  context.fillStyle = '#ffffff';
+  context.font = `950 ${Math.round(height * 0.083)}px Inter, Arial, sans-serif`;
+  drawWrappedText(
+    context,
+    title,
+    layout.content.x,
+    layout.content.y + height * (cardIndex === undefined ? 0.34 : 0.29),
+    layout.content.width,
+    height * 0.093,
+    4,
+  );
+  context.restore();
+}
+
+function drawLandscapeClosingFrame(
+  context: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  board: StackVideoBoard,
+  closing: StackVideoClosingScreen,
+  image: LoadedImage | undefined,
+  qrImage: LoadedImage | undefined,
+  progress: number,
+): void {
+  const layout = stackVideoLandscapeLayout(width, height);
+  drawLandscapeImageScene(context, width, height, layout.image, image);
+  drawLandscapeBrandPill(context, layout.content, height);
+  const reveal = easeOut(Math.min(1, progress * 2.5));
+  context.save();
+  context.globalAlpha = reveal;
+  context.translate((1 - reveal) * height * 0.03, 0);
+  context.fillStyle = '#bdfbe3';
+  context.font = `850 ${Math.round(height * 0.033)}px Inter, Arial, sans-serif`;
+  drawWrappedText(
+    context,
+    closing.headline.toUpperCase(),
+    layout.content.x,
+    layout.content.y + height * 0.18,
+    layout.content.width,
+    height * 0.042,
+    2,
+  );
+  context.fillStyle = '#ffffff';
+  context.font = `950 ${Math.round(height * 0.064)}px Inter, Arial, sans-serif`;
+  drawWrappedText(
+    context,
+    closing.message || board.title,
+    layout.content.x,
+    layout.content.y + height * 0.27,
+    layout.content.width,
+    height * 0.071,
+    3,
+  );
+  if (qrImage) {
+    const qrSize = height * 0.19;
+    const x = layout.content.x;
+    const y = layout.content.y + height * 0.54;
+    roundedRect(context, x - 8, y - 8, qrSize + 16, qrSize + 16, 16);
+    context.fillStyle = '#ffffff';
+    context.fill();
+    context.drawImage(qrImage.source, x, y, qrSize, qrSize);
+  }
+  context.fillStyle = 'rgba(255,255,255,.7)';
+  context.font = `750 ${Math.round(height * 0.025)}px Inter, Arial, sans-serif`;
+  context.fillText('Made with LivingWiki', layout.content.x, layout.content.y + layout.content.height - height * 0.07);
+  context.fillStyle = '#ffffff';
+  context.font = `900 ${Math.round(height * 0.026)}px Inter, Arial, sans-serif`;
+  context.fillText(STACK_VIDEO_BRAND_URL, layout.content.x, layout.content.y + layout.content.height - height * 0.03);
+  context.restore();
+}
+
+function drawLandscapeTrailerMontageFrame(
+  context: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  cards: StackVideoCard[],
+  images: Map<string, LoadedImage>,
+  progress: number,
+): void {
+  const columns = 4;
+  const gap = height * 0.025;
+  const padding = height * 0.075;
+  const tileWidth = (width - padding * 2 - gap * (columns - 1)) / columns;
+  const tileHeight = height * 0.205;
+  const startY = height * 0.095;
+  cards.slice(0, 12).forEach((card, index) => {
+    const image = firstLoadedCardImage(card, images);
+    const x = padding + (index % columns) * (tileWidth + gap);
+    const y = startY + Math.floor(index / columns) * (tileHeight + gap);
+    context.save();
+    context.globalAlpha = easeOut(Math.min(1, progress * 3 - index * 0.06));
+    roundedRect(context, x, y, tileWidth, tileHeight, height * 0.025);
+    context.clip();
+    if (image) {
+      context.globalAlpha *= 0.42;
+      drawImageCoverIntoRect(context, image, x, y, tileWidth, tileHeight, 1.02);
+      context.globalAlpha = easeOut(Math.min(1, progress * 3 - index * 0.06));
+      context.fillStyle = 'rgba(4,18,14,.38)';
+      context.fillRect(x, y, tileWidth, tileHeight);
+      drawImageContainIntoRect(context, image, x + 6, y + 6, tileWidth - 12, tileHeight - 12);
+    } else {
+      context.fillStyle = index % 2 ? '#144738' : '#0c6b54';
+      context.fillRect(x, y, tileWidth, tileHeight);
+    }
+    context.restore();
+  });
+  const gradient = context.createLinearGradient(0, height * 0.55, 0, height);
+  gradient.addColorStop(0, 'rgba(7,16,13,0)');
+  gradient.addColorStop(0.3, 'rgba(7,16,13,.88)');
+  gradient.addColorStop(1, '#07100d');
+  context.fillStyle = gradient;
+  context.fillRect(0, height * 0.53, width, height * 0.47);
+  context.textAlign = 'center';
+  context.fillStyle = '#bdfbe3';
+  context.font = `900 ${Math.round(height * 0.037)}px Inter, Arial, sans-serif`;
+  context.fillText('THE WHOLE BOARD IS WAITING', width / 2, height * 0.79);
+  context.fillStyle = '#ffffff';
+  context.font = `950 ${Math.round(height * 0.085)}px Inter, Arial, sans-serif`;
+  context.fillText(`${cards.length} CARDS`, width / 2, height * 0.88);
+  context.textAlign = 'left';
+}
+
+function drawLandscapeTrailerClosingFrame(
+  context: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  board: StackVideoBoard,
+  progress: number,
+): void {
+  const reveal = easeOut(Math.min(1, progress * 2.8));
+  context.save();
+  context.globalAlpha = reveal;
+  context.translate(0, (1 - reveal) * height * 0.03);
+  context.textAlign = 'center';
+  context.fillStyle = '#bdfbe3';
+  context.font = `900 ${Math.round(height * 0.038)}px Inter, Arial, sans-serif`;
+  context.fillText('THERE IS MORE TO DISCOVER', width / 2, height * 0.28);
+  context.fillStyle = '#ffffff';
+  context.font = `950 ${Math.round(height * 0.09)}px Inter, Arial, sans-serif`;
+  drawWrappedText(context, 'OPEN THE FULL BOARD', width * 0.12, height * 0.39, width * 0.76, height * 0.1, 2, 'center');
+  roundedRect(context, width * 0.28, height * 0.62, width * 0.44, height * 0.1, 999);
+  context.fillStyle = '#bdfbe3';
+  context.fill();
+  context.fillStyle = '#08271e';
+  context.font = `950 ${Math.round(height * 0.035)}px Inter, Arial, sans-serif`;
+  context.textBaseline = 'middle';
+  context.fillText('EXPLORE ON LIVINGWIKI', width / 2, height * 0.67);
+  context.textBaseline = 'alphabetic';
+  context.fillStyle = 'rgba(255,255,255,.72)';
+  context.font = `800 ${Math.round(height * 0.029)}px Inter, Arial, sans-serif`;
+  context.fillText(displayUrlHost(board.liveUrl), width / 2, height * 0.83);
+  context.restore();
+}
+
+function drawLandscapeImageScene(
+  context: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  imageRect: StackVideoRect,
+  image: LoadedImage | undefined,
+): void {
+  if (image) {
+    context.save();
+    context.globalAlpha = 0.48;
+    context.filter = `blur(${Math.round(height * 0.025)}px)`;
+    drawCoverImage(context, image, width, height, 1.04);
+    context.restore();
+  }
+  const wash = context.createLinearGradient(0, 0, width, 0);
+  wash.addColorStop(0, 'rgba(4,18,14,.4)');
+  wash.addColorStop(0.58, 'rgba(4,18,14,.72)');
+  wash.addColorStop(1, 'rgba(4,18,14,.96)');
+  context.fillStyle = wash;
+  context.fillRect(0, 0, width, height);
+
+  context.save();
+  context.shadowColor = 'rgba(0,0,0,.4)';
+  context.shadowBlur = height * 0.035;
+  context.shadowOffsetY = height * 0.015;
+  roundedRect(context, imageRect.x, imageRect.y, imageRect.width, imageRect.height, height * 0.035);
+  context.fillStyle = '#07100d';
+  context.fill();
+  context.restore();
+
+  context.save();
+  roundedRect(context, imageRect.x, imageRect.y, imageRect.width, imageRect.height, height * 0.035);
+  context.clip();
+  if (image) {
+    context.globalAlpha = 0.32;
+    drawImageCoverIntoRect(context, image, imageRect.x, imageRect.y, imageRect.width, imageRect.height, 1.02);
+    context.globalAlpha = 1;
+    context.fillStyle = 'rgba(4,18,14,.38)';
+    context.fillRect(imageRect.x, imageRect.y, imageRect.width, imageRect.height);
+    const inset = height * 0.017;
+    drawImageContainIntoRect(
+      context,
+      image,
+      imageRect.x + inset,
+      imageRect.y + inset,
+      imageRect.width - inset * 2,
+      imageRect.height - inset * 2,
+    );
+  } else {
+    const placeholder = context.createLinearGradient(imageRect.x, imageRect.y, imageRect.x + imageRect.width, imageRect.y + imageRect.height);
+    placeholder.addColorStop(0, '#0c6b54');
+    placeholder.addColorStop(1, '#10251d');
+    context.fillStyle = placeholder;
+    context.fillRect(imageRect.x, imageRect.y, imageRect.width, imageRect.height);
+  }
+  context.restore();
+  roundedRect(context, imageRect.x, imageRect.y, imageRect.width, imageRect.height, height * 0.035);
+  context.strokeStyle = 'rgba(255,255,255,.32)';
+  context.lineWidth = 2;
+  context.stroke();
+}
+
+function drawLandscapeBrandPill(
+  context: CanvasRenderingContext2D,
+  contentRect: StackVideoRect,
+  height: number,
+): void {
+  const pillHeight = height * 0.062;
+  const pillWidth = Math.min(contentRect.width, height * 0.31);
+  roundedRect(context, contentRect.x, contentRect.y, pillWidth, pillHeight, pillHeight / 2);
+  context.fillStyle = 'rgba(4,18,14,.7)';
+  context.fill();
+  context.strokeStyle = 'rgba(255,255,255,.4)';
+  context.lineWidth = 2;
+  context.stroke();
+  context.fillStyle = '#ffffff';
+  context.font = `900 ${Math.round(height * 0.027)}px Inter, Arial, sans-serif`;
+  context.textAlign = 'left';
+  context.textBaseline = 'middle';
+  context.fillText('◈  LivingWiki', contentRect.x + pillHeight * 0.34, contentRect.y + pillHeight / 2);
+  context.textBaseline = 'alphabetic';
+}
+
+function isLandscapeFrame(width: number, height: number): boolean {
+  return width / height >= 1.5;
 }
 
 function drawBrandPill(context: CanvasRenderingContext2D, width: number, height: number): void {
@@ -1257,6 +1688,28 @@ function drawImageCoverIntoRect(
     y,
     width,
     height,
+  );
+}
+
+function drawImageContainIntoRect(
+  context: CanvasRenderingContext2D,
+  image: LoadedImage,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+): void {
+  const destination = stackVideoContainRect(image.width, image.height, { x, y, width, height });
+  context.drawImage(
+    image.source,
+    0,
+    0,
+    image.width,
+    image.height,
+    destination.x,
+    destination.y,
+    destination.width,
+    destination.height,
   );
 }
 
