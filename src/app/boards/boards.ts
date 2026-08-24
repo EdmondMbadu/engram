@@ -142,7 +142,11 @@ import {
 import { canReorderCardSurface } from './card-interaction';
 import { cardPresentationSubtitle } from './card-numbering';
 import { cardNotesForPersistence, cardNotesSummary } from './card-notes';
-import { boardCityMetadataForFirestore, omitUndefinedDeep } from './firestore-payload';
+import {
+  boardCityMetadataForFirestore,
+  boardDescriptionForFirestore,
+  omitUndefinedDeep,
+} from './firestore-payload';
 import { cardsForNewBoardInside, legacyMemoryImages, relatedCardCollectionLabel, upsertNestedCard } from './related-cards';
 import {
   cardsForStackView,
@@ -5608,7 +5612,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
           kind: result.board.kind ?? this.wizardGeneratedBoardKind(),
           sortOrder: this.nextBoardSortOrder(),
           title: result.board.title.trim() || 'Wizard board',
-          description: result.board.description.trim(),
+          description: boardDescriptionForFirestore(result.board.description),
           backNote: `Started with the LivingWiki Wizard from ${this.wizardMode()} input.`,
           icon: result.board.icon || 'auto_awesome',
           tone: result.board.tone,
@@ -17052,7 +17056,9 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     return {
       board: {
         title: this.stringValue(boardData['title'], fallback.board.title, 90),
-        description: this.stringValue(boardData['description'], fallback.board.description, 500),
+        description: boardDescriptionForFirestore(
+          this.stringValue(boardData['description'], fallback.board.description, 500),
+        ),
         icon: resolveBoardIcon(this.stringValue(boardData['icon'], fallback.board.icon, 64), {
           title: this.stringValue(boardData['title'], fallback.board.title, 90),
           description: this.stringValue(boardData['description'], fallback.board.description, 500),
@@ -17663,6 +17669,9 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   }
 
   private shouldEnrichWizardCard(card: BoardWizardGeneratedCard): boolean {
+    if (card.tags.some((tag) => tag.toLowerCase() === 'listing')) {
+      return false;
+    }
     if (card.type === 'food' && card.tags.some((tag) => ['menu-item', 'dish', 'menu', 'food item'].includes(tag.toLowerCase()))) {
       return false;
     }
@@ -19085,7 +19094,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     if (board.ownerUserId !== uid) {
       throw new Error('Only the board owner can save changes.');
     }
-    const boardWithOwner = { ...board, ...this.currentOwnerSnapshot() };
+    const boardWithOwner = {
+      ...board,
+      description: boardDescriptionForFirestore(board.description),
+      ...this.currentOwnerSnapshot(),
+    };
     const storageOwnerId = boardWithOwner.ownerUserId || uid;
     const resolvedOwnerPublicSlug = await this.resolveOwnerPublicSlug(boardWithOwner, storageOwnerId);
     const prepared = await this.prepareBoardImagesForFirebase({ ...boardWithOwner, ownerPublicSlug: resolvedOwnerPublicSlug }, storageOwnerId);

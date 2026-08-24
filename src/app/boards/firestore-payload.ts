@@ -53,3 +53,17 @@ export function boardCityMetadataForFirestore(
 
   return metadata;
 }
+
+export const FIRESTORE_BOARD_DESCRIPTION_MAX_LENGTH = 240;
+
+/**
+ * Keep every board-writing path aligned with the Firestore board validator.
+ * Generators and importers may retain longer source copy for cards, but the
+ * board-level description is deliberately compact and capped by the rules.
+ */
+export function boardDescriptionForFirestore(value: unknown): string {
+  return (typeof value === 'string' ? value : '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, FIRESTORE_BOARD_DESCRIPTION_MAX_LENGTH);
+}

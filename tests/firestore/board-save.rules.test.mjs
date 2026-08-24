@@ -190,6 +190,18 @@ test('owner can atomically save a personal wizard board and remove its draft', a
   });
 });
 
+test('personal board description boundary matches the client persistence contract', async () => {
+  const database = testEnvironment.authenticatedContext(ownerUid).firestore();
+  await assertSucceeds(setDoc(
+    doc(database, 'boards', 'description-at-limit'),
+    personalWizardBoard({ id: 'description-at-limit', description: 'x'.repeat(240) }),
+  ));
+  await assertFails(setDoc(
+    doc(database, 'boards', 'description-over-limit'),
+    personalWizardBoard({ id: 'description-over-limit', description: 'x'.repeat(241) }),
+  ));
+});
+
 test('owner can stage a photo board privately in Studio and publish it later', async () => {
   const database = testEnvironment.authenticatedContext(ownerUid).firestore();
   const boardReference = doc(database, 'boards', 'wizard-board-1');

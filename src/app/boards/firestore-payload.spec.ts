@@ -1,5 +1,10 @@
 import { serverTimestamp } from 'firebase/firestore';
-import { boardCityMetadataForFirestore, omitUndefinedDeep } from './firestore-payload';
+import {
+  boardCityMetadataForFirestore,
+  boardDescriptionForFirestore,
+  FIRESTORE_BOARD_DESCRIPTION_MAX_LENGTH,
+  omitUndefinedDeep,
+} from './firestore-payload';
 
 describe('omitUndefinedDeep', () => {
   it('removes undefined values throughout nested board data', () => {
@@ -68,5 +73,19 @@ describe('boardCityMetadataForFirestore', () => {
       atlas_id: 'atlas-philly',
       generated_for_atlas_id: 'atlas-philly',
     });
+  });
+});
+
+describe('boardDescriptionForFirestore', () => {
+  it('normalizes generated copy to the Firestore board-description limit', () => {
+    const value = `  A   Zillow listing ${'with useful source context '.repeat(20)}  `;
+    const normalized = boardDescriptionForFirestore(value);
+
+    expect(normalized.length).toBe(FIRESTORE_BOARD_DESCRIPTION_MAX_LENGTH);
+    expect(normalized).not.toContain('  ');
+  });
+
+  it('returns an empty string for non-text values', () => {
+    expect(boardDescriptionForFirestore(undefined)).toBe('');
   });
 });

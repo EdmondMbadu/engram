@@ -149,6 +149,79 @@ export function isBoardWizardListingPageUrl(value: string): boolean {
   return isStrongListingUrl(value);
 }
 
+export function extractBoardWizardListingFromMarkdown(
+  sourceUrl: string,
+  markdown: string,
+): BoardWizardListingExtraction | null {
+  if (!isStrongListingUrl(sourceUrl) || !markdown.trim()) return null;
+  const kind = listingKindFromUrl(sourceUrl);
+  if (!kind) return null;
+
+  const titleLine = markdown.match(/^Title:\s*(.+)$/im)?.[1]
+    || markdown.match(/^#\s+(.+)$/m)?.[1]
+    || '';
+  const listingName = cleanText(titleLine)
+    .replace(/\s*\|\s*(?:MLS\b[^|]*\|\s*)?(?:Zillow|Airbnb|Vrbo|Booking\.com).*$/i, '')
+    .trim();
+  if (!listingName) return null;
+
+  const galleryBoundary = firstPositiveIndex(
+    markdown,
+    /\bSee all media\b/i,
+    /^#{1,6}\s+(?:Nearby|Similar|Other homes|Meet your host|Reviews|Things to know)\b/im,
+  );
+  const listingRegion = markdown.slice(0, galleryBoundary > 0 ? galleryBoundary : Math.min(markdown.length, 30_000));
+  const markdownImages = Array.from(listingRegion.matchAll(/!\[([^\]]*)\]\((https?:\/\/[^)\s]+)[^)]*\)/g))
+    .map((match) => ({ alt: cleanText(match[1]), url: match[2] }));
+  const candidateImages = markdownImages.filter((image) => {
+    if (NOISE_MEDIA.test(`${image.alt} ${image.url}`)) return false;
+    if (kind === 'real-estate' && safeHostname(sourceUrl).includes('zillow.')) {
+      return /photos\.zillowstatic\.com\/fp\//i.test(image.url)
+        && !/(?:zillow_web|[-_]h_l\.(?:jpg|jpeg|png|webp)|[-_]p_e\.webp)/i.test(image.url);
+    }
+    if (kind === 'vacation-rental' && safeHostname(sourceUrl).includes('airbnb.')) {
+      return /a\d\.muscache\.com\/im\/pictures\/(?:miso\/hosting|hosting|prohost-api)/i.test(image.url);
+    }
+    return /\.(?:jpe?g|png|webp)(?:[?#]|$)/i.test(image.url)
+      && /property|home|house|room|suite|bedroom|kitchen|building|listing|photo|image/i.test(image.alt);
+  });
+  const bestImages = bestMarkdownListingImages(candidateImages).slice(0, 12);
+  if (!bestImages.length) return null;
+
+  const specialDescription = markdownSection(markdown, /^(?:#{1,6}\s*)?What's special\s*$/im);
+  const fallbackDescription = markdown.match(/\b(?:For sale|For rent)[\s\S]{0,1200}/i)?.[0] || '';
+  const description = markdownToPlainText(specialDescription || fallbackDescription).slice(0, 1200);
+  const factsText = markdownToPlainText(markdown.slice(0, Math.min(markdown.length, 24_000)));
+  const price = factsText.match(/\$[\d,]+(?:\.\d{2})?/)?.[0] || '';
+  const latitude = finiteNumber(markdown.match(/[?&]center=(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/i)?.[1]);
+  const longitude = finiteNumber(markdown.match(/[?&]center=(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/i)?.[2]);
+  const syntheticHtml = `<!doctype html><html><head>
+    <meta property="og:site_name" content="${escapeHtml(hostnameLabel(sourceUrl))}">
+    <script type="application/ld+json">${JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': kind === 'real-estate' ? 'RealEstateListing' : kind === 'hotel' ? 'Hotel' : 'VacationRental',
+      name: listingName,
+      description,
+      address: kind === 'real-estate' ? listingName : undefined,
+      image: bestImages.map((image) => image.url),
+      offers: price ? { price, priceCurrency: 'USD' } : undefined,
+      latitude,
+      longitude,
+    })}</script>
+  </head><body>${escapeHtml(factsText)}</body></html>`;
+  const extraction = extractBoardWizardListing(sourceUrl, sourceUrl, syntheticHtml);
+  if (!extraction) return null;
+  return {
+    ...extraction,
+    images: bestImages.map((image) => ({
+      url: image.url,
+      alt: image.alt || `${listingName} listing photo`,
+      evidence: 'listing-gallery' as const,
+    })),
+    confidence: 0.9,
+  };
+}
+
 export function buildBoardWizardListingBatch(options: {
   extraction: BoardWizardListingExtraction;
   targetBoardTitle: string;
@@ -248,14 +321,28 @@ export function buildBoardWizardListingBatch(options: {
     extractedAt,
   }));
 
+  const sourceBoundDetailCards = detailCards.map((card, index) => {
+    if (!extraction.images.length) return card;
+    const image = extraction.images[(index + 1) % extraction.images.length];
+    return {
+      ...card,
+      tags: Array.from(new Set([...card.tags, 'source-image'])),
+      image_query: image.alt || card.image_query,
+      image_context: image.alt || `${extraction.listingName} source gallery`,
+      imageUrl: image.url,
+      imageUrls: [image.url],
+      imageSource: 'source-page' as const,
+    };
+  });
+
   return {
     board: {
       title: (options.targetBoardTitle || extraction.listingName).slice(0, 90),
-      description: (extraction.description || `${kindLabel} captured from ${extraction.siteName || 'the source page'}.`).slice(0, 500),
+      description: (extraction.description || `${kindLabel} captured from ${extraction.siteName || 'the source page'}.`).slice(0, 240),
       icon: extraction.kind === 'real-estate' ? 'apartment' : 'hotel',
       tone: extraction.kind === 'real-estate' ? 'teal' : 'sky',
     },
-    cards: [overview, ...detailCards].slice(0, count),
+    cards: [overview, ...sourceBoundDetailCards].slice(0, count),
   };
 }
 
@@ -422,6 +509,50 @@ function imageAssetKey(value: string): string {
 function imageResolutionScore(value: string): number {
   const dimensions = [...value.matchAll(/(?:[?&](?:w|width)=|[-_/])(\d{2,4})(?:x(\d{2,4}))?/gi)];
   return dimensions.reduce((best, match) => Math.max(best, Number(match[1]) * Number(match[2] || match[1])), 0);
+}
+
+function bestMarkdownListingImages(
+  images: Array<{ alt: string; url: string }>,
+): Array<{ alt: string; url: string }> {
+  const best = new Map<string, { alt: string; url: string; score: number; position: number }>();
+  images.forEach((image, position) => {
+    const key = imageAssetKey(image.url);
+    if (!key) return;
+    const score = imageResolutionScore(image.url)
+      + (/1152|1536|2048|original/i.test(image.url) ? 5_000_000 : 0)
+      - (/192|thumbnail/i.test(image.url) ? 1_000_000 : 0);
+    const current = best.get(key);
+    if (!current || score > current.score) best.set(key, { ...image, score, position });
+  });
+  return Array.from(best.values())
+    .sort((left, right) => left.position - right.position)
+    .map(({ alt, url }) => ({ alt, url }));
+}
+
+function markdownSection(markdown: string, headingPattern: RegExp): string {
+  const match = headingPattern.exec(markdown);
+  if (!match || match.index == null) return '';
+  const start = match.index + match[0].length;
+  const remainder = markdown.slice(start);
+  const nextHeading = remainder.search(/^#{1,6}\s+\S/im);
+  return remainder.slice(0, nextHeading >= 0 ? nextHeading : 1600);
+}
+
+function markdownToPlainText(value: string): string {
+  return cleanText(value
+    .replace(/!\[([^\]]*)\]\([^)]+\)/g, '$1')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/^#{1,6}\s*/gm, '')
+    .replace(/[*_`>|]+/g, ' '));
+}
+
+function firstPositiveIndex(value: string, ...patterns: RegExp[]): number {
+  const indexes = patterns.map((pattern) => value.search(pattern)).filter((index) => index > 0);
+  return indexes.length ? Math.min(...indexes) : -1;
+}
+
+function escapeHtml(value: string): string {
+  return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
 function bestSrcsetUrl(value: string | null, baseUrl: string): string {

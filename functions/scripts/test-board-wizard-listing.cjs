@@ -2,6 +2,7 @@ const assert = require('node:assert/strict');
 const {
   buildBoardWizardListingBatch,
   extractBoardWizardListing,
+  extractBoardWizardListingFromMarkdown,
   isBoardWizardListingPageUrl,
 } = require('../lib/board-wizard-listing.js');
 
@@ -9,6 +10,40 @@ assert.equal(isBoardWizardListingPageUrl('https://www.airbnb.com/rooms/168431079
 assert.equal(isBoardWizardListingPageUrl('https://www.airbnb.com/s/homes'), false);
 assert.equal(isBoardWizardListingPageUrl('https://www.zillow.com/apartments/philadelphia-pa/the-porter/CgKQWS/'), true);
 assert.equal(isBoardWizardListingPageUrl('https://www.zillow.com/philadelphia-pa/apartments/'), false);
+
+const zillowReaderMarkdown = `Title: 27 Cranberry Cove Ct, Las Vegas, NV 89135 | MLS #2809912 | Zillow
+
+URL Source: https://www.zillow.com/homedetails/27-Cranberry-Cove-Ct-Las-Vegas-NV-89135/141490995_zpid/
+
+$3,999,000  4 beds  5 baths  4,618 sqft
+
+![thumbnail](https://photos.zillowstatic.com/fp/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-sc_192_128.jpg)
+![cover](https://photos.zillowstatic.com/fp/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-sc_1152_768.jpg)
+![kitchen](https://photos.zillowstatic.com/fp/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb-sc_1152_768.jpg)
+![Agent avatar](https://photos.zillowstatic.com/fp/cccccccccccccccccccccccccccccccc-h_l.jpg)
+
+## What's special
+Resort-style pool, updated kitchen, and a bright open layout.
+
+See all media
+
+## Nearby homes
+![nearby](https://photos.zillowstatic.com/fp/dddddddddddddddddddddddddddddddd-p_e.webp)`;
+const readerListing = extractBoardWizardListingFromMarkdown(
+  'https://www.zillow.com/homedetails/27-Cranberry-Cove-Ct-Las-Vegas-NV-89135/141490995_zpid/',
+  zillowReaderMarkdown,
+);
+assert.ok(readerListing, 'a blocked Zillow detail page should recover as a listing from Reader markdown');
+assert.equal(readerListing.listingName, '27 Cranberry Cove Ct, Las Vegas, NV 89135');
+assert.equal(readerListing.images.length, 2, 'responsive duplicates should collapse to the highest-resolution gallery image');
+assert.match(readerListing.images[0].url, /sc_1152_768/);
+assert.equal(readerListing.images.some((image) => /h_l|p_e/.test(image.url)), false, 'agent and nearby-home images must be rejected');
+assert.equal(buildBoardWizardListingBatch({ extraction: readerListing, targetBoardTitle: '', count: 1 }).cards[0].imageUrls.length, 2);
+const readerFourCardBatch = buildBoardWizardListingBatch({ extraction: readerListing, targetBoardTitle: '', count: 4 });
+assert.equal(readerFourCardBatch.cards.length, 4);
+assert.ok(readerFourCardBatch.board.description.length <= 240);
+assert.ok(readerFourCardBatch.cards.every((card) => !!card.imageUrl));
+assert.ok(readerFourCardBatch.cards.every((card) => readerListing.images.some((image) => image.url === card.imageUrl)));
 
 const airbnbImages = Array.from({ length: 8 }, (_, index) =>
   `https://a0.muscache.com/im/pictures/hosting/aaaaaaaa-bbbb-cccc-dddd-${String(index).padStart(12, '0')}/original.jpg?im_w=1200`,
@@ -108,6 +143,9 @@ const zillowBatch = buildBoardWizardListingBatch({ extraction: zillow, targetBoa
 assert.equal(zillowBatch.cards[0].imageUrls.length, 3);
 assert.equal(zillowBatch.cards[1].title, 'Unit 402');
 assert.ok(zillowBatch.cards.every((card) => card.sourceUrl.includes('zillow.com')));
+assert.ok(zillowBatch.cards.every((card) => !!card.imageUrl), 'every listing-derived card should use an exact gallery image');
+assert.ok(zillowBatch.cards.every((card) => card.imageSource === 'source-page'));
+assert.ok(zillowBatch.cards.every((card) => zillow.images.some((image) => image.url === card.imageUrl)));
 
 const commerceOnly = extractBoardWizardListing(
   'https://example-shop.com/products/blue-chair',

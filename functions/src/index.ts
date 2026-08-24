@@ -199,6 +199,7 @@ import {
 import {
   buildBoardWizardListingBatch,
   extractBoardWizardListing,
+  extractBoardWizardListingFromMarkdown,
   isBoardWizardListingPageUrl,
   type BoardWizardListingExtraction,
 } from './board-wizard-listing';
@@ -5706,6 +5707,9 @@ async function analyzeBoardWizardSourcePreview(sourceUrl: string): Promise<Board
 
   const reader = await fetchBoardWizardReaderPage(sourceUrl, { timeoutMs: 18_000 });
   if (reader.markdown) {
+    if (extractBoardWizardListingFromMarkdown(sourceUrl, reader.markdown)) {
+      return { manifest: null, specializedKind: 'accommodation', warning: '' };
+    }
     if (extractBoardWizardReaderMenuItems(reader.markdown).length >= 3) {
       return { manifest: null, specializedKind: 'restaurant', warning: '' };
     }
@@ -7426,11 +7430,17 @@ export const generateBoardWizardBatch = onCall(
           if (!listingExtraction && !commerceExtraction) {
             accommodationExtraction = buildBoardWizardAccommodationExtraction(url, fetched.finalUrl || url, fetched.html);
           }
-          if (!listingExtraction && !commerceExtraction && !accommodationExtraction && !(urlExtraction.restaurantLike && urlExtraction.menuItems.length >= 3)) {
+          if (!listingExtraction && !commerceExtraction && !accommodationExtraction && !isBoardWizardListingPageUrl(url) && !(urlExtraction.restaurantLike && urlExtraction.menuItems.length >= 3)) {
             articleManifest = extractBoardWizardArticleManifest(url, fetched.finalUrl || url, fetched.html);
             if (articleManifest) {
               urlExtraction = buildArticleManifestUrlExtraction(articleManifest);
             }
+          }
+          if (!listingExtraction && isBoardWizardListingPageUrl(url)) {
+            // Keep property-detail URLs out of generic article/commerce generation.
+            // The Reader branch below can recover a listing when Zillow/Airbnb serve
+            // a usable shell to raw fetches but withhold the listing payload in cloud.
+            urlExtraction = null;
           }
         } else {
           logger.warn('Board wizard rejected an unusable source response.', {
@@ -7452,15 +7462,18 @@ export const generateBoardWizardBatch = onCall(
       if (!urlExtraction && !listingExtraction && !accommodationExtraction && !commerceExtraction) {
         const reader = await fetchBoardWizardReaderPage(url, { timeoutMs: 18_000 });
         if (reader.markdown) {
-          urlExtraction = buildBoardWizardReaderExtraction(url, reader.markdown);
-          if (!(urlExtraction?.restaurantLike && urlExtraction.menuItems.length >= 3)) {
-            commerceExtraction = buildBoardWizardReaderCommerceExtraction(url, reader.markdown);
+          listingExtraction = extractBoardWizardListingFromMarkdown(url, reader.markdown);
+          if (!listingExtraction) {
+            urlExtraction = buildBoardWizardReaderExtraction(url, reader.markdown);
+            if (!(urlExtraction?.restaurantLike && urlExtraction.menuItems.length >= 3)) {
+              commerceExtraction = buildBoardWizardReaderCommerceExtraction(url, reader.markdown);
+            }
+            if (!commerceExtraction && !isBoardWizardListingPageUrl(url) && !(urlExtraction?.restaurantLike && urlExtraction.menuItems.length >= 3)) {
+              articleManifest = extractBoardWizardArticleManifestFromMarkdown(url, reader.markdown);
+              if (articleManifest) urlExtraction = buildArticleManifestUrlExtraction(articleManifest);
+            }
           }
-          if (!commerceExtraction && !(urlExtraction?.restaurantLike && urlExtraction.menuItems.length >= 3)) {
-            articleManifest = extractBoardWizardArticleManifestFromMarkdown(url, reader.markdown);
-            if (articleManifest) urlExtraction = buildArticleManifestUrlExtraction(articleManifest);
-          }
-          if (urlExtraction || commerceExtraction) {
+          if (listingExtraction || urlExtraction || commerceExtraction) {
             urlRecoveryMethod = 'reader';
           }
         }
@@ -7478,12 +7491,14 @@ export const generateBoardWizardBatch = onCall(
           blocked: reader.blocked,
           commerceProductCount: commerceExtraction?.products.length ?? 0,
           commerceProductImageCount: commerceExtraction?.products.filter((product) => !!product.imageUrl).length ?? 0,
+          listingKind: listingExtraction?.kind ?? '',
+          listingImageCount: listingExtraction?.images.length ?? 0,
         });
       }
-      if (!accommodationExtraction && isBoardWizardAccommodationUrl(url)) {
+      if (!listingExtraction && !accommodationExtraction && isBoardWizardAccommodationUrl(url)) {
         accommodationExtraction = buildFallbackAccommodationExtraction(url);
       }
-      if (!urlExtraction && !accommodationExtraction && !commerceExtraction) {
+      if (!urlExtraction && !listingExtraction && !accommodationExtraction && !commerceExtraction) {
         urlExtraction = buildBoardWizardResearchFallbackExtraction(url);
         urlResearchFallback = true;
         urlRecoveryMethod = 'grounded-search';
