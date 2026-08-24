@@ -526,6 +526,7 @@ export type GeneratedBoardWizardCard = {
   youtubeVerifiedAt?: string;
   place_query: string;
   imageUrl?: string;
+  imageUrls?: string[];
   audioPreviewUrl?: string;
   spotifyTrackId?: string;
   spotifyTrackUrl?: string;

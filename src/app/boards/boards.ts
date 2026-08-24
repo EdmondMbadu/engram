@@ -729,6 +729,7 @@ type BoardWizardGeneratedCard = {
   youtubeMatchConfidence?: number;
   youtubeVerifiedAt?: string;
   imageUrl?: string;
+  imageUrls?: string[];
   audioPreviewUrl?: string;
   spotifyTrackId?: string;
   spotifyTrackUrl?: string;
@@ -5325,17 +5326,18 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   }
 
   handleWizardImageError(cardId: string): void {
-    this.wizardPreviewCards.update((cards) =>
-      cards.map((card) =>
-        card.id === cardId
-          ? {
-              ...card,
-              imageUrl: '',
-              imageSource: card.productUrl ? 'missing' : card.imageSource,
-            }
-          : card,
-      ),
-    );
+    this.wizardPreviewCards.update((cards) => cards.map((card) => {
+      if (card.id !== cardId) return card;
+      const remainingImages = this.uniqueImageUrls(card.imageUrls ?? []).filter((url) => url !== card.imageUrl);
+      return {
+        ...card,
+        imageUrl: remainingImages[0] ?? '',
+        imageUrls: remainingImages,
+        imageSource: remainingImages.length ? card.imageSource : (card.productUrl ? 'missing' : card.imageSource),
+      };
+    }));
+    const currentResult = this.wizardResult();
+    if (currentResult) this.wizardResult.set({ ...currentResult, cards: this.wizardPreviewCards() });
   }
 
   productCardCtaLabel(): string {
@@ -5528,7 +5530,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       youtubeMatchConfidence: Math.max(0, Math.min(1, card.youtubeMatchConfidence ?? 0)),
       youtubeVerifiedAt: card.youtubeVerifiedAt?.trim() || '',
       imageUrl: card.imageUrl,
-      imageUrls: card.imageUrl ? [card.imageUrl] : [],
+      imageUrls: this.uniqueImageUrls([card.imageUrl, ...(card.imageUrls ?? [])]).slice(0, 12),
       audioPreviewUrl: card.audioPreviewUrl ?? '',
       spotifyTrackId: card.spotifyTrackId ?? '',
       spotifyTrackUrl: card.spotifyTrackUrl ?? '',
@@ -16719,6 +16721,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
           ...card,
           id: this.stringValue(rawCard['id'], this.createId(), 180),
           imageUrl: card.imageUrl ?? '',
+          imageUrls: this.uniqueImageUrls([card.imageUrl, ...(card.imageUrls ?? [])]).slice(0, 12),
           placeId: card.placeId ?? '',
           googleMapsUrl: card.googleMapsUrl ?? '',
           editing: false,
@@ -17267,6 +17270,9 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       youtubeMatchConfidence: this.numberValue(data['youtubeMatchConfidence'], 0, 0, 1),
       youtubeVerifiedAt: this.stringValue(data['youtubeVerifiedAt'], '', 80),
       imageUrl: this.stringValue(data['imageUrl'], '', 2000),
+      imageUrls: Array.isArray(data['imageUrls'])
+        ? this.uniqueImageUrls(data['imageUrls'].map((url) => this.stringValue(url, '', 2000))).slice(0, 12)
+        : [],
       audioPreviewUrl: this.stringValue(data['audioPreviewUrl'], '', 2000),
       spotifyTrackId: this.stringValue(data['spotifyTrackId'], '', 120),
       spotifyTrackUrl: this.stringValue(data['spotifyTrackUrl'], '', 2000),
@@ -17321,6 +17327,8 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       media_kind: card.media_kind || 'none',
       short_summary: card.short_summary || card.subtitle,
       rank: card.rank || 0,
+      imageUrl: card.imageUrl || '',
+      imageUrls: this.uniqueImageUrls([card.imageUrl, ...(card.imageUrls ?? [])]).slice(0, 12),
       video_intent: card.video_intent === true,
       video_search_query: card.video_search_query || '',
       audioPreviewUrl: card.audioPreviewUrl || '',
@@ -17362,6 +17370,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         id: this.createId(),
         what3wordsAddress: what3WordsAddressFromCard(card),
         imageUrl: card.imageUrl ?? '',
+        imageUrls: this.uniqueImageUrls([card.imageUrl, ...(card.imageUrls ?? [])]).slice(0, 12),
         audioPreviewUrl: card.audioPreviewUrl ?? '',
         spotifyTrackId: card.spotifyTrackId ?? '',
         spotifyTrackUrl: card.spotifyTrackUrl ?? '',

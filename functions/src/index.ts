@@ -197,6 +197,12 @@ import {
   type CommercePageExtraction,
 } from './board-wizard-commerce';
 import {
+  buildBoardWizardListingBatch,
+  extractBoardWizardListing,
+  isBoardWizardListingPageUrl,
+  type BoardWizardListingExtraction,
+} from './board-wizard-listing';
+import {
   bestBoardWizardSrcsetUrl,
   extractBoardWizardPictureImages,
   isPlausibleBoardWizardFoodImageContext,
@@ -5678,6 +5684,12 @@ async function analyzeBoardWizardSourcePreview(sourceUrl: string): Promise<Board
       if (extraction.restaurantLike && extraction.menuItems.length >= 3) {
         return { manifest: null, specializedKind: 'restaurant', warning: '' };
       }
+      if (extractBoardWizardListing(sourceUrl, fetched.finalUrl || sourceUrl, fetched.html)) {
+        return { manifest: null, specializedKind: 'accommodation', warning: '' };
+      }
+      if (isBoardWizardListingPageUrl(sourceUrl)) {
+        return { manifest: null, specializedKind: 'accommodation', warning: '' };
+      }
       const commerce = extractCommercePage(sourceUrl, fetched.finalUrl || sourceUrl, fetched.html);
       if (commerce.isCommerce && commerce.products.length >= 2) {
         return { manifest: null, specializedKind: 'commerce', warning: '' };
@@ -7283,6 +7295,7 @@ export const generateBoardWizardBatch = onCall(
 
     let urlExtraction: BoardWizardUrlExtraction | null = null;
     let articleManifest: BoardWizardSourceManifest | null = submittedSourceManifest;
+    let listingExtraction: BoardWizardListingExtraction | null = null;
     let accommodationExtraction: BoardWizardAccommodationExtraction | null = null;
     let commerceExtraction: CommercePageExtraction | null = null;
     let urlResearchFallback = false;
@@ -7352,23 +7365,68 @@ export const generateBoardWizardBatch = onCall(
           // Restaurant menus can resemble product grids. Give a strongly extracted menu
           // precedence so its food-card behavior and page-bound photos are preserved.
           if (!(urlExtraction.restaurantLike && urlExtraction.menuItems.length >= 3)) {
-            const commerce = extractCommercePage(url, fetched.finalUrl || url, fetched.html);
-            commerceExtraction = commerce.isCommerce
-              ? await enrichCommerceProductDetails(commerce)
-              : null;
-            logger.info('Board wizard commerce classification completed.', {
+            listingExtraction = extractBoardWizardListing(url, fetched.finalUrl || url, fetched.html);
+            logger.info('Board wizard property listing classification completed.', {
               userId,
               urlHost: safeCommerceHostname(url),
-              isCommerce: commerce.isCommerce,
-              productCount: commerce.products.length,
-              productImageCount: commerce.products.filter((product) => !!product.imageUrl).length,
+              isListing: !!listingExtraction,
+              listingKind: listingExtraction?.kind ?? '',
+              listingImageCount: listingExtraction?.images.length ?? 0,
+              listingUnitCount: listingExtraction?.units.length ?? 0,
               durationMs: Date.now() - urlIntakeStartedAt,
             });
+            if ((!listingExtraction || listingExtraction.images.length === 0) && isBoardWizardListingPageUrl(url)) {
+              try {
+                const rendered = await fetchHtmlWithFallback(url, {
+                  timeoutMs: 30_000,
+                  preferBrowser: true,
+                  allowBrowserFallback: false,
+                });
+                const renderedUsable = rendered.status >= 200
+                  && rendered.status < 400
+                  && !looksLikeAntiBotChallenge(rendered.html);
+                if (renderedUsable) {
+                  const renderedListing = extractBoardWizardListing(url, rendered.finalUrl || url, rendered.html);
+                  if (renderedListing && (!listingExtraction || renderedListing.images.length > listingExtraction.images.length)) {
+                    listingExtraction = renderedListing;
+                  }
+                }
+                logger.info('Board wizard rendered listing recovery completed.', {
+                  userId,
+                  urlHost: safeCommerceHostname(url),
+                  method: rendered.method,
+                  status: rendered.status,
+                  recovered: !!listingExtraction,
+                  listingImageCount: listingExtraction?.images.length ?? 0,
+                  durationMs: Date.now() - urlIntakeStartedAt,
+                });
+              } catch (error) {
+                logger.warn('Board wizard rendered listing recovery failed.', {
+                  userId,
+                  urlHost: safeCommerceHostname(url),
+                  errorMessage: error instanceof Error ? error.message : String(error),
+                });
+              }
+            }
+            if (!listingExtraction && !isBoardWizardListingPageUrl(url)) {
+              const commerce = extractCommercePage(url, fetched.finalUrl || url, fetched.html);
+              commerceExtraction = commerce.isCommerce
+                ? await enrichCommerceProductDetails(commerce)
+                : null;
+              logger.info('Board wizard commerce classification completed.', {
+                userId,
+                urlHost: safeCommerceHostname(url),
+                isCommerce: commerce.isCommerce,
+                productCount: commerce.products.length,
+                productImageCount: commerce.products.filter((product) => !!product.imageUrl).length,
+                durationMs: Date.now() - urlIntakeStartedAt,
+              });
+            }
           }
-          if (!commerceExtraction) {
+          if (!listingExtraction && !commerceExtraction) {
             accommodationExtraction = buildBoardWizardAccommodationExtraction(url, fetched.finalUrl || url, fetched.html);
           }
-          if (!commerceExtraction && !accommodationExtraction && !(urlExtraction.restaurantLike && urlExtraction.menuItems.length >= 3)) {
+          if (!listingExtraction && !commerceExtraction && !accommodationExtraction && !(urlExtraction.restaurantLike && urlExtraction.menuItems.length >= 3)) {
             articleManifest = extractBoardWizardArticleManifest(url, fetched.finalUrl || url, fetched.html);
             if (articleManifest) {
               urlExtraction = buildArticleManifestUrlExtraction(articleManifest);
@@ -7391,7 +7449,7 @@ export const generateBoardWizardBatch = onCall(
           errorMessage: error instanceof Error ? error.message : String(error),
         });
       }
-      if (!urlExtraction && !accommodationExtraction && !commerceExtraction) {
+      if (!urlExtraction && !listingExtraction && !accommodationExtraction && !commerceExtraction) {
         const reader = await fetchBoardWizardReaderPage(url, { timeoutMs: 18_000 });
         if (reader.markdown) {
           urlExtraction = buildBoardWizardReaderExtraction(url, reader.markdown);
@@ -7446,6 +7504,9 @@ export const generateBoardWizardBatch = onCall(
       commerceExtraction
         ? `Detected shopping page with ${commerceExtraction.products.length} locally bound product records.`
         : '',
+      listingExtraction
+        ? `Detected ${listingExtraction.kind} listing with ${listingExtraction.images.length} exact source photos.`
+        : '',
       accommodationExtraction ? `Detected lodging listing: ${accommodationExtraction.listingName}` : '',
       urlExtraction?.context ? `URL extraction context:\n${urlExtraction.context}` : '',
     ].filter(Boolean).join('\n\n').trim();
@@ -7495,6 +7556,7 @@ export const generateBoardWizardBatch = onCall(
       : countResolution.policy;
 
     const generationUsesNarrationPrompt = !commerceExtraction
+      && !listingExtraction
       && !accommodationExtraction
       && !(urlExtraction?.restaurantLike && urlExtraction.menuItems.length >= 3);
     let generated: GeneratedBoardWizardBatch;
@@ -7504,6 +7566,12 @@ export const generateBoardWizardBatch = onCall(
             extraction: commerceExtraction,
             targetBoardTitle,
             requestedCount: explicitCount,
+          })
+        : listingExtraction
+        ? buildBoardWizardListingBatch({
+            extraction: listingExtraction,
+            targetBoardTitle,
+            count,
           })
         : accommodationExtraction
         ? buildAccommodationWizardBatch({
@@ -7591,7 +7659,7 @@ export const generateBoardWizardBatch = onCall(
     const urlFallbackShapedGenerated = urlResearchFallback
       ? shapeBoardWizardResearchFallbackBatch(sourceShapedGenerated, url)
       : sourceShapedGenerated;
-    const enrichedResult = accommodationExtraction
+    const enrichedResult = listingExtraction || accommodationExtraction
       ? urlFallbackShapedGenerated
       : await enrichBoardWizardBatchWithPlaces(urlFallbackShapedGenerated, {
           userId,
@@ -11197,12 +11265,18 @@ function buildBoardWizardSourceReport(
   const matchedCardCount = options.manifest?.items.filter((item) =>
     normalizedCardTitles.has(normalizeBoardWizardSourceTitle(item.title)),
   ).length ?? 0;
-  const sourceImageCount = options.manifest?.items.filter((item) => !!item.imageUrl).length ?? exactImageCount;
+  const exactSourceImageUrls = new Set(batch.cards.flatMap((card) => {
+    if (card.imageSource !== 'source-page' && card.imageSource !== 'product-page') return [];
+    return [card.imageUrl, ...(card.imageUrls ?? [])].filter((url): url is string => !!url);
+  }));
+  const sourceImageCount = options.manifest?.items.filter((item) => !!item.imageUrl).length
+    ?? exactSourceImageUrls.size;
   const recovered = options.method !== 'page' || options.sourceBlocked;
   const deterministicSourceCards = batch.cards.filter((card) =>
     !!card.productUrl
-    || card.tags.some((tag) => ['menu-item', 'lodging'].includes(tag.toLowerCase())),
+    || card.tags.some((tag) => ['menu-item', 'lodging', 'listing', 'real-estate'].includes(tag.toLowerCase())),
   );
+  const listingCards = batch.cards.filter((card) => card.tags.some((tag) => tag.toLowerCase() === 'listing'));
   const manifestExact = !!options.manifest
     && boardWizardSourceManifestIsExact(options.manifest)
     && matchedCardCount === extractedItemCount
@@ -11221,7 +11295,9 @@ function buildBoardWizardSourceReport(
     : options.method === 'reader'
       ? `${productCards.length || batch.cards.length} item${(productCards.length || batch.cards.length) === 1 ? '' : 's'} recovered from the page’s public Reader representation.`
       : deterministicSourceCards.length > 0
-        ? `${deterministicSourceCards.length} structured source item${deterministicSourceCards.length === 1 ? '' : 's'} extracted directly from the page.`
+        ? listingCards.length > 0
+          ? `Structured property listing extracted directly from the page${sourceImageCount ? ` with ${sourceImageCount} exact source photo${sourceImageCount === 1 ? '' : 's'}` : ''}.`
+          : `${deterministicSourceCards.length} structured source item${deterministicSourceCards.length === 1 ? '' : 's'} extracted directly from the page.`
         : `${batch.cards.length} card${batch.cards.length === 1 ? '' : 's'} generated from readable source text. The page did not expose a reliable structured item list, so review the names before saving.`;
   return {
     status,
