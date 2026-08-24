@@ -190,6 +190,72 @@ test('owner can atomically save a personal wizard board and remove its draft', a
   });
 });
 
+test('owner can stage a photo board privately in Studio and publish it later', async () => {
+  const database = testEnvironment.authenticatedContext(ownerUid).firestore();
+  const boardReference = doc(database, 'boards', 'wizard-board-1');
+  const draftReference = doc(database, 'users', ownerUid, 'board_wizard_drafts', 'wizard-board-1');
+  const privatePhotoDraft = personalWizardBoard({
+    visibility: 'private',
+    photoStoryBoard: true,
+    photoStudioDraft: true,
+    cards: [{ id: 'photo-1', title: 'Photo 1', notes: '', imageUrl: 'https://example.com/photo.jpg' }],
+  });
+  const batch = writeBatch(database);
+  batch.set(boardReference, privatePhotoDraft);
+  batch.delete(draftReference);
+
+  await assertSucceeds(batch.commit());
+  await assertSucceeds(getDoc(boardReference));
+  await assertFails(getDoc(doc(
+    testEnvironment.authenticatedContext('different-user').firestore(),
+    'boards',
+    'wizard-board-1',
+  )));
+
+  await assertSucceeds(setDoc(boardReference, {
+    ...privatePhotoDraft,
+    cards: [{ id: 'photo-1', title: 'Opening day', notes: 'A finished narration.', imageUrl: 'https://example.com/photo.jpg' }],
+    updated_at_iso: '2026-08-12T01:00:00.000Z',
+    server_updated_at: serverTimestamp(),
+  }));
+
+  await assertSucceeds(setDoc(boardReference, {
+    ...privatePhotoDraft,
+    visibility: 'public',
+    photoStudioDraft: false,
+    updated_at_iso: '2026-08-12T02:00:00.000Z',
+    server_updated_at: serverTimestamp(),
+  }));
+  await assertSucceeds(getDoc(doc(
+    testEnvironment.unauthenticatedContext().firestore(),
+    'boards',
+    'wizard-board-1',
+  )));
+});
+
+test('photo Studio exception cannot be used for an ordinary private board', async () => {
+  const database = testEnvironment.authenticatedContext(ownerUid).firestore();
+
+  await assertFails(setDoc(
+    doc(database, 'boards', 'photo-draft-missing-story-flag'),
+    personalWizardBoard({
+      id: 'photo-draft-missing-story-flag',
+      visibility: 'private',
+      photoStudioDraft: true,
+    }),
+  ));
+  await assertFails(setDoc(
+    doc(database, 'boards', 'photo-draft-wrong-kind'),
+    personalWizardBoard({
+      id: 'photo-draft-wrong-kind',
+      visibility: 'private',
+      kind: 'walking-tour',
+      photoStoryBoard: true,
+      photoStudioDraft: true,
+    }),
+  ));
+});
+
 test('board narration length accepts supported timing and rejects out-of-range values', async () => {
   const database = testEnvironment.authenticatedContext(ownerUid).firestore();
 

@@ -1540,7 +1540,7 @@
                     @if (canUseStackStudio(board)) {
                       <button type="button" (click)="openStackStudio(board, $event)">
                         <span class="material-symbols-outlined" aria-hidden="true">auto_awesome_motion</span>
-                        <span>Stack Studio</span>
+                        <span>{{ isPhotoStoryBoard(board) ? 'Edit stories' : 'Stack Studio' }}</span>
                       </button>
                     }
                     @if (board.stackCtaLabel && stackCtaHref(board)) {
@@ -1720,9 +1720,9 @@
                     <span class="material-symbols-outlined">arrow_forward</span>
                   </button>
                   @if (canUseStackStudio(board)) {
-                    <button type="button" class="board-detail__studio-entry" (click)="openStackStudio(board, $event)" i18n>
-                      <span class="material-symbols-outlined">auto_awesome_motion</span>
-                      Studio
+                    <button type="button" class="board-detail__studio-entry" (click)="openStackStudio(board, $event)">
+                      <span class="material-symbols-outlined">{{ isPhotoStoryBoard(board) ? 'edit_note' : 'auto_awesome_motion' }}</span>
+                      {{ isPhotoStoryBoard(board) ? 'Edit stories' : 'Studio' }}
                     </button>
                   }
                 </div>
@@ -1877,9 +1877,9 @@
                       View Stack
                     </button>
                     @if (canUseStackStudio(board)) {
-                      <button type="button" class="board-share-panel__studio" (click)="openStackStudio(board, $event)" i18n>
-                        <span class="material-symbols-outlined">auto_awesome_motion</span>
-                        Stack Studio
+                      <button type="button" class="board-share-panel__studio" (click)="openStackStudio(board, $event)">
+                        <span class="material-symbols-outlined">{{ isPhotoStoryBoard(board) ? 'edit_note' : 'auto_awesome_motion' }}</span>
+                        {{ isPhotoStoryBoard(board) ? 'Edit stories' : 'Stack Studio' }}
                       </button>
                     }
                     <button type="button" (click)="nativeShareBoard(board)" i18n>
@@ -4884,6 +4884,59 @@
                     (input)="wizardPrompt.set($any($event.target).value)"
                    i18n-placeholder/>
                 </label>
+                <section class="photo-story-choice" aria-labelledby="photo-story-choice-title">
+                  <div class="photo-story-choice__head">
+                    <span class="material-symbols-outlined" aria-hidden="true">auto_stories</span>
+                    <div>
+                      <strong id="photo-story-choice-title">How should these photo cards begin?</strong>
+                      <small>
+                        {{ wizardTargetBoardId() === 'new'
+                          ? 'Both choices create a private draft and open the editable Studio Script.'
+                          : 'Review the prepared cards before adding them to this existing board.' }}
+                      </small>
+                    </div>
+                  </div>
+                  <div class="photo-story-choice__options">
+                    <button
+                      type="button"
+                      class="photo-story-choice__option photo-story-choice__option--generate"
+                      [disabled]="!wizardCanGenerate() || wizardPhotoStoryMode() !== null"
+                      (click)="createPhotoBoardForStudio('generate')"
+                    >
+                      <span class="material-symbols-outlined" aria-hidden="true">
+                        {{ wizardPhotoStoryMode() === 'generate' ? 'progress_activity' : 'auto_awesome' }}
+                      </span>
+                      <span>
+                        <strong>
+                          {{ wizardPhotoStoryMode() === 'generate'
+                            ? 'Creating titles and stories…'
+                            : wizardTargetBoardId() === 'new' ? 'Generate titles and stories' : 'Generate editable preview' }}
+                        </strong>
+                        <small>AI drafts an editable title and narration for every photo.</small>
+                      </span>
+                      <span class="material-symbols-outlined photo-story-choice__arrow" aria-hidden="true">arrow_forward</span>
+                    </button>
+                    <button
+                      type="button"
+                      class="photo-story-choice__option"
+                      [disabled]="!wizardCanGenerate() || wizardPhotoStoryMode() !== null"
+                      (click)="createPhotoBoardForStudio('blank')"
+                    >
+                      <span class="material-symbols-outlined" aria-hidden="true">
+                        {{ wizardPhotoStoryMode() === 'blank' ? 'progress_activity' : 'edit_note' }}
+                      </span>
+                      <span>
+                        <strong>
+                          {{ wizardPhotoStoryMode() === 'blank'
+                            ? 'Creating blank stories…'
+                            : wizardTargetBoardId() === 'new' ? 'Start with blank stories' : 'Create blank preview' }}
+                        </strong>
+                        <small>Uses Photo 1, Photo 2, and so on, with empty narration.</small>
+                      </span>
+                      <span class="material-symbols-outlined photo-story-choice__arrow" aria-hidden="true">arrow_forward</span>
+                    </button>
+                  </div>
+                </section>
               } @else if (wizardMode() === 'off-grid') {
                 <div class="off-grid-wizard-intro">
                   <span class="material-symbols-outlined">explore_nearby</span>
@@ -5273,7 +5326,7 @@
                   </select>
                 </label>
               }
-              @if (wizardMode() !== 'off-grid') {
+              @if (wizardMode() !== 'off-grid' && wizardMode() !== 'photos') {
               <label>
                 <span>{{ isTourWizardMode() ? 'Number of stops' : 'Number of cards' }}</span>
                 @if (wizardMode() === 'describe') {
@@ -5622,13 +5675,15 @@
                   Nothing is published until you save.
                 </small>
                 }
-                <button type="submit" class="boards-primary-action" [disabled]="!wizardCanGenerate()">
-                  <span class="material-symbols-outlined">auto_awesome</span>
-                  {{ wizardMode() === 'off-grid' ? 'Preview card' : wizardMode() === 'describe' ? 'Create preview' : 'Generate preview' }}
-                  @if (wizardMode() === 'describe') {
-                    <span class="material-symbols-outlined">arrow_forward</span>
-                  }
-                </button>
+                @if (wizardMode() !== 'photos') {
+                  <button type="submit" class="boards-primary-action" [disabled]="!wizardCanGenerate()">
+                    <span class="material-symbols-outlined">auto_awesome</span>
+                    {{ wizardMode() === 'off-grid' ? 'Preview card' : wizardMode() === 'describe' ? 'Create preview' : 'Generate preview' }}
+                    @if (wizardMode() === 'describe') {
+                      <span class="material-symbols-outlined">arrow_forward</span>
+                    }
+                  </button>
+                }
               }
             </div>
           </form>
@@ -5638,7 +5693,11 @@
               <span class="material-symbols-outlined">sync</span>
             </span>
             <h4>{{ wizardLoadingMessage() }}</h4>
-            <p i18n>Building the preview. This stays active while places, images, and cards finish.</p>
+            <p>
+              {{ wizardMode() === 'photos'
+                ? 'Your photos stay in their selected order while the board is created.'
+                : 'Building the preview. This stays active while places, images, and cards finish.' }}
+            </p>
             <div class="boards-wizard-progress">
               <span [style.width.%]="wizardLoadingProgress()"></span>
             </div>
@@ -6040,7 +6099,11 @@
                           <input type="text" maxlength="90" [value]="card.subtitle" (input)="updateWizardCard(card.id, 'subtitle', $any($event.target).value)" />
                         </label>
                         <label>
-                          <span i18n>Notes</span>
+                          @if (wizardMode() === 'photos') {
+                            <span>Story / narration <small>Shown on the card and read aloud in the Stack.</small></span>
+                          } @else {
+                            <span i18n>Notes</span>
+                          }
                           <textarea rows="7" [value]="card.notes" (input)="updateWizardCard(card.id, 'notes', $any($event.target).value)"></textarea>
                         </label>
                         @if (what3wordsAddressFor(card); as what3wordsAddress) {
@@ -6403,6 +6466,8 @@
                   <span class="material-symbols-outlined">cloud_done</span>
                   @if (wizardLockedTargetBoard() || wizardContributionBoard()) {
                     <span>Closing keeps this draft. Saving adds the selected cards to the existing board.</span>
+                  } @else if (isNewPhotoWizardBoard()) {
+                    <span>Continue to the private Photo Story Studio. Nothing is published until you publish from Studio.</span>
                   } @else if (wizardMode() === 'nearby-gems') {
                     <span>Your starting location is not stored. Saving creates a private board that only you can open.</span>
                   } @else {
@@ -6413,9 +6478,9 @@
                   type="button"
                   class="boards-primary-action"
                   [disabled]="!wizardSelectedCount() || wizardSaving() || wizardVideoLoadingCardIds().size > 0"
-                  (click)="saveWizardBatch()"
+                  (click)="isNewPhotoWizardBoard() ? continuePhotoPreviewToStudio() : saveWizardBatch()"
                 >
-                  <span class="material-symbols-outlined">save</span>
+                  <span class="material-symbols-outlined">{{ isNewPhotoWizardBoard() ? 'arrow_forward' : 'save' }}</span>
                   @if (wizardVideoLoadingCardIds().size > 0) {
                     <span i18n>Finding videos...</span>
                   } @else if (wizardSaving()) {
@@ -6424,6 +6489,8 @@
                     <span i18n>Add card to board</span>
                   } @else if (wizardLockedTargetBoard()) {
                     <span>Add {{ wizardSelectedCount() }} {{ wizardSelectedCount() === 1 ? 'card' : 'cards' }}</span>
+                  } @else if (isNewPhotoWizardBoard()) {
+                    <span>Continue to Studio</span>
                   } @else if (wizardMode() === 'nearby-gems') {
                     <span>Save private board</span>
                   } @else {
@@ -6549,7 +6616,12 @@
                 <span i18n>{{ stackFormatLabel() }} Stack</span>
               </div>
               <div class="stack-studio__context-actions">
-                <button type="button" (click)="copyStackUrl(board)">
+                <button
+                  type="button"
+                  [disabled]="isPhotoStudioDraft(board)"
+                  [title]="isPhotoStudioDraft(board) ? 'Publish the board before copying its Stack link' : 'Copy Stack link'"
+                  (click)="copyStackUrl(board)"
+                >
                   <span class="material-symbols-outlined">content_copy</span>
                   <span class="stack-action-label" i18n>Copy</span>
                 </button>
@@ -6569,6 +6641,36 @@
                 </button>
               </div>
             </header>
+            @if (isPhotoStudioDraft(board)) {
+              <section class="stack-panel" role="status">
+                <div class="stack-panel__head">
+                  <div>
+                    <p><span class="material-symbols-outlined" aria-hidden="true">lock</span> Private photo draft</p>
+                    <h4>
+                      @if (stackPhotoDraftMissingCount(board)) {
+                        Saved privately. Add narration for {{ stackPhotoDraftMissingCount(board) }}
+                        {{ stackPhotoDraftMissingCount(board) === 1 ? 'photo' : 'photos' }} before publishing.
+                      } @else {
+                        Saved privately. Your story is ready to publish.
+                      }
+                    </h4>
+                  </div>
+                  <div class="stack-panel__actions">
+                    <button
+                      type="button"
+                      class="boards-primary-action"
+                      [disabled]="stackPhotoDraftPublishing() || stackScriptSaving() || stackCoverSaving() || stackCoverImageUploading() || !stackScriptBoardTitle().trim() || stackPhotoDraftMissingCount(board) > 0"
+                      (click)="publishPhotoStudioDraft(board)"
+                    >
+                      <span class="material-symbols-outlined" aria-hidden="true">
+                        {{ stackPhotoDraftPublishing() ? 'progress_activity' : 'publish' }}
+                      </span>
+                      {{ stackPhotoDraftPublishing() ? 'Publishing…' : 'Publish board' }}
+                    </button>
+                  </div>
+                </div>
+              </section>
+            }
             @if (stackShareMessage()) {
               <small class="stack-studio__notice">{{ stackShareMessage() }}</small>
             }
@@ -6619,9 +6721,13 @@
                 <section class="stack-panel stack-sound-panel stack-workflow-panel">
                   <div class="stack-panel__head">
                     <div class="stack-workflow-heading">
-                      <p>Video Studio</p>
-                      <h4>Shape your board into a story</h4>
-                      <small>Write the words, choose the voice, then set the mood.</small>
+                      <p>{{ isPhotoStoryBoard(board) ? 'Photo Story Studio' : 'Video Studio' }}</p>
+                      <h4>{{ isPhotoStoryBoard(board) ? 'Edit every photo in one place' : 'Shape your board into a story' }}</h4>
+                      <small>
+                        {{ isPhotoStoryBoard(board)
+                          ? 'Edit titles, captions, and the story each photo will show and speak.'
+                          : 'Write the words, choose the voice, then set the mood.' }}
+                      </small>
                     </div>
                   </div>
 
@@ -6634,7 +6740,10 @@
                       (click)="setStackSoundTab('script')"
                     >
                       <span class="stack-workflow-tabs__step">1</span>
-                      <span class="stack-workflow-tabs__copy"><strong>Script</strong><small>Write the story</small></span>
+                      <span class="stack-workflow-tabs__copy">
+                        <strong>{{ isPhotoStoryBoard(board) ? 'Stories' : 'Script' }}</strong>
+                        <small>{{ isPhotoStoryBoard(board) ? 'Edit every photo' : 'Write the story' }}</small>
+                      </span>
                       @if (!stackScriptDirty() && !stackCoverDirty() && stackScriptMissingCount() === 0) {
                         <span class="stack-workflow-tabs__status" aria-label="Script ready">✓</span>
                       }
@@ -6694,13 +6803,24 @@
                       <div class="stack-script-summary">
                         <span><strong>{{ stackSelectedCount() }}</strong><small>Cards selected</small></span>
                         <span><strong>{{ stackScriptDurationLabel() }}</strong><small>Estimated voice</small></span>
-                        <span [class.stack-script-summary__warning]="stackScriptMissingCount() > 0"><strong>{{ stackScriptMissingCount() }}</strong><small>{{ stackScriptMissingCount() === 1 ? 'Script needed' : 'Scripts needed' }}</small></span>
+                        <span [class.stack-script-summary__warning]="stackScriptMissingCount() > 0">
+                          <strong>{{ stackScriptMissingCount() }}</strong>
+                          <small>
+                            {{ isPhotoStoryBoard(board)
+                              ? stackScriptMissingCount() === 1 ? 'Story needed' : 'Stories needed'
+                              : stackScriptMissingCount() === 1 ? 'Script needed' : 'Scripts needed' }}
+                          </small>
+                        </span>
                       </div>
 
                       <div class="stack-script-sequence-head">
                         <div>
-                          <span>Narration sequence</span>
-                          <strong>Exactly what the voice will read</strong>
+                          <span>{{ isPhotoStoryBoard(board) ? 'Photo stories' : 'Narration sequence' }}</span>
+                          <strong>
+                            {{ isPhotoStoryBoard(board)
+                              ? 'Titles, captions, and spoken narration'
+                              : 'Exactly what the voice will read' }}
+                          </strong>
                         </div>
                         <div>
                           <button type="button" (click)="setAllStackScriptCardsExpanded(true)">Expand all</button>
@@ -6727,11 +6847,21 @@
                             @if (stackScriptCardIsExpanded(card.id)) {
                               <div class="stack-script-card__editor">
                                 <label>
-                                  <span>Card title</span>
+                                  <span>{{ isPhotoStoryBoard(board) ? 'Title' : 'Card title' }}</span>
                                   <input type="text" maxlength="160" [value]="stackScriptTitle(card)" (input)="updateStackScriptCard(card.id, 'title', $any($event.target).value)" />
                                 </label>
+                                @if (isPhotoStoryBoard(board)) {
+                                  <label>
+                                    <span>Subtitle <small>Optional caption shown with this photo.</small></span>
+                                    <input type="text" maxlength="90" [value]="stackScriptSubtitle(card)" (input)="updateStackScriptCard(card.id, 'subtitle', $any($event.target).value)" />
+                                  </label>
+                                }
                                 <label>
-                                  <span>Narration script <small>This is exactly what the selected voice will read.</small></span>
+                                  @if (isPhotoStoryBoard(board) && !card.tour) {
+                                    <span>Story / narration <small>Shown on the card and read aloud in the Stack.</small></span>
+                                  } @else {
+                                    <span>Narration script <small>This is exactly what the selected voice will read.</small></span>
+                                  }
                                   <textarea rows="5" maxlength="3000" [value]="stackScriptNarration(card)" (input)="updateStackScriptCard(card.id, 'narration', $any($event.target).value)"></textarea>
                                 </label>
                                 <div class="stack-script-card__actions">
@@ -6759,7 +6889,10 @@
                             }
                           </article>
                         } @empty {
-                          <div class="stack-empty-note"><span class="material-symbols-outlined">select_check_box</span><strong>Select at least one card to write its script.</strong></div>
+                          <div class="stack-empty-note">
+                            <span class="material-symbols-outlined">select_check_box</span>
+                            <strong>{{ isPhotoStoryBoard(board) ? 'Select at least one photo to edit its story.' : 'Select at least one card to write its script.' }}</strong>
+                          </div>
                         }
                       </div>
 
@@ -6769,10 +6902,16 @@
                       <footer class="stack-script-footer">
                         <span class="stack-script-save-state" [class.stack-script-save-state--dirty]="stackScriptDirty() || stackCoverDirty()">
                           <span class="stack-script-save-state__dot" aria-hidden="true"></span>
-                          {{ stackScriptSaving() ? 'Saving…' : stackScriptDirty() || stackCoverDirty() ? 'Unsaved changes' : stackScriptSavedAt() ? 'Script saved' : 'Ready to edit' }}
+                          {{ stackScriptSaving()
+                            ? 'Saving…'
+                            : stackScriptDirty() || stackCoverDirty()
+                              ? 'Unsaved changes'
+                              : stackScriptSavedAt()
+                                ? isPhotoStoryBoard(board) ? 'Stories saved' : 'Script saved'
+                                : 'Ready to edit' }}
                         </span>
                         <button type="button" class="boards-ghost-action" [disabled]="!stackScriptCanSave()" (click)="saveStackScript(board)">
-                          {{ stackScriptSaving() ? 'Saving…' : 'Save script' }}
+                          {{ stackScriptSaving() ? 'Saving…' : isPhotoStoryBoard(board) ? 'Save stories' : 'Save script' }}
                         </button>
                         <button type="button" class="boards-primary-action" [disabled]="stackScriptSaving() || !stackScriptBoardTitle().trim() || stackScriptMissingCount() > 0" (click)="continueStackStudio(board, 'voice')">
                           Continue to Voice
@@ -7364,7 +7503,11 @@
                           <div class="stack-preview__shade"></div>
                           <div class="stack-preview__brand" i18n>LivingWiki</div>
                           <div class="stack-preview__content">
-                            <span>{{ card.status }} · {{ card.rating }}/5</span>
+                            <span>
+                              {{ isPhotoStoryBoard(board)
+                                ? stackScriptSubtitle(card) || 'No subtitle'
+                                : card.status + ' · ' + card.rating + '/5' }}
+                            </span>
                             <h4>{{ stackScriptTitle(card) }}</h4>
                             <p>{{ stackScriptNarration(card) }}</p>
                             @if (card.audioPreviewUrl && !hasSpotifyTrack(card)) {
@@ -9117,13 +9260,17 @@
                 </label>
               </div>
               <label>
-                <span i18n>Notes</span>
+                @if (isEditingPhotoStoryCard()) {
+                  <span>Story / narration <small>Shown on the card and read aloud in the Stack.</small></span>
+                } @else {
+                  <span i18n>Notes</span>
+                }
                 <textarea
                   rows="3"
-                  placeholder="Why this belongs on the board."
+                  [placeholder]="isEditingPhotoStoryCard() ? 'Tell the story behind this photo.' : 'Why this belongs on the board.'"
                   [value]="cardDraft().notes"
                   (input)="updateCardDraft('notes', $any($event.target).value)"
-                 i18n-placeholder></textarea>
+                ></textarea>
               </label>
               <label class="card-youtube-field">
                 <span i18n>YouTube video <small>(optional)</small></span>

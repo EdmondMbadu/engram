@@ -105,6 +105,13 @@ import {
   type BoardWizardCountPolicy,
 } from './board-wizard-count-policy';
 import { appendBoardCards } from './board-batch';
+import {
+  buildBoardPhotoStoryDrafts,
+  isBoardPhotoStory,
+  isBoardPhotoStudioDraft,
+  shouldOpenBoardPhotoStoryStudio,
+  type BoardPhotoStoryMode,
+} from './board-photo-story';
 import { compareBoardsByCreatedDate } from './board-gallery-order';
 import { beginBoardRouteLoad, completeBoardRouteLoad } from './board-route-load-state';
 import { shouldCanonicalizeBoardsRootRoute } from './board-root-route';
@@ -304,6 +311,7 @@ type StackSoundTab = 'script' | 'voice' | 'music';
 
 type StackScriptCardDraft = {
   title: string;
+  subtitle: string;
   narration: string;
 };
 type StackLinkShareTarget = Extract<ShareTarget, 'x' | 'facebook' | 'linkedin' | 'reddit' | 'whatsapp'> | 'more';
@@ -450,6 +458,8 @@ type Board = {
   forkedFromOwnerUserId: string;
   forkedFromOwnerName: string;
   visibility: BoardVisibility;
+  photoStoryBoard?: boolean;
+  photoStudioDraft?: boolean;
   title: string;
   description: string;
   backNote: string;
@@ -1531,6 +1541,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   private wizardDraftsLoadedForUid = '';
   private readonly wizardDraftFailedSnapshotKey = signal('');
   private stackLivePreviewAutoplay = false;
+  private pendingPhotoStudioNotice: { boardId: string; message: string } | null = null;
   private stackStudioDirectRequested = false;
   private stackStudioDirectOpenedFor = '';
   private readonly stackAutoplayRequested = signal(false);
@@ -1846,6 +1857,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly wizardPhotos = signal<BoardWizardPhoto[]>([]);
   readonly wizardPhotosLoading = signal(false);
   readonly wizardPhotoError = signal<string | null>(null);
+  readonly wizardPhotoStoryMode = signal<BoardPhotoStoryMode | null>(null);
   readonly wizardOffGridName = signal('');
   readonly wizardOffGridAddress = signal('');
   readonly wizardOffGridTip = signal('');
@@ -1902,6 +1914,8 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly wizardCardImageApplying = signal(false);
   readonly wizardCardEditorError = signal<string | null>(null);
   readonly wizardSaving = signal(false);
+  readonly wizardSaveDestination = signal<'board' | 'studio'>('board');
+  readonly wizardPhotoStudioNotice = signal('');
   readonly wizardDrafts = signal<BoardWizardDraft[]>([]);
   readonly wizardActiveDraftId = signal<string | null>(null);
   readonly wizardDraftSaveState = signal<BoardWizardDraftSaveState>('idle');
@@ -1947,6 +1961,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly stackScriptOriginalSnapshot = signal('');
   readonly stackScriptExpandedCardIds = signal<Set<string>>(new Set());
   readonly stackScriptSaving = signal(false);
+  readonly stackPhotoDraftPublishing = signal(false);
   readonly stackScriptSavedAt = signal('');
   readonly stackScriptError = signal<string | null>(null);
   readonly stackScriptPreviewLoadingCardId = signal<string | null>(null);
@@ -2701,13 +2716,14 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   }, 0));
   readonly stackScriptEstimatedSeconds = computed(() => Math.max(0, Math.ceil(this.stackScriptWordCount() / 2.35)));
   readonly stackScriptMissingCount = computed(() => this.stackSelectedCards().filter((card) => !this.stackScriptNarration(card).trim()).length);
-  readonly stackScriptCanSave = computed(() =>
-    (this.stackScriptDirty() || this.stackCoverDirty())
-    && !this.stackScriptSaving()
-    && !this.stackCoverSaving()
-    && !!this.stackScriptBoardTitle().trim()
-    && this.stackScriptMissingCount() === 0,
-  );
+  readonly stackScriptCanSave = computed(() => {
+    const board = this.stackBoard();
+    return (this.stackScriptDirty() || this.stackCoverDirty())
+      && !this.stackScriptSaving()
+      && !this.stackCoverSaving()
+      && !!this.stackScriptBoardTitle().trim()
+      && (this.stackScriptMissingCount() === 0 || (!!board && this.isPhotoStudioDraft(board)));
+  });
   readonly stackFinalScreenDirty = computed(() =>
     this.stackFinalScreenSnapshot() !== this.stackFinalScreenOriginalSnapshot(),
   );
@@ -3881,6 +3897,8 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   }
 
   chooseWizardMode(mode: BoardWizardMode | 'manual'): void {
+    this.wizardSaveDestination.set('board');
+    this.wizardPhotoStudioNotice.set('');
     if (mode === 'manual') {
       const targetBoardId = this.wizardLockedTargetBoardId();
       this.closeBoardWizard();
@@ -3979,6 +3997,9 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
   submitWizardConfigure(event: Event): void {
     event.preventDefault();
+    if (this.wizardMode() === 'photos') {
+      return;
+    }
     if (this.wizardMode() === 'nearby-gems') {
       void this.findNearbyGemsFromManualLocation();
       return;
@@ -4094,6 +4115,9 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   }
 
   async closeBoardWizard(): Promise<void> {
+    if (this.wizardPhotoStoryMode()) {
+      return;
+    }
     this.cancelWizardVideoEnrichment();
     if (shouldFlushBoardWizardDraftOnClose({
       step: this.wizardStep(),
@@ -4162,9 +4186,13 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.wizardDraftDiscardCandidateId.set(null);
     this.wizardStep.set('preview');
     this.wizardOpen.set(true);
+    this.wizardSaveDestination.set(this.isNewPhotoWizardBoard() ? 'studio' : 'board');
     if (this.isBrowser) {
       window.setTimeout(() => {
         this.wizardDraftRestoreInProgress = false;
+        if (this.isNewPhotoWizardBoard()) {
+          void this.continuePhotoPreviewToStudio();
+        }
       }, 0);
     } else {
       this.wizardDraftRestoreInProgress = false;
@@ -4395,6 +4423,90 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       const index = photos.findIndex((photo) => photo.id === photoId);
       return index > 0 ? [photos[index], ...photos.slice(0, index), ...photos.slice(index + 1)] : photos;
     });
+  }
+
+  async createPhotoBoardForStudio(mode: BoardPhotoStoryMode): Promise<void> {
+    if (
+      this.wizardMode() !== 'photos'
+      || !this.wizardCanGenerate()
+      || this.wizardPhotoStoryMode()
+      || this.wizardSaving()
+    ) {
+      return;
+    }
+
+    const opensStudioDraft = this.isNewPhotoWizardBoard();
+    this.wizardPhotoStoryMode.set(mode);
+    this.wizardSaveDestination.set(opensStudioDraft ? 'studio' : 'board');
+    this.wizardError.set(null);
+    this.setWizardCount(this.wizardPhotos().length, false);
+    this.wizardPhotoStudioNotice.set('');
+    this.wizardResult.set(null);
+    this.wizardPreviewCards.set([]);
+    this.wizardSelectedCardIds.set(new Set());
+
+    try {
+      if (mode === 'generate') {
+        await this.generateWizardBatch();
+        if (this.wizardStep() !== 'preview' || !this.wizardResult() || !this.wizardPreviewCards().length) {
+          this.wizardPhotoStudioNotice.set(
+            'AI could not finish every story, so your photos were preserved as blank, editable cards.',
+          );
+          await this.prepareBlankPhotoStoryBatch();
+        }
+      } else {
+        await this.prepareBlankPhotoStoryBatch();
+      }
+
+      if (this.wizardStep() === 'preview' && this.wizardResult() && this.wizardPreviewCards().length) {
+        if (!opensStudioDraft) {
+          return;
+        }
+        await this.continuePhotoPreviewToStudio();
+      }
+    } catch (error) {
+      this.wizardError.set(
+        error instanceof Error ? error.message : 'This photo board could not be created. Please try again.',
+      );
+      this.wizardStep.set(this.wizardResult() ? 'preview' : 'configure');
+    } finally {
+      this.wizardPhotoStoryMode.set(null);
+      this.wizardLoadingTask.set(null);
+    }
+  }
+
+  isNewPhotoWizardBoard(): boolean {
+    return shouldOpenBoardPhotoStoryStudio({
+      mode: this.wizardMode(),
+      targetBoardId: this.wizardTargetBoardId(),
+      lockedTargetBoardId: this.wizardLockedTargetBoardId(),
+      contributionBoardId: this.wizardContributionBoardId(),
+    });
+  }
+
+  async continuePhotoPreviewToStudio(): Promise<void> {
+    if (
+      !this.isNewPhotoWizardBoard()
+      || this.wizardStep() !== 'preview'
+      || !this.wizardResult()
+      || !this.wizardPreviewCards().length
+      || !this.wizardSelectedCount()
+      || this.wizardSaving()
+    ) {
+      return;
+    }
+    this.wizardSaveDestination.set('studio');
+    this.wizardError.set(null);
+    this.wizardStep.set('loading');
+    this.wizardLoadingTask.set({ message: 'Saving your private draft and opening Studio', progress: 92 });
+    try {
+      await this.saveWizardBatch();
+    } finally {
+      if (this.wizardOpen() && this.wizardError()) {
+        this.wizardStep.set('preview');
+      }
+      this.wizardLoadingTask.set(null);
+    }
   }
 
   setWizardOffGridSource(source: OffGridLocationSource): void {
@@ -4770,6 +4882,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       const generatedBatch = this.applyWizardMediaModeToGeneratedBatch(
         await this.requestWizardBatch(refinement),
       );
+      if (this.wizardMode() === 'photos' && generatedBatch.cards.length < this.wizardPhotos().length) {
+        this.wizardPhotoStudioNotice.set(
+          'Some photos did not receive AI copy, so those cards were kept with blank, editable stories.',
+        );
+      }
       const batch = this.wizardMode() === 'photos'
         ? this.attachWizardPhotosToBatch(generatedBatch)
         : generatedBatch;
@@ -5539,7 +5656,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
           forkedFromTitle: '',
           forkedFromOwnerUserId: '',
           forkedFromOwnerName: '',
-          visibility: this.wizardMode() === 'nearby-gems' ? 'private' : 'public',
+          visibility: this.wizardMode() === 'nearby-gems' || this.wizardSaveDestination() === 'studio'
+            ? 'private'
+            : 'public',
+          photoStoryBoard: this.wizardMode() === 'photos',
+          photoStudioDraft: this.wizardSaveDestination() === 'studio',
           stickers: [],
           tourMeta: result.board.tourMeta ?? this.buildWizardTourMeta(cards),
           nearbyGems: result.board.nearbyGems ?? null,
@@ -5565,7 +5686,16 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       this.boardsSyncError.set(null);
       this.wizardStep.set('done');
       this.wizardSaving.set(false);
-      void this.router.navigate(['/boards', persisted.id]);
+      if (this.wizardSaveDestination() === 'studio') {
+        const notice = this.wizardPhotoStudioNotice().trim();
+        this.pendingPhotoStudioNotice = notice ? { boardId: persisted.id, message: notice } : null;
+        this.wizardOpen.set(false);
+        void this.router.navigate(['/boards', persisted.id], {
+          queryParams: { studio: 'video' },
+        });
+      } else {
+        void this.router.navigate(['/boards', persisted.id]);
+      }
     } catch (error) {
       console.error('Wizard board save failed', error, {
         boardId: nextBoard.id,
@@ -12685,6 +12815,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     if (!this.isBrowser) {
       return;
     }
+    if (this.isPhotoStudioDraft(board)) {
+      this.setStackShareMessage('Publish the board before copying its Stack link.');
+      return;
+    }
 
     const url = this.stackShareUrl(board);
     if (await this.copyTextToClipboard(url)) {
@@ -12740,10 +12874,81 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       return;
     }
     this.prepareStackForBoard(board);
+    if (this.pendingPhotoStudioNotice?.boardId === board.id) {
+      this.stackScriptError.set(this.pendingPhotoStudioNotice.message);
+      this.pendingPhotoStudioNotice = null;
+    }
     this.stackVoiceLibraryOpen.set(false);
     this.sharePanelOpen.set(false);
     this.stackStudioOpen.set(true);
     void this.loadPersonalNarratorVoice();
+  }
+
+  isPhotoStudioDraft(board: Board): boolean {
+    return isBoardPhotoStudioDraft(board);
+  }
+
+  isPhotoStoryBoard(board: Board | null | undefined): boolean {
+    return !!board && isBoardPhotoStory(board);
+  }
+
+  isEditingPhotoStoryCard(): boolean {
+    const boardId = this.editingCardBoardId();
+    return this.isPhotoStoryBoard(this.boards().find((board) => board.id === boardId));
+  }
+
+  stackPhotoDraftMissingCount(board: Board): number {
+    return board.cards.filter((card) => !this.stackScriptNarration(card).trim()).length;
+  }
+
+  async publishPhotoStudioDraft(board: Board): Promise<void> {
+    if (
+      !this.isPhotoStudioDraft(board)
+      || !this.canEditBoard(board)
+      || this.stackPhotoDraftPublishing()
+      || this.stackScriptSaving()
+      || this.stackCoverSaving()
+      || this.stackCoverImageUploading()
+    ) {
+      return;
+    }
+    if (!this.stackScriptBoardTitle().trim()) {
+      this.stackScriptError.set('Add a board title before publishing.');
+      return;
+    }
+    const missingCount = this.stackPhotoDraftMissingCount(board);
+    if (missingCount) {
+      this.stackScriptError.set(
+        `Add narration for ${missingCount} photo${missingCount === 1 ? '' : 's'} before publishing.`,
+      );
+      return;
+    }
+
+    this.stackPhotoDraftPublishing.set(true);
+    this.stackScriptError.set(null);
+    try {
+      if ((this.stackScriptDirty() || this.stackCoverDirty()) && !await this.saveStackScript(board)) {
+        return;
+      }
+      const current = this.boards().find((candidate) => candidate.id === board.id) ?? null;
+      if (!current || !this.isPhotoStudioDraft(current)) {
+        throw new Error('This photo draft is no longer available.');
+      }
+      const published: Board = {
+        ...current,
+        visibility: 'public',
+        photoStudioDraft: false,
+        updatedAt: new Date().toISOString(),
+      };
+      if (!await this.persistAndReplaceBoard(published)) {
+        throw new Error('The board could not be published. It is still private.');
+      }
+      this.setStackShareMessage('Board published. Its link and Stack are now ready to share.', false);
+    } catch (error) {
+      this.stackScriptError.set(error instanceof Error ? error.message : 'The board could not be published. It is still private.');
+    } finally {
+      this.stackPhotoDraftPublishing.set(false);
+    }
   }
 
   openStackDocsExportDialog(board: Board, event?: Event): void {
@@ -13048,6 +13253,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       ...drafts,
       [cardId]: {
         title: drafts[cardId]?.title ?? '',
+        subtitle: drafts[cardId]?.subtitle ?? '',
         narration: drafts[cardId]?.narration ?? '',
         [field]: value,
       },
@@ -13057,6 +13263,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
   stackScriptTitle(card: BoardCard): string {
     return this.stackScriptCardDrafts()[card.id]?.title ?? card.title;
+  }
+
+  stackScriptSubtitle(card: BoardCard): string {
+    return this.stackScriptCardDrafts()[card.id]?.subtitle ?? card.subtitle;
   }
 
   stackScriptNarration(card: BoardCard): string {
@@ -13082,6 +13292,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
   resetStackScriptCard(card: BoardCard): void {
     this.updateStackScriptCard(card.id, 'title', card.title);
+    this.updateStackScriptCard(card.id, 'subtitle', card.subtitle);
     this.updateStackScriptCard(card.id, 'narration', card.tour?.guideScript || this.persistedStackCardNarrationText(card) || '');
   }
 
@@ -13211,7 +13422,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       this.stackScriptError.set('Add a board title before saving.');
       return false;
     }
-    if (this.stackScriptMissingCount()) {
+    if (this.stackScriptMissingCount() && !this.isPhotoStudioDraft(board)) {
       this.stackScriptError.set(`Add narration for ${this.stackScriptMissingCount()} selected card${this.stackScriptMissingCount() === 1 ? '' : 's'} before saving.`);
       return false;
     }
@@ -13232,6 +13443,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         return {
           ...card,
           title: draft.title.trim() || card.title,
+          subtitle: draft.subtitle.trim(),
           notes: card.tour ? card.notes : narration,
           tour: card.tour ? { ...card.tour, guideScript: narration } : card.tour,
           updatedAt: now,
@@ -13248,11 +13460,17 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       this.applyStackCoverState(savedBoard);
       this.stackScriptCardDrafts.set(Object.fromEntries(savedBoard.cards.map((card) => [card.id, {
         title: card.title,
+        subtitle: card.subtitle,
         narration: card.tour?.guideScript || this.persistedStackCardNarrationText(card) || '',
       }])));
       this.stackScriptOriginalSnapshot.set(this.stackScriptSnapshot(savedBoard));
       this.stackScriptSavedAt.set(now);
-      this.setStackShareMessage('Script saved. Your video will use these words.', false);
+      this.setStackShareMessage(
+        this.isPhotoStoryBoard(savedBoard)
+          ? 'Stories saved. Each card and its narration now use these words.'
+          : 'Script saved. Your video will use these words.',
+        false,
+      );
       return true;
     } catch (error) {
       this.stackScriptError.set(error instanceof Error ? error.message : 'The script could not be saved. Your draft is still here.');
@@ -15544,6 +15762,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.applyStackCoverState(board);
     this.stackScriptCardDrafts.set(Object.fromEntries(board.cards.map((card) => [card.id, {
       title: card.title,
+      subtitle: card.subtitle,
       narration: card.tour?.guideScript || this.persistedStackCardNarrationText(card) || '',
     }])));
     this.stackScriptExpandedCardIds.set(new Set(board.cards.slice(0, 1).map((card) => card.id)));
@@ -15642,6 +15861,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       cards: (board?.cards ?? []).map((card) => ({
         id: card.id,
         title: drafts[card.id]?.title ?? card.title,
+        subtitle: drafts[card.id]?.subtitle ?? card.subtitle,
         narration: drafts[card.id]?.narration ?? (card.tour?.guideScript || this.persistedStackCardNarrationText(card) || ''),
       })),
     });
@@ -16589,6 +16809,9 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.wizardPhotoImportRun += 1;
     this.wizardPhotosLoading.set(false);
     this.wizardPhotoError.set(null);
+    this.wizardPhotoStoryMode.set(null);
+    this.wizardPhotoStudioNotice.set('');
+    this.wizardSaveDestination.set('board');
     this.wizardOffGridName.set('');
     this.wizardOffGridAddress.set('');
     this.wizardOffGridTip.set('');
@@ -16656,24 +16879,72 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
   private attachWizardPhotosToBatch(batch: BoardWizardGeneratedBatch): BoardWizardGeneratedBatch {
     const photos = this.wizardPhotos();
-    const localCards = this.buildLocalWizardBatch().cards;
+    const drafts = buildBoardPhotoStoryDrafts(photos, batch.cards);
     return {
       ...batch,
-      cards: photos.map((photo, index) => ({
-        ...(batch.cards[index] ?? localCards[index] ?? {
-          title: this.photoTitleFromFileName(photo.name),
-          subtitle: $localize`A photo memory`,
-          notes: $localize`Add the story behind this moment before sharing.`,
-          type: 'memory' as BoardCardType,
-          scope: 'place' as BoardCardScope,
-          status: 'saved' as BoardCardStatus,
-          rating: 4,
-          tags: ['memory'],
-          image_query: this.photoTitleFromFileName(photo.name),
-          place_query: this.photoTitleFromFileName(photo.name),
-        }),
-        imageUrl: photo.imageUrl,
+      cards: drafts.map((draft, index) => ({
+        ...this.blankPhotoStoryCard(draft, index),
+        ...(batch.cards[index] ?? {}),
+        title: draft.title,
+        subtitle: draft.subtitle,
+        notes: draft.notes,
+        short_summary: draft.shortSummary,
+        imageUrl: draft.imageUrl,
       })),
+    };
+  }
+
+  private async prepareBlankPhotoStoryBatch(): Promise<void> {
+    this.wizardStep.set('loading');
+    this.wizardError.set(null);
+    this.wizardLoadingTask.set({
+      message: 'Creating editable photo cards and opening Studio',
+      progress: 55,
+    });
+    const drafts = buildBoardPhotoStoryDrafts(this.wizardPhotos());
+    const batch: BoardWizardGeneratedBatch = {
+      board: {
+        title: this.wizardTargetBoardId() === 'new'
+          ? this.titleFromWizardInput(this.wizardPrompt().trim() || 'Photo memories')
+          : this.wizardTargetBoardTitle(),
+        description: this.wizardPrompt().trim() || 'A visual story created from your selected photos.',
+        icon: 'photo_library',
+        tone: 'purple',
+        kind: 'standard',
+        tourMeta: null,
+      },
+      cards: drafts.map((draft, index) => this.blankPhotoStoryCard(draft, index)),
+    };
+    const previewCards = await this.enrichWizardCards(batch.cards);
+    this.wizardResult.set({ ...batch, cards: previewCards });
+    this.wizardPreviewCards.set(previewCards);
+    this.wizardSelectedCardIds.set(new Set(previewCards.map((card) => card.id)));
+    this.wizardLoadingTask.set({ message: 'Saving your photo board', progress: 88 });
+    this.wizardStep.set('preview');
+  }
+
+  private blankPhotoStoryCard(
+    draft: ReturnType<typeof buildBoardPhotoStoryDrafts>[number],
+    index: number,
+  ): BoardWizardGeneratedCard {
+    return {
+      title: draft.title,
+      subtitle: draft.subtitle,
+      notes: draft.notes,
+      short_summary: draft.shortSummary,
+      type: 'memory',
+      scope: 'place',
+      status: 'saved',
+      rating: 4,
+      tags: ['memory'],
+      image_query: '',
+      place_query: '',
+      entity_name: draft.title,
+      entity_type: 'other',
+      image_intent: 'other',
+      image_context: '',
+      rank: index + 1,
+      imageUrl: draft.imageUrl,
     };
   }
 
@@ -18604,7 +18875,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
           forkedFromTitle: typeof board.forkedFromTitle === 'string' ? board.forkedFromTitle : '',
           forkedFromOwnerUserId: typeof board.forkedFromOwnerUserId === 'string' ? board.forkedFromOwnerUserId : '',
           forkedFromOwnerName: typeof board.forkedFromOwnerName === 'string' ? board.forkedFromOwnerName : '',
-          visibility: this.isBoardVisibility((board as Partial<Board>).visibility) ? (board as Board).visibility : 'public',
+          visibility: (board as Partial<Board>).photoStudioDraft === true
+            ? 'private'
+            : this.isBoardVisibility((board as Partial<Board>).visibility) ? (board as Board).visibility : 'public',
+          photoStoryBoard: (board as Partial<Board>).photoStoryBoard === true,
+          photoStudioDraft: (board as Partial<Board>).photoStudioDraft === true,
           imageUrl: board.imageUrl ?? '',
           logoUrl: typeof board.logoUrl === 'string' ? board.logoUrl : '',
           logoLinkUrl: typeof board.logoLinkUrl === 'string' ? board.logoLinkUrl : '',
@@ -18757,11 +19032,14 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   }
 
   private async persistBoard(board: Board): Promise<Board> {
+    const visibilitySafeBoard: Board = board.photoStudioDraft
+      ? { ...board, visibility: 'private' }
+      : board;
     const uid = this.authService.uid();
     if (!this.firestore || !uid) {
-      return board;
+      return visibilitySafeBoard;
     }
-    const { prepared, persistable } = await this.prepareBoardForFirestore(board, uid);
+    const { prepared, persistable } = await this.prepareBoardForFirestore(visibilitySafeBoard, uid);
     await setDoc(doc(this.firestore, 'boards', prepared.id), persistable);
     return prepared;
   }
@@ -18971,6 +19249,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     }
 
     const rawCards = Array.isArray(data['cards']) ? data['cards'] : [];
+    const photoStudioDraft = data['photoStudioDraft'] === true;
     return {
       id,
       likeCount: typeof data['like_count'] === 'number' ? Math.max(0, Math.trunc(data['like_count'])) : 0,
@@ -18991,7 +19270,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       forkedFromTitle: typeof data['forkedFromTitle'] === 'string' ? data['forkedFromTitle'] : '',
       forkedFromOwnerUserId: typeof data['forkedFromOwnerUserId'] === 'string' ? data['forkedFromOwnerUserId'] : '',
       forkedFromOwnerName: typeof data['forkedFromOwnerName'] === 'string' ? data['forkedFromOwnerName'] : '',
-      visibility: this.isBoardVisibility(data['visibility']) ? data['visibility'] : 'public',
+      visibility: photoStudioDraft
+        ? 'private'
+        : this.isBoardVisibility(data['visibility']) ? data['visibility'] : 'public',
+      photoStoryBoard: data['photoStoryBoard'] === true,
+      photoStudioDraft,
       title,
       description: typeof data['description'] === 'string' ? data['description'] : '',
       backNote: typeof data['backNote'] === 'string' ? data['backNote'] : '',

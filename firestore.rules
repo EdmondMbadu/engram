@@ -209,6 +209,8 @@ service cloud.firestore {
         'forkedFromOwnerUserId',
         'forkedFromOwnerName',
         'visibility',
+        'photoStoryBoard',
+        'photoStudioDraft',
         'kind',
         'sortOrder',
         'title',
@@ -278,6 +280,14 @@ service cloud.firestore {
         'updated_at_iso',
         'server_updated_at'
       ];
+    }
+
+    function isPhotoStudioDraft(data) {
+      return data.keys().hasAll(['photoStoryBoard', 'photoStudioDraft'])
+        && data.photoStoryBoard == true
+        && data.photoStudioDraft == true
+        && data.visibility == 'private'
+        && data.kind == 'standard';
     }
 
     function isValidNearbyGemsMetadata(data) {
@@ -913,6 +923,7 @@ service cloud.firestore {
         && request.resource.data.visibility in ['public', 'private']
         && (
           request.resource.data.visibility == 'public'
+          || isPhotoStudioDraft(request.resource.data)
           || isPlatformAdmin()
           || hasActivePersonalWikiPlan()
         )
