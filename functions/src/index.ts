@@ -173,7 +173,9 @@ import {
   cityPlaceSearchGoogleResultLimit,
 } from './city-place-search';
 import {
+  normalizeNarrationSpeechText as normalizeSpeechText,
   sharedStackNarrationCacheMode,
+  stackTrailerNarrationMatchesPreparedScript,
   stackVideoNarrationCardFromBoard,
   stackVideoNarrationRevisionCacheKey,
   stackVideoNarrationTextFromCard,
@@ -16353,19 +16355,6 @@ function normalizeAnonymousVisitorId(value: unknown): string | null {
   return /^[A-Za-z0-9_-]+$/.test(trimmed) ? trimmed : null;
 }
 
-function normalizeSpeechText(value: unknown): string {
-  if (typeof value !== 'string') {
-    return '';
-  }
-
-  return value
-    .replace(/\[[^\]]+\]\(([^)]+)\)/g, '$1')
-    .replace(/[`*_#>~-]+/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim()
-    .slice(0, maxSpeechTextLength);
-}
-
 function cleanSpeechLine(value: string): string {
   return value
     .replace(/\[[^\]]+\]\(([^)]+)\)/g, '$1')
@@ -19719,7 +19708,8 @@ export const synthesizeChatAnswerSpeech = onCall(
       throw new HttpsError('permission-denied', 'This narration does not match a card on the selected board.');
     }
     if (requestedMode === 'stack-trailer'
-      && (!requestedBoard || normalizeNarrationAuthorizationText(requestedBoard['trailerVideoScript']) !== text)) {
+      && (!requestedBoard
+        || !stackTrailerNarrationMatchesPreparedScript(requestedBoard['trailerVideoScript'], text))) {
       throw new HttpsError('permission-denied', 'This voiceover does not match the prepared Board Trailer script.');
     }
 

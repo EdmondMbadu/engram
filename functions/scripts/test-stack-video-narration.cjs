@@ -1,6 +1,8 @@
 const assert = require('node:assert/strict');
 const {
   sharedStackNarrationCacheMode,
+  normalizeNarrationSpeechText,
+  stackTrailerNarrationMatchesPreparedScript,
   stackVideoNarrationCardFromBoard,
   stackVideoNarrationRevisionCacheKey,
   stackVideoNarrationRevisionFromCard,
@@ -12,6 +14,31 @@ const {
 assert.equal(sharedStackNarrationCacheMode('tour'), 'tour');
 assert.equal(sharedStackNarrationCacheMode('stack-video'), 'tour');
 assert.equal(sharedStackNarrationCacheMode('stack-trailer'), 'stack-trailer');
+assert.equal(
+  normalizeNarrationSpeechText('Thirty-nine **carefully chosen** places.'),
+  'Thirty nine carefully chosen places.',
+);
+assert.equal(
+  stackTrailerNarrationMatchesPreparedScript(
+    'Thirty-nine carefully chosen places are waiting inside the full board.',
+    'Thirty-nine carefully chosen places are waiting inside the full board.',
+  ),
+  true,
+);
+assert.equal(
+  stackTrailerNarrationMatchesPreparedScript(
+    'Open the [full board](https://livingwiki.com/boards/example) to see every card.',
+    'Open the [full board](https://livingwiki.com/boards/example) to see every card.',
+  ),
+  true,
+);
+assert.equal(
+  stackTrailerNarrationMatchesPreparedScript(
+    'Thirty-nine carefully chosen places are waiting inside the full board.',
+    'Forty carefully chosen places are waiting inside the full board.',
+  ),
+  false,
+);
 
 const board = {
   cards: [

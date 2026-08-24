@@ -1,5 +1,26 @@
 export type StackVideoNarrationCard = Record<string, unknown>;
 
+const maxNarrationSpeechTextLength = 4000;
+
+export function normalizeNarrationSpeechText(value: unknown): string {
+  if (typeof value !== 'string') return '';
+  return value
+    .replace(/\[[^\]]+\]\(([^)]+)\)/g, '$1')
+    .replace(/[`*_#>~-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, maxNarrationSpeechTextLength);
+}
+
+export function stackTrailerNarrationMatchesPreparedScript(
+  preparedScript: unknown,
+  requestedSpeechText: unknown,
+): boolean {
+  const expectedSpeechText = normalizeNarrationSpeechText(preparedScript);
+  return !!expectedSpeechText
+    && expectedSpeechText === normalizeNarrationSpeechText(requestedSpeechText);
+}
+
 export function sharedStackNarrationCacheMode(mode: string): string {
   return mode === 'stack-video' ? 'tour' : mode;
 }
