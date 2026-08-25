@@ -152,6 +152,47 @@ assert.equal(fullAirbnb.images[0].alt, 'Living room', 'room context should remai
 const fullAirbnbBatch = buildBoardWizardListingBatch({ extraction: fullAirbnb, targetBoardTitle: '', count: 1 });
 assert.equal(fullAirbnbBatch.cards[0].imageUrls.length, 26, 'the overview card should preserve the complete Airbnb gallery');
 
+const fourteenPhotoAirbnb = { ...fullAirbnb, images: fullAirbnb.images.slice(0, 14) };
+const twelveCardAirbnbBatch = buildBoardWizardListingBatch({
+  extraction: fourteenPhotoAirbnb,
+  targetBoardTitle: '',
+  count: 12,
+});
+assert.equal(twelveCardAirbnbBatch.cards.length, 12, 'a 12-card request should be filled with exact gallery cards');
+assert.equal(new Set(twelveCardAirbnbBatch.cards.map((card) => card.imageUrl)).size, 12, 'expanded cards should use distinct primary photos');
+assert.ok(twelveCardAirbnbBatch.cards.every((card) => card.imageSource === 'source-page'));
+assert.ok(twelveCardAirbnbBatch.cards.every((card) => fourteenPhotoAirbnb.images.some((image) => image.url === card.imageUrl)));
+assert.ok(twelveCardAirbnbBatch.cards.some((card) => card.tags.includes('gallery')), 'unused source photos should become gallery cards');
+assert.ok(twelveCardAirbnbBatch.cards.at(-1).tags.includes('action'), 'the booking action should remain the final card');
+
+const fourteenCardAirbnbBatch = buildBoardWizardListingBatch({
+  extraction: fourteenPhotoAirbnb,
+  targetBoardTitle: '',
+  count: 14,
+});
+assert.equal(fourteenCardAirbnbBatch.cards.length, 14, 'all 14 verified photos should support 14 cards');
+assert.equal(new Set(fourteenCardAirbnbBatch.cards.map((card) => card.imageUrl)).size, 14);
+assert.equal(fourteenCardAirbnbBatch.cards[0].imageUrls.length, 14, 'the overview should still own the complete gallery');
+assert.ok(fourteenCardAirbnbBatch.cards.at(-1).tags.includes('action'));
+
+const sixteenCardAirbnbBatch = buildBoardWizardListingBatch({
+  extraction: fourteenPhotoAirbnb,
+  targetBoardTitle: '',
+  count: 16,
+});
+assert.equal(sixteenCardAirbnbBatch.cards.length, 14, 'card expansion must stop rather than inventing or repeating beyond 14 exact photos');
+assert.equal(new Set(sixteenCardAirbnbBatch.cards.map((card) => card.imageUrl)).size, 14);
+assert.ok(sixteenCardAirbnbBatch.cards.at(-1).tags.includes('action'));
+
+const sixteenOfTwentySixAirbnbBatch = buildBoardWizardListingBatch({
+  extraction: fullAirbnb,
+  targetBoardTitle: '',
+  count: 16,
+});
+assert.equal(sixteenOfTwentySixAirbnbBatch.cards.length, 16, 'larger verified galleries should honor a 16-card request');
+assert.equal(new Set(sixteenOfTwentySixAirbnbBatch.cards.map((card) => card.imageUrl)).size, 16);
+assert.ok(sixteenOfTwentySixAirbnbBatch.cards.at(-1).tags.includes('action'));
+
 const zillowHtml = `<!doctype html><html><head>
   <title>The Porter Apartments - Philadelphia, PA | Zillow</title>
   <meta property="og:site_name" content="Zillow">

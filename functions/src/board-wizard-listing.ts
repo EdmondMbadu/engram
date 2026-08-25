@@ -348,6 +348,14 @@ export function buildBoardWizardListingBatch(options: {
     };
   });
 
+  const baseCards = [overview, ...sourceBoundDetailCards];
+  const cards = fillListingBatchWithGalleryCards({
+    baseCards,
+    extraction,
+    extractedAt,
+    count,
+  });
+
   return {
     board: {
       title: (options.targetBoardTitle || extraction.listingName).slice(0, 90),
@@ -355,7 +363,96 @@ export function buildBoardWizardListingBatch(options: {
       icon: extraction.kind === 'real-estate' ? 'apartment' : 'hotel',
       tone: extraction.kind === 'real-estate' ? 'teal' : 'sky',
     },
-    cards: [overview, ...sourceBoundDetailCards].slice(0, count),
+    cards,
+  };
+}
+
+function fillListingBatchWithGalleryCards(options: {
+  baseCards: GeneratedBoardWizardCard[];
+  extraction: BoardWizardListingExtraction;
+  extractedAt: string;
+  count: number;
+}): GeneratedBoardWizardCard[] {
+  const baseCards = options.baseCards.slice(0, options.count);
+  if (baseCards.length >= options.count || !options.extraction.images.length) return baseCards;
+
+  // The overview owns the complete gallery, while each generated card needs a
+  // distinct primary photo whenever the source provides enough exact images.
+  const usedPrimaryUrls = new Set(
+    baseCards
+      .map((card) => card.imageUrl)
+      .filter((url): url is string => !!url),
+  );
+  const availableImages = options.extraction.images
+    .map((image, index) => ({ image, index }))
+    .filter(({ image }) => !usedPrimaryUrls.has(image.url));
+  if (!availableImages.length) return baseCards;
+
+  const slots = options.count - baseCards.length;
+  const galleryCards = availableImages
+    .slice(0, slots)
+    .map(({ image, index }) => listingGalleryCard({
+      image,
+      imageIndex: index,
+      imageCount: options.extraction.images.length,
+      extraction: options.extraction,
+      extractedAt: options.extractedAt,
+    }));
+  if (!galleryCards.length) return baseCards;
+
+  // The source action is deliberately kept as the final card after expansion.
+  const finalCard = baseCards.at(-1);
+  const finalCardIsAction = finalCard?.tags.some((tag) => tag.toLowerCase() === 'action') ?? false;
+  return finalCard && finalCardIsAction
+    ? [...baseCards.slice(0, -1), ...galleryCards, finalCard]
+    : [...baseCards, ...galleryCards];
+}
+
+function listingGalleryCard(options: {
+  image: BoardWizardListingImage;
+  imageIndex: number;
+  imageCount: number;
+  extraction: BoardWizardListingExtraction;
+  extractedAt: string;
+}): GeneratedBoardWizardCard {
+  const photoNumber = options.imageIndex + 1;
+  const context = cleanText(options.image.alt)
+    .replace(/\s+(?:listing|property)\s+photo$/i, '')
+    .slice(0, 52);
+  const titlePrefix = context && !/^photo(?:graph)?\b/i.test(context)
+    ? context
+    : options.extraction.kind === 'real-estate' ? 'Property gallery' : 'Stay gallery';
+  const title = `${titlePrefix} · Photo ${photoNumber}`.slice(0, 80);
+  const sourceLabel = options.extraction.siteName || hostnameLabel(options.extraction.sourceUrl) || 'source listing';
+  const subtitle = `Exact source photo ${photoNumber} of ${options.imageCount} · ${sourceLabel}`.slice(0, 120);
+
+  return {
+    title,
+    subtitle,
+    notes: `Verified gallery photo from ${options.extraction.listingName}. Open the original listing for the latest details and availability.`.slice(0, 3600),
+    type: 'note',
+    scope: 'place',
+    status: 'saved',
+    rating: 4,
+    tags: [
+      'listing',
+      'gallery',
+      'source-image',
+      options.extraction.kind === 'real-estate' ? 'real-estate' : 'lodging',
+    ],
+    image_query: context || `${options.extraction.listingName} gallery photo ${photoNumber}`,
+    image_context: context || `${options.extraction.listingName} source gallery`,
+    place_query: options.extraction.address || options.extraction.listingName,
+    entity_name: options.extraction.listingName,
+    entity_type: 'place',
+    image_intent: 'place',
+    short_summary: subtitle.slice(0, 160),
+    imageUrl: options.image.url,
+    imageUrls: [options.image.url],
+    sourceUrl: options.extraction.sourceUrl,
+    imageSource: 'source-page',
+    extractionConfidence: options.extraction.confidence,
+    extractedAt: options.extractedAt,
   };
 }
 
