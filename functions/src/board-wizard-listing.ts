@@ -6,7 +6,7 @@ export type BoardWizardListingKind = 'vacation-rental' | 'real-estate' | 'hotel'
 export type BoardWizardListingImage = {
   url: string;
   alt: string;
-  evidence: 'structured-data' | 'listing-gallery' | 'page-metadata';
+  evidence: 'embedded-gallery' | 'structured-data' | 'listing-gallery' | 'page-metadata';
 };
 
 export type BoardWizardListingUnit = {
@@ -39,6 +39,8 @@ export type BoardWizardListingExtraction = {
 };
 
 type JsonRecord = Record<string, unknown>;
+
+export const BOARD_WIZARD_SOURCE_GALLERY_LIMIT = 100;
 
 const LISTING_TYPES = new Map<string, BoardWizardListingKind>([
   ['vacationrental', 'vacation-rental'],
@@ -113,13 +115,20 @@ export function extractBoardWizardListing(
     || formatAddress(nestedAbout.address)
     || firstText(primaryNode.contentLocation, nestedAbout.contentLocation);
   const pageText = cleanText(document.body?.textContent || '').slice(0, 80_000);
-  const images = extractListingImages({
+  const pageImages = extractListingImages({
     document,
     nodes: [primaryNode, nestedAbout, ...relatedNodes],
     baseUrl,
     kind,
     hostname: safeHostname(baseUrl),
   });
+  const embeddedImages = extractPublisherEmbeddedListingImages({
+    document,
+    sourceUrl: inputUrl || baseUrl,
+    baseUrl,
+    listingName,
+  });
+  const images = mergeListingImages(embeddedImages, pageImages, BOARD_WIZARD_SOURCE_GALLERY_LIMIT);
   const offers = recordValue(primaryNode.offers);
   const aggregateRating = recordValue(primaryNode.aggregateRating);
   const geo = recordValue(primaryNode.geo);
@@ -147,6 +156,10 @@ export function extractBoardWizardListing(
 
 export function isBoardWizardListingPageUrl(value: string): boolean {
   return isStrongListingUrl(value);
+}
+
+export function isBoardWizardZillowListingPageUrl(value: string): boolean {
+  return safeHostname(value).includes('zillow.') && isStrongListingUrl(value);
 }
 
 export function extractBoardWizardListingFromMarkdown(
@@ -229,7 +242,7 @@ export function buildBoardWizardListingBatch(options: {
 }): GeneratedBoardWizardBatch {
   const extraction = options.extraction;
   const count = Math.max(1, Math.min(100, Math.round(options.count) || 1));
-  const imageUrls = extraction.images.map((image) => image.url).slice(0, 12);
+  const imageUrls = extraction.images.map((image) => image.url).slice(0, BOARD_WIZARD_SOURCE_GALLERY_LIMIT);
   const kindLabel = extraction.kind === 'real-estate'
     ? 'Property listing'
     : extraction.kind === 'hotel' ? 'Hotel listing' : 'Vacation rental';
@@ -415,6 +428,240 @@ function classifyListingNode(node: JsonRecord): { kind: BoardWizardListingKind |
   return { kind: null, score: 0 };
 }
 
+function extractPublisherEmbeddedListingImages(options: {
+  document: Document;
+  sourceUrl: string;
+  baseUrl: string;
+  listingName: string;
+}): BoardWizardListingImage[] {
+  const hostname = safeHostname(options.sourceUrl || options.baseUrl);
+  if (hostname.includes('airbnb.')) {
+    return extractAirbnbEmbeddedListingImages(options);
+  }
+  if (hostname.includes('zillow.')) {
+    return extractZillowEmbeddedListingImages(options);
+  }
+  return [];
+}
+
+function extractAirbnbEmbeddedListingImages(options: {
+  document: Document;
+  sourceUrl: string;
+  baseUrl: string;
+  listingName: string;
+}): BoardWizardListingImage[] {
+  const roomId = safePathname(options.sourceUrl).match(/\/rooms\/(\d+)/i)?.[1] || '';
+  if (!roomId) return [];
+
+  const candidates: BoardWizardListingImage[] = [];
+  const seen = new Set<string>();
+  const add = (rawUrl: string, context: string): void => {
+    const normalized = airbnbListingImageUrl(rawUrl, roomId, options.baseUrl);
+    if (!normalized) return;
+    const key = imageAssetKey(normalized);
+    if (!key || seen.has(key)) return;
+    seen.add(key);
+    candidates.push({
+      url: normalized,
+      alt: embeddedImageAlt(context, options.listingName, candidates.length),
+      evidence: 'embedded-gallery',
+    });
+  };
+
+  // Airbnb currently server-renders the photo-tour media even when only the
+  // five-photo hero is visible. The exact Hosting-{roomId} path is a stronger
+  // identity boundary than CSS/test ids, which change frequently.
+  for (const image of Array.from(options.document.querySelectorAll('img'))) {
+    const containerLabel = image.closest('[role="img"]')?.getAttribute('aria-label') || '';
+    const context = firstText(
+      image.getAttribute('alt'),
+      image.getAttribute('aria-label'),
+      containerLabel,
+    );
+    for (const value of [
+      image.getAttribute('data-original-uri') || '',
+      image.getAttribute('src') || '',
+      ...srcsetUrls(image.getAttribute('srcset')),
+    ]) {
+      add(value, context);
+    }
+  }
+
+  for (const source of Array.from(options.document.querySelectorAll('picture source[srcset]'))) {
+    const image = source.parentElement?.querySelector('img');
+    const context = firstText(
+      image?.getAttribute('alt'),
+      image?.getAttribute('aria-label'),
+      image?.closest('[role="img"]')?.getAttribute('aria-label'),
+    );
+    srcsetUrls(source.getAttribute('srcset')).forEach((value) => add(value, context));
+  }
+
+  for (const script of Array.from(options.document.querySelectorAll('script[type="application/json"]'))) {
+    const raw = script.textContent?.trim();
+    if (!raw) continue;
+    try {
+      collectEmbeddedImageStrings(JSON.parse(raw), '', (value, context) => add(value, context));
+    } catch {
+      // A malformed deferred-state block must not affect JSON-LD/DOM extraction.
+    }
+  }
+  return mergeListingImages(candidates, [], BOARD_WIZARD_SOURCE_GALLERY_LIMIT);
+}
+
+function airbnbListingImageUrl(value: string, roomId: string, baseUrl: string): string {
+  const absolute = absoluteImageUrl(value, baseUrl);
+  if (!absolute) return '';
+  try {
+    const url = new URL(absolute);
+    if (!/^a\d\.muscache\.com$/i.test(url.hostname)) return '';
+    const exactListingPath = new RegExp(
+      `/im/pictures/miso/Hosting-${escapeRegExp(roomId)}/original/[0-9a-f-]+\\.(?:jpe?g|png|webp)$`,
+      'i',
+    );
+    if (!exactListingPath.test(url.pathname)) return '';
+    url.search = '';
+    url.searchParams.set('im_w', '1440');
+    url.hash = '';
+    return url.toString();
+  } catch {
+    return '';
+  }
+}
+
+function extractZillowEmbeddedListingImages(options: {
+  document: Document;
+  sourceUrl: string;
+  baseUrl: string;
+  listingName: string;
+}): BoardWizardListingImage[] {
+  const zpid = safePathname(options.sourceUrl).match(/\/(\d+)_zpid\/?$/i)?.[1] || '';
+  if (!zpid) return [];
+  const nextData = options.document.querySelector('script#__NEXT_DATA__[type="application/json"]')?.textContent?.trim();
+  if (!nextData) return [];
+
+  try {
+    const root = recordValue(JSON.parse(nextData));
+    const props = recordValue(root.props);
+    const pageProps = recordValue(props.pageProps);
+    const componentProps = recordValue(pageProps.componentProps);
+    const cacheValue = componentProps.gdpClientCache;
+    const cache = typeof cacheValue === 'string'
+      ? recordValue(JSON.parse(cacheValue))
+      : recordValue(cacheValue);
+    for (const [cacheKey, cacheEntryValue] of Object.entries(cache)) {
+      if (!cacheKeyIncludesZpid(cacheKey, zpid)) continue;
+      const cacheEntry = recordValue(cacheEntryValue);
+      const property = recordValue(cacheEntry.property);
+      const propertyZpid = firstText(property.zpid);
+      if (propertyZpid && propertyZpid !== zpid) continue;
+      const photos = arrayValue(property.responsivePhotos).length
+        ? arrayValue(property.responsivePhotos)
+        : arrayValue(property.photos);
+      if (!photos.length) continue;
+      const images = photos.flatMap((photo, index): BoardWizardListingImage[] => {
+        const record = recordValue(photo);
+        const url = bestZillowPhotoUrl(photo, options.baseUrl);
+        if (!url) return [];
+        const alt = firstText(record.caption, record.altText, record.name, record.roomType);
+        return [{
+          url,
+          alt: embeddedImageAlt(alt, options.listingName, index),
+          evidence: 'embedded-gallery',
+        }];
+      });
+      return mergeListingImages(images, [], BOARD_WIZARD_SOURCE_GALLERY_LIMIT);
+    }
+  } catch {
+    // Zillow changes its bootstrap schema regularly; retain the safe page/Reader path.
+  }
+  return [];
+}
+
+function cacheKeyIncludesZpid(cacheKey: string, zpid: string): boolean {
+  if (!cacheKey.includes('Query')) return false;
+  const match = cacheKey.match(/"zpid"\s*:\s*"?(\d+)"?/i);
+  return match?.[1] === zpid;
+}
+
+function bestZillowPhotoUrl(value: unknown, baseUrl: string): string {
+  const urls: string[] = [];
+  collectEmbeddedImageStrings(value, '', (candidate) => {
+    const absolute = absoluteImageUrl(candidate, baseUrl);
+    if (!absolute || !/https:\/\/photos\.zillowstatic\.com\/fp\/[0-9a-f]{24,}/i.test(absolute)) return;
+    if (NOISE_MEDIA.test(absolute)) return;
+    urls.push(absolute);
+  });
+  return Array.from(new Set(urls)).sort((left, right) => {
+    const preferred = (url: string): number => {
+      const resolution = imageResolutionScore(url);
+      const practicalResolution = resolution > 0 && resolution <= 2_500 * 2_500 ? resolution : 0;
+      return practicalResolution
+        + (/\.(?:webp|jpe?g)(?:[?#]|$)/i.test(url) ? 1_000_000 : 0)
+        - (/(?:thumbnail|[-_]p_e\.|[-_]h_l\.)/i.test(url) ? 5_000_000 : 0);
+    };
+    return preferred(right) - preferred(left);
+  })[0] || '';
+}
+
+function collectEmbeddedImageStrings(
+  value: unknown,
+  inheritedContext: string,
+  add: (value: string, context: string) => void,
+  depth = 0,
+): void {
+  if (depth > 24 || value == null) return;
+  if (typeof value === 'string') {
+    if (/^https?:\/\//i.test(value) && /\.(?:jpe?g|png|webp)(?:[?#]|$)/i.test(value)) {
+      add(value, inheritedContext);
+    }
+    return;
+  }
+  if (Array.isArray(value)) {
+    value.forEach((item) => collectEmbeddedImageStrings(item, inheritedContext, add, depth + 1));
+    return;
+  }
+  if (typeof value !== 'object') return;
+  const record = value as JsonRecord;
+  const context = firstText(
+    record.caption,
+    record.altText,
+    record.accessibilityLabel,
+    record.roomType,
+    record.title,
+    record.name,
+    inheritedContext,
+  );
+  for (const nested of Object.values(record)) {
+    collectEmbeddedImageStrings(nested, context, add, depth + 1);
+  }
+}
+
+function embeddedImageAlt(context: string, listingName: string, index: number): string {
+  const cleanContext = cleanText(context);
+  if (cleanContext && cleanContext.length <= 120 && !/^https?:/i.test(cleanContext)) {
+    return cleanContext;
+  }
+  return `${listingName} listing photo ${index + 1}`.slice(0, 180);
+}
+
+function mergeListingImages(
+  preferred: BoardWizardListingImage[],
+  fallback: BoardWizardListingImage[],
+  limit: number,
+): BoardWizardListingImage[] {
+  const result: BoardWizardListingImage[] = [];
+  const seen = new Set<string>();
+  for (const image of [...preferred, ...fallback]) {
+    const key = imageAssetKey(image.url);
+    if (!key || seen.has(key)) continue;
+    seen.add(key);
+    result.push(image);
+    if (result.length >= limit) break;
+  }
+  return result;
+}
+
 function extractListingImages(options: {
   document: Document;
   nodes: JsonRecord[];
@@ -561,6 +808,11 @@ function bestSrcsetUrl(value: string | null, baseUrl: string): string {
     const parts = candidate.trim().split(/\s+/);
     return { url: absoluteImageUrl(parts[0] || '', baseUrl), width: Number((parts[1] || '').replace(/[^\d.]/g, '')) || 0 };
   }).filter((candidate) => !!candidate.url).sort((a, b) => b.width - a.width)[0]?.url || '';
+}
+
+function srcsetUrls(value: string | null): string[] {
+  if (!value) return [];
+  return value.split(',').map((candidate) => candidate.trim().split(/\s+/)[0] || '').filter(Boolean);
 }
 
 function extractListingFacts(primary: JsonRecord, about: JsonRecord, text: string): string[] {
@@ -737,6 +989,14 @@ function safeHttpUrl(value: string): string {
 
 function safeHostname(value: string): string {
   try { return new URL(value).hostname.toLowerCase(); } catch { return ''; }
+}
+
+function safePathname(value: string): string {
+  try { return new URL(value).pathname; } catch { return ''; }
+}
+
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 function hostnameLabel(value: string): string {

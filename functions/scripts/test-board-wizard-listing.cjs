@@ -1,15 +1,19 @@
 const assert = require('node:assert/strict');
 const {
+  BOARD_WIZARD_SOURCE_GALLERY_LIMIT,
   buildBoardWizardListingBatch,
   extractBoardWizardListing,
   extractBoardWizardListingFromMarkdown,
   isBoardWizardListingPageUrl,
+  isBoardWizardZillowListingPageUrl,
 } = require('../lib/board-wizard-listing.js');
 
 assert.equal(isBoardWizardListingPageUrl('https://www.airbnb.com/rooms/1684310791539108474'), true);
 assert.equal(isBoardWizardListingPageUrl('https://www.airbnb.com/s/homes'), false);
 assert.equal(isBoardWizardListingPageUrl('https://www.zillow.com/apartments/philadelphia-pa/the-porter/CgKQWS/'), true);
 assert.equal(isBoardWizardListingPageUrl('https://www.zillow.com/philadelphia-pa/apartments/'), false);
+assert.equal(isBoardWizardZillowListingPageUrl('https://www.zillow.com/homedetails/example/141490995_zpid/'), true);
+assert.equal(isBoardWizardZillowListingPageUrl('https://www.airbnb.com/rooms/1684310791539108474'), false);
 
 const zillowReaderMarkdown = `Title: 27 Cranberry Cove Ct, Las Vegas, NV 89135 | MLS #2809912 | Zillow
 
@@ -93,6 +97,61 @@ assert.equal(singleCard.cards[0].imageUrls.length, 8, 'one-card boards must pres
 assert.equal(singleCard.cards[0].imageUrl, airbnbImages[0]);
 assert.equal(singleCard.cards[0].productUrl, undefined, 'a lodging listing must not be presented as a shopping product');
 
+const fullAirbnbRoomId = '776364752068549104';
+const fullAirbnbImages = Array.from({ length: 26 }, (_, index) =>
+  `https://a0.muscache.com/im/pictures/miso/Hosting-${fullAirbnbRoomId}/original/${String(index).padStart(8, '0')}-1111-4222-8333-444444444444.jpeg?im_w=720`,
+);
+const fullAirbnbSections = [
+  ['Living room', 3], ['Full kitchen', 4], ['Bedroom 1', 3], ['Bedroom 2', 3],
+  ['Backyard', 4], ['Exterior', 3], ['Additional photos', 6],
+];
+let fullAirbnbIndex = 0;
+const fullAirbnbDeferredState = {
+  niobeClientData: [[
+    `StaysPdpSections:{"id":"${fullAirbnbRoomId}"}`,
+    {
+      data: {
+        photoTour: fullAirbnbSections.map(([title, count]) => ({
+          title,
+          mediaItems: Array.from({ length: count }, () => ({
+            caption: title,
+            baseUrl: fullAirbnbImages[fullAirbnbIndex++],
+          })),
+        })),
+        nearbyStays: [{
+          title: 'Unrelated nearby stay',
+          baseUrl: 'https://a0.muscache.com/im/pictures/miso/Hosting-999999999999999999/original/ffffffff-1111-4222-8333-444444444444.jpeg?im_w=720',
+        }],
+      },
+    },
+  ]],
+};
+const fullAirbnbHtml = `<!doctype html><html><head>
+  <title>Eclectic! Clean! 4 BD 2 BATH. - Airbnb</title>
+  <meta property="og:site_name" content="Airbnb">
+  <script type="application/ld+json">${JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'VacationRental',
+    name: 'Eclectic! Clean! 4 BD 2 BATH.',
+    description: 'A complete Anaheim stay.',
+    image: fullAirbnbImages.slice(0, 8),
+  })}</script>
+  <script id="data-deferred-state-0" type="application/json">${JSON.stringify(fullAirbnbDeferredState)}</script>
+</head><body><p>10 guests · 4 bedrooms · 2 baths</p></body></html>`;
+const fullAirbnb = extractBoardWizardListing(
+  `https://www.airbnb.com/rooms/${fullAirbnbRoomId}?check_in=2026-08-28&check_out=2026-08-30`,
+  `https://www.airbnb.com/rooms/${fullAirbnbRoomId}`,
+  fullAirbnbHtml,
+);
+assert.ok(fullAirbnb, 'Airbnb deferred state should remain a valid vacation-rental listing');
+assert.equal(fullAirbnb.images.length, 26, 'all exact Airbnb deferred-state photos should be retained');
+assert.ok(fullAirbnb.images.every((image) => image.url.includes(`Hosting-${fullAirbnbRoomId}`)));
+assert.ok(fullAirbnb.images.every((image) => image.url.endsWith('?im_w=1440')), 'Airbnb photos should use a bounded high-quality rendition');
+assert.equal(fullAirbnb.images.some((image) => image.url.includes('999999999999999999')), false, 'nearby stays must be rejected by room id');
+assert.equal(fullAirbnb.images[0].alt, 'Living room', 'room context should remain bound to the image');
+const fullAirbnbBatch = buildBoardWizardListingBatch({ extraction: fullAirbnb, targetBoardTitle: '', count: 1 });
+assert.equal(fullAirbnbBatch.cards[0].imageUrls.length, 26, 'the overview card should preserve the complete Airbnb gallery');
+
 const zillowHtml = `<!doctype html><html><head>
   <title>The Porter Apartments - Philadelphia, PA | Zillow</title>
   <meta property="og:site_name" content="Zillow">
@@ -146,6 +205,71 @@ assert.ok(zillowBatch.cards.every((card) => card.sourceUrl.includes('zillow.com'
 assert.ok(zillowBatch.cards.every((card) => !!card.imageUrl), 'every listing-derived card should use an exact gallery image');
 assert.ok(zillowBatch.cards.every((card) => card.imageSource === 'source-page'));
 assert.ok(zillowBatch.cards.every((card) => zillow.images.some((image) => image.url === card.imageUrl)));
+
+const fullZillowZpid = '141490995';
+const fullZillowPhotos = Array.from({ length: 41 }, (_, index) => {
+  const assetId = index.toString(16).padStart(32, '0');
+  return {
+    caption: index === 0 ? 'Front exterior' : `Property photo ${index + 1}`,
+    mixedSources: {
+      jpeg: [
+        { url: `https://photos.zillowstatic.com/fp/${assetId}-cc_ft_384.webp`, width: 384 },
+        { url: `https://photos.zillowstatic.com/fp/${assetId}-cc_ft_1536.webp`, width: 1536 },
+      ],
+    },
+  };
+});
+const unrelatedZillowAsset = 'ffffffffffffffffffffffffffffffff';
+const fullZillowCacheKey = `ViewShowcasePriorityQuery{"zpid":"${fullZillowZpid}","zillowPlatform":"DESKTOP"}`;
+const fullZillowNextData = {
+  props: {
+    pageProps: {
+      componentProps: {
+        gdpClientCache: JSON.stringify({
+          [fullZillowCacheKey]: {
+            property: {
+              zpid: fullZillowZpid,
+              responsivePhotos: fullZillowPhotos,
+              photos: fullZillowPhotos,
+            },
+            showcase: {
+              photos: [{ url: `https://photos.zillowstatic.com/fp/${unrelatedZillowAsset}-cc_ft_1536.webp` }],
+            },
+          },
+          'ViewShowcasePriorityQuery{"zpid":"999999999","zillowPlatform":"DESKTOP"}': {
+            property: {
+              zpid: '999999999',
+              photos: [{ url: `https://photos.zillowstatic.com/fp/${unrelatedZillowAsset}-cc_ft_1536.webp` }],
+            },
+          },
+        }),
+      },
+    },
+  },
+};
+const fullZillowHtml = `<!doctype html><html><head>
+  <title>27 Cranberry Cove Ct, Las Vegas, NV 89135 | Zillow</title>
+  <meta property="og:site_name" content="Zillow">
+  <script type="application/ld+json">${JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'RealEstateListing',
+    name: '27 Cranberry Cove Ct, Las Vegas, NV 89135',
+    image: fullZillowPhotos[0].mixedSources.jpeg[0].url,
+  })}</script>
+  <script id="__NEXT_DATA__" type="application/json">${JSON.stringify(fullZillowNextData)}</script>
+</head><body><p>4 beds · 5 baths · 4,618 sqft</p></body></html>`;
+const fullZillow = extractBoardWizardListing(
+  `https://www.zillow.com/homedetails/27-Cranberry-Cove-Ct-Las-Vegas-NV-89135/${fullZillowZpid}_zpid/`,
+  `https://www.zillow.com/homedetails/27-Cranberry-Cove-Ct-Las-Vegas-NV-89135/${fullZillowZpid}_zpid/`,
+  fullZillowHtml,
+);
+assert.ok(fullZillow, 'Zillow Next data should remain a valid real-estate listing');
+assert.equal(fullZillow.images.length, 41, 'only the canonical property photo array should be retained');
+assert.ok(fullZillow.images.every((image) => image.evidence === 'embedded-gallery'));
+assert.ok(fullZillow.images.every((image) => /cc_ft_1536/.test(image.url)), 'the best practical responsive rendition should be selected');
+assert.equal(fullZillow.images.some((image) => image.url.includes(unrelatedZillowAsset)), false, 'showcase and mismatched-zpid media must be rejected');
+assert.equal(buildBoardWizardListingBatch({ extraction: fullZillow, targetBoardTitle: '', count: 1 }).cards[0].imageUrls.length, 41);
+assert.ok(BOARD_WIZARD_SOURCE_GALLERY_LIMIT >= 41);
 
 const commerceOnly = extractBoardWizardListing(
   'https://example-shop.com/products/blue-chair',

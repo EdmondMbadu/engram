@@ -4476,7 +4476,7 @@
                 [attr.aria-pressed]="cardPhotoViewerPosition(photoCard) === photoIndex + 1"
                 (click)="selectCardPhotoViewer(photoCard, photoIndex, $event)"
               >
-                <img [src]="photo" alt="" />
+                <img [src]="photo" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
                 @if (photoIndex === 0) {
                   <span i18n>Cover</span>
                 }

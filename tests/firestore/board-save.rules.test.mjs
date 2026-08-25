@@ -202,6 +202,30 @@ test('personal board description boundary matches the client persistence contrac
   ));
 });
 
+test('owner can save a verified URL listing gallery with more than twelve remote photos', async () => {
+  const database = testEnvironment.authenticatedContext(ownerUid).firestore();
+  const imageUrls = Array.from(
+    { length: 41 },
+    (_, index) => `https://photos.zillowstatic.com/fp/${index.toString(16).padStart(32, '0')}-cc_ft_1536.webp`,
+  );
+  await assertSucceeds(setDoc(
+    doc(database, 'boards', 'full-listing-gallery'),
+    personalWizardBoard({
+      id: 'full-listing-gallery',
+      cards: [{
+        id: 'listing-overview',
+        title: 'Property overview',
+        notes: '',
+        imageUrl: imageUrls[0],
+        imageUrls,
+        imageSource: 'source-page',
+        sourceUrl: 'https://www.zillow.com/homedetails/example/141490995_zpid/',
+        tags: ['listing', 'real-estate', 'source-image'],
+      }],
+    }),
+  ));
+});
+
 test('owner can stage a photo board privately in Studio and publish it later', async () => {
   const database = testEnvironment.authenticatedContext(ownerUid).firestore();
   const boardReference = doc(database, 'boards', 'wizard-board-1');

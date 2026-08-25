@@ -142,6 +142,7 @@ import {
 import { canReorderCardSurface } from './card-interaction';
 import { cardPresentationSubtitle } from './card-numbering';
 import { cardNotesForPersistence, cardNotesSummary } from './card-notes';
+import { cardPhotoLimit } from './board-card-photo-limit';
 import {
   boardCityMetadataForFirestore,
   boardDescriptionForFirestore,
@@ -5534,7 +5535,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       youtubeMatchConfidence: Math.max(0, Math.min(1, card.youtubeMatchConfidence ?? 0)),
       youtubeVerifiedAt: card.youtubeVerifiedAt?.trim() || '',
       imageUrl: card.imageUrl,
-      imageUrls: this.uniqueImageUrls([card.imageUrl, ...(card.imageUrls ?? [])]).slice(0, 12),
+      imageUrls: this.uniqueImageUrls([card.imageUrl, ...(card.imageUrls ?? [])]).slice(0, cardPhotoLimit(card)),
       audioPreviewUrl: card.audioPreviewUrl ?? '',
       spotifyTrackId: card.spotifyTrackId ?? '',
       spotifyTrackUrl: card.spotifyTrackUrl ?? '',
@@ -16725,7 +16726,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
           ...card,
           id: this.stringValue(rawCard['id'], this.createId(), 180),
           imageUrl: card.imageUrl ?? '',
-          imageUrls: this.uniqueImageUrls([card.imageUrl, ...(card.imageUrls ?? [])]).slice(0, 12),
+          imageUrls: this.uniqueImageUrls([card.imageUrl, ...(card.imageUrls ?? [])]).slice(0, cardPhotoLimit(card)),
           placeId: card.placeId ?? '',
           googleMapsUrl: card.googleMapsUrl ?? '',
           editing: false,
@@ -17277,7 +17278,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       youtubeVerifiedAt: this.stringValue(data['youtubeVerifiedAt'], '', 80),
       imageUrl: this.stringValue(data['imageUrl'], '', 2000),
       imageUrls: Array.isArray(data['imageUrls'])
-        ? this.uniqueImageUrls(data['imageUrls'].map((url) => this.stringValue(url, '', 2000))).slice(0, 12)
+        ? this.uniqueImageUrls(data['imageUrls'].map((url) => this.stringValue(url, '', 2000))).slice(0, cardPhotoLimit({
+            imageSource: data['imageSource'],
+            sourceUrl,
+            tags,
+          }))
         : [],
       audioPreviewUrl: this.stringValue(data['audioPreviewUrl'], '', 2000),
       spotifyTrackId: this.stringValue(data['spotifyTrackId'], '', 120),
@@ -17334,7 +17339,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       short_summary: card.short_summary || card.subtitle,
       rank: card.rank || 0,
       imageUrl: card.imageUrl || '',
-      imageUrls: this.uniqueImageUrls([card.imageUrl, ...(card.imageUrls ?? [])]).slice(0, 12),
+      imageUrls: this.uniqueImageUrls([card.imageUrl, ...(card.imageUrls ?? [])]).slice(0, cardPhotoLimit(card)),
       video_intent: card.video_intent === true,
       video_search_query: card.video_search_query || '',
       audioPreviewUrl: card.audioPreviewUrl || '',
@@ -17376,7 +17381,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         id: this.createId(),
         what3wordsAddress: what3WordsAddressFromCard(card),
         imageUrl: card.imageUrl ?? '',
-        imageUrls: this.uniqueImageUrls([card.imageUrl, ...(card.imageUrls ?? [])]).slice(0, 12),
+        imageUrls: this.uniqueImageUrls([card.imageUrl, ...(card.imageUrls ?? [])]).slice(0, cardPhotoLimit(card)),
         audioPreviewUrl: card.audioPreviewUrl ?? '',
         spotifyTrackId: card.spotifyTrackId ?? '',
         spotifyTrackUrl: card.spotifyTrackUrl ?? '',
@@ -19449,7 +19454,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       imageUrls: this.uniqueImageUrls([
         typeof data['imageUrl'] === 'string' ? data['imageUrl'] : '',
         ...(Array.isArray(data['imageUrls']) ? data['imageUrls'].filter((url): url is string => typeof url === 'string') : []),
-      ]).slice(0, 12),
+      ]).slice(0, cardPhotoLimit(data)),
       audioPreviewUrl: typeof data['audioPreviewUrl'] === 'string' ? data['audioPreviewUrl'] : '',
       spotifyTrackId: typeof data['spotifyTrackId'] === 'string' ? data['spotifyTrackId'] : '',
       spotifyTrackUrl: typeof data['spotifyTrackUrl'] === 'string' ? data['spotifyTrackUrl'] : '',

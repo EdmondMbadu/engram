@@ -201,6 +201,7 @@ import {
   extractBoardWizardListing,
   extractBoardWizardListingFromMarkdown,
   isBoardWizardListingPageUrl,
+  isBoardWizardZillowListingPageUrl,
   type BoardWizardListingExtraction,
 } from './board-wizard-listing';
 import {
@@ -7336,10 +7337,15 @@ export const generateBoardWizardBatch = onCall(
         urlRecoveryMethod = articleManifest.method;
         urlSourceBlocked = articleManifest.sourceBlocked;
       } else try {
+        const zillowListingPage = isBoardWizardZillowListingPageUrl(url);
         const fetched = await fetchHtmlWithFallback(url, {
           timeoutMs: 30_000,
           preferBrowser: false,
-          allowBrowserFallback: true,
+          // Zillow currently returns the same 403 to raw and Cloud Chromium
+          // requests. Avoid paying another 13–15 seconds before using the safe
+          // Reader fallback. A future raw 2xx still gets the complete embedded
+          // property gallery without changing this branch.
+          allowBrowserFallback: !zillowListingPage,
         });
         const blocked = looksLikeAntiBotChallenge(fetched.html);
         urlSourceBlocked = blocked || fetched.status <= 0 || fetched.status >= 400;
@@ -7376,10 +7382,15 @@ export const generateBoardWizardBatch = onCall(
               isListing: !!listingExtraction,
               listingKind: listingExtraction?.kind ?? '',
               listingImageCount: listingExtraction?.images.length ?? 0,
+              listingEmbeddedImageCount: listingExtraction?.images.filter((image) => image.evidence === 'embedded-gallery').length ?? 0,
               listingUnitCount: listingExtraction?.units.length ?? 0,
               durationMs: Date.now() - urlIntakeStartedAt,
             });
-            if ((!listingExtraction || listingExtraction.images.length === 0) && isBoardWizardListingPageUrl(url)) {
+            if (
+              (!listingExtraction || listingExtraction.images.length === 0)
+              && isBoardWizardListingPageUrl(url)
+              && !zillowListingPage
+            ) {
               try {
                 const rendered = await fetchHtmlWithFallback(url, {
                   timeoutMs: 30_000,
@@ -7493,6 +7504,7 @@ export const generateBoardWizardBatch = onCall(
           commerceProductImageCount: commerceExtraction?.products.filter((product) => !!product.imageUrl).length ?? 0,
           listingKind: listingExtraction?.kind ?? '',
           listingImageCount: listingExtraction?.images.length ?? 0,
+          listingEmbeddedImageCount: listingExtraction?.images.filter((image) => image.evidence === 'embedded-gallery').length ?? 0,
         });
       }
       if (!listingExtraction && !accommodationExtraction && isBoardWizardAccommodationUrl(url)) {
