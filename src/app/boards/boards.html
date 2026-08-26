@@ -3320,7 +3320,19 @@
                             [attr.aria-label]="hasYoutubeVideo(card) ? 'Play ' + card.title + ' video' : 'Open ' + card.title + ' photos full screen'"
                             (click)="hasYoutubeVideo(card) ? openCardVideoViewer(card, $event) : openCardPhotoViewer(card, $event)"
                           >
-                            <img [src]="cardMediaPoster(card)" [alt]="hasYoutubeVideo(card) ? card.title + ' video thumbnail' : card.title + ' photo ' + currentCardPhotoPosition(card)" loading="lazy" />
+                            <img
+                              class="detail-card__photo-backdrop"
+                              [src]="cardMediaPoster(card)"
+                              alt=""
+                              aria-hidden="true"
+                              loading="lazy"
+                            />
+                            <img
+                              class="detail-card__photo-image"
+                              [src]="cardMediaPoster(card)"
+                              [alt]="hasYoutubeVideo(card) ? card.title + ' video thumbnail' : card.title + ' photo ' + currentCardPhotoPosition(card)"
+                              loading="lazy"
+                            />
                             <span class="detail-card__photo-hint" aria-hidden="true">
                               <span class="material-symbols-outlined">{{ hasYoutubeVideo(card) ? 'play_arrow' : 'fullscreen' }}</span>
                               @if (hasYoutubeVideo(card)) {
