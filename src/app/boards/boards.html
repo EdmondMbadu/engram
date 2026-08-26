@@ -1496,13 +1496,23 @@
                   <span class="material-symbols-outlined" aria-hidden="true">ios_share</span>
                   <span>Share</span>
                 </button>
-                @if (canForkBoard(board) || canEditBoard(board) || canUseStackStudio(board) || (board.stackCtaLabel && stackCtaHref(board))) {
+                @if (board.visibility === 'public' || canForkBoard(board) || canEditBoard(board) || canUseStackStudio(board) || (board.stackCtaLabel && stackCtaHref(board))) {
                   <details class="board-editorial-hero__more">
                     <summary>
                       <span class="material-symbols-outlined" aria-hidden="true">more_horiz</span>
                       <span>More</span>
                     </summary>
                     <div class="board-editorial-hero__more-menu">
+                    @if (board.visibility === 'public') {
+                      <button
+                        type="button"
+                        [id]="'board-promo-trigger-' + board.id"
+                        (click)="openBoardPromoImage(board, $event)"
+                      >
+                        <span class="material-symbols-outlined" aria-hidden="true">campaign</span>
+                        <span>Create promo image</span>
+                      </button>
+                    }
                     @if (canForkBoard(board)) {
                       <button type="button" [disabled]="!!boardForkingId()" (click)="forkBoard(board, $event)">
                         <span class="material-symbols-outlined" aria-hidden="true">content_copy</span>
@@ -9614,6 +9624,22 @@
     (closed)="closeCustomUrlDialog()"
     (saved)="handleCustomUrlSaved($event)"
   ></app-custom-public-url-dialog>
+}
+
+@if (boardPromoImageBoard(); as promoBoard) {
+  <app-board-promo-image-dialog
+    [title]="promoBoard.title"
+    [description]="promoBoard.description"
+    [ownerName]="ownerName(promoBoard)"
+    [updatedLabel]="promoBoard.cards.length ? boardUpdatedLabel(promoBoard) : 'today'"
+    [cardCount]="boardDisplayCardCount(promoBoard)"
+    [coverImageUrl]="stackCoverImage(promoBoard)"
+    [boardUrl]="boardPageUrl(promoBoard)"
+    [boardTypeLabel]="boardPromoTypeLabel(promoBoard)"
+    [icon]="boardDisplayIcon(promoBoard)"
+    (closed)="closeBoardPromoImage()"
+    (downloaded)="boardPromoImageDownloaded()"
+  ></app-board-promo-image-dialog>
 }
 
 @if (relatedCardEditorOpen() && relatedCardEditorParent(); as relatedParent) {

@@ -1,0 +1,126 @@
+<div class="board-promo-backdrop" role="presentation" (mousedown)="$event.target === $event.currentTarget && close()">
+  <section
+    #dialog
+    class="board-promo-dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="board-promo-title"
+    aria-describedby="board-promo-description"
+    (keydown)="onDialogKeydown($event)"
+  >
+    <header class="board-promo-dialog__header">
+      <span class="board-promo-dialog__mark material-symbols-outlined" aria-hidden="true">campaign</span>
+      <span>
+        <small>Ready to share anywhere</small>
+        <h2 id="board-promo-title">Board promo image</h2>
+      </span>
+      <button #closeButton type="button" aria-label="Close promo image dialog" (click)="close()">
+        <span class="material-symbols-outlined" aria-hidden="true">close</span>
+      </button>
+    </header>
+
+    <div class="board-promo-dialog__body">
+      <section class="board-promo-preview" [attr.aria-busy]="rendering()">
+        <div class="board-promo-preview__frame">
+          @if (previewUrl()) {
+            <img [src]="previewUrl()" [alt]="'Promo image preview for ' + title()" />
+          } @else if (!rendering()) {
+            <div class="board-promo-preview__empty">
+              <span class="material-symbols-outlined" aria-hidden="true">image_not_supported</span>
+              <strong>Preview unavailable</strong>
+              <small>The board remains unchanged.</small>
+            </div>
+          }
+          @if (rendering()) {
+            <div class="board-promo-preview__loading" role="status">
+              <span class="material-symbols-outlined" aria-hidden="true">progress_activity</span>
+              <strong>Rendering your promo image…</strong>
+              <small>Loading the cover and preparing a scannable QR code.</small>
+            </div>
+          }
+        </div>
+        <div class="board-promo-preview__caption">
+          <span class="material-symbols-outlined" aria-hidden="true">visibility</span>
+          <span>
+            <strong>Download preview</strong>
+            <small>This is the exact 1200 × 630 composition, exported at 2× resolution.</small>
+          </span>
+        </div>
+      </section>
+
+      <aside class="board-promo-options" id="board-promo-description">
+        <div class="board-promo-options__intro">
+          <span class="material-symbols-outlined" aria-hidden="true">auto_awesome</span>
+          <span>
+            <strong>Promote this board</strong>
+            <small>A clean image with no viewer controls—ready for social posts, email, slides, or print.</small>
+          </span>
+        </div>
+
+        <fieldset [disabled]="rendering()">
+          <legend>Included in the image</legend>
+          <label>
+            <input
+              type="checkbox"
+              [checked]="showQrCode()"
+              (change)="setShowQrCode($any($event.target).checked)"
+            />
+            <span class="board-promo-options__toggle" aria-hidden="true"><i></i></span>
+            <span>
+              <strong>Show QR code</strong>
+              <small>Opens this exact board view using its public link.</small>
+            </span>
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              [checked]="showDescription()"
+              (change)="setShowDescription($any($event.target).checked)"
+            />
+            <span class="board-promo-options__toggle" aria-hidden="true"><i></i></span>
+            <span>
+              <strong>Show description</strong>
+              <small>Includes a short introduction beneath the board title.</small>
+            </span>
+          </label>
+        </fieldset>
+
+        <div class="board-promo-options__details">
+          <span><small>Format</small><strong>PNG</strong></span>
+          <span><small>Resolution</small><strong>2400 × 1260</strong></span>
+        </div>
+
+        <p class="board-promo-options__privacy">
+          <span class="material-symbols-outlined" aria-hidden="true">public</span>
+          Only information already visible on this public board is included.
+        </p>
+      </aside>
+    </div>
+
+    <footer class="board-promo-dialog__footer">
+      <span class="board-promo-dialog__status" aria-live="polite">
+        <span class="material-symbols-outlined" aria-hidden="true">{{ error() ? 'error' : rendering() ? 'progress_activity' : 'check_circle' }}</span>
+        {{ error() || statusMessage() }}
+      </span>
+      <span class="board-promo-dialog__actions">
+        @if (error()) {
+          <button type="button" class="board-promo-dialog__secondary" (click)="retry()">
+            <span class="material-symbols-outlined" aria-hidden="true">refresh</span>
+            Try again
+          </button>
+        } @else {
+          <button type="button" class="board-promo-dialog__secondary" (click)="close()">Cancel</button>
+        }
+        <button
+          type="button"
+          class="board-promo-dialog__download"
+          [disabled]="rendering() || !!error() || !previewUrl()"
+          (click)="download()"
+        >
+          <span class="material-symbols-outlined" aria-hidden="true">download</span>
+          {{ rendering() ? 'Preparing…' : 'Download PNG' }}
+        </button>
+      </span>
+    </footer>
+  </section>
+</div>

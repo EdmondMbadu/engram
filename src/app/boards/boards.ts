@@ -44,6 +44,7 @@ import {
   type NearbyGemsBoardCardView,
 } from './nearby-gems-board/nearby-gems-board';
 import { VideoLibraryService } from '../video-library/video-library.service';
+import { BoardPromoImageDialogComponent } from './board-promo-image-dialog';
 import { SpotifyPlaybackService, type SpotifyTrack } from '../spotify-playback.service';
 import { StackNarrationSessionService } from '../stack-narration-session.service';
 import {
@@ -1478,7 +1479,7 @@ type BoardLoadContext = {
 
 @Component({
   selector: 'app-boards',
-  imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink, BoardCollectionCreateComponent, BoardCollectionListComponent, CustomPublicUrlDialogComponent, NearbyGemsBoardComponent],
+  imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink, BoardCollectionCreateComponent, BoardCollectionListComponent, CustomPublicUrlDialogComponent, BoardPromoImageDialogComponent, NearbyGemsBoardComponent],
   providers: [DocxExportService],
   templateUrl: './boards.html',
   styleUrls: ['./boards.css', './tour-experience.css', './board-wizard-drafts.css', './board-wizard-media-mode.css', './board-narration-style.css', './board-wizard-redesign.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css', './stack-script.css', './stack-cover-final.css', './stack-doc-export.css', './board-city-tag.css', './board-custom-link.css', './nearby-gems-gallery.css'],
@@ -1703,6 +1704,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly exploredRelatedCardParentId = signal<string | null>(null);
   readonly boardDeleteCandidate = signal<Board | null>(null);
   readonly customUrlBoard = signal<Board | null>(null);
+  readonly boardPromoImageBoard = signal<Board | null>(null);
   readonly draggedBoardId = signal<string | null>(null);
   readonly boardDropTargetId = signal<string | null>(null);
   readonly boardDropPosition = signal<ReorderDropPosition | null>(null);
@@ -5984,6 +5986,36 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       return;
     }
     this.customUrlBoard.set(board);
+  }
+
+  openBoardPromoImage(board: Board, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (board.visibility !== 'public') {
+      this.boardsSyncError.set('Make this board public before creating a promo image.');
+      return;
+    }
+    this.boardPromoImageBoard.set(board);
+  }
+
+  closeBoardPromoImage(): void {
+    const boardId = this.boardPromoImageBoard()?.id ?? '';
+    this.boardPromoImageBoard.set(null);
+    if (!this.isBrowser || !boardId) return;
+    requestAnimationFrame(() => {
+      document.getElementById(`board-promo-trigger-${boardId}`)?.focus();
+    });
+  }
+
+  boardPromoImageDownloaded(): void {
+    this.boardAnalytics.trackShare('board_share');
+  }
+
+  boardPromoTypeLabel(board: Board): string {
+    if (board.parentCardId) return 'Board inside';
+    if (this.isTourBoard(board)) return board.kind === 'driving-tour' ? 'Driving tour' : 'Walking tour';
+    if (this.isSongBoard(board)) return 'Music board';
+    return 'Board';
   }
 
   openBoardInsights(board: Board, event?: Event): void {
