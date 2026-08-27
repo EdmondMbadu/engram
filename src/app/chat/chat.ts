@@ -41,6 +41,7 @@ import {
 } from '../public-wiki-catalog';
 import { CITY_ATLAS_TEMPLATES } from '../city-atlas-templates';
 import { formatAssistantMessageHtml } from './message-format.util';
+import { VoiceFluidVisualComponent } from './voice-fluid-visual';
 
 interface ChatMessage {
   id: string;
@@ -413,6 +414,7 @@ const VOICE_LANGUAGES: VoiceLanguageOption[] = [
     MobileMenuComponent,
     ChatLocationMapComponent,
     AccountMenuComponent,
+    VoiceFluidVisualComponent,
   ],
   templateUrl: './chat.html',
   styleUrl: './chat.css',

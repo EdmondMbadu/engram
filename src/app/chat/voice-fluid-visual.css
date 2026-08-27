@@ -1,0 +1,75 @@
+:host {
+  position: absolute;
+  z-index: 2;
+  inset: -0.15rem 0 1.45rem;
+  display: block;
+  filter: drop-shadow(0 14px 24px color-mix(in srgb, var(--presence-c) 20%, transparent));
+}
+
+svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.stop-a { stop-color: var(--presence-a); }
+.stop-b { stop-color: var(--presence-b); }
+.stop-c { stop-color: var(--presence-c); }
+
+path { vector-effect: non-scaling-stroke; }
+
+.glow {
+  fill: var(--presence-b);
+  opacity: calc(0.22 + var(--voice-energy) * 0.2);
+  filter: blur(15px);
+}
+
+.shape {
+  fill: url('#voice-fluid-gradient');
+  stroke: rgba(255, 255, 255, 0.42);
+  stroke-width: 1;
+}
+
+.sheen {
+  fill: url('#voice-fluid-sheen');
+  opacity: 0.78;
+  mix-blend-mode: screen;
+}
+
+.texture {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.23);
+  stroke-width: 0.75;
+  stroke-dasharray: 1.2 4.4;
+  opacity: calc(0.52 + var(--voice-energy) * 0.28);
+}
+
+.contour {
+  fill: none;
+  stroke: color-mix(in srgb, var(--presence-b) 34%, transparent);
+  stroke-width: 0.8;
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: calc(0.28 + var(--voice-energy) * 0.32);
+}
+
+.outer { transform: scale(1.18); }
+.middle { transform: scale(1.09); }
+
+.ribbon {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.primary {
+  stroke: rgba(255, 255, 255, 0.9);
+  stroke-width: calc(1.3px + var(--voice-energy) * 1.2px);
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.72));
+}
+
+.secondary {
+  stroke: color-mix(in srgb, var(--presence-a) 76%, white);
+  stroke-width: 1.1;
+  opacity: calc(0.48 + var(--voice-energy) * 0.35);
+}

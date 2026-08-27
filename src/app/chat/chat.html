@@ -337,11 +337,11 @@
                 [attr.aria-label]="realtimeVoicePanelTitle()"
               >
                 <span class="voice-presence__aura" aria-hidden="true"></span>
-                <span class="voice-presence__contour voice-presence__contour--outer" aria-hidden="true"></span>
-                <span class="voice-presence__contour voice-presence__contour--middle" aria-hidden="true"></span>
-                <span class="voice-presence__contour voice-presence__contour--inner" aria-hidden="true"></span>
 
                 @if (realtimeVoicePortraitUrl(); as portraitUrl) {
+                  <span class="voice-presence__contour voice-presence__contour--outer" aria-hidden="true"></span>
+                  <span class="voice-presence__contour voice-presence__contour--middle" aria-hidden="true"></span>
+                  <span class="voice-presence__contour voice-presence__contour--inner" aria-hidden="true"></span>
                   <span class="voice-presence__portrait-frame">
                     <img
                       [src]="portraitUrl"
@@ -350,7 +350,12 @@
                     />
                   </span>
                 } @else {
-                  <span class="voice-presence__body" aria-hidden="true"></span>
+                  @defer (on immediate) {
+                    <app-voice-fluid-visual
+                      [energy]="realtimeVoiceEnergyLevel()"
+                      [speaking]="realtimeVoiceMode() === 'speaking'"
+                    ></app-voice-fluid-visual>
+                  }
                 }
 
                 <span class="voice-presence__trace" aria-hidden="true">

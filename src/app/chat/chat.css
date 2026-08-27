@@ -1380,7 +1380,6 @@
 
 .voice-presence__aura,
 .voice-presence__contour,
-.voice-presence__body,
 .voice-presence__portrait-frame {
   position: absolute;
   left: 50%;
@@ -1430,52 +1429,6 @@
   border-radius: 42% 58% 48% 52% / 55% 44% 56% 45%;
   transform: translate(-50%, -50%) scale(calc(0.95 + var(--voice-energy) * 0.08));
   animation-delay: -3.7s;
-}
-
-.voice-presence__body {
-  width: 76%;
-  height: 67%;
-  border-radius: 46% 54% 42% 58% / 50% 41% 59% 50%;
-  overflow: hidden;
-  background:
-    radial-gradient(circle at 30% 24%, rgba(255, 255, 255, 0.92), transparent 22%),
-    linear-gradient(135deg, var(--presence-a), var(--presence-b) 48%, var(--presence-c));
-  box-shadow:
-    inset 14px 18px 35px rgba(255, 255, 255, 0.45),
-    inset -18px -20px 38px color-mix(in srgb, var(--presence-c) 42%, transparent),
-    0 20px 50px -28px color-mix(in srgb, var(--presence-c) 65%, transparent);
-  transform: translate(-50%, -50%) scale(calc(0.96 + var(--voice-energy) * 0.14));
-  transition: transform 70ms linear;
-  animation: voice-body-morph 4.6s ease-in-out infinite alternate;
-}
-
-.voice-presence__body::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: repeating-radial-gradient(
-    ellipse at 52% 48%,
-    rgba(255, 255, 255, 0.26) 0 1px,
-    transparent 1px 5px
-  );
-  opacity: 0.6;
-  mix-blend-mode: soft-light;
-}
-
-.voice-presence__body::before {
-  content: '';
-  position: absolute;
-  z-index: 2;
-  left: -5%;
-  top: 36%;
-  width: 110%;
-  height: 34%;
-  border-block: 1.5px solid rgba(255, 255, 255, 0.72);
-  border-radius: 50%;
-  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.6));
-  opacity: calc(0.62 + var(--voice-energy) * 0.3);
-  transform: skewY(-6deg) scaleY(calc(0.7 + var(--voice-energy) * 0.5));
 }
 
 .voice-presence__portrait-frame {
@@ -1701,12 +1654,6 @@
   100% { border-radius: 43% 57% 49% 51% / 58% 46% 54% 42%; }
 }
 
-@keyframes voice-body-morph {
-  0% { border-radius: 46% 54% 42% 58% / 50% 41% 59% 50%; }
-  50% { border-radius: 54% 46% 57% 43% / 43% 55% 45% 57%; }
-  100% { border-radius: 43% 57% 48% 52% / 58% 46% 54% 42%; }
-}
-
 @keyframes voice-connecting-pulse {
   0%, 100% { opacity: 0.28; }
   50% { opacity: 0.72; }
@@ -1757,7 +1704,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .voice-presence__contour,
-  .voice-presence__body,
   .voice-presence--connecting .voice-presence__aura,
   .voice-presence--connecting .voice-presence__contour--outer {
     animation: none;

@@ -1,0 +1,22 @@
+<svg viewBox="0 0 320 220" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="voice-fluid-gradient" x1="0%" y1="5%" x2="100%" y2="95%">
+      <stop class="stop-a" offset="0%"></stop>
+      <stop class="stop-b" offset="50%"></stop>
+      <stop class="stop-c" offset="100%"></stop>
+    </linearGradient>
+    <radialGradient id="voice-fluid-sheen" cx="32%" cy="24%" r="72%">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0.94"></stop>
+      <stop offset="24%" stop-color="#fff" stop-opacity="0.3"></stop>
+      <stop offset="72%" stop-color="#fff" stop-opacity="0"></stop>
+    </radialGradient>
+  </defs>
+  <path class="glow" [attr.d]="fluidPath()"></path>
+  <path class="contour outer" [attr.d]="fluidPath()"></path>
+  <path class="contour middle" [attr.d]="fluidPath()"></path>
+  <path class="shape" [attr.d]="fluidPath()"></path>
+  <path class="texture" [attr.d]="fluidPath()"></path>
+  <path class="sheen" [attr.d]="fluidPath()"></path>
+  <path class="ribbon secondary" [attr.d]="secondaryRibbonPath()"></path>
+  <path class="ribbon primary" [attr.d]="ribbonPath()"></path>
+</svg>
