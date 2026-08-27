@@ -1894,6 +1894,8 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly wizardListingPreview = signal<BoardWizardListingPreview | null>(null);
   readonly wizardListingMarketingStyle = signal<BoardWizardListingMarketingStyle>('warm');
   readonly wizardListingMarketingDirection = signal('');
+  readonly wizardListingSceneMin = 5;
+  readonly wizardListingSceneMax = 16;
   readonly wizardListingMarketingStyles: ReadonlyArray<{
     id: BoardWizardListingMarketingStyle;
     label: string;
@@ -4863,7 +4865,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         this.wizardListingPreview.set(this.normalizeWizardListingPreview(data['listingPreview'], sourceUrl));
         this.wizardSourceManifest.set(null);
         this.wizardSourceConfirmedUrl.set('');
-        if (this.wizardCountMode() === 'auto') this.setWizardCount(12, false);
+        if (this.wizardCountMode() === 'auto') {
+          this.setWizardListingSceneCount(10, false);
+        } else {
+          this.setWizardListingSceneCount(this.wizardCount(), false);
+        }
         this.wizardStep.set('listing-setup');
         this.wizardLoadingTask.set(null);
         return true;
@@ -4907,6 +4913,16 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     if (!sourceUrl || !this.wizardListingPreview()) return;
     this.wizardSourceConfirmedUrl.set(sourceUrl);
     await this.generateWizardBatch('', true);
+  }
+
+  setWizardListingSceneCount(value: string | number, userInitiated = true): void {
+    const parsed = typeof value === 'number' ? value : Number.parseInt(value, 10);
+    const fallback = Math.min(this.wizardListingSceneMax, Math.max(this.wizardListingSceneMin, this.wizardCount()));
+    const bounded = Math.min(
+      this.wizardListingSceneMax,
+      Math.max(this.wizardListingSceneMin, Number.isFinite(parsed) ? parsed : fallback),
+    );
+    this.setWizardCount(bounded, userInitiated);
   }
 
   async rereadWizardSource(): Promise<void> {

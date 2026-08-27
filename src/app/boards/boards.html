@@ -4549,6 +4549,7 @@
         [class.boards-modal--nearby-gems]="wizardMode() === 'nearby-gems' && wizardStep() === 'configure'"
         [class.boards-modal--wizard-choose]="wizardStep() === 'choose'"
         [class.boards-modal--wizard-configure]="wizardStep() === 'configure' && wizardMode() === 'describe'"
+        [class.boards-modal--wizard-listing]="wizardStep() === 'listing-setup'"
         role="dialog"
         aria-modal="true"
         [attr.aria-labelledby]="wizardMode() === 'nearby-gems' && wizardStep() === 'configure' ? 'nearby-gems-modal-title' : 'board-wizard-modal-title'"
@@ -4566,6 +4567,8 @@
             } @else if (wizardStep() === 'configure' && wizardMode() === 'describe' && !wizardLockedTargetBoard()) {
               <h3 id="board-wizard-modal-title">Describe your board</h3>
               <span class="boards-wizard-modal__subtitle">Tell us what you want. You can review every card before saving.</span>
+            } @else if (wizardStep() === 'listing-setup') {
+              <h3 id="board-wizard-modal-title">Shape the listing story</h3>
             } @else {
               <h3 id="board-wizard-modal-title">{{ wizardStep() === 'choose' ? (wizardLockedTargetBoard() ? 'Choose how to add cards' : 'Choose how to start') : wizardModeLabel() }}</h3>
             }
@@ -5835,31 +5838,57 @@
               </section>
 
               <section>
-                <span class="boards-wizard-label">Story approach</span>
+                <span class="boards-wizard-label">Choose a story approach</span>
                 <div class="boards-listing-story-styles" role="radiogroup" aria-label="Listing story approach">
                   @for (style of wizardListingMarketingStyles; track style.id) {
                     <button
                       type="button"
+                      class="boards-listing-story-style"
                       role="radio"
                       [attr.aria-checked]="wizardListingMarketingStyle() === style.id"
                       [class.boards-listing-story-style--active]="wizardListingMarketingStyle() === style.id"
                       (click)="wizardListingMarketingStyle.set(style.id)"
                     >
-                      <span class="material-symbols-outlined">{{ style.icon }}</span>
-                      <span><strong>{{ style.label }}</strong><small>{{ style.description }}</small></span>
+                      <span class="boards-listing-story-style__radio" aria-hidden="true"></span>
+                      <span class="boards-listing-story-style__icon material-symbols-outlined">{{ style.icon }}</span>
+                      <span class="boards-listing-story-style__copy"><strong>{{ style.label }}</strong><small>{{ style.description }}</small></span>
                     </button>
                   }
                 </div>
               </section>
 
               <div class="boards-listing-story-controls">
-                <label>
-                  <span>Story scenes</span>
-                  <input type="number" min="4" max="24" [value]="wizardCount()" (input)="setWizardCount($any($event.target).value)" />
-                  <small>The original gallery remains attached to the opening card.</small>
-                </label>
-                <label>
-                  <span>What should the story emphasize? <small>Optional</small></span>
+                <section class="boards-listing-story-control-panel" aria-labelledby="listing-story-scenes-label">
+                  <div class="boards-listing-story-control-label">
+                    <strong id="listing-story-scenes-label">Story scenes</strong>
+                    <small>Recommended: 8–12</small>
+                  </div>
+                  <div class="boards-listing-story-stepper">
+                    <button
+                      type="button"
+                      aria-label="Use one fewer story scene"
+                      [disabled]="wizardCount() <= wizardListingSceneMin"
+                      (click)="setWizardListingSceneCount(wizardCount() - 1)"
+                    >
+                      <span class="material-symbols-outlined">remove</span>
+                    </button>
+                    <output aria-live="polite">{{ wizardCount() }} scenes</output>
+                    <button
+                      type="button"
+                      aria-label="Use one more story scene"
+                      [disabled]="wizardCount() >= wizardListingSceneMax"
+                      (click)="setWizardListingSceneCount(wizardCount() + 1)"
+                    >
+                      <span class="material-symbols-outlined">add</span>
+                    </button>
+                  </div>
+                  <small class="boards-listing-story-helper">All {{ listing.imageCount || 'source' }} photos remain available on the opening card.</small>
+                </section>
+                <label class="boards-listing-story-control-panel boards-listing-story-direction">
+                  <span class="boards-listing-story-control-label">
+                    <strong>What should the story emphasize?</strong>
+                    <small>Optional</small>
+                  </span>
                   <textarea
                     rows="3"
                     maxlength="500"
@@ -5874,11 +5903,12 @@
                 <section class="boards-listing-story-attribution">
                   <span class="material-symbols-outlined">verified</span>
                   <div>
-                    <strong>Attribution retained</strong>
+                    <strong>Listing attribution will be retained</strong>
                     <small>
                       @if (listing.contactName) { {{ listing.contactRole || 'Site contact' }}: {{ listing.contactName }} }
                       @if (listing.contactName && listing.brokerage) { · }
                       @if (listing.brokerage) { Listed by {{ listing.brokerage }} }
+                      · Source and contact details stay attached to the final story.
                     </small>
                   </div>
                 </section>
@@ -5888,7 +5918,7 @@
                 <button type="button" class="boards-ghost-action" (click)="backWizardStep()">Back</button>
                 <button type="button" class="boards-primary-action" (click)="confirmWizardListingStory()">
                   <span class="material-symbols-outlined">auto_awesome</span>
-                  Build the listing story
+                  Build {{ wizardCount() }}-scene story
                 </button>
               </div>
             </div>
