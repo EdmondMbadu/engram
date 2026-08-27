@@ -4,6 +4,7 @@ import {
   combineStackVideoMediaStream,
   generateStackTrailer,
   generateStackVideo,
+  normalizeStackVideoBranding,
   normalizeStackVideoClosingScreen,
   preferredRecorderMimeType,
   publishedStackVideoStoragePath,
@@ -27,7 +28,17 @@ describe('Stack video card images', () => {
   });
 
   it('marks the subject-safe landscape layout as a new trailer render', () => {
-    expect(STACK_TRAILER_RENDER_VERSION).toBe('board-trailer-v3');
+    expect(STACK_TRAILER_RENDER_VERSION).toBe('board-trailer-v4');
+  });
+
+  it('normalizes video branding without changing legacy board defaults', () => {
+    expect(normalizeStackVideoBranding(undefined)).toEqual({ mode: 'livingwiki', logoUrl: '' });
+    expect(normalizeStackVideoBranding({ mode: 'none', logoUrl: 'https://example.com/retained.png' }))
+      .toEqual({ mode: 'none', logoUrl: '' });
+    expect(normalizeStackVideoBranding({ mode: 'custom', logoUrl: ' https://example.com/logo.png ' }))
+      .toEqual({ mode: 'custom', logoUrl: 'https://example.com/logo.png' });
+    expect(normalizeStackVideoBranding({ mode: 'custom', logoUrl: '' }))
+      .toEqual({ mode: 'livingwiki', logoUrl: '' });
   });
 
   it('publishes each video do-over at a distinct cache-safe URL', () => {
@@ -103,7 +114,8 @@ describe('Stack video card images', () => {
     expect(stackVideoRenderIsCurrent('stack-video-v12')).toBeFalse();
     expect(stackVideoRenderIsCurrent('stack-video-v13')).toBeFalse();
     expect(stackVideoRenderIsCurrent('stack-video-v14')).toBeFalse();
-    expect(stackVideoRenderIsCurrent('stack-video-v15')).toBeTrue();
+    expect(stackVideoRenderIsCurrent('stack-video-v15')).toBeFalse();
+    expect(stackVideoRenderIsCurrent('stack-video-v16')).toBeTrue();
   });
 
   it('contains portrait artwork without cropping it in a landscape image panel', () => {

@@ -211,12 +211,14 @@ import {
 import {
   generateStackTrailer,
   generateStackVideo,
+  normalizeStackVideoBranding,
   normalizeStackVideoClosingScreen,
   publishedStackVideoStoragePath,
   STACK_TRAILER_RENDER_VERSION,
   STACK_VIDEO_RENDER_VERSION,
   stackVideoRenderIsCurrent,
   type StackVideoBackgroundAudio,
+  type StackVideoBrandingMode,
   type StackVideoNarration,
   type StackVideoResult,
   type StackTrailerNarration,
@@ -2002,6 +2004,14 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly stackFinalScreenOriginalSnapshot = signal('');
   readonly stackFinalScreenSaving = signal(false);
   readonly stackFinalScreenError = signal<string | null>(null);
+  readonly stackVideoBrandingMode = signal<StackVideoBrandingMode>('livingwiki');
+  readonly stackVideoBrandingLogoUrl = signal('');
+  readonly stackVideoBrandingSaving = signal(false);
+  readonly stackVideoBrandingUploading = signal(false);
+  readonly stackVideoBrandingLoading = signal(false);
+  readonly stackVideoBrandingUpdatedAt = signal('');
+  readonly stackVideoBrandingError = signal<string | null>(null);
+  readonly stackVideoBrandingUpgradeOpen = signal(false);
   readonly personalNarratorVoice = signal<PersonalNarratorVoice | null>(null);
   readonly personalVoiceLoading = signal(false);
   readonly personalVoiceServerEligible = signal<boolean | null>(null);
@@ -2778,6 +2788,16 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.personalVoiceServerEligible()
       ?? (this.authService.isAdmin() || this.authService.hasActivePersonalWikiPlan()),
   );
+  readonly videoBrandingEligible = computed(() =>
+    this.authService.isAdmin() || this.authService.hasActivePersonalWikiPlan(),
+  );
+  readonly stackVideoBrandingSummary = computed(() => {
+    const mode = this.stackVideoBrandingMode();
+    if (!this.videoBrandingEligible() && mode !== 'livingwiki') return 'LivingWiki logo · membership required to change';
+    if (mode === 'none') return 'No corner logo';
+    if (mode === 'custom') return 'Your logo';
+    return 'LivingWiki logo';
+  });
   readonly personalVoiceReady = computed(() => !!this.personalNarratorVoice());
   readonly personalVoiceFileLabel = computed(() => {
     const file = this.personalVoiceFile();
@@ -13745,6 +13765,126 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  async selectStackVideoBranding(board: Board, mode: StackVideoBrandingMode): Promise<void> {
+    if (this.stackVideoExporting() || this.stackVideoBrandingSaving() || this.stackVideoBrandingUploading()) return;
+    if (mode !== 'livingwiki' && !this.videoBrandingEligible()) {
+      this.stackVideoBrandingUpgradeOpen.set(true);
+      this.stackVideoBrandingError.set(null);
+      return;
+    }
+    if (mode === 'custom' && !this.stackVideoBrandingLogoUrl()) {
+      this.stackVideoBrandingMode.set('custom');
+      this.stackVideoBrandingError.set(null);
+      return;
+    }
+    await this.saveStackVideoBranding(board, mode, this.stackVideoBrandingLogoUrl());
+  }
+
+  async useBoardLogoForStackVideo(board: Board): Promise<void> {
+    if (!board.logoUrl) return;
+    if (!this.videoBrandingEligible()) {
+      this.stackVideoBrandingUpgradeOpen.set(true);
+      return;
+    }
+    this.stackVideoBrandingMode.set('custom');
+    this.stackVideoBrandingLogoUrl.set(board.logoUrl);
+    await this.saveStackVideoBranding(board, 'custom', board.logoUrl);
+  }
+
+  async onStackVideoBrandingLogoSelected(board: Board, event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    input.value = '';
+    if (!file || this.stackVideoBrandingUploading() || this.stackVideoBrandingSaving()) return;
+    if (!this.videoBrandingEligible()) {
+      this.stackVideoBrandingUpgradeOpen.set(true);
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      this.stackVideoBrandingError.set('Choose a logo smaller than 10 MB.');
+      return;
+    }
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+      this.stackVideoBrandingError.set('Choose a PNG, WebP, or JPG logo.');
+      return;
+    }
+    this.stackVideoBrandingUploading.set(true);
+    this.stackVideoBrandingError.set(null);
+    try {
+      const logoUrl = await this.readVideoBrandingLogoFile(file);
+      this.stackVideoBrandingMode.set('custom');
+      this.stackVideoBrandingLogoUrl.set(logoUrl);
+      await this.saveStackVideoBranding(board, 'custom', logoUrl);
+    } catch (error) {
+      this.stackVideoBrandingError.set(error instanceof Error ? error.message : 'That logo could not be prepared.');
+    } finally {
+      this.stackVideoBrandingUploading.set(false);
+    }
+  }
+
+  async clearStackVideoBrandingLogo(board: Board): Promise<void> {
+    if (!this.videoBrandingEligible() || this.stackVideoBrandingSaving()) return;
+    this.stackVideoBrandingLogoUrl.set('');
+    this.stackVideoBrandingMode.set('livingwiki');
+    await this.saveStackVideoBranding(board, 'livingwiki', '');
+  }
+
+  upgradeVideoBranding(): void {
+    this.stackVideoBrandingUpgradeOpen.set(false);
+    void this.router.navigate(['/pricing'], { queryParams: { feature: 'video-branding' } });
+  }
+
+  dismissVideoBrandingUpgrade(): void {
+    this.stackVideoBrandingUpgradeOpen.set(false);
+  }
+
+  private async saveStackVideoBranding(
+    board: Board,
+    mode: StackVideoBrandingMode,
+    logoUrl: string,
+  ): Promise<boolean> {
+    if (!this.canEditBoard(board) || this.stackVideoBrandingSaving()) return false;
+    if (mode !== 'livingwiki' && !this.videoBrandingEligible()) {
+      this.stackVideoBrandingUpgradeOpen.set(true);
+      return false;
+    }
+    const branding = normalizeStackVideoBranding({ mode, logoUrl });
+    if (mode === 'custom' && branding.mode !== 'custom') {
+      this.stackVideoBrandingError.set('Upload a logo before selecting Your logo.');
+      return false;
+    }
+    this.stackVideoBrandingSaving.set(true);
+    this.stackVideoBrandingError.set(null);
+    try {
+      const uid = this.authService.uid();
+      if (!this.firestore || !uid) throw new Error('Sign in to save video branding.');
+      const persistedLogoUrl = await this.persistImageIfNeeded(
+        logoUrl.trim(),
+        `users/${uid}/boards/${board.id}/social/branding/logo.png`,
+      );
+      const updatedAt = new Date().toISOString();
+      await setDoc(doc(this.firestore, 'boards', board.id, 'video_settings', 'branding'), {
+        owner_user_id: uid,
+        mode: branding.mode,
+        logo_url: persistedLogoUrl,
+        updated_at_iso: updatedAt,
+        server_updated_at: serverTimestamp(),
+      });
+      this.stackVideoBrandingMode.set(branding.mode);
+      this.stackVideoBrandingLogoUrl.set(persistedLogoUrl);
+      this.stackVideoBrandingUpdatedAt.set(updatedAt);
+      this.stackVideoBrandingUpgradeOpen.set(false);
+      this.setStackShareMessage('Video branding saved. Update existing videos to apply it.', false);
+      return true;
+    } catch (error) {
+      this.stackVideoBrandingError.set(error instanceof Error ? error.message : 'Video branding could not be saved.');
+      void this.loadStackVideoBranding(board, true);
+      return false;
+    } finally {
+      this.stackVideoBrandingSaving.set(false);
+    }
+  }
+
   selectStackAudioTrack(board: Board, trackId: string): void {
     const normalizedTrackId = normalizeStackAudioTrackId(trackId);
     if (this.stackAudioTrackId() === normalizedTrackId) return;
@@ -14924,11 +15064,15 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     const videoTime = Date.parse(board.socialVideoUpdatedAt);
     const landscapeVideoTime = Date.parse(board.socialLandscapeVideoUpdatedAt);
     const boardTime = Date.parse(board.updatedAt);
+    const brandingTime = this.stackStudioBoardId() === board.id
+      ? Date.parse(this.stackVideoBrandingUpdatedAt())
+      : Number.NaN;
     return Number.isFinite(videoTime)
       && Number.isFinite(landscapeVideoTime)
       && Number.isFinite(boardTime)
       && videoTime >= boardTime
-      && landscapeVideoTime >= boardTime;
+      && landscapeVideoTime >= boardTime
+      && (!Number.isFinite(brandingTime) || (videoTime >= brandingTime && landscapeVideoTime >= brandingTime));
   }
 
   trailerVideoIsCurrent(board: Board): boolean {
@@ -14945,11 +15089,15 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     const videoTime = Date.parse(board.trailerVideoUpdatedAt);
     const landscapeVideoTime = Date.parse(board.trailerLandscapeVideoUpdatedAt);
     const boardTime = Date.parse(board.updatedAt);
+    const brandingTime = this.stackStudioBoardId() === board.id
+      ? Date.parse(this.stackVideoBrandingUpdatedAt())
+      : Number.NaN;
     return Number.isFinite(videoTime)
       && Number.isFinite(landscapeVideoTime)
       && Number.isFinite(boardTime)
       && videoTime >= boardTime
-      && landscapeVideoTime >= boardTime;
+      && landscapeVideoTime >= boardTime
+      && (!Number.isFinite(brandingTime) || (videoTime >= brandingTime && landscapeVideoTime >= brandingTime));
   }
 
   setStackSharePreviewRatio(ratio: StackDeliveryRatio): void {
@@ -15034,6 +15182,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
   async publishStackTrailer(board: Board): Promise<void> {
     if (!this.isBrowser || this.stackVideoExporting()) return;
+    if (this.stackVideoBrandingLoading() || this.stackVideoBrandingSaving() || this.stackVideoBrandingUploading()) {
+      this.setStackShareMessage('Wait for video branding to finish before creating the trailer.', false);
+      return;
+    }
     if (!this.canEditBoard(board)) {
       this.setStackShareMessage('Only the board owner can publish a Board Trailer.', false);
       return;
@@ -15204,6 +15356,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       liveUrl: this.stackShareUrl(board),
       qrImageUrl: '',
       showCardNumbers: this.boardShowsCardNumbers(board),
+      branding: this.effectiveStackVideoBranding(board),
       cards: cards.map((card) => ({
         title: card.title,
         subtitle: this.cardDisplaySubtitle(board, card),
@@ -15237,6 +15390,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
   async publishStackVideo(board: Board): Promise<void> {
     if (!this.isBrowser || this.stackVideoExporting()) return;
+    if (this.stackVideoBrandingLoading() || this.stackVideoBrandingSaving() || this.stackVideoBrandingUploading()) {
+      this.setStackShareMessage('Wait for video branding to finish before creating the video.', false);
+      return;
+    }
     if (!this.canEditBoard(board)) {
       this.setStackShareMessage('Only the board owner can publish a permanent video link.', false);
       return;
@@ -15508,6 +15665,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       liveUrl: this.stackShareUrl(board),
       qrImageUrl: this.stackQrImageUrl(board),
       showCardNumbers: this.boardShowsCardNumbers(board),
+      branding: this.effectiveStackVideoBranding(board),
       closingScreen: this.currentStackFinalScreen(board),
       cards: selectedCards.map((card) => ({
         title: this.stackScriptTitle(card),
@@ -15864,6 +16022,8 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.stackScriptError.set(null);
     this.stackScriptDiscardConfirmOpen.set(false);
     this.applyStackFinalScreenState(board);
+    this.resetStackVideoBrandingState();
+    void this.loadStackVideoBranding(board);
     this.stackCaption.set(`I made a LivingWiki Stack: ${board.title}. Explore the full board.`);
     this.stackFormat.set('reel');
     this.stackRatio.set('vertical');
@@ -15927,6 +16087,53 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.stackFinalScreenDurationSeconds.set(closing.durationSeconds);
     this.stackFinalScreenError.set(null);
     this.stackFinalScreenOriginalSnapshot.set(this.stackFinalScreenSnapshot());
+  }
+
+  private resetStackVideoBrandingState(): void {
+    this.stackVideoBrandingMode.set('livingwiki');
+    this.stackVideoBrandingLogoUrl.set('');
+    this.stackVideoBrandingUpdatedAt.set('');
+    this.stackVideoBrandingSaving.set(false);
+    this.stackVideoBrandingUploading.set(false);
+    this.stackVideoBrandingLoading.set(false);
+    this.stackVideoBrandingError.set(null);
+    this.stackVideoBrandingUpgradeOpen.set(false);
+  }
+
+  private async loadStackVideoBranding(board: Board, preserveError = false): Promise<void> {
+    if (!this.firestore || !this.authService.uid() || !this.canEditBoard(board)) return;
+    this.stackVideoBrandingLoading.set(true);
+    try {
+      const snapshot = await getDoc(doc(this.firestore, 'boards', board.id, 'video_settings', 'branding'));
+      if (this.stackStudioBoardId() !== board.id) return;
+      const data = snapshot.data();
+      const branding = normalizeStackVideoBranding({
+        mode: data?.['mode'] === 'none' || data?.['mode'] === 'custom' ? data['mode'] : 'livingwiki',
+        logoUrl: typeof data?.['logo_url'] === 'string' ? data['logo_url'] : '',
+      });
+      this.stackVideoBrandingMode.set(branding.mode);
+      this.stackVideoBrandingLogoUrl.set(typeof data?.['logo_url'] === 'string' ? data['logo_url'].trim() : '');
+      this.stackVideoBrandingUpdatedAt.set(typeof data?.['updated_at_iso'] === 'string' ? data['updated_at_iso'] : '');
+      if (!preserveError) this.stackVideoBrandingError.set(null);
+    } catch (error) {
+      if (this.stackStudioBoardId() === board.id && !preserveError) {
+        this.stackVideoBrandingError.set(error instanceof Error ? error.message : 'Video branding could not be loaded.');
+      }
+    } finally {
+      if (this.stackStudioBoardId() === board.id) this.stackVideoBrandingLoading.set(false);
+    }
+  }
+
+  private effectiveStackVideoBranding(_board: Board): ReturnType<typeof normalizeStackVideoBranding> {
+    if (!this.videoBrandingEligible()) return normalizeStackVideoBranding(null);
+    const branding = normalizeStackVideoBranding({
+      mode: this.stackVideoBrandingMode(),
+      logoUrl: this.stackVideoBrandingLogoUrl(),
+    });
+    if (this.stackVideoBrandingMode() === 'custom' && branding.mode !== 'custom') {
+      throw new Error('Upload a logo before creating a video with Your logo selected.');
+    }
+    return branding;
   }
 
   private stackCoverSnapshot(): string {
@@ -20632,7 +20839,32 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     return this.resizeImageDataUrl(dataUrl);
   }
 
-  private resizeImageDataUrl(dataUrl: string, maxSide = 1400, quality = 0.84): Promise<string> {
+  private async readVideoBrandingLogoFile(file: File): Promise<string> {
+    if (!this.isBrowser) throw new Error('Logo uploads are available in the browser.');
+    const dataUrl = await this.readBlobAsDataUrl(file);
+    await new Promise<void>((resolve, reject) => {
+      const image = new Image();
+      image.onload = () => {
+        const width = image.naturalWidth || image.width;
+        const height = image.naturalHeight || image.height;
+        if (Math.min(width, height) < 128) {
+          reject(new Error('Choose a logo that is at least 128 pixels on its shortest side.'));
+          return;
+        }
+        resolve();
+      };
+      image.onerror = () => reject(new Error('That logo image could not be decoded.'));
+      image.src = dataUrl;
+    });
+    return this.resizeImageDataUrl(dataUrl, 1800, 0.92, 'image/png');
+  }
+
+  private resizeImageDataUrl(
+    dataUrl: string,
+    maxSide = 1400,
+    quality = 0.84,
+    outputType: 'image/jpeg' | 'image/png' = 'image/jpeg',
+  ): Promise<string> {
     return new Promise((resolve, reject) => {
       const image = new Image();
       image.onload = () => {
@@ -20654,7 +20886,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         }
 
         context.drawImage(image, 0, 0, canvas.width, canvas.height);
-        resolve(canvas.toDataURL('image/jpeg', quality));
+        resolve(canvas.toDataURL(outputType, quality));
       };
       image.onerror = () => reject(new Error('Could not load that image.'));
       image.src = dataUrl;

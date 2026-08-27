@@ -641,6 +641,127 @@ test('owner can save a custom final-screen image', async () => {
   ));
 });
 
+test('video branding is limited to paid members and platform admins', async () => {
+  await testEnvironment.withSecurityRulesDisabled(async (context) => {
+    const database = context.firestore();
+    await setDoc(doc(database, 'boards', 'wizard-board-1'), personalWizardBoard({
+      server_updated_at: new Date('2026-08-12T00:00:00.000Z'),
+    }));
+    await setDoc(doc(database, 'users', 'platform-admin'), { role: 'admin' });
+    await setDoc(doc(database, 'boards', 'admin-board'), personalWizardBoard({
+      id: 'admin-board',
+      owner_user_id: 'platform-admin',
+      owner_public_slug: 'platform-admin',
+      server_updated_at: new Date('2026-08-12T00:00:00.000Z'),
+    }));
+  });
+  const freeDatabase = testEnvironment.authenticatedContext(ownerUid).firestore();
+  await assertSucceeds(setDoc(
+    doc(freeDatabase, 'boards', 'wizard-board-1', 'video_settings', 'branding'),
+    {
+      owner_user_id: ownerUid,
+      mode: 'livingwiki',
+      logo_url: '',
+      updated_at_iso: '2026-08-12T01:00:00.000Z',
+      server_updated_at: serverTimestamp(),
+    },
+  ));
+  await assertFails(setDoc(
+    doc(freeDatabase, 'boards', 'wizard-board-1', 'video_settings', 'branding'),
+    {
+      owner_user_id: ownerUid,
+      mode: 'none',
+      logo_url: '',
+      updated_at_iso: '2026-08-12T02:00:00.000Z',
+      server_updated_at: serverTimestamp(),
+    },
+  ));
+  await assertFails(setDoc(
+    doc(freeDatabase, 'boards', 'wizard-board-1', 'video_settings', 'branding'),
+    {
+      owner_user_id: ownerUid,
+      mode: 'custom',
+      logo_url: 'https://storage.googleapis.com/example/logo.png',
+      updated_at_iso: '2026-08-12T02:00:00.000Z',
+      server_updated_at: serverTimestamp(),
+    },
+  ));
+
+  await testEnvironment.withSecurityRulesDisabled(async (context) => {
+    await setDoc(doc(context.firestore(), 'users', ownerUid), {
+      role: 'member',
+      pricingPlan: 'creator',
+      subscriptionStatus: 'active',
+    });
+  });
+  const paidDatabase = testEnvironment.authenticatedContext(ownerUid).firestore();
+  await assertSucceeds(setDoc(
+    doc(paidDatabase, 'boards', 'wizard-board-1', 'video_settings', 'branding'),
+    {
+      owner_user_id: ownerUid,
+      mode: 'none',
+      logo_url: '',
+      updated_at_iso: '2026-08-12T03:00:00.000Z',
+      server_updated_at: serverTimestamp(),
+    },
+  ));
+  await assertSucceeds(setDoc(
+    doc(paidDatabase, 'boards', 'wizard-board-1', 'video_settings', 'branding'),
+    {
+      owner_user_id: ownerUid,
+      mode: 'custom',
+      logo_url: 'https://storage.googleapis.com/example/logo.png',
+      updated_at_iso: '2026-08-12T04:00:00.000Z',
+      server_updated_at: serverTimestamp(),
+    },
+  ));
+  const adminDatabase = testEnvironment.authenticatedContext('platform-admin').firestore();
+  await assertSucceeds(setDoc(
+    doc(adminDatabase, 'boards', 'admin-board', 'video_settings', 'branding'),
+    {
+      owner_user_id: 'platform-admin',
+      mode: 'none',
+      logo_url: '',
+      updated_at_iso: '2026-08-12T03:00:00.000Z',
+      server_updated_at: serverTimestamp(),
+    },
+  ));
+});
+
+test('custom video branding requires a supported mode and non-empty logo URL', async () => {
+  await testEnvironment.withSecurityRulesDisabled(async (context) => {
+    await setDoc(doc(context.firestore(), 'boards', 'wizard-board-1'), personalWizardBoard({
+      server_updated_at: new Date('2026-08-12T00:00:00.000Z'),
+    }));
+    await setDoc(doc(context.firestore(), 'users', ownerUid), {
+      role: 'member',
+      pricingPlan: 'creator',
+      subscriptionStatus: 'active',
+    });
+  });
+  const database = testEnvironment.authenticatedContext(ownerUid).firestore();
+  await assertFails(setDoc(
+    doc(database, 'boards', 'wizard-board-1', 'video_settings', 'branding'),
+    {
+      owner_user_id: ownerUid,
+      mode: 'custom',
+      logo_url: '',
+      updated_at_iso: '2026-08-12T01:00:00.000Z',
+      server_updated_at: serverTimestamp(),
+    },
+  ));
+  await assertFails(setDoc(
+    doc(database, 'boards', 'wizard-board-1', 'video_settings', 'branding'),
+    {
+      owner_user_id: ownerUid,
+      mode: 'sponsored',
+      logo_url: '',
+      updated_at_iso: '2026-08-12T01:00:00.000Z',
+      server_updated_at: serverTimestamp(),
+    },
+  ));
+});
+
 test('owner can update the Studio cover and final card together', async () => {
   await testEnvironment.withSecurityRulesDisabled(async (context) => {
     await setDoc(

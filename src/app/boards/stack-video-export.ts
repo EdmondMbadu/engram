@@ -18,8 +18,16 @@ export type StackVideoBoard = {
   liveUrl: string;
   qrImageUrl: string;
   showCardNumbers: boolean;
+  branding?: Partial<StackVideoBranding> | null;
   closingScreen?: Partial<StackVideoClosingScreen> | null;
   cards: StackVideoCard[];
+};
+
+export type StackVideoBrandingMode = 'livingwiki' | 'none' | 'custom';
+
+export type StackVideoBranding = {
+  mode: StackVideoBrandingMode;
+  logoUrl: string;
 };
 
 export type StackVideoClosingImage = 'cover' | 'final-card' | 'custom';
@@ -107,9 +115,23 @@ const DEFAULT_CLOSING_DURATION_SECONDS = 3;
 const NARRATION_LEAD_MS = 100;
 const NARRATION_TAIL_MS = 350;
 
-export const STACK_VIDEO_RENDER_VERSION = 'stack-video-v15';
-export const STACK_TRAILER_RENDER_VERSION = 'board-trailer-v3';
+export const STACK_VIDEO_RENDER_VERSION = 'stack-video-v16';
+export const STACK_TRAILER_RENDER_VERSION = 'board-trailer-v4';
 export const STACK_VIDEO_BRAND_URL = 'LivingWiki.com';
+
+const loadedBrandingImages = new WeakMap<StackVideoBoard, LoadedImage>();
+
+export function normalizeStackVideoBranding(
+  value: Partial<StackVideoBranding> | null | undefined,
+): StackVideoBranding {
+  const logoUrl = typeof value?.logoUrl === 'string' ? value.logoUrl.trim() : '';
+  const mode: StackVideoBrandingMode = value?.mode === 'none'
+    ? 'none'
+    : value?.mode === 'custom' && logoUrl
+      ? 'custom'
+      : 'livingwiki';
+  return { mode, logoUrl: mode === 'custom' ? logoUrl : '' };
+}
 
 export function publishedStackVideoStoragePath(
   uid: string,
@@ -319,6 +341,7 @@ export async function generateStackVideo(
   }
 
   const images = new Map<string, LoadedImage>();
+  const branding = normalizeStackVideoBranding(board.branding);
   const pendingImages = new Map<string, Promise<LoadedImage | null>>();
   const loadCachedImage = async (url: string): Promise<LoadedImage | null> => {
     if (!url) return null;
@@ -334,6 +357,7 @@ export async function generateStackVideo(
   await Promise.all([
     loadCachedImage(board.coverImageUrl),
     loadCachedImage(board.qrImageUrl),
+    loadCachedImage(branding.logoUrl),
     loadCachedImage(normalizeStackVideoClosingScreen(board.closingScreen).customImageUrl),
     ...board.cards.map(async (card) => {
       for (const imageUrl of stackVideoCardImageCandidates(card)) {
@@ -341,6 +365,14 @@ export async function generateStackVideo(
       }
     }),
   ]);
+  if (branding.mode === 'custom') {
+    const brandingImage = images.get(branding.logoUrl);
+    if (!brandingImage) {
+      for (const image of images.values()) image.close();
+      throw new Error('Your video logo could not be loaded. No video was created; replace it and try again.');
+    }
+    loadedBrandingImages.set(board, brandingImage);
+  }
 
   const frames: VideoFrame[] = [
     { kind: 'cover' },
@@ -393,6 +425,7 @@ export async function generateStackVideo(
     await stopRecorder(recorder);
     onProgress?.(1);
   } finally {
+    loadedBrandingImages.delete(board);
     for (const image of images.values()) image.close();
     for (const track of stream.getTracks()) track.stop();
     for (const track of canvasStream.getTracks()) track.stop();
@@ -442,6 +475,7 @@ export async function generateStackTrailer(
   if (!context) throw new Error('Could not prepare the video canvas.');
 
   const images = new Map<string, LoadedImage>();
+  const branding = normalizeStackVideoBranding(board.branding);
   const pendingImages = new Map<string, Promise<LoadedImage | null>>();
   const loadCachedImage = async (url: string): Promise<LoadedImage | null> => {
     if (!url) return null;
@@ -456,12 +490,21 @@ export async function generateStackTrailer(
   };
   await Promise.all([
     loadCachedImage(board.coverImageUrl),
+    loadCachedImage(branding.logoUrl),
     ...cards.map(async (card) => {
       for (const imageUrl of stackVideoCardImageCandidates(card)) {
         if (await loadCachedImage(imageUrl)) return;
       }
     }),
   ]);
+  if (branding.mode === 'custom') {
+    const brandingImage = images.get(branding.logoUrl);
+    if (!brandingImage) {
+      for (const image of images.values()) image.close();
+      throw new Error('Your video logo could not be loaded. No trailer was created; replace it and try again.');
+    }
+    loadedBrandingImages.set(board, brandingImage);
+  }
 
   const initialPlan = stackTrailerPlan(cards.length);
   const preparedAudio = hasAudio
@@ -507,6 +550,7 @@ export async function generateStackTrailer(
     await stopRecorder(recorder);
     onProgress?.(1);
   } finally {
+    loadedBrandingImages.delete(board);
     for (const image of images.values()) image.close();
     for (const track of stream.getTracks()) track.stop();
     for (const track of canvasStream.getTracks()) track.stop();
@@ -850,6 +894,7 @@ function renderFrame(
       context,
       width,
       height,
+      board,
       frame.card,
       firstLoadedCardImage(frame.card, images),
       progress,
@@ -900,6 +945,7 @@ function renderTrailerFrame(
       context,
       width,
       height,
+      board,
       cards[cardIndex],
       cardIndex,
       cards.length,
@@ -932,7 +978,7 @@ function drawTrailerCoverFrame(
   }
   if (image) drawCoverImage(context, image, width, height, 1.04 + progress * 0.035);
   drawShade(context, width, height, image ? 0.88 : 0.4);
-  drawBrandPill(context, width, height);
+  drawBrandPill(context, width, height, board);
   const padding = width * 0.075;
   const reveal = easeOut(Math.min(1, progress * 3.2));
   context.save();
@@ -956,6 +1002,7 @@ function drawTrailerCardFrame(
   context: CanvasRenderingContext2D,
   width: number,
   height: number,
+  board: StackVideoBoard,
   card: StackVideoCard,
   cardIndex: number,
   cardCount: number,
@@ -963,12 +1010,12 @@ function drawTrailerCardFrame(
   progress: number,
 ): void {
   if (isLandscapeFrame(width, height)) {
-    drawLandscapeCardFrame(context, width, height, card, image, progress, cardIndex, cardCount);
+    drawLandscapeCardFrame(context, width, height, board, card, image, progress, cardIndex, cardCount);
     return;
   }
   if (image) drawCoverImage(context, image, width, height, 1.06 + progress * 0.045);
   drawShade(context, width, height, image ? 0.82 : 0.36);
-  drawBrandPill(context, width, height);
+  drawBrandPill(context, width, height, board);
   const padding = width * 0.075;
   const reveal = easeOut(Math.min(1, progress * 4));
   context.save();
@@ -1176,7 +1223,7 @@ function drawCoverFrame(
   }
   if (image) drawCoverImage(context, image, width, height, 1.03 + progress * 0.025);
   drawShade(context, width, height, image ? 0.82 : 0.34);
-  drawBrandPill(context, width, height);
+  drawBrandPill(context, width, height, board);
   const padding = width * 0.075;
   const bottom = height * 0.16;
   const reveal = easeOut(Math.min(1, progress * 2.8));
@@ -1201,17 +1248,18 @@ function drawCardFrame(
   context: CanvasRenderingContext2D,
   width: number,
   height: number,
+  board: StackVideoBoard,
   card: StackVideoCard,
   image: LoadedImage | undefined,
   progress: number,
 ): void {
   if (isLandscapeFrame(width, height)) {
-    drawLandscapeCardFrame(context, width, height, card, image, progress);
+    drawLandscapeCardFrame(context, width, height, board, card, image, progress);
     return;
   }
   if (image) drawCoverImage(context, image, width, height, 1.02 + progress * 0.03);
   drawShade(context, width, height, image ? 0.86 : 0.38);
-  drawBrandPill(context, width, height);
+  drawBrandPill(context, width, height, board);
   const padding = width * 0.075;
   const reveal = easeOut(Math.min(1, progress * 3));
   context.save();
@@ -1240,6 +1288,8 @@ function drawClosingFrame(
   }
   if (image) drawCoverImage(context, image, width, height, 1.03 + progress * 0.025);
   drawShade(context, width, height, image ? 0.9 : 0.4);
+  const branding = normalizeStackVideoBranding(board.branding);
+  if (branding.mode === 'custom') drawBrandPill(context, width, height, board);
   const reveal = easeOut(Math.min(1, progress * 2.5));
   context.save();
   context.globalAlpha = reveal;
@@ -1260,12 +1310,14 @@ function drawClosingFrame(
     context.fill();
     context.drawImage(qrImage.source, x, y, qrSize, qrSize);
   }
-  context.fillStyle = 'rgba(255,255,255,.76)';
-  context.font = `750 ${Math.round(width * 0.028)}px Inter, Arial, sans-serif`;
-  context.fillText('Made with LivingWiki', width / 2, height * 0.89);
-  context.fillStyle = '#ffffff';
-  context.font = `900 ${Math.round(width * 0.027)}px Inter, Arial, sans-serif`;
-  context.fillText(STACK_VIDEO_BRAND_URL, width / 2, height * 0.93);
+  if (branding.mode === 'livingwiki') {
+    context.fillStyle = 'rgba(255,255,255,.76)';
+    context.font = `750 ${Math.round(width * 0.028)}px Inter, Arial, sans-serif`;
+    context.fillText('Made with LivingWiki', width / 2, height * 0.89);
+    context.fillStyle = '#ffffff';
+    context.font = `900 ${Math.round(width * 0.027)}px Inter, Arial, sans-serif`;
+    context.fillText(STACK_VIDEO_BRAND_URL, width / 2, height * 0.93);
+  }
   context.restore();
 }
 
@@ -1280,7 +1332,7 @@ function drawLandscapeCoverFrame(
 ): void {
   const layout = stackVideoLandscapeLayout(width, height);
   drawLandscapeImageScene(context, width, height, layout.image, image);
-  drawLandscapeBrandPill(context, layout.content, height);
+  drawLandscapeBrandPill(context, layout.content, height, board);
   const reveal = easeOut(Math.min(1, progress * (trailer ? 3.2 : 2.8)));
   context.save();
   context.globalAlpha = reveal;
@@ -1333,6 +1385,7 @@ function drawLandscapeCardFrame(
   context: CanvasRenderingContext2D,
   width: number,
   height: number,
+  board: StackVideoBoard,
   card: StackVideoCard,
   image: LoadedImage | undefined,
   progress: number,
@@ -1341,7 +1394,7 @@ function drawLandscapeCardFrame(
 ): void {
   const layout = stackVideoLandscapeLayout(width, height);
   drawLandscapeImageScene(context, width, height, layout.image, image);
-  drawLandscapeBrandPill(context, layout.content, height);
+  drawLandscapeBrandPill(context, layout.content, height, board);
   const reveal = easeOut(Math.min(1, progress * 3.5));
   context.save();
   context.globalAlpha = reveal;
@@ -1382,7 +1435,7 @@ function drawLandscapeClosingFrame(
 ): void {
   const layout = stackVideoLandscapeLayout(width, height);
   drawLandscapeImageScene(context, width, height, layout.image, image);
-  drawLandscapeBrandPill(context, layout.content, height);
+  drawLandscapeBrandPill(context, layout.content, height, board);
   const reveal = easeOut(Math.min(1, progress * 2.5));
   context.save();
   context.globalAlpha = reveal;
@@ -1418,12 +1471,14 @@ function drawLandscapeClosingFrame(
     context.fill();
     context.drawImage(qrImage.source, x, y, qrSize, qrSize);
   }
-  context.fillStyle = 'rgba(255,255,255,.7)';
-  context.font = `750 ${Math.round(height * 0.025)}px Inter, Arial, sans-serif`;
-  context.fillText('Made with LivingWiki', layout.content.x, layout.content.y + layout.content.height - height * 0.07);
-  context.fillStyle = '#ffffff';
-  context.font = `900 ${Math.round(height * 0.026)}px Inter, Arial, sans-serif`;
-  context.fillText(STACK_VIDEO_BRAND_URL, layout.content.x, layout.content.y + layout.content.height - height * 0.03);
+  if (normalizeStackVideoBranding(board.branding).mode === 'livingwiki') {
+    context.fillStyle = 'rgba(255,255,255,.7)';
+    context.font = `750 ${Math.round(height * 0.025)}px Inter, Arial, sans-serif`;
+    context.fillText('Made with LivingWiki', layout.content.x, layout.content.y + layout.content.height - height * 0.07);
+    context.fillStyle = '#ffffff';
+    context.font = `900 ${Math.round(height * 0.026)}px Inter, Arial, sans-serif`;
+    context.fillText(STACK_VIDEO_BRAND_URL, layout.content.x, layout.content.y + layout.content.height - height * 0.03);
+  }
   context.restore();
 }
 
@@ -1576,7 +1631,10 @@ function drawLandscapeBrandPill(
   context: CanvasRenderingContext2D,
   contentRect: StackVideoRect,
   height: number,
+  board: StackVideoBoard,
 ): void {
+  const branding = normalizeStackVideoBranding(board.branding);
+  if (branding.mode === 'none') return;
   const pillHeight = height * 0.062;
   const pillWidth = Math.min(contentRect.width, height * 0.31);
   roundedRect(context, contentRect.x, contentRect.y, pillWidth, pillHeight, pillHeight / 2);
@@ -1585,19 +1643,38 @@ function drawLandscapeBrandPill(
   context.strokeStyle = 'rgba(255,255,255,.4)';
   context.lineWidth = 2;
   context.stroke();
-  context.fillStyle = '#ffffff';
-  context.font = `900 ${Math.round(height * 0.027)}px Inter, Arial, sans-serif`;
-  context.textAlign = 'left';
-  context.textBaseline = 'middle';
-  context.fillText('◈  LivingWiki', contentRect.x + pillHeight * 0.34, contentRect.y + pillHeight / 2);
-  context.textBaseline = 'alphabetic';
+  const customLogo = branding.mode === 'custom' ? loadedBrandingImages.get(board) : undefined;
+  if (customLogo) {
+    const padding = pillHeight * 0.18;
+    const target = stackVideoContainRect(customLogo.width, customLogo.height, {
+      x: contentRect.x + padding,
+      y: contentRect.y + padding,
+      width: pillWidth - padding * 2,
+      height: pillHeight - padding * 2,
+    });
+    context.drawImage(customLogo.source, target.x, target.y, target.width, target.height);
+  } else {
+    context.fillStyle = '#ffffff';
+    context.font = `900 ${Math.round(height * 0.027)}px Inter, Arial, sans-serif`;
+    context.textAlign = 'left';
+    context.textBaseline = 'middle';
+    context.fillText('◈  LivingWiki', contentRect.x + pillHeight * 0.34, contentRect.y + pillHeight / 2);
+    context.textBaseline = 'alphabetic';
+  }
 }
 
 function isLandscapeFrame(width: number, height: number): boolean {
   return width / height >= 1.5;
 }
 
-function drawBrandPill(context: CanvasRenderingContext2D, width: number, height: number): void {
+function drawBrandPill(
+  context: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  board: StackVideoBoard,
+): void {
+  const branding = normalizeStackVideoBranding(board.branding);
+  if (branding.mode === 'none') return;
   const x = width * 0.065;
   const y = height * 0.055;
   const pillWidth = width * 0.31;
@@ -1608,12 +1685,24 @@ function drawBrandPill(context: CanvasRenderingContext2D, width: number, height:
   context.strokeStyle = 'rgba(255,255,255,.45)';
   context.lineWidth = 2;
   context.stroke();
-  context.fillStyle = '#ffffff';
-  context.font = `900 ${Math.round(width * 0.027)}px Inter, Arial, sans-serif`;
-  context.textAlign = 'left';
-  context.textBaseline = 'middle';
-  context.fillText('◈  LivingWiki', x + pillHeight * 0.35, y + pillHeight / 2);
-  context.textBaseline = 'alphabetic';
+  const customLogo = branding.mode === 'custom' ? loadedBrandingImages.get(board) : undefined;
+  if (customLogo) {
+    const padding = pillHeight * 0.18;
+    const target = stackVideoContainRect(customLogo.width, customLogo.height, {
+      x: x + padding,
+      y: y + padding,
+      width: pillWidth - padding * 2,
+      height: pillHeight - padding * 2,
+    });
+    context.drawImage(customLogo.source, target.x, target.y, target.width, target.height);
+  } else {
+    context.fillStyle = '#ffffff';
+    context.font = `900 ${Math.round(width * 0.027)}px Inter, Arial, sans-serif`;
+    context.textAlign = 'left';
+    context.textBaseline = 'middle';
+    context.fillText('◈  LivingWiki', x + pillHeight * 0.35, y + pillHeight / 2);
+    context.textBaseline = 'alphabetic';
+  }
 }
 
 function drawTimeline(

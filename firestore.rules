@@ -1625,6 +1625,42 @@ service cloud.firestore {
         && request.resource.data.server_updated_at == request.time;
       allow delete: if isSignedIn()
         && (resource.data.owner_user_id == request.auth.uid || isPlatformAdmin());
+
+      match /video_settings/{settingId} {
+        allow read: if isSignedIn()
+          && (
+            get(/databases/$(database)/documents/boards/$(boardId)).data.owner_user_id == request.auth.uid
+            || isPlatformAdmin()
+          );
+        allow create, update: if settingId == 'branding'
+          && isSignedIn()
+          && get(/databases/$(database)/documents/boards/$(boardId)).data.owner_user_id == request.auth.uid
+          && request.resource.data.owner_user_id == request.auth.uid
+          && request.resource.data.keys().hasOnly([
+            'owner_user_id',
+            'mode',
+            'logo_url',
+            'updated_at_iso',
+            'server_updated_at'
+          ])
+          && request.resource.data.mode in ['livingwiki', 'none', 'custom']
+          && request.resource.data.logo_url is string
+          && request.resource.data.logo_url.size() <= 2000
+          && (request.resource.data.mode != 'custom' || request.resource.data.logo_url.size() >= 1)
+          && (
+            request.resource.data.mode == 'livingwiki'
+            || isPlatformAdmin()
+            || hasActivePersonalWikiPlan()
+          )
+          && request.resource.data.updated_at_iso is string
+          && request.resource.data.updated_at_iso.size() <= 80
+          && request.resource.data.server_updated_at == request.time;
+        allow delete: if isSignedIn()
+          && (
+            get(/databases/$(database)/documents/boards/$(boardId)).data.owner_user_id == request.auth.uid
+            || isPlatformAdmin()
+          );
+      }
     }
 
     match /city_board_listings/{listingId} {

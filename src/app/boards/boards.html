@@ -8102,6 +8102,114 @@
                 </details>
               }
 
+              @if ((stackShareMode() === 'video' || stackShareMode() === 'trailer') && canEditBoard(board)) {
+                <details class="stack-video-branding">
+                  <summary>
+                    <span class="material-symbols-outlined">branding_watermark</span>
+                    <span>
+                      <strong>Video branding</strong>
+                      <small>{{ stackVideoBrandingSummary() }}</small>
+                    </span>
+                    <em [class.stack-video-branding__access--locked]="!videoBrandingEligible()">
+                      {{ videoBrandingEligible() ? (isPlatformAdmin() ? 'Admin access' : 'Included') : 'Member' }}
+                    </em>
+                    <span class="material-symbols-outlined stack-video-branding__chevron">expand_more</span>
+                  </summary>
+                  <div class="stack-video-branding__body">
+                    <div class="stack-video-branding__choices" role="radiogroup" aria-label="Logo shown on exported videos">
+                      <button
+                        type="button"
+                        role="radio"
+                        [attr.aria-checked]="stackVideoBrandingMode() === 'livingwiki'"
+                        [class.stack-video-branding__choice--active]="stackVideoBrandingMode() === 'livingwiki'"
+                        [disabled]="stackVideoExporting() || stackVideoBrandingLoading() || stackVideoBrandingSaving() || stackVideoBrandingUploading()"
+                        (click)="selectStackVideoBranding(board, 'livingwiki')"
+                      >
+                        <span class="stack-video-branding__mark">LW</span>
+                        <span><strong>LivingWiki</strong><small>Default</small></span>
+                        @if (stackVideoBrandingMode() === 'livingwiki') { <span class="material-symbols-outlined">check_circle</span> }
+                      </button>
+                      <button
+                        type="button"
+                        role="radio"
+                        [attr.aria-checked]="stackVideoBrandingMode() === 'none'"
+                        [class.stack-video-branding__choice--active]="stackVideoBrandingMode() === 'none'"
+                        [class.stack-video-branding__choice--locked]="!videoBrandingEligible()"
+                        [disabled]="stackVideoExporting() || stackVideoBrandingLoading() || stackVideoBrandingSaving() || stackVideoBrandingUploading()"
+                        (click)="selectStackVideoBranding(board, 'none')"
+                      >
+                        <span class="stack-video-branding__mark stack-video-branding__mark--empty"></span>
+                        <span><strong>No corner logo</strong><small>Clean export</small></span>
+                        <span class="material-symbols-outlined">{{ videoBrandingEligible() ? (stackVideoBrandingMode() === 'none' ? 'check_circle' : '') : 'lock' }}</span>
+                      </button>
+                      <button
+                        type="button"
+                        role="radio"
+                        [attr.aria-checked]="stackVideoBrandingMode() === 'custom'"
+                        [class.stack-video-branding__choice--active]="stackVideoBrandingMode() === 'custom'"
+                        [class.stack-video-branding__choice--locked]="!videoBrandingEligible()"
+                        [disabled]="stackVideoExporting() || stackVideoBrandingLoading() || stackVideoBrandingSaving() || stackVideoBrandingUploading()"
+                        (click)="selectStackVideoBranding(board, 'custom')"
+                      >
+                        <span class="stack-video-branding__mark material-symbols-outlined">image</span>
+                        <span><strong>Your logo</strong><small>Company or organization</small></span>
+                        <span class="material-symbols-outlined">{{ videoBrandingEligible() ? (stackVideoBrandingMode() === 'custom' ? 'check_circle' : '') : 'lock' }}</span>
+                      </button>
+                    </div>
+
+                    @if (videoBrandingEligible() && (stackVideoBrandingMode() === 'custom' || stackVideoBrandingLogoUrl())) {
+                      <div class="stack-video-branding__logo-row">
+                        <span class="stack-video-branding__preview">
+                          @if (stackVideoBrandingLogoUrl()) {
+                            <img [src]="stackVideoBrandingLogoUrl()" alt="Current video logo" />
+                          } @else {
+                            <span class="material-symbols-outlined">add_photo_alternate</span>
+                          }
+                        </span>
+                        <span class="stack-video-branding__logo-copy">
+                          <strong>{{ stackVideoBrandingLogoUrl() ? 'Your video logo' : 'Add your logo' }}</strong>
+                          <small>Transparent PNG or WebP works best.</small>
+                        </span>
+                        @if (board.logoUrl && board.logoUrl !== stackVideoBrandingLogoUrl()) {
+                          <button type="button" [disabled]="stackVideoBrandingSaving() || stackVideoBrandingUploading()" (click)="useBoardLogoForStackVideo(board)">Use board logo</button>
+                        }
+                        <label [class.stack-video-branding__upload--busy]="stackVideoBrandingUploading()">
+                          <span class="material-symbols-outlined">upload</span>
+                          {{ stackVideoBrandingUploading() ? 'Preparing…' : stackVideoBrandingLogoUrl() ? 'Replace logo' : 'Upload logo' }}
+                          <input
+                            type="file"
+                            accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
+                            [disabled]="stackVideoBrandingLoading() || stackVideoBrandingSaving() || stackVideoBrandingUploading() || stackVideoExporting()"
+                            (change)="onStackVideoBrandingLogoSelected(board, $event)"
+                          />
+                        </label>
+                        @if (stackVideoBrandingLogoUrl()) {
+                          <button type="button" class="stack-video-branding__remove" [disabled]="stackVideoBrandingSaving() || stackVideoBrandingUploading()" (click)="clearStackVideoBrandingLogo(board)">Remove</button>
+                        }
+                      </div>
+                    }
+
+                    @if (stackVideoBrandingUpgradeOpen()) {
+                      <div class="stack-video-branding__upgrade" role="status">
+                        <span class="material-symbols-outlined">workspace_premium</span>
+                        <span><strong>Make every video your own</strong><small>Removing LivingWiki branding or adding your logo is included with a paid membership.</small></span>
+                        <button type="button" (click)="upgradeVideoBranding()">View membership</button>
+                        <button type="button" class="stack-video-branding__upgrade-close" aria-label="Dismiss" (click)="dismissVideoBrandingUpgrade()"><span class="material-symbols-outlined">close</span></button>
+                      </div>
+                    }
+                    <div class="stack-video-branding__foot">
+                      <span>Applies to Trailer and Full video · Phone and Landscape.</span>
+                      <small>Changes the corner logo only. Final-screen links and QR codes still open this LivingWiki board.</small>
+                      @if (stackVideoBrandingLoading()) { <em aria-live="polite">Loading branding…</em> }
+                      @if (stackVideoBrandingSaving()) { <em aria-live="polite">Saving branding…</em> }
+                    </div>
+                    @if (stackVideoBrandingError()) {
+                      <small class="stack-video-branding__error" role="alert">{{ stackVideoBrandingError() }}</small>
+                    }
+                  </div>
+                </details>
+              }
+
               @if (stackShareMode() === 'trailer' && !board.trailerVideoUrl) {
                 <div class="stack-share-sheet__empty stack-share-sheet__empty--trailer">
                   <span class="stack-share-sheet__hero-icon material-symbols-outlined">movie_filter</span>
