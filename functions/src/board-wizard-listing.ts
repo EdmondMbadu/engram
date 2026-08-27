@@ -18,6 +18,27 @@ export type BoardWizardListingUnit = {
   price: string;
 };
 
+export type BoardWizardRealEstateDetails = {
+  mlsId: string;
+  listingStatus: string;
+  propertyType: string;
+  bedrooms: string;
+  bathrooms: string;
+  fullBathrooms: string;
+  halfBathrooms: string;
+  yearBuilt: string;
+  hoaFee: string;
+  taxes: string;
+  agentName: string;
+  agentRole: string;
+  agentProfileUrl: string;
+  agentImageUrl: string;
+  brokerage: string;
+  dataSource: string;
+  virtualTours: string[];
+  features: string[];
+};
+
 export type BoardWizardListingExtraction = {
   kind: BoardWizardListingKind;
   sourceUrl: string;
@@ -33,6 +54,7 @@ export type BoardWizardListingExtraction = {
   amenities: string[];
   images: BoardWizardListingImage[];
   units: BoardWizardListingUnit[];
+  realEstate: BoardWizardRealEstateDetails;
   latitude?: number;
   longitude?: number;
   confidence: number;
@@ -53,7 +75,7 @@ const LISTING_TYPES = new Map<string, BoardWizardListingKind>([
 ]);
 
 const VACATION_HOSTS = /(^|\.)(airbnb|vrbo|booking|expedia|agoda|hotels)\./i;
-const REAL_ESTATE_HOSTS = /(^|\.)(zillow|trulia|hotpads|realtor|redfin|apartments|homes|rent|zumper|apartmentlist)\./i;
+const REAL_ESTATE_HOSTS = /(^|\.)(zillow|trulia|hotpads|realtor|redfin|apartments|homes|rent|zumper|apartmentlist|exprealty)\./i;
 const HOTEL_HOSTS = /(^|\.)(marriott|hilton|hyatt|ihg|wyndham|choicehotels)\./i;
 const NOISE_MEDIA = /(logo|favicon|icon|avatar|profile|host[-_ ]?photo|review|rating|star|badge|tracking|pixel|sprite|search[-_ ]?bar|platform[-_ ]?assets|nearby|recommend|similar|map[-_ ]?pin|payment|social)/i;
 
@@ -77,12 +99,15 @@ export function extractBoardWizardListing(
     .map((node) => ({ node, ...classifyListingNode(node) }))
     .filter((candidate): candidate is { node: JsonRecord; kind: BoardWizardListingKind; score: number } => !!candidate.kind)
     .sort((a, b) => b.score - a.score);
-  const hostKind = listingKindFromUrl(inputUrl || baseUrl);
+  const boldTrailListing = isBoldTrailListingDocument(document);
+  const hostKind = listingKindFromUrl(inputUrl || baseUrl) || (boldTrailListing ? 'real-estate' : null);
   const primary = candidates[0];
 
   // A known host alone is not enough: search/category pages must not be converted
   // into a single property. Require listing semantics or a strong listing-page URL.
-  const kind = primary?.kind || (isStrongListingUrl(inputUrl || baseUrl) ? hostKind : null);
+  const kind = primary?.kind
+    || (isStrongListingUrl(inputUrl || baseUrl) ? hostKind : null)
+    || (boldTrailListing ? 'real-estate' : null);
   if (!kind) return null;
 
   const primaryNode = primary?.node || {};
@@ -105,16 +130,23 @@ export function extractBoardWizardListing(
     recordValue(primaryNode.publisher).name,
     hostnameLabel(baseUrl),
   );
-  const description = firstText(
+  const metadataDescription = firstText(
     primaryNode.description,
     nestedAbout.description,
     metaContent(document, 'name', 'description'),
     metaContent(document, 'property', 'og:description'),
   );
+  const description = kind === 'real-estate'
+    ? firstText(extractSectionText(document, 'Property Description'), metadataDescription)
+    : metadataDescription;
   const address = formatAddress(primaryNode.address)
     || formatAddress(nestedAbout.address)
-    || firstText(primaryNode.contentLocation, nestedAbout.contentLocation);
+    || firstText(primaryNode.contentLocation, nestedAbout.contentLocation)
+    || (kind === 'real-estate' && looksLikeStreetAddress(listingName) ? listingName : '');
   const pageText = cleanText(document.body?.textContent || '').slice(0, 80_000);
+  const realEstate = kind === 'real-estate'
+    ? extractRealEstateDetails(document, primaryNode, nestedAbout, pageText, baseUrl)
+    : emptyRealEstateDetails();
   const pageImages = extractListingImages({
     document,
     nodes: [primaryNode, nestedAbout, ...relatedNodes],
@@ -142,12 +174,19 @@ export function extractBoardWizardListing(
     description: cleanText(description).slice(0, 1200),
     address: cleanText(address).slice(0, 300),
     host: extractHost(primaryNode, pageText),
-    price: formatOfferPrice(offers),
+    price: normalizeCurrency(firstText(formatOfferPrice(offers), realEstateFieldPrice(document))),
     rating: firstText(aggregateRating.ratingValue, primaryNode.ratingValue),
-    facts: extractListingFacts(primaryNode, nestedAbout, pageText),
-    amenities: extractAmenities(primaryNode, nestedAbout, `${description} ${pageText}`),
+    facts: mergeTextValues(
+      realEstateFacts(realEstate),
+      extractListingFacts(primaryNode, nestedAbout, pageText),
+      16,
+    ),
+    amenities: boldTrailListing
+      ? extractBoldTrailAmenities(document)
+      : extractAmenities(primaryNode, nestedAbout, `${description} ${pageText}`),
     images,
     units: kind === 'real-estate' ? extractUnits(document, pageText) : [],
+    realEstate,
     latitude: finiteNumber(geo.latitude) ?? finiteNumber(primaryNode.latitude),
     longitude: finiteNumber(geo.longitude) ?? finiteNumber(primaryNode.longitude),
     confidence: primary ? (images.length ? 0.99 : 0.94) : (images.length ? 0.9 : 0.82),
@@ -183,7 +222,7 @@ export function extractBoardWizardListingFromMarkdown(
     /\bSee all media\b/i,
     /^#{1,6}\s+(?:Nearby|Similar|Other homes|Meet your host|Reviews|Things to know)\b/im,
   );
-  const listingRegion = markdown.slice(0, galleryBoundary > 0 ? galleryBoundary : Math.min(markdown.length, 30_000));
+  const listingRegion = markdown.slice(0, galleryBoundary > 0 ? galleryBoundary : Math.min(markdown.length, 80_000));
   const markdownImages = Array.from(listingRegion.matchAll(/!\[([^\]]*)\]\((https?:\/\/[^)\s]+)[^)]*\)/g))
     .map((match) => ({ alt: cleanText(match[1]), url: match[2] }));
   const candidateImages = markdownImages.filter((image) => {
@@ -195,13 +234,22 @@ export function extractBoardWizardListingFromMarkdown(
     if (kind === 'vacation-rental' && safeHostname(sourceUrl).includes('airbnb.')) {
       return /a\d\.muscache\.com\/im\/pictures\/(?:miso\/hosting|hosting|prohost-api)/i.test(image.url);
     }
+    if (kind === 'real-estate' && isBoldTrailPropertyUrl(sourceUrl)) {
+      return /listing thumbnail image\s*\d+/i.test(image.alt)
+        && isBoldTrailListingImageUrl(image.url);
+    }
     return /\.(?:jpe?g|png|webp)(?:[?#]|$)/i.test(image.url)
       && /property|home|house|room|suite|bedroom|kitchen|building|listing|photo|image/i.test(image.alt);
   });
-  const bestImages = bestMarkdownListingImages(candidateImages).slice(0, 12);
+  const bestImages = bestMarkdownListingImages(candidateImages).slice(0, BOARD_WIZARD_SOURCE_GALLERY_LIMIT);
   if (!bestImages.length) return null;
 
-  const specialDescription = markdownSection(markdown, /^(?:#{1,6}\s*)?What's special\s*$/im);
+  const specialDescription = markdownSection(
+    markdown,
+    kind === 'real-estate'
+      ? /^(?:#{1,6}\s*)?Property Description\s*$/im
+      : /^(?:#{1,6}\s*)?What's special\s*$/im,
+  );
   const fallbackDescription = markdown.match(/\b(?:For sale|For rent)[\s\S]{0,1200}/i)?.[0] || '';
   const description = markdownToPlainText(specialDescription || fallbackDescription).slice(0, 1200);
   const factsText = markdownToPlainText(markdown.slice(0, Math.min(markdown.length, 24_000)));
@@ -224,8 +272,17 @@ export function extractBoardWizardListingFromMarkdown(
   </head><body>${escapeHtml(factsText)}</body></html>`;
   const extraction = extractBoardWizardListing(sourceUrl, sourceUrl, syntheticHtml);
   if (!extraction) return null;
+  const markdownRealEstate = kind === 'real-estate'
+    ? extractRealEstateDetailsFromMarkdown(markdown, sourceUrl)
+    : extraction.realEstate;
   return {
     ...extraction,
+    price: normalizeCurrency(firstText(price, markdownLabeledValue(markdown, 'Price'), extraction.price)),
+    facts: mergeTextValues(realEstateFacts(markdownRealEstate), extraction.facts, 16),
+    amenities: kind === 'real-estate' && isBoldTrailPropertyUrl(sourceUrl)
+      ? boldTrailAmenitiesFromFeatures(markdownRealEstate.features)
+      : extraction.amenities,
+    realEstate: markdownRealEstate,
     images: bestImages.map((image) => ({
       url: image.url,
       alt: image.alt || `${listingName} listing photo`,
@@ -252,7 +309,7 @@ export function buildBoardWizardListingBatch(options: {
   const extractedAt = new Date().toISOString();
   const overview: GeneratedBoardWizardCard = {
     title: extraction.listingName.slice(0, 80),
-    subtitle: (extraction.address || extraction.siteName || kindLabel).slice(0, 120),
+    subtitle: listingOverviewSubtitle(extraction, kindLabel),
     notes: (extraction.description || `Review this ${kindLabel.toLowerCase()} on the original source page.`).slice(0, 3600),
     type: 'place',
     scope: 'place',
@@ -286,6 +343,65 @@ export function buildBoardWizardListingBatch(options: {
       extraction,
       extractedAt,
     }));
+  }
+  if (extraction.kind === 'real-estate') {
+    const atAGlance = realEstateAtAGlance(extraction.realEstate, extraction.price);
+    if (atAGlance.length) {
+      detailCards.push(listingDetailCard({
+        title: 'At a glance',
+        subtitle: atAGlance.slice(0, 3).join(' · '),
+        notes: atAGlance.join(' · '),
+        tag: 'key-facts',
+        extraction,
+        extractedAt,
+      }));
+    }
+    if (extraction.realEstate.features.length) {
+      detailCards.push(listingDetailCard({
+        title: 'Property features',
+        subtitle: extraction.realEstate.features.slice(0, 3).join(' · '),
+        notes: extraction.realEstate.features.join('\n'),
+        tag: 'features',
+        extraction,
+        extractedAt,
+      }));
+    }
+    const contactDetails = [
+      extraction.realEstate.agentName
+        ? `${extraction.realEstate.agentRole || 'Site contact'}: ${extraction.realEstate.agentName}`
+        : '',
+      extraction.realEstate.brokerage ? `Listed by: ${extraction.realEstate.brokerage}` : '',
+      extraction.realEstate.dataSource ? `Data source: ${extraction.realEstate.dataSource}` : '',
+    ].filter(Boolean);
+    if (contactDetails.length) {
+      const contactCard = listingDetailCard({
+        title: extraction.realEstate.agentName ? 'Contact & brokerage' : 'Listing brokerage',
+        subtitle: contactDetails.slice(0, 2).join(' · '),
+        notes: contactDetails.join('\n'),
+        tag: 'contact',
+        extraction,
+        extractedAt,
+      });
+      if (extraction.realEstate.agentProfileUrl) contactCard.sourceUrl = extraction.realEstate.agentProfileUrl;
+      if (extraction.realEstate.agentImageUrl) {
+        contactCard.imageUrl = extraction.realEstate.agentImageUrl;
+        contactCard.imageUrls = [extraction.realEstate.agentImageUrl];
+        contactCard.imageSource = 'source-page';
+        contactCard.image_context = `${extraction.realEstate.agentRole || 'Site contact'} ${extraction.realEstate.agentName}`.trim();
+        contactCard.tags = Array.from(new Set([...contactCard.tags, 'source-image']));
+      }
+      detailCards.push(contactCard);
+    }
+    if (extraction.realEstate.virtualTours.length) {
+      detailCards.push(listingDetailCard({
+        title: 'Virtual tours',
+        subtitle: `${extraction.realEstate.virtualTours.length} source-linked tour${extraction.realEstate.virtualTours.length === 1 ? '' : 's'}`,
+        notes: extraction.realEstate.virtualTours.join('\n'),
+        tag: 'virtual-tour',
+        extraction,
+        extractedAt,
+      }));
+    }
   }
   if (extraction.facts.length) {
     detailCards.push(listingDetailCard({
@@ -324,10 +440,10 @@ export function buildBoardWizardListingBatch(options: {
     });
   }
   detailCards.push(listingDetailCard({
-    title: extraction.kind === 'real-estate' ? 'Verify availability' : 'View listing',
+    title: extraction.kind === 'real-estate' ? 'Verify listing status' : 'View listing',
     subtitle: extraction.price || `Open on ${extraction.siteName || 'source site'}`,
     notes: extraction.kind === 'real-estate'
-      ? 'Check current rent, availability, fees, lease terms, pet rules, and contact details on the original listing.'
+      ? 'Confirm current listing status, price, disclosures, fees, showing availability, and contact details on the original listing.'
       : 'Check current price, availability, fees, cancellation terms, house rules, and booking details on the original listing.',
     tag: 'action',
     extraction,
@@ -335,6 +451,7 @@ export function buildBoardWizardListingBatch(options: {
   }));
 
   const sourceBoundDetailCards = detailCards.map((card, index) => {
+    if (card.imageUrl) return card;
     if (!extraction.images.length) return card;
     const image = extraction.images[(index + 1) % extraction.images.length];
     return {
@@ -538,7 +655,43 @@ function extractPublisherEmbeddedListingImages(options: {
   if (hostname.includes('zillow.')) {
     return extractZillowEmbeddedListingImages(options);
   }
+  if (isBoldTrailListingDocument(options.document) || isBoldTrailPropertyUrl(options.sourceUrl)) {
+    return extractBoldTrailEmbeddedListingImages(options);
+  }
   return [];
+}
+
+function isBoldTrailListingDocument(document: Document): boolean {
+  const galleryImage = document.querySelector('a.pic-link[href] img[alt^="Listing Thumbnail Image" i]');
+  if (!galleryImage) return false;
+  return Array.from(document.querySelectorAll('.overview strong, .overview h5, table th'))
+    .some((element) => /^(?:MLS#|Property Attributes|General Features)$/i.test(cleanText(element.textContent || '')));
+}
+
+function extractBoldTrailEmbeddedListingImages(options: {
+  document: Document;
+  sourceUrl: string;
+  baseUrl: string;
+  listingName: string;
+}): BoardWizardListingImage[] {
+  const images: BoardWizardListingImage[] = [];
+  for (const anchor of Array.from(options.document.querySelectorAll('a.pic-link[href]'))) {
+    const image = anchor.querySelector('img[alt^="Listing Thumbnail Image" i]');
+    if (!image) continue;
+    const rawUrl = firstText(
+      anchor.getAttribute('href'),
+      image.getAttribute('data-src'),
+      image.getAttribute('src'),
+    );
+    const url = absoluteImageUrl(rawUrl, options.baseUrl);
+    if (!url || !isBoldTrailListingImageUrl(url)) continue;
+    images.push({
+      url,
+      alt: embeddedImageAlt(image.getAttribute('alt') || '', options.listingName, images.length),
+      evidence: 'embedded-gallery',
+    });
+  }
+  return mergeListingImages(images, [], BOARD_WIZARD_SOURCE_GALLERY_LIMIT);
 }
 
 function extractAirbnbEmbeddedListingImages(options: {
@@ -831,6 +984,10 @@ function plausibleListingImage(
     return /photos\.zillowstatic\.com\/fp\//i.test(url)
       && (evidence !== 'listing-gallery' || /building photo|property photo|listing photo/i.test(alt));
   }
+  if (hostname.includes('exprealty.') || isBoldTrailListingImageUrl(url)) {
+    return isBoldTrailListingImageUrl(url)
+      && (evidence !== 'listing-gallery' || /listing thumbnail image|property photo|listing photo/i.test(alt));
+  }
   if (evidence === 'structured-data' || evidence === 'page-metadata') return true;
   return kind !== 'real-estate' || /property|building|listing|room|home|apartment/i.test(alt);
 }
@@ -842,12 +999,40 @@ function imageAssetKey(value: string): string {
     if (airbnbId) return `airbnb:${airbnbId}`;
     const zillowId = url.pathname.match(/\/fp\/([0-9a-f]{24,})/i)?.[1];
     if (zillowId) return `zillow:${zillowId.toLowerCase()}`;
+    const boldTrailAsset = boldTrailOriginalAssetKey(url.toString());
+    if (boldTrailAsset) return `boldtrail:${boldTrailAsset}`;
     return `${url.hostname}${url.pathname}`
       .toLowerCase()
       .replace(/[-_](?:\d{2,4}x\d{2,4}|thumb|small|medium|large)(?=\.)/g, '');
   } catch {
     return '';
   }
+}
+
+function isBoldTrailListingImageUrl(value: string): boolean {
+  return !!boldTrailOriginalAssetKey(value);
+}
+
+function boldTrailOriginalAssetKey(value: string): string {
+  try {
+    const url = new URL(value);
+    const direct = url.pathname.match(/\/(listingphotos\d+\/[^/?#]+-\d+\.(?:jpe?g|png|webp))$/i)?.[1];
+    if (direct) return direct.toLowerCase();
+    for (const segment of url.pathname.split('/').reverse()) {
+      if (segment.length < 24 || !/^[A-Za-z0-9_-]+$/.test(segment)) continue;
+      try {
+        const decoded = Buffer.from(segment.replace(/-/g, '+').replace(/_/g, '/'), 'base64').toString('utf8');
+        const decodedUrl = new URL(decoded);
+        const match = decodedUrl.pathname.match(/\/(listingphotos\d+\/[^/?#]+-\d+\.(?:jpe?g|png|webp))$/i)?.[1];
+        if (match) return match.toLowerCase();
+      } catch {
+        // Non-image path segments are expected; keep checking the remaining path.
+      }
+    }
+  } catch {
+    // Ignore malformed media URLs.
+  }
+  return '';
 }
 
 function imageResolutionScore(value: string): number {
@@ -969,12 +1154,323 @@ function extractAmenities(primary: JsonRecord, about: JsonRecord, text: string):
   return result.slice(0, 24);
 }
 
+type ListingLabelValue = { label: string; value: string };
+
+function emptyRealEstateDetails(): BoardWizardRealEstateDetails {
+  return {
+    mlsId: '', listingStatus: '', propertyType: '', bedrooms: '', bathrooms: '',
+    fullBathrooms: '', halfBathrooms: '', yearBuilt: '', hoaFee: '', taxes: '',
+    agentName: '', agentRole: '', agentProfileUrl: '', agentImageUrl: '', brokerage: '',
+    dataSource: '', virtualTours: [], features: [],
+  };
+}
+
+function extractRealEstateDetails(
+  document: Document,
+  primary: JsonRecord,
+  about: JsonRecord,
+  pageText: string,
+  baseUrl: string,
+): BoardWizardRealEstateDetails {
+  const pairs = extractListingLabelValues(document);
+  const fullBathrooms = firstText(
+    labeledValue(pairs, 'Full Bathrooms', 'Full Baths'),
+    primary.numberOfBathrooms,
+    about.numberOfBathrooms,
+  );
+  const halfBathrooms = labeledValue(pairs, 'Half Bathrooms', 'Half Baths');
+  const bathrooms = firstText(
+    labeledValue(pairs, 'Total Baths', 'Bathrooms'),
+    primary.numberOfBathroomsTotal,
+    about.numberOfBathroomsTotal,
+    combinedBathroomCount(fullBathrooms, halfBathrooms),
+  );
+  const contact = extractSiteContact(document, baseUrl);
+  const featureLabels = [
+    'Heating', 'Cooling', 'Parking', 'Other Rooms', 'Pet Friendly', 'Stories Count',
+    'New Construction Y/N', 'Features', 'Location', 'SEASONAL/YEAR ROUND', 'Unit',
+    'Appliances Included', 'Hot Water', 'Total Rooms', 'Unit Features',
+  ];
+  const features = featureLabels.flatMap((label) =>
+    labeledValues(pairs, label).map((value) => `${friendlyFeatureLabel(label)}: ${value}`),
+  );
+  const virtualTours = mergeTextValues(
+    labeledValues(pairs, 'Virtual Tour').flatMap(extractHttpUrls),
+    Array.from(document.querySelectorAll('tr a[href]'))
+      .filter((anchor) => /virtual tour/i.test(cleanText(anchor.closest('tr')?.querySelector('th')?.textContent || '')))
+      .map((anchor) => absoluteImageUrl(anchor.getAttribute('href') || '', baseUrl)),
+    8,
+  );
+  return {
+    mlsId: firstText(labeledValue(pairs, 'MLS#', 'MLS ID'), primary.identifier),
+    listingStatus: firstText(labeledValue(pairs, 'Listing Status', 'Status'), statusFromText(pageText)),
+    propertyType: firstText(labeledValue(pairs, 'Style', 'Type', 'Class'), about.additionalType),
+    bedrooms: firstText(labeledValue(pairs, 'Bedrooms', 'Beds'), primary.numberOfBedrooms, about.numberOfBedrooms),
+    bathrooms,
+    fullBathrooms,
+    halfBathrooms,
+    yearBuilt: labeledValue(pairs, 'Year Built'),
+    hoaFee: normalizeCurrency(labeledValue(pairs, 'HOA Fee'), true),
+    taxes: normalizeCurrency(labeledValue(pairs, 'Taxes'), true),
+    agentName: contact.name,
+    agentRole: contact.name ? 'Site contact' : '',
+    agentProfileUrl: contact.profileUrl,
+    agentImageUrl: contact.imageUrl,
+    brokerage: extractBrokerage(document),
+    dataSource: extractDataSource(document),
+    virtualTours,
+    features: mergeTextValues(features, [], 24),
+  };
+}
+
+function extractListingLabelValues(document: Document): ListingLabelValue[] {
+  const pairs: ListingLabelValue[] = [];
+  const add = (label: string, value: string): void => {
+    const cleanLabel = cleanText(label).replace(/:$/, '');
+    const cleanValue = cleanText(value);
+    if (cleanLabel && cleanValue && normalizeText(cleanLabel) !== normalizeText(cleanValue)) {
+      pairs.push({ label: cleanLabel, value: cleanValue });
+    }
+  };
+  for (const item of Array.from(document.querySelectorAll('.overview li'))) {
+    const labelElement = item.querySelector('strong, b');
+    const valueElement = labelElement?.nextElementSibling;
+    if (labelElement && valueElement) add(labelElement.textContent || '', valueElement.textContent || '');
+  }
+  for (const row of Array.from(document.querySelectorAll('tr, [role="row"]'))) {
+    const cells = Array.from(row.querySelectorAll(':scope > th, :scope > td, :scope > [role="cell"], :scope > [role="gridcell"]'));
+    if (cells.length >= 2) add(cells[0].textContent || '', cells.slice(1).map((cell) => cell.textContent || '').join(' '));
+  }
+  return pairs;
+}
+
+function labeledValues(pairs: ListingLabelValue[], ...labels: string[]): string[] {
+  return labels.flatMap((label) => {
+    const wanted = normalizeText(label);
+    return pairs.filter((pair) => normalizeText(pair.label) === wanted).map((pair) => pair.value);
+  });
+}
+
+function labeledValue(pairs: ListingLabelValue[], ...labels: string[]): string {
+  return firstText(...labeledValues(pairs, ...labels));
+}
+
+function extractSiteContact(document: Document, baseUrl: string): { name: string; profileUrl: string; imageUrl: string } {
+  for (const heading of Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6'))) {
+    if (!/^Your Agent$/i.test(cleanText(heading.textContent || ''))) continue;
+    const container = heading.parentElement;
+    const profile = container?.querySelector('a[href*="/agents/" i]');
+    if (!profile) continue;
+    const name = firstText(profile.getAttribute('aria-label'), profile.textContent);
+    const imageElement = container?.querySelector('[data-src*="/profiles/" i], img[src*="/profiles/" i]');
+    return {
+      name,
+      profileUrl: absoluteImageUrl(profile.getAttribute('href') || '', baseUrl),
+      imageUrl: absoluteImageUrl(firstText(imageElement?.getAttribute('data-src'), imageElement?.getAttribute('src')), baseUrl),
+    };
+  }
+  return { name: '', profileUrl: '', imageUrl: '' };
+}
+
+function extractBrokerage(document: Document): string {
+  const listedBy = Array.from(document.querySelectorAll('span, h1, h2, h3, h4, h5, h6'))
+    .find((element) => /^Listed By$/i.test(cleanText(element.textContent || '')));
+  if (!listedBy) return '';
+  return cleanText(
+    listedBy.parentElement?.querySelector('#crmls-listing-info')?.textContent
+      || listedBy.nextElementSibling?.textContent
+      || '',
+  );
+}
+
+function extractDataSource(document: Document): string {
+  const heading = Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6'))
+    .find((element) => /^Data Source:?$/i.test(cleanText(element.textContent || '')));
+  return cleanText(heading?.nextElementSibling?.textContent || '');
+}
+
+function extractSectionText(document: Document, headingText: string): string {
+  const heading = Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6'))
+    .find((element) => normalizeText(element.textContent || '') === normalizeText(headingText));
+  if (!heading) return '';
+  let sibling = heading.nextElementSibling;
+  while (sibling) {
+    const value = cleanText(sibling.textContent || '');
+    if (value) return value;
+    sibling = sibling.nextElementSibling;
+  }
+  return '';
+}
+
+function realEstateFieldPrice(document: Document): string {
+  return labeledValue(extractListingLabelValues(document), 'Price');
+}
+
+function extractBoldTrailAmenities(document: Document): string[] {
+  return Array.from(document.querySelectorAll('ul.amenities li.yes'))
+    .map((element) => cleanText(element.textContent || ''))
+    .filter(Boolean)
+    .slice(0, 24);
+}
+
+function boldTrailAmenitiesFromFeatures(features: string[]): string[] {
+  const text = features.join(' ');
+  const candidates: Array<[string, RegExp]> = [
+    ['New Construction', /New construction:\s*Yes/i],
+    ['Pets', /Pet Friendly:\s*(?!No\b|None\b)/i],
+    ['Air Conditioning', /Cooling:\s*(?!No\b|None\b)/i],
+    ['Deck', /(?:Features|Unit Features):[^\n]*\bDeck/i],
+    ['Garage', /Parking:[^\n]*\bGarage/i],
+  ];
+  return candidates.filter(([, pattern]) => pattern.test(text)).map(([name]) => name);
+}
+
+function extractRealEstateDetailsFromMarkdown(markdown: string, _sourceUrl: string): BoardWizardRealEstateDetails {
+  const fullBathrooms = markdownLabeledValue(markdown, 'Full Bathrooms', 'Full Baths');
+  const halfBathrooms = markdownLabeledValue(markdown, 'Half Bathrooms', 'Half Baths');
+  const bathrooms = firstText(
+    markdownLabeledValue(markdown, 'Total Baths', 'Bathrooms'),
+    combinedBathroomCount(fullBathrooms, halfBathrooms),
+  );
+  const featureLabels = [
+    'Heating', 'Cooling', 'Parking', 'Other Rooms', 'Pet Friendly', 'Stories Count',
+    'New Construction Y/N', 'Features', 'Location', 'SEASONAL/YEAR ROUND', 'Unit',
+    'Appliances Included', 'Hot Water', 'Total Rooms', 'Unit Features',
+  ];
+  const virtualTours = markdownLabeledValues(markdown, 'Virtual Tour').flatMap(extractHttpUrls);
+  const brokerage = cleanText(markdown.match(/^Listed By\s*\n+\s*([^\n#]+)/im)?.[1] || '');
+  const dataSource = cleanText(markdown.match(/^#{1,6}\s+Data Source:?\s*\n+#{1,6}\s+([^\n]+)/im)?.[1] || '');
+  return {
+    ...emptyRealEstateDetails(),
+    mlsId: markdownLabeledValue(markdown, 'MLS#', 'MLS ID'),
+    listingStatus: markdownLabeledValue(markdown, 'Listing Status', 'Status'),
+    propertyType: markdownLabeledValue(markdown, 'Style', 'Type', 'Class'),
+    bedrooms: markdownLabeledValue(markdown, 'Bedrooms', 'Beds'),
+    bathrooms,
+    fullBathrooms,
+    halfBathrooms,
+    yearBuilt: markdownLabeledValue(markdown, 'Year Built'),
+    hoaFee: normalizeCurrency(markdownLabeledValue(markdown, 'HOA Fee'), true),
+    taxes: normalizeCurrency(markdownLabeledValue(markdown, 'Taxes'), true),
+    brokerage,
+    dataSource,
+    virtualTours: mergeTextValues(virtualTours, [], 8),
+    features: mergeTextValues(
+      featureLabels.flatMap((label) => markdownLabeledValues(markdown, label)
+        .map((value) => `${friendlyFeatureLabel(label)}: ${markdownToPlainText(value)}`)),
+      [],
+      24,
+    ),
+  };
+}
+
+function markdownLabeledValue(markdown: string, ...labels: string[]): string {
+  return firstText(...labels.flatMap((label) => markdownLabeledValues(markdown, label)));
+}
+
+function markdownLabeledValues(markdown: string, label: string): string[] {
+  const escaped = escapeRegExp(label);
+  const values: string[] = [];
+  for (const pattern of [
+    new RegExp(`^\\s*\\*\\s+\\*\\*${escaped}\\*\\*\\s*([^\\n]+)`, 'gim'),
+    new RegExp(`^\\s*\\|\\s*\\*\\*${escaped}\\*\\*\\s*\\|\\s*([^|\\n]+)`, 'gim'),
+  ]) {
+    for (const match of markdown.matchAll(pattern)) {
+      const value = cleanText(match[1] || '');
+      if (value) values.push(value);
+    }
+  }
+  return values;
+}
+
+function realEstateFacts(details: BoardWizardRealEstateDetails): string[] {
+  return [
+    details.propertyType,
+    details.bedrooms ? `${details.bedrooms} bedrooms` : '',
+    details.bathrooms ? `${details.bathrooms} bathrooms` : '',
+    details.yearBuilt ? `Built ${details.yearBuilt}` : '',
+    details.listingStatus ? `Status: ${details.listingStatus}` : '',
+    details.mlsId ? `MLS# ${details.mlsId}` : '',
+    details.hoaFee ? `HOA ${details.hoaFee}` : '',
+    details.taxes ? `Taxes ${details.taxes}` : '',
+  ].filter(Boolean);
+}
+
+function realEstateAtAGlance(details: BoardWizardRealEstateDetails, price: string): string[] {
+  return mergeTextValues(
+    [price, ...realEstateFacts(details)],
+    [],
+    12,
+  );
+}
+
+function listingOverviewSubtitle(extraction: BoardWizardListingExtraction, kindLabel: string): string {
+  if (extraction.kind !== 'real-estate') {
+    return (extraction.address || extraction.siteName || kindLabel).slice(0, 120);
+  }
+  return [
+    extraction.price,
+    extraction.realEstate.bedrooms ? `${extraction.realEstate.bedrooms} bd` : '',
+    extraction.realEstate.bathrooms ? `${extraction.realEstate.bathrooms} ba` : '',
+    extraction.address || extraction.siteName || kindLabel,
+  ].filter(Boolean).join(' · ').slice(0, 120);
+}
+
+function combinedBathroomCount(fullBathrooms: string, halfBathrooms: string): string {
+  const full = Number(fullBathrooms);
+  const half = Number(halfBathrooms);
+  if (!Number.isFinite(full)) return '';
+  return String(full + (Number.isFinite(half) ? half * 0.5 : 0));
+}
+
+function normalizeCurrency(value: string, addSymbol = false): string {
+  const clean = cleanText(value).replace(/^([A-Z]{3})\s+\$\s*/i, '$1 ').replace(/^\$\s+/, '$');
+  if (!clean) return '';
+  if (addSymbol && /^\d[\d,]*(?:\.\d+)?$/.test(clean)) return `$${clean}`;
+  return clean;
+}
+
+function extractHttpUrls(value: string): string[] {
+  return Array.from(value.matchAll(/https?:\/\/[^\s)\]]+/gi)).map((match) => match[0]);
+}
+
+function mergeTextValues(primary: string[], fallback: string[], limit: number): string[] {
+  const result: string[] = [];
+  const seen = new Set<string>();
+  for (const value of [...primary, ...fallback]) {
+    const clean = cleanText(value);
+    const key = normalizeText(clean);
+    if (!clean || !key || seen.has(key)) continue;
+    seen.add(key);
+    result.push(clean);
+    if (result.length >= limit) break;
+  }
+  return result;
+}
+
+function friendlyFeatureLabel(value: string): string {
+  if (/^New Construction Y\/N$/i.test(value)) return 'New construction';
+  if (/^SEASONAL\/YEAR ROUND$/i.test(value)) return 'Usage';
+  return value;
+}
+
+function statusFromText(text: string): string {
+  return text.match(/\bListing Status\s+(Active|Pending|Sold|Withdrawn|Expired|Coming Soon)\b/i)?.[1] || '';
+}
+
+function looksLikeStreetAddress(value: string): boolean {
+  return /^\d+[A-Za-z-]*\s+.{3,},\s*[^,]+,\s*[A-Z]{2}(?:,?\s*\d{5})?/i.test(cleanText(value));
+}
+
 function extractUnits(document: Document, pageText: string): BoardWizardListingUnit[] {
   const units: BoardWizardListingUnit[] = [];
   for (const row of Array.from(document.querySelectorAll('tr, [role="row"]'))) {
     const cells = Array.from(row.querySelectorAll('th, td, [role="cell"], [role="gridcell"]'))
       .map((cell) => cleanText(cell.textContent || '')).filter(Boolean);
-    if (cells.length < 2 || !/\bunit\s*[#a-z0-9-]+/i.test(cells.join(' '))) continue;
+    const joined = cells.join(' ');
+    if (cells.length < 2
+      || !/\bunit\s*(?:#\s*)?[a-z0-9-]+/i.test(joined)
+      || !/(?:\$|\bstudio\b|\b\d+(?:\.\d+)?\s*(?:bd|ba)\b|sq\.?\s*ft|ft²|\bavailable\b)/i.test(joined)) continue;
     units.push(unitFromParts(cells));
   }
   if (!units.length) {
@@ -1053,8 +1549,19 @@ function isStrongListingUrl(value: string): boolean {
         || /\/b\/[^/]+\/[A-Za-z0-9_-]{5,}\/?$/i.test(url.pathname)
         || /\/apartments\/[^/]+\/[^/]+\/[A-Za-z0-9_-]{5,}\/?$/i.test(url.pathname);
     }
+    if (/exprealty\./i.test(url.hostname)) return isBoldTrailPropertyUrl(url.toString());
     if (/(?:^|\/)(?:search|vacation-rentals|category|browse|s\/homes)(?:\/|$)/i.test(url.pathname)) return false;
     return url.pathname.split('/').filter(Boolean).length >= 2;
+  } catch {
+    return false;
+  }
+}
+
+function isBoldTrailPropertyUrl(value: string): boolean {
+  try {
+    const url = new URL(value);
+    return /(?:^|\.)exprealty\.com$/i.test(url.hostname)
+      && /^\/property\/\d+-[A-Za-z0-9]+-[^/]{8,}\/?$/i.test(url.pathname);
   } catch {
     return false;
   }

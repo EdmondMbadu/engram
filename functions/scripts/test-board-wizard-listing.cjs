@@ -312,6 +312,172 @@ assert.equal(fullZillow.images.some((image) => image.url.includes(unrelatedZillo
 assert.equal(buildBoardWizardListingBatch({ extraction: fullZillow, targetBoardTitle: '', count: 1 }).cards[0].imageUrls.length, 41);
 assert.ok(BOARD_WIZARD_SOURCE_GALLERY_LIMIT >= 41);
 
+const expListingUrl = 'https://cmc.exprealty.com/property/26-261262-3721-pacific-avenue-wildwood-NJ-08260';
+assert.equal(isBoardWizardListingPageUrl(expListingUrl), true, 'eXp property detail URLs should use the listing extractor');
+assert.equal(isBoardWizardListingPageUrl('https://cmc.exprealty.com/areas/wildwood'), false, 'eXp area/search pages must remain generic');
+const expOriginalImages = Array.from({ length: 43 }, (_, index) =>
+  `https://d36xftgacqn2p.cloudfront.net/listingphotos26/261262-${index + 1}.jpg?v=1787333295`,
+);
+const expGalleryImages = expOriginalImages.map((original, index) => ({
+  original,
+  transformed: `https://d2na8ywvtbawk2.cloudfront.net/signature-${index}/f:webp/rt:fit/w:1025/${Buffer.from(original).toString('base64url')}`,
+}));
+const expHtml = `<!doctype html><html><head>
+  <title>3721 Pacific Avenue, Wildwood, NJ, 08260 - Photos, Videos & More!</title>
+  <meta property="og:title" content="3721 Pacific Avenue, Wildwood, NJ, 08260">
+  <meta property="og:site_name" content="eXp Realty in Cape May County">
+  <meta property="og:image" content="${expGalleryImages[0].original}">
+  <meta property="og:description" content="A shortened metadata description that should lose to the visible description.">
+</head><body>
+  <div class="gallery">${expGalleryImages.map(({ transformed }, index) => `
+    <a class="pic-link" href="${transformed}" title="3721 Pacific Avenue Wildwood, NJ">
+      <img class="owl-lazy" alt="Listing Thumbnail Image ${index + 1}" data-src="${transformed}">
+    </a>`).join('')}
+    <a class="similar-property" href="https://example.com/nearby.jpg"><img alt="Nearby listing" src="https://example.com/nearby.jpg"></a>
+  </div>
+  <div class="overview">
+    <h5 class="key">Property Attributes</h5>
+    <ul>
+      <li><strong>MLS#</strong><span>261262</span></li>
+      <li><strong>Listing Status</strong><span>Active</span></li>
+      <li><strong>Style</strong><span>Condo</span></li>
+      <li><strong>Year Built</strong><span>2026</span></li>
+      <li><strong>Taxes</strong><span>$ 7105</span></li>
+      <li><strong>Price</strong><span>$ 729,000</span></li>
+      <li><strong>Bedrooms</strong><span>3</span></li>
+      <li><strong>Full Bathrooms</strong><span>2</span></li>
+      <li><strong>Half Bathrooms</strong><span>0</span></li>
+    </ul>
+    <h5 class="key">Data Source:</h5><h6>Cape May County MLS (CMCAR)</h6>
+  </div>
+  <div class="overview"><h5 class="key">Property Description</h5>
+    <p>Visible, complete property description with new construction, top-floor privacy, and Shore access.</p>
+  </div>
+  <h2>General Features</h2><table id="general-features">
+    <tr><th>Heating</th><td>Gas Natural, Forced Air</td></tr>
+    <tr><th>Cooling</th><td>Central Air, Ceiling Fan</td></tr>
+    <tr><th>HOA Fee</th><td>277</td></tr>
+    <tr><th>Parking</th><td>Garage, 2 Car</td></tr>
+    <tr><th>New Construction Y/N</th><td>Yes</td></tr>
+    <tr><th>Features</th><td>Deck/Porch, Outside Shower</td></tr>
+    <tr><th>Virtual Tour</th><td><a href="https://vimeo.com/1210127727">Tour one</a></td></tr>
+    <tr><th>Virtual Tour</th><td><a href="https://homejab.vr-360-tour.com/e/example">Tour two</a></td></tr>
+    <tr><th>Unit Number</th><td>5</td></tr>
+  </table>
+  <h2>Interior Features</h2><table>
+    <tr><th>Beds</th><td>3</td></tr><tr><th>Total Baths</th><td>2</td></tr>
+    <tr><th>Unit Features</th><td>Kitchen Island, Hardwood Floors</td></tr>
+  </table>
+  <h2>Amenities</h2><ul class="amenities">
+    <li class="yes">New Construction</li><li class="yes">Pets</li><li class="yes">Air Conditioning</li>
+    <li class="yes">Deck</li><li class="yes">Garage</li><li class="no">Pool</li>
+  </ul>
+  <div class="widget"><h2>Your Agent</h2><div class="listing-small">
+    <a class="lazy-img" data-src="https://cdn.example.com/profiles/93256.jpg" href="/agents/93256/Howard+%22Chip%22+Watson" aria-label="Howard &quot;Chip&quot; Watson"></a>
+    <h3><a href="/agents/93256/Howard+%22Chip%22+Watson">Howard "Chip" Watson</a></h3>
+  </div></div>
+  <div class="widget"><span>Listed By</span><br><span id="crmls-listing-info">eXp REALTY</span></div>
+</body></html>`;
+const expListing = extractBoardWizardListing(expListingUrl, expListingUrl, expHtml);
+assert.ok(expListing, 'the rendered eXp/BoldTrail property page should extract deterministically');
+assert.equal(expListing.kind, 'real-estate');
+assert.equal(expListing.listingName, '3721 Pacific Avenue, Wildwood, NJ, 08260');
+assert.equal(expListing.address, '3721 Pacific Avenue, Wildwood, NJ, 08260');
+assert.equal(expListing.price, '$729,000');
+assert.match(expListing.description, /^Visible, complete property description/);
+assert.equal(expListing.images.length, 43, 'all property gallery images should survive and the OG duplicate should collapse');
+assert.ok(expListing.images.every((image) => image.evidence === 'embedded-gallery'));
+assert.equal(expListing.images.some((image) => /nearby|profiles/i.test(image.url)), false, 'nearby properties and agent portraits must stay out of the property gallery');
+assert.deepEqual(expListing.amenities, ['New Construction', 'Pets', 'Air Conditioning', 'Deck', 'Garage']);
+assert.equal(expListing.units.length, 0, 'a Unit Number property attribute must not become a fake available unit');
+assert.equal(expListing.realEstate.mlsId, '261262');
+assert.equal(expListing.realEstate.listingStatus, 'Active');
+assert.equal(expListing.realEstate.propertyType, 'Condo');
+assert.equal(expListing.realEstate.bedrooms, '3');
+assert.equal(expListing.realEstate.bathrooms, '2');
+assert.equal(expListing.realEstate.yearBuilt, '2026');
+assert.equal(expListing.realEstate.hoaFee, '$277');
+assert.equal(expListing.realEstate.taxes, '$7105');
+assert.equal(expListing.realEstate.agentName, 'Howard "Chip" Watson');
+assert.equal(expListing.realEstate.agentRole, 'Site contact', 'the page contact must not be mislabeled as the MLS listing agent');
+assert.match(expListing.realEstate.agentProfileUrl, /\/agents\/93256\//);
+assert.match(expListing.realEstate.agentImageUrl, /\/profiles\/93256\.jpg/);
+assert.equal(expListing.realEstate.brokerage, 'eXp REALTY');
+assert.equal(expListing.realEstate.dataSource, 'Cape May County MLS (CMCAR)');
+assert.deepEqual(expListing.realEstate.virtualTours, [
+  'https://vimeo.com/1210127727',
+  'https://homejab.vr-360-tour.com/e/example',
+]);
+assert.ok(expListing.realEstate.features.some((feature) => /Heating: Gas Natural/i.test(feature)));
+
+const expBatch = buildBoardWizardListingBatch({ extraction: expListing, targetBoardTitle: '', count: 12 });
+assert.equal(expBatch.cards.length, 12);
+assert.equal(expBatch.cards[0].imageUrls.length, 43, 'the board overview should own the complete eXp gallery');
+assert.match(expBatch.cards[0].subtitle, /\$729,000 · 3 bd · 2 ba/);
+assert.ok(expBatch.cards.some((card) => card.title === 'At a glance' && /MLS# 261262/.test(card.notes)));
+assert.ok(expBatch.cards.some((card) => card.title === 'Property features'));
+const expContactCard = expBatch.cards.find((card) => card.title === 'Contact & brokerage');
+assert.ok(expContactCard);
+assert.match(expContactCard.notes, /Site contact: Howard "Chip" Watson/);
+assert.match(expContactCard.notes, /Listed by: eXp REALTY/);
+assert.match(expContactCard.imageUrl, /\/profiles\/93256\.jpg/);
+assert.ok(expBatch.cards.some((card) => card.title === 'Virtual tours'));
+assert.ok(expBatch.cards.at(-1).tags.includes('action'));
+assert.ok(expBatch.cards.filter((card) => card.tags.includes('gallery')).every((card) => expListing.images.some((image) => image.url === card.imageUrl)));
+
+const expReaderMarkdown = `Title: 3721 Pacific Avenue, Wildwood, NJ, 08260
+
+${expGalleryImages.map(({ transformed }, index) => `[![Image ${index + 1}: Listing Thumbnail Image ${index + 1}](${transformed})](${transformed})`).join('\n')}
+
+Address
+
+3721 Pacific Avenue, Wildwood, NJ
+
+Price
+
+$ 729,000
+
+##### Property Attributes
+* **MLS#**261262
+* **Listing Status** Active
+* **Style**Condo
+* **Year Built**2026
+* **Taxes**$ 7105
+* **Price**$ 729,000
+* **Bedrooms**3
+* **Full Bathrooms**2
+* **Half Bathrooms**0
+
+##### Data Source:
+###### Cape May County MLS (CMCAR)
+
+##### Property Description
+Reader fallback property description.
+
+## General Features
+| **HOA Fee** | 277 |
+| **Parking** | Garage,2 Car |
+| **New Construction Y/N** | Yes |
+| **Features** | Deck/Porch,Outside Shower |
+| **Virtual Tour** | [https://vimeo.com/1210127727](https://vimeo.com/1210127727) |
+
+## Interior Features
+| **Beds** | 3 |
+| **Total Baths** | 2 |
+| **Unit Features** | Kitchen Island,Hardwood Floors |
+
+Listed By
+eXp REALTY`;
+const expReaderListing = extractBoardWizardListingFromMarkdown(expListingUrl, expReaderMarkdown);
+assert.ok(expReaderListing, 'the free Reader fallback should recover eXp listings when browser rendering is unavailable');
+assert.equal(expReaderListing.images.length, 43, 'Reader fallback should retain the full linked eXp gallery');
+assert.equal(expReaderListing.price, '$729,000');
+assert.equal(expReaderListing.realEstate.mlsId, '261262');
+assert.equal(expReaderListing.realEstate.bedrooms, '3');
+assert.equal(expReaderListing.realEstate.bathrooms, '2');
+assert.equal(expReaderListing.realEstate.brokerage, 'eXp REALTY');
+assert.equal(expReaderListing.realEstate.virtualTours[0], 'https://vimeo.com/1210127727');
+
 const commerceOnly = extractBoardWizardListing(
   'https://example-shop.com/products/blue-chair',
   'https://example-shop.com/products/blue-chair',
