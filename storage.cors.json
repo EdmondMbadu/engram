@@ -9,10 +9,12 @@
       "http://localhost:4300",
       "http://localhost:4317",
       "http://localhost:4321",
+      "http://localhost:64957",
       "http://127.0.0.1:4200",
       "http://127.0.0.1:4300",
       "http://127.0.0.1:4317",
-      "http://127.0.0.1:4321"
+      "http://127.0.0.1:4321",
+      "http://127.0.0.1:64957"
     ],
     "method": ["GET", "HEAD"],
     "responseHeader": [
