@@ -1912,7 +1912,8 @@ function buildBoardWizardPrompt(params: {
           'Set board.kind to "walking-tour" or "driving-tour". Set board.tourMeta with mode, voiceStyle, paceOrRouteStyle, extras, and showWayfindersDefault false.',
           'Every tour card must include tour.sequence, tour.address if known, tour.guideScript, and tour.legToNext for every card except the final stop.',
           'guideScript should be polished spoken narration following the narration length target, with concrete details and no markdown.',
-          'legToNext.instruction should be a concise direction summary. legToNext.navScript should be a spoken bridge from this stop to the next.',
+          'legToNext.instruction should be a concise direction summary. legToNext.navScript is the polished spoken handoff visitors hear after the current stop story.',
+          'Write each navScript as 2-4 short spoken sentences: announce the exact next stop, preview one concrete source-supported reason it matters, give the known travel time naturally, and end with a brief arrival line such as "I’ll meet you there." Keep turn-by-turn routing in instruction, not navScript. Never use placeholders such as "a short distance" or "roughly nearby".',
           'Use type "place", scope "place", status "planned" or "saved", and tags including "tour-stop".',
         ].join('\n')
       : '',
@@ -2397,7 +2398,7 @@ function buildFallbackTourWizardBatch(
               distanceText,
               durationText,
               instruction: `${mode === 'driving' ? 'Drive' : 'Walk'} from ${title} to ${next}.`,
-              navScript: `From ${title}, ${mode === 'driving' ? 'drive' : 'walk'} about ${durationText}, roughly ${distanceText}, to your next stop: ${next}.`,
+              navScript: `Next stop: ${next}. We will continue the story of ${baseTitle} there. You should reach it in about ${durationText} ${mode === 'driving' ? 'by car' : 'on foot'}, around ${distanceText}. I'll meet you there.`,
               encodedPolyline: '',
             },
       },

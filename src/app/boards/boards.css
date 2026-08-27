@@ -3339,6 +3339,10 @@
   text-align: left;
 }
 
+.stack-handoff__directions {
+  text-decoration: none;
+}
+
 .stack-preview--viewer .stack-preview__content span,
 .stack-preview--viewer .stack-preview__brand {
   max-width: 100%;

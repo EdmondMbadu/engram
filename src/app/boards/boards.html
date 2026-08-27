@@ -48,13 +48,13 @@
                 </div>
               </div>
               <div class="stack-viewer-actions">
-                @if (stackCurrentCard(); as narratableCard) {
+                @if (stackCurrentNarrationFrame(); as narratableFrame) {
                   <button
                     type="button"
                     [disabled]="stackNarrationLoading()"
-                    [attr.aria-label]="stackNarrationLoading() ? 'Preparing ElevenLabs narration' : tourSpeechPlaying() ? 'Stop narration' : 'Listen to card'"
-                    [attr.title]="stackNarrationLoading() ? 'Preparing ElevenLabs narration' : tourSpeechPlaying() ? 'Stop narration' : 'Listen to card'"
-                    (click)="tourSpeechPlaying() ? stopNarratedStack($event) : (narratableCard.tour ? replayStackTourNarration($event) : replayStackCardNarration(narratableCard, $event))"
+                    [attr.aria-label]="stackNarrationLoading() ? 'Preparing ElevenLabs narration' : tourSpeechPlaying() ? 'Stop narration' : narratableFrame.kind === 'handoff' ? 'Listen to next stop handoff' : 'Listen to card'"
+                    [attr.title]="stackNarrationLoading() ? 'Preparing ElevenLabs narration' : tourSpeechPlaying() ? 'Stop narration' : narratableFrame.kind === 'handoff' ? 'Listen to next stop handoff' : 'Listen to card'"
+                    (click)="tourSpeechPlaying() ? stopNarratedStack($event) : replayStackCurrentNarration($event)"
                   >
                     <span class="material-symbols-outlined">
                       {{ stackNarrationLoading() ? 'progress_activity' : tourSpeechPlaying() ? 'graphic_eq' : 'volume_up' }}
@@ -198,6 +198,38 @@
                       </div>
                     }
                   }
+                } @else if (frame.kind === 'handoff') {
+                  @if (stackHandoffImage(board, frame); as handoffImage) {
+                    <img class="stack-preview__media stack-preview__media--handoff" [src]="handoffImage" [alt]="frame.nextCard.title" />
+                  }
+                  <div class="stack-preview__shade stack-preview__shade--handoff"></div>
+                  <div class="stack-preview__content stack-preview__content--handoff" aria-live="polite">
+                    <span class="stack-handoff__eyebrow stack-preview__read-more">
+                      <span class="material-symbols-outlined">near_me</span>
+                      Next stop
+                    </span>
+                    <h4 [class]="stackTitleClass(frame.nextCard.title)">{{ frame.nextCard.title }}</h4>
+                    @if (stackHandoffTeaser(frame); as teaser) {
+                      <p>{{ teaser }}</p>
+                    }
+                    @if (stackHandoffMeta(frame); as routeMeta) {
+                      <span class="stack-preview__read-more" aria-label="Travel to next stop">
+                        <span class="material-symbols-outlined">schedule</span>
+                        {{ routeMeta }}
+                      </span>
+                    }
+                    <p class="stack-handoff__arrival">I’ll meet you there.</p>
+                    <a
+                      class="stack-handoff__directions stack-viewer-lets-go"
+                      [href]="tourLegDirectionsUrl(board, frame.card)"
+                      target="_blank"
+                      rel="noopener"
+                      (click)="$event.stopPropagation()"
+                    >
+                      <span class="material-symbols-outlined">directions</span>
+                      <strong>Directions</strong>
+                    </a>
+                  </div>
                 } @else {
                   <div class="stack-preview__closing stack-preview__closing--viewer">
                     @if (stackCoverImage(board); as closingImage) {
@@ -6594,11 +6626,11 @@
               </span>
               <h2>{{ frame.kind === 'leg' && frame.nextCard ? 'To ' + frame.nextCard.title : frame.card.title }}</h2>
               <p class="tour-guide__meta">
-                {{ frame.kind === 'leg' ? (frame.card.tour?.legToNext?.durationText || '') + ' · ' + (frame.card.tour?.legToNext?.distanceText || '') : (frame.card.tour?.address || frame.card.subtitle) }}
+                {{ tourFrameMeta(frame) }}
               </p>
               <div class="tour-guide__script">
                 <span class="material-symbols-outlined">{{ frame.kind === 'leg' ? 'assistant_direction' : 'headphones' }}</span>
-                <p>{{ frame.kind === 'leg' ? (frame.card.tour?.legToNext?.navScript || frame.card.tour?.legToNext?.instruction) : (frame.card.tour?.guideScript || frame.card.notes) }}</p>
+                <p>{{ tourFrameNarration(frame) }}</p>
               </div>
             </div>
             <div class="tour-guide__actions">

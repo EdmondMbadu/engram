@@ -162,6 +162,12 @@ import {
   normalizeBoardNarrationSeconds,
 } from './board-narration-length';
 import {
+  allowedStoredTourHandoffTexts,
+  effectiveStoredTourHandoffText,
+  isGenericStoredTourHandoffScript,
+  storedTourHandoffCard,
+} from './tour-handoff';
+import {
   getStoredCityPulseSnapshot,
   listEnabledCityAtlasIds,
   refreshStoredCityPulseSnapshot,
@@ -10726,7 +10732,9 @@ async function enrichBoardWizardTourBatchWithRoutes(
         distanceText: computed?.distanceText || card.tour.legToNext.distanceText,
         durationText: computed?.durationText || card.tour.legToNext.durationText,
         instruction: card.tour.legToNext.instruction || buildBoardWizardTourInstruction(card, next, tourMode),
-        navScript: card.tour.legToNext.navScript || buildBoardWizardTourNavScript(card, next, tourMode, computed?.durationText || card.tour.legToNext.durationText, computed?.distanceText || card.tour.legToNext.distanceText),
+        navScript: !isGenericStoredTourHandoffScript(card.tour.legToNext.navScript)
+          ? card.tour.legToNext.navScript
+          : buildBoardWizardTourNavScript(card, next, tourMode, computed?.durationText || card.tour.legToNext.durationText, computed?.distanceText || card.tour.legToNext.distanceText),
         encodedPolyline: computed?.encodedPolyline || card.tour.legToNext.encodedPolyline,
       };
       return { ...card, tour: { ...card.tour, legToNext: leg } };
@@ -10762,6 +10770,9 @@ async function enrichBoardWizardTourBatchWithRoutes(
 
 type BoardTourRoutePoint = {
   title: string;
+  subtitle?: string;
+  notes?: string;
+  shortSummary?: string;
   tour?: {
     lat?: number | null;
     lng?: number | null;
@@ -10830,7 +10841,23 @@ function buildBoardWizardTourInstruction(from: BoardTourRoutePoint, to: BoardTou
 }
 
 function buildBoardWizardTourNavScript(from: BoardTourRoutePoint, to: BoardTourRoutePoint | null, mode: GeneratedBoardTourMode, duration: string, distance: string): string {
-  return to ? `From ${from.title}, ${mode === 'driving' ? 'drive' : 'walk'} about ${duration || 'a short distance'}, roughly ${distance || 'nearby'}, to your next stop: ${to.title}.` : '';
+  if (!to) return '';
+  const detail = textFromUnknown(to.shortSummary || to.notes || to.subtitle);
+  const completeSentence = detail.match(/^(.{1,190}?[.!?])(?:\s|$)/)?.[1] ?? detail.slice(0, 190);
+  const teaser = completeSentence.trim()
+    ? `${completeSentence.trim()}${/[.!?]$/.test(completeSentence.trim()) ? '' : '.'}`
+    : '';
+  const route = duration
+    ? `You should reach it in about ${duration} ${mode === 'driving' ? 'by car' : 'on foot'}${distance ? `, around ${distance}` : ''}.`
+    : distance
+      ? `It is about ${distance} away.`
+      : '';
+  return [`Next stop: ${to.title}.`, teaser, route, "I'll meet you there."]
+    .filter(Boolean)
+    .join(' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 700);
 }
 
 function secondsFromGoogleDuration(value: unknown): number {
@@ -10906,7 +10933,13 @@ function storedTourCard(value: unknown): StoredTourCard | null {
 function storedTourRoutePoint(card: StoredTourCard): BoardTourRoutePoint {
   const lat = typeof card.tour.lat === 'number' && Number.isFinite(card.tour.lat) ? card.tour.lat : null;
   const lng = typeof card.tour.lng === 'number' && Number.isFinite(card.tour.lng) ? card.tour.lng : null;
-  return { title: card.title, tour: { lat, lng } };
+  return {
+    title: card.title,
+    subtitle: textFromUnknown(card.subtitle),
+    notes: textFromUnknown(card.notes),
+    shortSummary: textFromUnknown(card.shortSummary),
+    tour: { lat, lng },
+  };
 }
 
 function normalizedTourRouteText(value: unknown): string {
@@ -11026,35 +11059,41 @@ export const recalculateBoardTourRoute = onCall(
       }
 
       const currentLeg = card.tour.legToNext;
-      if (existingTourLegTargetsCard(currentLeg, nextCard)) {
-        return {
-          ...card,
-          tour: {
-            ...tour,
-            legToNext: {
-              ...(currentLeg as Record<string, unknown>),
-              toCardId: nextCard.id,
-            },
-          },
-        };
-      }
-
       const fromPoint = storedTourRoutePoint(card);
       const toPoint = storedTourRoutePoint(nextCard);
       const computed = await computeBoardWizardTourLeg(fromPoint, toPoint, mode);
-      const distanceText = computed?.distanceText ?? '';
-      const durationText = computed?.durationText ?? '';
+      const currentLegData = currentLeg && typeof currentLeg === 'object'
+        ? currentLeg as Record<string, unknown>
+        : {};
+      const targetsNextCard = existingTourLegTargetsCard(currentLeg, nextCard);
+      const distanceText = computed?.distanceText || (targetsNextCard ? textFromUnknown(currentLegData.distanceText) : '');
+      const durationText = computed?.durationText || (targetsNextCard ? textFromUnknown(currentLegData.durationText) : '');
+      const nextLeg = {
+        ...(targetsNextCard ? currentLegData : {}),
+        distanceText,
+        durationText,
+        instruction: targetsNextCard && textFromUnknown(currentLegData.instruction)
+          ? textFromUnknown(currentLegData.instruction)
+          : buildBoardWizardTourInstruction(fromPoint, toPoint, mode),
+        navScript: targetsNextCard ? textFromUnknown(currentLegData.navScript) : '',
+        encodedPolyline: computed?.encodedPolyline || (targetsNextCard ? textFromUnknown(currentLegData.encodedPolyline) : ''),
+        toCardId: nextCard.id,
+      };
+      const sourceWithLeg = storedTourHandoffCard({
+        ...card,
+        tour: { ...tour, legToNext: nextLeg },
+      });
+      const destination = storedTourHandoffCard(nextCard);
+      const navScript = sourceWithLeg && destination
+        ? effectiveStoredTourHandoffText(sourceWithLeg, destination, mode)
+        : buildBoardWizardTourNavScript(fromPoint, toPoint, mode, durationText, distanceText);
       return {
         ...card,
         tour: {
           ...tour,
           legToNext: {
-            distanceText,
-            durationText,
-            instruction: buildBoardWizardTourInstruction(fromPoint, toPoint, mode),
-            navScript: buildBoardWizardTourNavScript(fromPoint, toPoint, mode, durationText, distanceText),
-            encodedPolyline: computed?.encodedPolyline ?? '',
-            toCardId: nextCard.id,
+            ...nextLeg,
+            navScript,
           },
         },
       };
@@ -19429,7 +19468,12 @@ function boardAllowsNarrationText(board: Record<string, unknown>, text: string):
   if (!requestedText) return false;
   if (normalizeNarrationAuthorizationText(board['trailerVideoScript']) === requestedText) return true;
   if (!Array.isArray(board['cards'])) return false;
-  return board['cards'].some((card) => personalNarrationTextsFromCard(card).has(requestedText));
+  if (board['cards'].some((card) => personalNarrationTextsFromCard(card).has(requestedText))) {
+    return true;
+  }
+  return Array.from(allowedStoredTourHandoffTexts(board)).some(
+    (handoff) => normalizeNarrationAuthorizationText(handoff) === requestedText,
+  );
 }
 
 export const getPersonalNarratorVoice = onCall(

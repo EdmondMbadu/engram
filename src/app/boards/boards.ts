@@ -156,6 +156,11 @@ import {
   previousFiniteStackFrameIndex,
 } from './stack-card-selection';
 import {
+  buildStackStoryFrames,
+  stackStoryFrameKey,
+  type StackStoryFrame,
+} from './stack-story-frames';
+import {
   buildStackDocsExportSnapshot,
   stackDocsExportImageCount,
   stackDocsExportMissingNarrationCount,
@@ -174,6 +179,10 @@ import {
   reorderTourCards,
   tourOrderIds,
 } from './tour-order';
+import {
+  effectiveTourHandoffText,
+  tourHandoffDestinationTeaser,
+} from './tour-handoff';
 import { isGenericTourStopFallback, tourStopDestinationQuery } from './tour-stop';
 import {
   youtubePrivacyEmbedUrl,
@@ -874,9 +883,7 @@ type BoardWizardDraft = {
   updatedAt: string;
 };
 
-type StackFrame = {
-  kind: 'cover' | 'card' | 'closing';
-  card?: BoardCard;
+type StackFrame = StackStoryFrame<BoardCard> & {
   index: number;
   total: number;
 };
@@ -2780,7 +2787,16 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   });
   readonly stackHasTourNarration = computed(() => this.stackSelectedCards().some((card) => !!card.tour));
   readonly stackSelectedCount = computed(() => this.stackSelectedCards().length);
-  readonly stackFrameCount = computed(() => this.stackSelectedCards().length + 2);
+  readonly stackFrames = computed<StackFrame[]>(() => {
+    const board = this.stackDirectView() ? this.selectedBoard() : this.stackBoard();
+    const baseFrames = buildStackStoryFrames(this.stackSelectedCards(), this.isTourBoard(board));
+    return baseFrames.map((frame, index) => ({
+      ...frame,
+      index,
+      total: baseFrames.length,
+    })) as StackFrame[];
+  });
+  readonly stackFrameCount = computed(() => this.stackFrames().length);
   readonly stackProgressFrames = computed(() =>
     Array.from({ length: this.stackFrameCount() }, (_item, index) => index),
   );
@@ -2789,11 +2805,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   });
   readonly stackCurrentCard = computed<BoardCard | null>(() => {
     const frame = this.stackCurrentFrame();
-    return frame.kind === 'card' ? frame.card ?? null : null;
+    return frame.kind === 'card' ? frame.card : null;
   });
-  readonly stackCurrentTourCard = computed<BoardCard | null>(() => {
+  readonly stackCurrentNarrationFrame = computed<StackFrame | null>(() => {
     const frame = this.stackCurrentFrame();
-    return frame.kind === 'card' && frame.card?.tour ? frame.card : null;
+    return frame.kind === 'card' || frame.kind === 'handoff' ? frame : null;
   });
   readonly stackTourNarrationConsent = signal(false);
   readonly selectedBoardTourCards = computed(() => this.tourCards(this.selectedBoard()));
@@ -8895,13 +8911,31 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     void this.speakTourFrame();
   }
 
+  tourFrameNarration(frame: TourDeckFrame): string {
+    if (frame.kind === 'leg' && frame.nextCard) {
+      return effectiveTourHandoffText(
+        frame.card,
+        frame.nextCard,
+        this.selectedBoard()?.kind === 'driving-tour' ? 'driving' : 'walking',
+      );
+    }
+    return frame.card.tour?.guideScript || frame.card.notes || frame.card.subtitle;
+  }
+
+  tourFrameMeta(frame: TourDeckFrame): string {
+    return frame.kind === 'leg'
+      ? [frame.card.tour?.legToNext?.durationText, frame.card.tour?.legToNext?.distanceText]
+          .map((value) => value?.trim() || '')
+          .filter(Boolean)
+          .join(' · ')
+      : frame.card.tour?.address || frame.card.subtitle;
+  }
+
   async speakTourFrame(frame = this.tourCurrentFrame()): Promise<void> {
     if (!this.isBrowser || !frame) {
       return;
     }
-    const text = frame.kind === 'leg'
-      ? frame.card.tour?.legToNext?.navScript || frame.card.tour?.legToNext?.instruction || ''
-      : frame.card.tour?.guideScript || frame.card.notes || frame.card.subtitle;
+    const text = this.tourFrameNarration(frame);
     if (!text.trim()) {
       return;
     }
@@ -9208,6 +9242,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     mode: 'tour' | 'stack-video' | 'stack-trailer' | 'voice-preview' = 'tour',
     cardId?: string,
     required = false,
+    silent = false,
   ): Promise<string | null> {
     const normalizedNarratorVoiceId = narratorVoiceId
       ? normalizeStackNarratorVoiceId(narratorVoiceId)
@@ -9248,12 +9283,16 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
           return audioUrl;
         }
       } catch (error) {
-        this.tourAudioNotice.set(mode === 'stack-video'
-          ? 'A video narration clip could not be created. The video will not be generated with missing narration.'
-          : mode === 'voice-preview'
-            ? 'The selected voice sample could not be loaded. Try again in a moment.'
-            : 'ElevenLabs tour narration failed to generate. Check the function logs if this persists.');
-        console.error('Narration audio generation failed.', error, { boardId, cardId, mode });
+        if (!silent) {
+          this.tourAudioNotice.set(mode === 'stack-video'
+            ? 'A video narration clip could not be created. The video will not be generated with missing narration.'
+            : mode === 'voice-preview'
+              ? 'The selected voice sample could not be loaded. Try again in a moment.'
+              : 'ElevenLabs tour narration failed to generate. Check the function logs if this persists.');
+        }
+        if (!silent) {
+          console.error('Narration audio generation failed.', error, { boardId, cardId, mode });
+        }
         if (required) throw error;
       } finally {
         this.tourAudioPromises.delete(requestKey);
@@ -14413,16 +14452,9 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   }
 
   private stackFrameAtIndex(frameIndex: number): StackFrame {
-    const cards = this.stackSelectedCards();
-    const total = cards.length + 2;
-    const index = Math.max(0, Math.min(frameIndex, total - 1));
-    if (index === 0) {
-      return { kind: 'cover', index, total };
-    }
-    if (index === total - 1) {
-      return { kind: 'closing', index, total };
-    }
-    return { kind: 'card', card: cards[index - 1], index, total };
+    const frames = this.stackFrames();
+    const index = Math.max(0, Math.min(frameIndex, frames.length - 1));
+    return frames[index] ?? { kind: 'cover', index: 0, total: 1 };
   }
 
   previousStackFrame(): void {
@@ -14494,6 +14526,25 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     return card.notes.trim().length > 0 && card.notes.trim() !== this.stackCardSummary(board, card).trim();
   }
 
+  stackHandoffTeaser(frame: StackFrame = this.stackCurrentFrame()): string {
+    return frame.kind === 'handoff' ? tourHandoffDestinationTeaser(frame.nextCard) : '';
+  }
+
+  stackHandoffMeta(frame: StackFrame = this.stackCurrentFrame()): string {
+    return frame.kind === 'handoff'
+      ? [frame.card.tour?.legToNext?.durationText, frame.card.tour?.legToNext?.distanceText]
+          .map((value) => value?.trim() || '')
+          .filter(Boolean)
+          .join(' · ')
+      : '';
+  }
+
+  stackHandoffImage(board: Board, frame: StackFrame = this.stackCurrentFrame()): string {
+    return frame.kind === 'handoff'
+      ? this.cardImages(frame.nextCard)[0] || this.stackCoverImage(board)
+      : '';
+  }
+
   stackTitleClass(title: string): string {
     const normalized = title.replace(/\s+/g, ' ').trim();
     const longestWordLength = normalized
@@ -14525,8 +14576,12 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   }
 
   stackNarrationLoading(): boolean {
-    const card = this.stackCurrentCard();
-    return !!card && (card.tour ? this.stackTourNarrationLoading() : this.stackCardNarrationLoading(card));
+    const frame = this.stackCurrentFrame();
+    if (frame.kind === 'handoff') return this.stackTourNarrationLoading();
+    if (frame.kind !== 'card') return false;
+    return frame.card.tour
+      ? this.stackTourNarrationLoading()
+      : this.stackCardNarrationLoading(frame.card);
   }
 
   private stackCardNarrationText(card: BoardCard): string {
@@ -14647,23 +14702,21 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   }
 
   stackTourNarrationLoading(): boolean {
-    const card = this.stackCurrentTourCard();
-    return !!card && this.tourAudioLoadingKey() === this.narrationAudioRequestKey(
-      `stop:${card.id}:stop`,
+    const frame = this.stackTourFrameFromStackFrame(this.stackCurrentFrame());
+    return !!frame && this.tourAudioLoadingKey() === this.narrationAudioRequestKey(
+      this.tourAudioKey(frame),
       this.stackNarratorVoiceId(),
     );
   }
 
-  async replayStackTourNarration(event?: Event): Promise<void> {
+  async replayStackCurrentNarration(event?: Event): Promise<void> {
     event?.preventDefault();
     event?.stopPropagation();
-    const cardId = this.stackCurrentTourCard()?.id;
-    if (!cardId) {
-      return;
-    }
+    const frameKey = stackStoryFrameKey(this.stackCurrentFrame());
+    if (!this.stackCurrentNarrationFrame()) return;
     this.stopStackPlayback();
     await this.unlockStackNarrationAudio();
-    if (this.stackCurrentTourCard()?.id !== cardId) return;
+    if (stackStoryFrameKey(this.stackCurrentFrame()) !== frameKey) return;
     this.stackTourNarrationConsent.set(true);
     this.stackPlaying.set(true);
     this.syncStackNarrationAfterFrameChange({ autoAdvance: true, forceNarration: true });
@@ -16219,6 +16272,34 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     return this.stackDirectView();
   }
 
+  private stackTourFrameFromStackFrame(frame: StackFrame): TourDeckFrame | null {
+    if (frame.kind === 'card') {
+      return {
+        kind: 'stop',
+        card: frame.card,
+        nextCard: null,
+        index: frame.index,
+        total: frame.total,
+      };
+    }
+    if (frame.kind === 'handoff') {
+      return {
+        kind: 'leg',
+        card: frame.card,
+        nextCard: frame.nextCard,
+        index: frame.index,
+        total: frame.total,
+      };
+    }
+    return null;
+  }
+
+  private stackTourFrameKey(frame: TourDeckFrame): string {
+    return frame.kind === 'leg'
+      ? `handoff:${frame.card.id}:${frame.nextCard?.id ?? 'end'}`
+      : `card:${frame.card.id}`;
+  }
+
   private syncStackNarrationAfterFrameChange(
     options: { autoAdvance?: boolean; forceNarration?: boolean } = {},
   ): boolean {
@@ -16234,8 +16315,8 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
     const autoAdvance = options.autoAdvance ?? this.stackPlaying();
     const frame = this.stackCurrentFrame();
-    const card = frame.kind === 'card' ? frame.card ?? null : null;
-    if (!card) {
+    const tourFrame = this.stackTourFrameFromStackFrame(frame);
+    if (!tourFrame) {
       if (autoAdvance && this.stackPlaying()) {
         this.scheduleStackFrameAdvance(this.stackFrameDurationMs, token);
       }
@@ -16245,13 +16326,6 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       return true;
     }
 
-    const tourFrame: TourDeckFrame = {
-      kind: 'stop',
-      card,
-      nextCard: null,
-      index: frame.index,
-      total: frame.total,
-    };
     void this.playStackNarration(tourFrame, token, autoAdvance);
     return true;
   }
@@ -16261,7 +16335,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     token: number,
     autoAdvance: boolean,
   ): Promise<void> {
-    const text = frame.card.tour?.guideScript || this.stackCardNarrationText(frame.card);
+    const text = this.stackNarrationTextForTourFrame(frame);
     if (!text.trim()) {
       if (autoAdvance && this.stackPlaying()) {
         this.scheduleStackFrameAdvance(this.stackFrameDurationMs, token);
@@ -16270,14 +16344,19 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     }
 
     const startedAt = Date.now();
+    const frameKey = this.stackTourFrameKey(frame);
     this.stackActiveFrameDurationMs.set(120_000);
     const audioKey = frame.card.tour ? this.tourAudioKey(frame) : this.stackCardAudioKey(frame.card);
     const boardId = this.stackBoard()?.id || this.selectedBoard()?.id;
     const audioUrl = await this.ensureTourAudioUrl(audioKey, text, this.stackNarratorVoiceId(), boardId);
-    if (!this.isStackNarrationCurrent(token, frame.card.id)) {
+    if (!this.isStackNarrationCurrent(token, frameKey)) {
       return;
     }
     if (!audioUrl) {
+      this.tourAudioNotice.set(null);
+      if (this.startStackBrowserNarration(frame, text, token, autoAdvance, startedAt, frameKey)) {
+        return;
+      }
       this.stackActiveFrameDurationMs.set(this.stackFrameDurationMs);
       if (autoAdvance && this.stackPlaying()) {
         this.scheduleStackFrameAdvance(this.stackFrameDurationMs, token);
@@ -16293,7 +16372,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.tourAudio = audio;
     this.tourSpeechPlaying.set(true);
     const syncProgressDuration = () => {
-      if (!this.isStackNarrationCurrent(token, frame.card.id) || !Number.isFinite(audio.duration) || audio.duration <= 0) {
+      if (!this.isStackNarrationCurrent(token, frameKey) || !Number.isFinite(audio.duration) || audio.duration <= 0) {
         return;
       }
       const elapsedMs = Date.now() - startedAt;
@@ -16301,7 +16380,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     };
     audio.onloadedmetadata = syncProgressDuration;
     audio.onended = () => {
-      if (!this.isStackNarrationCurrent(token, frame.card.id) || this.tourAudio !== audio) {
+      if (!this.isStackNarrationCurrent(token, frameKey) || this.tourAudio !== audio) {
         return;
       }
       this.stopTourSpeech();
@@ -16310,7 +16389,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       }
     };
     audio.onerror = () => {
-      if (!this.isStackNarrationCurrent(token, frame.card.id) || this.tourAudio !== audio) {
+      if (!this.isStackNarrationCurrent(token, frameKey) || this.tourAudio !== audio) {
         return;
       }
       this.stopTourSpeech();
@@ -16319,7 +16398,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         return;
       }
       this.stackActiveFrameDurationMs.set(this.stackFrameDurationMs);
-      this.tourAudioNotice.set('The narration could not play this card. Continuing to the next card.');
+      this.tourAudioNotice.set('The narration could not play this part of the tour. Continuing.');
       if (autoAdvance && this.stackPlaying()) {
         this.scheduleStackFrameAdvance(this.stackFrameDurationMs, token);
       }
@@ -16328,13 +16407,14 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     try {
       await audio.play();
       syncProgressDuration();
+      this.prefetchNextStackNarration(frameKey);
     } catch {
-      if (!this.isStackNarrationCurrent(token, frame.card.id) || this.tourAudio !== audio) {
+      if (!this.isStackNarrationCurrent(token, frameKey) || this.tourAudio !== audio) {
         return;
       }
       this.stopTourSpeech();
       this.tourAudioNotice.set(null);
-      if (this.startStackBrowserNarration(frame, text, token, autoAdvance, startedAt)) {
+      if (this.startStackBrowserNarration(frame, text, token, autoAdvance, startedAt, frameKey)) {
         return;
       }
       this.clearStackPlaybackTimer();
@@ -16350,11 +16430,12 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     token: number,
     autoAdvance: boolean,
     startedAt: number,
+    frameKey = this.stackTourFrameKey(frame),
   ): boolean {
     if (!this.isBrowser
       || typeof window.speechSynthesis === 'undefined'
       || typeof window.SpeechSynthesisUtterance === 'undefined'
-      || !this.isStackNarrationCurrent(token, frame.card.id)) {
+      || !this.isStackNarrationCurrent(token, frameKey)) {
       return false;
     }
 
@@ -16374,7 +16455,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.stackActiveFrameDurationMs.set(Date.now() - startedAt + estimatedSpeechMs + 450);
 
     utterance.onend = () => {
-      if (this.tourSpeechUtterance !== utterance || !this.isStackNarrationCurrent(token, frame.card.id)) {
+      if (this.tourSpeechUtterance !== utterance || !this.isStackNarrationCurrent(token, frameKey)) {
         return;
       }
       this.tourSpeechUtterance = null;
@@ -16384,7 +16465,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       }
     };
     utterance.onerror = () => {
-      if (this.tourSpeechUtterance !== utterance || !this.isStackNarrationCurrent(token, frame.card.id)) {
+      if (this.tourSpeechUtterance !== utterance || !this.isStackNarrationCurrent(token, frameKey)) {
         return;
       }
       this.tourSpeechUtterance = null;
@@ -16395,13 +16476,47 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       this.tourAudioNotice.set('Narration could not start. Tap the voice button to try this location again.');
     };
     window.speechSynthesis.speak(utterance);
+    this.prefetchNextStackNarration(frameKey);
     return true;
   }
 
-  private isStackNarrationCurrent(token: number, cardId: string): boolean {
+  private stackNarrationTextForTourFrame(frame: TourDeckFrame): string {
+    return frame.kind === 'leg' && frame.nextCard
+      ? effectiveTourHandoffText(
+          frame.card,
+          frame.nextCard,
+          this.selectedBoard()?.kind === 'driving-tour' ? 'driving' : 'walking',
+        )
+      : frame.card.tour?.guideScript || this.stackCardNarrationText(frame.card);
+  }
+
+  private prefetchNextStackNarration(currentFrameKey: string): void {
+    if (!this.isBrowser || stackStoryFrameKey(this.stackCurrentFrame()) !== currentFrameKey) return;
+    const nextFrame = this.stackFrameAtIndex(this.stackFrameIndex() + 1);
+    const tourFrame = this.stackTourFrameFromStackFrame(nextFrame);
+    if (!tourFrame) return;
+    const text = this.stackNarrationTextForTourFrame(tourFrame).trim();
+    if (!text) return;
+    const audioKey = tourFrame.card.tour
+      ? this.tourAudioKey(tourFrame)
+      : this.stackCardAudioKey(tourFrame.card);
+    const boardId = this.stackBoard()?.id || this.selectedBoard()?.id;
+    void this.ensureTourAudioUrl(
+      audioKey,
+      text,
+      this.stackNarratorVoiceId(),
+      boardId,
+      'tour',
+      undefined,
+      false,
+      true,
+    );
+  }
+
+  private isStackNarrationCurrent(token: number, frameKey: string): boolean {
     return token === this.stackTourNarrationSwitchToken
       && this.isNarratedStackLiveView()
-      && this.stackCurrentCard()?.id === cardId;
+      && stackStoryFrameKey(this.stackCurrentFrame()) === frameKey;
   }
 
   private async unlockStackNarrationAudio(): Promise<void> {
@@ -18437,7 +18552,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
                 distanceText,
                 durationText,
                 instruction: `${mode === 'driving' ? 'Drive' : 'Walk'} from ${name} to ${next}.`,
-                navScript: `From ${name}, ${mode === 'driving' ? 'drive' : 'walk'} about ${durationText}, roughly ${distanceText}, to your next stop: ${next}.`,
+                navScript: `Next stop: ${next}. We will continue the story of ${title} there. You should reach it in about ${durationText} ${mode === 'driving' ? 'by car' : 'on foot'}, around ${distanceText}. I'll meet you there.`,
                 encodedPolyline: '',
                 toCardId: '',
               },
