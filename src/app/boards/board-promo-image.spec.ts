@@ -1,6 +1,7 @@
 import {
   boardPromoDisplayUrl,
   boardPromoFileName,
+  boardPromoLinkPanelWidth,
   boardPromoTextLines,
   boardPromoTitleFontSize,
 } from './board-promo-image';
@@ -29,6 +30,12 @@ describe('board promo image helpers', () => {
     );
   });
 
+  it('keeps the no-QR link border balanced around its content', () => {
+    expect(boardPromoLinkPanelWidth(800)).toBe(920);
+    expect(boardPromoLinkPanelWidth(200)).toBe(720);
+    expect(boardPromoLinkPanelWidth(1400)).toBe(1240);
+  });
+
   it('wraps and ellipsizes text to the requested line count', () => {
     const lines = boardPromoTextLines(
       'one two three four',
@@ -41,5 +48,15 @@ describe('board promo image helpers', () => {
 
   it('returns no lines for empty copy', () => {
     expect(boardPromoTextLines('   ', 100, (value) => value.length, 3)).toEqual([]);
+  });
+
+  it('never lets one unbroken link overflow its available width', () => {
+    const lines = boardPromoTextLines(
+      'localhost:64957/boards/a-very-long-board-link',
+      120,
+      (value) => value.length * 10,
+      2,
+    );
+    expect(lines).toEqual(['localhost:6…']);
   });
 });

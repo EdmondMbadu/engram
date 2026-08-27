@@ -63,6 +63,14 @@ export function boardPromoTitleFontSize(title: string): number {
   return 126;
 }
 
+export function boardPromoLinkPanelWidth(contentWidth: number): number {
+  // Canvas text can paint slightly beyond its advance width, especially with
+  // synthetic font weights. Leave extra optical room while keeping the panel
+  // clear of the cover image.
+  const horizontalAllowance = 120;
+  return Math.min(1240, Math.max(720, Math.ceil(contentWidth) + horizontalAllowance));
+}
+
 export function boardPromoTextLines(
   text: string,
   maxWidth: number,
@@ -76,15 +84,24 @@ export function boardPromoTextLines(
   let consumedWords = 0;
 
   for (const word of words) {
+    if (!current) {
+      current = measure(word) <= maxWidth
+        ? word
+        : truncateMeasuredText(word, maxWidth, measure);
+      consumedWords += 1;
+      continue;
+    }
     const candidate = current ? `${current} ${word}` : word;
-    if (!current || measure(candidate) <= maxWidth) {
+    if (measure(candidate) <= maxWidth) {
       current = candidate;
       consumedWords += 1;
       continue;
     }
     lines.push(current);
     if (lines.length === maxLines) break;
-    current = truncateMeasuredText(word, maxWidth, measure);
+    current = measure(word) <= maxWidth
+      ? word
+      : truncateMeasuredText(word, maxWidth, measure);
     consumedWords += 1;
   }
 
@@ -286,8 +303,10 @@ function drawPromoDestination(
   const x = 112;
   const displayUrl = boardPromoDisplayUrl(boardUrl);
   if (!showQrCode || !qrImage) {
+    context.font = '720 31px Inter, Arial, sans-serif';
+    const panelWidth = boardPromoLinkPanelWidth(context.measureText(displayUrl).width);
     context.fillStyle = 'rgba(255,255,255,.075)';
-    roundedRect(context, x, 930, 1130, 164, 28);
+    roundedRect(context, x, 930, panelWidth, 164, 28);
     context.fill();
     context.strokeStyle = 'rgba(255,253,243,.42)';
     context.lineWidth = 2;
@@ -299,7 +318,12 @@ function drawPromoDestination(
     context.letterSpacing = '0px';
     context.fillStyle = '#fffdf3';
     context.font = '720 31px Inter, Arial, sans-serif';
-    const linkLines = boardPromoTextLines(displayUrl, 1055, (value) => context.measureText(value).width, 2);
+    const linkLines = boardPromoTextLines(
+      displayUrl,
+      panelWidth - 76,
+      (value) => context.measureText(value).width,
+      2,
+    );
     linkLines.forEach((line, index) => context.fillText(line, x + 38, 1044 + index * 38));
     return;
   }
