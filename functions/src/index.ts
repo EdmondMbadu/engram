@@ -16046,24 +16046,31 @@ export const createElevenLabsVoiceSession = onCall(
       });
     }
     const visitorId = uid ?? anonymousVisitorId ?? `visitor_${randomUUID()}`;
+    const requestedConnectionType = request.data?.connectionType === 'websocket' ? 'websocket' : 'webrtc';
     const params = new URLSearchParams({
       agent_id: agentId,
-      participant_name: textValue(request.data?.participantName, 80) || visitorId.slice(0, 80),
       environment: 'production',
     });
+    if (requestedConnectionType === 'webrtc') {
+      params.set('participant_name', textValue(request.data?.participantName, 80) || visitorId.slice(0, 80));
+    }
+    const credentialEndpoint = requestedConnectionType === 'websocket'
+      ? 'get-signed-url'
+      : 'token';
 
-    const response = await fetchWithTimeout(`https://api.elevenlabs.io/v1/convai/conversation/token?${params.toString()}`, {
+    const response = await fetchWithTimeout(`https://api.elevenlabs.io/v1/convai/conversation/${credentialEndpoint}?${params.toString()}`, {
       method: 'GET',
       headers: {
         'xi-api-key': apiKey,
       },
     }, elevenLabsTokenRequestTimeoutMs);
-    markTiming('tokenRequestMs', checkpoint);
+    markTiming('credentialRequestMs', checkpoint);
 
     if (!response.ok) {
       const errorText = await response.text().catch(() => '');
-      logger.warn('ElevenLabs voice session token request failed', {
+      logger.warn('ElevenLabs voice session credential request failed', {
         status: response.status,
+        connectionType: requestedConnectionType,
         body: errorText.slice(0, 500),
       });
       if (response.status === 404 && errorText.includes('agent_not_found')) {
@@ -16075,10 +16082,11 @@ export const createElevenLabsVoiceSession = onCall(
       throw new HttpsError('internal', 'Failed to start realtime voice.');
     }
 
-    const data = await response.json() as { token?: unknown };
+    const data = await response.json() as { token?: unknown; signed_url?: unknown };
     const conversationToken = typeof data.token === 'string' ? data.token : '';
-    if (!conversationToken) {
-      throw new HttpsError('internal', 'ElevenLabs did not return a conversation token.');
+    const signedUrl = typeof data.signed_url === 'string' ? data.signed_url : '';
+    if (requestedConnectionType === 'websocket' ? !signedUrl : !conversationToken) {
+      throw new HttpsError('internal', 'ElevenLabs did not return a conversation credential.');
     }
 
     timings.totalMs = Date.now() - startedAt;
@@ -16092,11 +16100,14 @@ export const createElevenLabsVoiceSession = onCall(
       selectedVoiceId: selectedVoice?.voiceId ?? null,
       atlasVoiceSource: atlasVoice?.source ?? 'default',
       configuredVoiceAvailable,
+      connectionType: requestedConnectionType,
       timings,
     });
 
     return {
-      conversationToken,
+      conversationToken: conversationToken || null,
+      signedUrl: signedUrl || null,
+      connectionType: requestedConnectionType,
       agentId,
       userId: visitorId,
       voiceOverrideEnabled,

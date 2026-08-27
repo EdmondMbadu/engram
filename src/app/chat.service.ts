@@ -86,7 +86,9 @@ type ChatAnswerSpeechResponse = {
 };
 
 type ElevenLabsVoiceSessionResponse = {
-  conversationToken: string;
+  conversationToken?: string | null;
+  signedUrl?: string | null;
+  connectionType?: 'websocket' | 'webrtc' | null;
   agentId: string;
   userId: string;
   dynamicVariables: Record<string, string | number | boolean>;
@@ -590,6 +592,7 @@ export class ChatService {
     voiceLanguage?: string | null;
     voiceCountry?: string | null;
     voiceAccent?: string | null;
+    connectionType?: 'websocket' | 'webrtc';
   }): Promise<ElevenLabsVoiceSessionResponse | null> {
     if (!this.functions) {
       return null;
@@ -605,6 +608,7 @@ export class ChatService {
         voiceLanguage?: string | null;
         voiceCountry?: string | null;
         voiceAccent?: string | null;
+        connectionType?: 'websocket' | 'webrtc';
       },
       ElevenLabsVoiceSessionResponse
     >(this.functions, 'createElevenLabsVoiceSession');
@@ -618,6 +622,7 @@ export class ChatService {
       voiceLanguage: options.voiceLanguage ?? null,
       voiceCountry: options.voiceCountry ?? null,
       voiceAccent: options.voiceAccent ?? null,
+      connectionType: options.connectionType ?? 'websocket',
     });
     return data;
   }

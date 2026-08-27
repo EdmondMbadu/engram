@@ -120,6 +120,7 @@ const THINKING_STAGES = [
 ];
 
 const CITY_WIKI_CATEGORY = 'Cities & Regions';
+const ELEVENLABS_RESAMPLER_PATH = '/voice/libsamplerate-2.1.2/libsamplerate.worklet.js';
 const SAFE_CITY_BOARD_ICON = /^(?:dashboard|dashboard_customize|travel_explore|location_city|location_on|restaurant|local_cafe|local_bar|nightlife|beach_access|festival|hiking|directions_walk|directions_car|museum|history_edu|shopping_bag|storefront|favorite|auto_awesome|public|sports_handball|sports_basketball|sports_soccer|sports_football|sports_baseball|sports_tennis|sports_volleyball|fitness_center|music_note|palette|photo_camera|park|family_restroom|school|menu_book|theater_comedy|stadium|spa|pets)$/;
 
 // ElevenLabs supported language override codes (see @elevenlabs/types
@@ -449,6 +450,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   private answerAudioPromises = new Map<string, Promise<string | null>>();
   private voiceClickScrollPosition: ReturnType<ChatComponent['captureScrollPosition']> = null;
   private voiceScrollLockTimer: ReturnType<typeof setInterval> | null = null;
+  private elevenLabsClientPromise: Promise<typeof import('@elevenlabs/client')> | null = null;
+  private voiceResamplerPreloadPromise: Promise<void> | null = null;
+  private voiceSdkPreloadTimer: number | null = null;
   private realtimeVoiceConversation: ElevenLabsConversation | null = null;
   private realtimeVoiceEndingByUser = false;
   private realtimeVoiceSummaryOffered = false;
@@ -3732,6 +3736,12 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       this.voiceLanguageDetectionStarted = true;
       void this.detectAndSelectVoiceLanguage();
     });
+
+    effect(() => {
+      if (this.canStartRealtimeVoice()) {
+        this.scheduleVoiceSdkPreload();
+      }
+    });
   }
 
   async submitQuestion(): Promise<void> {
@@ -4269,6 +4279,71 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     await this.startRealtimeVoice(this.selectedVoiceLanguage() ?? undefined);
   }
 
+  private loadElevenLabsClient(): Promise<typeof import('@elevenlabs/client')> {
+    if (this.elevenLabsClientPromise) {
+      return this.elevenLabsClientPromise;
+    }
+
+    const modulePromise = import('@elevenlabs/client').catch((error) => {
+      if (this.elevenLabsClientPromise === modulePromise) {
+        this.elevenLabsClientPromise = null;
+      }
+      throw error;
+    });
+    this.elevenLabsClientPromise = modulePromise;
+    return modulePromise;
+  }
+
+  private preloadVoiceResampler(): Promise<void> {
+    if (this.voiceResamplerPreloadPromise) {
+      return this.voiceResamplerPreloadPromise;
+    }
+    if (typeof window === 'undefined') {
+      return Promise.resolve();
+    }
+
+    const preloadPromise = fetch(ELEVENLABS_RESAMPLER_PATH, {
+      cache: 'force-cache',
+      credentials: 'same-origin',
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error(`Voice resampler preload failed (${response.status}).`);
+        }
+        // Consume the response so the browser can reuse it from its HTTP cache
+        // when AudioWorklet.addModule requests the same versioned URL.
+        await response.arrayBuffer();
+      })
+      .catch((error) => {
+        if (this.voiceResamplerPreloadPromise === preloadPromise) {
+          this.voiceResamplerPreloadPromise = null;
+        }
+        throw error;
+      });
+    this.voiceResamplerPreloadPromise = preloadPromise;
+    return preloadPromise;
+  }
+
+  private scheduleVoiceSdkPreload(): void {
+    if (
+      typeof window === 'undefined' ||
+      this.voiceSdkPreloadTimer !== null ||
+      (this.elevenLabsClientPromise !== null && this.voiceResamplerPreloadPromise !== null)
+    ) {
+      return;
+    }
+
+    this.voiceSdkPreloadTimer = window.setTimeout(() => {
+      this.voiceSdkPreloadTimer = null;
+      void this.loadElevenLabsClient().catch(() => {
+        // A tap will retry the import and surface an actionable voice error.
+      });
+      void this.preloadVoiceResampler().catch(() => {
+        // Voice startup falls back to ElevenLabs' hosted resampler if needed.
+      });
+    }, 350);
+  }
+
   async startRealtimeVoice(language?: VoiceLanguageOption): Promise<void> {
     if (this.realtimeVoiceActive()) {
       return;
@@ -4319,11 +4394,6 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     };
 
     try {
-      const streamPromise = navigator.mediaDevices.getUserMedia({ audio: true })
-        .then((stream) => {
-          markStartupTiming('microphoneMs', startupStartedAt);
-          return stream;
-        });
       const sessionPromise = this.chatService.createElevenLabsVoiceSession({
           atlasId,
           atlasName: this.currentWikiName(),
@@ -4333,6 +4403,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
           voiceLanguage: language?.language ?? null,
           voiceCountry: language?.country ?? null,
           voiceAccent: accentProfile?.label ?? null,
+          connectionType: 'websocket',
         })
         .then((session) => {
           markStartupTiming('callableMs', startupStartedAt);
@@ -4342,13 +4413,23 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
           return session;
         });
       const sdkImportStartedAt = performance.now();
-      const conversationModulePromise = import('@elevenlabs/client')
+      const conversationModulePromise = this.loadElevenLabsClient()
         .then((module) => {
           markStartupTiming('sdkImportMs', sdkImportStartedAt);
           return module;
         });
-      const [stream, session, conversationModule] = await Promise.all([streamPromise, sessionPromise, conversationModulePromise]);
-      stream.getTracks().forEach((track) => track.stop());
+      const resamplerStartedAt = performance.now();
+      const resamplerPathPromise = this.preloadVoiceResampler()
+        .then(() => {
+          markStartupTiming('resamplerPreloadMs', resamplerStartedAt);
+          return ELEVENLABS_RESAMPLER_PATH;
+        })
+        .catch(() => undefined);
+      const [session, conversationModule, resamplerPath] = await Promise.all([
+        sessionPromise,
+        conversationModulePromise,
+        resamplerPathPromise,
+      ]);
       if (!session) {
         throw new Error('Voice service is unavailable.');
       }
@@ -4386,12 +4467,26 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       const voiceOverrideOptions = Object.keys(voiceOverrides).length > 0
         ? { overrides: voiceOverrides }
         : {};
+      const connectionOptions = session.signedUrl
+        ? {
+            signedUrl: session.signedUrl,
+            connectionType: 'websocket' as const,
+          }
+        : session.conversationToken
+          ? {
+              conversationToken: session.conversationToken,
+              connectionType: 'webrtc' as const,
+            }
+          : null;
+      if (!connectionOptions) {
+        throw new Error('Voice service did not return a conversation credential.');
+      }
 
       let checkpoint = performance.now();
       const { Conversation } = conversationModule;
       const conversation = await Conversation.startSession({
-        conversationToken: session.conversationToken,
-        connectionType: 'webrtc',
+        ...connectionOptions,
+        ...(resamplerPath ? { libsampleratePath: resamplerPath } : {}),
         userId: session.userId,
         ...(language && accentProfile
           ? {
@@ -5924,6 +6019,10 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     if (this.copyFeedbackTimeout) {
       clearTimeout(this.copyFeedbackTimeout);
       this.copyFeedbackTimeout = null;
+    }
+    if (this.voiceSdkPreloadTimer !== null) {
+      window.clearTimeout(this.voiceSdkPreloadTimer);
+      this.voiceSdkPreloadTimer = null;
     }
     this.unlockScrollPosition(this.voiceClickScrollPosition);
     this.clearSpeechState(true);
