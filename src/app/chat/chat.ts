@@ -503,9 +503,8 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly realtimeVoiceInputLevel = signal(0);
   readonly realtimeVoiceOutputLevel = signal(0);
   readonly realtimeVoiceEnergyLevel = signal(0);
-  readonly realtimeVoiceVisualScale = computed(() => (1 + this.realtimeVoiceEnergyLevel() * 0.12).toFixed(3));
+  readonly realtimeVoicePortraitFailedUrl = signal<string | null>(null);
   readonly realtimeVoiceVisualGlow = computed(() => `${Math.round(22 + this.realtimeVoiceEnergyLevel() * 70)}px`);
-  readonly realtimeVoiceVisualBar = computed(() => (0.2 + this.realtimeVoiceEnergyLevel() * 1.7).toFixed(3));
   readonly voiceSummaryModal = signal<VoiceSummaryModal | null>(null);
   readonly voiceSummaryEmail = signal('');
   readonly voiceSummarySending = signal(false);
@@ -752,6 +751,15 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly realtimeVoiceGreeting = computed(() =>
     this.voiceSessionGreeting(this.selectedVoiceLanguage() ?? undefined),
   );
+  readonly realtimeVoiceParticipantName = computed(() =>
+    this.currentWikiName()
+    || this.currentWikiGuide()?.name?.trim()
+    || this.uiText('myLivingWiki'),
+  );
+  readonly realtimeVoicePortraitUrl = computed(() => {
+    const url = this.currentWikiGuide()?.image_url?.trim() || null;
+    return url && url !== this.realtimeVoicePortraitFailedUrl() ? url : null;
+  });
 
   readonly canScrollVoiceCarouselPrev = computed(() => !this.voiceCarouselAtStart());
   readonly canScrollVoiceCarouselNext = computed(() => !this.voiceCarouselAtEnd());
@@ -4630,6 +4638,10 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   onRealtimeVoiceTextInput(event: Event): void {
     const input = event.target as HTMLInputElement | null;
     this.realtimeVoiceTextInput.set(input?.value ?? '');
+  }
+
+  handleRealtimeVoicePortraitError(url: string): void {
+    this.realtimeVoicePortraitFailedUrl.set(url);
   }
 
   sendRealtimeVoiceTextMessage(event?: Event): void {

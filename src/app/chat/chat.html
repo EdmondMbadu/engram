@@ -297,7 +297,12 @@
       </header>
 
       @if (realtimeVoicePanelOpen()) {
-        <section class="voice-mode-overlay" [attr.aria-label]="uiText('realtimeVoiceMode')">
+        <section
+          class="voice-mode-overlay"
+          role="dialog"
+          aria-modal="true"
+          [attr.aria-label]="uiText('realtimeVoiceMode')"
+        >
           <div class="voice-mode-shell">
             <div class="voice-mode-topbar">
               <button
@@ -308,52 +313,60 @@
               >
                 <span class="material-symbols-outlined">close</span>
               </button>
-              <div class="voice-mode-status">
-                <span class="voice-mode-status__dot" [class.voice-mode-status__dot--live]="realtimeVoiceStatus() === 'connected'"></span>
-                <span>{{ realtimeVoicePanelTitle() }}</span>
+              <div class="voice-mode-identity">
+                <span class="material-symbols-outlined voice-mode-identity__mark" aria-hidden="true">eco</span>
+                <span>{{ realtimeVoiceParticipantName() }}</span>
               </div>
-              @if (realtimeVoiceStatus() === 'connected') {
-                <button
-                  type="button"
-                  class="voice-mode-icon-button"
-                  [attr.aria-label]="realtimeVoiceMuted() ? uiText('unmuteMicrophone') : uiText('muteMicrophone')"
-                  (click)="toggleRealtimeVoiceMute()"
-                >
-                  <span class="material-symbols-outlined">{{ realtimeVoiceMuted() ? 'mic_off' : 'mic' }}</span>
-                </button>
-              } @else {
-                <span class="voice-mode-icon-button voice-mode-icon-button--placeholder"></span>
-              }
+              <div class="voice-mode-status" [class.voice-mode-status--live]="realtimeVoiceStatus() === 'connected'">
+                <span class="voice-mode-status__dot" [class.voice-mode-status__dot--live]="realtimeVoiceStatus() === 'connected'"></span>
+                <span>{{ realtimeVoiceStatus() === 'connected' ? uiText('live') : realtimeVoicePanelTitle() }}</span>
+              </div>
             </div>
 
             <div class="voice-mode-stage">
               <div
-                class="voice-orb"
-                [class.voice-orb--speaking]="realtimeVoiceMode() === 'speaking'"
-                [class.voice-orb--listening]="realtimeVoiceMode() === 'listening'"
-                [class.voice-orb--connecting]="realtimeVoiceStatus() === 'connecting'"
-                [class.voice-orb--error]="realtimeVoiceStatus() === 'error'"
+                class="voice-presence"
+                [class.voice-presence--speaking]="realtimeVoiceMode() === 'speaking'"
+                [class.voice-presence--listening]="realtimeVoiceMode() === 'listening'"
+                [class.voice-presence--connecting]="realtimeVoiceStatus() === 'connecting'"
+                [class.voice-presence--error]="realtimeVoiceStatus() === 'error'"
+                [class.voice-presence--portrait]="!!realtimeVoicePortraitUrl()"
                 [style.--voice-energy]="realtimeVoiceEnergyLevel()"
-                [style.--voice-input]="realtimeVoiceInputLevel()"
-                [style.--voice-output]="realtimeVoiceOutputLevel()"
-                [style.--voice-scale]="realtimeVoiceVisualScale()"
                 [style.--voice-glow]="realtimeVoiceVisualGlow()"
-                [style.--voice-bar]="realtimeVoiceVisualBar()"
+                role="img"
+                [attr.aria-label]="realtimeVoicePanelTitle()"
               >
-                <span class="voice-orb__halo"></span>
-                <span class="voice-orb__slice voice-orb__slice--one"></span>
-                <span class="voice-orb__slice voice-orb__slice--two"></span>
-                <span class="voice-orb__slice voice-orb__slice--three"></span>
-                <span class="voice-orb__center"></span>
-                <span class="voice-orb__wave voice-orb__wave--one"></span>
-                <span class="voice-orb__wave voice-orb__wave--two"></span>
-                <span class="voice-orb__wave voice-orb__wave--three"></span>
-                <span class="voice-orb__wave voice-orb__wave--four"></span>
-                <span class="voice-orb__wave voice-orb__wave--five"></span>
+                <span class="voice-presence__aura" aria-hidden="true"></span>
+                <span class="voice-presence__contour voice-presence__contour--outer" aria-hidden="true"></span>
+                <span class="voice-presence__contour voice-presence__contour--middle" aria-hidden="true"></span>
+                <span class="voice-presence__contour voice-presence__contour--inner" aria-hidden="true"></span>
+
+                @if (realtimeVoicePortraitUrl(); as portraitUrl) {
+                  <span class="voice-presence__portrait-frame">
+                    <img
+                      [src]="portraitUrl"
+                      [alt]="realtimeVoiceParticipantName()"
+                      (error)="handleRealtimeVoicePortraitError(portraitUrl)"
+                    />
+                  </span>
+                } @else {
+                  <span class="voice-presence__body" aria-hidden="true"></span>
+                }
+
+                <span class="voice-presence__trace" aria-hidden="true">
+                  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                </span>
               </div>
-              <p class="voice-mode-orb-label">{{ realtimeVoiceOrbState() }}</p>
+              <p class="voice-mode-orb-label">
+                @if (realtimeVoiceStatus() === 'connected' && realtimeVoiceMode() === 'speaking') {
+                  <span>{{ realtimeVoiceParticipantName() }}</span>
+                  <span aria-hidden="true"> · </span>
+                }
+                {{ realtimeVoiceOrbState() }}
+              </p>
               <p class="voice-mode-orb-subtitle">
-                {{ uiText('internetModeOnly') }}{{ realtimeVoiceConversationId() ? ' · ' + realtimeVoiceConversationId() : '' }}
+                {{ realtimeVoiceMode() === 'speaking' ? uiText('aiTalking') : uiText('listeningForYou') }}
               </p>
               @if (realtimeVoiceError()) {
                 <p class="voice-mode-error">{{ realtimeVoiceError() }}</p>

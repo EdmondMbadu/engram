@@ -1216,35 +1216,38 @@
 .voice-mode-overlay {
   position: fixed;
   inset: 0;
-  z-index: 80;
+  z-index: 200;
   display: flex;
   align-items: center;
   justify-content: center;
   background:
-    radial-gradient(circle at 50% 18%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 32rem),
-    color-mix(in srgb, var(--bg) 84%, transparent);
+    radial-gradient(circle at 50% 12%, color-mix(in srgb, #67e8d0 13%, transparent), transparent 29rem),
+    radial-gradient(circle at 18% 82%, color-mix(in srgb, #60a5fa 7%, transparent), transparent 25rem),
+    color-mix(in srgb, var(--bg) 88%, transparent);
   padding: 1rem;
   backdrop-filter: blur(18px);
 }
 
 .voice-mode-shell {
-  width: min(100%, 28rem);
-  max-height: min(45rem, calc(100dvh - 2rem));
+  width: min(100%, 31rem);
+  max-height: min(52rem, calc(100dvh - 2rem));
+  min-height: 0;
   display: grid;
   grid-template-rows: auto auto minmax(8rem, 1fr) auto;
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--accent) 16%, var(--line));
-  border-radius: 1.4rem;
+  border-radius: 1.75rem;
   background:
     linear-gradient(180deg, color-mix(in srgb, var(--surface) 98%, white 2%), color-mix(in srgb, var(--surface) 94%, transparent));
   box-shadow:
-    0 28px 90px -44px rgba(0, 0, 0, 0.55),
+    0 32px 96px -48px rgba(10, 42, 34, 0.5),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .voice-mode-topbar,
 .voice-mode-composer {
   display: flex;
+  flex-direction: row;
   align-items: center;
   gap: 0.75rem;
   padding: 0.8rem;
@@ -1252,7 +1255,32 @@
 
 .voice-mode-topbar {
   justify-content: space-between;
-  border-bottom: 1px solid var(--line);
+  min-height: 4rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 64%, transparent);
+  padding-inline: 1rem;
+}
+
+.voice-mode-identity {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  color: var(--text);
+  font-size: 0.98rem;
+  font-weight: 900;
+}
+
+.voice-mode-identity > span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.voice-mode-identity__mark {
+  flex: 0 0 auto;
+  color: #0c9d71;
+  font-size: 1.35rem;
 }
 
 .voice-mode-status {
@@ -1260,10 +1288,14 @@
   align-items: center;
   gap: 0.45rem;
   min-width: 0;
-  color: var(--text);
+  color: var(--muted);
   font-size: 0.82rem;
   font-weight: 850;
   letter-spacing: 0;
+}
+
+.voice-mode-status--live {
+  color: #07864e;
 }
 
 .voice-mode-status__dot {
@@ -1274,8 +1306,8 @@
 }
 
 .voice-mode-status__dot--live {
-  background: #18b66a;
-  box-shadow: 0 0 0 4px rgba(24, 182, 106, 0.16);
+  background: #10a861;
+  box-shadow: 0 0 0 4px rgba(16, 168, 97, 0.12);
 }
 
 .voice-mode-icon-button,
@@ -1315,111 +1347,201 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1.6rem 1rem 1.1rem;
+  padding: 1.1rem 1rem 0.95rem;
   text-align: center;
 }
 
-.voice-orb {
-  --voice-scale: 1;
+.voice-presence {
   --voice-glow: 22px;
-  --voice-bar: 0.2;
+  --presence-a: #64e5c5;
+  --presence-b: #18bfca;
+  --presence-c: #438eea;
   position: relative;
-  width: 12.5rem;
-  height: 12.5rem;
-  display: grid;
-  place-items: center;
-  border-radius: 999px;
-  overflow: visible;
+  width: 16rem;
+  height: 14.5rem;
+  flex: 0 0 auto;
   isolation: isolate;
-  transform: scale(var(--voice-scale));
-  transition: transform 80ms linear, filter 80ms linear;
-  filter: drop-shadow(0 0 var(--voice-glow) color-mix(in srgb, #0ba7ff 24%, transparent));
+  filter: drop-shadow(0 0 var(--voice-glow) color-mix(in srgb, var(--presence-b) 19%, transparent));
+  transition: filter 100ms linear;
 }
 
-.voice-orb__halo,
-.voice-orb__slice,
-.voice-orb__center {
+.voice-presence--listening {
+  --presence-a: #7dd3fc;
+  --presence-b: #3b9df4;
+  --presence-c: #536ce8;
+}
+
+.voice-presence--error {
+  --presence-a: #fda4af;
+  --presence-b: #fb7185;
+  --presence-c: #dc2626;
+  filter: drop-shadow(0 0 28px rgba(220, 38, 38, 0.22));
+}
+
+.voice-presence__aura,
+.voice-presence__contour,
+.voice-presence__body,
+.voice-presence__portrait-frame {
   position: absolute;
-  border-radius: inherit;
+  left: 50%;
+  top: 45%;
+  transform: translate(-50%, -50%);
 }
 
-.voice-orb__halo {
-  inset: -0.75rem;
-  border: 1px solid color-mix(in srgb, #39d5d3 25%, transparent);
-  opacity: 0.45;
-  transform: scale(var(--voice-scale));
-}
-
-.voice-orb__slice {
-  inset: 0;
+.voice-presence__aura {
+  width: 85%;
+  height: 78%;
+  border-radius: 45% 55% 52% 48% / 48% 42% 58% 52%;
   background:
-    conic-gradient(from 230deg,
-      #0a47b8 0deg,
-      #0bbdd6 46deg,
-      rgba(255, 255, 255, 0.92) 74deg,
-      #72ded8 108deg,
-      #0b5ac8 160deg,
-      #36d3cf 214deg,
-      rgba(255, 255, 255, 0.86) 254deg,
-      #0f55bd 300deg,
-      #66ddd7 360deg);
-  opacity: 0.88;
-  transform-origin: 50% 52%;
-  clip-path: circle(50% at 50% 50%);
+    radial-gradient(circle at 34% 38%, color-mix(in srgb, var(--presence-a) 78%, white), transparent 34%),
+    radial-gradient(circle at 66% 62%, color-mix(in srgb, var(--presence-c) 58%, transparent), transparent 55%);
+  opacity: calc(0.27 + var(--voice-energy) * 0.26);
+  filter: blur(25px);
+  transform: translate(-50%, -50%) scale(calc(0.96 + var(--voice-energy) * 0.18));
+  transition: transform 90ms linear, opacity 90ms linear;
 }
 
-.voice-orb__slice--two {
-  opacity: 0.38;
-  filter: blur(8px);
-  transform: scale(0.96);
+.voice-presence__contour {
+  border: 1px solid color-mix(in srgb, var(--presence-b) 22%, transparent);
+  opacity: calc(0.2 + var(--voice-energy) * 0.28);
+  transition: opacity 100ms linear, transform 100ms linear;
+  animation: voice-contour-morph 5.8s ease-in-out infinite alternate;
 }
 
-.voice-orb__slice--three {
-  opacity: 0.36;
-  background: radial-gradient(circle at 42% 34%, rgba(255, 255, 255, 0.86), transparent 22%, rgba(14, 103, 205, 0.68) 54%, rgba(72, 218, 210, 0.76));
-  mix-blend-mode: screen;
+.voice-presence__contour--outer {
+  width: 94%;
+  height: 84%;
+  border-radius: 47% 53% 44% 56% / 53% 42% 58% 47%;
+  transform: translate(-50%, -50%) scale(calc(0.96 + var(--voice-energy) * 0.13));
 }
 
-.voice-orb__center {
-  width: 0.45rem;
-  height: 0.45rem;
-  background: #063e9d;
-  box-shadow: 0 0 18px rgba(255, 255, 255, 0.92);
-  z-index: 2;
+.voice-presence__contour--middle {
+  width: 82%;
+  height: 73%;
+  border-radius: 54% 46% 56% 44% / 43% 58% 42% 57%;
+  transform: translate(-50%, -50%) scale(calc(0.95 + var(--voice-energy) * 0.1));
+  animation-delay: -2.1s;
 }
 
-.voice-orb__wave {
+.voice-presence__contour--inner {
+  width: 70%;
+  height: 63%;
+  border-color: color-mix(in srgb, var(--presence-a) 32%, transparent);
+  border-radius: 42% 58% 48% 52% / 55% 44% 56% 45%;
+  transform: translate(-50%, -50%) scale(calc(0.95 + var(--voice-energy) * 0.08));
+  animation-delay: -3.7s;
+}
+
+.voice-presence__body {
+  width: 76%;
+  height: 67%;
+  border-radius: 46% 54% 42% 58% / 50% 41% 59% 50%;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 30% 24%, rgba(255, 255, 255, 0.92), transparent 22%),
+    linear-gradient(135deg, var(--presence-a), var(--presence-b) 48%, var(--presence-c));
+  box-shadow:
+    inset 14px 18px 35px rgba(255, 255, 255, 0.45),
+    inset -18px -20px 38px color-mix(in srgb, var(--presence-c) 42%, transparent),
+    0 20px 50px -28px color-mix(in srgb, var(--presence-c) 65%, transparent);
+  transform: translate(-50%, -50%) scale(calc(0.96 + var(--voice-energy) * 0.14));
+  transition: transform 70ms linear;
+  animation: voice-body-morph 4.6s ease-in-out infinite alternate;
+}
+
+.voice-presence__body::after {
+  content: '';
   position: absolute;
-  bottom: 0.92rem;
-  z-index: 3;
-  width: 0.34rem;
-  height: 2.4rem;
+  inset: 0;
+  border-radius: inherit;
+  background: repeating-radial-gradient(
+    ellipse at 52% 48%,
+    rgba(255, 255, 255, 0.26) 0 1px,
+    transparent 1px 5px
+  );
+  opacity: 0.6;
+  mix-blend-mode: soft-light;
+}
+
+.voice-presence__body::before {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  left: -5%;
+  top: 36%;
+  width: 110%;
+  height: 34%;
+  border-block: 1.5px solid rgba(255, 255, 255, 0.72);
+  border-radius: 50%;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.6));
+  opacity: calc(0.62 + var(--voice-energy) * 0.3);
+  transform: skewY(-6deg) scaleY(calc(0.7 + var(--voice-energy) * 0.5));
+}
+
+.voice-presence__portrait-frame {
+  z-index: 2;
+  width: 9.7rem;
+  height: 9.7rem;
+  overflow: hidden;
+  border: 4px solid color-mix(in srgb, white 88%, var(--presence-a));
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.86);
-  transform-origin: 50% 100%;
-  transform: translateX(var(--wave-x, 0)) scaleY(var(--voice-bar));
-  opacity: 0.86;
-  animation: voice-wave-breathe 520ms ease-in-out infinite alternate;
+  background: var(--soft-fill);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--presence-b) 35%, transparent),
+    0 18px 48px -24px color-mix(in srgb, var(--presence-c) 72%, transparent);
+  transform: translate(-50%, -50%) scale(calc(0.98 + var(--voice-energy) * 0.06));
+  transition: transform 90ms linear;
 }
 
-.voice-orb__wave--one { --wave-x: -1.6rem; animation-delay: 40ms; }
-.voice-orb__wave--two { --wave-x: -0.8rem; animation-delay: 120ms; }
-.voice-orb__wave--three { --wave-x: 0; animation-delay: 0ms; }
-.voice-orb__wave--four { --wave-x: 0.8rem; animation-delay: 180ms; }
-.voice-orb__wave--five { --wave-x: 1.6rem; animation-delay: 80ms; }
-
-.voice-orb--connecting .voice-orb__halo {
-  animation: atlas-pulse 1.3s ease-out infinite;
+.voice-presence__portrait-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.voice-orb--error {
-  filter: drop-shadow(0 0 28px rgba(220, 38, 38, 0.24));
+.voice-presence--portrait .voice-presence__contour {
+  border-radius: 999px;
+}
+
+.voice-presence__trace {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  bottom: 0.35rem;
+  display: flex;
+  height: 1.8rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  transform: translateX(-50%);
+}
+
+.voice-presence__trace i {
+  width: 0.16rem;
+  height: 1.4rem;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--presence-a), var(--presence-c));
+  opacity: calc(0.52 + var(--voice-energy) * 0.48);
+  transform: scaleY(calc(var(--bar-floor, 0.12) + var(--voice-energy) * var(--bar-gain, 0.75)));
+  transition: transform 70ms linear, opacity 100ms linear;
+}
+
+.voice-presence__trace i:nth-child(2n) { --bar-floor: 0.2; --bar-gain: 0.92; }
+.voice-presence__trace i:nth-child(3n) { --bar-floor: 0.32; --bar-gain: 0.62; }
+.voice-presence__trace i:nth-child(4n) { --bar-floor: 0.15; --bar-gain: 1.08; }
+.voice-presence__trace i:nth-child(7),
+.voice-presence__trace i:nth-child(9),
+.voice-presence__trace i:nth-child(11) { --bar-floor: 0.4; --bar-gain: 1.12; }
+
+.voice-presence--connecting .voice-presence__aura,
+.voice-presence--connecting .voice-presence__contour--outer {
+  animation: voice-connecting-pulse 1.5s ease-in-out infinite;
 }
 
 .voice-mode-orb-label {
-  margin-top: 1.1rem;
+  margin-top: 0.45rem;
   color: var(--text);
-  font-size: 1rem;
+  font-size: 1.08rem;
   font-weight: 900;
   letter-spacing: 0;
 }
@@ -1441,13 +1563,13 @@
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  min-width: 6.5rem;
+  min-width: 8rem;
   height: 2.8rem;
   justify-content: center;
-  margin-top: 1rem;
+  margin-top: 0.85rem;
   border: 0;
   border-radius: 999px;
-  background: #dc2626;
+  background: linear-gradient(135deg, #f04444, #e32626);
   color: white;
   box-shadow: 0 12px 28px -16px rgba(220, 38, 38, 0.8);
   font-size: 0.86rem;
@@ -1568,13 +1690,26 @@
 }
 
 .voice-mode-send {
-  background: var(--text);
-  color: var(--bg);
+  border-color: color-mix(in srgb, #0c9d71 55%, transparent);
+  background: linear-gradient(135deg, #15ad7e, #079b70);
+  color: white;
 }
 
-@keyframes voice-wave-breathe {
-  0% { opacity: 0.48; }
-  100% { opacity: 1; }
+@keyframes voice-contour-morph {
+  0% { border-radius: 47% 53% 44% 56% / 53% 42% 58% 47%; }
+  50% { border-radius: 54% 46% 57% 43% / 44% 56% 44% 56%; }
+  100% { border-radius: 43% 57% 49% 51% / 58% 46% 54% 42%; }
+}
+
+@keyframes voice-body-morph {
+  0% { border-radius: 46% 54% 42% 58% / 50% 41% 59% 50%; }
+  50% { border-radius: 54% 46% 57% 43% / 43% 55% 45% 57%; }
+  100% { border-radius: 43% 57% 48% 52% / 58% 46% 54% 42%; }
+}
+
+@keyframes voice-connecting-pulse {
+  0%, 100% { opacity: 0.28; }
+  50% { opacity: 0.72; }
 }
 
 @media (max-width: 480px) {
@@ -1591,16 +1726,41 @@
   }
 
   .voice-mode-stage {
-    padding-top: 1.25rem;
+    padding-top: 0.75rem;
   }
 
-  .voice-orb {
-    width: 10.8rem;
-    height: 10.8rem;
+  .voice-presence {
+    width: 14rem;
+    height: 12.4rem;
   }
 
   .voice-mode-transcript {
-    min-height: 10rem;
+    min-height: 8rem;
+  }
+}
+
+@media (max-height: 700px) {
+  .voice-mode-stage {
+    padding-block: 0.55rem 0.7rem;
+  }
+
+  .voice-presence {
+    width: 12.5rem;
+    height: 10.5rem;
+  }
+
+  .voice-mode-orb-label {
+    margin-top: 0.25rem;
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .voice-presence__contour,
+  .voice-presence__body,
+  .voice-presence--connecting .voice-presence__aura,
+  .voice-presence--connecting .voice-presence__contour--outer {
+    animation: none;
   }
 }
 
