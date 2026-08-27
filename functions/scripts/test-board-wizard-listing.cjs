@@ -7,6 +7,12 @@ const {
   isBoardWizardListingPageUrl,
   isBoardWizardZillowListingPageUrl,
 } = require('../lib/board-wizard-listing.js');
+const {
+  boardWizardListingPreview,
+  buildBoardWizardListingMarketingBatchFromAnalyses,
+  isLikelyBoardWizardRealEstateUrl,
+  normalizeBoardWizardListingMarketingOptions,
+} = require('../lib/board-wizard-listing-marketing.js');
 
 assert.equal(isBoardWizardListingPageUrl('https://www.airbnb.com/rooms/1684310791539108474'), true);
 assert.equal(isBoardWizardListingPageUrl('https://www.airbnb.com/s/homes'), false);
@@ -14,6 +20,13 @@ assert.equal(isBoardWizardListingPageUrl('https://www.zillow.com/apartments/phil
 assert.equal(isBoardWizardListingPageUrl('https://www.zillow.com/philadelphia-pa/apartments/'), false);
 assert.equal(isBoardWizardZillowListingPageUrl('https://www.zillow.com/homedetails/example/141490995_zpid/'), true);
 assert.equal(isBoardWizardZillowListingPageUrl('https://www.airbnb.com/rooms/1684310791539108474'), false);
+assert.equal(isLikelyBoardWizardRealEstateUrl('https://cmc.exprealty.com/property/26-261262-example'), true);
+assert.equal(isLikelyBoardWizardRealEstateUrl('https://www.airbnb.com/rooms/1684310791539108474'), false);
+assert.deepEqual(normalizeBoardWizardListingMarketingOptions({ style: 'luxury', direction: '  Lead with the deck.  ' }), {
+  enabled: true,
+  style: 'luxury',
+  direction: 'Lead with the deck.',
+});
 
 const zillowReaderMarkdown = `Title: 27 Cranberry Cove Ct, Las Vegas, NV 89135 | MLS #2809912 | Zillow
 
@@ -424,6 +437,55 @@ assert.match(expContactCard.imageUrl, /\/profiles\/93256\.jpg/);
 assert.ok(expBatch.cards.some((card) => card.title === 'Virtual tours'));
 assert.ok(expBatch.cards.at(-1).tags.includes('action'));
 assert.ok(expBatch.cards.filter((card) => card.tags.includes('gallery')).every((card) => expListing.images.some((image) => image.url === card.imageUrl)));
+
+const expPreview = boardWizardListingPreview(expListing);
+assert.equal(expPreview.kind, 'real-estate');
+assert.equal(expPreview.imageCount, 43);
+assert.equal(expPreview.price, '$729,000');
+assert.equal(expPreview.contactRole, 'Site contact');
+
+const expStoryAnalyses = [
+  ['exterior', 'Building exterior', ['corner setting', 'covered entry'], 0.95, 0.96],
+  ['living', 'Living area', ['open layout', 'natural light'], 0.93, 0.82],
+  ['kitchen', 'Kitchen', ['center island', 'cabinetry'], 0.94, 0.78],
+  ['dining', 'Dining area', ['connected layout'], 0.88, 0.68],
+  ['bedroom', 'Bedroom', ['windows'], 0.86, 0.52],
+  ['bedroom', 'Bedroom', ['closet'], 0.82, 0.48],
+  ['bathroom', 'Bathroom', ['double vanity'], 0.9, 0.55],
+  ['balcony', 'Deck', ['outdoor seating'], 0.92, 0.84],
+  ['garage', 'Garage and parking', ['covered parking'], 0.8, 0.42],
+  ['unknown', 'Interior view', [], 0.72, 0.35],
+  ['agent', 'Agent portrait', [], 0.9, 0.1],
+  ['logo', 'Brokerage logo', [], 0.9, 0.1],
+].map(([sceneType, roomType, features, qualityScore, heroScore], index) => ({
+  index,
+  sceneType,
+  roomType,
+  features,
+  qualityScore,
+  heroScore,
+  confidence: sceneType === 'unknown' ? 0.3 : 0.92,
+}));
+const expStory = buildBoardWizardListingMarketingBatchFromAnalyses({
+  extraction: expListing,
+  targetBoardTitle: '',
+  count: 10,
+  narrationSecondsPerCard: 15,
+  style: 'warm',
+  analyses: expStoryAnalyses,
+});
+assert.equal(expStory.cards.length, 10, 'the specialist should create the requested number of distinct story scenes');
+assert.equal(expStory.cards[0].imageUrls.length, 43, 'the story opener must retain the entire source gallery');
+assert.match(expStory.cards[0].tags.join(' '), /listing-story story-hook/);
+assert.match(expStory.cards[0].title, /Begin at 3721 Pacific Avenue/);
+assert.ok(expStory.cards.some((card) => card.tags.includes('story-kitchen')), 'the story should include an identified kitchen in sequence');
+assert.ok(expStory.cards.some((card) => card.tags.includes('story-balcony')), 'the story should include available outdoor living');
+assert.equal(new Set(expStory.cards.map((card) => card.imageUrl)).size, expStory.cards.length, 'story cards must not reuse primary photos');
+assert.equal(expStory.cards.some((card) => /profiles|agent portrait|brokerage logo/i.test(`${card.imageUrl} ${card.title}`)), false, 'agent and logo images must never enter the property story');
+assert.ok(expStory.cards.at(-1).tags.includes('story-next-step'));
+assert.match(expStory.cards.at(-1).title, /\$729,000/);
+assert.match(expStory.cards.at(-1).notes, /current price, status, disclosures, fees, showing availability/i);
+assert.match(expStory.cards.at(-1).notes, /Site contact/i);
 
 const expReaderMarkdown = `Title: 3721 Pacific Avenue, Wildwood, NJ, 08260
 

@@ -1,4 +1,4 @@
-export type BoardWizardDraftLifecycleStep = 'choose' | 'configure' | 'loading' | 'source-review' | 'preview' | 'done';
+export type BoardWizardDraftLifecycleStep = 'choose' | 'configure' | 'loading' | 'source-review' | 'listing-setup' | 'preview' | 'done';
 
 export type BoardWizardDraftLifecycleState = {
   step: BoardWizardDraftLifecycleStep;

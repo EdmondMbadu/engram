@@ -96,6 +96,7 @@ import {
 } from './board-wizard-media-mode';
 import {
   boardWizardDraftCountMode,
+  boardWizardDraftListingMarketing,
   boardWizardDraftMediaMode,
   boardWizardDraftNarrationSeconds,
   boardWizardDraftPayloadWithPreferences,
@@ -287,8 +288,25 @@ type CardImageToolMode = 'generate' | 'search' | null;
 type WizardCardEditorSection = 'details' | 'image';
 type OffGridLocationSource = 'spot' | 'words';
 type BoardWizardMode = 'describe' | 'paste' | 'photos' | 'off-grid' | 'nearby-gems' | 'url' | 'walking-tour' | 'driving-tour';
-type BoardWizardStep = 'choose' | 'configure' | 'loading' | 'source-review' | 'preview' | 'done';
+type BoardWizardStep = 'choose' | 'configure' | 'loading' | 'source-review' | 'listing-setup' | 'preview' | 'done';
 type BoardWizardVibe = 'playful' | 'foodie' | 'traveler' | 'curator' | 'memory';
+type BoardWizardListingMarketingStyle = 'warm' | 'guided' | 'luxury' | 'brisk' | 'investor';
+type BoardWizardListingPreview = {
+  listingName: string;
+  address: string;
+  price: string;
+  status: string;
+  propertyType: string;
+  bedrooms: string;
+  bathrooms: string;
+  mlsId: string;
+  imageCount: number;
+  contactName: string;
+  contactRole: string;
+  brokerage: string;
+  siteName: string;
+  confidence: number;
+};
 type NearbyGemRange = 'walk' | 'quick-drive' | 'adventure';
 type NearbyGemLocation = { latitude: number; longitude: number; accuracy: number };
 type NearbyGemCardMetrics = {
@@ -868,6 +886,8 @@ type BoardWizardDraft = {
   mediaMode: BoardWizardMediaMode;
   narrationStyle: BoardNarrationStyleId;
   narrationSecondsPerCard: number;
+  listingMarketingStyle: BoardWizardListingMarketingStyle;
+  listingMarketingDirection: string;
   prompt: string;
   pastedList: string;
   sourceUrl: string;
@@ -1871,6 +1891,21 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly wizardSourceReviewExact = signal(false);
   readonly wizardSourceReviewWarning = signal('');
   readonly wizardSourceConfirmedUrl = signal('');
+  readonly wizardListingPreview = signal<BoardWizardListingPreview | null>(null);
+  readonly wizardListingMarketingStyle = signal<BoardWizardListingMarketingStyle>('warm');
+  readonly wizardListingMarketingDirection = signal('');
+  readonly wizardListingMarketingStyles: ReadonlyArray<{
+    id: BoardWizardListingMarketingStyle;
+    label: string;
+    description: string;
+    icon: string;
+  }> = [
+    { id: 'warm', label: 'Warm storyteller', description: 'An inviting, connected walk-through without sales hype.', icon: 'auto_stories' },
+    { id: 'guided', label: 'Guided tour', description: 'Lead the viewer naturally from one space to the next.', icon: 'explore' },
+    { id: 'luxury', label: 'Luxury editorial', description: 'Polished and restrained, grounded in visible details.', icon: 'diamond' },
+    { id: 'brisk', label: 'Brisk agent reel', description: 'Concise, energetic copy for a quick social story.', icon: 'bolt' },
+    { id: 'investor', label: 'Fact-forward', description: 'Emphasize verified practical property information.', icon: 'analytics' },
+  ];
   readonly wizardPhotos = signal<BoardWizardPhoto[]>([]);
   readonly wizardPhotosLoading = signal(false);
   readonly wizardPhotoError = signal<string | null>(null);
@@ -4208,6 +4243,8 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.wizardMediaMode.set(draft.mediaMode);
     this.wizardNarrationStyle.set(draft.narrationStyle);
     this.wizardNarrationSecondsPerCard.set(draft.narrationSecondsPerCard);
+    this.wizardListingMarketingStyle.set(draft.listingMarketingStyle);
+    this.wizardListingMarketingDirection.set(draft.listingMarketingDirection);
     this.wizardPrompt.set(draft.prompt);
     this.wizardPastedList.set(draft.pastedList);
     this.wizardUrl.set(draft.sourceUrl);
@@ -4317,7 +4354,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         return;
       }
       this.wizardStep.set('choose');
-    } else if (step === 'preview' || step === 'source-review') {
+    } else if (step === 'preview' || step === 'source-review' || step === 'listing-setup') {
       this.cancelWizardVideoEnrichment();
       this.wizardStep.set('configure');
     }
@@ -4822,6 +4859,16 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       this.wizardSourceReviewUrl.set(sourceUrl);
       this.wizardSourceReviewExact.set(data['exact'] === true);
       this.wizardSourceReviewWarning.set(this.stringValue(data['warning'], '', 500));
+      if (data['specializedKind'] === 'real-estate') {
+        this.wizardListingPreview.set(this.normalizeWizardListingPreview(data['listingPreview'], sourceUrl));
+        this.wizardSourceManifest.set(null);
+        this.wizardSourceConfirmedUrl.set('');
+        if (this.wizardCountMode() === 'auto') this.setWizardCount(12, false);
+        this.wizardStep.set('listing-setup');
+        this.wizardLoadingTask.set(null);
+        return true;
+      }
+      this.wizardListingPreview.set(null);
       if (data['requiresReview'] === true && manifest) {
         this.wizardSourceManifest.set(manifest);
         this.wizardSourceConfirmedUrl.set('');
@@ -4855,6 +4902,13 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     await this.generateWizardBatch('', true);
   }
 
+  async confirmWizardListingStory(): Promise<void> {
+    const sourceUrl = this.wizardSourceReviewUrl() || this.wizardDetectedSourceUrl();
+    if (!sourceUrl || !this.wizardListingPreview()) return;
+    this.wizardSourceConfirmedUrl.set(sourceUrl);
+    await this.generateWizardBatch('', true);
+  }
+
   async rereadWizardSource(): Promise<void> {
     const sourceUrl = this.wizardSourceReviewUrl() || this.wizardDetectedSourceUrl();
     this.wizardSourceManifest.set(null);
@@ -4872,6 +4926,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     const sourceUrl = this.wizardDetectedSourceUrl();
     if (!sourceUrl) {
       this.wizardSourceManifest.set(null);
+      this.wizardListingPreview.set(null);
       this.wizardSourceReviewUrl.set('');
       this.wizardSourceReviewExact.set(false);
       this.wizardSourceReviewWarning.set('');
@@ -4879,8 +4934,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     } else if (
       this.canonicalWizardSourceUrl(this.wizardSourceManifest()?.sourceUrl ?? '')
       !== this.canonicalWizardSourceUrl(sourceUrl)
+      && this.canonicalWizardSourceUrl(this.wizardSourceReviewUrl())
+      !== this.canonicalWizardSourceUrl(sourceUrl)
     ) {
       this.wizardSourceManifest.set(null);
+      this.wizardListingPreview.set(null);
       this.wizardSourceConfirmedUrl.set('');
     }
     if (
@@ -5409,6 +5467,22 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
   clearWizardSelection(): void {
     this.wizardSelectedCardIds.set(new Set());
+  }
+
+  wizardListingStoryRole(card: BoardWizardGeneratedCard): string {
+    const role = card.tags.find((tag) => tag.startsWith('story-'))?.slice('story-'.length) || '';
+    return role.replace(/-/g, ' ').replace(/\b\w/g, (letter) => letter.toUpperCase());
+  }
+
+  moveWizardCard(cardId: string, direction: -1 | 1): void {
+    this.wizardPreviewCards.update((cards) => {
+      const index = cards.findIndex((card) => card.id === cardId);
+      const target = index + direction;
+      if (index < 0 || target < 0 || target >= cards.length) return cards;
+      const reordered = [...cards];
+      [reordered[index], reordered[target]] = [reordered[target], reordered[index]];
+      return reordered;
+    });
   }
 
   removeWizardCard(cardId: string): void {
@@ -16858,6 +16932,8 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       mediaMode: this.wizardMediaMode(),
       narrationStyle: this.wizardNarrationStyle(),
       narrationSecondsPerCard: this.wizardNarrationSecondsPerCard(),
+      listingMarketingStyle: this.wizardListingMarketingStyle(),
+      listingMarketingDirection: this.wizardListingMarketingDirection(),
       prompt: this.wizardPrompt(),
       pastedList: this.wizardPastedList(),
       sourceUrl: this.wizardUrl(),
@@ -16963,6 +17039,8 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         mediaMode: this.wizardMediaMode(),
         narrationStyle: this.wizardNarrationStyle(),
         narrationSecondsPerCard: this.wizardNarrationSecondsPerCard(),
+        listingMarketingStyle: this.wizardListingMarketingStyle(),
+        listingMarketingDirection: this.wizardListingMarketingDirection(),
         prompt: this.wizardPrompt(),
         pastedList: this.wizardPastedList(),
         sourceUrl: this.wizardUrl(),
@@ -17009,6 +17087,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       }, draft.mediaMode, {
         countMode: draft.countMode,
         narrationSecondsPerCard: draft.narrationSecondsPerCard,
+        listingMarketing: {
+          style: draft.listingMarketingStyle,
+          direction: draft.listingMarketingDirection,
+        },
       });
       await setDoc(
         doc(this.firestore, 'users', uid, 'board_wizard_drafts', draftId),
@@ -17100,6 +17182,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       const mediaMode = boardWizardDraftMediaMode(value);
       const countMode = boardWizardDraftCountMode(value);
       const narrationSecondsPerCard = boardWizardDraftNarrationSeconds(value);
+      const listingMarketing = boardWizardDraftListingMarketing(value);
       const tourVoiceValue = value['tour_voice_style'];
       const tourVoiceStyle: BoardTourVoiceStyle = tourVoiceValue === 'local' || tourVoiceValue === 'kid-friendly'
         ? tourVoiceValue
@@ -17118,6 +17201,8 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         mediaMode,
         narrationStyle,
         narrationSecondsPerCard,
+        listingMarketingStyle: listingMarketing.style,
+        listingMarketingDirection: listingMarketing.direction,
         prompt: this.stringValue(value['prompt'], '', 2000),
         pastedList: this.stringValue(value['pasted_list'], '', BOARD_WIZARD_PASTE_MAX_LENGTH),
         sourceUrl: this.stringValue(value['source_url'], '', 2000),
@@ -17167,6 +17252,9 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.wizardSourceReviewExact.set(false);
     this.wizardSourceReviewWarning.set('');
     this.wizardSourceConfirmedUrl.set('');
+    this.wizardListingPreview.set(null);
+    this.wizardListingMarketingStyle.set('warm');
+    this.wizardListingMarketingDirection.set('');
     this.wizardPhotos.set([]);
     this.wizardPhotoImportRun += 1;
     this.wizardPhotosLoading.set(false);
@@ -17380,6 +17468,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       mediaMode: this.wizardMediaMode(),
       narrationStyle: this.wizardNarrationStyleForGeneration(),
       narrationSecondsPerCard: this.wizardNarrationSecondsForGeneration(),
+      listingMarketing: {
+        enabled: true,
+        style: this.wizardListingMarketingStyle(),
+        direction: this.wizardListingMarketingDirection().trim(),
+      },
       tourOptions: this.isTourWizardMode(this.wizardMode())
         ? {
             voiceStyle: this.wizardTourVoiceStyle(),
@@ -17520,6 +17613,34 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       confidence: this.numberValue(data['confidence'], status === 'exact' ? 1 : 0.5, 0, 1),
       snapshotDate: this.stringValue(data['snapshotDate'], '', 40),
       message: this.stringValue(data['message'], '', 500),
+    };
+  }
+
+  private normalizeWizardListingPreview(value: unknown, sourceUrl: string): BoardWizardListingPreview {
+    const data = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+    let fallbackName = 'Real-estate listing';
+    try {
+      const url = new URL(sourceUrl);
+      const slug = decodeURIComponent(url.pathname.split('/').filter(Boolean).at(-1) || '');
+      fallbackName = slug.replace(/[-_]+/g, ' ').replace(/\b[a-z]/g, (letter) => letter.toUpperCase()) || fallbackName;
+    } catch {
+      // Keep the neutral label when the source URL cannot be parsed here.
+    }
+    return {
+      listingName: this.stringValue(data['listingName'], fallbackName, 140),
+      address: this.stringValue(data['address'], '', 300),
+      price: this.stringValue(data['price'], '', 80),
+      status: this.stringValue(data['status'], '', 80),
+      propertyType: this.stringValue(data['propertyType'], '', 100),
+      bedrooms: this.stringValue(data['bedrooms'], '', 40),
+      bathrooms: this.stringValue(data['bathrooms'], '', 40),
+      mlsId: this.stringValue(data['mlsId'], '', 80),
+      imageCount: Math.round(this.numberValue(data['imageCount'], 0, 0, 100)),
+      contactName: this.stringValue(data['contactName'], '', 140),
+      contactRole: this.stringValue(data['contactRole'], '', 80),
+      brokerage: this.stringValue(data['brokerage'], '', 160),
+      siteName: this.stringValue(data['siteName'], '', 120),
+      confidence: this.numberValue(data['confidence'], 0, 0, 1),
     };
   }
 

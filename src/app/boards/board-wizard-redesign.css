@@ -749,3 +749,199 @@
     min-width: 0;
   }
 }
+
+.boards-listing-story-setup {
+  display: grid;
+  gap: 1.1rem;
+  padding: 0.25rem;
+}
+
+.boards-listing-story-hero {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 1.25rem;
+  border: 2px solid var(--modal-ink, var(--ink));
+  border-radius: 1.25rem;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 22%, var(--surface)), var(--surface) 66%);
+  box-shadow: 4px 4px 0 var(--modal-ink, var(--ink));
+}
+
+.boards-listing-story-hero__icon {
+  display: grid;
+  place-items: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 1rem;
+  background: var(--modal-ink, var(--ink));
+  color: var(--surface);
+  font-size: 1.7rem;
+}
+
+.boards-listing-story-hero h4,
+.boards-listing-story-hero p {
+  margin: 0.15rem 0 0;
+}
+
+.boards-listing-story-hero small {
+  color: var(--muted);
+}
+
+.boards-listing-story-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.65rem;
+}
+
+.boards-listing-story-facts span,
+.boards-listing-story-facts strong {
+  padding: 0.28rem 0.55rem;
+  border: 1px solid color-mix(in srgb, var(--modal-ink, var(--ink)) 28%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 86%, transparent);
+  font-size: 0.78rem;
+}
+
+.boards-listing-story-photo-count {
+  display: grid;
+  justify-items: center;
+  min-width: 5rem;
+  padding: 0.7rem;
+  border-left: 1px solid color-mix(in srgb, var(--modal-ink, var(--ink)) 24%, transparent);
+}
+
+.boards-listing-story-photo-count strong {
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+.boards-listing-story-explainer,
+.boards-listing-story-attribution {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 0.85rem 1rem;
+  border-radius: 0.9rem;
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+}
+
+.boards-listing-story-explainer div,
+.boards-listing-story-attribution div,
+.boards-listing-story-style span:last-child {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.boards-listing-story-explainer small,
+.boards-listing-story-attribution small,
+.boards-listing-story-style small {
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.boards-listing-story-styles {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin-top: 0.5rem;
+}
+
+.boards-listing-story-style {
+  display: grid;
+  gap: 0.55rem;
+  min-height: 8.2rem;
+  padding: 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 0.9rem;
+  background: var(--surface);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.boards-listing-story-style:hover,
+.boards-listing-story-style--active {
+  border-color: var(--modal-ink, var(--ink));
+  background: color-mix(in srgb, var(--accent) 13%, var(--surface));
+  box-shadow: 2px 2px 0 var(--modal-ink, var(--ink));
+}
+
+.boards-listing-story-style > .material-symbols-outlined {
+  font-size: 1.45rem;
+}
+
+.boards-listing-story-controls {
+  display: grid;
+  grid-template-columns: minmax(10rem, 0.35fr) minmax(0, 1fr);
+  gap: 0.85rem;
+}
+
+.boards-listing-story-controls label {
+  display: grid;
+  align-content: start;
+  gap: 0.4rem;
+}
+
+.boards-listing-story-controls input,
+.boards-listing-story-controls textarea {
+  width: 100%;
+}
+
+.boards-listing-story-role {
+  position: absolute;
+  bottom: 0.6rem;
+  left: 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.32rem 0.55rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 88%, #111827);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 850;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.22);
+}
+
+.boards-listing-story-role b {
+  display: grid;
+  place-items: center;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 999px;
+  background: #fff;
+  color: #111827;
+}
+
+@media (max-width: 850px) {
+  .boards-listing-story-styles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .boards-listing-story-hero {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .boards-listing-story-photo-count {
+    grid-column: 1 / -1;
+    grid-template-columns: auto auto;
+    gap: 0.4rem;
+    justify-content: start;
+    border-top: 1px solid color-mix(in srgb, var(--modal-ink, var(--ink)) 24%, transparent);
+    border-left: 0;
+  }
+
+  .boards-listing-story-controls,
+  .boards-listing-story-styles {
+    grid-template-columns: 1fr;
+  }
+
+  .boards-listing-story-style {
+    grid-template-columns: auto 1fr;
+    min-height: 0;
+  }
+}

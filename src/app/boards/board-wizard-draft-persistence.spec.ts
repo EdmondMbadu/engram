@@ -1,5 +1,6 @@
 import {
   boardWizardDraftCountMode,
+  boardWizardDraftListingMarketing,
   boardWizardDraftMediaMode,
   boardWizardDraftNarrationSeconds,
   boardWizardDraftPayloadWithPreferences,
@@ -30,6 +31,26 @@ describe('board wizard draft persistence contract', () => {
     });
     expect(payload.result.board).toEqual({ title: 'Draft board' });
     expect(payload.result.cards).toEqual([{ id: 'card-1' }]);
+  });
+
+  it('persists listing-story choices without adding fragile top-level fields', () => {
+    const payload = boardWizardDraftPayloadWithPreferences({
+      id: 'listing-draft',
+      owner_user_id: 'owner-1',
+      mode: 'url',
+      result: { board: { title: 'Listing' }, cards: [] },
+    }, 'images', {
+      listingMarketing: { style: 'luxury', direction: '  Lead with the deck.  ' },
+    });
+    expect(payload.result.wizard_preferences.listing_marketing).toEqual({
+      style: 'luxury',
+      direction: 'Lead with the deck.',
+    });
+    expect(boardWizardDraftListingMarketing(payload)).toEqual({
+      style: 'luxury',
+      direction: 'Lead with the deck.',
+    });
+    expect(Object.prototype.hasOwnProperty.call(payload, 'listing_marketing')).toBeFalse();
   });
 
   it('restores count and narration preferences with safe legacy defaults', () => {

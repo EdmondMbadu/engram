@@ -16,6 +16,7 @@ import {
 } from './board-wizard-narration';
 import {
   boardNarrationLengthPromptInstructions,
+  boardNarrationTargetWords,
   normalizeBoardNarrationSeconds,
 } from './board-narration-length';
 import {
@@ -669,6 +670,214 @@ type BoardWizardPhotoInput = {
   mimeType: 'image/jpeg' | 'image/png' | 'image/webp';
   base64: string;
 };
+
+export type BoardWizardListingPhotoInput = {
+  index: number;
+  mimeType: 'image/jpeg' | 'image/png' | 'image/webp';
+  base64: string;
+  sourceLabel?: string;
+};
+
+export type BoardWizardListingPhotoAnalysis = {
+  index: number;
+  sceneType: string;
+  roomType: string;
+  features: string[];
+  qualityScore: number;
+  heroScore: number;
+  confidence: number;
+};
+
+export type BoardWizardListingStoryScene = {
+  photoIndex: number;
+  role: string;
+  title: string;
+  subtitle: string;
+  narration: string;
+  durationSeconds: number;
+  factKeys: string[];
+};
+
+const boardWizardListingPhotoSchema = {
+  type: 'array',
+  items: {
+    type: 'object',
+    properties: {
+      index: { type: 'integer' },
+      scene_type: { type: 'string' },
+      room_type: { type: 'string' },
+      features: { type: 'array', items: { type: 'string' } },
+      quality_score: { type: 'number' },
+      hero_score: { type: 'number' },
+      confidence: { type: 'number' },
+    },
+    required: ['index', 'scene_type', 'room_type', 'features', 'quality_score', 'hero_score', 'confidence'],
+  },
+} as const;
+
+const boardWizardListingStorySchema = {
+  type: 'object',
+  properties: {
+    scenes: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          photo_index: { type: 'integer' },
+          role: { type: 'string' },
+          title: { type: 'string' },
+          subtitle: { type: 'string' },
+          narration: { type: 'string' },
+          duration_seconds: { type: 'integer' },
+          fact_keys: { type: 'array', items: { type: 'string' } },
+        },
+        required: ['photo_index', 'role', 'title', 'subtitle', 'narration', 'duration_seconds', 'fact_keys'],
+      },
+    },
+  },
+  required: ['scenes'],
+} as const;
+
+/**
+ * Classifies a small batch of already-extracted listing photographs. Callers
+ * resize and cache the images; this function deliberately performs no fetches.
+ */
+export async function analyzeBoardWizardListingPhotos(params: {
+  listingName: string;
+  address: string;
+  photos: BoardWizardListingPhotoInput[];
+}): Promise<BoardWizardListingPhotoAnalysis[]> {
+  const photos = params.photos.slice(0, 12);
+  if (!photos.length) return [];
+  const prompt = [
+    'You are the visual editor for a factual real-estate listing story.',
+    `Listing: ${params.listingName}. Address: ${params.address || 'not supplied'}.`,
+    'Classify every numbered image. Use only visible evidence; never infer luxury, condition, room identity, view, or amenities that are not visible.',
+    'scene_type should be one of exterior, aerial, entry, living, kitchen, dining, bedroom, bathroom, office, flex, laundry, garage, outdoor, balcony, view, amenity, floor-plan, agent, logo, map, duplicate, or unknown.',
+    'room_type is a concise neutral label. If uncertain use “Interior view” or “Property view”.',
+    'features are short visible details only. Scores and confidence range from 0 to 1. hero_score measures suitability as an opening image.',
+    'Return exactly one result for every supplied image index.',
+  ].join(' ');
+  const contents = [
+    { text: prompt },
+    ...photos.flatMap((photo) => [
+      { text: `Photo index ${photo.index}${photo.sourceLabel ? `; source label: ${photo.sourceLabel}` : ''}` },
+      { inlineData: { mimeType: photo.mimeType, data: photo.base64 } },
+    ]),
+  ];
+  const response = await generateContentWithRetry({
+    model: internetSearchModel,
+    contents,
+    config: {
+      responseMimeType: 'application/json',
+      responseJsonSchema: boardWizardListingPhotoSchema,
+      temperature: 0.1,
+      maxOutputTokens: 4096,
+      thinkingConfig: { thinkingBudget: 0 },
+    },
+  });
+  const parsed = parseJsonResponse<unknown>(response.text ?? '[]');
+  if (!Array.isArray(parsed)) return [];
+  const expected = new Set(photos.map((photo) => photo.index));
+  const seen = new Set<number>();
+  return parsed.flatMap((value): BoardWizardListingPhotoAnalysis[] => {
+    const record = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+    const index = Number(record.index);
+    if (!Number.isInteger(index) || !expected.has(index) || seen.has(index)) return [];
+    seen.add(index);
+    const text = (input: unknown, fallback: string, max: number) => {
+      const cleaned = typeof input === 'string' ? input.replace(/\s+/g, ' ').trim() : '';
+      return (cleaned || fallback).slice(0, max);
+    };
+    const score = (input: unknown) => Math.max(0, Math.min(1, Number(input) || 0));
+    return [{
+      index,
+      sceneType: text(record.scene_type, 'unknown', 40).toLowerCase(),
+      roomType: text(record.room_type, 'Property view', 80),
+      features: Array.isArray(record.features)
+        ? record.features.map((item) => text(item, '', 90)).filter(Boolean).slice(0, 8)
+        : [],
+      qualityScore: score(record.quality_score),
+      heroScore: score(record.hero_score),
+      confidence: score(record.confidence),
+    }];
+  });
+}
+
+/** Writes an ordered, grounded card story from verified facts and photo labels. */
+export async function generateBoardWizardListingStory(params: {
+  listingName: string;
+  address: string;
+  facts: Record<string, string>;
+  photos: BoardWizardListingPhotoAnalysis[];
+  sceneCount: number;
+  narrationStyle: BoardNarrationStyleId;
+  narrationSecondsPerCard: number;
+  marketingStyle: string;
+  direction: string;
+}): Promise<BoardWizardListingStoryScene[]> {
+  const sceneCount = Math.max(1, Math.min(24, Math.round(params.sceneCount) || 1));
+  const seconds = normalizeBoardNarrationSeconds(params.narrationSecondsPerCard);
+  const words = boardNarrationTargetWords(seconds);
+  const facts = Object.fromEntries(
+    Object.entries(params.facts).filter(([, value]) => !!value).slice(0, 40),
+  );
+  const photos = params.photos.slice(0, 100);
+  const prompt = [
+    'You are a meticulous real-estate listing marketing specialist and visual story editor.',
+    `Create exactly ${Math.min(sceneCount, photos.length)} ordered scenes for ${params.listingName}, ${params.address}.`,
+    `Marketing style: ${params.marketingStyle}. ${boardNarrationPromptInstructions(params.narrationStyle)}`,
+    `Each narration should be approximately ${words} spoken words (${seconds} seconds), with complete sentences and a natural handoff to the next scene.`,
+    'Build a coherent tour: strong visual hook, arrival/exterior when available, connected living spaces, kitchen/dining, bedrooms, bathrooms, outdoor/amenities, then an accurate fact-and-action close.',
+    'Choose each photo_index at most once. Do not use agent, logo, map, floor-plan, duplicate, or unknown images unless no suitable property image exists.',
+    'Use only supplied facts and visible photo labels. Never invent views, finishes, room purposes, neighborhood claims, schools, safety, demographics, distances, superlatives, urgency, or agent identity.',
+    'If a room classification confidence is below 0.65, use a neutral title. fact_keys must name every supplied fact used in that scene; use an empty array for purely visual narration.',
+    'The final scene must invite the viewer to verify price, status, disclosures, and showing details on the original listing. Keep attribution factual.',
+    params.direction ? `User direction: ${params.direction}` : '',
+    `VERIFIED FACTS: ${JSON.stringify(facts)}`,
+    `PHOTO ANALYSIS: ${JSON.stringify(photos)}`,
+  ].filter(Boolean).join('\n');
+  const response = await generateContentWithRetry({
+    model: internetSearchModel,
+    contents: prompt,
+    config: {
+      responseMimeType: 'application/json',
+      responseJsonSchema: boardWizardListingStorySchema,
+      temperature: 0.32,
+      maxOutputTokens: Math.min(12288, 1400 + sceneCount * 500),
+      thinkingConfig: { thinkingBudget: 768 },
+    },
+  });
+  const parsed = parseJsonResponse<unknown>(response.text ?? '{}');
+  const record = parsed && typeof parsed === 'object' ? parsed as Record<string, unknown> : {};
+  if (!Array.isArray(record.scenes)) return [];
+  const allowedPhotos = new Set(photos.map((photo) => photo.index));
+  const allowedFacts = new Set(Object.keys(facts));
+  const seenPhotos = new Set<number>();
+  const clean = (input: unknown, max: number) => (
+    typeof input === 'string' ? input.replace(/\s+/g, ' ').trim().slice(0, max) : ''
+  );
+  return record.scenes.flatMap((value): BoardWizardListingStoryScene[] => {
+    const scene = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+    const photoIndex = Number(scene.photo_index);
+    if (!Number.isInteger(photoIndex) || !allowedPhotos.has(photoIndex) || seenPhotos.has(photoIndex)) return [];
+    seenPhotos.add(photoIndex);
+    const title = clean(scene.title, 80);
+    const narration = clean(scene.narration, 3600);
+    if (!title || !narration) return [];
+    return [{
+      photoIndex,
+      role: clean(scene.role, 40).toLowerCase() || 'property-view',
+      title,
+      subtitle: clean(scene.subtitle, 120),
+      narration,
+      durationSeconds: Math.max(5, Math.min(180, Math.round(Number(scene.duration_seconds) || seconds))),
+      factKeys: Array.isArray(scene.fact_keys)
+        ? scene.fact_keys.map((item) => clean(item, 60)).filter((item) => allowedFacts.has(item)).slice(0, 12)
+        : [],
+    }];
+  }).slice(0, sceneCount);
+}
 
 function createClient(): GoogleGenAI {
   return new GoogleGenAI({

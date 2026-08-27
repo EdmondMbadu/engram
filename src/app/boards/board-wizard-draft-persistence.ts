@@ -43,6 +43,10 @@ type PersistedWizardPreferences = {
   media_mode: BoardWizardMediaMode;
   count_mode: BoardWizardCountMode;
   narration_seconds_per_card: number;
+  listing_marketing?: {
+    style: 'warm' | 'guided' | 'luxury' | 'brisk' | 'investor';
+    direction: string;
+  };
 };
 
 /**
@@ -58,6 +62,10 @@ export function boardWizardDraftPayloadWithPreferences<
   preferences: {
     countMode?: BoardWizardCountMode;
     narrationSecondsPerCard?: number;
+    listingMarketing?: {
+      style?: unknown;
+      direction?: unknown;
+    };
   } = {},
 ): Record<string, unknown> & { result: TResult & { wizard_preferences: PersistedWizardPreferences } } {
   const stablePayload: Record<string, unknown> = {};
@@ -80,6 +88,9 @@ export function boardWizardDraftPayloadWithPreferences<
         narration_seconds_per_card: normalizeBoardNarrationSeconds(
           preferences.narrationSecondsPerCard ?? DEFAULT_BOARD_NARRATION_SECONDS_PER_CARD,
         ),
+        ...(preferences.listingMarketing ? {
+          listing_marketing: normalizePersistedListingMarketing(preferences.listingMarketing),
+        } : {}),
       },
     },
   };
@@ -123,4 +134,27 @@ export function boardWizardDraftNarrationSeconds(value: Record<string, unknown>)
   return normalizeBoardNarrationSeconds(
     boardWizardDraftPreferences(value)['narration_seconds_per_card'],
   );
+}
+
+export function boardWizardDraftListingMarketing(value: Record<string, unknown>): {
+  style: 'warm' | 'guided' | 'luxury' | 'brisk' | 'investor';
+  direction: string;
+} {
+  return normalizePersistedListingMarketing(boardWizardDraftPreferences(value)['listing_marketing']);
+}
+
+function normalizePersistedListingMarketing(value: unknown): {
+  style: 'warm' | 'guided' | 'luxury' | 'brisk' | 'investor';
+  direction: string;
+} {
+  const record = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+  const style = record['style'];
+  return {
+    style: style === 'guided' || style === 'luxury' || style === 'brisk' || style === 'investor'
+      ? style
+      : 'warm',
+    direction: typeof record['direction'] === 'string'
+      ? record['direction'].replace(/\s+/g, ' ').trim().slice(0, 500)
+      : '',
+  };
 }

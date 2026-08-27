@@ -201,6 +201,70 @@ export function isBoardWizardZillowListingPageUrl(value: string): boolean {
   return safeHostname(value).includes('zillow.') && isStrongListingUrl(value);
 }
 
+/**
+ * BoldTrail/eXp sometimes renders only the active carousel window even though
+ * the complete, sequential MLS gallery remains publicly available on its CDN.
+ * Recover that gallery with logarithmic HEAD probes instead of a paid scraper
+ * or one request per photograph.
+ */
+export async function recoverBoardWizardBoldTrailGallery(
+  extraction: BoardWizardListingExtraction,
+): Promise<BoardWizardListingExtraction> {
+  if (extraction.kind !== 'real-estate' || !isBoldTrailPropertyUrl(extraction.sourceUrl) || !extraction.images.length) {
+    return extraction;
+  }
+  const originals = extraction.images.flatMap((image) => {
+    const original = boldTrailOriginalImageUrl(image.url);
+    return original ? [{ image, original }] : [];
+  });
+  const seed = originals.find(({ original }) => /-1\.(?:jpe?g|png|webp)(?:[?#]|$)/i.test(original))
+    || originals[0];
+  if (!seed) return extraction;
+  const template = boldTrailSequentialTemplate(seed.original);
+  if (!template) return extraction;
+  const presentIndices = originals.flatMap(({ original }) => {
+    const match = original.match(/-(\d+)\.(?:jpe?g|png|webp)(?:[?#]|$)/i);
+    return match ? [Number(match[1])] : [];
+  }).filter((index) => Number.isInteger(index) && index > 0 && index <= BOARD_WIZARD_SOURCE_GALLERY_LIMIT);
+  let lower = Math.max(1, ...presentIndices);
+  let upper = lower;
+  while (upper < BOARD_WIZARD_SOURCE_GALLERY_LIMIT) {
+    const candidate = Math.min(BOARD_WIZARD_SOURCE_GALLERY_LIMIT, Math.max(upper + 1, upper * 2));
+    if (await boldTrailImageExists(template(candidate))) {
+      lower = candidate;
+      upper = candidate;
+      if (candidate === BOARD_WIZARD_SOURCE_GALLERY_LIMIT) break;
+      continue;
+    }
+    upper = candidate;
+    break;
+  }
+  if (upper > lower) {
+    let low = lower + 1;
+    let high = upper - 1;
+    while (low <= high) {
+      const middle = Math.floor((low + high) / 2);
+      if (await boldTrailImageExists(template(middle))) {
+        lower = middle;
+        low = middle + 1;
+      } else {
+        high = middle - 1;
+      }
+    }
+  }
+  if (lower <= extraction.images.length) return extraction;
+  const recovered = Array.from({ length: lower }, (_, index): BoardWizardListingImage => ({
+    url: template(index + 1),
+    alt: `${extraction.listingName} listing photo ${index + 1}`,
+    evidence: 'embedded-gallery',
+  }));
+  return {
+    ...extraction,
+    images: mergeListingImages(recovered, extraction.images, BOARD_WIZARD_SOURCE_GALLERY_LIMIT),
+    confidence: Math.max(extraction.confidence, 0.96),
+  };
+}
+
 export function extractBoardWizardListingFromMarkdown(
   sourceUrl: string,
   markdown: string,
@@ -1033,6 +1097,61 @@ function boldTrailOriginalAssetKey(value: string): string {
     // Ignore malformed media URLs.
   }
   return '';
+}
+
+function boldTrailOriginalImageUrl(value: string): string {
+  try {
+    const url = new URL(value);
+    if (/\/listingphotos\d+\/[^/?#]+-\d+\.(?:jpe?g|png|webp)$/i.test(url.pathname)) return url.toString();
+    for (const segment of url.pathname.split('/').reverse()) {
+      if (segment.length < 24 || !/^[A-Za-z0-9_-]+$/.test(segment)) continue;
+      try {
+        const decoded = Buffer.from(segment.replace(/-/g, '+').replace(/_/g, '/'), 'base64').toString('utf8');
+        const decodedUrl = new URL(decoded);
+        if (/\/listingphotos\d+\/[^/?#]+-\d+\.(?:jpe?g|png|webp)$/i.test(decodedUrl.pathname)) {
+          return decodedUrl.toString();
+        }
+      } catch {
+        // Keep inspecting the other transformed-CDN path segments.
+      }
+    }
+  } catch {
+    // Ignore malformed image URLs.
+  }
+  return '';
+}
+
+function boldTrailSequentialTemplate(value: string): ((index: number) => string) | null {
+  try {
+    const url = new URL(value);
+    const match = url.pathname.match(/^(.*-)(\d+)(\.(?:jpe?g|png|webp))$/i);
+    if (!match) return null;
+    return (index: number) => {
+      const candidate = new URL(url.toString());
+      candidate.pathname = `${match[1]}${index}${match[3]}`;
+      return candidate.toString();
+    };
+  } catch {
+    return null;
+  }
+}
+
+async function boldTrailImageExists(value: string): Promise<boolean> {
+  try {
+    const url = new URL(value);
+    if (!/^https:$/.test(url.protocol) || url.username || url.password || url.port) return false;
+    const response = await fetch(url, {
+      method: 'HEAD',
+      redirect: 'follow',
+      headers: { 'User-Agent': 'LivingWiki/1.0 listing-gallery-reader' },
+      signal: AbortSignal.timeout(6_000),
+    });
+    return response.ok
+      && response.headers.get('x-amz-meta-no-image-available') !== 'true'
+      && (response.headers.get('content-type') || '').toLowerCase().startsWith('image/');
+  } catch {
+    return false;
+  }
 }
 
 function imageResolutionScore(value: string): number {

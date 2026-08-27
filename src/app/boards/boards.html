@@ -5800,6 +5800,99 @@
               </div>
             </div>
           }
+        } @else if (wizardStep() === 'listing-setup') {
+          @if (wizardListingPreview(); as listing) {
+            <div class="boards-wizard boards-listing-story-setup">
+              <section class="boards-listing-story-hero">
+                <span class="boards-listing-story-hero__icon material-symbols-outlined">auto_stories</span>
+                <div>
+                  <small>Real-estate listing detected</small>
+                  <h4>{{ listing.listingName }}</h4>
+                  @if (listing.address && listing.address !== listing.listingName) {
+                    <p>{{ listing.address }}</p>
+                  }
+                  <div class="boards-listing-story-facts">
+                    @if (listing.price) { <strong>{{ listing.price }}</strong> }
+                    @if (listing.bedrooms) { <span>{{ listing.bedrooms }} beds</span> }
+                    @if (listing.bathrooms) { <span>{{ listing.bathrooms }} baths</span> }
+                    @if (listing.propertyType) { <span>{{ listing.propertyType }}</span> }
+                    @if (listing.status) { <span>{{ listing.status }}</span> }
+                    @if (listing.mlsId) { <span>MLS# {{ listing.mlsId }}</span> }
+                  </div>
+                </div>
+                <div class="boards-listing-story-photo-count">
+                  <strong>{{ listing.imageCount || '—' }}</strong>
+                  <small>source photos</small>
+                </div>
+              </section>
+
+              <section class="boards-listing-story-explainer">
+                <span class="material-symbols-outlined">account_tree</span>
+                <div>
+                  <strong>Turn the gallery into a connected property story</strong>
+                  <small>LivingWiki will identify each space, choose the strongest photographs, remove repetition, and arrange the cards from the opening view through the final listing details.</small>
+                </div>
+              </section>
+
+              <section>
+                <span class="boards-wizard-label">Story approach</span>
+                <div class="boards-listing-story-styles" role="radiogroup" aria-label="Listing story approach">
+                  @for (style of wizardListingMarketingStyles; track style.id) {
+                    <button
+                      type="button"
+                      role="radio"
+                      [attr.aria-checked]="wizardListingMarketingStyle() === style.id"
+                      [class.boards-listing-story-style--active]="wizardListingMarketingStyle() === style.id"
+                      (click)="wizardListingMarketingStyle.set(style.id)"
+                    >
+                      <span class="material-symbols-outlined">{{ style.icon }}</span>
+                      <span><strong>{{ style.label }}</strong><small>{{ style.description }}</small></span>
+                    </button>
+                  }
+                </div>
+              </section>
+
+              <div class="boards-listing-story-controls">
+                <label>
+                  <span>Story scenes</span>
+                  <input type="number" min="4" max="24" [value]="wizardCount()" (input)="setWizardCount($any($event.target).value)" />
+                  <small>The original gallery remains attached to the opening card.</small>
+                </label>
+                <label>
+                  <span>What should the story emphasize? <small>Optional</small></span>
+                  <textarea
+                    rows="3"
+                    maxlength="500"
+                    placeholder="For example: lead with the deck, keep it warm, and emphasize the kitchen and top-floor privacy."
+                    [value]="wizardListingMarketingDirection()"
+                    (input)="wizardListingMarketingDirection.set($any($event.target).value)"
+                  ></textarea>
+                </label>
+              </div>
+
+              @if (listing.contactName || listing.brokerage) {
+                <section class="boards-listing-story-attribution">
+                  <span class="material-symbols-outlined">verified</span>
+                  <div>
+                    <strong>Attribution retained</strong>
+                    <small>
+                      @if (listing.contactName) { {{ listing.contactRole || 'Site contact' }}: {{ listing.contactName }} }
+                      @if (listing.contactName && listing.brokerage) { · }
+                      @if (listing.brokerage) { Listed by {{ listing.brokerage }} }
+                    </small>
+                  </div>
+                </section>
+              }
+
+              <div class="boards-form__actions">
+                <button type="button" class="boards-ghost-action" (click)="backWizardStep()">Back</button>
+                <button type="button" class="boards-primary-action" (click)="confirmWizardListingStory()">
+                  <span class="material-symbols-outlined">auto_awesome</span>
+                  Build the listing story
+                </button>
+              </div>
+            </div>
+          }
         } @else if (wizardStep() === 'preview') {
           <div class="boards-wizard boards-wizard-preview">
             <div class="boards-wizard-preview__bar">
@@ -6329,6 +6422,12 @@
                             {{ wizardProductImageLabel(card) }}
                           </span>
                         }
+                        @if (wizardListingStoryRole(card); as storyRole) {
+                          <span class="boards-listing-story-role">
+                            <b>{{ $index + 1 }}</b>
+                            {{ storyRole }}
+                          </span>
+                        }
                         @if ((card.imageUrls?.length ?? 0) > 1) {
                           <span
                             style="position: absolute; top: 0.55rem; right: 0.55rem; display: inline-flex; align-items: center; gap: 0.25rem; border-radius: 999px; background: rgba(31, 41, 55, 0.86); padding: 0.3rem 0.48rem; color: #fff; font-size: 0.64rem; font-weight: 950;"
@@ -6397,6 +6496,16 @@
                         </div>
                       }
                       <div class="boards-wizard-card__actions boards-wizard-card__actions--simple">
+                        @if (wizardListingStoryRole(card)) {
+                          <button type="button" [disabled]="$first" (click)="moveWizardCard(card.id, -1)" aria-label="Move this story card earlier">
+                            <span class="material-symbols-outlined">arrow_back</span>
+                            Earlier
+                          </button>
+                          <button type="button" [disabled]="$last" (click)="moveWizardCard(card.id, 1)" aria-label="Move this story card later">
+                            <span class="material-symbols-outlined">arrow_forward</span>
+                            Later
+                          </button>
+                        }
                         <button type="button" [disabled]="isWizardCardBusy(card.id)" (click)="openWizardCardEditor(card.id, 'details')" i18n>
                           <span class="material-symbols-outlined">edit</span>
                           Edit card

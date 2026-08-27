@@ -208,8 +208,16 @@ import {
   extractBoardWizardListingFromMarkdown,
   isBoardWizardListingPageUrl,
   isBoardWizardZillowListingPageUrl,
+  recoverBoardWizardBoldTrailGallery,
   type BoardWizardListingExtraction,
 } from './board-wizard-listing';
+import {
+  boardWizardListingPreview,
+  generateBoardWizardListingMarketingBatch,
+  isLikelyBoardWizardRealEstateUrl,
+  normalizeBoardWizardListingMarketingOptions,
+  type BoardWizardListingPreview,
+} from './board-wizard-listing-marketing';
 import {
   bestBoardWizardSrcsetUrl,
   extractBoardWizardPictureImages,
@@ -5257,6 +5265,7 @@ type BoardWizardCallableData = {
   mediaMode?: unknown;
   narrationStyle?: unknown;
   narrationSecondsPerCard?: unknown;
+  listingMarketing?: unknown;
   tourOptions?: unknown;
   existingCards?: unknown;
   singleTourStop?: unknown;
@@ -5675,7 +5684,8 @@ function buildBoardWizardReaderCommerceExtraction(
 
 type BoardWizardSourcePreviewAnalysis = {
   manifest: BoardWizardSourceManifest | null;
-  specializedKind: 'restaurant' | 'commerce' | 'accommodation' | null;
+  specializedKind: 'restaurant' | 'commerce' | 'accommodation' | 'real-estate' | null;
+  listingPreview: BoardWizardListingPreview | null;
   warning: string;
 };
 
@@ -5690,23 +5700,46 @@ async function analyzeBoardWizardSourcePreview(sourceUrl: string): Promise<Board
     if (fetched.status >= 200 && fetched.status < 400 && !blocked) {
       const extraction = await buildBoardWizardUrlContext(sourceUrl, fetched.finalUrl || sourceUrl, fetched.html);
       if (extraction.restaurantLike && extraction.menuItems.length >= 3) {
-        return { manifest: null, specializedKind: 'restaurant', warning: '' };
+        return { manifest: null, specializedKind: 'restaurant', listingPreview: null, warning: '' };
       }
-      if (extractBoardWizardListing(sourceUrl, fetched.finalUrl || sourceUrl, fetched.html)) {
-        return { manifest: null, specializedKind: 'accommodation', warning: '' };
+      let listing = extractBoardWizardListing(sourceUrl, fetched.finalUrl || sourceUrl, fetched.html);
+      if (listing?.kind === 'real-estate') listing = await recoverBoardWizardBoldTrailGallery(listing);
+      if (listing?.kind === 'real-estate' && listing.images.length < 8) {
+        const reader = await fetchBoardWizardReaderPage(sourceUrl, { timeoutMs: 18_000 });
+        const recovered = reader.markdown
+          ? extractBoardWizardListingFromMarkdown(sourceUrl, reader.markdown)
+          : null;
+        if (recovered && recovered.images.length > listing.images.length) {
+          listing = await recoverBoardWizardBoldTrailGallery(recovered);
+        }
+      }
+      if (listing) {
+        return listing.kind === 'real-estate'
+          ? { manifest: null, specializedKind: 'real-estate', listingPreview: boardWizardListingPreview(listing), warning: '' }
+          : { manifest: null, specializedKind: 'accommodation', listingPreview: null, warning: '' };
       }
       if (isBoardWizardListingPageUrl(sourceUrl)) {
-        return { manifest: null, specializedKind: 'accommodation', warning: '' };
+        if (isLikelyBoardWizardRealEstateUrl(sourceUrl)) {
+          // A sparse rendered shell is common on property sites. Let the Reader
+          // recovery below try to return the actual facts and gallery summary.
+        } else {
+          return {
+            manifest: null,
+            specializedKind: 'accommodation',
+            listingPreview: null,
+            warning: '',
+          };
+        }
       }
       const commerce = extractCommercePage(sourceUrl, fetched.finalUrl || sourceUrl, fetched.html);
       if (commerce.isCommerce && commerce.products.length >= 2) {
-        return { manifest: null, specializedKind: 'commerce', warning: '' };
+        return { manifest: null, specializedKind: 'commerce', listingPreview: null, warning: '' };
       }
       if (buildBoardWizardAccommodationExtraction(sourceUrl, fetched.finalUrl || sourceUrl, fetched.html)) {
-        return { manifest: null, specializedKind: 'accommodation', warning: '' };
+        return { manifest: null, specializedKind: 'accommodation', listingPreview: null, warning: '' };
       }
       const manifest = extractBoardWizardArticleManifest(sourceUrl, fetched.finalUrl || sourceUrl, fetched.html);
-      if (manifest) return { manifest, specializedKind: null, warning: '' };
+      if (manifest) return { manifest, specializedKind: null, listingPreview: null, warning: '' };
     }
   } catch {
     // The no-key Reader fallback below can still recover public article content.
@@ -5714,22 +5747,29 @@ async function analyzeBoardWizardSourcePreview(sourceUrl: string): Promise<Board
 
   const reader = await fetchBoardWizardReaderPage(sourceUrl, { timeoutMs: 18_000 });
   if (reader.markdown) {
-    if (extractBoardWizardListingFromMarkdown(sourceUrl, reader.markdown)) {
-      return { manifest: null, specializedKind: 'accommodation', warning: '' };
+    const readerListing = extractBoardWizardListingFromMarkdown(sourceUrl, reader.markdown);
+    if (readerListing) {
+      const completeReaderListing = readerListing.kind === 'real-estate'
+        ? await recoverBoardWizardBoldTrailGallery(readerListing)
+        : readerListing;
+      return completeReaderListing.kind === 'real-estate'
+        ? { manifest: null, specializedKind: 'real-estate', listingPreview: boardWizardListingPreview(completeReaderListing), warning: '' }
+        : { manifest: null, specializedKind: 'accommodation', listingPreview: null, warning: '' };
     }
     if (extractBoardWizardReaderMenuItems(reader.markdown).length >= 3) {
-      return { manifest: null, specializedKind: 'restaurant', warning: '' };
+      return { manifest: null, specializedKind: 'restaurant', listingPreview: null, warning: '' };
     }
     if (extractBoardWizardReaderProducts(reader.markdown, sourceUrl).length >= 2) {
-      return { manifest: null, specializedKind: 'commerce', warning: '' };
+      return { manifest: null, specializedKind: 'commerce', listingPreview: null, warning: '' };
     }
     const manifest = extractBoardWizardArticleManifestFromMarkdown(sourceUrl, reader.markdown);
-    if (manifest) return { manifest, specializedKind: null, warning: '' };
+    if (manifest) return { manifest, specializedKind: null, listingPreview: null, warning: '' };
   }
 
   return {
     manifest: null,
     specializedKind: null,
+    listingPreview: null,
     warning: reader.blocked
       ? 'The publisher blocked source reading. LivingWiki will use verified public indexing and clearly mark the result for review.'
       : 'LivingWiki could not identify a reliable ordered list before generation. The full card preview will require careful review.',
@@ -7181,6 +7221,7 @@ export const previewBoardWizardSource = onCall(
       sourceUrl,
       requiresReview: !!analysis.manifest,
       specializedKind: analysis.specializedKind,
+      listingPreview: analysis.listingPreview,
       manifest: analysis.manifest,
       exact: analysis.manifest ? boardWizardSourceManifestIsExact(analysis.manifest) : false,
       warning: analysis.warning,
@@ -7210,6 +7251,7 @@ export const generateBoardWizardBatch = onCall(
     const vibe = normalizeBoardWizardVibe(data.vibe);
     const mediaMode = normalizeBoardWizardMediaMode(data.mediaMode);
     const narrationStyle = normalizeBoardNarrationStyle(data.narrationStyle);
+    const listingMarketing = normalizeBoardWizardListingMarketingOptions(data.listingMarketing);
     const tourOptions = normalizeBoardWizardTourOptions(data.tourOptions, mode);
     const targetBoardId = stringOrEmpty(data.targetBoardId).slice(0, 140);
     const targetBoardTitle = stringOrEmpty(data.targetBoardTitle).slice(0, 120);
@@ -7382,6 +7424,9 @@ export const generateBoardWizardBatch = onCall(
           // precedence so its food-card behavior and page-bound photos are preserved.
           if (!(urlExtraction.restaurantLike && urlExtraction.menuItems.length >= 3)) {
             listingExtraction = extractBoardWizardListing(url, fetched.finalUrl || url, fetched.html);
+            if (listingExtraction?.kind === 'real-estate') {
+              listingExtraction = await recoverBoardWizardBoldTrailGallery(listingExtraction);
+            }
             logger.info('Board wizard property listing classification completed.', {
               userId,
               urlHost: safeCommerceHostname(url),
@@ -7407,7 +7452,10 @@ export const generateBoardWizardBatch = onCall(
                   && rendered.status < 400
                   && !looksLikeAntiBotChallenge(rendered.html);
                 if (renderedUsable) {
-                  const renderedListing = extractBoardWizardListing(url, rendered.finalUrl || url, rendered.html);
+                  let renderedListing = extractBoardWizardListing(url, rendered.finalUrl || url, rendered.html);
+                  if (renderedListing?.kind === 'real-estate') {
+                    renderedListing = await recoverBoardWizardBoldTrailGallery(renderedListing);
+                  }
                   if (renderedListing && (!listingExtraction || renderedListing.images.length > listingExtraction.images.length)) {
                     listingExtraction = renderedListing;
                   }
@@ -7476,10 +7524,22 @@ export const generateBoardWizardBatch = onCall(
           errorMessage: error instanceof Error ? error.message : String(error),
         });
       }
-      if (!urlExtraction && !listingExtraction && !accommodationExtraction && !commerceExtraction) {
+      if (
+        !accommodationExtraction
+        && !commerceExtraction
+        && (!urlExtraction || isBoardWizardListingPageUrl(url))
+        && (!listingExtraction || listingExtraction.images.length < 8)
+      ) {
         const reader = await fetchBoardWizardReaderPage(url, { timeoutMs: 18_000 });
         if (reader.markdown) {
-          listingExtraction = extractBoardWizardListingFromMarkdown(url, reader.markdown);
+          let readerListing = extractBoardWizardListingFromMarkdown(url, reader.markdown);
+          if (readerListing?.kind === 'real-estate') {
+            readerListing = await recoverBoardWizardBoldTrailGallery(readerListing);
+          }
+          if (readerListing && (!listingExtraction || readerListing.images.length > listingExtraction.images.length)) {
+            listingExtraction = readerListing;
+            urlRecoveryMethod = 'reader';
+          }
           if (!listingExtraction) {
             urlExtraction = buildBoardWizardReaderExtraction(url, reader.markdown);
             if (!(urlExtraction?.restaurantLike && urlExtraction.menuItems.length >= 3)) {
@@ -7490,7 +7550,7 @@ export const generateBoardWizardBatch = onCall(
               if (articleManifest) urlExtraction = buildArticleManifestUrlExtraction(articleManifest);
             }
           }
-          if (listingExtraction || urlExtraction || commerceExtraction) {
+          if (!isBoardWizardListingPageUrl(url) && (listingExtraction || urlExtraction || commerceExtraction)) {
             urlRecoveryMethod = 'reader';
           }
         }
@@ -7588,10 +7648,11 @@ export const generateBoardWizardBatch = onCall(
       ? 'source-exact'
       : countResolution.policy;
 
-    const generationUsesNarrationPrompt = !commerceExtraction
+    const generationUsesNarrationPrompt = (listingExtraction?.kind === 'real-estate' && listingMarketing.enabled)
+      || (!commerceExtraction
       && !listingExtraction
       && !accommodationExtraction
-      && !(urlExtraction?.restaurantLike && urlExtraction.menuItems.length >= 3);
+      && !(urlExtraction?.restaurantLike && urlExtraction.menuItems.length >= 3));
     let generated: GeneratedBoardWizardBatch;
     try {
       generated = commerceExtraction
@@ -7601,11 +7662,20 @@ export const generateBoardWizardBatch = onCall(
             requestedCount: explicitCount,
           })
         : listingExtraction
-        ? buildBoardWizardListingBatch({
-            extraction: listingExtraction,
-            targetBoardTitle,
-            count,
-          })
+        ? listingExtraction.kind === 'real-estate'
+          ? await generateBoardWizardListingMarketingBatch({
+              extraction: listingExtraction,
+              targetBoardTitle,
+              count,
+              narrationStyle,
+              narrationSecondsPerCard,
+              marketing: listingMarketing,
+            })
+          : buildBoardWizardListingBatch({
+              extraction: listingExtraction,
+              targetBoardTitle,
+              count,
+            })
         : accommodationExtraction
         ? buildAccommodationWizardBatch({
             extraction: accommodationExtraction,
