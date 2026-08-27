@@ -31,6 +31,7 @@
     "test:public-board-summary": "npm run build && node scripts/test-public-board-summary.cjs",
     "test:stack-video-narration": "npm run build && node scripts/test-stack-video-narration.cjs",
     "test:tour-handoff": "npm run build && node scripts/test-tour-handoff.cjs",
+    "test:atlas-realtime-voice": "npm run build && node scripts/test-atlas-realtime-voice.cjs",
     "test:board-doc-export": "npm run build && node scripts/test-board-doc-export.cjs",
     "repair:board-videos": "npm run build && node scripts/repair-board-videos.cjs",
     "backfill:public-board-summaries": "npm run build && node scripts/backfill-public-board-summaries.cjs",

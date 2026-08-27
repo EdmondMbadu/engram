@@ -10,6 +10,7 @@ import { FieldValue, type DocumentReference } from 'firebase-admin/firestore';
 import sgMail from '@sendgrid/mail';
 import Stripe from 'stripe';
 import stackNarratorVoiceCatalog from './stack-narrator-voices.json';
+import { selectAtlasRealtimeVoice } from './atlas-realtime-voice';
 import { BOARD_WIZARD_PASTE_MAX_LENGTH, parseNumberedBoardSource, type NumberedBoardSource } from './board-wizard-source';
 import {
   boardWizardImageEntityName,
@@ -314,6 +315,8 @@ const elevenLabsPremadeNarratorVoiceIds = [
 const stackNarratorVoiceIds = Object.fromEntries(
   stackNarratorVoiceCatalog.map((voice) => [voice.id, voice.providerVoiceId]),
 ) as Readonly<Record<string, string>>;
+const defaultAtlasRealtimeVoice = stackNarratorVoiceCatalog.find((voice) => voice.id === 'warm-storyteller')
+  ?? stackNarratorVoiceCatalog[0];
 const personalStackNarratorVoiceId = 'personal-voice';
 const personalNarratorVoiceCollection = 'user_narrator_voices';
 const personalNarratorVoiceConsentVersion = 'v1';
@@ -16023,21 +16026,28 @@ export const createElevenLabsVoiceSession = onCall(
     const voicePreference = normalizeElevenLabsVoicePreference(request.data);
     const voiceOverrideEnabled = isTruthyParam(elevenLabsTtsVoiceOverridesEnabled.value());
     const firstMessageOverrideEnabled = elevenLabsFirstMessageOverridesEnabled.value().trim().toLowerCase() !== 'false';
-    const voiceCacheKey = elevenLabsVoicePreferenceCacheKey(voicePreference);
     const atlasVoice = atlasId ? await loadAtlasSpeechVoiceConfig(atlasId) : null;
     const configuredVoiceAvailable = voiceOverrideEnabled
       && !!atlasVoice?.provider_voice_id
       && await elevenLabsVoiceIsAvailable(apiKey, atlasVoice.provider_voice_id);
-    const selectedVoice: ElevenLabsResolvedVoice | null = configuredVoiceAvailable && atlasVoice?.provider_voice_id
-      ? {
-          voiceId: atlasVoice.provider_voice_id,
-          name: atlasVoice.name ?? 'LivingWiki voice',
-          accent: voicePreference.accent,
-          score: Number.MAX_SAFE_INTEGER,
-        }
-      : voiceOverrideEnabled
-        ? await resolveElevenLabsVoiceForPreference(apiKey, voicePreference, voiceCacheKey)
-        : null;
+    const globalDefaultVoiceAvailable = voiceOverrideEnabled
+      && !configuredVoiceAvailable
+      && !!defaultAtlasRealtimeVoice?.providerVoiceId
+      && await elevenLabsVoiceIsAvailable(apiKey, defaultAtlasRealtimeVoice.providerVoiceId);
+    const selectedVoice = selectAtlasRealtimeVoice({
+      overridesEnabled: voiceOverrideEnabled,
+      accent: voicePreference.accent,
+      wikiVoice: {
+        voiceId: atlasVoice?.provider_voice_id ?? null,
+        name: atlasVoice?.name ?? null,
+        available: configuredVoiceAvailable,
+      },
+      globalDefaultVoice: {
+        voiceId: defaultAtlasRealtimeVoice?.providerVoiceId ?? null,
+        name: defaultAtlasRealtimeVoice?.name ?? null,
+        available: globalDefaultVoiceAvailable,
+      },
+    });
     checkpoint = markTiming('voiceResolveMs', checkpoint);
     if (voicePreference.languageCode && !voiceOverrideEnabled) {
       logger.warn('ElevenLabs TTS voice override is disabled; using the agent default voice.', {
@@ -16096,10 +16106,12 @@ export const createElevenLabsVoiceSession = onCall(
       anonymousVisitorIdPresent: Boolean(anonymousVisitorId),
       voiceOverrideEnabled,
       firstMessageOverrideEnabled,
-      voiceCacheKey,
       selectedVoiceId: selectedVoice?.voiceId ?? null,
+      selectedVoiceName: selectedVoice?.name ?? null,
+      selectedVoiceSource: selectedVoice?.source ?? 'agent-default',
       atlasVoiceSource: atlasVoice?.source ?? 'default',
       configuredVoiceAvailable,
+      globalDefaultVoiceAvailable,
       connectionType: requestedConnectionType,
       timings,
     });
