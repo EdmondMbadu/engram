@@ -241,6 +241,35 @@ export interface AtlasVoiceAgentConfig {
   updated_at?: { toDate(): Date } | Date | string | null;
 }
 
+export type AtlasSpeechVoiceSource = 'default' | 'catalog' | 'designed';
+
+export interface AtlasSpeechVoiceConfig {
+  source: AtlasSpeechVoiceSource;
+  provider: 'elevenlabs';
+  catalogVoiceId: string | null;
+  name: string;
+  description: string | null;
+  previewUrl: string | null;
+  designModel: string | null;
+  createdAt: string | null;
+  updatedAt: string | null;
+}
+
+export interface AtlasSpeechVoicePreview {
+  id: string;
+  audioBase64: string;
+  contentType: string;
+  durationSeconds: number | null;
+  label: string;
+}
+
+export interface AtlasSpeechVoiceDesignResult {
+  sessionId: string;
+  description: string;
+  previewText: string;
+  previews: AtlasSpeechVoicePreview[];
+}
+
 export interface AtlasUsage {
   documents: number;
   wiki_articles: number;

@@ -1,4 +1,4 @@
-import { onDocumentCreated, onDocumentUpdated, onDocumentWritten } from 'firebase-functions/v2/firestore';
+import { onDocumentCreated, onDocumentDeleted, onDocumentUpdated, onDocumentWritten } from 'firebase-functions/v2/firestore';
 import { HttpsError, onCall, onRequest, type CallableRequest } from 'firebase-functions/v2/https';
 import { onSchedule } from 'firebase-functions/v2/scheduler';
 import { onObjectFinalized } from 'firebase-functions/v2/storage';
@@ -329,7 +329,19 @@ const tourGuideSpeechModel = 'eleven_multilingual_v2';
 const elevenLabsVoiceCacheTtlMs = 6 * 60 * 60 * 1000;
 const elevenLabsVoiceSearchDeadlineMs = 950;
 const elevenLabsTokenRequestTimeoutMs = 5000;
+const elevenLabsVoiceDesignRequestTimeoutMs = 60_000;
 const elevenLabsVoiceCache = new Map<string, ElevenLabsVoiceCacheEntry>();
+const elevenLabsVoiceAvailabilityCache = new Map<string, { available: boolean; cachedAt: number }>();
+const atlasSpeechVoiceDesignSessionCollection = 'atlas_voice_design_sessions';
+const atlasSpeechVoiceDesignRateCollection = 'atlas_voice_design_limits';
+const atlasSpeechVoiceDescriptionMinLength = 20;
+const atlasSpeechVoiceDescriptionMaxLength = 1000;
+const atlasSpeechVoicePreviewTextMinLength = 100;
+const atlasSpeechVoicePreviewTextMaxLength = 1000;
+const atlasSpeechVoiceDesignSessionTtlMs = 30 * 60 * 1000;
+const atlasSpeechVoiceDesignCooldownMs = 5_000;
+const atlasSpeechVoiceDesignRateWindowMs = 60 * 60 * 1000;
+const atlasSpeechVoiceDesignRateWindowMax = 12;
 const defaultNewsletterPrompt = [
   'Create a premium weekly Living Wiki email briefing with exactly five of the biggest headlines for this specific wiki.',
   'Focus on the latest verified public information, news, civic updates, development, culture, public safety, transportation, economy, and community signals that matter most to readers.',
@@ -1368,6 +1380,33 @@ type ElevenLabsVerifiedLanguage = {
   language?: unknown;
   accent?: unknown;
   locale?: unknown;
+};
+
+type AtlasSpeechVoiceSource = 'default' | 'catalog' | 'designed';
+
+type AtlasSpeechVoiceConfig = {
+  source: AtlasSpeechVoiceSource;
+  provider: 'elevenlabs';
+  provider_voice_id: string | null;
+  catalog_voice_id: string | null;
+  name: string | null;
+  description: string | null;
+  preview_url: string | null;
+  design_model: string | null;
+  created_by: string | null;
+  created_at?: unknown;
+  updated_at?: unknown;
+};
+
+type AtlasVoiceDesignSessionRecord = {
+  atlas_id?: unknown;
+  created_by?: unknown;
+  description?: unknown;
+  preview_text?: unknown;
+  model_id?: unknown;
+  generated_voice_ids?: unknown;
+  status?: unknown;
+  expires_at_ms?: unknown;
 };
 
 type VapiToolCall = {
@@ -5108,6 +5147,24 @@ async function loadAtlasForAdminAccess(atlasId: string, userId: string) {
     throw new HttpsError('permission-denied', 'You do not have access to this wiki admin data.');
   }
 
+  return { atlasSnapshot, atlas: atlas ?? {} };
+}
+
+async function loadAtlasForVoiceAccess(atlasId: string, userId: string | null) {
+  const atlasSnapshot = await db.collection('atlases').doc(atlasId).get();
+  if (!atlasSnapshot.exists) {
+    throw new HttpsError('not-found', 'Atlas not found.');
+  }
+  const atlas = atlasSnapshot.data() as Record<string, unknown> | undefined;
+  const ownerId = String(atlas?.user_id ?? '');
+  const adminIds = Array.isArray(atlas?.admin_user_ids)
+    ? atlas.admin_user_ids.map((value) => String(value))
+    : [];
+  const canAccess = atlas?.is_public === true
+    || (!!userId && (ownerId === userId || adminIds.includes(userId)));
+  if (!canAccess) {
+    throw new HttpsError('permission-denied', 'You do not have access to this wiki voice.');
+  }
   return { atlasSnapshot, atlas: atlas ?? {} };
 }
 
@@ -15397,6 +15454,522 @@ export const updateAtlasVoiceAgentConfig = onCall({ region: callableRegion, cors
   return { config: serializeVoiceAgentConfig(atlasId, { ...config, updated_at: new Date().toISOString() }) };
 });
 
+function atlasSpeechVoiceFromStored(value: unknown): AtlasSpeechVoiceConfig {
+  const data = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+  const source: AtlasSpeechVoiceSource = data['source'] === 'designed'
+    ? 'designed'
+    : data['source'] === 'catalog'
+      ? 'catalog'
+      : 'default';
+  const providerVoiceId = textValue(data['provider_voice_id'], 160);
+  const catalogVoiceId = textValue(data['catalog_voice_id'], 120);
+  if (source !== 'default' && !providerVoiceId) {
+    return {
+      source: 'default',
+      provider: 'elevenlabs',
+      provider_voice_id: null,
+      catalog_voice_id: null,
+      name: null,
+      description: null,
+      preview_url: null,
+      design_model: null,
+      created_by: null,
+    };
+  }
+  return {
+    source,
+    provider: 'elevenlabs',
+    provider_voice_id: source === 'default' ? null : providerVoiceId,
+    catalog_voice_id: source === 'catalog' ? catalogVoiceId : null,
+    name: textValue(data['name'], 120),
+    description: textValue(data['description'], atlasSpeechVoiceDescriptionMaxLength),
+    preview_url: textValue(data['preview_url'], 2000),
+    design_model: textValue(data['design_model'], 80),
+    created_by: textValue(data['created_by'], 128),
+    created_at: data['created_at'],
+    updated_at: data['updated_at'],
+  };
+}
+
+function serializeAtlasSpeechVoiceConfig(config: AtlasSpeechVoiceConfig): Record<string, unknown> {
+  return {
+    source: config.source,
+    provider: config.provider,
+    catalogVoiceId: config.catalog_voice_id,
+    name: config.name ?? (config.source === 'default' ? 'Default voice' : 'ElevenLabs voice'),
+    description: config.description,
+    previewUrl: config.preview_url,
+    designModel: config.design_model,
+    createdAt: timestampToIso(config.created_at),
+    updatedAt: timestampToIso(config.updated_at),
+  };
+}
+
+async function loadAtlasSpeechVoiceConfig(atlasId: string): Promise<AtlasSpeechVoiceConfig> {
+  const integrationSnapshot = await db.collection('atlas_integrations').doc(atlasId).get();
+  return atlasSpeechVoiceFromStored(integrationSnapshot.data()?.speech_voice);
+}
+
+async function replaceAtlasSpeechVoiceConfig(
+  atlasId: string,
+  userId: string,
+  next: AtlasSpeechVoiceConfig,
+): Promise<AtlasSpeechVoiceConfig> {
+  const integrationRef = db.collection('atlas_integrations').doc(atlasId);
+  const previousSnapshot = await integrationRef.get();
+  const previous = atlasSpeechVoiceFromStored(previousSnapshot.data()?.speech_voice);
+  const now = FieldValue.serverTimestamp();
+  const createdAt = next.source === previous.source
+    && next.provider_voice_id === previous.provider_voice_id
+    ? previous.created_at ?? now
+    : now;
+  const stored: AtlasSpeechVoiceConfig = {
+    ...next,
+    created_by: next.created_by ?? userId,
+    created_at: createdAt,
+    updated_at: now,
+  };
+  await integrationRef.set({
+    atlas_id: atlasId,
+    speech_voice: stored,
+    updated_at: now,
+  }, { merge: true });
+
+  if (previous.source === 'designed'
+    && previous.provider_voice_id
+    && previous.provider_voice_id !== next.provider_voice_id) {
+    const apiKey = elevenLabsApiKey.value();
+    if (apiKey) {
+      await deleteElevenLabsPersonalVoice(apiKey, previous.provider_voice_id, false);
+    }
+  }
+  return { ...stored, created_at: createdAt, updated_at: new Date() };
+}
+
+function defaultAtlasVoicePreviewText(atlasName: string): string {
+  return [
+    `Welcome to ${atlasName}.`,
+    'I am your LivingWiki guide, ready to explore the people, places, choices, and ideas that shaped this story.',
+    'Ask a question, and we will examine the evidence together with clarity and care.',
+  ].join(' ');
+}
+
+function validateAtlasVoiceDesignInput(data: unknown, atlasName: string): {
+  description: string;
+  previewText: string;
+  modelId: 'eleven_multilingual_ttv_v2' | 'eleven_ttv_v3';
+} {
+  const record = data && typeof data === 'object' ? data as Record<string, unknown> : {};
+  const description = textValue(record['description'], atlasSpeechVoiceDescriptionMaxLength) ?? '';
+  if (description.length < atlasSpeechVoiceDescriptionMinLength) {
+    throw new HttpsError(
+      'invalid-argument',
+      `Describe the voice in at least ${atlasSpeechVoiceDescriptionMinLength} characters.`,
+    );
+  }
+  const suppliedText = textValue(record['previewText'], atlasSpeechVoicePreviewTextMaxLength) ?? '';
+  const previewText = suppliedText.length >= atlasSpeechVoicePreviewTextMinLength
+    ? suppliedText
+    : defaultAtlasVoicePreviewText(atlasName);
+  const modelId = record['modelId'] === 'eleven_ttv_v3'
+    ? 'eleven_ttv_v3'
+    : 'eleven_multilingual_ttv_v2';
+  return { description, previewText, modelId };
+}
+
+export const getAtlasSpeechVoiceConfig = onCall({ region: callableRegion, cors: true }, async (request) => {
+  if (!request.auth?.uid) {
+    throw new HttpsError('unauthenticated', 'Authentication is required.');
+  }
+  const atlasId = normalizeAtlasId(request.data?.atlasId);
+  if (!atlasId) {
+    throw new HttpsError('invalid-argument', 'atlasId is required.');
+  }
+  await loadAtlasForAdminAccess(atlasId, request.auth.uid);
+  return { config: serializeAtlasSpeechVoiceConfig(await loadAtlasSpeechVoiceConfig(atlasId)) };
+});
+
+export const designAtlasSpeechVoice = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 90,
+    memory: '512MiB',
+    cors: true,
+    secrets: [elevenLabsApiKey],
+  },
+  async (request) => {
+    if (!request.auth?.uid) {
+      throw new HttpsError('unauthenticated', 'Authentication is required.');
+    }
+    const atlasId = normalizeAtlasId(request.data?.atlasId);
+    if (!atlasId) {
+      throw new HttpsError('invalid-argument', 'atlasId is required.');
+    }
+    const { atlas } = await loadAtlasForAdminAccess(atlasId, request.auth.uid);
+    const atlasName = textValue(atlas['name'], 120) ?? 'this LivingWiki';
+    const { description, previewText, modelId } = validateAtlasVoiceDesignInput(request.data, atlasName);
+    const rateRef = db.collection(atlasSpeechVoiceDesignRateCollection)
+      .doc(createHash('sha256').update(`${request.auth.uid}:${atlasId}`).digest('hex'));
+    const nowMs = Date.now();
+    await db.runTransaction(async (transaction) => {
+      const snapshot = await transaction.get(rateRef);
+      const previousMs = Number(snapshot.data()?.last_generated_at_ms ?? 0);
+      if (Number.isFinite(previousMs) && nowMs - previousMs < atlasSpeechVoiceDesignCooldownMs) {
+        throw new HttpsError('resource-exhausted', 'Wait a few seconds before generating another set of voices.');
+      }
+      const storedWindowStartMs = Number(snapshot.data()?.window_started_at_ms ?? 0);
+      const currentWindow = Number.isFinite(storedWindowStartMs)
+        && storedWindowStartMs > 0
+        && nowMs - storedWindowStartMs < atlasSpeechVoiceDesignRateWindowMs;
+      const windowStartedAtMs = currentWindow ? storedWindowStartMs : nowMs;
+      const windowCount = currentWindow ? Number(snapshot.data()?.window_count ?? 0) : 0;
+      if (Number.isFinite(windowCount) && windowCount >= atlasSpeechVoiceDesignRateWindowMax) {
+        throw new HttpsError(
+          'resource-exhausted',
+          'This wiki has reached its hourly voice-design limit. Try again after the current window resets.',
+        );
+      }
+      transaction.set(rateRef, {
+        atlas_id: atlasId,
+        user_id: request.auth!.uid,
+        last_generated_at_ms: nowMs,
+        window_started_at_ms: windowStartedAtMs,
+        window_count: (Number.isFinite(windowCount) ? windowCount : 0) + 1,
+        updated_at: FieldValue.serverTimestamp(),
+      }, { merge: true });
+    });
+
+    const apiKey = elevenLabsApiKey.value();
+    if (!apiKey) {
+      throw new HttpsError('failed-precondition', 'ElevenLabs is not configured.');
+    }
+    const designUrl = new URL('https://api.elevenlabs.io/v1/text-to-voice/design');
+    designUrl.searchParams.set('output_format', 'mp3_22050_32');
+    let response: Response;
+    try {
+      response = await fetchWithTimeout(designUrl.toString(), {
+        method: 'POST',
+        headers: {
+          'xi-api-key': apiKey,
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          voice_description: description,
+          text: previewText,
+          model_id: modelId,
+          stream_previews: false,
+          should_enhance: true,
+          guidance_scale: 5,
+        }),
+      }, elevenLabsVoiceDesignRequestTimeoutMs);
+    } catch (error) {
+      logger.warn('ElevenLabs voice design request failed.', {
+        atlasId,
+        errorMessage: error instanceof Error ? error.message : String(error),
+      });
+      throw new HttpsError('unavailable', 'Voice design is temporarily unavailable. Try again shortly.');
+    }
+    if (!response.ok) {
+      const body = (await response.text().catch(() => '')).slice(0, 500);
+      logger.warn('ElevenLabs voice design rejected.', { atlasId, status: response.status, body });
+      throw new HttpsError(
+        response.status === 429 ? 'resource-exhausted' : 'failed-precondition',
+        response.status === 429
+          ? 'The voice-design quota is temporarily exhausted. Try again later.'
+          : 'ElevenLabs could not design that voice. Refine the description and try again.',
+      );
+    }
+    const data = await response.json() as { previews?: unknown; text?: unknown };
+    const previews = (Array.isArray(data.previews) ? data.previews : [])
+      .map((value, index) => {
+        const preview = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+        const generatedVoiceId = textValue(preview['generated_voice_id'], 160);
+        const audioBase64 = typeof preview['audio_base_64'] === 'string' ? preview['audio_base_64'] : '';
+        if (!generatedVoiceId || !audioBase64) return null;
+        return {
+          id: generatedVoiceId,
+          audioBase64,
+          contentType: textValue(preview['media_type'], 80) ?? 'audio/mpeg',
+          durationSeconds: Number.isFinite(Number(preview['duration_secs']))
+            ? Number(preview['duration_secs'])
+            : null,
+          label: `Voice ${index + 1}`,
+        };
+      })
+      .filter((value): value is NonNullable<typeof value> => value !== null)
+      .slice(0, 3);
+    if (previews.length === 0) {
+      throw new HttpsError('internal', 'ElevenLabs did not return any voice previews.');
+    }
+
+    const sessionRef = db.collection(atlasSpeechVoiceDesignSessionCollection).doc();
+    await sessionRef.set({
+      atlas_id: atlasId,
+      created_by: request.auth.uid,
+      description,
+      preview_text: previewText,
+      model_id: modelId,
+      generated_voice_ids: previews.map((preview) => preview.id),
+      status: 'preview',
+      expires_at_ms: Date.now() + atlasSpeechVoiceDesignSessionTtlMs,
+      created_at: FieldValue.serverTimestamp(),
+      updated_at: FieldValue.serverTimestamp(),
+    });
+    return {
+      sessionId: sessionRef.id,
+      description,
+      previewText: textValue(data.text, atlasSpeechVoicePreviewTextMaxLength) ?? previewText,
+      previews,
+    };
+  },
+);
+
+export const saveAtlasDesignedVoice = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 90,
+    memory: '512MiB',
+    cors: true,
+    secrets: [elevenLabsApiKey],
+  },
+  async (request) => {
+    if (!request.auth?.uid) {
+      throw new HttpsError('unauthenticated', 'Authentication is required.');
+    }
+    const atlasId = normalizeAtlasId(request.data?.atlasId);
+    const sessionId = textValue(request.data?.sessionId, 160);
+    const generatedVoiceId = textValue(request.data?.generatedVoiceId, 160);
+    if (!atlasId || !sessionId || !generatedVoiceId) {
+      throw new HttpsError('invalid-argument', 'Atlas, preview session, and selected voice are required.');
+    }
+    const { atlas } = await loadAtlasForAdminAccess(atlasId, request.auth.uid);
+    const sessionRef = db.collection(atlasSpeechVoiceDesignSessionCollection).doc(sessionId);
+    let session!: AtlasVoiceDesignSessionRecord;
+    await db.runTransaction(async (transaction) => {
+      const snapshot = await transaction.get(sessionRef);
+      if (!snapshot.exists) {
+        throw new HttpsError('not-found', 'That voice preview session has expired. Generate new previews.');
+      }
+      session = snapshot.data() as AtlasVoiceDesignSessionRecord;
+      const generatedIds = Array.isArray(session.generated_voice_ids)
+        ? session.generated_voice_ids.map((value) => String(value))
+        : [];
+      if (session.atlas_id !== atlasId
+        || session.created_by !== request.auth!.uid
+        || session.status !== 'preview'
+        || Number(session.expires_at_ms ?? 0) < Date.now()
+        || !generatedIds.includes(generatedVoiceId)) {
+        throw new HttpsError('failed-precondition', 'That preview is no longer available. Generate a new set.');
+      }
+      transaction.update(sessionRef, {
+        status: 'creating',
+        selected_voice_id: generatedVoiceId,
+        updated_at: FieldValue.serverTimestamp(),
+      });
+    });
+
+    const apiKey = elevenLabsApiKey.value();
+    if (!apiKey) {
+      throw new HttpsError('failed-precondition', 'ElevenLabs is not configured.');
+    }
+    const description = textValue(session.description, atlasSpeechVoiceDescriptionMaxLength) ?? '';
+    const atlasName = textValue(atlas['name'], 80) ?? 'LivingWiki Guide';
+    let providerVoiceId = '';
+    try {
+      const response = await fetchWithTimeout('https://api.elevenlabs.io/v1/text-to-voice', {
+        method: 'POST',
+        headers: {
+          'xi-api-key': apiKey,
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          voice_name: `LivingWiki - ${atlasName}`.slice(0, 100),
+          voice_description: description,
+          generated_voice_id: generatedVoiceId,
+          labels: { product: 'LivingWiki', atlas_id: atlasId.slice(0, 80) },
+        }),
+      }, elevenLabsVoiceDesignRequestTimeoutMs);
+      if (!response.ok) {
+        const body = (await response.text().catch(() => '')).slice(0, 500);
+        logger.warn('ElevenLabs designed voice could not be saved.', { atlasId, status: response.status, body });
+        throw new HttpsError(
+          response.status === 429 ? 'resource-exhausted' : 'failed-precondition',
+          response.status === 429
+            ? 'Your ElevenLabs voice capacity or operation quota is exhausted.'
+            : 'ElevenLabs could not save that voice. Generate a new set and try again.',
+        );
+      }
+      const data = await response.json() as Record<string, unknown>;
+      providerVoiceId = textValue(data['voice_id'], 160) ?? '';
+      if (!providerVoiceId) {
+        throw new HttpsError('internal', 'ElevenLabs did not return the saved voice.');
+      }
+      const next: AtlasSpeechVoiceConfig = {
+        source: 'designed',
+        provider: 'elevenlabs',
+        provider_voice_id: providerVoiceId,
+        catalog_voice_id: null,
+        name: atlasName,
+        description,
+        preview_url: textValue(data['preview_url'], 2000),
+        design_model: textValue(session.model_id, 80) ?? 'eleven_multilingual_ttv_v2',
+        created_by: request.auth.uid,
+      };
+      const saved = await replaceAtlasSpeechVoiceConfig(atlasId, request.auth.uid, next);
+      await sessionRef.set({
+        status: 'consumed',
+        provider_voice_id: providerVoiceId,
+        consumed_at: FieldValue.serverTimestamp(),
+        updated_at: FieldValue.serverTimestamp(),
+      }, { merge: true }).catch((error) => {
+        logger.warn('Voice design session finalization failed.', {
+          atlasId,
+          sessionId,
+          errorMessage: error instanceof Error ? error.message : String(error),
+        });
+      });
+      return { config: serializeAtlasSpeechVoiceConfig(saved) };
+    } catch (error) {
+      if (providerVoiceId) {
+        await deleteElevenLabsPersonalVoice(apiKey, providerVoiceId, false);
+      }
+      await sessionRef.set({
+        status: 'preview',
+        updated_at: FieldValue.serverTimestamp(),
+      }, { merge: true }).catch(() => undefined);
+      throw error;
+    }
+  },
+);
+
+export const selectAtlasCatalogVoice = onCall(
+  { region: callableRegion, timeoutSeconds: 30, memory: '256MiB', cors: true, secrets: [elevenLabsApiKey] },
+  async (request) => {
+    if (!request.auth?.uid) {
+      throw new HttpsError('unauthenticated', 'Authentication is required.');
+    }
+    const atlasId = normalizeAtlasId(request.data?.atlasId);
+    const catalogVoiceId = textValue(request.data?.catalogVoiceId, 120);
+    if (!atlasId || !catalogVoiceId) {
+      throw new HttpsError('invalid-argument', 'Atlas and catalog voice are required.');
+    }
+    await loadAtlasForAdminAccess(atlasId, request.auth.uid);
+    const catalogVoice = stackNarratorVoiceCatalog.find((voice) => voice.id === catalogVoiceId);
+    if (!catalogVoice?.providerVoiceId) {
+      throw new HttpsError('not-found', 'That included voice is not available.');
+    }
+    const saved = await replaceAtlasSpeechVoiceConfig(atlasId, request.auth.uid, {
+      source: 'catalog',
+      provider: 'elevenlabs',
+      provider_voice_id: catalogVoice.providerVoiceId,
+      catalog_voice_id: catalogVoice.id,
+      name: catalogVoice.name,
+      description: catalogVoice.description,
+      preview_url: null,
+      design_model: null,
+      created_by: request.auth.uid,
+    });
+    return { config: serializeAtlasSpeechVoiceConfig(saved) };
+  },
+);
+
+export const resetAtlasSpeechVoice = onCall(
+  { region: callableRegion, timeoutSeconds: 30, memory: '256MiB', cors: true, secrets: [elevenLabsApiKey] },
+  async (request) => {
+    if (!request.auth?.uid) {
+      throw new HttpsError('unauthenticated', 'Authentication is required.');
+    }
+    const atlasId = normalizeAtlasId(request.data?.atlasId);
+    if (!atlasId) {
+      throw new HttpsError('invalid-argument', 'atlasId is required.');
+    }
+    await loadAtlasForAdminAccess(atlasId, request.auth.uid);
+    const saved = await replaceAtlasSpeechVoiceConfig(atlasId, request.auth.uid, {
+      source: 'default',
+      provider: 'elevenlabs',
+      provider_voice_id: null,
+      catalog_voice_id: null,
+      name: null,
+      description: null,
+      preview_url: null,
+      design_model: null,
+      created_by: request.auth.uid,
+    });
+    return { config: serializeAtlasSpeechVoiceConfig(saved) };
+  },
+);
+
+export const cleanupDeletedAtlasVoice = onDocumentDeleted(
+  {
+    document: 'atlases/{atlasId}',
+    region: callableRegion,
+    secrets: [elevenLabsApiKey],
+  },
+  async (event) => {
+    const atlasId = normalizeAtlasId(event.params.atlasId);
+    if (!atlasId) return;
+    const integrationRef = db.collection('atlas_integrations').doc(atlasId);
+    const [integrationSnapshot, sessionSnapshot] = await Promise.all([
+      integrationRef.get(),
+      db.collection(atlasSpeechVoiceDesignSessionCollection).where('atlas_id', '==', atlasId).get(),
+    ]);
+    const voice = atlasSpeechVoiceFromStored(integrationSnapshot.data()?.speech_voice);
+    if (voice.source === 'designed' && voice.provider_voice_id) {
+      const apiKey = elevenLabsApiKey.value();
+      if (apiKey) {
+        await deleteElevenLabsPersonalVoice(apiKey, voice.provider_voice_id, false);
+      }
+    }
+    const batch = db.batch();
+    if (integrationSnapshot.exists) batch.delete(integrationRef);
+    sessionSnapshot.docs.forEach((document) => batch.delete(document.ref));
+    if (integrationSnapshot.exists || !sessionSnapshot.empty) {
+      await batch.commit();
+    }
+  },
+);
+
+function atlasRuntimePersonaInstruction(atlas: Record<string, unknown>): string {
+  const guide = atlas['chat_guide'] && typeof atlas['chat_guide'] === 'object'
+    ? atlas['chat_guide'] as Record<string, unknown>
+    : null;
+  const guideName = textValue(guide?.['name'], 80) ?? '';
+  const guideLabel = textValue(guide?.['label'], 120) ?? '';
+  const guidePrompt = guideName
+    ? [
+        `You are responding as ${guideName}, ${guideLabel || 'the LivingWiki guide'} for this wiki.`,
+        'Let that guide identity shape the voice, warmth, framing, and local color of every answer.',
+        'Stay accurate and source-aware; never fabricate personal memories, citations, dates, or facts.',
+      ].join(' ')
+    : '';
+  const persona = typeof atlas['persona_prompt'] === 'string'
+    ? atlas['persona_prompt'].trim()
+    : '';
+  return [guidePrompt, persona].filter(Boolean).join('\n\n').slice(0, 8000);
+}
+
+async function elevenLabsVoiceIsAvailable(apiKey: string, voiceId: string): Promise<boolean> {
+  const cached = elevenLabsVoiceAvailabilityCache.get(voiceId);
+  if (cached && Date.now() - cached.cachedAt < elevenLabsVoiceCacheTtlMs) {
+    return cached.available;
+  }
+  let available = false;
+  try {
+    const response = await fetchWithTimeout(
+      `https://api.elevenlabs.io/v1/voices/${encodeURIComponent(voiceId)}`,
+      { headers: { 'xi-api-key': apiKey } },
+      2500,
+    );
+    available = response.ok;
+  } catch {
+    // A provider timeout should not prevent a conversation from starting. The
+    // agent default remains the safe fallback when availability is uncertain.
+    available = false;
+  }
+  elevenLabsVoiceAvailabilityCache.set(voiceId, { available, cachedAt: Date.now() });
+  return available;
+}
+
 export const createElevenLabsVoiceSession = onCall(
   {
     region: callableRegion,
@@ -15422,15 +15995,12 @@ export const createElevenLabsVoiceSession = onCall(
     }
 
     let atlasName = textValue(request.data?.atlasName, 120) || null;
+    let atlasRecord: Record<string, unknown> | null = null;
     let checkpoint = Date.now();
     if (atlasId) {
-      if (uid) {
-        const { atlas } = await loadAtlasForAdminAccess(atlasId, uid);
-        atlasName = textValue(atlas.name, 120) || atlasName;
-      } else {
-        const atlas = await loadPublicAtlasById(atlasId);
-        atlasName = textValue(atlas.name, 120) || atlasName;
-      }
+      const { atlas } = await loadAtlasForVoiceAccess(atlasId, uid);
+      atlasRecord = atlas;
+      atlasName = textValue(atlas.name, 120) || atlasName;
     }
     checkpoint = markTiming('atlasLoadMs', checkpoint);
 
@@ -15454,9 +16024,20 @@ export const createElevenLabsVoiceSession = onCall(
     const voiceOverrideEnabled = isTruthyParam(elevenLabsTtsVoiceOverridesEnabled.value());
     const firstMessageOverrideEnabled = elevenLabsFirstMessageOverridesEnabled.value().trim().toLowerCase() !== 'false';
     const voiceCacheKey = elevenLabsVoicePreferenceCacheKey(voicePreference);
-    const selectedVoice = voiceOverrideEnabled
-      ? await resolveElevenLabsVoiceForPreference(apiKey, voicePreference, voiceCacheKey)
-      : null;
+    const atlasVoice = atlasId ? await loadAtlasSpeechVoiceConfig(atlasId) : null;
+    const configuredVoiceAvailable = voiceOverrideEnabled
+      && !!atlasVoice?.provider_voice_id
+      && await elevenLabsVoiceIsAvailable(apiKey, atlasVoice.provider_voice_id);
+    const selectedVoice: ElevenLabsResolvedVoice | null = configuredVoiceAvailable && atlasVoice?.provider_voice_id
+      ? {
+          voiceId: atlasVoice.provider_voice_id,
+          name: atlasVoice.name ?? 'LivingWiki voice',
+          accent: voicePreference.accent,
+          score: Number.MAX_SAFE_INTEGER,
+        }
+      : voiceOverrideEnabled
+        ? await resolveElevenLabsVoiceForPreference(apiKey, voicePreference, voiceCacheKey)
+        : null;
     checkpoint = markTiming('voiceResolveMs', checkpoint);
     if (voicePreference.languageCode && !voiceOverrideEnabled) {
       logger.warn('ElevenLabs TTS voice override is disabled; using the agent default voice.', {
@@ -15509,6 +16090,8 @@ export const createElevenLabsVoiceSession = onCall(
       firstMessageOverrideEnabled,
       voiceCacheKey,
       selectedVoiceId: selectedVoice?.voiceId ?? null,
+      atlasVoiceSource: atlasVoice?.source ?? 'default',
+      configuredVoiceAvailable,
       timings,
     });
 
@@ -15534,6 +16117,13 @@ export const createElevenLabsVoiceSession = onCall(
         preferred_accent: selectedVoice?.accent ?? voicePreference.accent ?? '',
         selected_voice_id: selectedVoice?.voiceId ?? '',
         selected_voice_name: selectedVoice?.name ?? '',
+        atlas_persona_instruction: atlasRecord ? atlasRuntimePersonaInstruction(atlasRecord) : '',
+        atlas_guide_name: textValue(
+          atlasRecord?.['chat_guide'] && typeof atlasRecord['chat_guide'] === 'object'
+            ? (atlasRecord['chat_guide'] as Record<string, unknown>)['name']
+            : null,
+          80,
+        ) ?? '',
       },
     };
   },
@@ -19483,12 +20073,13 @@ async function deleteElevenLabsPersonalVoice(
   strict: boolean,
 ): Promise<void> {
   if (!voiceId) return;
-  const response = await fetch(
+  const response = await fetchWithTimeout(
     `https://api.elevenlabs.io/v1/voices/${encodeURIComponent(voiceId)}`,
     {
       method: 'DELETE',
       headers: { 'xi-api-key': apiKey },
     },
+    10_000,
   );
   if (response.ok || response.status === 404) return;
   const body = (await response.text().catch(() => '')).slice(0, 500);
@@ -19877,6 +20468,7 @@ export const synthesizeChatAnswerSpeech = onCall(
           ? 'full'
           : 'recap';
     const requestedNarratorId = String(request.data?.narratorVoiceId ?? '').trim();
+    const requestedAtlasId = normalizeAtlasId(request.data?.atlasId);
     const boardId = String(request.data?.boardId ?? '').trim();
     const requestedCardId = String(request.data?.cardId ?? '').trim().slice(0, 160);
     let requestedBoard: Record<string, unknown> | null = null;
@@ -19911,6 +20503,11 @@ export const synthesizeChatAnswerSpeech = onCall(
       && requestedNarratorId !== personalStackNarratorVoiceId
       && !requestedNarratorVoiceId) {
       throw new HttpsError('invalid-argument', 'The selected narrator voice is not available.');
+    }
+    if (!requestedNarratorId && requestedAtlasId) {
+      await loadAtlasForVoiceAccess(requestedAtlasId, request.auth?.uid ?? null);
+      const atlasVoice = await loadAtlasSpeechVoiceConfig(requestedAtlasId);
+      requestedNarratorVoiceId = atlasVoice.provider_voice_id ?? '';
     }
     const text = requestedMode === 'stack-video' && requestedStackVideoCard
       ? stackVideoNarrationTextFromCard(requestedStackVideoCard, normalizeSpeechText)

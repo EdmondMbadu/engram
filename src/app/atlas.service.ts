@@ -20,7 +20,7 @@ import {
 } from 'firebase/firestore';
 import { httpsCallable } from 'firebase/functions';
 import { deleteObject, getDownloadURL, ref as storageRef, uploadBytes } from 'firebase/storage';
-import type { AtlasAdminProfile, AtlasChatGuideConfig, AtlasItem, AtlasNewsletterConfig, AtlasNewsletterTestResult, AtlasSubscriptionItem, AtlasTextMessagingConfig, AtlasUsage, AtlasVoiceAgentConfig, CityAtlasConfig, CityAtlasMetadata, CityPulseMetric, UniversityAtlasConfig } from './atlas.models';
+import type { AtlasAdminProfile, AtlasChatGuideConfig, AtlasItem, AtlasNewsletterConfig, AtlasNewsletterTestResult, AtlasSpeechVoiceConfig, AtlasSpeechVoiceDesignResult, AtlasSubscriptionItem, AtlasTextMessagingConfig, AtlasUsage, AtlasVoiceAgentConfig, CityAtlasConfig, CityAtlasMetadata, CityPulseMetric, UniversityAtlasConfig } from './atlas.models';
 import { AuthService } from './auth.service';
 import type { CityAtlasTemplate } from './city-atlas-templates';
 import { getFirebaseFirestore, getFirebaseFunctions, getFirebaseStorage } from './firebase.client';
@@ -411,6 +411,18 @@ type AtlasTextMessagingConfigResponse = {
 
 type AtlasVoiceAgentConfigResponse = {
   config: AtlasVoiceAgentConfig;
+};
+
+type AtlasSpeechVoiceConfigResponse = {
+  config: AtlasSpeechVoiceConfig;
+};
+
+export type AtlasSpeechAudioResponse = {
+  audioUrl?: string;
+  audioBase64?: string;
+  contentType: string;
+  voiceId?: string | null;
+  speechText?: string;
 };
 
 @Injectable({ providedIn: 'root' })
@@ -1179,6 +1191,88 @@ export class AtlasService {
     >(this.functions, 'updateAtlasVoiceAgentConfig');
     const { data } = await updateAtlasVoiceAgentConfig({ atlasId, config, rotateToken });
     return this.hydrateVoiceAgentConfig(data.config);
+  }
+
+  async getAtlasSpeechVoiceConfig(atlasId: string): Promise<AtlasSpeechVoiceConfig> {
+    if (!this.functions) throw new Error('Functions unavailable.');
+    const callable = httpsCallable<{ atlasId: string }, AtlasSpeechVoiceConfigResponse>(
+      this.functions,
+      'getAtlasSpeechVoiceConfig',
+    );
+    const { data } = await callable({ atlasId });
+    return data.config;
+  }
+
+  async designAtlasSpeechVoice(
+    atlasId: string,
+    description: string,
+    previewText: string,
+  ): Promise<AtlasSpeechVoiceDesignResult> {
+    if (!this.functions) throw new Error('Functions unavailable.');
+    const callable = httpsCallable<
+      { atlasId: string; description: string; previewText: string; modelId: 'eleven_multilingual_ttv_v2' },
+      AtlasSpeechVoiceDesignResult
+    >(this.functions, 'designAtlasSpeechVoice', { timeout: 120_000 });
+    const { data } = await callable({
+      atlasId,
+      description,
+      previewText,
+      modelId: 'eleven_multilingual_ttv_v2',
+    });
+    return data;
+  }
+
+  async saveAtlasDesignedVoice(
+    atlasId: string,
+    sessionId: string,
+    generatedVoiceId: string,
+  ): Promise<AtlasSpeechVoiceConfig> {
+    if (!this.functions) throw new Error('Functions unavailable.');
+    const callable = httpsCallable<
+      { atlasId: string; sessionId: string; generatedVoiceId: string },
+      AtlasSpeechVoiceConfigResponse
+    >(this.functions, 'saveAtlasDesignedVoice', { timeout: 120_000 });
+    const { data } = await callable({ atlasId, sessionId, generatedVoiceId });
+    return data.config;
+  }
+
+  async selectAtlasCatalogVoice(atlasId: string, catalogVoiceId: string): Promise<AtlasSpeechVoiceConfig> {
+    if (!this.functions) throw new Error('Functions unavailable.');
+    const callable = httpsCallable<
+      { atlasId: string; catalogVoiceId: string },
+      AtlasSpeechVoiceConfigResponse
+    >(this.functions, 'selectAtlasCatalogVoice');
+    const { data } = await callable({ atlasId, catalogVoiceId });
+    return data.config;
+  }
+
+  async resetAtlasSpeechVoice(atlasId: string): Promise<AtlasSpeechVoiceConfig> {
+    if (!this.functions) throw new Error('Functions unavailable.');
+    const callable = httpsCallable<{ atlasId: string }, AtlasSpeechVoiceConfigResponse>(
+      this.functions,
+      'resetAtlasSpeechVoice',
+    );
+    const { data } = await callable({ atlasId });
+    return data.config;
+  }
+
+  async previewAtlasSpeechVoice(
+    atlasId: string,
+    text: string,
+    narratorVoiceId?: string | null,
+  ): Promise<AtlasSpeechAudioResponse> {
+    if (!this.functions) throw new Error('Functions unavailable.');
+    const callable = httpsCallable<
+      { atlasId: string; text: string; mode: 'full' | 'voice-preview'; narratorVoiceId?: string | null },
+      AtlasSpeechAudioResponse
+    >(this.functions, 'synthesizeChatAnswerSpeech', { timeout: 120_000 });
+    const { data } = await callable({
+      atlasId,
+      text,
+      mode: narratorVoiceId ? 'voice-preview' : 'full',
+      narratorVoiceId: narratorVoiceId ?? null,
+    });
+    return data;
   }
 
   private patchAtlas(atlasId: string, patch: Partial<AtlasItem>): void {

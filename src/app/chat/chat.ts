@@ -4353,6 +4353,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         throw new Error('Voice service is unavailable.');
       }
 
+      const atlasPersonaInstruction = String(
+        session.dynamicVariables?.['atlas_persona_instruction'] ?? '',
+      ).trim();
       const voiceDynamicVariables = {
         ...(session.dynamicVariables ?? {}),
         current_city: cityName,
@@ -4361,8 +4364,8 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         requested_intro_greeting: greeting,
         link_delivery_instruction: linkDeliveryInstruction,
         city_context_instruction: cityName
-          ? `This voice conversation is for the LivingWiki city page for ${cityName}${cityCountry ? `, ${cityCountry}` : ''}. Invite questions about ${cityName}, while still answering broader questions when asked. ${linkDeliveryInstruction}`
-          : `This voice conversation is for the current LivingWiki page. ${linkDeliveryInstruction}`,
+          ? `This voice conversation is for the LivingWiki page for ${cityName}${cityCountry ? `, ${cityCountry}` : ''}. Invite questions about ${cityName}, while still answering broader questions when asked. ${atlasPersonaInstruction} ${linkDeliveryInstruction}`.trim()
+          : `This voice conversation is for the current LivingWiki page. ${atlasPersonaInstruction} ${linkDeliveryInstruction}`.trim(),
       };
       const voiceOverrides = {
         ...(session.firstMessageOverrideEnabled
@@ -6301,6 +6304,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         message.text,
         this.questionBeforeMessage(message.id),
         this.isAnonymousPublicVisitor() ? this.ensureAnonymousVisitorId() : null,
+        this.currentVoiceAtlasId(),
       )
       .then((response) => {
         if (response?.audioUrl) {

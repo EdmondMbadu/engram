@@ -175,10 +175,6 @@
     "source": "Ask anything about {$INTERPOLATION} or {$INTERPOLATION_1}",
     "file": "src/app/business-detail/business-detail.html"
   },
-  "1135707937764121681": {
-    "source": "Structured replies with concrete next steps",
-    "file": "src/app/atlas-persona/atlas-persona.html"
-  },
   "1137319519199859335": {
     "source": "Subtitle",
     "file": "src/app/boards/boards.html"
@@ -358,10 +354,6 @@
   "1250680466969063058": {
     "source": "Learn what people are asking around your city so promotions, events, staffing, and inventory can follow actual demand.",
     "file": "src/app/business/business.ts"
-  },
-  "1253396341165671470": {
-    "source": "Share the video",
-    "file": "src/app/boards/boards.html"
   },
   "125463331637220244": {
     "source": "Every major streaming platform — content libraries, subscriber counts, pricing, original productions, and the business models behind Netflix, Disney+, Max, Apple TV+, and newcomers.",
@@ -707,6 +699,10 @@
     "source": "Refine with AI",
     "file": "src/app/business-claim/business-claim.html"
   },
+  "1450887291415673948": {
+    "source": "Voice library",
+    "file": "src/app/atlas-persona/atlas-persona.html"
+  },
   "1451484137317286847": {
     "source": "Could not load the people on this plan.",
     "file": "src/app/boards/boards.ts"
@@ -726,6 +722,10 @@
   "1464356151059047889": {
     "source": "Regenerated draft",
     "file": "src/app/boards/boards.ts"
+  },
+  "1465113801759533746": {
+    "source": "“Be formal and concise, but explain eighteenth-century terms.”",
+    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "1465150981029153833": {
     "source": "Population",
@@ -991,10 +991,6 @@
     "source": "Photos for this board",
     "file": "src/app/boards/boards.html"
   },
-  "1598474817296415453": {
-    "source": "\"Sound calm, direct, and avoid hedging language.\"",
-    "file": "src/app/atlas-persona/atlas-persona.html"
-  },
   "16005692485610512": {
     "source": "and see how well you know this board.",
     "file": "src/app/boards/boards.ts"
@@ -1075,13 +1071,13 @@
     "source": "Friendship views",
     "file": "src/app/boards/boards.html"
   },
-  "1686251725256647635": {
-    "source": "Images and your selected background music are embedded in the downloaded video.",
-    "file": "src/app/boards/boards.html"
-  },
   "1693937864227883367": {
     "source": " Open in Spotify {$START_TAG_SPAN}open_in_new{$CLOSE_TAG_SPAN}",
     "file": "src/app/spotify-player/spotify-player.html"
+  },
+  "1695250638544681406": {
+    "source": "Be specific about age, resonance, pace, accent, emotion, and delivery. Do not request an imitation of a living person.",
+    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "1699656696201330584": {
     "source": "Open places board",
@@ -1098,10 +1094,6 @@
   "1705676152570833241": {
     "source": "Raw sewage pooled in yards from failing septic systems, leading to a landmark environmental-justice civil rights settlement.",
     "file": "src/app/fence-line/fence-line.ts"
-  },
-  "1706773921329146569": {
-    "source": " Saved persona can be this long. For speed, each reply uses the first {$INTERPOLATION} characters plus the wiki's guide identity. ",
-    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "1707894732689029747": {
     "source": "Latest render from each board",
@@ -1147,6 +1139,10 @@
     "source": "We speak your language",
     "file": "src/app/chat/chat.ts"
   },
+  "1737075565199812351": {
+    "source": "Spoken voice",
+    "file": "src/app/atlas-persona/atlas-persona.html"
+  },
   "1738932212761922063": {
     "source": "City themes",
     "file": "src/app/dymaxion/dymaxion.html"
@@ -1162,6 +1158,10 @@
   "1746109379607263203": {
     "source": "Public Wiki",
     "file": "src/app/atlas-landing/atlas-landing.html"
+  },
+  "1747409528485527162": {
+    "source": "Voice source",
+    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "1750555739180809831": {
     "source": "Voice",
@@ -1755,10 +1755,6 @@
     "source": " Open Gemini billing ",
     "file": "src/app/boards/boards.html"
   },
-  "2165743094994635243": {
-    "source": "Share the MP4 for native playback, or open a social app directly with the video link.",
-    "file": "src/app/boards/boards.html"
-  },
   "2167591127908300399": {
     "source": "Anyone with this link can read this thread. They will not be able to reply from the shared page.",
     "file": "src/app/chat/chat.ts"
@@ -1766,6 +1762,10 @@
   "2170438266510307114": {
     "source": "Only the board owner can delete this board.",
     "file": "src/app/boards/boards.ts"
+  },
+  "2172845425175320892": {
+    "source": "Loading voice settings…",
+    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "2175761888402868267": {
     "source": "Close sharing",
@@ -1831,6 +1831,10 @@
     "source": "Local search insights",
     "file": "src/app/business/business.ts"
   },
+  "2218041540137295821": {
+    "source": "Describe the voice",
+    "file": "src/app/atlas-persona/atlas-persona.html"
+  },
   "2218082343053095278": {
     "source": "Service",
     "file": "src/app/business-badge-icons.ts"
@@ -1891,6 +1895,10 @@
     "source": "Example supported languages",
     "file": "src/app/business-claim/business-claim.html"
   },
+  "2267151139786295168": {
+    "source": "ElevenLabs conversation voice",
+    "file": "src/app/atlas-persona/atlas-persona.html"
+  },
   "2267745389656750090": {
     "source": "Warm Storyteller",
     "file": "src/app/boards/boards.ts"
@@ -1898,6 +1906,10 @@
   "2267786923106483724": {
     "source": "Signed-in visitors can chat freely with this atlas",
     "file": "src/app/chat/chat.ts"
+  },
+  "2269791630488417644": {
+    "source": "No voices match that search.",
+    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "2277251651635106589": {
     "source": "{$START_TAG_SPAN}construction{$CLOSE_TAG_SPAN} Start building ",
@@ -1946,10 +1958,6 @@
   "2300208273493739830": {
     "source": "This will permanently remove",
     "file": "src/app/chat/chat.ts"
-  },
-  "2301942916578372512": {
-    "source": " Default voice ",
-    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "230223899767284884": {
     "source": "LivingWiki home",
@@ -2327,6 +2335,10 @@
     "source": "Top 500 podcasts mapped by genre, audience, ad rates, and influence — with the business model of podcasting analyzed through public data.",
     "file": "src/app/public-wiki-catalog.ts"
   },
+  "2554008766216746347": {
+    "source": "Previews are temporary. Select one and save it to add the voice to this wiki.",
+    "file": "src/app/atlas-persona/atlas-persona.html"
+  },
   "2555853257286023739": {
     "source": " Claim your business {$START_TAG_SPAN}arrow_forward{$CLOSE_TAG_SPAN}",
     "file": "src/app/business/business.html"
@@ -2374,6 +2386,10 @@
   "2577354328429223424": {
     "source": "The 2022 collapse left roughly 150,000 people without reliable water.",
     "file": "src/app/fence-line/fence-line.ts"
+  },
+  "2579339600286801694": {
+    "source": "Use the standard voice, select one from the library, or create a new voice from a description.",
+    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "2580023614957355751": {
     "source": "How many to scrape?",
@@ -2762,6 +2778,10 @@
   "285603769993726999": {
     "source": "Cedar Park",
     "file": "src/app/business/business.html"
+  },
+  "2857077768608419300": {
+    "source": " Shape what your guide knows about itself, then choose exactly how it sounds in live conversations and spoken answers. ",
+    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "2857587999825290192": {
     "source": "Art",
@@ -3355,10 +3375,6 @@
     "source": "Failed to save default search mode.",
     "file": "src/app/atlas-manage/atlas-manage.ts"
   },
-  "3221511166288560984": {
-    "source": "Why this belongs on the board.",
-    "file": "src/app/boards/boards.html"
-  },
   "3222409068138160643": {
     "source": "Retry available",
     "file": "src/app/atlas-manage/atlas-manage.ts"
@@ -3414,6 +3430,10 @@
   "3253388312086754493": {
     "source": "{$START_TAG_SPAN}chat{$CLOSE_TAG_SPAN} Back to chat ",
     "file": "src/app/city-places/city-places.html"
+  },
+  "32574714261860078": {
+    "source": "Listen",
+    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "3260083096227792176": {
     "source": "AI tone",
@@ -3699,6 +3719,10 @@
     "source": "Coke plants and the 35th Avenue Superfund site were joined by a bribery scandal aimed at suppressing the cleanup residents demanded.",
     "file": "src/app/fence-line/fence-line.ts"
   },
+  "3406126694227837140": {
+    "source": "Revert changes",
+    "file": "src/app/atlas-persona/atlas-persona.html"
+  },
   "3406869222231484883": {
     "source": "Philly only",
     "file": "src/app/atlas-landing/atlas-landing.html"
@@ -3795,6 +3819,10 @@
     "source": "ESG Reporting & Compliance",
     "file": "src/app/public-wiki-catalog.ts"
   },
+  "3464074116178888634": {
+    "source": "Voice setup steps",
+    "file": "src/app/atlas-persona/atlas-persona.html"
+  },
   "3465942650835858981": {
     "source": "Maintenance",
     "file": "src/app/atlas-manage/atlas-manage.html"
@@ -3867,6 +3895,10 @@
     "source": "Find automatically",
     "file": "src/app/boards/boards.html"
   },
+  "3515141984520207626": {
+    "source": "Markdown is supported. Describe identity, tone, boundaries, and priorities.",
+    "file": "src/app/atlas-persona/atlas-persona.html"
+  },
   "3517550046701184661": {
     "source": "Show less",
     "file": "src/app/chat/chat.ts"
@@ -3886,6 +3918,10 @@
   "3526705040409139369": {
     "source": "Place details and photo are ready.",
     "file": "src/app/boards/boards.ts"
+  },
+  "3527501637408090689": {
+    "source": "Used automatically",
+    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "3528466809032347684": {
     "source": "{$INTERPOLATION} of {$INTERPOLATION_1} businesses shown",
@@ -4031,10 +4067,6 @@
     "source": "The scrape run has finished.",
     "file": "src/app/web-scraper/web-scraper.ts"
   },
-  "3607759949968500330": {
-    "source": " Your full Markdown is saved here. To keep chat quick, the answer pipeline sends only the runtime voice layer, capped at {$INTERPOLATION} characters. ",
-    "file": "src/app/atlas-persona/atlas-persona.html"
-  },
   "3611138004748408234": {
     "source": " Sign in with Google or use your email and password. Email/password accounts must be verified first. ",
     "file": "src/app/sign-in/sign-in.html"
@@ -4094,10 +4126,6 @@
   "365136080089384152": {
     "source": "{$START_TAG_SPAN}style{$CLOSE_TAG_SPAN} Review source card ",
     "file": "src/app/boards/boards.html"
-  },
-  "3652454557898807430": {
-    "source": " Trim to {$INTERPOLATION} characters or less. ",
-    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "3655082891939518750": {
     "source": "Continue with Google",
@@ -4186,6 +4214,10 @@
   "3712296200086203735": {
     "source": "Choose or create a workspace",
     "file": "src/app/wiki-home/wiki-home.html"
+  },
+  "3714899061455941046": {
+    "source": "Trim to {$INTERPOLATION} characters or less.",
+    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "3715596725146409911": {
     "source": "Owner",
@@ -4402,6 +4434,10 @@
   "3874137787806029269": {
     "source": "See all",
     "file": "src/app/chat/chat.ts"
+  },
+  "3874175328868315720": {
+    "source": "Your guide",
+    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "3881817862923658256": {
     "source": "Close official Spotify player",
@@ -4743,10 +4779,6 @@
     "source": "on",
     "file": "src/app/boards/boards.ts"
   },
-  "4108889246377479069": {
-    "source": "Add the story behind this moment before sharing.",
-    "file": "src/app/boards/boards.ts"
-  },
   "4109755214985264235": {
     "source": "A Covanta/Reworld incinerator, regional sewage plant, and scrap-metal operations stack into one poor, majority-minority neighborhood.",
     "file": "src/app/fence-line/fence-line.ts"
@@ -5027,6 +5059,10 @@
     "source": "Shared chat link is incomplete.",
     "file": "src/app/shared-chat/shared-chat.ts"
   },
+  "4280108227238159092": {
+    "source": "Search 41 voices by name, accent, or style",
+    "file": "src/app/atlas-persona/atlas-persona.html"
+  },
   "4283238968307725955": {
     "source": "Chat | LivingWiki",
     "file": "src/app/app.routes.ts"
@@ -5098,10 +5134,6 @@
   "4329235876894468241": {
     "source": " Admin ",
     "file": "src/app/account-menu/account-menu.html"
-  },
-  "4334489272457353656": {
-    "source": "{$START_TAG_SPAN}check_circle{$CLOSE_TAG_SPAN} Permanent video ready",
-    "file": "src/app/boards/boards.html"
   },
   "43385917889626108": {
     "source": "Score ready. Sign in to save your result.",
@@ -5399,10 +5431,6 @@
     "source": "Logo",
     "file": "src/app/boards/boards.html"
   },
-  "4551066756854355501": {
-    "source": " The latest video from each board is saved here automatically. Regenerating replaces the previous version without creating duplicates. ",
-    "file": "src/app/video-library/video-library.html"
-  },
   "4553186615320329789": {
     "source": " No listings match the current filter. ",
     "file": "src/app/green-jobs/green-jobs.html"
@@ -5498,6 +5526,10 @@
   "4602337612647194323": {
     "source": "Saved Boards",
     "file": "src/app/public-wikis/public-wikis.ts"
+  },
+  "4603224590655768458": {
+    "source": "Preview script",
+    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "4607581465689784056": {
     "source": "Business",
@@ -5802,6 +5834,10 @@
   "4787006466736074025": {
     "source": "Enter a valid email address or leave invitations empty.",
     "file": "src/app/boards/boards.ts"
+  },
+  "4787985446248861347": {
+    "source": "Build the voice of your AI.",
+    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "4788629766022671727": {
     "source": "Attach population to city Wikis.",
@@ -6323,10 +6359,6 @@
     "source": "Current setup",
     "file": "src/app/atlas-manage/atlas-manage.html"
   },
-  "5158796772933676403": {
-    "source": "Update video first",
-    "file": "src/app/boards/boards.html"
-  },
   "5160053987987759046": {
     "source": " Wrong account? {$START_TAG_BUTTON}Sign out{$CLOSE_TAG_BUTTON}",
     "file": "src/app/verify-email/verify-email.html"
@@ -6390,10 +6422,6 @@
   "51952318571096765": {
     "source": "Queueing stopped after the current article.",
     "file": "src/app/web-scraper/web-scraper.ts"
-  },
-  "5204959570695071139": {
-    "source": " Revert changes ",
-    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "5207635742003539443": {
     "source": "Sign in",
@@ -6670,10 +6698,6 @@
   "5373471252507137577": {
     "source": "Block-group environmental justice percentiles preserved for community review.",
     "file": "src/app/fence-line/fence-line.html"
-  },
-  "5374090795835297683": {
-    "source": " Saved. The next chat reply in this wiki will use this voice. ",
-    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "5374948793948746137": {
     "source": "Sends the full board—not the Stack or video.",
@@ -7015,13 +7039,17 @@
     "source": "Dymaxion Map | LivingWiki",
     "file": "src/app/app.routes.ts"
   },
+  "559959477702422115": {
+    "source": "Design new",
+    "file": "src/app/atlas-persona/atlas-persona.html"
+  },
   "5603970865625901336": {
     "source": "Give me the key facts about {topic}.",
     "file": "src/app/chat/chat.ts"
   },
   "5607669932062416162": {
     "source": "Default",
-    "file": "src/app/boards/boards.html"
+    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "5611592591303869712": {
     "source": "Status",
@@ -7029,10 +7057,6 @@
   },
   "5613583708495864860": {
     "source": "Board icon stickers",
-    "file": "src/app/boards/boards.html"
-  },
-  "5614441472799669221": {
-    "source": "{$START_TAG_SPAN}download{$CLOSE_TAG_SPAN} Download video",
     "file": "src/app/boards/boards.html"
   },
   "561803020364050431": {
@@ -7314,6 +7338,10 @@
   "5787671382322865445": {
     "source": "Favorite",
     "file": "src/app/boards/boards.ts"
+  },
+  "5792408502776080819": {
+    "source": "Personality",
+    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "5794522528765102598": {
     "source": "Discovery failed. Try another source URL.",
@@ -7611,6 +7639,10 @@
     "source": "OpenClaw & the Agentic AI Revolution",
     "file": "src/app/public-wiki-catalog.ts"
   },
+  "6013809289335979770": {
+    "source": "“Never claim certainty when primary sources disagree.”",
+    "file": "src/app/atlas-persona/atlas-persona.html"
+  },
   "6014051039354445380": {
     "source": "Source-aware",
     "file": "src/app/public-wikis/public-wikis.html"
@@ -7654,6 +7686,10 @@
   "6036496861941227405": {
     "source": "invitation",
     "file": "src/app/boards/boards.ts"
+  },
+  "6037529224193160408": {
+    "source": "AI-generated voices can sound realistic. Make sure you have permission before cloning or impersonating a real person.",
+    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "603947103662630478": {
     "source": "Create an empty board with the current form.",
@@ -8375,6 +8411,10 @@
     "source": "{$INTERPOLATION} of {$INTERPOLATION_1} scraped",
     "file": "src/app/web-scraper/web-scraper.html"
   },
+  "6469648340622611172": {
+    "source": "Clear separation of evidence and inference",
+    "file": "src/app/atlas-persona/atlas-persona.html"
+  },
   "6475890840151608970": {
     "source": "{$START_TAG_SPAN}record_voice_over{$CLOSE_TAG_SPAN} Voice ",
     "file": "src/app/atlas-landing/atlas-landing.html"
@@ -8386,6 +8426,10 @@
   "6480514482875099731": {
     "source": "Author / account",
     "file": "src/app/admin-users/admin-users.html"
+  },
+  "648306878592239743": {
+    "source": "Reset to default",
+    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "6483513306681782629": {
     "source": "{$START_TAG_SPAN}edit{$CLOSE_TAG_SPAN} Edit card ",
@@ -8706,10 +8750,6 @@
   "6659120347384113820": {
     "source": "Manage existing Wikis.",
     "file": "src/app/atlas-manage/atlas-manage.html"
-  },
-  "6660037272092151638": {
-    "source": "A photo memory",
-    "file": "src/app/boards/boards.ts"
   },
   "6667331822763138432": {
     "source": "{$START_TAG_SPAN}delete{$CLOSE_TAG_SPAN} Delete selected ",
@@ -9115,6 +9155,10 @@
     "source": "Continue",
     "file": "src/app/auth-action/auth-action.html"
   },
+  "6963121523100295410": {
+    "source": "Cancel changes",
+    "file": "src/app/atlas-persona/atlas-persona.html"
+  },
   "6964943827551505424": {
     "source": " Your Local Insider. Any City. Any Language. ",
     "file": "src/app/business/business.html"
@@ -9247,10 +9291,6 @@
     "source": " Refresh official city metrics, inspect the stored snapshot, and validate what the public landing page will render. ",
     "file": "src/app/city-pulse-admin/city-pulse-admin.html"
   },
-  "7055168605128539443": {
-    "source": " Reset to default ",
-    "file": "src/app/atlas-persona/atlas-persona.html"
-  },
   "7056588119694382431": {
     "source": "This shared chat is unavailable",
     "file": "src/app/shared-chat/shared-chat.html"
@@ -9326,10 +9366,6 @@
   "7147118755083263484": {
     "source": "Terms and Conditions | LivingWiki",
     "file": "src/app/app.routes.ts"
-  },
-  "7147397124347685290": {
-    "source": " Tell the assistant who it is, how to sound, and what to emphasize when answering questions in this wiki. You can store a longer Markdown persona here; replies stay fast by using a bounded runtime voice layer. ",
-    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "7148485592773560034": {
     "source": "Boston's sustainability, innovation, and civic data — universities, transit, climate resilience, healthcare, and the innovation economy.",
@@ -9414,6 +9450,10 @@
   "7206690825838385338": {
     "source": "Enter your password.",
     "file": "src/app/sign-in/sign-in.html"
+  },
+  "7208134974620869323": {
+    "source": "Live browser voice conversations",
+    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "7212239620607483566": {
     "source": "Only the owner can view this LivingWiki board.",
@@ -9739,6 +9779,10 @@
     "source": "Close learning",
     "file": "src/app/boards/boards.html"
   },
+  "7440752053822933102": {
+    "source": " Personality saved. New conversations will use it. ",
+    "file": "src/app/atlas-persona/atlas-persona.html"
+  },
   "7441806737971156915": {
     "source": "Atlas Settings | LivingWiki",
     "file": "src/app/app.routes.ts"
@@ -9762,10 +9806,6 @@
   "7453927778830821242": {
     "source": "Quiz link copied.",
     "file": "src/app/boards/boards.ts"
-  },
-  "745444768136587746": {
-    "source": "{$START_TAG_SPAN}{$INTERPOLATION}{$CLOSE_TAG_SPAN} Like ",
-    "file": "src/app/boards/boards.html"
   },
   "7455879454574992214": {
     "source": "Manage settings",
@@ -9951,6 +9991,10 @@
     "source": "Atlas | LivingWiki",
     "file": "src/app/app.routes.ts"
   },
+  "7613002732374642088": {
+    "source": " The full prompt is saved. Each live reply uses the first {$INTERPOLATION} characters for a fast response. ",
+    "file": "src/app/atlas-persona/atlas-persona.html"
+  },
   "7613041245997928672": {
     "source": "Unmute microphone",
     "file": "src/app/chat/chat.ts"
@@ -10043,6 +10087,10 @@
     "source": "PREVIEW",
     "file": "src/app/web-scraper/web-scraper.ts"
   },
+  "766371824753969784": {
+    "source": "Voice description",
+    "file": "src/app/atlas-persona/atlas-persona.html"
+  },
   "7671686035273089740": {
     "source": "We could not translate this board right now. Please try again.",
     "file": "src/app/boards/boards.ts"
@@ -10098,6 +10146,10 @@
   "7705870305515649003": {
     "source": "SCRAPING",
     "file": "src/app/web-scraper/web-scraper.ts"
+  },
+  "7707526167408214550": {
+    "source": "Your saved personality and wiki sources",
+    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "7710508469345502569": {
     "source": "Neighborhood sponsor view",
@@ -10775,6 +10827,10 @@
     "source": "LivingWiki",
     "file": "src/app/atlas-manage/atlas-manage.html"
   },
+  "8132424293432274889": {
+    "source": " Back ",
+    "file": "src/app/atlas-persona/atlas-persona.html"
+  },
   "8133924153515128326": {
     "source": "Edit preview card",
     "file": "src/app/boards/boards.html"
@@ -11035,10 +11091,6 @@
     "source": "Quiz title",
     "file": "src/app/boards/boards.html"
   },
-  "8331031046367440412": {
-    "source": "Set the voice of your AI.",
-    "file": "src/app/atlas-persona/atlas-persona.html"
-  },
   "8340082836740122639": {
     "source": "Create a city not listed below.",
     "file": "src/app/atlas-manage/atlas-manage.html"
@@ -11174,6 +11226,10 @@
   "8415650686000293071": {
     "source": "Taylor Swift: The Living Discography",
     "file": "src/app/public-wiki-catalog.ts"
+  },
+  "8418303242280274717": {
+    "source": "Default conversation voice",
+    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "8424500371671047486": {
     "source": "Use a Twilio SMS-capable number, or a Vapi setup that exposes Twilio SMS webhooks.",
@@ -11611,10 +11667,6 @@
     "source": "{$INTERPOLATION}% correct",
     "file": "src/app/answer-quiz/answer-quiz.html"
   },
-  "8789895735339000521": {
-    "source": "You are the friendly, plain-spoken guide for this wiki. Lead with one concrete example before any general advice. Avoid jargon. When the user is exploring tradeoffs, give a clear recommendation, not a menu.",
-    "file": "src/app/atlas-persona/atlas-persona.html"
-  },
   "8790918354594417962": {
     "source": "Facebook",
     "file": "src/app/answer-card/answer-card.html"
@@ -11726,6 +11778,10 @@
   "8862419730767187996": {
     "source": "Hazel Johnson named the ring of landfills and factories around this public housing community and helped found the environmental justice movement here.",
     "file": "src/app/fence-line/fence-line.ts"
+  },
+  "8865863396309528194": {
+    "source": "LivingWiki selects a clear, neutral ElevenLabs voice.",
+    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "8866382158070881874": {
     "source": "Failed to save text messaging settings.",
@@ -11915,6 +11971,10 @@
     "source": "Longitude {$START_TAG_SPAN}(optional · for the map){$CLOSE_TAG_SPAN}",
     "file": "src/app/atlas-manage/atlas-manage.html"
   },
+  "8964086704738540657": {
+    "source": "Spoken chat answers",
+    "file": "src/app/atlas-persona/atlas-persona.html"
+  },
   "8964103419533062186": {
     "source": "Happy",
     "file": "src/app/business-claim/business-claim.ts"
@@ -11983,6 +12043,10 @@
     "source": "Add QR code",
     "file": "src/app/business-detail/business-edit.ts"
   },
+  "9001012306537203684": {
+    "source": "You are George Washington. Speak as a measured, thoughtful statesman...",
+    "file": "src/app/atlas-persona/atlas-persona.html"
+  },
   "9005392867041288869": {
     "source": "The location request timed out. Try again, preferably outdoors.",
     "file": "src/app/boards/boards.ts"
@@ -11998,10 +12062,6 @@
   "9009733971381231945": {
     "source": "{$START_TAG_SPAN}check{$CLOSE_TAG_SPAN} Save board ",
     "file": "src/app/boards/boards.html"
-  },
-  "9012222513511191008": {
-    "source": "\"Always lead with a concrete example before any general claim.\"",
-    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "901450452121089892": {
     "source": "{$INTERPOLATION} place{$INTERPOLATION_1}",
@@ -12171,6 +12231,10 @@
     "source": "Tomorrow",
     "file": "src/app/boards/boards.html"
   },
+  "9136661697586768173": {
+    "source": "Preview saved voice",
+    "file": "src/app/atlas-persona/atlas-persona.html"
+  },
   "9137345098023582320": {
     "source": "Copy chat",
     "file": "src/app/chat/chat.ts"
@@ -12239,6 +12303,10 @@
     "source": "Use a strong image on every card. No videos are added automatically.",
     "file": "src/app/boards/boards.ts"
   },
+  "9187580480258537751": {
+    "source": "“Answer in the first person, grounded in the historical record.”",
+    "file": "src/app/atlas-persona/atlas-persona.html"
+  },
   "9188397733808972472": {
     "source": "Census-tract health outcomes connecting pollution exposure to people.",
     "file": "src/app/fence-line/fence-line.html"
@@ -12271,10 +12339,6 @@
     "source": "Cities",
     "file": "src/app/public-wikis/public-wikis.ts"
   },
-  "9213563099776457292": {
-    "source": "Custom voice",
-    "file": "src/app/atlas-persona/atlas-persona.html"
-  },
   "921380007408819310": {
     "source": "{$INTERPOLATION} · {$INTERPOLATION_1}",
     "file": "src/app/profile/profile.html"
@@ -12286,14 +12350,6 @@
   "9218227291989588857": {
     "source": "LivingWiki: San Francisco",
     "file": "src/app/public-wiki-catalog.ts"
-  },
-  "9220264015100449915": {
-    "source": "Building the preview. This stays active while places, images, and cards finish.",
-    "file": "src/app/boards/boards.html"
-  },
-  "923860033073891718": {
-    "source": "\"You are an experienced city planner explaining policy to neighbors.\"",
-    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "926039708040434207": {
     "source": "Add trip",

@@ -10,7 +10,6 @@ import { WikiComponent } from './wiki/wiki';
 import { ChatComponent } from './chat/chat';
 import { LibraryComponent } from './library/library';
 import { AtlasManageComponent } from './atlas-manage/atlas-manage';
-import { AtlasPersonaComponent } from './atlas-persona/atlas-persona';
 import { AtlasLandingComponent } from './atlas-landing/atlas-landing';
 import { LegalComponent } from './legal/legal';
 import { PublicWikisComponent } from './public-wikis/public-wikis';
@@ -201,7 +200,12 @@ export const routes: Routes = [
     canActivate: [adminGuard],
     data: { factoryKind: 'university' },
   },
-  { path: 'atlases/:atlasId/persona', component: AtlasPersonaComponent, title: $localize`Wiki Voice | LivingWiki`, canActivate: [authGuard] },
+  {
+    path: 'atlases/:atlasId/persona',
+    loadComponent: () => import('./atlas-persona/atlas-persona').then((m) => m.AtlasPersonaComponent),
+    title: $localize`Wiki Voice | LivingWiki`,
+    canActivate: [authGuard],
+  },
   { path: 'atlas/:slug/green-jobs', component: GreenJobsComponent, title: $localize`Philly Green Jobs | LivingWiki` },
   { path: 'atlas/:slug/worldometers', component: CityPulseAdminComponent, title: $localize`Worldometers Maintenance | LivingWiki` },
   { path: 'atlas/:slug', component: AtlasLandingComponent, title: $localize`Atlas | LivingWiki` },

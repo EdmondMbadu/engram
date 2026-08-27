@@ -560,13 +560,14 @@ export class ChatService {
     text: string,
     question?: string | null,
     anonymousVisitorId?: string | null,
+    atlasId?: string | null,
   ): Promise<ChatAnswerSpeechResponse | null> {
     if (!this.functions) {
       return null;
     }
 
     const synthesizeChatAnswerSpeech = httpsCallable<
-      { text: string; question?: string | null; anonymousVisitorId?: string | null; mode?: 'recap' | 'full' },
+      { text: string; question?: string | null; anonymousVisitorId?: string | null; atlasId?: string | null; mode?: 'recap' | 'full' },
       ChatAnswerSpeechResponse
     >(this.functions, 'synthesizeChatAnswerSpeech');
 
@@ -574,6 +575,7 @@ export class ChatService {
       text,
       question: question ?? null,
       anonymousVisitorId: anonymousVisitorId ?? null,
+      atlasId: atlasId ?? null,
       mode: 'recap',
     });
     return data;
