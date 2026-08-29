@@ -4494,13 +4494,28 @@
               <h3 id="board-wizard-modal-title">{{ wizardStep() === 'choose' ? (wizardLockedTargetBoard() ? 'Choose how to add cards' : 'Choose how to start') : wizardModeLabel() }}</h3>
             }
             @if (wizardResult() && wizardPreviewCards().length && wizardStep() !== 'done') {
-              <small class="boards-wizard-draft-status" [class.boards-wizard-draft-status--error]="wizardDraftSaveState() === 'error'">
-                <span class="material-symbols-outlined">{{ wizardDraftSaveState() === 'saving' ? 'sync' : wizardDraftSaveState() === 'error' ? 'cloud_off' : 'cloud_done' }}</span>
-                {{ wizardDraftStatusLabel() }}
+              <small
+                class="boards-wizard-draft-status"
+                [class.boards-wizard-draft-status--error]="wizardDraftSaveState() === 'error' && !wizardImagesPreparing()"
+                [class.boards-wizard-draft-status--working]="wizardImagesPreparing()"
+              >
+                <span
+                  class="material-symbols-outlined"
+                  [class.boards-wizard-progress-icon]="wizardImagesPreparing()"
+                >{{ wizardImagesPreparing() ? 'progress_activity' : wizardDraftSaveState() === 'saving' ? 'sync' : wizardDraftSaveState() === 'error' ? 'cloud_off' : 'cloud_done' }}</span>
+                {{ wizardImagesPreparing() ? wizardImageProgressLabel() : wizardDraftStatusLabel() }}
               </small>
             }
           </div>
-          <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeBoardWizard()" i18n-aria-label>
+          <button
+            type="button"
+            class="boards-icon-button"
+            aria-label="Close"
+            [disabled]="wizardStep() === 'preview' && wizardImagesPreparing()"
+            [title]="wizardStep() === 'preview' && wizardImagesPreparing() ? 'Wait for images to finish, or choose Stop before closing.' : 'Close'"
+            (click)="closeBoardWizard()"
+            i18n-aria-label
+          >
             <span class="material-symbols-outlined">close</span>
           </button>
         </div>
@@ -6335,6 +6350,7 @@
                     >
                       <div
                         class="boards-wizard-card__media"
+                        [class.boards-wizard-card__media--image-pending]="!card.imageUrl && wizardImageEnrichmentActive()"
                         [class.boards-wizard-card__media--contain]="
                           (card.type === 'food' && card.imageSource === 'source-page')
                           || (!!card.productUrl && (card.imageSource === 'source-page' || card.imageSource === 'product-page'))
@@ -6502,7 +6518,7 @@
                   <p class="boards-wizard-refine__quality">
                     <strong>{{ wizardImageCoveragePercent() }}% image coverage</strong>
                     @if (wizardMissingImageCount()) {
-                      <span>{{ wizardMissingImageCount() }} card{{ wizardMissingImageCount() === 1 ? '' : 's' }} still need a verified image.</span>
+                      <span>{{ wizardMissingImageCount() }} card{{ wizardMissingImageCount() === 1 ? '' : 's' }} still need an image.</span>
                     } @else {
                       <span i18n>Every card has an image.</span>
                     }
@@ -6511,7 +6527,7 @@
                     <div class="boards-wizard-refine__video" aria-live="polite">
                       <span class="material-symbols-outlined">image_search</span>
                       <span>{{ wizardImageNotice() }}</span>
-                      @if (wizardImageLoadingCardIds().size > 0) {
+                      @if (wizardImageEnrichmentActive()) {
                         <button type="button" (click)="cancelWizardImageEnrichment()" i18n>Stop</button>
                       }
                     </div>
@@ -6591,12 +6607,17 @@
                   <button
                     type="button"
                     class="boards-ghost-action"
-                    [disabled]="wizardDraftDiscarding()"
+                    [disabled]="wizardDraftDiscarding() || wizardImagesPreparing()"
+                    [title]="wizardImagesPreparing() ? 'Wait for images to finish, or choose Stop before going back.' : ''"
                     (click)="backWizardStep()"
                     i18n
                   >Back</button>
                 </div>
-                <span class="boards-wizard-savebar__status">
+                <span class="boards-wizard-savebar__status" aria-live="polite">
+                  @if (wizardImagesPreparing()) {
+                    <span class="material-symbols-outlined boards-wizard-progress-icon">progress_activity</span>
+                    <span><strong>{{ wizardImageProgressLabel() }}</strong> You can keep editing, and your draft keeps saving. Finish when the images are ready.</span>
+                  } @else {
                   <span class="material-symbols-outlined">cloud_done</span>
                   @if (wizardLockedTargetBoard() || wizardContributionBoard()) {
                     <span>Closing keeps this draft. Saving adds the selected cards to the existing board.</span>
@@ -6607,15 +6628,23 @@
                   } @else {
                     <span>Closing keeps this draft. Publishing creates the board and notifies your friends.</span>
                   }
+                  }
                 </span>
                 <button
                   type="button"
                   class="boards-primary-action"
-                  [disabled]="!wizardSelectedCount() || wizardSaving() || wizardVideoLoadingCardIds().size > 0"
+                  [disabled]="!wizardSelectedCount() || wizardSaving() || wizardImagesPreparing() || wizardVideoLoadingCardIds().size > 0"
+                  [attr.aria-busy]="wizardImagesPreparing() || wizardVideoLoadingCardIds().size > 0 || wizardSaving()"
+                  [title]="wizardImagesPreparing() ? 'Publishing will unlock when image preparation finishes. Choose Stop to continue with the images already added.' : ''"
                   (click)="isNewPhotoWizardBoard() ? continuePhotoPreviewToStudio() : saveWizardBatch()"
                 >
-                  <span class="material-symbols-outlined">{{ isNewPhotoWizardBoard() ? 'arrow_forward' : 'save' }}</span>
-                  @if (wizardVideoLoadingCardIds().size > 0) {
+                  <span
+                    class="material-symbols-outlined"
+                    [class.boards-wizard-progress-icon]="wizardImagesPreparing()"
+                  >{{ wizardImagesPreparing() ? 'progress_activity' : isNewPhotoWizardBoard() ? 'arrow_forward' : 'save' }}</span>
+                  @if (wizardImagesPreparing()) {
+                    <span>{{ wizardImageProgressLabel() }}</span>
+                  } @else if (wizardVideoLoadingCardIds().size > 0) {
                     <span i18n>Finding videos...</span>
                   } @else if (wizardSaving()) {
                     <span i18n>Saving...</span>

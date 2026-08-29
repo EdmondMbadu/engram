@@ -8,6 +8,11 @@ export type BoardWizardDraftLifecycleState = {
   restoring: boolean;
 };
 
+export type BoardWizardImageProgress = Readonly<{
+  completed: number;
+  total: number;
+}>;
+
 export function hasBoardWizardDraftContent(state: Pick<BoardWizardDraftLifecycleState, 'hasResult' | 'cardCount'>): boolean {
   return state.hasResult && state.cardCount > 0;
 }
@@ -31,4 +36,25 @@ export function boardWizardStepAfterGenerationFailure(hasPreviousPreview: boolea
 
 export function shouldRetryBoardWizardDraftAutosave(snapshotKey: string, failedSnapshotKey: string): boolean {
   return !!snapshotKey && snapshotKey !== failedSnapshotKey;
+}
+
+export function isBoardWizardImageEnrichmentActive(progress: BoardWizardImageProgress | null): boolean {
+  return !!progress && progress.total > 0 && progress.completed < progress.total;
+}
+
+export function isBoardWizardImagePreparationActive(
+  progress: BoardWizardImageProgress | null,
+  activeImageCount: number,
+): boolean {
+  return isBoardWizardImageEnrichmentActive(progress) || activeImageCount > 0;
+}
+
+export function boardWizardImageProgressLabel(
+  progress: BoardWizardImageProgress | null,
+  activeImageCount: number,
+): string {
+  if (progress && isBoardWizardImageEnrichmentActive(progress)) {
+    return `Preparing images · ${progress.completed} of ${progress.total}`;
+  }
+  return activeImageCount === 1 ? 'Preparing image…' : 'Preparing images…';
 }

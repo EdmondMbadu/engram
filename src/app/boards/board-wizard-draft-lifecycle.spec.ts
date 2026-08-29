@@ -1,5 +1,8 @@
 import {
+  boardWizardImageProgressLabel,
   boardWizardStepAfterGenerationFailure,
+  isBoardWizardImageEnrichmentActive,
+  isBoardWizardImagePreparationActive,
   shouldAutosaveBoardWizardDraft,
   shouldFlushBoardWizardDraftOnClose,
   shouldRetryBoardWizardDraftAutosave,
@@ -66,5 +69,20 @@ describe('board wizard draft lifecycle', () => {
     expect(shouldRetryBoardWizardDraftAutosave('snapshot-a', 'snapshot-a')).toBeFalse();
     expect(shouldRetryBoardWizardDraftAutosave('snapshot-b', 'snapshot-a')).toBeTrue();
     expect(shouldRetryBoardWizardDraftAutosave('snapshot-a', '')).toBeTrue();
+  });
+
+  it('keeps publish gated until every queued image attempt finishes', () => {
+    expect(isBoardWizardImageEnrichmentActive({ completed: 7, total: 8 })).toBeTrue();
+    expect(isBoardWizardImagePreparationActive({ completed: 8, total: 8 }, 0)).toBeFalse();
+    expect(boardWizardImageProgressLabel({ completed: 7, total: 8 }, 0)).toBe('Preparing images · 7 of 8');
+  });
+
+  it('gates publish for a manual image retry without pretending there is a bulk queue', () => {
+    expect(isBoardWizardImagePreparationActive(null, 1)).toBeTrue();
+    expect(boardWizardImageProgressLabel(null, 1)).toBe('Preparing image…');
+  });
+
+  it('unlocks publish when a stopped queue has no request still active', () => {
+    expect(isBoardWizardImagePreparationActive(null, 0)).toBeFalse();
   });
 });

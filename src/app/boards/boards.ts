@@ -82,7 +82,10 @@ import {
   parseNumberedBoardSource,
 } from './board-wizard-source';
 import {
+  boardWizardImageProgressLabel,
   boardWizardStepAfterGenerationFailure,
+  isBoardWizardImageEnrichmentActive,
+  isBoardWizardImagePreparationActive,
   shouldAutosaveBoardWizardDraft,
   shouldFlushBoardWizardDraftOnClose,
   shouldRetryBoardWizardDraftAutosave,
@@ -1977,6 +1980,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly wizardSelectedCardIds = signal<Set<string>>(new Set());
   readonly wizardRedoingCardIds = signal<Set<string>>(new Set());
   readonly wizardImageLoadingCardIds = signal<Set<string>>(new Set());
+  readonly wizardImageProgress = signal<{ completed: number; total: number } | null>(null);
   readonly wizardImageNotice = signal<string | null>(null);
   readonly wizardVideoLoadingCardIds = signal<Set<string>>(new Set());
   readonly wizardVideoNotice = signal<string | null>(null);
@@ -2729,6 +2733,15 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     const cards = this.wizardPreviewCards();
     return cards.length ? Math.round((cards.length - this.wizardMissingImageCount()) / cards.length * 100) : 100;
   });
+  readonly wizardImageEnrichmentActive = computed(() => {
+    return isBoardWizardImageEnrichmentActive(this.wizardImageProgress());
+  });
+  readonly wizardImagesPreparing = computed(() =>
+    isBoardWizardImagePreparationActive(
+      this.wizardImageProgress(),
+      this.wizardImageLoadingCardIds().size,
+    ),
+  );
   readonly wizardProductCount = computed(() =>
     this.wizardPreviewCards().filter((card) => !!card.productUrl).length,
   );
@@ -4236,6 +4249,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     if (this.wizardPhotoStoryMode()) {
       return;
     }
+    if (this.wizardStep() === 'preview' && this.wizardImagesPreparing()) {
+      this.showWizardImageWaitNotice();
+      return;
+    }
     this.cancelWizardVideoEnrichment();
     if (shouldFlushBoardWizardDraftOnClose({
       step: this.wizardStep(),
@@ -4384,6 +4401,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
   backWizardStep(): void {
     const step = this.wizardStep();
+    if (step === 'preview' && this.wizardImagesPreparing()) {
+      this.showWizardImageWaitNotice();
+      return;
+    }
     if (step === 'configure') {
       if (this.wizardMode() === 'nearby-gems' && this.route.snapshot.queryParamMap.get('create') === 'gems') {
         void this.closeBoardWizard();
@@ -4614,6 +4635,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   }
 
   async continuePhotoPreviewToStudio(): Promise<void> {
+    if (this.wizardImagesPreparing()) {
+      this.showWizardImageWaitNotice();
+      return;
+    }
     if (
       !this.isNewPhotoWizardBoard()
       || this.wizardStep() !== 'preview'
@@ -5034,6 +5059,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     const previousSelectedCardIds = new Set(this.wizardSelectedCardIds());
     this.wizardImageEnrichmentRun += 1;
     this.wizardImageLoadingCardIds.set(new Set());
+    this.wizardImageProgress.set(null);
     this.wizardImageNotice.set(null);
     this.wizardStep.set('loading');
     this.wizardLoadingIndex.set(0);
@@ -5443,7 +5469,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
   wizardCardBusyLabel(cardId: string): string {
     if (this.wizardImageLoadingCardIds().has(cardId)) {
-      return 'Finding image';
+      return 'Finding or creating image';
     }
     if (this.wizardVideoLoadingCardIds().has(cardId)) {
       return 'Finding video';
@@ -5674,6 +5700,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   }
 
   async saveWizardBatch(): Promise<void> {
+    if (this.wizardImagesPreparing()) {
+      this.showWizardImageWaitNotice();
+      return;
+    }
     const result = this.wizardResult();
     const selectedIds = this.wizardSelectedCardIds();
     const selectedCards = this.wizardPreviewCards().filter((card) => selectedIds.has(card.id));
@@ -17524,6 +17554,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.wizardSelectedCardIds.set(new Set());
     this.wizardRedoingCardIds.set(new Set());
     this.wizardImageLoadingCardIds.set(new Set());
+    this.wizardImageProgress.set(null);
     this.wizardImageNotice.set(null);
     this.wizardVideoLoadingCardIds.set(new Set());
     this.wizardVideoNotice.set(null);
@@ -18746,6 +18777,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     if (!this.functions) return;
     const candidates = cards.filter((card) => !card.imageUrl);
     if (!candidates.length) {
+      this.wizardImageProgress.set(null);
       this.wizardImageNotice.set(null);
       return;
     }
@@ -18753,11 +18785,25 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     let nextIndex = 0;
     let completed = 0;
     let matched = 0;
+    this.wizardImageProgress.set({ completed: 0, total: candidates.length });
     this.wizardImageNotice.set(`Finding or creating images · 0 of ${candidates.length} checked`);
+
+    const recordCompletion = () => {
+      completed += 1;
+      if (run === this.wizardImageEnrichmentRun) {
+        this.wizardImageProgress.set({ completed, total: candidates.length });
+        this.wizardImageNotice.set(`Finding or creating images · ${completed} of ${candidates.length} checked · ${matched} added`);
+      }
+    };
 
     const worker = async () => {
       while (nextIndex < candidates.length && run === this.wizardImageEnrichmentRun) {
-        const card = candidates[nextIndex++];
+        const candidate = candidates[nextIndex++];
+        const card = this.wizardPreviewCards().find((item) => item.id === candidate.id);
+        if (!card || card.imageUrl) {
+          recordCompletion();
+          continue;
+        }
         this.wizardImageLoadingCardIds.update((ids) => new Set(ids).add(card.id));
         try {
           const replacement = await this.requestWizardCardImage(
@@ -18768,26 +18814,33 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
           );
           if (run !== this.wizardImageEnrichmentRun) return;
           if (replacement?.imageUrl) {
-            matched += 1;
-            this.wizardPreviewCards.update((current) => current.map((item) => item.id === card.id ? {
-              ...item,
-              imageUrl: replacement.imageUrl || item.imageUrl,
-              imageSource: replacement.imageSource || (item.productUrl ? 'search' : item.imageSource),
-              audioPreviewUrl: replacement.audioPreviewUrl || item.audioPreviewUrl,
-              spotifyTrackId: replacement.spotifyTrackId || item.spotifyTrackId,
-              spotifyTrackUrl: replacement.spotifyTrackUrl || item.spotifyTrackUrl,
-              spotifyUri: replacement.spotifyUri || item.spotifyUri,
-              spotifyArtistName: replacement.spotifyArtistName || item.spotifyArtistName,
-              spotifyAlbumName: replacement.spotifyAlbumName || item.spotifyAlbumName,
-              spotifyArtworkUrl: replacement.spotifyArtworkUrl || item.spotifyArtworkUrl,
-              image_query: replacement.image_query || item.image_query,
-              placeId: replacement.placeId || item.placeId,
-              googleMapsUrl: replacement.googleMapsUrl || item.googleMapsUrl,
-              locationLat: replacement.locationLat ?? item.locationLat,
-              locationLng: replacement.locationLng ?? item.locationLng,
-            } : item));
-            const currentResult = this.wizardResult();
-            if (currentResult) this.wizardResult.set({ ...currentResult, cards: this.wizardPreviewCards() });
+            let applied = false;
+            this.wizardPreviewCards.update((current) => current.map((item) => {
+              if (item.id !== card.id || item.imageUrl) return item;
+              applied = true;
+              return {
+                ...item,
+                imageUrl: replacement.imageUrl || item.imageUrl,
+                imageSource: replacement.imageSource || (item.productUrl ? 'search' : item.imageSource),
+                audioPreviewUrl: replacement.audioPreviewUrl || item.audioPreviewUrl,
+                spotifyTrackId: replacement.spotifyTrackId || item.spotifyTrackId,
+                spotifyTrackUrl: replacement.spotifyTrackUrl || item.spotifyTrackUrl,
+                spotifyUri: replacement.spotifyUri || item.spotifyUri,
+                spotifyArtistName: replacement.spotifyArtistName || item.spotifyArtistName,
+                spotifyAlbumName: replacement.spotifyAlbumName || item.spotifyAlbumName,
+                spotifyArtworkUrl: replacement.spotifyArtworkUrl || item.spotifyArtworkUrl,
+                image_query: replacement.image_query || item.image_query,
+                placeId: replacement.placeId || item.placeId,
+                googleMapsUrl: replacement.googleMapsUrl || item.googleMapsUrl,
+                locationLat: replacement.locationLat ?? item.locationLat,
+                locationLng: replacement.locationLng ?? item.locationLng,
+              };
+            }));
+            if (applied) {
+              matched += 1;
+              const currentResult = this.wizardResult();
+              if (currentResult) this.wizardResult.set({ ...currentResult, cards: this.wizardPreviewCards() });
+            }
           }
         } catch {
           // Progressive image lookup is best-effort. Text cards remain ready to edit and save.
@@ -18797,10 +18850,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
             next.delete(card.id);
             return next;
           });
-          completed += 1;
-          if (run === this.wizardImageEnrichmentRun) {
-            this.wizardImageNotice.set(`Finding or creating images · ${completed} of ${candidates.length} checked · ${matched} added`);
-          }
+          recordCompletion();
         }
       }
     };
@@ -18808,18 +18858,35 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     await Promise.all(Array.from({ length: Math.min(3, candidates.length) }, () => worker()));
     if (run !== this.wizardImageEnrichmentRun) return;
     this.wizardImageLoadingCardIds.set(new Set());
+    const remaining = this.wizardMissingImageCount();
     this.wizardImageNotice.set(
       matched
-        ? `${matched} image${matched === 1 ? '' : 's'} added. ${candidates.length - matched || 'No'} card${candidates.length - matched === 1 ? '' : 's'} can still be edited or given a custom image.`
-        : 'The cards are ready. No additional images could be created, so you can add custom images where needed.',
+        ? `${matched} image${matched === 1 ? '' : 's'} added. ${remaining ? `${remaining} card${remaining === 1 ? '' : 's'} still need a custom image.` : 'Every card now has an image.'}`
+        : remaining
+          ? 'The cards are ready. No additional images could be created, so you can add custom images where needed.'
+          : 'Every card now has an image.',
     );
   }
 
   cancelWizardImageEnrichment(): void {
-    if (!this.wizardImageLoadingCardIds().size && !this.wizardImageNotice()?.startsWith('Finding')) return;
+    if (!this.wizardImageEnrichmentActive()) return;
     this.wizardImageEnrichmentRun += 1;
     this.wizardImageLoadingCardIds.set(new Set());
-    this.wizardImageNotice.set('Image search stopped. The text cards remain ready to edit and save.');
+    this.wizardImageProgress.set(null);
+    this.wizardImageNotice.set('Image preparation stopped. You can continue with the images already added, or add custom images before publishing.');
+  }
+
+  wizardImageProgressLabel(): string {
+    return boardWizardImageProgressLabel(
+      this.wizardImageProgress(),
+      this.wizardImageLoadingCardIds().size,
+    );
+  }
+
+  private showWizardImageWaitNotice(): void {
+    this.wizardImageNotice.set(
+      'Images are still being prepared. You can keep editing while this finishes, or choose Stop to continue with the images already added.',
+    );
   }
 
   private localWizardItems(source: string, preserveSingleItemList = false): string[] {
