@@ -5336,6 +5336,7 @@ type BoardWizardCallableData = {
   singleTourStop?: unknown;
   sourceManifest?: unknown;
   deferMediaEnrichment?: unknown;
+  allowGeneratedImageFallback?: unknown;
 };
 
 type BoardWizardTourOptions = {
@@ -7541,10 +7542,12 @@ export const generateBoardWizardBatch = onCall(
         throw new HttpsError('invalid-argument', 'Provide the current card before replacing its image.');
       }
       const result = await buildBoardWizardImageOnlyBatch({
+        userId,
         currentCard,
         prompt,
         targetBoardTitle,
         defaultType,
+        allowGeneratedFallback: data.allowGeneratedImageFallback === true,
       });
       await db.collection('board_wizard_batches').add({
         owner_user_id: userId,
@@ -11526,10 +11529,12 @@ export const recalculateBoardTourRoute = onCall(
 
 async function buildBoardWizardImageOnlyBatch(
   options: {
+    userId: string;
     currentCard: BoardWizardCurrentCard;
     prompt: string;
     targetBoardTitle: string;
     defaultType: GeneratedBoardWizardCard['type'];
+    allowGeneratedFallback: boolean;
   },
 ): Promise<GeneratedBoardWizardBatch> {
   const card: GeneratedBoardWizardCard = {
@@ -11598,6 +11603,27 @@ async function buildBoardWizardImageOnlyBatch(
   if (!imageUrl && card.type !== 'food') {
     imageUrl = await findReferenceImageForBoardWizard(card.image_query);
   }
+  let imageSource: GeneratedBoardWizardCard['imageSource'] | undefined;
+  if (!imageUrl && options.allowGeneratedFallback) {
+    const startedAt = Date.now();
+    imageUrl = await withBoardWizardTimeout(
+      generateAndStoreBoardWizardContextualImage({
+        userId: options.userId,
+        card,
+        cardIndex: Math.max(0, (card.rank ?? 1) - 1),
+        boardTitle: options.targetBoardTitle || card.title,
+        boardDescription: options.prompt,
+      }),
+      45_000,
+      '',
+    );
+    imageSource = imageUrl ? 'generated' : undefined;
+    logger.info('Board wizard progressive contextual image fallback completed.', {
+      entity: boardWizardImageEntityName(card),
+      resolved: !!imageUrl,
+      durationMs: Date.now() - startedAt,
+    });
+  }
 
   return {
     board: {
@@ -11614,6 +11640,7 @@ async function buildBoardWizardImageOnlyBatch(
       googleMapsUrl: placeEnrichment?.googleMapsUrl ?? card.googleMapsUrl,
       ...spotifyFieldsForBoardWizardCard(spotifyTrack),
       imageUrl: imageUrl || undefined,
+      imageSource,
       audioPreviewUrl: audioPreviewUrl || undefined,
     }],
   };

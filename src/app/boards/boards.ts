@@ -5392,7 +5392,12 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.wizardImageLoadingCardIds.update((ids) => new Set(ids).add(cardId));
     this.wizardError.set(null);
     try {
-      const replacement = await this.requestWizardCardImage(card, this.wizardTargetBoardTitle());
+      const replacement = await this.requestWizardCardImage(
+        card,
+        this.wizardTargetBoardTitle(),
+        '',
+        true,
+      );
       if (!replacement?.imageUrl) {
         this.wizardError.set(`No better image was found for "${card.title}". You can paste an image URL in Edit or upload one with Picture.`);
         return;
@@ -5403,7 +5408,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
             ? {
                 ...item,
                 imageUrl: replacement.imageUrl ?? item.imageUrl,
-                imageSource: item.productUrl ? 'search' : item.imageSource,
+                imageSource: replacement.imageSource || (item.productUrl ? 'search' : item.imageSource),
                 audioPreviewUrl: replacement.audioPreviewUrl || item.audioPreviewUrl,
                 spotifyTrackId: replacement.spotifyTrackId || item.spotifyTrackId,
                 spotifyTrackUrl: replacement.spotifyTrackUrl || item.spotifyTrackUrl,
@@ -18329,6 +18334,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     card: BoardWizardPreviewCard,
     targetBoardTitle: string,
     promptContext = '',
+    allowGeneratedFallback = false,
   ): Promise<BoardWizardGeneratedCard | null> {
     if (!this.functions) {
       return null;
@@ -18367,6 +18373,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       url: '',
       photoNames: [],
       imageOnly: true,
+      allowGeneratedImageFallback: allowGeneratedFallback,
       currentCard: this.wizardCardToCurrentCard(card),
       targetBoardId: this.wizardTargetBoardId() === 'new' ? '' : this.wizardTargetBoardId(),
       targetBoardTitle,
@@ -18746,14 +18753,19 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     let nextIndex = 0;
     let completed = 0;
     let matched = 0;
-    this.wizardImageNotice.set(`Finding verified images · 0 of ${candidates.length} checked`);
+    this.wizardImageNotice.set(`Finding or creating images · 0 of ${candidates.length} checked`);
 
     const worker = async () => {
       while (nextIndex < candidates.length && run === this.wizardImageEnrichmentRun) {
         const card = candidates[nextIndex++];
         this.wizardImageLoadingCardIds.update((ids) => new Set(ids).add(card.id));
         try {
-          const replacement = await this.requestWizardCardImage(card, boardTitle, card.image_context || card.subtitle);
+          const replacement = await this.requestWizardCardImage(
+            card,
+            boardTitle,
+            card.image_context || card.subtitle,
+            true,
+          );
           if (run !== this.wizardImageEnrichmentRun) return;
           if (replacement?.imageUrl) {
             matched += 1;
@@ -18787,7 +18799,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
           });
           completed += 1;
           if (run === this.wizardImageEnrichmentRun) {
-            this.wizardImageNotice.set(`Finding verified images · ${completed} of ${candidates.length} checked · ${matched} matched`);
+            this.wizardImageNotice.set(`Finding or creating images · ${completed} of ${candidates.length} checked · ${matched} added`);
           }
         }
       }
@@ -18798,8 +18810,8 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.wizardImageLoadingCardIds.set(new Set());
     this.wizardImageNotice.set(
       matched
-        ? `${matched} verified image${matched === 1 ? '' : 's'} added. ${candidates.length - matched || 'No'} card${candidates.length - matched === 1 ? '' : 's'} can still be edited or given a custom image.`
-        : 'The cards are ready. No additional exact images were found, so you can add custom images where needed.',
+        ? `${matched} image${matched === 1 ? '' : 's'} added. ${candidates.length - matched || 'No'} card${candidates.length - matched === 1 ? '' : 's'} can still be edited or given a custom image.`
+        : 'The cards are ready. No additional images could be created, so you can add custom images where needed.',
     );
   }
 
