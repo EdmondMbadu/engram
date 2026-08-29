@@ -6073,7 +6073,14 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     }
 
     if (nextBoard && (editingId || !insideContext)) {
-      await this.persistAndReplaceBoard(nextBoard);
+      const visibilityOnlyEdit = !!editingBoardForVisibility
+        && this.isVisibilityOnlyBoardEdit(editingBoardForVisibility, nextBoard);
+      const saved = visibilityOnlyEdit
+        ? await this.persistVisibilityAndReplaceBoard(nextBoard)
+        : await this.persistAndReplaceBoard(nextBoard);
+      if (!saved) {
+        return;
+      }
       if (editingId) {
         const linkedChildren = this.nestedBoardsUnder(editingId)
           .filter((board) => board.visibility !== draft.visibility
@@ -6087,7 +6094,9 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         if (linkedChildren.length) {
           const linkedById = new Map(linkedChildren.map((board) => [board.id, board]));
           this.boards.update((boards) => boards.map((board) => linkedById.get(board.id) ?? board));
-          await Promise.all(linkedChildren.map((board) => this.persistAndReplaceBoard(board)));
+          await Promise.all(linkedChildren.map((board) => visibilityOnlyEdit
+            ? this.persistVisibilityAndReplaceBoard(board)
+            : this.persistAndReplaceBoard(board)));
         }
       }
     }
@@ -10205,7 +10214,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     }
     this.nearbyGemsVisibilitySavingId.set(board.id);
     this.nearbyGemsVisibilityMessage.set('');
-    const saved = await this.persistAndReplaceBoard({
+    const saved = await this.persistVisibilityAndReplaceBoard({
       ...board,
       visibility: nextVisibility,
       updatedAt: new Date().toISOString(),
@@ -19541,6 +19550,53 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     } catch (error) {
       console.error('Board Firebase sync failed', error, { boardId: board.id });
       this.boardsSyncError.set($localize`Saved on this browser, but Firebase sync failed.`);
+      return false;
+    }
+  }
+
+  private isVisibilityOnlyBoardEdit(previous: Board, next: Board): boolean {
+    if (previous.visibility === next.visibility) {
+      return false;
+    }
+    const unchangedFields: Array<keyof Board> = [
+      'title',
+      'description',
+      'backNote',
+      'icon',
+      'tone',
+      'imageUrl',
+      'logoUrl',
+      'logoLinkUrl',
+      'stackCtaLabel',
+      'stackCtaUrl',
+    ];
+    return unchangedFields.every((field) => previous[field] === next[field])
+      && JSON.stringify(previous.stickers ?? []) === JSON.stringify(next.stickers ?? []);
+  }
+
+  private async persistVisibilityAndReplaceBoard(board: Board): Promise<boolean> {
+    if (!this.canEditBoard(board)) {
+      this.boardsSyncError.set($localize`Only the board owner can save changes.`);
+      return false;
+    }
+    const uid = this.authService.uid();
+    if (!this.firestore || !uid) {
+      return true;
+    }
+    const updatedAt = board.updatedAt || new Date().toISOString();
+    const nextBoard = { ...board, updatedAt };
+    try {
+      await updateDoc(doc(this.firestore, 'boards', board.id), {
+        visibility: board.visibility,
+        updated_at_iso: updatedAt,
+        server_updated_at: serverTimestamp(),
+      });
+      this.boards.update((boards) => boards.map((item) => item.id === board.id ? nextBoard : item));
+      this.boardsSyncError.set(null);
+      return true;
+    } catch (error) {
+      console.error('Board visibility Firebase sync failed', error, { boardId: board.id });
+      this.boardsSyncError.set($localize`Board save failed. Please try again.`);
       return false;
     }
   }

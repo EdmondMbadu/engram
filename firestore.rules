@@ -870,15 +870,34 @@ service cloud.firestore {
       allow list: if resource.data.visibility == 'public'
         || (isSignedIn() && resource.data.owner_user_id == request.auth.uid)
         || isPlatformAdmin();
+
+      // Voice and visibility are intentionally small updates. In particular,
+      // changing privacy must not re-validate or rewrite every card on a
+      // historical board.
       allow update: if isSignedIn()
         && resource.data.owner_user_id == request.auth.uid
-        && request.resource.data.owner_user_id == resource.data.owner_user_id
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
           'stackNarratorVoiceId',
+          'visibility',
           'updated_at_iso',
           'server_updated_at'
         ])
-        && isValidStackNarratorVoiceId(request.resource.data.stackNarratorVoiceId)
+        && (
+          !request.resource.data.diff(resource.data).affectedKeys().hasAny(['stackNarratorVoiceId'])
+          || isValidStackNarratorVoiceId(request.resource.data.stackNarratorVoiceId)
+        )
+        && (
+          !request.resource.data.diff(resource.data).affectedKeys().hasAny(['visibility'])
+          || (
+            request.resource.data.visibility in ['public', 'private']
+            && (
+              request.resource.data.visibility == 'public'
+              || resource.data.kind == 'nearby-gems'
+              || isPlatformAdmin()
+              || hasActivePersonalWikiPlan()
+            )
+          )
+        )
         && request.resource.data.updated_at_iso is string
         && request.resource.data.server_updated_at == request.time;
 

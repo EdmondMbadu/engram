@@ -15,6 +15,7 @@ import {
   query,
   serverTimestamp,
   setDoc,
+  updateDoc,
   where,
   writeBatch,
 } from 'firebase/firestore';
@@ -581,6 +582,110 @@ test('owner can update a full personal board without hitting the rule expression
       updated_at_iso: '2026-08-12T01:00:00.000Z',
     }),
   ));
+});
+
+test('visibility-only updates work for paid owners without rewriting the board', async () => {
+  await testEnvironment.withSecurityRulesDisabled(async (context) => {
+    const database = context.firestore();
+    await setDoc(doc(database, 'users', ownerUid), {
+      role: 'member',
+      pricingPlan: 'creator',
+      subscriptionStatus: 'active',
+    });
+    await setDoc(
+      doc(database, 'boards', 'legacy-visibility-board'),
+      {
+        ...personalWizardBoard({ id: 'legacy-visibility-board' }),
+        legacy_field_that_is_no_longer_in_the_client_schema: true,
+        server_updated_at: new Date('2026-08-12T00:00:00.000Z'),
+      },
+    );
+  });
+  const database = testEnvironment.authenticatedContext(ownerUid).firestore();
+
+  await assertSucceeds(updateDoc(doc(database, 'boards', 'legacy-visibility-board'), {
+    visibility: 'private',
+    updated_at_iso: '2026-08-12T01:00:00.000Z',
+    server_updated_at: serverTimestamp(),
+  }));
+
+  await testEnvironment.withSecurityRulesDisabled(async (context) => {
+    const snapshot = await getDoc(doc(context.firestore(), 'boards', 'legacy-visibility-board'));
+    assert.equal(snapshot.data()?.visibility, 'private');
+    assert.equal(snapshot.data()?.legacy_field_that_is_no_longer_in_the_client_schema, true);
+  });
+});
+
+test('visibility-only private updates still enforce ownership and plan access', async () => {
+  await testEnvironment.withSecurityRulesDisabled(async (context) => {
+    await setDoc(
+      doc(context.firestore(), 'boards', 'protected-visibility-board'),
+      personalWizardBoard({
+        id: 'protected-visibility-board',
+        server_updated_at: new Date('2026-08-12T00:00:00.000Z'),
+      }),
+    );
+  });
+  const ownerDatabase = testEnvironment.authenticatedContext(ownerUid).firestore();
+  const otherDatabase = testEnvironment.authenticatedContext('different-user').firestore();
+  const update = {
+    visibility: 'private',
+    updated_at_iso: '2026-08-12T01:00:00.000Z',
+    server_updated_at: serverTimestamp(),
+  };
+
+  await assertFails(updateDoc(doc(ownerDatabase, 'boards', 'protected-visibility-board'), update));
+  await assertFails(updateDoc(doc(otherDatabase, 'boards', 'protected-visibility-board'), update));
+});
+
+test('platform admins can make their existing boards private with a visibility-only update', async () => {
+  const adminUid = 'visibility-admin';
+  await testEnvironment.withSecurityRulesDisabled(async (context) => {
+    const database = context.firestore();
+    await setDoc(doc(database, 'users', adminUid), { role: 'admin' });
+    await setDoc(doc(database, 'boards', 'admin-visibility-board'), personalWizardBoard({
+      id: 'admin-visibility-board',
+      owner_user_id: adminUid,
+      owner_public_slug: 'visibility-admin',
+      server_updated_at: new Date('2026-08-12T00:00:00.000Z'),
+    }));
+  });
+  const database = testEnvironment.authenticatedContext(adminUid).firestore();
+
+  await assertSucceeds(updateDoc(doc(database, 'boards', 'admin-visibility-board'), {
+    visibility: 'private',
+    updated_at_iso: '2026-08-12T01:00:00.000Z',
+    server_updated_at: serverTimestamp(),
+  }));
+});
+
+test('free owners can publish existing boards and can toggle Nearby Gems visibility', async () => {
+  await testEnvironment.withSecurityRulesDisabled(async (context) => {
+    const database = context.firestore();
+    await setDoc(doc(database, 'boards', 'free-private-board'), personalWizardBoard({
+      id: 'free-private-board',
+      visibility: 'private',
+      server_updated_at: new Date('2026-08-12T00:00:00.000Z'),
+    }));
+    await setDoc(doc(database, 'boards', 'free-nearby-board'), personalWizardBoard({
+      id: 'free-nearby-board',
+      kind: 'nearby-gems',
+      visibility: 'public',
+      server_updated_at: new Date('2026-08-12T00:00:00.000Z'),
+    }));
+  });
+  const database = testEnvironment.authenticatedContext(ownerUid).firestore();
+
+  await assertSucceeds(updateDoc(doc(database, 'boards', 'free-private-board'), {
+    visibility: 'public',
+    updated_at_iso: '2026-08-12T01:00:00.000Z',
+    server_updated_at: serverTimestamp(),
+  }));
+  await assertSucceeds(updateDoc(doc(database, 'boards', 'free-nearby-board'), {
+    visibility: 'private',
+    updated_at_iso: '2026-08-12T01:00:00.000Z',
+    server_updated_at: serverTimestamp(),
+  }));
 });
 
 test('owner can save a fresh narration revision with final-screen settings', async () => {
