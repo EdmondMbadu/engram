@@ -1965,11 +1965,22 @@
           <div class="board-detail__toolbar">
             @if (!exploredRelatedCardParent() && (board.cards.length || canEditBoard(board) || board.kind === 'off-grid')) {
               <div class="board-detail__actions">
-                @if (canEditBoard(board) && board.cards.length) {
-                  <button type="button" class="boards-ghost-action" (click)="toggleCardManageMode(board, $event)">
-                    <span class="material-symbols-outlined">{{ isManagingBoard(board.id) ? 'close' : 'settings' }}</span>
-                    {{ isManagingBoard(board.id) ? 'Done' : 'Settings' }}
+                @if (canEditBoard(board)) {
+                  <button
+                    type="button"
+                    class="boards-ghost-action"
+                    [id]="'board-settings-trigger-' + board.id"
+                    (click)="openBoardSettings(board, $event)"
+                  >
+                    <span class="material-symbols-outlined">settings</span>
+                    Board settings
                   </button>
+                  @if (board.cards.length) {
+                    <button type="button" class="boards-ghost-action" (click)="toggleCardManageMode(board, $event)">
+                      <span class="material-symbols-outlined">{{ isManagingBoard(board.id) ? 'close' : 'checklist' }}</span>
+                      {{ isManagingBoard(board.id) ? 'Done' : 'Manage cards' }}
+                    </button>
+                  }
                 }
                 @if (board.kind === 'off-grid') {
                   <button type="button" class="boards-primary-action off-grid-drop-card-action" (click)="openOffGridContribution(board, $event)" i18n>
@@ -2005,96 +2016,6 @@
           }
 
           @if (!isSongBoard(board) && canEditBoard(board) && isManagingBoard(board.id)) {
-            <section
-              class="board-inside-display"
-              style="display: grid; align-items: stretch; gap: .75rem; padding: .8rem;"
-              [attr.aria-labelledby]="'board-settings-title-' + board.id"
-            >
-              <header class="board-inside-display__copy">
-                <span class="material-symbols-outlined">settings</span>
-                <span>
-                  <strong [id]="'board-settings-title-' + board.id">Board settings</strong>
-                  <small>Presentation choices save automatically for this board.</small>
-                </span>
-              </header>
-              <div style="display: grid; gap: .6rem;">
-                <div class="board-inside-display" style="margin: 0; background: #ffffff;" aria-label="Card numbering setting">
-                  <div class="board-inside-display__copy">
-                    <span class="material-symbols-outlined">format_list_numbered</span>
-                    <span>
-                      <strong>Card numbers</strong>
-                      <small>
-                        {{ boardCardNumbersSavingId() === board.id ? 'Saving…' : 'Controls the board, Live View, tours, Learn, and generated video.' }}
-                      </small>
-                    </span>
-                  </div>
-                  <div class="board-inside-display__switch" role="group" aria-label="Card numbers">
-                    <button
-                      type="button"
-                      [disabled]="boardCardNumbersSavingId() === board.id"
-                      [class.board-inside-display__option--active]="boardShowsCardNumbers(board)"
-                      [attr.aria-pressed]="boardShowsCardNumbers(board)"
-                      (click)="setBoardShowCardNumbers(board, true, $event)"
-                    >
-                      <span class="material-symbols-outlined">filter_1</span>
-                      <span><strong>Show</strong><small>Display sequence numbers</small></span>
-                    </button>
-                    <button
-                      type="button"
-                      [disabled]="boardCardNumbersSavingId() === board.id"
-                      [class.board-inside-display__option--active]="!boardShowsCardNumbers(board)"
-                      [attr.aria-pressed]="!boardShowsCardNumbers(board)"
-                      (click)="setBoardShowCardNumbers(board, false, $event)"
-                    >
-                      <span class="material-symbols-outlined">format_list_bulleted</span>
-                      <span><strong>Hide</strong><small>Remove sequence numbers</small></span>
-                    </button>
-                  </div>
-                </div>
-
-                @if (!exploredRelatedCardParent() && boardHasCardsInside(board)) {
-                  <div class="board-inside-display" style="margin: 0; background: #ffffff;" aria-label="Cards inside placement setting">
-                    <div class="board-inside-display__copy">
-                      <span class="material-symbols-outlined">account_tree</span>
-                      <span>
-                        <strong>Cards inside placement</strong>
-                        <small>
-                          {{ boardInsideDisplaySavingId() === board.id ? 'Saving…' : 'Choose where a board created inside a card appears.' }}
-                        </small>
-                      </span>
-                    </div>
-                    <div class="board-inside-display__switch" role="group" aria-label="Cards inside placement">
-                      <button
-                        type="button"
-                        [disabled]="boardInsideDisplaySavingId() === board.id"
-                        [class.board-inside-display__option--active]="boardInsideDisplay(board) === 'nested'"
-                        [attr.aria-pressed]="boardInsideDisplay(board) === 'nested'"
-                        (click)="setBoardInsideDisplay(board, 'nested', $event)"
-                      >
-                        <span class="material-symbols-outlined">subdirectory_arrow_right</span>
-                        <span>
-                          <strong>Inside parent</strong>
-                          <small>Default · Open from its parent card</small>
-                        </span>
-                      </button>
-                      <button
-                        type="button"
-                        [disabled]="boardInsideDisplaySavingId() === board.id"
-                        [class.board-inside-display__option--active]="boardInsideDisplay(board) === 'alongside'"
-                        [attr.aria-pressed]="boardInsideDisplay(board) === 'alongside'"
-                        (click)="setBoardInsideDisplay(board, 'alongside', $event)"
-                      >
-                        <span class="material-symbols-outlined">view_module</span>
-                        <span>
-                          <strong>Alongside cards</strong>
-                          <small>Show the opened inside board in this grid</small>
-                        </span>
-                      </button>
-                    </div>
-                  </div>
-                }
-              </div>
-            </section>
             <div class="board-bulk-actions">
               <div>
                 <strong i18n>{{ selectedCardCount() }} selected</strong>
@@ -6718,7 +6639,7 @@
               <button type="button" class="boards-primary-action" (click)="closeBoardWizard()">See them on the board</button>
             } @else if (wizardMode() === 'nearby-gems') {
               <h4>Your private Gems board is ready</h4>
-              <p>Only you can open it until you choose Make public in More or Board settings. Your starting location was not saved.</p>
+              <p>Only you can open it until you choose Make public in Board settings. Your starting location was not saved.</p>
               <button type="button" class="boards-primary-action" (click)="closeBoardWizard()">Open my board</button>
             } @else {
               <h4>Board published</h4>
@@ -8702,6 +8623,213 @@
             Delete selected
           </button>
         </div>
+      </section>
+    </div>
+  }
+
+  @if (boardSettingsBoard(); as settingsBoard) {
+    <div class="boards-modal-backdrop board-settings-backdrop" style="background: rgba(7, 25, 18, .48); backdrop-filter: blur(4px);" (click)="closeBoardSettings($event)">
+      <section
+        class="boards-modal boards-modal--wide board-settings-modal"
+        style="width: min(100%, 45rem); border-width: 1px; border-radius: 1.35rem; box-shadow: 0 28px 80px rgba(4, 31, 21, .34);"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="board-settings-modal-title"
+        aria-describedby="board-settings-modal-description"
+        (click)="$event.stopPropagation()"
+      >
+        <header class="boards-modal__head board-settings-modal__head" style="display: grid; grid-template-columns: auto minmax(0, 1fr) auto;">
+          <span class="material-symbols-outlined" style="display: grid; width: 2.6rem; height: 2.6rem; place-items: center; border-radius: .8rem; background: color-mix(in srgb, var(--accent) 10%, var(--surface)); color: var(--accent); font-variation-settings: 'FILL' 1;" aria-hidden="true">settings</span>
+          <span class="board-settings-modal__head-copy" style="display: grid; gap: .2rem;">
+            <strong id="board-settings-modal-title" style="font-family: Georgia, 'Times New Roman', serif; font-size: 1.4rem;">Board settings</strong>
+            <small id="board-settings-modal-description" style="color: var(--muted); font-weight: 700;">Manage the details, presentation, and visibility of this board.</small>
+          </span>
+          <button
+            type="button"
+            class="boards-icon-button board-settings-modal__close"
+            aria-label="Close board settings"
+            [disabled]="boardSettingsSaving()"
+            (click)="closeBoardSettings($event)"
+          >
+            <span class="material-symbols-outlined" aria-hidden="true">close</span>
+          </button>
+        </header>
+
+        <form class="boards-form board-settings-form" (submit)="saveBoardSettings($event)">
+          <div class="board-settings-summary" style="display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: .75rem; border-bottom: 1px solid var(--line); padding-bottom: 1rem;">
+            @if (stackCoverImage(settingsBoard); as settingsCover) {
+              <img style="width: 4rem; height: 3.25rem; border-radius: .75rem; object-fit: cover;" [src]="settingsCover" [alt]="settingsBoard.title + ' cover image'" />
+            } @else {
+              <span class="board-settings-summary__fallback material-symbols-outlined" style="display: grid; width: 4rem; height: 3.25rem; place-items: center; border-radius: .75rem; background: color-mix(in srgb, var(--accent) 10%, var(--surface)); color: var(--accent);" aria-hidden="true">{{ boardDisplayIcon(settingsBoard) }}</span>
+            }
+            <span class="board-settings-summary__copy" style="display: grid; min-width: 0; gap: .2rem;">
+              <strong style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ settingsBoard.title }}</strong>
+              <small style="color: var(--muted);">{{ ownerName(settingsBoard) }}</small>
+            </span>
+            <span class="board-settings-summary__count" style="border-radius: 999px; background: color-mix(in srgb, var(--text) 7%, transparent); font-size: .72rem; font-weight: 850; padding: .42rem .62rem; white-space: nowrap;">
+              {{ boardDisplayCardCount(settingsBoard) }}
+              {{ boardDisplayCardCount(settingsBoard) === 1 ? 'card' : 'cards' }}
+            </span>
+          </div>
+
+          <label class="board-settings-field">
+            <span>Board title</span>
+            <input
+              type="text"
+              required
+              maxlength="72"
+              autocomplete="off"
+              [value]="boardSettingsDraft().title"
+              [disabled]="boardSettingsSaving()"
+              (input)="updateBoardSettingsDraft('title', $any($event.target).value)"
+            />
+          </label>
+
+          <label class="board-settings-field">
+            <span>Description</span>
+            <textarea
+              rows="3"
+              maxlength="180"
+              [value]="boardSettingsDraft().description"
+              [disabled]="boardSettingsSaving()"
+              (input)="updateBoardSettingsDraft('description', $any($event.target).value)"
+            ></textarea>
+          </label>
+
+          <section class="board-inside-display board-settings-choice" style="margin: 0;" aria-labelledby="board-settings-card-numbers-title">
+            <div class="board-inside-display__copy board-settings-choice__copy">
+              <span class="material-symbols-outlined" aria-hidden="true">format_list_numbered</span>
+              <span>
+                <strong id="board-settings-card-numbers-title">Card numbers</strong>
+                <small>Controls the board, Live View, tours, Learn, and generated video.</small>
+              </span>
+            </div>
+            <div class="board-inside-display__switch board-settings-segmented" role="group" aria-label="Card numbers">
+              <button
+                type="button"
+                [class.board-inside-display__option--active]="boardSettingsDraft().showCardNumbers"
+                [attr.aria-pressed]="boardSettingsDraft().showCardNumbers"
+                [disabled]="boardSettingsSaving()"
+                (click)="updateBoardSettingsDraft('showCardNumbers', true)"
+              >
+                <span class="material-symbols-outlined" aria-hidden="true">filter_1</span>
+                <span><strong>Show</strong><small>Display sequence numbers</small></span>
+              </button>
+              <button
+                type="button"
+                [class.board-inside-display__option--active]="!boardSettingsDraft().showCardNumbers"
+                [attr.aria-pressed]="!boardSettingsDraft().showCardNumbers"
+                [disabled]="boardSettingsSaving()"
+                (click)="updateBoardSettingsDraft('showCardNumbers', false)"
+              >
+                <span class="material-symbols-outlined" aria-hidden="true">format_list_bulleted</span>
+                <span><strong>Hide</strong><small>Remove sequence numbers</small></span>
+              </button>
+            </div>
+          </section>
+
+          @if (boardHasCardsInside(settingsBoard)) {
+            <section class="board-inside-display board-settings-choice" style="margin: 0;" aria-labelledby="board-settings-inside-title">
+              <div class="board-inside-display__copy board-settings-choice__copy">
+                <span class="material-symbols-outlined" aria-hidden="true">account_tree</span>
+                <span>
+                  <strong id="board-settings-inside-title">Cards inside placement</strong>
+                  <small>Choose where a board created inside a card appears.</small>
+                </span>
+              </div>
+              <div class="board-inside-display__switch board-settings-segmented" role="group" aria-label="Cards inside placement">
+                <button
+                  type="button"
+                  [class.board-inside-display__option--active]="boardSettingsDraft().insideCardsDisplay === 'nested'"
+                  [attr.aria-pressed]="boardSettingsDraft().insideCardsDisplay === 'nested'"
+                  [disabled]="boardSettingsSaving()"
+                  (click)="updateBoardSettingsDraft('insideCardsDisplay', 'nested')"
+                >
+                  <span class="material-symbols-outlined" aria-hidden="true">subdirectory_arrow_right</span>
+                  <span><strong>Inside parent</strong><small>Open from its parent card</small></span>
+                </button>
+                <button
+                  type="button"
+                  [class.board-inside-display__option--active]="boardSettingsDraft().insideCardsDisplay === 'alongside'"
+                  [attr.aria-pressed]="boardSettingsDraft().insideCardsDisplay === 'alongside'"
+                  [disabled]="boardSettingsSaving()"
+                  (click)="updateBoardSettingsDraft('insideCardsDisplay', 'alongside')"
+                >
+                  <span class="material-symbols-outlined" aria-hidden="true">view_module</span>
+                  <span><strong>Alongside cards</strong><small>Show in this card grid</small></span>
+                </button>
+              </div>
+            </section>
+          }
+
+          <section class="board-inside-display board-settings-privacy" style="margin: 0;" aria-labelledby="board-settings-privacy-title">
+            <span class="material-symbols-outlined" style="display: grid; width: 2.35rem; height: 2.35rem; flex: none; place-items: center; border-radius: .72rem; background: color-mix(in srgb, var(--accent) 12%, var(--surface)); color: var(--accent); font-variation-settings: 'FILL' 1;" aria-hidden="true">lock</span>
+            <span class="board-settings-privacy__copy" style="display: grid; min-width: 0; flex: 1; gap: .18rem;">
+              <strong id="board-settings-privacy-title">Private board</strong>
+              <small>
+                @if (settingsBoard.parentCardId) {
+                  This board uses its parent board’s visibility.
+                } @else {
+                  Only you can view this board.
+                }
+              </small>
+            </span>
+            <button
+              type="button"
+              class="board-settings-toggle"
+              style="display: inline-flex; align-items: center; gap: .3rem; min-width: 4.2rem; border: 1px solid var(--line); border-radius: 999px; cursor: pointer; padding: .22rem .38rem .22rem .22rem;"
+              [style.background]="boardSettingsDraft().visibility === 'private' ? 'var(--accent)' : 'color-mix(in srgb, var(--text) 7%, var(--surface))'"
+              [style.color]="boardSettingsDraft().visibility === 'private' ? '#fff' : 'var(--muted)'"
+              [style.border-color]="boardSettingsDraft().visibility === 'private' ? 'var(--accent)' : 'var(--line)'"
+              role="switch"
+              [class.board-settings-toggle--active]="boardSettingsDraft().visibility === 'private'"
+              [attr.aria-checked]="boardSettingsDraft().visibility === 'private'"
+              [attr.aria-label]="boardSettingsDraft().visibility === 'private' ? 'Make board public' : 'Make board private'"
+              [disabled]="boardSettingsSaving() || !!settingsBoard.parentCardId"
+              (click)="setBoardSettingsVisibility(boardSettingsDraft().visibility === 'private' ? 'public' : 'private')"
+            >
+              <span style="width: 1.45rem; height: 1.45rem; border-radius: 999px; background: var(--surface-strong); box-shadow: 0 2px 6px rgba(5,30,21,.2);" aria-hidden="true"></span>
+              <small style="font-size: .62rem; font-weight: 900;">{{ boardSettingsDraft().visibility === 'private' ? 'ON' : 'OFF' }}</small>
+            </button>
+          </section>
+
+          @if (boardCustomUrl(settingsBoard); as settingsUrl) {
+            <section class="board-inside-display board-settings-link" style="margin: 0;" aria-label="Board link">
+              <span class="material-symbols-outlined" aria-hidden="true">link</span>
+              <span class="board-settings-link__copy" style="display: grid; min-width: 0; flex: 1; gap: .08rem;">
+                <small>Board link</small>
+                <a style="overflow: hidden; color: var(--text); font-size: .74rem; font-weight: 700; text-decoration: none; text-overflow: ellipsis; white-space: nowrap;" [href]="settingsUrl" [title]="settingsUrl">{{ boardCustomUrlDisplay(settingsBoard) }}</a>
+              </span>
+              <button
+                type="button"
+                class="boards-ghost-action"
+                [class.board-settings-link__button--copied]="customUrlCopiedBoardId() === settingsBoard.id"
+                [attr.aria-label]="customUrlCopiedBoardId() === settingsBoard.id ? 'Board link copied' : 'Copy board link'"
+                (click)="copyCustomBoardUrl(settingsBoard, $event)"
+              >
+                <span class="material-symbols-outlined" aria-hidden="true">{{ customUrlCopiedBoardId() === settingsBoard.id ? 'check' : 'content_copy' }}</span>
+                <span>{{ customUrlCopiedBoardId() === settingsBoard.id ? 'Copied' : 'Copy' }}</span>
+              </button>
+            </section>
+          }
+
+          @if (boardSettingsError()) {
+            <p class="board-settings-error" style="margin: 0; border-radius: .75rem; background: #fff0ee; color: #9b2a20; font-size: .75rem; font-weight: 750; padding: .65rem;" role="alert">{{ boardSettingsError() }}</p>
+          }
+
+          <footer class="boards-form__actions board-settings-actions">
+            <button
+              type="button"
+              class="boards-ghost-action board-settings-actions__cancel"
+              [disabled]="boardSettingsSaving()"
+              (click)="closeBoardSettings($event)"
+            >Cancel</button>
+            <button type="submit" class="boards-primary-action board-settings-actions__save" [disabled]="boardSettingsSaving()">
+              <span class="material-symbols-outlined" aria-hidden="true">{{ boardSettingsSaving() ? 'progress_activity' : 'check' }}</span>
+              <span>{{ boardSettingsSaving() ? 'Saving…' : 'Save changes' }}</span>
+            </button>
+          </footer>
+        </form>
       </section>
     </div>
   }

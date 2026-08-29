@@ -583,6 +583,14 @@ type BoardDraft = {
   stickers: BoardSticker[];
 };
 
+type BoardSettingsDraft = {
+  title: string;
+  description: string;
+  visibility: BoardVisibility;
+  showCardNumbers: boolean;
+  insideCardsDisplay: BoardInsideDisplay;
+};
+
 type BoardInsideContext = {
   parentBoardId: string;
   parentCardId: string;
@@ -1709,6 +1717,20 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly activeAlongsideBoardIds = signal<Set<string>>(new Set());
   readonly boardInsideDisplaySavingId = signal<string | null>(null);
   readonly boardCardNumbersSavingId = signal<string | null>(null);
+  readonly boardSettingsBoardId = signal<string | null>(null);
+  readonly boardSettingsSaving = signal(false);
+  readonly boardSettingsError = signal<string | null>(null);
+  readonly boardSettingsDraft = signal<BoardSettingsDraft>({
+    title: '',
+    description: '',
+    visibility: 'public',
+    showCardNumbers: true,
+    insideCardsDisplay: 'nested',
+  });
+  readonly boardSettingsBoard = computed(() => {
+    const boardId = this.boardSettingsBoardId();
+    return boardId ? this.boards().find((board) => board.id === boardId) ?? null : null;
+  });
   readonly nearbyGemsVisibilitySavingId = signal<string | null>(null);
   readonly nearbyGemsVisibilityMessage = signal('');
   readonly activeGalleryTab = signal<BoardGalleryTab>('boards');
@@ -5882,6 +5904,146 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       ? boards.map((item) => item.id === latestBoard.id ? latestBoard : item)
       : [latestBoard, ...boards]);
     this.boardsSyncError.set(null);
+  }
+
+  openBoardSettings(board: Board, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (!this.canEditBoard(board)) {
+      this.boardsSyncError.set($localize`Only the board owner can edit this board.`);
+      return;
+    }
+    this.boardSettingsDraft.set({
+      title: board.title,
+      description: board.description,
+      visibility: board.visibility,
+      showCardNumbers: this.boardShowsCardNumbers(board),
+      insideCardsDisplay: this.boardInsideDisplay(board),
+    });
+    this.boardSettingsError.set(null);
+    this.boardSettingsBoardId.set(board.id);
+  }
+
+  closeBoardSettings(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const boardId = this.boardSettingsBoardId();
+    this.boardSettingsBoardId.set(null);
+    this.boardSettingsError.set(null);
+    if (!this.isBrowser || !boardId) return;
+    requestAnimationFrame(() => {
+      document.getElementById(`board-settings-trigger-${boardId}`)?.focus();
+    });
+  }
+
+  updateBoardSettingsDraft<K extends keyof BoardSettingsDraft>(
+    field: K,
+    value: BoardSettingsDraft[K],
+  ): void {
+    this.boardSettingsDraft.update((draft) => ({ ...draft, [field]: value }));
+    this.boardSettingsError.set(null);
+  }
+
+  setBoardSettingsVisibility(visibility: BoardVisibility): void {
+    const board = this.boardSettingsBoard();
+    if (!board || board.parentCardId) return;
+    if (visibility === 'private' && !this.canUsePrivateBoards() && !this.isNearbyGemsBoard(board)) {
+      this.redirectToPrivateBoardsPricing();
+      return;
+    }
+    this.updateBoardSettingsDraft('visibility', visibility);
+  }
+
+  async saveBoardSettings(event: Event): Promise<void> {
+    event.preventDefault();
+    event.stopPropagation();
+    const current = this.boardSettingsBoard();
+    const draft = this.boardSettingsDraft();
+    const title = draft.title.trim();
+    if (!current || !this.canEditBoard(current)) {
+      this.boardSettingsError.set($localize`Only the board owner can save changes.`);
+      return;
+    }
+    if (!title) {
+      this.boardSettingsError.set('Give this board a title before saving.');
+      return;
+    }
+
+    const visibility = current.parentCardId ? current.visibility : draft.visibility;
+    if (visibility === 'private'
+      && !this.canUsePrivateBoards()
+      && !this.isNearbyGemsBoard(current)) {
+      this.redirectToPrivateBoardsPricing();
+      return;
+    }
+
+    const showCardNumbersChanged = this.boardShowsCardNumbers(current) !== draft.showCardNumbers;
+    const insideCardsDisplayChanged = this.boardInsideDisplay(current) !== draft.insideCardsDisplay;
+    const now = new Date().toISOString();
+    const nextBoard: Board = {
+      ...current,
+      title,
+      description: draft.description.trim(),
+      visibility,
+      showCardNumbers: draft.showCardNumbers,
+      insideCardsDisplay: draft.insideCardsDisplay,
+      ...(showCardNumbersChanged ? {
+        socialVideoUrl: '',
+        socialVideoMimeType: '',
+        socialVideoUpdatedAt: '',
+        socialVideoRenderVersion: '',
+      } : {}),
+      updatedAt: now,
+    };
+
+    this.boards.update((boards) => boards.map((board) => board.id === nextBoard.id ? nextBoard : board));
+    if (insideCardsDisplayChanged) {
+      this.activeAlongsideBoardIds.set(new Set());
+    }
+    if (showCardNumbersChanged) {
+      this.publishedStackVideoFiles.delete(this.stackPublishedFileKey(current.id, 'vertical'));
+      this.publishedStackVideoFiles.delete(this.stackPublishedFileKey(current.id, 'landscape'));
+      this.stackPublishedVideoReady.set(false);
+    }
+
+    this.boardSettingsSaving.set(true);
+    this.boardSettingsError.set(null);
+    try {
+      const visibilityOnlyEdit = !showCardNumbersChanged
+        && !insideCardsDisplayChanged
+        && this.isVisibilityOnlyBoardEdit(current, nextBoard);
+      const saved = visibilityOnlyEdit
+        ? await this.persistVisibilityAndReplaceBoard(nextBoard)
+        : await this.persistAndReplaceBoard(nextBoard);
+      if (!saved) {
+        this.boardSettingsError.set('These changes could not be saved. Please try again.');
+        return;
+      }
+
+      const linkedChildren = this.nestedBoardsUnder(current.id)
+        .filter((board) => board.visibility !== visibility
+          || (board.parentBoardId === current.id && board.parentBoardTitle !== title))
+        .map((board) => ({
+          ...board,
+          parentBoardTitle: board.parentBoardId === current.id ? title : board.parentBoardTitle,
+          visibility,
+          updatedAt: now,
+        }));
+      if (linkedChildren.length) {
+        const linkedById = new Map(linkedChildren.map((board) => [board.id, board]));
+        this.boards.update((boards) => boards.map((board) => linkedById.get(board.id) ?? board));
+        const childSaveResults = await Promise.all(linkedChildren.map((board) => visibilityOnlyEdit
+          ? this.persistVisibilityAndReplaceBoard(board)
+          : this.persistAndReplaceBoard(board)));
+        if (childSaveResults.some((result) => !result)) {
+          this.boardSettingsError.set('The board was updated, but one of its boards inside could not be synced.');
+          return;
+        }
+      }
+      this.closeBoardSettings();
+    } finally {
+      this.boardSettingsSaving.set(false);
+    }
   }
 
   openEditBoard(board: Board, event?: Event): void {
