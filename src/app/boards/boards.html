@@ -6507,6 +6507,15 @@
                       <span i18n>Every card has an image.</span>
                     }
                   </p>
+                  @if (wizardImageNotice()) {
+                    <div class="boards-wizard-refine__video" aria-live="polite">
+                      <span class="material-symbols-outlined">image_search</span>
+                      <span>{{ wizardImageNotice() }}</span>
+                      @if (wizardImageLoadingCardIds().size > 0) {
+                        <button type="button" (click)="cancelWizardImageEnrichment()" i18n>Stop</button>
+                      }
+                    </div>
+                  }
                   @if (wizardVideoNotice()) {
                     <div class="boards-wizard-refine__video" aria-live="polite">
                       <span class="material-symbols-outlined">smart_display</span>

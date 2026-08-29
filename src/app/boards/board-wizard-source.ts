@@ -47,18 +47,23 @@ export function parseNumberedBoardSource(value: string): NumberedBoardSource | n
     if (!current) {
       return;
     }
-    current.body = cleanSourceMarkdown(current.body);
+    current.body = stripTrailingGenerationCommentary(cleanSourceMarkdown(current.body));
     items.push(current);
     current = null;
   };
 
   for (const rawLine of lines) {
     const line = rawLine.trim();
-    const marker = line.match(/^(\d{1,3})[.)]\s+(.+)$/);
-    if (marker?.[1] && marker[2]) {
+    const numberedMarker = line.match(/^(\d{1,3})[.)]\s+(.+)$/);
+    const sceneMarker = line.match(/^(?:#{1,6}\s*)?scene\s+(\d{1,3})(?:\s*[:.)\-–—]\s*(.+))?$/i);
+    const marker = numberedMarker ?? sceneMarker;
+    if (marker?.[1] && (numberedMarker?.[2] || sceneMarker)) {
       finishCurrent();
       const rank = Number.parseInt(marker[1], 10);
-      const heading = cleanSourceMarkdown(marker[2]);
+      const explicitSceneTitle = sceneMarker?.[2] ? cleanSourceMarkdown(sceneMarker[2]) : '';
+      const heading = numberedMarker
+        ? cleanSourceMarkdown(numberedMarker[2])
+        : explicitSceneTitle || `Scene ${rank}`;
       const headingParts = heading.match(/^(.+?)\s+(?:—|–|-)\s+(.+)$/);
       current = {
         rank,
@@ -97,5 +102,11 @@ function cleanSourceMarkdown(value: string): string {
     .replace(/__([^_]+)__/g, '$1')
     .replace(/^[#>*_`~\s-]+|[*_`~]+$/g, '')
     .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function stripTrailingGenerationCommentary(value: string): string {
+  return value
+    .replace(/\s+This (?:version|script|board) should (?:run|take|last) approximately [^.]{1,120}\.\s*$/i, '')
     .trim();
 }

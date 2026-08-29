@@ -23,6 +23,7 @@ const {
   isBoardWizardCompleteSetRequest,
   resolveBoardWizardCount,
 } = require('../lib/board-wizard-count-policy.js');
+const { parseNumberedBoardSource } = require('../lib/board-wizard-source.js');
 
 assert.equal(isBoardWizardCompleteSetRequest('List all people who signed the US Constitution'), true);
 assert.equal(isBoardWizardCompleteSetRequest('Find all interesting places in America'), false);
@@ -41,6 +42,27 @@ assert.deepEqual(resolveBoardWizardCount({
   submittedCount: 10,
   countMode: 'fixed',
 }), { policy: 'target-count', targetCount: 10, explicitCount: 10, completeSet: false });
+
+const sceneSource = parseNumberedBoardSource([
+  'BioFarming Initiative',
+  'Scene 1', 'Living soil supports resilient crops.',
+  'Scene 2', 'Farmers learn to make active compost.',
+  'Scene 3', 'Field trials make the results visible.',
+].join('\n'));
+assert.equal(sceneSource.items.length, 3);
+assert.equal(sceneSource.items[0].title, 'Scene 1');
+assert.equal(sceneSource.items[2].body, 'Field trials make the results visible.');
+const sceneSourceWithRuntimeNote = parseNumberedBoardSource([
+  'Scene 1', 'Opening narration.',
+  'Scene 2', 'Middle narration.',
+  'Scene 3', 'Closing narration.',
+  'This version should run approximately six to seven minutes at a measured narration pace.',
+].join('\n'));
+assert.equal(sceneSourceWithRuntimeNote.items[2].body, 'Closing narration.');
+const hundredScenes = parseNumberedBoardSource(Array.from({ length: 100 }, (_item, index) =>
+  `Scene ${index + 1}\nNarration for scene ${index + 1}.`).join('\n\n'));
+assert.equal(hundredScenes.items.length, 100);
+assert.equal(hundredScenes.items[99].title, 'Scene 100');
 
 const score = (query, pageTitle, candidates) =>
   wikipediaPageTitleMatchScore(query, pageTitle, candidates);

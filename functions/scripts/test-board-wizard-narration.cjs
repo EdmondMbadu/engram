@@ -8,6 +8,7 @@ const {
 } = require('../lib/board-wizard-narration.js');
 const {
   boardNarrationLengthPromptInstructions,
+  boardNarrationBudgetedSecondsPerCard,
   boardNarrationTargetWords,
   normalizeBoardNarrationSeconds,
 } = require('../lib/board-narration-length.js');
@@ -52,6 +53,10 @@ assert.equal(normalizeBoardNarrationSeconds(240), 180);
 assert.equal(boardNarrationTargetWords(5), 12);
 assert.equal(boardNarrationTargetWords(30), 71);
 assert.equal(boardNarrationTargetWords(180), 423);
+assert.equal(boardNarrationBudgetedSecondsPerCard(12, 30), 30);
+assert.equal(boardNarrationBudgetedSecondsPerCard(40, 30), 15);
+assert.equal(boardNarrationBudgetedSecondsPerCard(100, 30), 5);
+assert.equal(boardNarrationBudgetedSecondsPerCard(100, 45), 45);
 assert.match(boardNarrationLengthPromptInstructions(30), /approximately 71 spoken words/i);
 assert.match(boardNarrationLengthPromptInstructions(5), /one crisp, self-contained sentence/i);
 

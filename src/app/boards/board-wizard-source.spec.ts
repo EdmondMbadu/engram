@@ -58,6 +58,72 @@ describe('board wizard pasted sources', () => {
     expect(parsed?.description).toBe('Ranked for memorable experiences, not prestige.');
   });
 
+  it('parses bare Scene headings as an exact ordered source', () => {
+    const parsed = parseNumberedBoardSource([
+      'BioFarming Initiative',
+      'Scene 1',
+      'Healthy soil begins with a living community of microorganisms.',
+      'Scene 2',
+      'Farmers learn to make biologically active compost.',
+      'Scene 3',
+      'Side-by-side trials make the results visible.',
+    ].join('\n\n'));
+
+    expect(parsed?.title).toBe('BioFarming Initiative');
+    expect(parsed?.items).toEqual([
+      jasmine.objectContaining({ rank: 1, title: 'Scene 1', body: 'Healthy soil begins with a living community of microorganisms.' }),
+      jasmine.objectContaining({ rank: 2, title: 'Scene 2', body: 'Farmers learn to make biologically active compost.' }),
+      jasmine.objectContaining({ rank: 3, title: 'Scene 3', body: 'Side-by-side trials make the results visible.' }),
+    ]);
+  });
+
+  it('uses an explicit Scene title while preserving its sequence', () => {
+    const parsed = parseNumberedBoardSource([
+      '# Scene 1: The challenge',
+      'Depleted soil makes farming harder.',
+      'Scene 2 — A biological response',
+      'Compost restores the soil food web.',
+      'Scene 3 - Proof in the field',
+      'Comparison plots demonstrate the difference.',
+    ].join('\n'));
+
+    expect(parsed?.items.map((item) => item.title)).toEqual([
+      'The challenge',
+      'A biological response',
+      'Proof in the field',
+    ]);
+  });
+
+  it('preserves all 100 sequential Scene headings', () => {
+    const source = Array.from({ length: 100 }, (_item, index) => [
+      `Scene ${index + 1}`,
+      `Narration for scene ${index + 1}.`,
+    ].join('\n')).join('\n\n');
+
+    const parsed = parseNumberedBoardSource(source);
+    expect(parsed?.items.length).toBe(100);
+    expect(parsed?.items[99]).toEqual(jasmine.objectContaining({
+      rank: 100,
+      title: 'Scene 100',
+      body: 'Narration for scene 100.',
+    }));
+  });
+
+  it('does not narrate a trailing runtime note as part of the final scene', () => {
+    const parsed = parseNumberedBoardSource([
+      'Scene 1',
+      'Opening narration.',
+      'Scene 2',
+      'Middle narration.',
+      'Scene 3',
+      'Closing narration.',
+      '',
+      'This version should run approximately six to seven minutes at a measured narration pace.',
+    ].join('\n'));
+
+    expect(parsed?.items[2].body).toBe('Closing narration.');
+  });
+
   it('detects a source URL pasted inside a Describe it prompt', () => {
     expect(detectBoardWizardSourceUrl(
       'describe',

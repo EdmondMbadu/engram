@@ -28,6 +28,7 @@ import {
   wikipediaPageTitleMatchScore,
 } from './board-wizard-image-quality';
 import { resolveBoardWizardMediaKind, type BoardWizardMediaKind } from './board-wizard-media-quality';
+import { shouldGroundAndVerifyBoardWizardBatch } from './board-wizard-generation-quality';
 import {
   applyBoardWizardMediaMode,
   boardWizardCardWantsVideo,
@@ -121,6 +122,7 @@ import {
   generateBoardTrailerScript,
   generateBoardWizardBatch as generateBoardWizardBatchWithGemini,
   resolveBoardWizardCompleteSetManifest,
+  resolveBoardWizardPlannedSetManifest,
   translateBoardTextSegments,
   generateVoiceConversationRecap,
   type BoardWizardMode,
@@ -159,6 +161,8 @@ import {
   type BoardWizardCountPolicy,
 } from './board-wizard-count-policy';
 import {
+  BOARD_NARRATION_WORDS_PER_SECOND,
+  boardNarrationBudgetedSecondsPerCard,
   boardNarrationTargetWords,
   normalizeBoardNarrationSeconds,
 } from './board-narration-length';
@@ -5325,11 +5329,13 @@ type BoardWizardCallableData = {
   mediaMode?: unknown;
   narrationStyle?: unknown;
   narrationSecondsPerCard?: unknown;
+  narrationLengthCustomized?: unknown;
   listingMarketing?: unknown;
   tourOptions?: unknown;
   existingCards?: unknown;
   singleTourStop?: unknown;
   sourceManifest?: unknown;
+  deferMediaEnrichment?: unknown;
 };
 
 type BoardWizardTourOptions = {
@@ -5400,6 +5406,7 @@ async function generateCompleteSetWizardBatch(options: {
   narrationStyle: BoardNarrationStyleId;
   narrationSecondsPerCard: number;
   existingCards: Array<{ title: string; subtitle?: string; tags?: string[] }>;
+  researchGrounding?: boolean;
 }): Promise<GeneratedBoardWizardBatch> {
   const targetWords = boardNarrationTargetWords(options.narrationSecondsPerCard);
   // Keep each grounded request below the model's practical output ceiling while
@@ -5411,8 +5418,8 @@ async function generateCompleteSetWizardBatch(options: {
   }
 
   const generatedChunks: GeneratedBoardWizardBatch[] = [];
-  for (let index = 0; index < chunks.length; index += 2) {
-    const group = chunks.slice(index, index + 2);
+  for (let index = 0; index < chunks.length; index += 3) {
+    const group = chunks.slice(index, index + 3);
     const results = await Promise.all(group.map(async (chunk) => {
       const chunkManifest: BoardWizardCompleteSetManifest = {
         ...options.manifest,
@@ -5433,7 +5440,7 @@ async function generateCompleteSetWizardBatch(options: {
         existingCards: options.existingCards,
         completeSetManifest: chunkManifest,
         verificationPass: false,
-        researchGrounding: true,
+        researchGrounding: options.researchGrounding !== false,
       });
       if (batch.cards.length !== chunk.items.length) {
         throw new Error(
@@ -5476,6 +5483,157 @@ async function generateCompleteSetWizardBatch(options: {
     board: first.board,
     cards,
   };
+}
+
+async function generateNumberedSourceWizardBatch(options: {
+  source: NumberedBoardSource;
+  pastedList: string;
+  prompt: string;
+  targetBoardTitle: string;
+  defaultType: GeneratedBoardWizardCard['type'];
+  vibe: BoardWizardVibe;
+  narrationStyle: BoardNarrationStyleId;
+  narrationSecondsPerCard: number;
+  existingCards: Array<{ title: string; subtitle?: string; tags?: string[] }>;
+}): Promise<GeneratedBoardWizardBatch> {
+  if (options.source.items.length <= 16) {
+    return generateBoardWizardBatchWithGemini({
+      mode: 'paste',
+      prompt: options.prompt,
+      pastedList: options.pastedList,
+      targetBoardTitle: options.targetBoardTitle,
+      defaultType: options.defaultType,
+      count: options.source.items.length,
+      countIsExplicit: true,
+      countPolicy: 'source-exact',
+      vibe: options.vibe,
+      narrationStyle: options.narrationStyle,
+      narrationSecondsPerCard: options.narrationSecondsPerCard,
+      existingCards: options.existingCards,
+    });
+  }
+  const targetWords = boardNarrationTargetWords(options.narrationSecondsPerCard);
+  const chunkSize = Math.max(4, Math.min(12, Math.floor(2_500 / targetWords)));
+  const chunks: Array<{ offset: number; items: NumberedBoardSource['items'] }> = [];
+  for (let offset = 0; offset < options.source.items.length; offset += chunkSize) {
+    chunks.push({ offset, items: options.source.items.slice(offset, offset + chunkSize) });
+  }
+
+  const generatedChunks: GeneratedBoardWizardBatch[] = [];
+  for (let index = 0; index < chunks.length; index += 3) {
+    const results = await Promise.all(chunks.slice(index, index + 3).map(async (chunk) => {
+      const pastedList = [
+        options.source.title,
+        options.source.description,
+        ...chunk.items.flatMap((item, itemIndex) => [
+          `${itemIndex + 1}. ${item.title}${item.subtitle ? ` — ${item.subtitle}` : ''}`,
+          item.body,
+        ]),
+      ].filter(Boolean).join('\n');
+      const batch = await generateBoardWizardBatchWithGemini({
+        mode: 'paste',
+        prompt: options.prompt,
+        pastedList,
+        targetBoardTitle: options.targetBoardTitle,
+        defaultType: options.defaultType,
+        count: chunk.items.length,
+        countIsExplicit: true,
+        countPolicy: 'source-exact',
+        vibe: options.vibe,
+        narrationStyle: options.narrationStyle,
+        narrationSecondsPerCard: options.narrationSecondsPerCard,
+        existingCards: options.existingCards,
+        verificationPass: false,
+        researchGrounding: false,
+      });
+      if (batch.cards.length !== chunk.items.length) {
+        throw new Error(
+          `The pasted source returned ${batch.cards.length} of ${chunk.items.length} cards in one generation batch. Please try again; no incomplete board was saved.`,
+        );
+      }
+      return batch;
+    }));
+    generatedChunks.push(...results);
+  }
+
+  const first = generatedChunks[0];
+  if (!first) throw new Error('The pasted source did not contain any usable scenes or items.');
+  const cards = generatedChunks.flatMap((batch) => batch.cards);
+  if (cards.length !== options.source.items.length) {
+    throw new Error('The pasted source could not be generated without omissions. Please try again; no incomplete board was saved.');
+  }
+  return { board: first.board, cards };
+}
+
+async function generateArticleManifestWizardBatch(options: {
+  manifest: BoardWizardSourceManifest;
+  mode: BoardWizardMode;
+  prompt: string;
+  targetBoardTitle: string;
+  defaultType: GeneratedBoardWizardCard['type'];
+  vibe: BoardWizardVibe;
+  narrationStyle: BoardNarrationStyleId;
+  narrationSecondsPerCard: number;
+  existingCards: Array<{ title: string; subtitle?: string; tags?: string[] }>;
+}): Promise<GeneratedBoardWizardBatch> {
+  if (options.manifest.items.length <= 16) {
+    return generateBoardWizardBatchWithGemini({
+      mode: options.mode,
+      prompt: options.prompt,
+      url: options.manifest.sourceUrl,
+      targetBoardTitle: options.targetBoardTitle,
+      defaultType: options.defaultType,
+      count: options.manifest.items.length,
+      countIsExplicit: true,
+      countPolicy: 'source-exact',
+      vibe: options.vibe,
+      narrationStyle: options.narrationStyle,
+      narrationSecondsPerCard: options.narrationSecondsPerCard,
+      existingCards: options.existingCards,
+      sourceManifest: options.manifest,
+    });
+  }
+  const chunks: BoardWizardSourceManifest[] = [];
+  for (let offset = 0; offset < options.manifest.items.length; offset += 12) {
+    const items = options.manifest.items.slice(offset, offset + 12);
+    chunks.push({ ...options.manifest, expectedCount: items.length, items });
+  }
+  const generatedChunks: GeneratedBoardWizardBatch[] = [];
+  for (let index = 0; index < chunks.length; index += 3) {
+    const results = await Promise.all(chunks.slice(index, index + 3).map(async (manifest) => {
+      const batch = await generateBoardWizardBatchWithGemini({
+        mode: options.mode,
+        prompt: options.prompt,
+        url: manifest.sourceUrl,
+        targetBoardTitle: options.targetBoardTitle,
+        defaultType: options.defaultType,
+        count: manifest.items.length,
+        countIsExplicit: true,
+        countPolicy: 'source-exact',
+        vibe: options.vibe,
+        narrationStyle: options.narrationStyle,
+        narrationSecondsPerCard: options.narrationSecondsPerCard,
+        existingCards: options.existingCards,
+        sourceManifest: manifest,
+        verificationPass: false,
+        researchGrounding: false,
+      });
+      if (batch.cards.length !== manifest.items.length) {
+        throw new Error(
+          `The source returned ${batch.cards.length} of ${manifest.items.length} cards in one generation batch. Please try again; no incomplete board was saved.`,
+        );
+      }
+      return batch;
+    }));
+    generatedChunks.push(...results);
+  }
+  const first = generatedChunks[0];
+  if (!first) throw new Error('The source manifest did not contain any usable items.');
+  const cards = generatedChunks.flatMap((batch) => batch.cards);
+  if (cards.length !== options.manifest.items.length) {
+    throw new Error('The source manifest could not be generated without omissions. Please try again; no incomplete board was saved.');
+  }
+  return { board: first.board, cards };
 }
 
 type BoardWizardMenuItem = {
@@ -7337,7 +7495,7 @@ export const generateBoardWizardBatch = onCall(
     });
     const explicitCount = countResolution.explicitCount;
     const count = countResolution.targetCount;
-    const narrationSecondsPerCard = normalizeBoardNarrationSeconds(data.narrationSecondsPerCard);
+    let narrationSecondsPerCard = normalizeBoardNarrationSeconds(data.narrationSecondsPerCard);
     const photoNames = Array.isArray(data.photoNames)
       ? data.photoNames.map((name) => stringOrEmpty(name).slice(0, 180)).filter(Boolean).slice(0, 100)
       : [];
@@ -7707,6 +7865,40 @@ export const generateBoardWizardBatch = onCall(
     const generationCountPolicy: BoardWizardCountPolicy = numberedSource || articleManifest || mapsTourStopCount || photos.length
       ? 'source-exact'
       : countResolution.policy;
+    if (data.narrationLengthCustomized !== true) {
+      narrationSecondsPerCard = boardNarrationBudgetedSecondsPerCard(
+        generationCount,
+        narrationSecondsPerCard,
+      );
+    }
+
+    let plannedSetManifest: BoardWizardCompleteSetManifest | null = null;
+    if (
+      generationCount > 16
+      && !completeSetManifest
+      && !numberedSource
+      && !articleManifest
+      && !photos.length
+      && !isBoardWizardTourMode(mode)
+      && !listingExtraction
+      && !accommodationExtraction
+      && !commerceExtraction
+      && !(urlExtraction?.restaurantLike && urlExtraction.menuItems.length >= 3)
+    ) {
+      plannedSetManifest = await resolveBoardWizardPlannedSetManifest({
+        prompt: effectivePrompt || prompt,
+        targetBoardTitle,
+        count: generationCount,
+        grounded: shouldGroundAndVerifyBoardWizardBatch({
+          mode: generationMode,
+          prompt: effectivePrompt || prompt,
+          pastedList,
+          targetBoardTitle,
+          count: generationCount,
+          sourceManifest: articleManifest,
+        }),
+      });
+    }
 
     const generationUsesNarrationPrompt = (listingExtraction?.kind === 'real-estate' && listingMarketing.enabled)
       || (!commerceExtraction
@@ -7749,6 +7941,30 @@ export const generateBoardWizardBatch = onCall(
             targetBoardTitle,
             count,
           })
+        : numberedSource
+        ? await generateNumberedSourceWizardBatch({
+            source: numberedSource,
+            pastedList,
+            prompt: effectivePrompt || prompt,
+            targetBoardTitle,
+            defaultType,
+            vibe,
+            narrationStyle,
+            narrationSecondsPerCard,
+            existingCards,
+          })
+        : articleManifest
+        ? await generateArticleManifestWizardBatch({
+            manifest: articleManifest,
+            mode: generationMode,
+            prompt: effectivePrompt || prompt,
+            targetBoardTitle,
+            defaultType,
+            vibe,
+            narrationStyle,
+            narrationSecondsPerCard,
+            existingCards,
+          })
         : completeSetManifest
         ? await generateCompleteSetWizardBatch({
             manifest: completeSetManifest,
@@ -7760,6 +7976,19 @@ export const generateBoardWizardBatch = onCall(
             narrationStyle,
             narrationSecondsPerCard,
             existingCards,
+          })
+        : plannedSetManifest
+        ? await generateCompleteSetWizardBatch({
+            manifest: plannedSetManifest,
+            mode: generationMode,
+            prompt: effectivePrompt || prompt,
+            targetBoardTitle,
+            defaultType,
+            vibe,
+            narrationStyle,
+            narrationSecondsPerCard,
+            existingCards,
+            researchGrounding: false,
           })
         : await generateBoardWizardBatchWithGemini({
             mode: generationMode,
@@ -7822,7 +8051,9 @@ export const generateBoardWizardBatch = onCall(
     const urlFallbackShapedGenerated = urlResearchFallback
       ? shapeBoardWizardResearchFallbackBatch(sourceShapedGenerated, url)
       : sourceShapedGenerated;
+    const deferMediaEnrichment = data.deferMediaEnrichment === true && generationCount > 16;
     const enrichedResult = listingExtraction || accommodationExtraction
+      || deferMediaEnrichment
       ? urlFallbackShapedGenerated
       : await enrichBoardWizardBatchWithPlaces(urlFallbackShapedGenerated, {
           userId,
@@ -7837,15 +8068,17 @@ export const generateBoardWizardBatch = onCall(
       : articleManifest
         ? shapeArticleSourceWizardBatch(imageProvenanceResult, articleManifest, defaultType)
         : imageProvenanceResult;
-    const previewReadyResult = await enrichBoardWizardBatchWithSongAudioPreviews(
-      result,
-      [
-        effectivePrompt || prompt || pastedList || url || photoNames.join(', '),
-        targetBoardTitle,
-        result.board.title,
-        result.board.description,
-      ].filter(Boolean).join(' '),
-    );
+    const previewReadyResult = deferMediaEnrichment
+      ? result
+      : await enrichBoardWizardBatchWithSongAudioPreviews(
+          result,
+          [
+            effectivePrompt || prompt || pastedList || url || photoNames.join(', '),
+            targetBoardTitle,
+            result.board.title,
+            result.board.description,
+          ].filter(Boolean).join(' '),
+        );
     const routeReadyResult = isBoardWizardTourMode(mode)
       ? await enrichBoardWizardTourBatchWithRoutes(previewReadyResult, mode, tourOptions)
       : previewReadyResult;
@@ -7853,6 +8086,18 @@ export const generateBoardWizardBatch = onCall(
       ...routeReadyResult,
       cards: applyBoardWizardMediaMode(routeReadyResult.cards, mediaMode),
     };
+    const sourceNarrationSecondsPerCard = numberedSource && data.narrationLengthCustomized !== true
+      ? normalizeBoardNarrationSeconds(
+          numberedSource.items.reduce(
+            (total, item) => total + (item.body.match(/\S+/g)?.length ?? 0),
+            0,
+          ) / numberedSource.items.length / BOARD_NARRATION_WORDS_PER_SECOND,
+        )
+      : narrationSecondsPerCard;
+    const reportedNarrationSecondsPerCard = Math.max(
+      narrationSecondsPerCard,
+      sourceNarrationSecondsPerCard,
+    );
 
     const resultWithSourceReport: GeneratedBoardWizardBatch = usesUrlSource && url
       ? {
@@ -7880,8 +8125,8 @@ export const generateBoardWizardBatch = onCall(
             : generationCountPolicy === 'source-exact'
               ? `Created one card for each of the ${resultWithSourceReport.cards.length} source items.`
               : `Created ${resultWithSourceReport.cards.length} cards from the selected target.`,
-        narrationSecondsPerCard,
-        targetWordsPerCard: boardNarrationTargetWords(narrationSecondsPerCard),
+        narrationSecondsPerCard: reportedNarrationSecondsPerCard,
+        targetWordsPerCard: boardNarrationTargetWords(reportedNarrationSecondsPerCard),
       },
     };
 
@@ -7897,8 +8142,8 @@ export const generateBoardWizardBatch = onCall(
       requested_count: generationCount,
       count_policy: generationCountPolicy,
       generated_count: resultWithGenerationSummary.cards.length,
-      narration_seconds_per_card: narrationSecondsPerCard,
-      narration_target_words_per_card: boardNarrationTargetWords(narrationSecondsPerCard),
+      narration_seconds_per_card: reportedNarrationSecondsPerCard,
+      narration_target_words_per_card: boardNarrationTargetWords(reportedNarrationSecondsPerCard),
       prompt_preview: (prompt || pastedList || url || photoNames.join(', ')).slice(0, 500),
       board_title: resultWithGenerationSummary.board.title,
       card_titles: resultWithGenerationSummary.cards.map((card) => card.title).slice(0, 100),
@@ -14360,20 +14605,21 @@ function shapeNumberedSourceWizardBatch(
   const sourceTitle = source.title.replace(/\s+/g, ' ').trim().slice(0, 90);
   const cards = source.items.map((item, index): GeneratedBoardWizardCard => {
     const generated = batch.cards[index];
+    const sceneLabel = /^Scene\s+\d+$/i.test(item.title);
     const subtitle = item.subtitle
-      ? `#${item.rank} · ${item.subtitle}`
-      : `Rank #${item.rank}`;
+      ? `${sceneLabel ? `Scene ${item.rank}` : `#${item.rank}`} · ${item.subtitle}`
+      : sceneLabel ? `Scene ${item.rank}` : `Rank #${item.rank}`;
     const notes = item.body || generated?.notes || 'Imported from the pasted source.';
     const type = generated?.type ?? defaultType;
     return {
-      title: cleanBoardWizardSourceText(item.title).slice(0, 80),
-      subtitle: cleanBoardWizardSourceText(subtitle).slice(0, 120),
+      title: cleanBoardWizardSourceText(sceneLabel ? generated?.title || item.title : item.title).slice(0, 80),
+      subtitle: cleanBoardWizardSourceText(sceneLabel ? generated?.subtitle || subtitle : subtitle).slice(0, 120),
       notes: cleanBoardWizardSourceText(notes).slice(0, 3600),
       type,
       scope: generated?.scope ?? 'place',
       status: generated?.status ?? 'saved',
       rating: generated?.rating ?? 4,
-      tags: mergeBoardWizardTags([`rank-${item.rank}`, 'source-item'], generated?.tags ?? []),
+      tags: mergeBoardWizardTags([sceneLabel ? `scene-${item.rank}` : `rank-${item.rank}`, 'source-item'], generated?.tags ?? []),
       image_query: (generated?.image_query || `${item.title} ${sourceTitle} travel photo`).slice(0, 120),
       place_query: (generated?.place_query || item.title).slice(0, 140),
       entity_name: cleanBoardWizardSourceText(generated?.entity_name || item.title).slice(0, 100),

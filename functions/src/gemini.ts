@@ -663,6 +663,65 @@ export async function resolveBoardWizardCompleteSetManifest(input: {
   };
 }
 
+export async function resolveBoardWizardPlannedSetManifest(input: {
+  prompt: string;
+  targetBoardTitle?: string | null;
+  count: number;
+  grounded?: boolean;
+}): Promise<BoardWizardCompleteSetManifest> {
+  const count = Math.max(17, Math.min(100, Math.trunc(input.count)));
+  const response = await generateContentWithRetry({
+    model,
+    contents: [
+      'Plan the exact card manifest for a large LivingWiki board.',
+      'Return only JSON matching the schema.',
+      `Return exactly ${count} distinct items in the best narrative, requested, ranked, or practical order.`,
+      'Each item title must name its concrete card subject. Keep context to one compact sentence of at most 120 characters.',
+      'Cover the request without duplicates, filler, generic action cards, or near-identical angles.',
+      input.grounded
+        ? 'Use Google Search to make the membership, identities, dates, and ordering accurate. Do not write full card narration yet.'
+        : 'This is a planning pass. Do not write full card narration yet.',
+      'Use status "complete" when the requested manifest is ready. Use "ambiguous" only when the request cannot responsibly be planned.',
+      `Request: ${input.prompt.slice(0, 4000)}`,
+      input.targetBoardTitle ? `Board context: ${input.targetBoardTitle.slice(0, 120)}` : '',
+    ].filter(Boolean).join('\n'),
+    config: {
+      tools: input.grounded ? [{ googleSearch: {} }] : undefined,
+      responseMimeType: 'application/json',
+      responseJsonSchema: boardWizardCompleteSetManifestSchema,
+      temperature: input.grounded ? 0 : 0.2,
+      maxOutputTokens: 8192,
+      thinkingConfig: { thinkingBudget: input.grounded ? 1024 : 512 },
+    },
+  });
+  const data = parseJsonResponse<unknown>(response.text ?? '{}');
+  const record = data && typeof data === 'object' ? data as Record<string, unknown> : {};
+  const items = Array.isArray(record.items)
+    ? record.items.flatMap((value): Array<{ title: string; context: string }> => {
+        const item = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+        const title = cleanLine(item.title, '', 100);
+        return title ? [{ title, context: cleanLine(item.context, '', 140) }] : [];
+      })
+    : [];
+  const uniqueItems = Array.from(new Map(items.map((item) => [item.title.toLowerCase(), item])).values());
+  if (record.status !== 'complete') {
+    throw new Error(cleanLine(
+      record.message,
+      'The large-board request needs more detail before it can be planned without filler or omissions.',
+      500,
+    ));
+  }
+  if (uniqueItems.length !== count) {
+    throw new Error(`The large-board plan returned ${uniqueItems.length} of ${count} distinct cards. Please try again; no incomplete board was saved.`);
+  }
+  return {
+    title: cleanLine(record.title, input.targetBoardTitle || 'LivingWiki board', 120),
+    status: 'complete',
+    message: cleanLine(record.message, `Planned ${count} distinct cards.`, 500),
+    items: uniqueItems,
+  };
+}
+
 type BoardWizardPhotoInput = {
   index: number;
   name: string;
@@ -2083,7 +2142,8 @@ function buildBoardWizardPrompt(params: {
       ? [
           'SOURCE-FIDELITY MODE: The pasted text is a structured numbered source.',
           `It contains exactly ${numberedSource.items.length} ordered items. Return exactly one card for every item in the same order.`,
-          'Use each source item title as the card title. Do not omit, merge, replace, reorder, or invent items.',
+          'Use each meaningful source item title as the card title. A bare label such as "Scene 12" is only an ordering marker: replace that label with a specific natural title derived from that scene body.',
+          'Do not omit, merge, replace, reorder, or invent items.',
           'Preserve the complete source item body in notes without truncating or moving text between items. Create short_summary separately for compact display.',
           'Facts in the source override general knowledge. Do not add unsupported claims.',
         ].join('\n')

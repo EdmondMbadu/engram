@@ -1,5 +1,6 @@
 import {
   boardNarrationDurationLabel,
+  boardNarrationBudgetedSecondsPerCard,
   boardNarrationEstimatedTotalSeconds,
   boardNarrationTargetWords,
   normalizeBoardNarrationSeconds,
@@ -23,5 +24,13 @@ describe('board narration length', () => {
     expect(boardNarrationEstimatedTotalSeconds(12, 30)).toBe(360);
     expect(boardNarrationDurationLabel(360)).toBe('~6 min');
     expect(boardNarrationDurationLabel(75)).toBe('~1:15');
+  });
+
+  it('keeps the standard small-board target and budgets large automatic boards', () => {
+    expect(boardNarrationBudgetedSecondsPerCard(12, 30)).toBe(30);
+    expect(boardNarrationBudgetedSecondsPerCard(20, 30)).toBe(30);
+    expect(boardNarrationBudgetedSecondsPerCard(40, 30)).toBe(15);
+    expect(boardNarrationBudgetedSecondsPerCard(100, 30)).toBe(5);
+    expect(boardNarrationBudgetedSecondsPerCard(100, 45)).toBe(45);
   });
 });

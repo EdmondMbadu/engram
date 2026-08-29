@@ -132,6 +132,7 @@ import {
   MAX_BOARD_NARRATION_SECONDS_PER_CARD,
   MIN_BOARD_NARRATION_SECONDS_PER_CARD,
   boardNarrationDurationLabel,
+  boardNarrationBudgetedSecondsPerCard,
   boardNarrationEstimatedTotalSeconds,
   boardNarrationTargetWords,
   normalizeBoardNarrationSeconds,
@@ -1576,6 +1577,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   private readonly spotifyEnrichmentInFlightBoardIds = new Set<string>();
   private readonly spotifyEmbedUrls = new Map<string, SafeResourceUrl>();
   private readonly youtubeEmbedUrls = new Map<string, SafeResourceUrl>();
+  private wizardImageEnrichmentRun = 0;
   private wizardVideoEnrichmentRun = 0;
   private wizardDraftAutosaveTimer: ReturnType<typeof setTimeout> | null = null;
   private wizardDraftSaveInFlight = false;
@@ -1868,6 +1870,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly wizardMediaMode = signal<BoardWizardMediaMode>(DEFAULT_BOARD_WIZARD_MEDIA_MODE);
   readonly wizardNarrationStyle = signal<BoardNarrationStyleId>(DEFAULT_BOARD_NARRATION_STYLE_ID);
   readonly wizardNarrationSecondsPerCard = signal(DEFAULT_BOARD_NARRATION_SECONDS_PER_CARD);
+  readonly wizardNarrationLengthCustomized = signal(false);
   readonly wizardPrompt = signal('');
   readonly wizardPastedList = signal('');
   readonly wizardPasteMaxLength = BOARD_WIZARD_PASTE_MAX_LENGTH;
@@ -1974,6 +1977,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly wizardSelectedCardIds = signal<Set<string>>(new Set());
   readonly wizardRedoingCardIds = signal<Set<string>>(new Set());
   readonly wizardImageLoadingCardIds = signal<Set<string>>(new Set());
+  readonly wizardImageNotice = signal<string | null>(null);
   readonly wizardVideoLoadingCardIds = signal<Set<string>>(new Set());
   readonly wizardVideoNotice = signal<string | null>(null);
   readonly wizardEditingCardId = signal<string | null>(null);
@@ -2985,6 +2989,17 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   constructor() {
     this.loadBoardActionState();
     this.loadLocalBoards();
+    effect(() => {
+      const count = this.wizardCountIntent().count ?? this.wizardCount();
+      if (this.wizardNarrationLengthCustomized()) return;
+      const budgeted = boardNarrationBudgetedSecondsPerCard(
+        count,
+        DEFAULT_BOARD_NARRATION_SECONDS_PER_CARD,
+      );
+      if (this.wizardNarrationSecondsPerCard() !== budgeted) {
+        this.wizardNarrationSecondsPerCard.set(budgeted);
+      }
+    });
     effect(() => {
       const targets = this.boards().flatMap((board) => [
         { boardId: board.id },
@@ -4267,6 +4282,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.wizardMediaMode.set(draft.mediaMode);
     this.wizardNarrationStyle.set(draft.narrationStyle);
     this.wizardNarrationSecondsPerCard.set(draft.narrationSecondsPerCard);
+    this.wizardNarrationLengthCustomized.set(true);
     this.wizardListingMarketingStyle.set(draft.listingMarketingStyle);
     this.wizardListingMarketingDirection.set(draft.listingMarketingDirection);
     this.wizardPrompt.set(draft.prompt);
@@ -4386,7 +4402,14 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
   setWizardCount(value: string | number, userInitiated = true): void {
     const count = typeof value === 'number' ? value : Number.parseInt(value, 10);
-    this.wizardCount.set(Math.max(1, Math.min(100, Number.isFinite(count) ? count : 12)));
+    const normalizedCount = Math.max(1, Math.min(100, Number.isFinite(count) ? count : 12));
+    this.wizardCount.set(normalizedCount);
+    if (!this.wizardNarrationLengthCustomized()) {
+      this.wizardNarrationSecondsPerCard.set(boardNarrationBudgetedSecondsPerCard(
+        normalizedCount,
+        DEFAULT_BOARD_NARRATION_SECONDS_PER_CARD,
+      ));
+    }
     if (userInitiated) this.wizardCountMode.set('fixed');
   }
 
@@ -4417,6 +4440,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   }
 
   setWizardNarrationSeconds(value: string | number): void {
+    this.wizardNarrationLengthCustomized.set(true);
     this.wizardNarrationSecondsPerCard.set(normalizeBoardNarrationSeconds(value));
   }
 
@@ -5008,6 +5032,9 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     const previousResult = this.wizardResult();
     const previousPreviewCards = this.wizardPreviewCards();
     const previousSelectedCardIds = new Set(this.wizardSelectedCardIds());
+    this.wizardImageEnrichmentRun += 1;
+    this.wizardImageLoadingCardIds.set(new Set());
+    this.wizardImageNotice.set(null);
     this.wizardStep.set('loading');
     this.wizardLoadingIndex.set(0);
     this.wizardLoadingTask.set(null);
@@ -5030,12 +5057,19 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       const batch = this.wizardMode() === 'photos'
         ? this.attachWizardPhotosToBatch(generatedBatch)
         : generatedBatch;
-      const placeEnrichedCards = await this.enrichWizardCards(batch.cards);
-      const previewCards = await this.enrichWizardMissingPlaceImages(placeEnrichedCards, batch.board.title);
+      if (!this.wizardNarrationLengthCustomized() && batch.generation?.narrationSecondsPerCard) {
+        this.wizardNarrationSecondsPerCard.set(batch.generation.narrationSecondsPerCard);
+      }
+      const progressiveImages = batch.cards.length > 16;
+      const placeEnrichedCards = await this.enrichWizardCards(batch.cards, undefined, !progressiveImages);
+      const previewCards = progressiveImages
+        ? placeEnrichedCards
+        : await this.enrichWizardMissingPlaceImages(placeEnrichedCards, batch.board.title);
       this.wizardResult.set({ ...batch, cards: previewCards });
       this.wizardPreviewCards.set(previewCards);
       this.wizardSelectedCardIds.set(new Set(previewCards.map((card) => card.id)));
       this.wizardStep.set('preview');
+      if (progressiveImages) void this.enrichWizardImagesAfterPreview(previewCards, batch.board.title);
       void this.enrichWizardVideos(previewCards, batch);
     } catch (error) {
       this.wizardError.set(this.wizardGenerationErrorMessage(error));
@@ -17416,6 +17450,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   }
 
   private resetBoardWizard(): void {
+    this.wizardImageEnrichmentRun += 1;
     this.wizardVideoEnrichmentRun += 1;
     const selectedBoard = this.selectedBoard();
     const editableSelectedBoard = selectedBoard && this.canEditBoard(selectedBoard) ? selectedBoard : null;
@@ -17431,6 +17466,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.wizardMediaMode.set(DEFAULT_BOARD_WIZARD_MEDIA_MODE);
     this.wizardNarrationStyle.set(DEFAULT_BOARD_NARRATION_STYLE_ID);
     this.wizardNarrationSecondsPerCard.set(DEFAULT_BOARD_NARRATION_SECONDS_PER_CARD);
+    this.wizardNarrationLengthCustomized.set(false);
     this.wizardPrompt.set('');
     this.wizardPastedList.set('');
     this.wizardUrl.set('');
@@ -17483,6 +17519,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.wizardSelectedCardIds.set(new Set());
     this.wizardRedoingCardIds.set(new Set());
     this.wizardImageLoadingCardIds.set(new Set());
+    this.wizardImageNotice.set(null);
     this.wizardVideoLoadingCardIds.set(new Set());
     this.wizardVideoNotice.set(null);
     this.wizardEditingCardId.set(null);
@@ -17655,11 +17692,13 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       mediaMode: this.wizardMediaMode(),
       narrationStyle: this.wizardNarrationStyleForGeneration(),
       narrationSecondsPerCard: this.wizardNarrationSecondsForGeneration(),
+      narrationLengthCustomized: this.wizardNarrationLengthCustomized(),
       listingMarketing: {
         enabled: true,
         style: this.wizardListingMarketingStyle(),
         direction: this.wizardListingMarketingDirection().trim(),
       },
+      deferMediaEnrichment: this.wizardShouldDeferMediaEnrichment(),
       tourOptions: this.isTourWizardMode(this.wizardMode())
         ? {
             voiceStyle: this.wizardTourVoiceStyle(),
@@ -17674,6 +17713,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       })) ?? [],
     });
     return this.normalizeWizardBatch(response.data);
+  }
+
+  private wizardShouldDeferMediaEnrichment(): boolean {
+    const intent = this.wizardCountIntent();
+    return intent.policy === 'complete-set' || (intent.count ?? this.wizardCount()) > 16;
   }
 
   private normalizeWizardBatch(value: unknown): BoardWizardGeneratedBatch {
@@ -18034,6 +18078,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   private async enrichWizardCards(
     cards: BoardWizardGeneratedCard[],
     onProgress?: (completed: number, total: number) => void,
+    enrichPlaces = true,
   ): Promise<BoardWizardPreviewCard[]> {
     const preview: BoardWizardPreviewCard[] = [];
     const candidates = cards.slice(0, 100);
@@ -18063,7 +18108,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         editing: false,
       };
 
-      if (this.shouldEnrichWizardCard(card) && !enriched.imageUrl) {
+      if (enrichPlaces && this.shouldEnrichWizardCard(card) && !enriched.imageUrl) {
         try {
           const place = await this.findWizardPlace(card);
           if (place) {
@@ -18685,6 +18730,84 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       Array.from({ length: Math.min(3, missingCards.length) }, () => worker()),
     );
     return cards.map((card) => enrichedById.get(card.id) ?? card);
+  }
+
+  private async enrichWizardImagesAfterPreview(
+    cards: BoardWizardPreviewCard[],
+    boardTitle: string,
+  ): Promise<void> {
+    if (!this.functions) return;
+    const candidates = cards.filter((card) => !card.imageUrl);
+    if (!candidates.length) {
+      this.wizardImageNotice.set(null);
+      return;
+    }
+    const run = ++this.wizardImageEnrichmentRun;
+    let nextIndex = 0;
+    let completed = 0;
+    let matched = 0;
+    this.wizardImageNotice.set(`Finding verified images · 0 of ${candidates.length} checked`);
+
+    const worker = async () => {
+      while (nextIndex < candidates.length && run === this.wizardImageEnrichmentRun) {
+        const card = candidates[nextIndex++];
+        this.wizardImageLoadingCardIds.update((ids) => new Set(ids).add(card.id));
+        try {
+          const replacement = await this.requestWizardCardImage(card, boardTitle, card.image_context || card.subtitle);
+          if (run !== this.wizardImageEnrichmentRun) return;
+          if (replacement?.imageUrl) {
+            matched += 1;
+            this.wizardPreviewCards.update((current) => current.map((item) => item.id === card.id ? {
+              ...item,
+              imageUrl: replacement.imageUrl || item.imageUrl,
+              imageSource: replacement.imageSource || (item.productUrl ? 'search' : item.imageSource),
+              audioPreviewUrl: replacement.audioPreviewUrl || item.audioPreviewUrl,
+              spotifyTrackId: replacement.spotifyTrackId || item.spotifyTrackId,
+              spotifyTrackUrl: replacement.spotifyTrackUrl || item.spotifyTrackUrl,
+              spotifyUri: replacement.spotifyUri || item.spotifyUri,
+              spotifyArtistName: replacement.spotifyArtistName || item.spotifyArtistName,
+              spotifyAlbumName: replacement.spotifyAlbumName || item.spotifyAlbumName,
+              spotifyArtworkUrl: replacement.spotifyArtworkUrl || item.spotifyArtworkUrl,
+              image_query: replacement.image_query || item.image_query,
+              placeId: replacement.placeId || item.placeId,
+              googleMapsUrl: replacement.googleMapsUrl || item.googleMapsUrl,
+              locationLat: replacement.locationLat ?? item.locationLat,
+              locationLng: replacement.locationLng ?? item.locationLng,
+            } : item));
+            const currentResult = this.wizardResult();
+            if (currentResult) this.wizardResult.set({ ...currentResult, cards: this.wizardPreviewCards() });
+          }
+        } catch {
+          // Progressive image lookup is best-effort. Text cards remain ready to edit and save.
+        } finally {
+          this.wizardImageLoadingCardIds.update((ids) => {
+            const next = new Set(ids);
+            next.delete(card.id);
+            return next;
+          });
+          completed += 1;
+          if (run === this.wizardImageEnrichmentRun) {
+            this.wizardImageNotice.set(`Finding verified images · ${completed} of ${candidates.length} checked · ${matched} matched`);
+          }
+        }
+      }
+    };
+
+    await Promise.all(Array.from({ length: Math.min(3, candidates.length) }, () => worker()));
+    if (run !== this.wizardImageEnrichmentRun) return;
+    this.wizardImageLoadingCardIds.set(new Set());
+    this.wizardImageNotice.set(
+      matched
+        ? `${matched} verified image${matched === 1 ? '' : 's'} added. ${candidates.length - matched || 'No'} card${candidates.length - matched === 1 ? '' : 's'} can still be edited or given a custom image.`
+        : 'The cards are ready. No additional exact images were found, so you can add custom images where needed.',
+    );
+  }
+
+  cancelWizardImageEnrichment(): void {
+    if (!this.wizardImageLoadingCardIds().size && !this.wizardImageNotice()?.startsWith('Finding')) return;
+    this.wizardImageEnrichmentRun += 1;
+    this.wizardImageLoadingCardIds.set(new Set());
+    this.wizardImageNotice.set('Image search stopped. The text cards remain ready to edit and save.');
   }
 
   private localWizardItems(source: string, preserveSingleItemList = false): string[] {

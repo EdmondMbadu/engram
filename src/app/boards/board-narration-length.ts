@@ -2,6 +2,7 @@ export const BOARD_NARRATION_WORDS_PER_SECOND = 2.35;
 export const DEFAULT_BOARD_NARRATION_SECONDS_PER_CARD = 30;
 export const MIN_BOARD_NARRATION_SECONDS_PER_CARD = 5;
 export const MAX_BOARD_NARRATION_SECONDS_PER_CARD = 180;
+export const DEFAULT_BOARD_NARRATION_TOTAL_SECONDS = 600;
 
 export type BoardNarrationLengthPreset = {
   seconds: number;
@@ -26,6 +27,19 @@ export function normalizeBoardNarrationSeconds(value: unknown): number {
 
 export function boardNarrationTargetWords(seconds: unknown): number {
   return Math.max(1, Math.round(normalizeBoardNarrationSeconds(seconds) * BOARD_NARRATION_WORDS_PER_SECOND));
+}
+
+export function boardNarrationBudgetedSecondsPerCard(
+  cardCount: unknown,
+  requestedSecondsPerCard: unknown = DEFAULT_BOARD_NARRATION_SECONDS_PER_CARD,
+): number {
+  const requested = normalizeBoardNarrationSeconds(requestedSecondsPerCard);
+  const count = typeof cardCount === 'number' && Number.isFinite(cardCount)
+    ? Math.max(1, Math.min(100, Math.trunc(cardCount)))
+    : 1;
+  if (requested !== DEFAULT_BOARD_NARRATION_SECONDS_PER_CARD || count <= 20) return requested;
+  const budgeted = Math.floor(DEFAULT_BOARD_NARRATION_TOTAL_SECONDS / count / 5) * 5;
+  return Math.max(MIN_BOARD_NARRATION_SECONDS_PER_CARD, Math.min(requested, budgeted));
 }
 
 export function boardNarrationEstimatedTotalSeconds(cardCount: unknown, secondsPerCard: unknown): number {
