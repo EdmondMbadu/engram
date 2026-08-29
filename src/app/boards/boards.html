@@ -8763,14 +8763,16 @@
           }
 
           <section class="board-inside-display board-settings-privacy" style="margin: 0;" aria-labelledby="board-settings-privacy-title">
-            <span class="material-symbols-outlined" style="display: grid; width: 2.35rem; height: 2.35rem; flex: none; place-items: center; border-radius: .72rem; background: color-mix(in srgb, var(--accent) 12%, var(--surface)); color: var(--accent); font-variation-settings: 'FILL' 1;" aria-hidden="true">lock</span>
+            <span class="material-symbols-outlined" style="display: grid; width: 2.35rem; height: 2.35rem; flex: none; place-items: center; border-radius: .72rem; background: color-mix(in srgb, var(--accent) 12%, var(--surface)); color: var(--accent); font-variation-settings: 'FILL' 1;" aria-hidden="true">{{ boardSettingsDraft().visibility === 'private' ? 'lock' : 'public' }}</span>
             <span class="board-settings-privacy__copy" style="display: grid; min-width: 0; flex: 1; gap: .18rem;">
-              <strong id="board-settings-privacy-title">Private board</strong>
+              <strong id="board-settings-privacy-title">{{ boardSettingsDraft().visibility === 'private' ? 'Private board' : 'Public board' }}</strong>
               <small>
                 @if (settingsBoard.parentCardId) {
                   This board uses its parent board’s visibility.
-                } @else {
+                } @else if (boardSettingsDraft().visibility === 'private') {
                   Only you can view this board.
+                } @else {
+                  Anyone can view this board.
                 }
               </small>
             </span>
