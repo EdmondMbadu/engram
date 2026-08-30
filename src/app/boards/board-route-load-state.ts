@@ -4,6 +4,20 @@ export type BoardRouteLoadState = {
   complete: boolean;
 };
 
+type BoardRouteCandidate = {
+  id: string;
+  isSummary?: boolean;
+};
+
+export function findResolvedBoardRoute<T extends BoardRouteCandidate>(
+  boards: readonly T[],
+  selectedId: string | null,
+): T | null {
+  if (!selectedId) return null;
+  const board = boards.find((candidate) => candidate.id === selectedId) ?? null;
+  return board?.isSummary ? null : board;
+}
+
 export function beginBoardRouteLoad(
   requestId: number,
   routeKey: string | null,

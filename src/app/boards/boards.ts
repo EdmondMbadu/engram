@@ -127,7 +127,7 @@ import {
   type BoardPhotoStoryMode,
 } from './board-photo-story';
 import { compareBoardsByCreatedDate } from './board-gallery-order';
-import { beginBoardRouteLoad, completeBoardRouteLoad } from './board-route-load-state';
+import { beginBoardRouteLoad, completeBoardRouteLoad, findResolvedBoardRoute } from './board-route-load-state';
 import { shouldCanonicalizeBoardsRootRoute } from './board-root-route';
 import { resetBoardRouteViewport } from './board-route-scroll';
 import {
@@ -2345,8 +2345,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   );
 
   readonly originalSelectedBoard = computed(() => {
-    const selectedId = this.selectedBoardId();
-    return this.boards().find((board) => board.id === selectedId) ?? null;
+    return findResolvedBoardRoute(this.boards(), this.selectedBoardId());
   });
   private readonly boardRouteLoadState = signal(beginBoardRouteLoad(0, null));
   private readonly boardRouteUnavailableReady = signal(false);
@@ -19731,6 +19730,34 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.privateBoardBlocked.set(false);
     this.boardPageCursor = null;
     this.boardLoadContext = null;
+    const storedBoards = this.boards();
+    const storedRouteBoard = boardId
+      ? storedBoards.find((board) => customPublicUrlRouteMatches(
+        boardId,
+        board.id,
+        board.customSlug ?? '',
+      )) ?? null
+      : null;
+    const requestedBoardRouteKey = boardId ?? '';
+    const startPriorityRouteLookup = (lookupKey: string): Promise<{ board: Board | null; error: unknown | null }> =>
+      this.loadBoardById(lookupKey)
+        .then((board) => {
+          if (board) {
+            this.retainPriorityRouteBoard(
+              board,
+              requestedBoardRouteKey,
+              storedRouteBoard?.id ?? null,
+              loadSequence,
+            );
+          }
+          return { board, error: null };
+        })
+        .catch((error: unknown) => ({ board: null, error }));
+    // Public gallery summaries are already authorized for display, so their full
+    // record can begin loading immediately instead of waiting for auth hydration.
+    let priorityRouteLookup = boardId && storedRouteBoard?.isSummary
+      ? startPriorityRouteLookup(storedRouteBoard.id)
+      : null;
     // Public owner shelves do not require identity. Start their compact public
     // query immediately and let authentication hydrate owner-only actions later.
     if (!publicOwnerRouteActive) {
@@ -19742,7 +19769,12 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     const uid = this.authService.uid();
     this.boardLoadContext = { uid, publicOwnerUid, publicOwnerSlug, publicOwnerRouteActive };
     this.boardsHasMore.set(true);
-    const storedBoards = this.boards();
+    const priorityRouteLookupKey = boardId && (!storedRouteBoard || storedRouteBoard.isSummary)
+      ? storedRouteBoard?.id ?? boardId
+      : null;
+    if (!priorityRouteLookup && priorityRouteLookupKey) {
+      priorityRouteLookup = startPriorityRouteLookup(priorityRouteLookupKey);
+    }
 
     try {
       await this.loadNextBoardPage(loadSequence, true);
@@ -19769,10 +19801,17 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
       if (boardId && !routedBoard) {
         try {
-          const sharedBoard = await this.loadBoardById(boardId);
+          const priorityResult = priorityRouteLookup ? await priorityRouteLookup : null;
+          if (priorityResult?.error) throw priorityResult.error;
+          const sharedBoard = priorityResult?.board ?? await this.loadBoardById(boardId);
           if (sharedBoard) {
-            loaded.unshift(sharedBoard);
-            this.boards.set(loaded);
+            const currentBoards = this.boards();
+            const existingIndex = currentBoards.findIndex((candidate) => candidate.id === sharedBoard.id);
+            const mergedBoards = existingIndex >= 0
+              ? currentBoards.map((candidate, index) => index === existingIndex ? sharedBoard : candidate)
+              : [sharedBoard, ...currentBoards];
+            this.boards.set(mergedBoards);
+            loaded = mergedBoards;
             routedBoard = sharedBoard;
           }
         } catch (error) {
@@ -19818,6 +19857,29 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         this.boardsLoading.set(false);
         this.scheduleGalleryViewportCheck();
       }
+    }
+  }
+
+  private retainPriorityRouteBoard(
+    board: Board,
+    requestedRouteKey: string,
+    storedRouteBoardId: string | null,
+    loadSequence: number,
+  ): void {
+    if (loadSequence !== this.boardLoadSequence) return;
+    this.boards.update((boards) => {
+      const existing = boards.find((candidate) => candidate.id === board.id) ?? null;
+      if (existing && !existing.isSummary && existing.updatedAt >= board.updatedAt) {
+        return boards;
+      }
+      const next = existing
+        ? boards.map((candidate) => candidate.id === board.id ? board : candidate)
+        : [board, ...boards];
+      return next.sort((left, right) => this.compareGalleryBoards(left, right));
+    });
+    const selectedId = this.selectedBoardId();
+    if (selectedId === requestedRouteKey || selectedId === storedRouteBoardId) {
+      this.selectedBoardId.set(board.id);
     }
   }
 

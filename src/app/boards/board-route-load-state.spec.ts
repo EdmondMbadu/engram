@@ -1,4 +1,4 @@
-import { beginBoardRouteLoad, completeBoardRouteLoad } from './board-route-load-state';
+import { beginBoardRouteLoad, completeBoardRouteLoad, findResolvedBoardRoute } from './board-route-load-state';
 
 describe('board route load state', () => {
   it('keeps a board route pending until its own lookup completes', () => {
@@ -21,5 +21,17 @@ describe('board route load state', () => {
 
   it('marks the board gallery route complete immediately', () => {
     expect(beginBoardRouteLoad(2, null).complete).toBeTrue();
+  });
+
+  it('does not treat a gallery summary as a resolved board route', () => {
+    const summary = { id: 'board-1', isSummary: true };
+
+    expect(findResolvedBoardRoute([summary], 'board-1')).toBeNull();
+  });
+
+  it('returns a cached full board without waiting for another lookup', () => {
+    const board = { id: 'board-1', isSummary: false, title: 'Full board' };
+
+    expect(findResolvedBoardRoute([board], 'board-1')).toBe(board);
   });
 });
