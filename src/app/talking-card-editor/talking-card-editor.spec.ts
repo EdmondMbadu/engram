@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import type { AtlasItem } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
 import { DocumentsService } from '../documents.service';
+import { STACK_NARRATOR_VOICES } from '../boards/stack-voice';
 import { TalkingCardEditorComponent } from './talking-card-editor';
 
 describe('TalkingCardEditorComponent', () => {
@@ -31,9 +32,25 @@ describe('TalkingCardEditorComponent', () => {
   const atlasService = {
     atlases,
     canAdminAtlas: jasmine.createSpy('canAdminAtlas').and.returnValue(true),
+    getAtlasSpeechVoiceConfig: jasmine.createSpy('getAtlasSpeechVoiceConfig').and.resolveTo({
+      source: 'default', provider: 'elevenlabs', catalogVoiceId: null, name: 'Default voice',
+      description: null, previewUrl: null, designModel: null, createdAt: null, updatedAt: null,
+    }),
+    previewAtlasSpeechVoice: jasmine.createSpy('previewAtlasSpeechVoice').and.resolveTo({ audioUrl: 'data:audio/mpeg;base64,SUQz' }),
+    selectAtlasCatalogVoice: jasmine.createSpy('selectAtlasCatalogVoice').and.resolveTo({
+      source: 'catalog', provider: 'elevenlabs', catalogVoiceId: 'warm-storyteller', name: 'Warm Storyteller',
+      description: null, previewUrl: null, designModel: null, createdAt: null, updatedAt: null,
+    }),
+    resetAtlasSpeechVoice: jasmine.createSpy('resetAtlasSpeechVoice'),
+    createTalkingCardAtlas: jasmine.createSpy('createTalkingCardAtlas').and.resolveTo('new-avatar'),
+    updatePersonaSettings: jasmine.createSpy('updatePersonaSettings'),
+    updateAtlas: jasmine.createSpy('updateAtlas'),
   };
 
   beforeEach(async () => {
+    Object.values(atlasService).forEach((value) => {
+      if (jasmine.isSpy(value)) value.calls.reset();
+    });
     await TestBed.configureTestingModule({
       imports: [TalkingCardEditorComponent],
       providers: [
@@ -70,5 +87,49 @@ describe('TalkingCardEditorComponent', () => {
     expect(fixture.componentInstance.selectedAtlasId()).toBe('james');
     expect(fixture.componentInstance.avatarSearch()).toBe('');
     expect(fixture.nativeElement.textContent).toContain('Selected avatar');
+  });
+
+  it('previews an included voice without changing the avatar selection', async () => {
+    const play = spyOn(HTMLMediaElement.prototype, 'play').and.resolveTo();
+    spyOn(HTMLMediaElement.prototype, 'pause');
+    const fixture = TestBed.createComponent(TalkingCardEditorComponent);
+    fixture.detectChanges();
+    fixture.componentInstance.selectExistingAtlas('george');
+    await fixture.whenStable();
+    const voice = STACK_NARRATOR_VOICES[0];
+
+    await fixture.componentInstance.toggleVoicePreview(`catalog:${voice.id}`, voice);
+
+    expect(atlasService.previewAtlasSpeechVoice).toHaveBeenCalledWith('', voice.sampleText, voice.id);
+    expect(play).toHaveBeenCalled();
+    expect(fixture.componentInstance.voicePreviewPlayingKey()).toBe(`catalog:${voice.id}`);
+  });
+
+  it('saves a newly selected catalog voice to an existing avatar', async () => {
+    const fixture = TestBed.createComponent(TalkingCardEditorComponent);
+    fixture.detectChanges();
+    fixture.componentInstance.selectExistingAtlas('george');
+    await fixture.whenStable();
+    const voice = STACK_NARRATOR_VOICES[0];
+    fixture.componentInstance.selectCatalogVoice(voice);
+
+    await fixture.componentInstance.save();
+
+    expect(atlasService.selectAtlasCatalogVoice).toHaveBeenCalledWith('george', voice.id);
+  });
+
+  it('saves a selected catalog voice to a newly created avatar', async () => {
+    const fixture = TestBed.createComponent(TalkingCardEditorComponent);
+    fixture.detectChanges();
+    fixture.componentInstance.setMode('new');
+    fixture.componentInstance.name.set('Maya Chen');
+    fixture.componentInstance.personaPrompt.set('You are Maya. Speak in the first person.');
+    const voice = STACK_NARRATOR_VOICES[1];
+    fixture.componentInstance.selectCatalogVoice(voice);
+
+    await fixture.componentInstance.save();
+
+    expect(atlasService.createTalkingCardAtlas).toHaveBeenCalled();
+    expect(atlasService.selectAtlasCatalogVoice).toHaveBeenCalledWith('new-avatar', voice.id);
   });
 });

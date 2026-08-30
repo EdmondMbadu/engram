@@ -100,16 +100,97 @@
         </label>
         <label><span>Knowledge documents (up to 10)</span><input type="file" multiple (change)="onDocumentsSelected($event)" /></label>
         @if (documentFiles().length) { <small>{{ documentFiles().length }} file(s) selected</small> }
-        <label>
-          <span>Conversation voice</span>
-          <select [ngModel]="catalogVoiceId()" (ngModelChange)="catalogVoiceId.set($event)">
-            <option value="">Default conversation voice</option>
-            @for (voice of voices; track voice.id) { <option [value]="voice.id">{{ voice.name }} · {{ voice.accent }} · {{ voice.style }}</option> }
-          </select>
-        </label>
         @if (publicBoard()) {
           <p class="talking-editor__notice">This avatar will be public because it is being added to a public board.</p>
         }
+      }
+
+      @if (mode() === 'new' || selectedAtlas()) {
+        <section class="talking-editor__voice-picker" aria-labelledby="talking-editor-voice-title">
+          <header>
+            <div>
+              <span class="material-symbols-outlined" aria-hidden="true">graphic_eq</span>
+              <span><strong id="talking-editor-voice-title">Conversation voice</strong><small>Choose a voice and preview it before adding the card.</small></span>
+            </div>
+            @if (voiceConfigLoading()) { <span class="talking-editor__voice-loading"><span class="material-symbols-outlined talking-editor__spin">progress_activity</span>Loading saved voice…</span> }
+          </header>
+
+          @if (!voiceConfigLoading()) {
+            <div class="talking-editor__voice-option" [class.is-selected]="voiceChoice() === 'default'">
+              <button type="button" class="talking-editor__voice-select" (click)="selectDefaultVoice()">
+                <span class="talking-editor__voice-icon material-symbols-outlined">record_voice_over</span>
+                <span><strong>Default conversation voice</strong><small>Clear, neutral LivingWiki voice</small></span>
+                <span class="material-symbols-outlined">{{ voiceChoice() === 'default' ? 'check_circle' : 'radio_button_unchecked' }}</span>
+              </button>
+              <button
+                type="button"
+                class="talking-editor__voice-preview"
+                [disabled]="!!voicePreviewLoadingKey() && voicePreviewLoadingKey() !== 'default'"
+                [attr.aria-label]="voicePreviewPlayingKey() === 'default' ? 'Stop default voice preview' : 'Preview default voice'"
+                (click)="toggleVoicePreview('default')"
+              ><span class="material-symbols-outlined" [class.talking-editor__spin]="voicePreviewLoadingKey() === 'default'">{{ voicePreviewLoadingKey() === 'default' ? 'progress_activity' : voicePreviewPlayingKey() === 'default' ? 'stop' : 'play_arrow' }}</span><span>{{ voicePreviewLoadingKey() === 'default' ? 'Loading…' : voicePreviewPlayingKey() === 'default' ? 'Stop' : 'Preview' }}</span></button>
+            </div>
+
+            @if (initialVoiceConfig()?.source === 'designed') {
+              <div class="talking-editor__voice-option" [class.is-selected]="voiceChoice() === 'saved'">
+                <button type="button" class="talking-editor__voice-select" (click)="keepSavedVoice()">
+                  <span class="talking-editor__voice-icon material-symbols-outlined">auto_awesome</span>
+                  <span><strong>{{ savedVoiceLabel() }}</strong><small>Custom voice already saved to this avatar</small></span>
+                  <span class="material-symbols-outlined">{{ voiceChoice() === 'saved' ? 'check_circle' : 'radio_button_unchecked' }}</span>
+                </button>
+                <button
+                  type="button"
+                  class="talking-editor__voice-preview"
+                  [disabled]="!!voicePreviewLoadingKey() && voicePreviewLoadingKey() !== 'saved'"
+                  [attr.aria-label]="voicePreviewPlayingKey() === 'saved' ? 'Stop saved voice preview' : 'Preview saved voice'"
+                  (click)="toggleVoicePreview('saved')"
+                ><span class="material-symbols-outlined" [class.talking-editor__spin]="voicePreviewLoadingKey() === 'saved'">{{ voicePreviewLoadingKey() === 'saved' ? 'progress_activity' : voicePreviewPlayingKey() === 'saved' ? 'stop' : 'play_arrow' }}</span><span>{{ voicePreviewLoadingKey() === 'saved' ? 'Loading…' : voicePreviewPlayingKey() === 'saved' ? 'Stop' : 'Preview' }}</span></button>
+              </div>
+            }
+
+            @if (selectedCatalogVoice(); as selectedVoice) {
+              <div class="talking-editor__selected-voice">
+                <span class="material-symbols-outlined">check_circle</span>
+                <span><small>Selected included voice</small><strong>{{ selectedVoice.name }}</strong><em>{{ selectedVoice.accent }} · {{ selectedVoice.style }}</em></span>
+                <button type="button" [disabled]="!!voicePreviewLoadingKey() && voicePreviewLoadingKey() !== 'catalog:' + selectedVoice.id" (click)="toggleVoicePreview('catalog:' + selectedVoice.id, selectedVoice)">
+                  <span class="material-symbols-outlined" [class.talking-editor__spin]="voicePreviewLoadingKey() === 'catalog:' + selectedVoice.id">{{ voicePreviewLoadingKey() === 'catalog:' + selectedVoice.id ? 'progress_activity' : voicePreviewPlayingKey() === 'catalog:' + selectedVoice.id ? 'stop' : 'play_arrow' }}</span>
+                  {{ voicePreviewLoadingKey() === 'catalog:' + selectedVoice.id ? 'Loading…' : voicePreviewPlayingKey() === 'catalog:' + selectedVoice.id ? 'Stop' : 'Preview' }}
+                </button>
+              </div>
+            }
+
+            <div class="talking-editor__voice-library">
+              <div class="talking-editor__voice-search">
+                <span class="material-symbols-outlined" aria-hidden="true">search</span>
+                <input type="search" autocomplete="off" placeholder="Search 41 voices by name, accent, or style…" [ngModel]="voiceSearch()" (ngModelChange)="voiceSearch.set($event)" />
+                @if (voiceSearch()) { <button type="button" aria-label="Clear voice search" (click)="voiceSearch.set('')"><span class="material-symbols-outlined">close</span></button> }
+              </div>
+              <small class="talking-editor__voice-library-label">{{ voiceSearch().trim() ? displayedVoices().length + ' matching voices' : 'Recommended voices' }}</small>
+              <div class="talking-editor__voice-results" role="radiogroup" aria-label="Included conversation voices">
+                @for (voice of displayedVoices(); track voice.id) {
+                  <div class="talking-editor__voice-option" [class.is-selected]="voiceChoice() === 'catalog' && catalogVoiceId() === voice.id">
+                    <button type="button" class="talking-editor__voice-select" role="radio" [attr.aria-checked]="voiceChoice() === 'catalog' && catalogVoiceId() === voice.id" (click)="selectCatalogVoice(voice)">
+                      <span class="talking-editor__voice-icon material-symbols-outlined">{{ voice.icon }}</span>
+                      <span><strong>{{ voice.name }}</strong><small>{{ voice.presentation }} · {{ voice.accent }} · {{ voice.style }}</small></span>
+                      <span class="material-symbols-outlined">{{ voiceChoice() === 'catalog' && catalogVoiceId() === voice.id ? 'check_circle' : 'radio_button_unchecked' }}</span>
+                    </button>
+                    <button
+                      type="button"
+                      class="talking-editor__voice-preview"
+                      [disabled]="!!voicePreviewLoadingKey() && voicePreviewLoadingKey() !== 'catalog:' + voice.id"
+                      [attr.aria-label]="voicePreviewPlayingKey() === 'catalog:' + voice.id ? 'Stop ' + voice.name + ' preview' : 'Preview ' + voice.name"
+                      (click)="toggleVoicePreview('catalog:' + voice.id, voice)"
+                    ><span class="material-symbols-outlined" [class.talking-editor__spin]="voicePreviewLoadingKey() === 'catalog:' + voice.id">{{ voicePreviewLoadingKey() === 'catalog:' + voice.id ? 'progress_activity' : voicePreviewPlayingKey() === 'catalog:' + voice.id ? 'stop' : 'play_arrow' }}</span><span>{{ voicePreviewLoadingKey() === 'catalog:' + voice.id ? 'Loading…' : voicePreviewPlayingKey() === 'catalog:' + voice.id ? 'Stop' : 'Preview' }}</span></button>
+                  </div>
+                } @empty {
+                  <p>No voices match “{{ voiceSearch().trim() }}”.</p>
+                }
+              </div>
+            </div>
+            <small class="talking-editor__voice-note">{{ mode() === 'existing' ? 'Changing the voice updates this avatar anywhere it speaks.' : 'This voice will be saved to the new avatar and used in live conversations.' }}</small>
+          }
+          @if (voiceErrorMessage()) { <p class="talking-editor__error" role="alert">{{ voiceErrorMessage() }}</p> }
+        </section>
       }
 
       <div class="talking-editor__grid">

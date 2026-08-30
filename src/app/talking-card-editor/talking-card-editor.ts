@@ -1,12 +1,18 @@
 import { Component, computed, HostListener, inject, input, OnDestroy, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import type { AtlasItem } from '../atlas.models';
-import { AtlasService } from '../atlas.service';
+import type { AtlasItem, AtlasSpeechVoiceConfig } from '../atlas.models';
+import { AtlasService, type AtlasSpeechAudioResponse } from '../atlas.service';
 import { DocumentsService } from '../documents.service';
-import { STACK_NARRATOR_VOICES } from '../boards/stack-voice';
+import {
+  RECOMMENDED_STACK_NARRATOR_VOICES,
+  STACK_NARRATOR_VOICES,
+  stackNarratorVoiceById,
+  type StackNarratorVoice,
+} from '../boards/stack-voice';
 import type { TalkingCardEditorResult } from '../boards/talking-card';
 
 type EditorMode = 'existing' | 'new';
+type VoiceChoice = 'default' | 'catalog' | 'saved';
 
 @Component({
   selector: 'app-talking-card-editor',
@@ -18,6 +24,9 @@ export class TalkingCardEditorComponent implements OnDestroy {
   private readonly atlasService = inject(AtlasService);
   private readonly documentsService = inject(DocumentsService);
   private createdAtlasId = '';
+  private previewAudio: HTMLAudioElement | null = null;
+  private previewRun = 0;
+  private readonly previewUrlCache = new Map<string, string>();
 
   readonly boardTitle = input('Board');
   readonly boardVisibility = input<'private' | 'public' | 'unlisted'>('private');
@@ -34,6 +43,13 @@ export class TalkingCardEditorComponent implements OnDestroy {
   readonly ctaLabel = signal('Talk to me');
   readonly placement = signal<'start' | 'end'>('end');
   readonly catalogVoiceId = signal('');
+  readonly voiceChoice = signal<VoiceChoice>('default');
+  readonly voiceSearch = signal('');
+  readonly voiceConfigLoading = signal(false);
+  readonly voicePreviewLoadingKey = signal<string | null>(null);
+  readonly voicePreviewPlayingKey = signal<string | null>(null);
+  readonly voiceErrorMessage = signal<string | null>(null);
+  readonly initialVoiceConfig = signal<AtlasSpeechVoiceConfig | null>(null);
   readonly publishAvatar = signal(false);
   readonly imageFile = signal<File | null>(null);
   readonly imagePreviewUrl = signal('');
@@ -49,6 +65,21 @@ export class TalkingCardEditorComponent implements OnDestroy {
   readonly selectedAtlas = computed<AtlasItem | null>(() =>
     this.availableAtlases().find((atlas) => atlas.id === this.selectedAtlasId()) ?? null,
   );
+  readonly selectedCatalogVoice = computed(() => stackNarratorVoiceById(this.catalogVoiceId()));
+  readonly displayedVoices = computed(() => {
+    const query = this.voiceSearch().trim().toLocaleLowerCase();
+    if (!query) return RECOMMENDED_STACK_NARRATOR_VOICES;
+    const terms = query.split(/\s+/).filter(Boolean);
+    return STACK_NARRATOR_VOICES.filter((voice) => {
+      const searchable = [voice.name, voice.presentation, voice.accent, voice.style, voice.description]
+        .join(' ')
+        .toLocaleLowerCase();
+      return terms.every((term) => searchable.includes(term));
+    });
+  });
+  readonly savedVoiceLabel = computed(() => this.initialVoiceConfig()?.source === 'designed'
+    ? this.initialVoiceConfig()?.name || 'Custom designed voice'
+    : 'Current saved voice');
   readonly filteredAvailableAtlases = computed(() => {
     const query = this.avatarSearch().trim().toLocaleLowerCase();
     if (!query) return [];
@@ -68,9 +99,8 @@ export class TalkingCardEditorComponent implements OnDestroy {
   });
   readonly publicBoard = computed(() => this.boardVisibility() === 'public');
   readonly needsPublication = computed(() => this.publicBoard() && this.selectedAtlas()?.is_public !== true);
-  readonly voices = STACK_NARRATOR_VOICES;
   readonly canSave = computed(() => {
-    if (this.saving()) return false;
+    if (this.saving() || this.voiceConfigLoading()) return false;
     if (!this.openingMessage().trim()) return false;
     if (this.mode() === 'existing') {
       return !!this.selectedAtlas() && (!this.needsPublication() || this.publishAvatar());
@@ -79,8 +109,19 @@ export class TalkingCardEditorComponent implements OnDestroy {
   });
 
   setMode(mode: EditorMode): void {
+    if (this.mode() === mode) return;
+    this.stopVoicePreview();
     this.mode.set(mode);
     this.errorMessage.set(null);
+    this.voiceErrorMessage.set(null);
+    this.voiceSearch.set('');
+    if (mode === 'new') {
+      this.initialVoiceConfig.set(null);
+      this.voiceChoice.set('default');
+      this.catalogVoiceId.set('');
+    } else if (this.selectedAtlasId()) {
+      void this.loadExistingVoiceConfig(this.selectedAtlasId());
+    }
   }
 
   onImageSelected(event: Event): void {
@@ -107,6 +148,7 @@ export class TalkingCardEditorComponent implements OnDestroy {
   }
 
   selectExistingAtlas(atlasId: string): void {
+    this.stopVoicePreview();
     this.selectedAtlasId.set(atlasId);
     const atlas = this.availableAtlases().find((candidate) => candidate.id === atlasId);
     if (!atlas) return;
@@ -115,10 +157,90 @@ export class TalkingCardEditorComponent implements OnDestroy {
     this.imagePreviewUrl.set(atlas.chat_guide?.image_url?.trim() || atlas.logo_url?.trim() || atlas.hero_url?.trim() || '');
     this.publishAvatar.set(false);
     this.avatarSearch.set('');
+    void this.loadExistingVoiceConfig(atlasId);
+  }
+
+  selectDefaultVoice(): void {
+    this.stopVoicePreview();
+    this.voiceChoice.set('default');
+    this.catalogVoiceId.set('');
+    this.voiceErrorMessage.set(null);
+  }
+
+  selectCatalogVoice(voice: StackNarratorVoice): void {
+    this.stopVoicePreview();
+    this.voiceChoice.set('catalog');
+    this.catalogVoiceId.set(voice.id);
+    this.voiceErrorMessage.set(null);
+  }
+
+  keepSavedVoice(): void {
+    if (this.initialVoiceConfig()?.source !== 'designed') return;
+    this.stopVoicePreview();
+    this.voiceChoice.set('saved');
+    this.catalogVoiceId.set('');
+    this.voiceErrorMessage.set(null);
+  }
+
+  async toggleVoicePreview(key: string, voice?: StackNarratorVoice): Promise<void> {
+    if (typeof Audio === 'undefined') return;
+    if (this.voicePreviewPlayingKey() === key || this.voicePreviewLoadingKey() === key) {
+      this.stopVoicePreview();
+      return;
+    }
+    this.stopVoicePreview();
+    const run = ++this.previewRun;
+    this.voicePreviewLoadingKey.set(key);
+    this.voiceErrorMessage.set(null);
+    try {
+      const cacheKey = key === 'saved' ? `saved:${this.selectedAtlasId()}` : key;
+      const cached = this.previewUrlCache.get(cacheKey);
+      let url = cached ?? '';
+      if (!url) {
+        const atlasId = key === 'saved' ? this.selectedAtlasId() : '';
+        const result = await this.atlasService.previewAtlasSpeechVoice(
+          atlasId,
+          voice?.sampleText || this.voicePreviewScript(),
+          voice?.id ?? null,
+        );
+        if (run !== this.previewRun) return;
+        url = this.voiceAudioUrl(result) ?? '';
+        if (!url) throw new Error('No preview audio was returned.');
+        this.previewUrlCache.set(cacheKey, url);
+      }
+      if (run !== this.previewRun) return;
+      const audio = new Audio(url);
+      audio.preload = 'auto';
+      audio.onended = () => {
+        if (this.previewAudio === audio) this.stopVoicePreview();
+      };
+      audio.onerror = () => {
+        if (this.previewAudio !== audio) return;
+        this.stopVoicePreview();
+        this.voiceErrorMessage.set('That voice preview could not be played.');
+      };
+      this.previewAudio = audio;
+      await audio.play();
+      if (run === this.previewRun && this.previewAudio === audio) {
+        this.voicePreviewPlayingKey.set(key);
+      }
+    } catch (error) {
+      if (run === this.previewRun) {
+        this.stopVoicePreview();
+        this.voiceErrorMessage.set(error instanceof Error && error.message.trim()
+          ? error.message
+          : 'That voice preview could not be played.');
+      }
+    } finally {
+      if (run === this.previewRun) this.voicePreviewLoadingKey.set(null);
+    }
   }
 
   close(): void {
-    if (!this.saving()) this.closed.emit();
+    if (!this.saving()) {
+      this.stopVoicePreview();
+      this.closed.emit();
+    }
   }
 
   @HostListener('document:keydown.escape')
@@ -127,6 +249,7 @@ export class TalkingCardEditorComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.stopVoicePreview();
     const preview = this.imagePreviewUrl();
     if (preview.startsWith('blob:')) URL.revokeObjectURL(preview);
   }
@@ -173,7 +296,7 @@ export class TalkingCardEditorComponent implements OnDestroy {
             }),
           ]);
         }
-        if (this.catalogVoiceId()) {
+        if (this.voiceChoice() === 'catalog' && this.catalogVoiceId()) {
           await this.atlasService.selectAtlasCatalogVoice(atlasId, this.catalogVoiceId());
         }
         if (this.documentFiles().length) {
@@ -189,6 +312,7 @@ export class TalkingCardEditorComponent implements OnDestroy {
         if (this.needsPublication() && this.publishAvatar()) {
           await this.atlasService.updateAtlas(atlas.id, { is_public: true });
         }
+        await this.saveExistingVoiceIfChanged(atlas.id);
       }
 
       this.saved.emit({
@@ -205,5 +329,76 @@ export class TalkingCardEditorComponent implements OnDestroy {
     } finally {
       this.saving.set(false);
     }
+  }
+
+  private async loadExistingVoiceConfig(atlasId: string): Promise<void> {
+    this.voiceConfigLoading.set(true);
+    this.voiceErrorMessage.set(null);
+    try {
+      const config = await this.atlasService.getAtlasSpeechVoiceConfig(atlasId);
+      if (this.selectedAtlasId() !== atlasId || this.mode() !== 'existing') return;
+      this.initialVoiceConfig.set(config);
+      if (config.source === 'catalog' && config.catalogVoiceId && stackNarratorVoiceById(config.catalogVoiceId)) {
+        this.voiceChoice.set('catalog');
+        this.catalogVoiceId.set(config.catalogVoiceId);
+      } else if (config.source === 'designed') {
+        this.voiceChoice.set('saved');
+        this.catalogVoiceId.set('');
+      } else {
+        this.voiceChoice.set('default');
+        this.catalogVoiceId.set('');
+      }
+    } catch (error) {
+      if (this.selectedAtlasId() !== atlasId || this.mode() !== 'existing') return;
+      this.initialVoiceConfig.set(null);
+      this.voiceChoice.set('default');
+      this.catalogVoiceId.set('');
+      this.voiceErrorMessage.set(error instanceof Error && error.message.trim()
+        ? error.message
+        : 'The saved conversation voice could not be loaded.');
+    } finally {
+      if (this.selectedAtlasId() === atlasId) this.voiceConfigLoading.set(false);
+    }
+  }
+
+  private async saveExistingVoiceIfChanged(atlasId: string): Promise<void> {
+    const initial = this.initialVoiceConfig();
+    if (this.voiceChoice() === 'saved') return;
+    if (this.voiceChoice() === 'default') {
+      if (initial?.source && initial.source !== 'default') {
+        await this.atlasService.resetAtlasSpeechVoice(atlasId);
+      }
+      return;
+    }
+    const voiceId = this.catalogVoiceId();
+    if (!voiceId) return;
+    if (initial?.source !== 'catalog' || initial.catalogVoiceId !== voiceId) {
+      await this.atlasService.selectAtlasCatalogVoice(atlasId, voiceId);
+    }
+  }
+
+  private voicePreviewScript(): string {
+    const subject = this.name().trim() || this.selectedAtlas()?.name || 'your LivingWiki guide';
+    return `Hello, I’m ${subject}. Ask me a question and we’ll explore this story together.`;
+  }
+
+  private voiceAudioUrl(response: AtlasSpeechAudioResponse): string | null {
+    if (response.audioUrl) return response.audioUrl;
+    return response.audioBase64
+      ? `data:${response.contentType || 'audio/mpeg'};base64,${response.audioBase64}`
+      : null;
+  }
+
+  private stopVoicePreview(): void {
+    this.previewRun += 1;
+    if (this.previewAudio) {
+      this.previewAudio.pause();
+      this.previewAudio.currentTime = 0;
+      this.previewAudio.onended = null;
+      this.previewAudio.onerror = null;
+      this.previewAudio = null;
+    }
+    this.voicePreviewLoadingKey.set(null);
+    this.voicePreviewPlayingKey.set(null);
   }
 }
