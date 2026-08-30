@@ -857,8 +857,16 @@
   font-variation-settings: 'FILL' 1;
 }
 
-.boards-doorway-card--real-estate .boards-doorway-card__icon {
+.boards-doorway-card--talkthru .boards-doorway-card__icon {
   background: linear-gradient(145deg, rgba(89, 170, 103, 0.72), rgba(31, 93, 50, 0.82));
+}
+
+.boards-doorway-card--talkthru.boards-doorway-card--active .boards-doorway-card__copy strong {
+  display: -webkit-box;
+  overflow: hidden;
+  white-space: normal;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .boards-doorway-card--previous .boards-doorway-card__icon,

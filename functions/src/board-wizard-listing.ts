@@ -2,6 +2,11 @@ import { JSDOM } from 'jsdom';
 import type { GeneratedBoardWizardBatch, GeneratedBoardWizardCard } from './gemini';
 
 export type BoardWizardListingKind = 'vacation-rental' | 'real-estate' | 'hotel';
+export type BoardWizardListingIntent = 'auto' | 'sale' | 'rental';
+
+export function normalizeBoardWizardListingIntent(value: unknown): BoardWizardListingIntent {
+  return value === 'sale' || value === 'rental' ? value : 'auto';
+}
 
 export type BoardWizardListingImage = {
   url: string;
@@ -360,8 +365,12 @@ export function buildBoardWizardListingBatch(options: {
   extraction: BoardWizardListingExtraction;
   targetBoardTitle: string;
   count: number;
+  listingIntent?: BoardWizardListingIntent;
 }): GeneratedBoardWizardBatch {
   const extraction = options.extraction;
+  const listingIntent = normalizeBoardWizardListingIntent(options.listingIntent);
+  const rental = listingIntent === 'rental' || (listingIntent === 'auto' && extraction.kind === 'vacation-rental');
+  const shortTermRental = rental && extraction.kind === 'vacation-rental';
   const count = Math.max(1, Math.min(100, Math.round(options.count) || 1));
   const imageUrls = extraction.images.map((image) => image.url).slice(0, BOARD_WIZARD_SOURCE_GALLERY_LIMIT);
   const kindLabel = extraction.kind === 'real-estate'
@@ -504,9 +513,15 @@ export function buildBoardWizardListingBatch(options: {
     });
   }
   detailCards.push(listingDetailCard({
-    title: extraction.kind === 'real-estate' ? 'Verify listing status' : 'View listing',
+    title: rental
+      ? shortTermRental ? 'Check availability & book' : 'Check availability & apply'
+      : extraction.kind === 'real-estate' ? 'Verify listing status' : 'View listing',
     subtitle: extraction.price || `Open on ${extraction.siteName || 'source site'}`,
-    notes: extraction.kind === 'real-estate'
+    notes: rental
+      ? shortTermRental
+        ? 'Confirm current price, availability, fees, cancellation terms, house rules, and booking details on the original rental listing.'
+        : 'Confirm current rent, availability, lease terms, deposits, fees, application requirements, and contact details on the original rental listing.'
+      : extraction.kind === 'real-estate'
       ? 'Confirm current listing status, price, disclosures, fees, showing availability, and contact details on the original listing.'
       : 'Check current price, availability, fees, cancellation terms, house rules, and booking details on the original listing.',
     tag: 'action',

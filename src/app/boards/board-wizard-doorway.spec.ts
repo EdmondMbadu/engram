@@ -26,6 +26,10 @@ describe('board wizard doorway carousel', () => {
     expect(boardWizardModeForDoorway('real-estate')).toBe('url');
   });
 
+  it('routes the Rental properties doorway through the established URL mode', () => {
+    expect(boardWizardModeForDoorway('rental-properties')).toBe('url');
+  });
+
   it('wraps in both directions without leaving the available range', () => {
     expect(wrapBoardWizardDoorwayIndex(0, -1, 10)).toBe(9);
     expect(wrapBoardWizardDoorwayIndex(9, 1, 10)).toBe(0);

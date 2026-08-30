@@ -15,8 +15,10 @@ import {
 import {
   BOARD_WIZARD_SOURCE_GALLERY_LIMIT,
   buildBoardWizardListingBatch,
+  normalizeBoardWizardListingIntent,
   type BoardWizardListingExtraction,
   type BoardWizardListingImage,
+  type BoardWizardListingIntent,
 } from './board-wizard-listing';
 import type { BoardNarrationStyleId } from './board-wizard-narration';
 
@@ -29,7 +31,7 @@ export type BoardWizardListingMarketingOptions = {
 };
 
 export type BoardWizardListingPreview = {
-  kind: 'real-estate';
+  kind: 'real-estate' | 'rental';
   listingName: string;
   address: string;
   price: string;
@@ -68,9 +70,13 @@ export function normalizeBoardWizardListingMarketingOptions(value: unknown): Boa
   };
 }
 
-export function boardWizardListingPreview(extraction: BoardWizardListingExtraction): BoardWizardListingPreview {
+export function boardWizardListingPreview(
+  extraction: BoardWizardListingExtraction,
+  listingIntent: BoardWizardListingIntent = 'auto',
+): BoardWizardListingPreview {
+  const intent = normalizeBoardWizardListingIntent(listingIntent);
   return {
-    kind: 'real-estate',
+    kind: intent === 'rental' ? 'rental' : 'real-estate',
     listingName: extraction.listingName,
     address: extraction.address,
     price: extraction.price,
@@ -99,10 +105,12 @@ export function buildBoardWizardListingMarketingBatchFromAnalyses(options: {
   count: number;
   narrationSecondsPerCard: number;
   style: BoardWizardListingMarketingStyle;
+  listingIntent?: BoardWizardListingIntent;
   analyses: BoardWizardListingPhotoAnalysis[];
   aiScenes?: BoardWizardListingStoryScene[];
 }): GeneratedBoardWizardBatch {
   const allAnalyses = mergeWithFallbackAnalyses(options.extraction, options.analyses);
+  const listingIntent = normalizeBoardWizardListingIntent(options.listingIntent);
   const aiScenes = validateAiScenes(options.aiScenes ?? [], allAnalyses, options.extraction);
   const scenes = completeStoryScenes({
     extraction: options.extraction,
@@ -111,11 +119,13 @@ export function buildBoardWizardListingMarketingBatchFromAnalyses(options: {
     count: Math.max(1, Math.min(24, options.extraction.images.length, Math.round(options.count) || 12)),
     secondsPerCard: options.narrationSecondsPerCard,
     style: options.style,
+    listingIntent,
   });
   return buildMarketingBatch({
     extraction: options.extraction,
     targetBoardTitle: options.targetBoardTitle,
     scenes,
+    listingIntent,
   });
 }
 
@@ -126,13 +136,17 @@ export async function generateBoardWizardListingMarketingBatch(options: {
   narrationStyle: BoardNarrationStyleId;
   narrationSecondsPerCard: number;
   marketing: BoardWizardListingMarketingOptions;
+  listingIntent?: BoardWizardListingIntent;
 }): Promise<GeneratedBoardWizardBatch> {
   const { extraction } = options;
-  if (extraction.kind !== 'real-estate' || options.marketing.enabled === false || extraction.images.length < 2) {
+  const listingIntent = normalizeBoardWizardListingIntent(options.listingIntent);
+  const supportsTalkThru = extraction.kind === 'real-estate' || listingIntent === 'rental';
+  if (!supportsTalkThru || options.marketing.enabled === false || extraction.images.length < 2) {
     return buildBoardWizardListingBatch({
       extraction,
       targetBoardTitle: options.targetBoardTitle,
       count: options.count,
+      listingIntent,
     });
   }
 
@@ -154,6 +168,7 @@ export async function generateBoardWizardListingMarketingBatch(options: {
         narrationSecondsPerCard: options.narrationSecondsPerCard,
         marketingStyle: marketingStyleDescription(options.marketing.style),
         direction: options.marketing.direction,
+        listingIntent,
       });
     }
   } catch (error) {
@@ -172,12 +187,14 @@ export async function generateBoardWizardListingMarketingBatch(options: {
     count: sceneCount,
     secondsPerCard: options.narrationSecondsPerCard,
     style: options.marketing.style,
+    listingIntent,
   });
   if (!scenes.length) {
     return buildBoardWizardListingBatch({
       extraction,
       targetBoardTitle: options.targetBoardTitle,
       count: options.count,
+      listingIntent,
     });
   }
 
@@ -194,6 +211,7 @@ export async function generateBoardWizardListingMarketingBatch(options: {
     extraction,
     targetBoardTitle: options.targetBoardTitle,
     scenes,
+    listingIntent,
   });
 }
 
@@ -355,6 +373,7 @@ function completeStoryScenes(options: {
   count: number;
   secondsPerCard: number;
   style: BoardWizardListingMarketingStyle;
+  listingIntent: BoardWizardListingIntent;
 }): BoardWizardListingStoryScene[] {
   const usable = options.analyses.filter((analysis) => !DISALLOWED_STORY_SCENES.has(analysis.sceneType));
   const used = new Set(options.aiScenes.map((scene) => scene.photoIndex));
@@ -367,12 +386,16 @@ function completeStoryScenes(options: {
   const limited = scenes.slice(0, options.count);
   if (!limited.length) return limited;
   const last = limited[limited.length - 1];
-  const close = listingClose(options.extraction);
+  const close = listingClose(options.extraction, options.listingIntent);
+  const rental = options.listingIntent === 'rental';
+  const shortTermRental = rental && options.extraction.kind === 'vacation-rental';
   limited[limited.length - 1] = {
     ...last,
     role: 'next-step',
-    title: options.extraction.price ? `The next step · ${options.extraction.price}` : 'See the full listing',
-    subtitle: closingSubtitle(options.extraction),
+    title: rental
+      ? shortTermRental ? 'Check availability & book' : 'Check availability & apply'
+      : options.extraction.price ? `The next step · ${options.extraction.price}` : 'See the full listing',
+    subtitle: closingSubtitle(options.extraction, options.listingIntent),
     narration: appendSentence(last.narration, close, 3600),
     factKeys: Array.from(new Set([...last.factKeys, 'price', 'status', 'contact', 'brokerage'].filter((key) => !!listingFacts(options.extraction)[key]))),
   };
@@ -402,6 +425,7 @@ function buildMarketingBatch(options: {
   extraction: BoardWizardListingExtraction;
   targetBoardTitle: string;
   scenes: BoardWizardListingStoryScene[];
+  listingIntent: BoardWizardListingIntent;
 }): GeneratedBoardWizardBatch {
   const extractedAt = new Date().toISOString();
   const gallery = options.extraction.images.map((image) => image.url).slice(0, BOARD_WIZARD_SOURCE_GALLERY_LIMIT);
@@ -416,7 +440,13 @@ function buildMarketingBatch(options: {
       scope: 'place',
       status: position === options.scenes.length - 1 ? 'planned' : 'saved',
       rating: position === 0 ? 5 : 4,
-      tags: ['listing', 'real-estate', 'listing-story', `story-${role}`, 'source-image'],
+      tags: [
+        'listing',
+        options.listingIntent === 'rental' ? 'rental' : 'real-estate',
+        'listing-story',
+        `story-${role}`,
+        'source-image',
+      ],
       image_query: `${options.extraction.listingName} ${scene.title}`.slice(0, 120),
       place_query: options.extraction.address || options.extraction.listingName,
       entity_name: options.extraction.listingName,
@@ -438,9 +468,9 @@ function buildMarketingBatch(options: {
   return {
     board: {
       title: (options.targetBoardTitle || options.extraction.listingName).slice(0, 90),
-      description: storyBoardDescription(options.extraction).slice(0, 240),
-      icon: 'apartment',
-      tone: 'teal',
+      description: storyBoardDescription(options.extraction, options.listingIntent).slice(0, 240),
+      icon: options.listingIntent === 'rental' ? 'key' : 'apartment',
+      tone: options.listingIntent === 'rental' ? 'sky' : 'teal',
     },
     cards,
   };
@@ -560,20 +590,23 @@ function listingFacts(extraction: BoardWizardListingExtraction): Record<string, 
   extraction.amenities.slice(0, 12).forEach((amenity, index) => {
     facts[`amenity_${index + 1}`] = amenity;
   });
+  extraction.facts.slice(0, 16).forEach((fact, index) => {
+    facts[`listing_fact_${index + 1}`] = fact;
+  });
   return Object.fromEntries(Object.entries(facts).filter(([, value]) => !!value));
 }
 
-function storyBoardDescription(extraction: BoardWizardListingExtraction): string {
+function storyBoardDescription(extraction: BoardWizardListingExtraction, listingIntent: BoardWizardListingIntent): string {
   const details = [
     extraction.price,
     extraction.realEstate.bedrooms ? `${extraction.realEstate.bedrooms} bedrooms` : '',
     extraction.realEstate.bathrooms ? `${extraction.realEstate.bathrooms} bathrooms` : '',
     extraction.realEstate.propertyType,
   ].filter(Boolean).join(' · ');
-  return `A visual walkthrough of ${extraction.listingName}${details ? ` — ${details}` : ''}, arranged from arrival through the living spaces to the next step.`;
+  return `A connected ${listingIntent === 'rental' ? 'rental TalkThru' : 'property TalkThru'} of ${extraction.listingName}${details ? ` — ${details}` : ''}, arranged from arrival through the living spaces to the next step.`;
 }
 
-function listingClose(extraction: BoardWizardListingExtraction): string {
+function listingClose(extraction: BoardWizardListingExtraction, listingIntent: BoardWizardListingIntent): string {
   const contact = extraction.realEstate.agentName
     ? `The source page identifies ${extraction.realEstate.agentName} as ${extraction.realEstate.agentRole || 'the site contact'}.`
     : '';
@@ -581,12 +614,17 @@ function listingClose(extraction: BoardWizardListingExtraction): string {
   return [
     contact,
     brokerage,
-    'Open the original listing to confirm the current price, status, disclosures, fees, showing availability, and contact details.',
+    listingIntent === 'rental'
+      ? extraction.kind === 'vacation-rental'
+        ? 'Open the original rental listing to confirm the current price, availability, fees, cancellation terms, house rules, and booking details.'
+        : 'Open the original rental listing to confirm the current rent, availability, lease terms, deposits, fees, application requirements, and contact details.'
+      : 'Open the original listing to confirm the current price, status, disclosures, fees, showing availability, and contact details.',
   ].filter(Boolean).join(' ');
 }
 
-function closingSubtitle(extraction: BoardWizardListingExtraction): string {
+function closingSubtitle(extraction: BoardWizardListingExtraction, listingIntent: BoardWizardListingIntent): string {
   return [
+    listingIntent === 'rental' ? 'Verify current availability' : '',
     extraction.realEstate.listingStatus,
     extraction.realEstate.mlsId ? `MLS# ${extraction.realEstate.mlsId}` : '',
     extraction.realEstate.brokerage,

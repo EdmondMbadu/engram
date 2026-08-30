@@ -164,6 +164,14 @@ assert.equal(fullAirbnb.images.some((image) => image.url.includes('9999999999999
 assert.equal(fullAirbnb.images[0].alt, 'Living room', 'room context should remain bound to the image');
 const fullAirbnbBatch = buildBoardWizardListingBatch({ extraction: fullAirbnb, targetBoardTitle: '', count: 1 });
 assert.equal(fullAirbnbBatch.cards[0].imageUrls.length, 26, 'the overview card should preserve the complete Airbnb gallery');
+const rentalAirbnbBatch = buildBoardWizardListingBatch({
+  extraction: fullAirbnb,
+  targetBoardTitle: '',
+  count: 8,
+  listingIntent: 'rental',
+});
+assert.equal(rentalAirbnbBatch.cards.at(-1).title, 'Check availability & book');
+assert.match(rentalAirbnbBatch.cards.at(-1).notes, /cancellation terms.*house rules.*booking details/i);
 
 const fourteenPhotoAirbnb = { ...fullAirbnb, images: fullAirbnb.images.slice(0, 14) };
 const twelveCardAirbnbBatch = buildBoardWizardListingBatch({
@@ -443,6 +451,7 @@ assert.equal(expPreview.kind, 'real-estate');
 assert.equal(expPreview.imageCount, 43);
 assert.equal(expPreview.price, '$729,000');
 assert.equal(expPreview.contactRole, 'Site contact');
+assert.equal(boardWizardListingPreview(expListing, 'rental').kind, 'rental');
 
 const expStoryAnalyses = [
   ['exterior', 'Building exterior', ['corner setting', 'covered entry'], 0.95, 0.96],
@@ -486,6 +495,40 @@ assert.ok(expStory.cards.at(-1).tags.includes('story-next-step'));
 assert.match(expStory.cards.at(-1).title, /\$729,000/);
 assert.match(expStory.cards.at(-1).notes, /current price, status, disclosures, fees, showing availability/i);
 assert.match(expStory.cards.at(-1).notes, /Site contact/i);
+
+const longTermRentalStory = buildBoardWizardListingMarketingBatchFromAnalyses({
+  extraction: expListing,
+  targetBoardTitle: '',
+  count: 6,
+  narrationSecondsPerCard: 15,
+  style: 'guided',
+  listingIntent: 'rental',
+  analyses: expStoryAnalyses,
+});
+assert.equal(longTermRentalStory.cards.at(-1).title, 'Check availability & apply');
+assert.match(longTermRentalStory.cards.at(-1).notes, /lease terms.*deposits.*application requirements/i);
+assert.ok(longTermRentalStory.cards.every((card) => card.tags.includes('rental')));
+assert.match(longTermRentalStory.board.description, /rental TalkThru/);
+
+const vacationRentalStory = buildBoardWizardListingMarketingBatchFromAnalyses({
+  extraction: airbnb,
+  targetBoardTitle: '',
+  count: 6,
+  narrationSecondsPerCard: 15,
+  style: 'warm',
+  listingIntent: 'rental',
+  analyses: airbnb.images.map((image, index) => ({
+    index,
+    sceneType: index === 0 ? 'living' : index === 1 ? 'kitchen' : 'bedroom',
+    roomType: image.alt || 'Rental space',
+    features: [],
+    qualityScore: 0.8,
+    heroScore: index === 0 ? 0.9 : 0.5,
+    confidence: 0.8,
+  })),
+});
+assert.equal(vacationRentalStory.cards.at(-1).title, 'Check availability & book');
+assert.match(vacationRentalStory.cards.at(-1).notes, /cancellation terms.*house rules.*booking details/i);
 
 const expReaderMarkdown = `Title: 3721 Pacific Avenue, Wildwood, NJ, 08260
 

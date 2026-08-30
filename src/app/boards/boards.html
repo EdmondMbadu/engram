@@ -4563,7 +4563,7 @@
                       [class.boards-doorway-card--previous]="slide.offset === -1"
                       [class.boards-doorway-card--active]="slide.offset === 0"
                       [class.boards-doorway-card--next]="slide.offset === 1"
-                      [class.boards-doorway-card--real-estate]="slide.option.id === 'real-estate'"
+                      [class.boards-doorway-card--talkthru]="slide.option.talkThru"
                       [attr.aria-current]="slide.offset === 0 ? 'true' : null"
                       [attr.aria-label]="(slide.offset === 0 ? 'Start with ' : 'Show ') + slide.option.label"
                       (click)="activateWizardDoorway(slide.option.id)"
@@ -4586,7 +4586,7 @@
                       <span class="boards-doorway-card__content">
                         <span class="boards-doorway-card__icon material-symbols-outlined" aria-hidden="true">{{ slide.option.icon }}</span>
                         <span class="boards-doorway-card__copy">
-                          <small>{{ slide.option.id === 'real-estate' ? 'Featured' : 'Board type' }}</small>
+                          <small>{{ slide.option.eyebrow || 'Board type' }}</small>
                           <strong>{{ wizardLockedTargetBoard() && slide.option.id === 'manual' ? 'Add one card manually' : slide.option.label }}</strong>
                           @if (slide.offset === 0) {
                             <span>{{ wizardLockedTargetBoard() && slide.option.id === 'manual' ? 'Create one card with the standard card editor.' : slide.option.description }}</span>
@@ -4594,7 +4594,7 @@
                         </span>
                         @if (slide.offset === 0) {
                           <span class="boards-doorway-card__action">
-                            {{ wizardLockedTargetBoard() ? 'Add cards' : 'Create board' }}
+                            {{ slide.option.actionLabel || (wizardLockedTargetBoard() ? 'Add cards' : 'Create board') }}
                             <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
                           </span>
                         }
@@ -5335,7 +5335,7 @@
                 </section>
               } @else {
                 <label>
-                  <span>{{ wizardEntryIntent() === 'real-estate' ? 'Property listing URL' : 'URL' }}</span>
+                  <span>{{ wizardIsRentalTalkThru() ? 'Rental listing URL' : wizardEntryIntent() === 'real-estate' ? 'Property listing URL' : 'URL' }}</span>
                   <input
                     type="url"
                     required
@@ -5343,18 +5343,18 @@
                     [value]="wizardUrl()"
                     (input)="wizardUrl.set($any($event.target).value)"
                   />
-                  @if (wizardEntryIntent() === 'real-estate') {
+                  @if (wizardIsTalkThruListing()) {
                     <small class="boards-wizard-real-estate-help">
-                      Paste a public property listing. LivingWiki will keep the source, listing details, photos, and attribution together.
+                      Paste a public {{ wizardIsRentalTalkThru() ? 'rental' : 'property' }} listing. LivingWiki will keep the source, listing details, photos, and attribution together.
                     </small>
                   }
                 </label>
                 <label>
-                  <span>{{ wizardEntryIntent() === 'real-estate' ? 'What should the property story emphasize?' : 'Optional direction' }}</span>
+                  <span>{{ wizardIsTalkThruListing() ? 'What should the TalkThru emphasize?' : 'Optional direction' }}</span>
                   <input
                     type="text"
                     maxlength="220"
-                    [placeholder]="wizardEntryIntent() === 'real-estate' ? 'Lead with the setting, kitchen, outdoor space, or another visible strength' : 'Focus on places, food, and things worth saving'"
+                    [placeholder]="wizardIsRentalTalkThru() ? 'Lead with the setting, living spaces, amenities, or guest experience' : wizardEntryIntent() === 'real-estate' ? 'Lead with the setting, kitchen, outdoor space, or another visible strength' : 'Focus on places, food, and things worth saving'"
                     [value]="wizardPrompt()"
                     (input)="wizardPrompt.set($any($event.target).value)"
                   />
@@ -5819,7 +5819,7 @@
               <section class="boards-listing-story-hero">
                 <span class="boards-listing-story-hero__icon material-symbols-outlined">auto_stories</span>
                 <div>
-                  <small>Real-estate listing detected</small>
+                  <small>{{ wizardIsRentalTalkThru() ? 'Rental listing detected' : 'Real-estate listing detected' }}</small>
                   <h4>{{ listing.listingName }}</h4>
                   @if (listing.address && listing.address !== listing.listingName) {
                     <p>{{ listing.address }}</p>
@@ -5842,8 +5842,8 @@
               <section class="boards-listing-story-explainer">
                 <span class="material-symbols-outlined">account_tree</span>
                 <div>
-                  <strong>Turn the gallery into a connected property story</strong>
-                  <small>LivingWiki will identify each space, choose the strongest photographs, remove repetition, and arrange the cards from the opening view through the final listing details.</small>
+                  <strong>Turn the gallery into a connected {{ wizardIsRentalTalkThru() ? 'rental TalkThru' : 'property TalkThru' }}</strong>
+                  <small>LivingWiki will identify each space, choose the strongest photographs, remove repetition, and arrange the cards from the opening view through the {{ wizardIsRentalTalkThru() ? 'availability and booking or application details' : 'final listing details' }}.</small>
                 </div>
               </section>
 
@@ -5928,7 +5928,7 @@
                 <button type="button" class="boards-ghost-action" (click)="backWizardStep()">Back</button>
                 <button type="button" class="boards-primary-action" (click)="confirmWizardListingStory()">
                   <span class="material-symbols-outlined">auto_awesome</span>
-                  Build {{ wizardCount() }}-scene story
+                  Build {{ wizardCount() }}-scene TalkThru
                 </button>
               </div>
             </div>

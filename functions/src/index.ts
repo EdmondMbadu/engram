@@ -218,8 +218,10 @@ import {
   extractBoardWizardListingFromMarkdown,
   isBoardWizardListingPageUrl,
   isBoardWizardZillowListingPageUrl,
+  normalizeBoardWizardListingIntent,
   recoverBoardWizardBoldTrailGallery,
   type BoardWizardListingExtraction,
+  type BoardWizardListingIntent,
 } from './board-wizard-listing';
 import {
   boardWizardListingPreview,
@@ -5336,6 +5338,7 @@ type BoardWizardCallableData = {
   narrationSecondsPerCard?: unknown;
   narrationLengthCustomized?: unknown;
   listingMarketing?: unknown;
+  listingIntent?: unknown;
   tourOptions?: unknown;
   existingCards?: unknown;
   singleTourStop?: unknown;
@@ -5908,12 +5911,32 @@ function buildBoardWizardReaderCommerceExtraction(
 
 type BoardWizardSourcePreviewAnalysis = {
   manifest: BoardWizardSourceManifest | null;
-  specializedKind: 'restaurant' | 'commerce' | 'accommodation' | 'real-estate' | null;
+  specializedKind: 'restaurant' | 'commerce' | 'accommodation' | 'real-estate' | 'rental' | null;
   listingPreview: BoardWizardListingPreview | null;
   warning: string;
 };
 
-async function analyzeBoardWizardSourcePreview(sourceUrl: string): Promise<BoardWizardSourcePreviewAnalysis> {
+function boardWizardListingSourcePreview(
+  listing: BoardWizardListingExtraction,
+  listingIntent: BoardWizardListingIntent,
+): BoardWizardSourcePreviewAnalysis {
+  if (listingIntent === 'rental') {
+    return {
+      manifest: null,
+      specializedKind: 'rental',
+      listingPreview: boardWizardListingPreview(listing, listingIntent),
+      warning: '',
+    };
+  }
+  return listing.kind === 'real-estate'
+    ? { manifest: null, specializedKind: 'real-estate', listingPreview: boardWizardListingPreview(listing, listingIntent), warning: '' }
+    : { manifest: null, specializedKind: 'accommodation', listingPreview: null, warning: '' };
+}
+
+async function analyzeBoardWizardSourcePreview(
+  sourceUrl: string,
+  listingIntent: BoardWizardListingIntent = 'auto',
+): Promise<BoardWizardSourcePreviewAnalysis> {
   try {
     const fetched = await fetchHtmlWithFallback(sourceUrl, {
       timeoutMs: 30_000,
@@ -5938,12 +5961,10 @@ async function analyzeBoardWizardSourcePreview(sourceUrl: string): Promise<Board
         }
       }
       if (listing) {
-        return listing.kind === 'real-estate'
-          ? { manifest: null, specializedKind: 'real-estate', listingPreview: boardWizardListingPreview(listing), warning: '' }
-          : { manifest: null, specializedKind: 'accommodation', listingPreview: null, warning: '' };
+        return boardWizardListingSourcePreview(listing, listingIntent);
       }
       if (isBoardWizardListingPageUrl(sourceUrl)) {
-        if (isLikelyBoardWizardRealEstateUrl(sourceUrl)) {
+        if (isLikelyBoardWizardRealEstateUrl(sourceUrl) || listingIntent === 'rental') {
           // A sparse rendered shell is common on property sites. Let the Reader
           // recovery below try to return the actual facts and gallery summary.
         } else {
@@ -5959,7 +5980,7 @@ async function analyzeBoardWizardSourcePreview(sourceUrl: string): Promise<Board
       if (commerce.isCommerce && commerce.products.length >= 2) {
         return { manifest: null, specializedKind: 'commerce', listingPreview: null, warning: '' };
       }
-      if (buildBoardWizardAccommodationExtraction(sourceUrl, fetched.finalUrl || sourceUrl, fetched.html)) {
+      if (listingIntent !== 'rental' && buildBoardWizardAccommodationExtraction(sourceUrl, fetched.finalUrl || sourceUrl, fetched.html)) {
         return { manifest: null, specializedKind: 'accommodation', listingPreview: null, warning: '' };
       }
       const manifest = extractBoardWizardArticleManifest(sourceUrl, fetched.finalUrl || sourceUrl, fetched.html);
@@ -5976,9 +5997,7 @@ async function analyzeBoardWizardSourcePreview(sourceUrl: string): Promise<Board
       const completeReaderListing = readerListing.kind === 'real-estate'
         ? await recoverBoardWizardBoldTrailGallery(readerListing)
         : readerListing;
-      return completeReaderListing.kind === 'real-estate'
-        ? { manifest: null, specializedKind: 'real-estate', listingPreview: boardWizardListingPreview(completeReaderListing), warning: '' }
-        : { manifest: null, specializedKind: 'accommodation', listingPreview: null, warning: '' };
+      return boardWizardListingSourcePreview(completeReaderListing, listingIntent);
     }
     if (extractBoardWizardReaderMenuItems(reader.markdown).length >= 3) {
       return { manifest: null, specializedKind: 'restaurant', listingPreview: null, warning: '' };
@@ -7427,14 +7446,16 @@ export const previewBoardWizardSource = onCall(
     const prompt = stringOrEmpty(data.prompt).slice(0, 4000);
     const submitted = stringOrEmpty(data.url).slice(0, 1000) || firstHttpUrl(prompt);
     const sourceUrl = safeBoardCardSourceUrl(submitted);
+    const listingIntent = normalizeBoardWizardListingIntent(data['listingIntent']);
     if (!sourceUrl) throw new HttpsError('invalid-argument', 'Provide a public HTTP or HTTPS page URL.');
 
     const startedAt = Date.now();
-    const analysis = await analyzeBoardWizardSourcePreview(sourceUrl);
+    const analysis = await analyzeBoardWizardSourcePreview(sourceUrl, listingIntent);
     logger.info('Board wizard source preview completed.', {
       userId,
       sourceHost: safeCommerceHostname(sourceUrl),
       specializedKind: analysis.specializedKind,
+      listingIntent,
       manifestItemCount: analysis.manifest?.items.length ?? 0,
       expectedCount: analysis.manifest?.expectedCount ?? null,
       confidence: analysis.manifest?.confidence ?? 0,
@@ -7476,6 +7497,7 @@ export const generateBoardWizardBatch = onCall(
     const mediaMode = normalizeBoardWizardMediaMode(data.mediaMode);
     const narrationStyle = normalizeBoardNarrationStyle(data.narrationStyle);
     const listingMarketing = normalizeBoardWizardListingMarketingOptions(data.listingMarketing);
+    const listingIntent = normalizeBoardWizardListingIntent(data.listingIntent);
     const tourOptions = normalizeBoardWizardTourOptions(data.tourOptions, mode);
     const targetBoardId = stringOrEmpty(data.targetBoardId).slice(0, 140);
     const targetBoardTitle = stringOrEmpty(data.targetBoardTitle).slice(0, 120);
@@ -7908,7 +7930,9 @@ export const generateBoardWizardBatch = onCall(
       });
     }
 
-    const generationUsesNarrationPrompt = (listingExtraction?.kind === 'real-estate' && listingMarketing.enabled)
+    const generationUsesNarrationPrompt = (!!listingExtraction
+      && (listingExtraction.kind === 'real-estate' || listingIntent === 'rental')
+      && listingMarketing.enabled)
       || (!commerceExtraction
       && !listingExtraction
       && !accommodationExtraction
@@ -7922,7 +7946,7 @@ export const generateBoardWizardBatch = onCall(
             requestedCount: explicitCount,
           })
         : listingExtraction
-        ? listingExtraction.kind === 'real-estate'
+        ? listingExtraction.kind === 'real-estate' || listingIntent === 'rental'
           ? await generateBoardWizardListingMarketingBatch({
               extraction: listingExtraction,
               targetBoardTitle,
@@ -7930,11 +7954,13 @@ export const generateBoardWizardBatch = onCall(
               narrationStyle,
               narrationSecondsPerCard,
               marketing: listingMarketing,
+              listingIntent,
             })
           : buildBoardWizardListingBatch({
               extraction: listingExtraction,
               targetBoardTitle,
               count,
+              listingIntent,
             })
         : accommodationExtraction
         ? buildAccommodationWizardBatch({

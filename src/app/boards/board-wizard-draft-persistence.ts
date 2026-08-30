@@ -43,11 +43,14 @@ type PersistedWizardPreferences = {
   media_mode: BoardWizardMediaMode;
   count_mode: BoardWizardCountMode;
   narration_seconds_per_card: number;
+  listing_intent: BoardWizardPersistedListingIntent;
   listing_marketing?: {
     style: 'warm' | 'guided' | 'luxury' | 'brisk' | 'investor';
     direction: string;
   };
 };
+
+export type BoardWizardPersistedListingIntent = 'default' | 'real-estate' | 'rental';
 
 /**
  * Optional wizard preferences live inside `result`, an established draft field.
@@ -62,6 +65,7 @@ export function boardWizardDraftPayloadWithPreferences<
   preferences: {
     countMode?: BoardWizardCountMode;
     narrationSecondsPerCard?: number;
+    listingIntent?: unknown;
     listingMarketing?: {
       style?: unknown;
       direction?: unknown;
@@ -88,6 +92,7 @@ export function boardWizardDraftPayloadWithPreferences<
         narration_seconds_per_card: normalizeBoardNarrationSeconds(
           preferences.narrationSecondsPerCard ?? DEFAULT_BOARD_NARRATION_SECONDS_PER_CARD,
         ),
+        listing_intent: normalizePersistedListingIntent(preferences.listingIntent),
         ...(preferences.listingMarketing ? {
           listing_marketing: normalizePersistedListingMarketing(preferences.listingMarketing),
         } : {}),
@@ -141,6 +146,14 @@ export function boardWizardDraftListingMarketing(value: Record<string, unknown>)
   direction: string;
 } {
   return normalizePersistedListingMarketing(boardWizardDraftPreferences(value)['listing_marketing']);
+}
+
+export function boardWizardDraftListingIntent(value: Record<string, unknown>): BoardWizardPersistedListingIntent {
+  return normalizePersistedListingIntent(boardWizardDraftPreferences(value)['listing_intent']);
+}
+
+function normalizePersistedListingIntent(value: unknown): BoardWizardPersistedListingIntent {
+  return value === 'real-estate' || value === 'rental' ? value : 'default';
 }
 
 function normalizePersistedListingMarketing(value: unknown): {

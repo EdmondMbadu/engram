@@ -883,6 +883,7 @@ export async function generateBoardWizardListingStory(params: {
   narrationSecondsPerCard: number;
   marketingStyle: string;
   direction: string;
+  listingIntent: 'auto' | 'sale' | 'rental';
 }): Promise<BoardWizardListingStoryScene[]> {
   const sceneCount = Math.max(1, Math.min(24, Math.round(params.sceneCount) || 1));
   const seconds = normalizeBoardNarrationSeconds(params.narrationSecondsPerCard);
@@ -891,8 +892,9 @@ export async function generateBoardWizardListingStory(params: {
     Object.entries(params.facts).filter(([, value]) => !!value).slice(0, 40),
   );
   const photos = params.photos.slice(0, 100);
+  const rental = params.listingIntent === 'rental';
   const prompt = [
-    'You are a meticulous real-estate listing marketing specialist and visual story editor.',
+    `You are a meticulous ${rental ? 'rental-property' : 'real-estate'} listing marketing specialist and visual story editor.`,
     `Create exactly ${Math.min(sceneCount, photos.length)} ordered scenes for ${params.listingName}, ${params.address}.`,
     `Marketing style: ${params.marketingStyle}. ${boardNarrationPromptInstructions(params.narrationStyle)}`,
     `Each narration should be approximately ${words} spoken words (${seconds} seconds), with complete sentences and a natural handoff to the next scene.`,
@@ -900,7 +902,9 @@ export async function generateBoardWizardListingStory(params: {
     'Choose each photo_index at most once. Do not use agent, logo, map, floor-plan, duplicate, or unknown images unless no suitable property image exists.',
     'Use only supplied facts and visible photo labels. Never invent views, finishes, room purposes, neighborhood claims, schools, safety, demographics, distances, superlatives, urgency, or agent identity.',
     'If a room classification confidence is below 0.65, use a neutral title. fact_keys must name every supplied fact used in that scene; use an empty array for purely visual narration.',
-    'The final scene must invite the viewer to verify price, status, disclosures, and showing details on the original listing. Keep attribution factual.',
+    rental
+      ? 'The final scene must invite the viewer to use the original rental listing to verify current price or rent, availability, fees, terms, and booking or application details. Keep attribution factual.'
+      : 'The final scene must invite the viewer to verify price, status, disclosures, and showing details on the original listing. Keep attribution factual.',
     params.direction ? `User direction: ${params.direction}` : '',
     `VERIFIED FACTS: ${JSON.stringify(facts)}`,
     `PHOTO ANALYSIS: ${JSON.stringify(photos)}`,

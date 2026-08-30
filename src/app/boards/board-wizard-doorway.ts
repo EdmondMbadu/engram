@@ -8,12 +8,13 @@ export type BoardWizardDoorwayId =
   | 'nearby-gems'
   | 'walking-tour'
   | 'driving-tour'
-  | 'real-estate';
+  | 'real-estate'
+  | 'rental-properties';
 
-export type BoardWizardDoorwayMode = Exclude<BoardWizardDoorwayId, 'real-estate'>;
+export type BoardWizardDoorwayMode = Exclude<BoardWizardDoorwayId, 'real-estate' | 'rental-properties'>;
 
 export function boardWizardModeForDoorway(id: BoardWizardDoorwayId): BoardWizardDoorwayMode {
-  return id === 'real-estate' ? 'url' : id;
+  return id === 'real-estate' || id === 'rental-properties' ? 'url' : id;
 }
 
 export function wrapBoardWizardDoorwayIndex(index: number, direction: number, total: number): number {

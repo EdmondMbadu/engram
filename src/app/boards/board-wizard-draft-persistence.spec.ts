@@ -1,5 +1,6 @@
 import {
   boardWizardDraftCountMode,
+  boardWizardDraftListingIntent,
   boardWizardDraftListingMarketing,
   boardWizardDraftMediaMode,
   boardWizardDraftNarrationSeconds,
@@ -28,6 +29,7 @@ describe('board wizard draft persistence contract', () => {
       media_mode: 'videos',
       count_mode: 'fixed',
       narration_seconds_per_card: 45,
+      listing_intent: 'default',
     });
     expect(payload.result.board).toEqual({ title: 'Draft board' });
     expect(payload.result.cards).toEqual([{ id: 'card-1' }]);
@@ -40,6 +42,7 @@ describe('board wizard draft persistence contract', () => {
       mode: 'url',
       result: { board: { title: 'Listing' }, cards: [] },
     }, 'images', {
+      listingIntent: 'rental',
       listingMarketing: { style: 'luxury', direction: '  Lead with the deck.  ' },
     });
     expect(payload.result.wizard_preferences.listing_marketing).toEqual({
@@ -50,7 +53,18 @@ describe('board wizard draft persistence contract', () => {
       style: 'luxury',
       direction: 'Lead with the deck.',
     });
+    expect(boardWizardDraftListingIntent(payload)).toBe('rental');
     expect(Object.prototype.hasOwnProperty.call(payload, 'listing_marketing')).toBeFalse();
+  });
+
+  it('restores listing intent with a safe default for legacy drafts', () => {
+    expect(boardWizardDraftListingIntent({
+      result: { wizard_preferences: { listing_intent: 'real-estate' } },
+    })).toBe('real-estate');
+    expect(boardWizardDraftListingIntent({ result: {} })).toBe('default');
+    expect(boardWizardDraftListingIntent({
+      result: { wizard_preferences: { listing_intent: 'invalid' } },
+    })).toBe('default');
   });
 
   it('restores count and narration preferences with safe legacy defaults', () => {

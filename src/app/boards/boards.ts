@@ -105,6 +105,7 @@ import {
 } from './board-wizard-media-mode';
 import {
   boardWizardDraftCountMode,
+  boardWizardDraftListingIntent,
   boardWizardDraftListingMarketing,
   boardWizardDraftMediaMode,
   boardWizardDraftNarrationSeconds,
@@ -299,7 +300,7 @@ type WizardCardEditorSection = 'details' | 'image';
 type OffGridLocationSource = 'spot' | 'words';
 type BoardWizardMode = 'describe' | 'paste' | 'photos' | 'off-grid' | 'nearby-gems' | 'url' | 'walking-tour' | 'driving-tour';
 type BoardWizardStep = 'choose' | 'configure' | 'loading' | 'source-review' | 'listing-setup' | 'preview' | 'done';
-type BoardWizardEntryIntent = 'default' | 'real-estate';
+type BoardWizardEntryIntent = 'default' | 'real-estate' | 'rental';
 type BoardWizardVibe = 'playful' | 'foodie' | 'traveler' | 'curator' | 'memory';
 type BoardWizardListingMarketingStyle = 'warm' | 'guided' | 'luxury' | 'brisk' | 'investor';
 type BoardWizardListingPreview = {
@@ -895,6 +896,7 @@ type BoardWizardDraft = {
   id: string;
   ownerUserId: string;
   mode: BoardWizardMode;
+  entryIntent: BoardWizardEntryIntent;
   targetBoardId: string;
   lockedTargetBoardId: string;
   contributionBoardId: string;
@@ -1114,6 +1116,9 @@ type BoardWizardDoorwayOption = {
   imageUrl: string;
   imagePosition?: string;
   collageUrls?: readonly string[];
+  eyebrow?: string;
+  actionLabel?: string;
+  talkThru?: boolean;
 };
 
 const BOARD_WIZARD_DOORWAY_ORDER: readonly BoardWizardDoorwayId[] = [
@@ -1126,6 +1131,7 @@ const BOARD_WIZARD_DOORWAY_ORDER: readonly BoardWizardDoorwayId[] = [
   'driving-tour',
   'photos',
   'real-estate',
+  'rental-properties',
   'walking-tour',
 ];
 
@@ -1151,6 +1157,7 @@ const BOARD_WIZARD_DOORWAY_VISUALS: Record<
     ],
   },
   'real-estate': { imageUrl: '/assets/board-wizard/real-estate-hero.jpg', imagePosition: 'center 58%' },
+  'rental-properties': { imageUrl: '/assets/board-wizard/rental-property-talkthru.jpg', imagePosition: 'center 54%' },
   'walking-tour': { imageUrl: '/assets/board-wizard/walking-tour.jpg', imagePosition: 'center 58%' },
 };
 
@@ -2772,14 +2779,20 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly wizardDoorwayModes = computed<BoardWizardDoorwayOption[]>(() => {
     const availableModes = new Map(this.wizardAvailableModes().map((mode) => [mode.id, mode]));
     return BOARD_WIZARD_DOORWAY_ORDER.flatMap((id): BoardWizardDoorwayOption[] => {
-      if (id === 'real-estate') {
+      if (id === 'real-estate' || id === 'rental-properties') {
         if (this.wizardLockedTargetBoard() || !availableModes.has('url')) return [];
+        const isRental = id === 'rental-properties';
         return [{
           id,
           mode: 'url',
-          label: 'Real estate',
-          description: 'Turn a property listing and its gallery into a connected, editable story.',
-          icon: 'home_work',
+          label: isRental ? 'Rental Property TalkThru Wizard' : 'Real Estate TalkThru Wizard',
+          description: isRental
+            ? 'Easily launch a unique rental listing as a personal, engaging TalkThru.'
+            : 'Create a personal, engaging TalkThru—not a static photo-by-photo walkthrough.',
+          icon: isRental ? 'key' : 'home_work',
+          eyebrow: 'TalkThru Wizard',
+          actionLabel: isRental ? 'Launch a rental' : 'Launch a listing',
+          talkThru: true,
           ...BOARD_WIZARD_DOORWAY_VISUALS[id],
         }];
       }
@@ -4150,7 +4163,9 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     if (!doorway) return;
     this.chooseWizardMode(
       boardWizardModeForDoorway(doorway.id),
-      doorway.id === 'real-estate' ? 'real-estate' : 'default',
+      doorway.id === 'real-estate'
+        ? 'real-estate'
+        : doorway.id === 'rental-properties' ? 'rental' : 'default',
     );
   }
 
@@ -4448,6 +4463,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.resetBoardWizard();
     this.wizardActiveDraftId.set(draft.id);
     this.wizardMode.set(draft.mode);
+    this.wizardEntryIntent.set(draft.entryIntent);
     this.wizardTargetBoardId.set(draft.targetBoardId);
     this.wizardLockedTargetBoardId.set(draft.lockedTargetBoardId || null);
     this.wizardContributionBoardId.set(draft.contributionBoardId || null);
@@ -5045,9 +5061,9 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       case 'photos':
         return 'IMG_2041 beach sunrise.jpg\nbirthday-dinner-kalaya.png\nmuseum-day.jpeg';
       case 'url':
-        return this.wizardEntryIntent() === 'real-estate'
-          ? 'https://example.com/property-listing'
-          : 'https://www.nationalmechanics.com/foodmenu-1';
+        if (this.wizardEntryIntent() === 'real-estate') return 'https://example.com/property-for-sale';
+        if (this.wizardEntryIntent() === 'rental') return 'https://example.com/rental-listing';
+        return 'https://www.nationalmechanics.com/foodmenu-1';
       case 'walking-tour':
         return 'A historical walking tour of Old City Philadelphia tracing where the Declaration of Independence was written, debated, and signed.';
       case 'driving-tour':
@@ -5085,7 +5101,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         'previewBoardWizardSource',
         { timeout: 90_000 },
       );
-      const response = await callable({ url: sourceUrl, prompt: this.wizardPrompt().trim() });
+      const response = await callable({
+        url: sourceUrl,
+        prompt: this.wizardPrompt().trim(),
+        listingIntent: this.wizardListingIntentForApi(),
+      });
       const data = response.data && typeof response.data === 'object'
         ? response.data as Record<string, unknown>
         : {};
@@ -5093,7 +5113,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       this.wizardSourceReviewUrl.set(sourceUrl);
       this.wizardSourceReviewExact.set(data['exact'] === true);
       this.wizardSourceReviewWarning.set(this.stringValue(data['warning'], '', 500));
-      if (data['specializedKind'] === 'real-estate') {
+      if (data['specializedKind'] === 'real-estate' || data['specializedKind'] === 'rental') {
         this.wizardListingPreview.set(this.normalizeWizardListingPreview(data['listingPreview'], sourceUrl));
         this.wizardSourceManifest.set(null);
         this.wizardSourceConfirmedUrl.set('');
@@ -17269,9 +17289,26 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
   wizardModeLabel(): string {
     if (this.wizardMode() === 'url' && this.wizardEntryIntent() === 'real-estate') {
-      return 'Real estate';
+      return 'Real Estate TalkThru';
+    }
+    if (this.wizardMode() === 'url' && this.wizardEntryIntent() === 'rental') {
+      return 'Rental Property TalkThru';
     }
     return this.wizardModes.find((mode) => mode.id === this.wizardMode())?.label ?? 'Wizard';
+  }
+
+  wizardIsTalkThruListing(): boolean {
+    return this.wizardEntryIntent() === 'real-estate' || this.wizardEntryIntent() === 'rental';
+  }
+
+  wizardIsRentalTalkThru(): boolean {
+    return this.wizardEntryIntent() === 'rental';
+  }
+
+  private wizardListingIntentForApi(): 'auto' | 'sale' | 'rental' {
+    if (this.wizardEntryIntent() === 'real-estate') return 'sale';
+    if (this.wizardEntryIntent() === 'rental') return 'rental';
+    return 'auto';
   }
 
   wizardLoadingMessage(): string {
@@ -17342,6 +17379,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     }
     return JSON.stringify({
       mode: this.wizardMode(),
+      entryIntent: this.wizardEntryIntent(),
       targetBoardId: this.wizardTargetBoardId(),
       lockedTargetBoardId: this.wizardLockedTargetBoardId(),
       contributionBoardId: this.wizardContributionBoardId(),
@@ -17449,6 +17487,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         id: draftId,
         ownerUserId: uid,
         mode: this.wizardMode(),
+        entryIntent: this.wizardEntryIntent(),
         targetBoardId: this.wizardTargetBoardId(),
         lockedTargetBoardId: this.wizardLockedTargetBoardId() ?? '',
         contributionBoardId: this.wizardContributionBoardId() ?? '',
@@ -17507,6 +17546,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       }, draft.mediaMode, {
         countMode: draft.countMode,
         narrationSecondsPerCard: draft.narrationSecondsPerCard,
+        listingIntent: draft.entryIntent,
         listingMarketing: {
           style: draft.listingMarketingStyle,
           direction: draft.listingMarketingDirection,
@@ -17603,6 +17643,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       const countMode = boardWizardDraftCountMode(value);
       const narrationSecondsPerCard = boardWizardDraftNarrationSeconds(value);
       const listingMarketing = boardWizardDraftListingMarketing(value);
+      const entryIntent = boardWizardDraftListingIntent(value);
       const tourVoiceValue = value['tour_voice_style'];
       const tourVoiceStyle: BoardTourVoiceStyle = tourVoiceValue === 'local' || tourVoiceValue === 'kid-friendly'
         ? tourVoiceValue
@@ -17611,6 +17652,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         id,
         ownerUserId,
         mode,
+        entryIntent,
         targetBoardId: this.stringValue(value['target_board_id'], 'new', 180),
         lockedTargetBoardId: this.stringValue(value['locked_target_board_id'], '', 180),
         contributionBoardId: this.stringValue(value['contribution_board_id'], '', 180),
@@ -17902,6 +17944,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         style: this.wizardListingMarketingStyle(),
         direction: this.wizardListingMarketingDirection().trim(),
       },
+      listingIntent: this.wizardListingIntentForApi(),
       deferMediaEnrichment: this.wizardShouldDeferMediaEnrichment(),
       tourOptions: this.isTourWizardMode(this.wizardMode())
         ? {
