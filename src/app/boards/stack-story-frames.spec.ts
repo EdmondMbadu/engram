@@ -36,4 +36,16 @@ describe('Stack story frames', () => {
       'cover', 'card', 'card', 'card', 'closing',
     ]);
   });
+
+  it('keeps a Talking Card as a marker-less interlude in a tour', () => {
+    const frames = buildStackStoryFrames([
+      { id: 'first', tour: { sequence: 1 } },
+      { id: 'guide', tour: null, conversation: { atlasId: 'atlas-guide' } },
+      { id: 'second', tour: { sequence: 2 } },
+    ], true);
+
+    expect(frames.map(stackStoryFrameKey)).toEqual([
+      'cover', 'card:first', 'card:guide', 'card:second', 'closing',
+    ]);
+  });
 });

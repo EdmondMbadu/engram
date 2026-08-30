@@ -168,7 +168,10 @@ export class DocumentsService {
     });
   }
 
-  async uploadFiles(fileList: FileList | File[]): Promise<void> {
+  async uploadFiles(
+    fileList: FileList | File[],
+    options?: { atlasId?: string | null },
+  ): Promise<void> {
     if (!this.functions || !this.storage) {
       return;
     }
@@ -183,7 +186,7 @@ export class DocumentsService {
 
     try {
       for (const file of files) {
-        await this.uploadSingleFile(file);
+        await this.uploadSingleFile(file, options?.atlasId ?? this.atlasService.activeAtlasId());
       }
     } catch (error) {
       this.uploadError.set(this.authService.toFriendlyError(error));
@@ -446,7 +449,7 @@ export class DocumentsService {
     }
   }
 
-  private async uploadSingleFile(file: File): Promise<void> {
+  private async uploadSingleFile(file: File, atlasId: string | null): Promise<void> {
     if (!this.functions || !this.storage) {
       return;
     }
@@ -460,7 +463,7 @@ export class DocumentsService {
       filename: file.name,
       mimeType: file.type,
       fileSize: file.size,
-      atlasId: this.atlasService.activeAtlasId(),
+      atlasId,
     });
 
     const storageRef = ref(this.storage, data.storagePath);

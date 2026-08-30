@@ -608,6 +608,64 @@ export class AtlasService {
     return ref.id;
   }
 
+  /** Creates the Atlas behind a Talking Card without changing the workspace's active Atlas. */
+  async createTalkingCardAtlas(input: {
+    name: string;
+    role?: string;
+    personaPrompt?: string;
+    imageUrl?: string | null;
+    isPublic?: boolean;
+  }): Promise<string | null> {
+    if (!this.firestore) return null;
+    const uid = this.authService.uid();
+    if (!uid) return null;
+    this.assertCanCreateWiki();
+
+    const name = input.name.trim().slice(0, 120) || 'Talking guide';
+    const role = input.role?.trim().slice(0, 240) || null;
+    const personaPrompt = input.personaPrompt?.trim().slice(0, 40000) || null;
+    const imageUrl = input.imageUrl?.trim().slice(0, 2000) || null;
+    const ref = await addDoc(collection(this.firestore, 'atlases'), {
+      user_id: uid,
+      wiki_type: 'person',
+      response_perspective: 'first_person',
+      name,
+      slug: this.slugify(name),
+      description: role,
+      landing_summary: role,
+      is_public: input.isPublic === true,
+      logo_url: imageUrl,
+      hero_url: null,
+      video_url: null,
+      cover_color: null,
+      default_answer_mode: 'wiki',
+      chat_guide: {
+        name,
+        label: role,
+        image_url: imageUrl,
+        banner_url: null,
+      },
+      persona_prompt: personaPrompt,
+      created_at: serverTimestamp(),
+      updated_at: serverTimestamp(),
+    });
+    return ref.id;
+  }
+
+  async getAccessibleAtlasById(atlasId: string): Promise<AtlasItem | null> {
+    if (!this.firestore || !atlasId.trim()) return null;
+    try {
+      const snapshot = await getDoc(doc(this.firestore, 'atlases', atlasId.trim()));
+      if (!snapshot.exists()) return null;
+      return this.hydrateAtlas({
+        id: snapshot.id,
+        ...(snapshot.data() as Record<string, unknown>),
+      });
+    } catch {
+      return null;
+    }
+  }
+
   async createCityAtlasFromTemplate(template: CityAtlasTemplate): Promise<string | null> {
     if (!this.firestore) return null;
     const uid = this.authService.uid();

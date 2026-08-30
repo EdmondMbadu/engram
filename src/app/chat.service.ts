@@ -25,7 +25,7 @@ import { AuthService } from './auth.service';
 import { getFirebaseConfig } from './firebase.config';
 import { getFirebaseFirestore, getFirebaseFunctions } from './firebase.client';
 
-type AskAtlasResponse = {
+export type AskAtlasResponse = {
   answer: string;
   citedEntryIds: string[];
   citedPassages: CitationPassage[];
@@ -45,7 +45,7 @@ type PublicChatStateResponse = {
   requiresSignIn: boolean;
 };
 
-type AskPublicAtlasResponse = {
+export type AskPublicAtlasResponse = {
   blocked: boolean;
   answer: string;
   citedEntryIds: string[];
@@ -85,7 +85,7 @@ type ChatAnswerSpeechResponse = {
   cached?: boolean;
 };
 
-type ElevenLabsVoiceSessionResponse = {
+export type ElevenLabsVoiceSessionResponse = {
   conversationToken?: string | null;
   signedUrl?: string | null;
   connectionType?: 'websocket' | 'webrtc' | null;
@@ -258,6 +258,35 @@ export class ChatService {
       this.latestCitations.set(data.citedPassages);
       this.knowledgeGap.set(data.knowledgeGap);
       this.latestThreadId.set(data.threadId);
+      return data;
+    } catch (error) {
+      this.submitError.set(this.authService.toFriendlyError(error));
+      return null;
+    } finally {
+      this.isSubmitting.set(false);
+    }
+  }
+
+  /** Owner/admin chat scoped to an explicit Atlas. Never changes activeAtlasId. */
+  async askScoped(
+    question: string,
+    atlasId: string,
+    threadId?: string | null,
+  ): Promise<AskAtlasResponse | null> {
+    if (!this.functions || !atlasId.trim()) return null;
+    this.isSubmitting.set(true);
+    this.submitError.set(null);
+    try {
+      const askAtlas = httpsCallable<
+        { question: string; threadId?: string | null; atlasId: string; answerMode: 'wiki' },
+        AskAtlasResponse
+      >(this.functions, 'askAtlas');
+      const { data } = await askAtlas({
+        question,
+        threadId: threadId ?? null,
+        atlasId: atlasId.trim(),
+        answerMode: 'wiki',
+      });
       return data;
     } catch (error) {
       this.submitError.set(this.authService.toFriendlyError(error));

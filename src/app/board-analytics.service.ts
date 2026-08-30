@@ -10,7 +10,11 @@ export type BoardAnalyticsEventType =
   | 'card_open'
   | 'outbound_click'
   | 'board_share'
-  | 'custom_link_copy';
+  | 'custom_link_copy'
+  | 'talking_card_open'
+  | 'talking_card_message'
+  | 'talking_card_voice_start'
+  | 'talking_card_voice_end';
 
 export type BoardInsightsRange = 7 | 30 | 90;
 
@@ -30,6 +34,10 @@ export type BoardInsights = {
     outboundClicks: number;
     shares: number;
     customLinkCopies: number;
+    talkingCardOpens?: number;
+    talkingCardMessages?: number;
+    talkingCardVoiceStarts?: number;
+    talkingCardVoiceEnds?: number;
   };
   daily: Array<{
     day: string;
@@ -40,10 +48,23 @@ export type BoardInsights = {
     outboundClicks: number;
     shares: number;
     customLinkCopies: number;
+    talkingCardOpens?: number;
+    talkingCardMessages?: number;
+    talkingCardVoiceStarts?: number;
+    talkingCardVoiceEnds?: number;
   }>;
   sources: Array<{ source: string; views: number }>;
   campaigns: Array<{ campaign: string; views: number }>;
-  cards: Array<{ cardId: string; title: string; opens: number; outboundClicks: number }>;
+  cards: Array<{
+    cardId: string;
+    title: string;
+    opens: number;
+    outboundClicks: number;
+    talkingCardOpens?: number;
+    talkingCardMessages?: number;
+    talkingCardVoiceStarts?: number;
+    talkingCardVoiceEnds?: number;
+  }>;
   lastUpdatedAt: string;
   definitions: { uniqueVisitors: string; engagedVisits: string };
 };
@@ -184,6 +205,14 @@ export class BoardAnalyticsService {
   trackShare(kind: 'board_share' | 'custom_link_copy' = 'board_share'): void {
     this.recordEngagementOnce();
     this.record(kind);
+  }
+
+  trackTalkingCard(
+    eventType: Extract<BoardAnalyticsEventType, `talking_card_${string}`>,
+    cardId: string,
+  ): void {
+    this.recordEngagementOnce();
+    this.record(eventType, { cardId });
   }
 
   async getInsights(boardId: string, days: BoardInsightsRange): Promise<BoardInsights> {

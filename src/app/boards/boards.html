@@ -100,6 +100,12 @@
                         }
                         <h4 [class]="stackTitleClass(card.title)">{{ card.title }}</h4>
                         <p>{{ stackCardSummary(board, card) }}</p>
+                        @if (isTalkingCard(card)) {
+                          <button type="button" class="talking-card-cta talking-card-cta--live" (click)="openTalkingCardConversation(card, $event, 'live')">
+                            <span class="material-symbols-outlined">graphic_eq</span>
+                            <strong>{{ talkingCardButtonLabel(card) }}</strong>
+                          </button>
+                        }
                         @if (stackCardHasMore(board, card) || stackPlaying() || tourSpeechPlaying() || stackNarrationLoading()) {
                           <div class="stack-preview__inline-actions">
                             @if (stackCardHasMore(board, card)) {
@@ -2442,7 +2448,7 @@
                               <span class="material-symbols-outlined">fullscreen</span>
                             </button>
                           } @else {
-                            <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
+                            <span class="material-symbols-outlined">{{ isTalkingCard(card) ? 'record_voice_over' : cardTypeIcon(card.type) }}</span>
                           }
                           <button type="button" class="tour-studio__replace-photo" (click)="openEditCard(card)">
                             <span class="material-symbols-outlined">photo_camera</span>
@@ -2677,6 +2683,21 @@
                       {{ tourAudioNotice() }}
                     </p>
                   }
+                </section>
+              }
+              @if (talkingCards(board).length) {
+                <section class="specialty-talking-cards" aria-label="Conversational tour guides">
+                  <h2>Talk with a guide</h2>
+                  <div>
+                    @for (guide of talkingCards(board); track guide.id) {
+                      <article>
+                        @if (guide.imageUrl) { <img [src]="guide.imageUrl" [alt]="guide.title" /> }
+                        @else { <span class="material-symbols-outlined">record_voice_over</span> }
+                        <span><small>Talking Card</small><strong>{{ guide.title }}</strong><em>{{ guide.subtitle }}</em></span>
+                        <button type="button" (click)="openTalkingCardConversation(guide, $event, 'board')">{{ talkingCardButtonLabel(guide) }}</button>
+                      </article>
+                    }
+                  </div>
                 </section>
               }
             } @else if (isSongBoard(board)) {
@@ -3081,6 +3102,21 @@
                     <p i18n>Clear the search or add cards with song titles, Spotify metadata, or preview URLs.</p>
                   </div>
                 }
+                @if (talkingCards(board).length) {
+                  <section class="specialty-talking-cards specialty-talking-cards--songs" aria-label="Conversational music guides">
+                    <h2>Talk with a guide</h2>
+                    <div>
+                      @for (guide of talkingCards(board); track guide.id) {
+                        <article>
+                          @if (guide.imageUrl) { <img [src]="guide.imageUrl" [alt]="guide.title" /> }
+                          @else { <span class="material-symbols-outlined">record_voice_over</span> }
+                          <span><small>Talking Card</small><strong>{{ guide.title }}</strong><em>{{ guide.subtitle }}</em></span>
+                          <button type="button" (click)="openTalkingCardConversation(guide, $event, 'board')">{{ talkingCardButtonLabel(guide) }}</button>
+                        </article>
+                      }
+                    </div>
+                  </section>
+                }
               </section>
             } @else {
             <div class="detail-cards-grid">
@@ -3275,6 +3311,9 @@
                       style="display: flex; flex-direction: column; overflow: hidden; border-radius: inherit; background: #fff;"
                     >
                       <div class="detail-card__media">
+                        @if (isTalkingCard(card)) {
+                          <span class="talking-card-badge"><span class="material-symbols-outlined">graphic_eq</span> Talking Card</span>
+                        }
                         @if (cardMediaPoster(card)) {
                           <button
                             type="button"
@@ -3305,7 +3344,7 @@
                           </button>
                         } @else {
                           <span class="detail-card__fallback">
-                            <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
+                            <span class="material-symbols-outlined">{{ isTalkingCard(card) ? 'record_voice_over' : cardTypeIcon(card.type) }}</span>
                           </span>
                         }
                         @if (!exploredRelatedCardParent() && (hasBoardInside(card) || relatedCardCount(card) > 0)) {
@@ -3383,7 +3422,7 @@
                           [attr.aria-label]="(isCardExpanded(card.id) ? 'Hide details for ' : 'Show details for ') + card.title"
                           (click)="toggleCardExpanded(card.id, $event)"
                         >
-                          <small>{{ cardTypeLabel(card.type) }}</small>
+                          <small>{{ isTalkingCard(card) ? 'Talking Card' : cardTypeLabel(card.type) }}</small>
                           <strong>{{ card.title }}</strong>
                           @if (cardDisplaySubtitle(board, card); as summarySubtitle) {
                             <span>{{ summarySubtitle }}</span>
@@ -3409,8 +3448,8 @@
                       <div class="detail-card__body">
                         <div class="detail-card__line">
                           <span>
-                            <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
-                            {{ cardTypeLabel(card.type) }}
+                            <span class="material-symbols-outlined">{{ isTalkingCard(card) ? 'record_voice_over' : cardTypeIcon(card.type) }}</span>
+                            {{ isTalkingCard(card) ? 'Talking Card' : cardTypeLabel(card.type) }}
                           </span>
                           @if (isLocationCardType(card.type)) {
                             <span>
@@ -3455,6 +3494,13 @@
                         }
                         @if (card.notes) {
                           <p class="detail-card__notes">{{ card.notes }}</p>
+                        }
+                        @if (isTalkingCard(card)) {
+                          <button type="button" class="talking-card-cta" (click)="openTalkingCardConversation(card, $event, 'board')">
+                            <span class="material-symbols-outlined">mic</span>
+                            <span><strong>{{ talkingCardButtonLabel(card) }}</strong><small>Text or voice conversation</small></span>
+                            <span class="material-symbols-outlined">arrow_forward</span>
+                          </button>
                         }
                         @if (card.tags.length) {
                           <div class="detail-card__tags">
@@ -8927,6 +8973,23 @@
             </section>
           }
 
+          <section class="board-settings-talking-card" aria-labelledby="board-settings-talking-card-title">
+            <span class="board-settings-talking-card__icon material-symbols-outlined" aria-hidden="true">record_voice_over</span>
+            <span class="board-settings-talking-card__copy">
+              <strong id="board-settings-talking-card-title">Talking Card</strong>
+              <small>Add a conversational avatar that visitors can talk to in Live View.</small>
+            </span>
+            <button
+              type="button"
+              class="boards-talking-action"
+              [disabled]="boardSettingsSaving()"
+              (click)="openTalkingCardEditorFromSettings(settingsBoard, $event)"
+            >
+              <span class="material-symbols-outlined" aria-hidden="true">add</span>
+              Add Talking Card
+            </button>
+          </section>
+
           @if (boardSettingsError()) {
             <p class="board-settings-error" style="margin: 0; border-radius: .75rem; background: #fff0ee; color: #9b2a20; font-size: .75rem; font-weight: 750; padding: .65rem;" role="alert">{{ boardSettingsError() }}</p>
           }
@@ -10730,5 +10793,29 @@
         }
       </section>
     </div>
+  }
+}
+
+@if (talkingCardEditorBoard(); as talkingBoard) {
+  <app-talking-card-editor
+    [boardTitle]="talkingBoard.title"
+    [boardVisibility]="talkingBoard.visibility"
+    (closed)="closeTalkingCardEditor()"
+    (saved)="addTalkingCard($event)"
+  ></app-talking-card-editor>
+}
+
+@if (talkingConversationCard(); as talkingCard) {
+  @if (talkingCard.conversation; as conversation) {
+    <app-talking-card-conversation
+      [atlasId]="conversation.atlasId"
+      [cardTitle]="talkingCard.title"
+      [cardSubtitle]="talkingCard.subtitle"
+      [imageUrl]="talkingCard.imageUrl"
+      [openingMessage]="conversation.openingMessage"
+      [surface]="talkingConversationSurface()"
+      (activity)="trackTalkingCardActivity(talkingCard, $event)"
+      (closed)="closeTalkingCardConversation()"
+    ></app-talking-card-conversation>
   }
 }

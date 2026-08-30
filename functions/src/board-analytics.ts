@@ -11,6 +11,10 @@ export const BOARD_ANALYTICS_EVENT_TYPES = [
   'outbound_click',
   'board_share',
   'custom_link_copy',
+  'talking_card_open',
+  'talking_card_message',
+  'talking_card_voice_start',
+  'talking_card_voice_end',
 ] as const;
 
 export type BoardAnalyticsEventType = typeof BOARD_ANALYTICS_EVENT_TYPES[number];
@@ -125,6 +129,10 @@ function eventCounter(type: BoardAnalyticsEventType): string {
     case 'outbound_click': return 'outbound_clicks';
     case 'board_share': return 'shares';
     case 'custom_link_copy': return 'custom_link_copies';
+    case 'talking_card_open': return 'talking_card_opens';
+    case 'talking_card_message': return 'talking_card_messages';
+    case 'talking_card_voice_start': return 'talking_card_voice_starts';
+    case 'talking_card_voice_end': return 'talking_card_voice_ends';
   }
 }
 
@@ -237,7 +245,7 @@ export const recordBoardAnalyticsEvent = onCall(
         sources: type === 'board_view' ? mapIncrement(source) : {},
         campaigns: type === 'board_view' && campaign ? mapIncrement(campaign) : {},
         campaign_labels: type === 'board_view' && campaign ? { [campaign]: campaign } : {},
-        cards: cardKey && (type === 'card_open' || type === 'outbound_click')
+        cards: cardKey && (type === 'card_open' || type === 'outbound_click' || type.startsWith('talking_card_'))
           ? cardMapIncrement(cardKey, counter)
           : {},
         updated_at: now,
@@ -285,10 +293,21 @@ export const getBoardInsights = onCall(
       outboundClicks: 0,
       shares: 0,
       customLinkCopies: 0,
+      talkingCardOpens: 0,
+      talkingCardMessages: 0,
+      talkingCardVoiceStarts: 0,
+      talkingCardVoiceEnds: 0,
     }]));
     const sources: NumericMap = {};
     const campaigns: NumericMap = {};
-    const cards = new Map<string, { opens: number; outboundClicks: number }>();
+    const cards = new Map<string, {
+      opens: number;
+      outboundClicks: number;
+      talkingCardOpens: number;
+      talkingCardMessages: number;
+      talkingCardVoiceStarts: number;
+      talkingCardVoiceEnds: number;
+    }>();
     let lastUpdatedAt = '';
 
     for (const snapshot of snapshots) {
@@ -307,6 +326,10 @@ export const getBoardInsights = onCall(
       row.outboundClicks += numeric(counts['outbound_clicks']);
       row.shares += numeric(counts['shares']);
       row.customLinkCopies += numeric(counts['custom_link_copies']);
+      row.talkingCardOpens += numeric(counts['talking_card_opens']);
+      row.talkingCardMessages += numeric(counts['talking_card_messages']);
+      row.talkingCardVoiceStarts += numeric(counts['talking_card_voice_starts']);
+      row.talkingCardVoiceEnds += numeric(counts['talking_card_voice_ends']);
       mergeNumericMap(sources, value['sources']);
       mergeNumericMap(campaigns, value['campaigns']);
       if (value['cards'] && typeof value['cards'] === 'object') {
@@ -314,9 +337,20 @@ export const getBoardInsights = onCall(
           const cardCounts = rawCard && typeof rawCard === 'object'
             ? rawCard as Record<string, unknown>
             : {};
-          const existing = cards.get(cardId) ?? { opens: 0, outboundClicks: 0 };
+          const existing = cards.get(cardId) ?? {
+            opens: 0,
+            outboundClicks: 0,
+            talkingCardOpens: 0,
+            talkingCardMessages: 0,
+            talkingCardVoiceStarts: 0,
+            talkingCardVoiceEnds: 0,
+          };
           existing.opens += numeric(cardCounts['card_opens']);
           existing.outboundClicks += numeric(cardCounts['outbound_clicks']);
+          existing.talkingCardOpens += numeric(cardCounts['talking_card_opens']);
+          existing.talkingCardMessages += numeric(cardCounts['talking_card_messages']);
+          existing.talkingCardVoiceStarts += numeric(cardCounts['talking_card_voice_starts']);
+          existing.talkingCardVoiceEnds += numeric(cardCounts['talking_card_voice_ends']);
           cards.set(cardId, existing);
         }
       }
@@ -335,6 +369,10 @@ export const getBoardInsights = onCall(
       outboundClicks: total.outboundClicks + row.outboundClicks,
       shares: total.shares + row.shares,
       customLinkCopies: total.customLinkCopies + row.customLinkCopies,
+      talkingCardOpens: total.talkingCardOpens + row.talkingCardOpens,
+      talkingCardMessages: total.talkingCardMessages + row.talkingCardMessages,
+      talkingCardVoiceStarts: total.talkingCardVoiceStarts + row.talkingCardVoiceStarts,
+      talkingCardVoiceEnds: total.talkingCardVoiceEnds + row.talkingCardVoiceEnds,
     }), {
       views: 0,
       uniqueVisitors: 0,
@@ -343,6 +381,10 @@ export const getBoardInsights = onCall(
       outboundClicks: 0,
       shares: 0,
       customLinkCopies: 0,
+      talkingCardOpens: 0,
+      talkingCardMessages: 0,
+      talkingCardVoiceStarts: 0,
+      talkingCardVoiceEnds: 0,
     });
     const boardCards = Array.isArray(board['cards']) ? board['cards'] as Array<Record<string, unknown>> : [];
     const cardTitles = new Map(boardCards.map((card) => [cleanText(card['id'], 180), cleanText(card['title'], 120)]));
@@ -366,7 +408,9 @@ export const getBoardInsights = onCall(
         .slice(0, 20),
       cards: [...cards.entries()]
         .map(([cardId, activity]) => ({ cardId, title: cardTitles.get(cardId) || 'Board card', ...activity }))
-        .sort((left, right) => (right.outboundClicks + right.opens) - (left.outboundClicks + left.opens))
+        .sort((left, right) =>
+          (right.outboundClicks + right.opens + right.talkingCardOpens + right.talkingCardMessages + right.talkingCardVoiceStarts)
+          - (left.outboundClicks + left.opens + left.talkingCardOpens + left.talkingCardMessages + left.talkingCardVoiceStarts))
         .slice(0, 50),
       lastUpdatedAt,
       definitions: {

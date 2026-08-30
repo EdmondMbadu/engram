@@ -16461,7 +16461,7 @@ export const createElevenLabsVoiceSession = onCall(
       dynamicVariables: {
         atlas_id: atlasId ?? '',
         atlas_name: atlasName ?? '',
-        answer_mode: 'internet',
+        answer_mode: atlasRecord?.['default_answer_mode'] === 'internet' ? 'internet' : 'wiki',
         visitor_id: visitorId,
         link_delivery_instruction: 'If the user asks for links, websites, maps, addresses, or asks you to send links, tell them the relevant links will be collected and included in the recap email after they hang up. Do not say you cannot send links directly.',
         preferred_language_code: voicePreference.languageCode ?? '',

@@ -1,6 +1,7 @@
 export type StackStoryCardLike = {
   id: string;
   tour?: { sequence?: number | null } | null;
+  conversation?: { atlasId?: string | null } | null;
 };
 
 export type StackStoryFrame<T> =

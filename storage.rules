@@ -2,6 +2,15 @@ rules_version = '2';
 
 service firebase.storage {
   match /b/{bucket}/o {
+    function canManageAtlas(atlasId) {
+      let atlas = firestore.get(/databases/(default)/documents/atlases/$(atlasId)).data;
+      return request.auth != null
+        && (
+          atlas.user_id == request.auth.uid
+          || (atlas.admin_user_ids is list && request.auth.uid in atlas.admin_user_ids)
+        );
+    }
+
     match /public-board-covers/{boardId}/{fileName=**} {
       allow read: if true;
       allow write: if false;
@@ -63,7 +72,8 @@ service firebase.storage {
 
     match /atlases/{atlasId}/{fileName=**} {
       allow read: if true;
-      allow write: if request.auth != null
+      allow delete: if canManageAtlas(atlasId);
+      allow create, update: if canManageAtlas(atlasId)
         && (
           (request.resource.contentType.matches('image/.*') && request.resource.size < 10 * 1024 * 1024)
           || (request.resource.contentType.matches('video/.*') && request.resource.size < 100 * 1024 * 1024)

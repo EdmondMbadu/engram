@@ -45,6 +45,8 @@ import {
 } from './nearby-gems-board/nearby-gems-board';
 import { VideoLibraryService } from '../video-library/video-library.service';
 import { BoardPromoImageDialogComponent } from './board-promo-image-dialog';
+import { TalkingCardEditorComponent } from '../talking-card-editor/talking-card-editor';
+import { TalkingCardConversationComponent } from '../talking-card-conversation/talking-card-conversation';
 import { SpotifyPlaybackService, type SpotifyTrack } from '../spotify-playback.service';
 import { StackNarrationSessionService } from '../stack-narration-session.service';
 import {
@@ -153,6 +155,12 @@ import {
   type BoardInsideDisplay,
 } from './board-inside-display';
 import { canReorderCardSurface } from './card-interaction';
+import {
+  normalizeBoardCardConversation,
+  talkingCardCtaLabel,
+  type BoardCardConversation,
+  type TalkingCardEditorResult,
+} from './talking-card';
 import { cardPresentationSubtitle } from './card-numbering';
 import { cardNotesForPersistence, cardNotesSummary } from './card-notes';
 import { cardPhotoLimit } from './board-card-photo-limit';
@@ -484,6 +492,7 @@ type BoardCard = {
   tour: BoardCardTour | null;
   childBoardId?: string;
   relatedCards?: BoardCard[];
+  conversation?: BoardCardConversation | null;
   createdAt: string;
   updatedAt: string;
 };
@@ -1583,10 +1592,10 @@ type BoardLoadContext = {
 
 @Component({
   selector: 'app-boards',
-  imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink, BoardCollectionCreateComponent, BoardCollectionListComponent, CustomPublicUrlDialogComponent, BoardPromoImageDialogComponent, NearbyGemsBoardComponent],
+  imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink, BoardCollectionCreateComponent, BoardCollectionListComponent, CustomPublicUrlDialogComponent, BoardPromoImageDialogComponent, NearbyGemsBoardComponent, TalkingCardEditorComponent, TalkingCardConversationComponent],
   providers: [DocxExportService],
   templateUrl: './boards.html',
-  styleUrls: ['./boards.css', './tour-experience.css', './board-wizard-drafts.css', './board-wizard-media-mode.css', './board-narration-style.css', './board-wizard-redesign.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css', './stack-script.css', './stack-cover-final.css', './stack-doc-export.css', './board-city-tag.css', './board-custom-link.css', './nearby-gems-gallery.css'],
+  styleUrls: ['./boards.css', './tour-experience.css', './board-wizard-drafts.css', './board-wizard-media-mode.css', './board-narration-style.css', './board-wizard-redesign.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css', './stack-script.css', './stack-cover-final.css', './stack-doc-export.css', './board-city-tag.css', './board-custom-link.css', './nearby-gems-gallery.css', './talking-card.css'],
 })
 export class BoardsComponent implements AfterViewInit, OnDestroy {
   private readonly localeId = inject(LOCALE_ID);
@@ -1810,6 +1819,18 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly boardDialogOpen = signal(false);
   readonly creatingBoardInside = signal<BoardInsideContext | null>(null);
   readonly cardDialogOpen = signal(false);
+  readonly talkingCardEditorBoardId = signal<string | null>(null);
+  readonly talkingConversationCardId = signal<string | null>(null);
+  readonly talkingConversationSurface = signal<'board' | 'live'>('board');
+  readonly talkingCardEditorBoard = computed(() => {
+    const boardId = this.talkingCardEditorBoardId();
+    return boardId ? this.boards().find((board) => board.id === boardId) ?? null : null;
+  });
+  readonly talkingConversationCard = computed(() => {
+    const cardId = this.talkingConversationCardId();
+    if (!cardId) return null;
+    return this.boards().flatMap((board) => board.cards).find((card) => card.id === cardId) ?? null;
+  });
   readonly relatedCardEditorOpen = signal(false);
   readonly relatedCardParentId = signal<string | null>(null);
   readonly relatedCardEditingId = signal<string | null>(null);
@@ -2457,12 +2478,13 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       ?? null;
   });
   readonly boardLearnBoard = computed(() => this.boardLearnOpen() ? this.selectedBoard() : null);
+  readonly boardLearnCards = computed(() => this.boardLearnBoard()?.cards.filter((card) => !this.isTalkingCard(card)) ?? []);
   readonly boardLearnStudyCard = computed(() => {
-    const board = this.boardLearnBoard();
-    if (!board?.cards.length) {
+    const cards = this.boardLearnCards();
+    if (!cards.length) {
       return null;
     }
-    return board.cards[Math.min(this.boardLearnStudyIndex(), board.cards.length - 1)] ?? null;
+    return cards[Math.min(this.boardLearnStudyIndex(), cards.length - 1)] ?? null;
   });
   readonly boardLearnCurrentQuestion = computed(() => {
     const quiz = this.boardLearnActiveQuiz();
@@ -3011,6 +3033,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   });
   readonly stackCurrentNarrationFrame = computed<StackFrame | null>(() => {
     const frame = this.stackCurrentFrame();
+    if (frame.kind === 'card' && this.isTalkingCard(frame.card)) return null;
     return frame.kind === 'card' || frame.kind === 'handoff' ? frame : null;
   });
   readonly stackTourNarrationConsent = signal(false);
@@ -3128,6 +3151,12 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       if (!signature || signature === this.likeMetricsSignature) return;
       this.likeMetricsSignature = signature;
       void this.syncLikeMetrics(targets);
+    });
+    effect(() => {
+      const card = this.stackCurrentCard();
+      if (this.stackDirectView() && this.stackPlaying() && this.isTalkingCard(card)) {
+        this.stopStackPlayback();
+      }
     });
     this.route.paramMap.subscribe((params) => {
       const routePath = this.route.snapshot.routeConfig?.path ?? '';
@@ -6226,6 +6255,15 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       this.redirectToPrivateBoardsPricing();
       return;
     }
+    if (visibility === 'public' && current.visibility !== 'public') {
+      const talkingCards = current.cards.filter((card) => this.isTalkingCard(card));
+      const avatars = await Promise.all(talkingCards.map((card) =>
+        this.atlasService.getAccessibleAtlasById(card.conversation?.atlasId ?? '')));
+      if (avatars.some((atlas) => !atlas?.is_public)) {
+        this.boardSettingsError.set('This board contains a private or unavailable Talking Card. Publish its avatar in Wiki settings, or remove that card, before making the board public.');
+        return;
+      }
+    }
 
     const showCardNumbersChanged = this.boardShowsCardNumbers(current) !== draft.showCardNumbers;
     const insideCardsDisplayChanged = this.boardInsideDisplay(current) !== draft.insideCardsDisplay;
@@ -6813,6 +6851,108 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       pending.push(...children.map((board) => board.id));
     }
     return descendants;
+  }
+
+  openTalkingCardEditor(boardId = this.selectedBoard()?.id ?? null, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const board = this.boards().find((item) => item.id === boardId);
+    if (!board || !this.canEditBoard(board)) {
+      this.boardsSyncError.set('Only the board owner can add Talking Cards.');
+      return;
+    }
+    this.talkingCardEditorBoardId.set(board.id);
+  }
+
+  openTalkingCardEditorFromSettings(board: Board, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (!this.canEditBoard(board)) {
+      this.boardSettingsError.set('Only the board owner can add Talking Cards.');
+      return;
+    }
+    this.boardSettingsBoardId.set(null);
+    this.boardSettingsError.set(null);
+    this.talkingCardEditorBoardId.set(board.id);
+  }
+
+  closeTalkingCardEditor(): void {
+    this.talkingCardEditorBoardId.set(null);
+  }
+
+  async addTalkingCard(result: TalkingCardEditorResult): Promise<void> {
+    const board = this.talkingCardEditorBoard();
+    if (!board || !this.canEditBoard(board)) return;
+    const now = new Date().toISOString();
+    const card = this.cardFromRecord({
+      id: this.createId(),
+      title: result.title,
+      subtitle: result.subtitle,
+      notes: result.openingMessage,
+      type: 'note',
+      scope: 'place',
+      status: 'saved',
+      rating: 5,
+      imageUrl: result.imageUrl,
+      imageUrls: result.imageUrl ? [result.imageUrl] : [],
+      tags: ['talking-card', 'conversational-guide'],
+      tour: null,
+      conversation: {
+        version: 1,
+        provider: 'atlas',
+        atlasId: result.atlasId,
+        openingMessage: result.openingMessage,
+        ctaLabel: result.ctaLabel,
+      },
+      createdAt: now,
+      updatedAt: now,
+    });
+    if (!card) return;
+    const cards = result.placement === 'start' ? [card, ...board.cards] : [...board.cards, card];
+    const nextBoard = { ...board, cards, updatedAt: now };
+    this.boards.update((boards) => boards.map((item) => item.id === board.id ? nextBoard : item));
+    this.closeTalkingCardEditor();
+    await this.persistAndReplaceBoard(nextBoard);
+  }
+
+  isTalkingCard(card: Pick<BoardCard, 'conversation'> | null | undefined): boolean {
+    return !!card?.conversation?.atlasId;
+  }
+
+  talkingCardButtonLabel(card: Pick<BoardCard, 'conversation'>): string {
+    return talkingCardCtaLabel(card.conversation);
+  }
+
+  openTalkingCardConversation(card: BoardCard, event?: Event, surface: 'board' | 'live' = 'board'): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (!card.conversation?.atlasId) return;
+    this.stopStackPlayback();
+    this.stopTourSpeech();
+    this.stopSongPreview();
+    this.stopStackAudioPreview();
+    this.stopStackVoicePreview();
+    this.spotify.closeEmbeddedPlayer();
+    if (this.spotify.playing()) void this.spotify.togglePlayback();
+    this.talkingConversationSurface.set(surface);
+    this.talkingConversationCardId.set(card.id);
+    this.boardAnalytics.trackTalkingCard('talking_card_open', card.id);
+  }
+
+  trackTalkingCardActivity(card: BoardCard, activity: 'message' | 'voice_start' | 'voice_end'): void {
+    this.boardAnalytics.trackTalkingCard(
+      activity === 'message'
+        ? 'talking_card_message'
+        : activity === 'voice_start'
+          ? 'talking_card_voice_start'
+          : 'talking_card_voice_end',
+      card.id,
+    );
+  }
+
+  closeTalkingCardConversation(): void {
+    this.talkingConversationCardId.set(null);
+    // Deliberately remain paused in Live view. The visitor explicitly resumes the flow.
   }
 
   openCreateCard(boardId = this.selectedBoard()?.id ?? null): void {
@@ -9237,6 +9377,15 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       return [];
     }
     return board.cards.filter((card) => this.isSongCard(card));
+  }
+
+  talkingCards(board: Board | null): BoardCard[] {
+    if (!board) return [];
+    const query = this.cardSearch().trim().toLowerCase();
+    return board.cards.filter((card) => this.isTalkingCard(card) && (!query || [card.title, card.subtitle, card.notes]
+      .join(' ')
+      .toLowerCase()
+      .includes(query)));
   }
 
   selectSongCard(index: number, event?: Event): void {
@@ -12055,7 +12204,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   openBoardLearn(board: Board, event?: Event): void {
     event?.preventDefault();
     event?.stopPropagation();
-    if (!board.cards.length) {
+    if (!board.cards.some((card) => !this.isTalkingCard(card))) {
       return;
     }
     this.boardLearnOpen.set(true);
@@ -12107,26 +12256,27 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   }
 
   boardQuizEligibleCount(board: Board): number {
-    return boardQuizEligibleCardCount(board.cards);
+    return boardQuizEligibleCardCount(board.cards.filter((card) => !this.isTalkingCard(card)));
   }
 
   startBoardStudy(sourceCardId?: string): void {
     const board = this.boardLearnBoard();
-    if (!board?.cards.length) {
+    const cards = this.boardLearnCards();
+    if (!board || !cards.length) {
       return;
     }
-    const index = sourceCardId ? board.cards.findIndex((card) => card.id === sourceCardId) : 0;
+    const index = sourceCardId ? cards.findIndex((card) => card.id === sourceCardId) : 0;
     this.boardLearnStudyIndex.set(index >= 0 ? index : 0);
     this.boardLearnStudyRevealed.set(false);
     this.boardLearnView.set('study');
   }
 
   stepBoardStudy(direction: number): void {
-    const board = this.boardLearnBoard();
-    if (!board?.cards.length) {
+    const cards = this.boardLearnCards();
+    if (!cards.length) {
       return;
     }
-    const next = (this.boardLearnStudyIndex() + direction + board.cards.length) % board.cards.length;
+    const next = (this.boardLearnStudyIndex() + direction + cards.length) % cards.length;
     this.boardLearnStudyIndex.set(next);
     this.boardLearnStudyRevealed.set(false);
   }
@@ -12141,7 +12291,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       return;
     }
     const draft = !regenerate ? this.cloneBoardLearningQuiz(board.learningQuiz) : null;
-    const generated = draft ?? buildBoardLearningQuiz(board);
+    const generated = draft ?? buildBoardLearningQuiz({ ...board, cards: board.cards.filter((card) => !this.isTalkingCard(card)) });
     if (!generated) {
       this.boardLearnQuizError.set($localize`Add at least three cards with a subtitle, summary, notes, or tags before making a quiz.`);
       return;
@@ -20098,6 +20248,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
             nearby: this.normalizeNearbyGemMetrics((card as Partial<BoardCard>).nearby),
             stickers: this.normalizeStickers(card.stickers),
             tour: this.normalizeCardTour((card as BoardCard).tour),
+            conversation: normalizeBoardCardConversation((card as Partial<BoardCard>).conversation),
             childBoardId: typeof (card as BoardCard).childBoardId === 'string' ? (card as BoardCard).childBoardId : '',
             relatedCards: Array.isArray((card as BoardCard).relatedCards)
               ? ((card as BoardCard).relatedCards ?? [])
@@ -20612,6 +20763,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
           .filter((card): card is BoardCard => !!card)
           .slice(0, 100)
         : [],
+      conversation: normalizeBoardCardConversation(data['conversation']),
       createdAt: typeof data['createdAt'] === 'string' ? data['createdAt'] : new Date().toISOString(),
       updatedAt: typeof data['updatedAt'] === 'string' ? data['updatedAt'] : new Date().toISOString(),
     };

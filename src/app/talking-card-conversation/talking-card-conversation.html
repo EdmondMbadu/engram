@@ -1,0 +1,51 @@
+<div class="talking-chat-backdrop" (click)="close()">
+  <section class="talking-chat" role="dialog" aria-modal="true" aria-labelledby="talking-chat-title" (click)="$event.stopPropagation()">
+    <header class="talking-chat__header">
+      <div class="talking-chat__identity">
+        <div class="talking-chat__avatar">
+          @if (avatarImage()) { <img [src]="avatarImage()" [alt]="avatarName()" /> }
+          @else { <span class="material-symbols-outlined">record_voice_over</span> }
+          <i aria-hidden="true"></i>
+        </div>
+        <div><span>Talking Card</span><h2 id="talking-chat-title">{{ avatarName() }}</h2><p>{{ cardSubtitle() }}</p></div>
+      </div>
+      <button type="button" class="talking-chat__close" aria-label="Close conversation" (click)="close()"><span class="material-symbols-outlined">close</span></button>
+    </header>
+
+    @if (loadingAtlas()) {
+      <div class="talking-chat__state"><span class="material-symbols-outlined talking-chat__spin">progress_activity</span><p>Preparing the conversation…</p></div>
+    } @else if (unavailable()) {
+      <div class="talking-chat__state"><span class="material-symbols-outlined">lock</span><h3>This avatar is unavailable</h3><p>It may be private, unpublished, or no longer exist. The card remains visible, but conversation is disabled.</p></div>
+    } @else {
+      <div class="talking-chat__messages" aria-live="polite">
+        @for (message of messages(); track message.id) {
+          <div class="talking-chat__message" [class.is-user]="message.role === 'user'">
+            <span>{{ message.role === 'user' ? 'You' : avatarName() }}</span><p>{{ message.text }}</p>
+          </div>
+        }
+        @if (submitting()) { <div class="talking-chat__typing" aria-label="Avatar is answering"><i></i><i></i><i></i></div> }
+      </div>
+
+      <div class="talking-chat__voice" [class.is-live]="voiceStatus() === 'connected'">
+        @if (voiceStatus() === 'connected') {
+          <div><strong>Voice conversation is live</strong><span>Your microphone is {{ voiceMuted() ? 'muted' : 'on' }}</span></div>
+          <button type="button" (click)="toggleMute()"><span class="material-symbols-outlined">{{ voiceMuted() ? 'mic_off' : 'mic' }}</span>{{ voiceMuted() ? 'Unmute' : 'Mute' }}</button>
+          <button type="button" class="is-end" (click)="endVoice()"><span class="material-symbols-outlined">call_end</span>End</button>
+        } @else {
+          <button type="button" class="talking-chat__start-voice" [disabled]="voiceStatus() === 'connecting'" (click)="startVoice()">
+            <span class="material-symbols-outlined">{{ voiceStatus() === 'connecting' ? 'progress_activity' : 'mic' }}</span>
+            {{ voiceStatus() === 'connecting' ? 'Connecting…' : 'Start voice conversation' }}
+          </button>
+          <span>Microphone permission is requested only when you start.</span>
+        }
+      </div>
+
+      @if (errorMessage()) { <p class="talking-chat__error" role="alert">{{ errorMessage() }}</p> }
+      <form class="talking-chat__composer" (submit)="$event.preventDefault(); send()">
+        <textarea rows="2" maxlength="2000" aria-label="Message" placeholder="Ask a question…" [ngModel]="draft()" (ngModelChange)="draft.set($event)" name="message"></textarea>
+        <button type="submit" [disabled]="!draft().trim() || submitting()" aria-label="Send message"><span class="material-symbols-outlined">arrow_upward</span></button>
+      </form>
+      <p class="talking-chat__disclaimer">AI can make mistakes. Verify important information.</p>
+    }
+  </section>
+</div>

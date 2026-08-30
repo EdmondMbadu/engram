@@ -1,0 +1,92 @@
+<div class="talking-editor-backdrop" (click)="close()">
+  <section class="talking-editor" role="dialog" aria-modal="true" aria-labelledby="talking-editor-title" (click)="$event.stopPropagation()">
+    <header class="talking-editor__header">
+      <div>
+        <span class="talking-editor__eyebrow">{{ boardTitle() }}</span>
+        <h2 id="talking-editor-title">Add a Talking Card</h2>
+        <p>Add a conversational guide anywhere in this board’s flow.</p>
+      </div>
+      <button type="button" class="talking-editor__icon" aria-label="Close Talking Card editor" (click)="close()">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </header>
+
+    <div class="talking-editor__tabs" role="tablist" aria-label="Avatar source">
+      <button type="button" role="tab" [attr.aria-selected]="mode() === 'existing'" [class.is-active]="mode() === 'existing'" (click)="setMode('existing')">Use existing avatar</button>
+      <button type="button" role="tab" [attr.aria-selected]="mode() === 'new'" [class.is-active]="mode() === 'new'" (click)="setMode('new')">Create a new avatar</button>
+    </div>
+
+    <div class="talking-editor__body">
+      @if (mode() === 'existing') {
+        <label>
+          <span>Conversational avatar</span>
+          <select [ngModel]="selectedAtlasId()" (ngModelChange)="selectExistingAtlas($event)">
+            <option value="">Choose an avatar…</option>
+            @for (atlas of availableAtlases(); track atlas.id) {
+              <option [value]="atlas.id">{{ atlas.chat_guide?.name || atlas.name }}{{ atlas.is_public ? ' · Public' : ' · Private' }}</option>
+            }
+          </select>
+        </label>
+        @if (!availableAtlases().length) {
+          <p class="talking-editor__notice">You do not have an avatar yet. Choose “Create a new avatar” to make one here.</p>
+        }
+        @if (selectedAtlas(); as avatar) {
+          <div class="talking-editor__avatar-summary">
+            <div class="talking-editor__avatar-image">
+              @if (imagePreviewUrl()) { <img [src]="imagePreviewUrl()" [alt]="name()" /> }
+              @else { <span class="material-symbols-outlined">record_voice_over</span> }
+            </div>
+            <div><strong>{{ name() }}</strong><span>{{ role() || 'Conversational guide' }}</span></div>
+          </div>
+          @if (needsPublication()) {
+            <label class="talking-editor__check">
+              <input type="checkbox" [ngModel]="publishAvatar()" (ngModelChange)="publishAvatar.set($event)" />
+              <span>Publish this avatar so visitors to this public board can talk to it.</span>
+            </label>
+          }
+        }
+      } @else {
+        <div class="talking-editor__grid">
+          <label><span>Name *</span><input maxlength="120" [ngModel]="name()" (ngModelChange)="name.set($event)" placeholder="Maya Chen" /></label>
+          <label><span>Role or subtitle</span><input maxlength="240" [ngModel]="role()" (ngModelChange)="role.set($event)" placeholder="Listing specialist" /></label>
+        </div>
+        <label><span>Avatar image</span><input type="file" accept="image/*" (change)="onImageSelected($event)" /></label>
+        @if (imagePreviewUrl()) { <img class="talking-editor__preview" [src]="imagePreviewUrl()" alt="Avatar preview" /> }
+        <label>
+          <span>System prompt *</span>
+          <textarea rows="7" maxlength="40000" [ngModel]="personaPrompt()" (ngModelChange)="personaPrompt.set($event)" placeholder="You are Maya. Speak in the first person. Answer from the supplied documents, be candid about uncertainty, and never invent property facts."></textarea>
+          <small>This becomes the avatar’s first-person persona. It is stored on the avatar, never copied into the board.</small>
+        </label>
+        <label><span>Knowledge documents (up to 10)</span><input type="file" multiple (change)="onDocumentsSelected($event)" /></label>
+        @if (documentFiles().length) { <small>{{ documentFiles().length }} file(s) selected</small> }
+        <label>
+          <span>Conversation voice</span>
+          <select [ngModel]="catalogVoiceId()" (ngModelChange)="catalogVoiceId.set($event)">
+            <option value="">Default conversation voice</option>
+            @for (voice of voices; track voice.id) { <option [value]="voice.id">{{ voice.name }} · {{ voice.accent }} · {{ voice.style }}</option> }
+          </select>
+        </label>
+        @if (publicBoard()) {
+          <p class="talking-editor__notice">This avatar will be public because it is being added to a public board.</p>
+        }
+      }
+
+      <div class="talking-editor__grid">
+        <label><span>Opening message *</span><textarea rows="3" maxlength="500" [ngModel]="openingMessage()" (ngModelChange)="openingMessage.set($event)"></textarea></label>
+        <div>
+          <label><span>Button label</span><input maxlength="48" [ngModel]="ctaLabel()" (ngModelChange)="ctaLabel.set($event)" /></label>
+          <label><span>Place card</span><select [ngModel]="placement()" (ngModelChange)="placement.set($event)"><option value="end">At the end</option><option value="start">At the beginning</option></select></label>
+        </div>
+      </div>
+      @if (errorMessage()) { <p class="talking-editor__error" role="alert">{{ errorMessage() }}</p> }
+    </div>
+
+    <footer class="talking-editor__footer">
+      <button type="button" class="talking-editor__secondary" (click)="close()">Cancel</button>
+      <button type="button" class="talking-editor__primary" [disabled]="!canSave()" (click)="save()">
+        @if (saving()) { <span class="material-symbols-outlined talking-editor__spin">progress_activity</span> Saving… }
+        @else { <span class="material-symbols-outlined">record_voice_over</span> Add Talking Card }
+      </button>
+    </footer>
+  </section>
+</div>

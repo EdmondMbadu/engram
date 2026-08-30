@@ -46,6 +46,7 @@ export function extractBoardTranslationSource(value: unknown): BoardTranslationS
     addSegment(segments, `${prefix}.shortSummary`, card['shortSummary']);
     addSegment(segments, `${prefix}.availability`, card['availability']);
     addSegment(segments, `${prefix}.productCategory`, card['productCategory']);
+    addSegment(segments, `${prefix}.conversation.openingMessage`, recordOrEmpty(card['conversation'])['openingMessage']);
     arrayOrEmpty(card['tags']).forEach((tag, tagIndex) => {
       addSegment(segments, `${prefix}.tags.${tagIndex}`, tag);
     });
