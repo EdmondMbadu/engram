@@ -750,7 +750,10 @@ export type BoardWizardListingPhotoAnalysis = {
   index: number;
   sceneType: string;
   roomType: string;
+  /** Permanent or attached property details that can be described as features. */
   features: string[];
+  /** Movable items visible in the photograph; not evidence that they convey. */
+  movableFurnishings?: string[];
   qualityScore: number;
   heroScore: number;
   confidence: number;
@@ -775,11 +778,12 @@ const boardWizardListingPhotoSchema = {
       scene_type: { type: 'string' },
       room_type: { type: 'string' },
       features: { type: 'array', items: { type: 'string' } },
+      movable_furnishings: { type: 'array', items: { type: 'string' } },
       quality_score: { type: 'number' },
       hero_score: { type: 'number' },
       confidence: { type: 'number' },
     },
-    required: ['index', 'scene_type', 'room_type', 'features', 'quality_score', 'hero_score', 'confidence'],
+    required: ['index', 'scene_type', 'room_type', 'features', 'movable_furnishings', 'quality_score', 'hero_score', 'confidence'],
   },
 } as const;
 
@@ -823,7 +827,9 @@ export async function analyzeBoardWizardListingPhotos(params: {
     'Classify every numbered image. Use only visible evidence; never infer luxury, condition, room identity, view, or amenities that are not visible.',
     'scene_type should be one of exterior, aerial, entry, living, kitchen, dining, bedroom, bathroom, office, flex, laundry, garage, outdoor, balcony, view, amenity, floor-plan, agent, logo, map, duplicate, or unknown.',
     'room_type is a concise neutral label. If uncertain use “Interior view” or “Property view”.',
-    'features are short visible details only. Scores and confidence range from 0 to 1. hero_score measures suitability as an opening image.',
+    'features are short visible permanent or attached property details only, such as windows, flooring, wall treatments, built-ins, closets, attached lighting, counters, cabinetry, and plumbing fixtures.',
+    'movable_furnishings are visible removable items such as beds, bunk beds, desks, office chairs, sofas, tables, rugs, artwork, televisions, lamps, and loose decor. Never place a movable item in features.',
+    'Scores and confidence range from 0 to 1. hero_score measures suitability as an opening image.',
     'Return exactly one result for every supplied image index.',
   ].join(' ');
   const contents = [
@@ -865,6 +871,9 @@ export async function analyzeBoardWizardListingPhotos(params: {
       features: Array.isArray(record.features)
         ? record.features.map((item) => text(item, '', 90)).filter(Boolean).slice(0, 8)
         : [],
+      movableFurnishings: Array.isArray(record.movable_furnishings)
+        ? record.movable_furnishings.map((item) => text(item, '', 90)).filter(Boolean).slice(0, 8)
+        : [],
       qualityScore: score(record.quality_score),
       heroScore: score(record.hero_score),
       confidence: score(record.confidence),
@@ -884,6 +893,7 @@ export async function generateBoardWizardListingStory(params: {
   marketingStyle: string;
   direction: string;
   listingIntent: 'auto' | 'sale' | 'rental';
+  furnishingsIncluded: boolean;
 }): Promise<BoardWizardListingStoryScene[]> {
   const sceneCount = Math.max(1, Math.min(24, Math.round(params.sceneCount) || 1));
   const seconds = normalizeBoardNarrationSeconds(params.narrationSecondsPerCard);
@@ -893,6 +903,7 @@ export async function generateBoardWizardListingStory(params: {
   );
   const photos = params.photos.slice(0, 100);
   const rental = params.listingIntent === 'rental';
+  const saleStagingPolicy = !rental && !params.furnishingsIncluded;
   const prompt = [
     `You are a meticulous ${rental ? 'rental-property' : 'real-estate'} listing marketing specialist and visual story editor.`,
     `Create exactly ${Math.min(sceneCount, photos.length)} ordered scenes for ${params.listingName}, ${params.address}.`,
@@ -901,6 +912,11 @@ export async function generateBoardWizardListingStory(params: {
     'Build a coherent tour: strong visual hook, arrival/exterior when available, connected living spaces, kitchen/dining, bedrooms, bathrooms, outdoor/amenities, then an accurate fact-and-action close.',
     'Choose each photo_index at most once. Do not use agent, logo, map, floor-plan, duplicate, or unknown images unless no suitable property image exists.',
     'Use only supplied facts and visible photo labels. Never invent views, finishes, room purposes, neighborhood claims, schools, safety, demographics, distances, superlatives, urgency, or agent identity.',
+    saleStagingPolicy
+      ? 'SALE STAGING POLICY: Treat beds, bunk beds, desks, chairs, sofas, tables, rugs, artwork, televisions, lamps, and loose decor as staging—not as property features or included items. Describe permanent features directly. Mention movable items only conditionally, using language such as “shown staged with,” “demonstrates how the room could accommodate,” or “one possible arrangement.” Never imply that movable items convey with the sale.'
+      : !rental && params.furnishingsIncluded
+        ? 'VERIFIED FURNISHED SALE: The supplied listing evidence states that furnishings are included. You may describe visible furnishings factually, but do not invent the included inventory; direct the viewer to confirm exact inclusions with the original listing.'
+        : '',
     'If a room classification confidence is below 0.65, use a neutral title. fact_keys must name every supplied fact used in that scene; use an empty array for purely visual narration.',
     rental
       ? 'The final scene must invite the viewer to use the original rental listing to verify current price or rent, availability, fees, terms, and booking or application details. Keep attribution factual.'

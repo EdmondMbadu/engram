@@ -8,6 +8,20 @@ export function normalizeBoardWizardListingIntent(value: unknown): BoardWizardLi
   return value === 'sale' || value === 'rental' ? value : 'auto';
 }
 
+export function boardWizardListingFurnishingsIncluded(extraction: BoardWizardListingExtraction): boolean {
+  const evidence = [
+    extraction.description,
+    ...extraction.facts,
+    ...extraction.amenities,
+    ...extraction.realEstate.features,
+  ].join(' ').replace(/\s+/g, ' ').trim();
+  if (!evidence) return false;
+  if (/\b(?:unfurnished|staging only|virtually staged)\b|\b(?:furnishings?|furniture)\s+(?:are\s+|is\s+)?not included\b/i.test(evidence)) {
+    return false;
+  }
+  return /\b(?:sold|offered|delivered)\s+(?:fully\s+|partially\s+)?furnished\b|\b(?:fully|partially|turnkey)\s+furnished\b|\b(?:furnishings?|furniture)\s+(?:are\s+|is\s+)?included\b|\bfurnished\s*:\s*(?:yes|included)\b/i.test(evidence);
+}
+
 export type BoardWizardListingImage = {
   url: string;
   alt: string;
@@ -371,6 +385,7 @@ export function buildBoardWizardListingBatch(options: {
   const listingIntent = normalizeBoardWizardListingIntent(options.listingIntent);
   const rental = listingIntent === 'rental' || (listingIntent === 'auto' && extraction.kind === 'vacation-rental');
   const shortTermRental = rental && extraction.kind === 'vacation-rental';
+  const furnishingsIncluded = boardWizardListingFurnishingsIncluded(extraction);
   const count = Math.max(1, Math.min(100, Math.round(options.count) || 1));
   const imageUrls = extraction.images.map((image) => image.url).slice(0, BOARD_WIZARD_SOURCE_GALLERY_LIMIT);
   const kindLabel = extraction.kind === 'real-estate'
@@ -522,7 +537,9 @@ export function buildBoardWizardListingBatch(options: {
         ? 'Confirm current price, availability, fees, cancellation terms, house rules, and booking details on the original rental listing.'
         : 'Confirm current rent, availability, lease terms, deposits, fees, application requirements, and contact details on the original rental listing.'
       : extraction.kind === 'real-estate'
-      ? 'Confirm current listing status, price, disclosures, fees, showing availability, and contact details on the original listing.'
+      ? furnishingsIncluded
+        ? 'The source describes the property as furnished. Confirm the exact furniture inventory, exclusions, current listing status, price, disclosures, fees, showing availability, and contact details on the original listing.'
+        : 'Furnishings and decor shown in listing photographs may be staging and may not be included in the sale. Confirm all inclusions, current listing status, price, disclosures, fees, showing availability, and contact details on the original listing.'
       : 'Check current price, availability, fees, cancellation terms, house rules, and booking details on the original listing.',
     tag: 'action',
     extraction,

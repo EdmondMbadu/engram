@@ -1,6 +1,7 @@
 const assert = require('node:assert/strict');
 const {
   BOARD_WIZARD_SOURCE_GALLERY_LIMIT,
+  boardWizardListingFurnishingsIncluded,
   buildBoardWizardListingBatch,
   extractBoardWizardListing,
   extractBoardWizardListingFromMarkdown,
@@ -495,6 +496,123 @@ assert.ok(expStory.cards.at(-1).tags.includes('story-next-step'));
 assert.match(expStory.cards.at(-1).title, /\$729,000/);
 assert.match(expStory.cards.at(-1).notes, /current price, status, disclosures, fees, showing availability/i);
 assert.match(expStory.cards.at(-1).notes, /Site contact/i);
+
+const stagedSaleAnalyses = [
+  {
+    index: 0,
+    sceneType: 'exterior',
+    roomType: 'Property exterior',
+    features: ['covered entry'],
+    movableFurnishings: [],
+    qualityScore: 0.9,
+    heroScore: 0.95,
+    confidence: 0.9,
+  },
+  {
+    index: 1,
+    sceneType: 'bedroom',
+    roomType: 'Secondary bedroom',
+    features: ['green and white walls', 'natural light'],
+    movableFurnishings: ['bunk bed', 'desk and office chair', 'colorful rug'],
+    qualityScore: 0.86,
+    heroScore: 0.55,
+    confidence: 0.92,
+  },
+  {
+    index: 2,
+    sceneType: 'bathroom',
+    roomType: 'Bathroom',
+    features: ['attached vanity'],
+    movableFurnishings: [],
+    qualityScore: 0.82,
+    heroScore: 0.45,
+    confidence: 0.9,
+  },
+];
+const unsafeFurnishedBedroomScene = {
+  photoIndex: 1,
+  role: 'bedroom',
+  title: 'Bunk-bed bedroom',
+  subtitle: 'Bunk bed · desk · colorful rug',
+  narration: 'Another versatile bedroom features a bunk bed. A desk and office chair offer a dedicated workspace, while a colorful rug adds vibrancy to the room.',
+  durationSeconds: 15,
+  factKeys: [],
+};
+const stagedSaleStory = buildBoardWizardListingMarketingBatchFromAnalyses({
+  extraction: expListing,
+  targetBoardTitle: '',
+  count: 3,
+  narrationSecondsPerCard: 30,
+  style: 'warm',
+  listingIntent: 'sale',
+  analyses: stagedSaleAnalyses,
+  aiScenes: [unsafeFurnishedBedroomScene],
+});
+const stagedBedroomCard = stagedSaleStory.cards.find((card) => card.imageUrl === expListing.images[1].url);
+assert.ok(stagedBedroomCard, 'a rejected furniture-as-feature scene should be replaced by a grounded fallback');
+assert.match(stagedBedroomCard.notes, /shown staged with bunk bed, desk and office chair, and colorful rug/i);
+assert.match(stagedBedroomCard.notes, /one possible arrangement/i);
+assert.doesNotMatch(stagedBedroomCard.subtitle, /bunk bed|desk|rug/i, 'sale subtitles should describe the property rather than staged furniture');
+assert.match(stagedSaleStory.cards.at(-1).notes, /furnishings and decor.*may be staging.*may not be included in the sale/i);
+assert.equal(boardWizardListingFurnishingsIncluded(expListing), false);
+
+const safeStagedBedroomScene = {
+  ...unsafeFurnishedBedroomScene,
+  title: 'A flexible secondary bedroom',
+  subtitle: 'Natural light · flexible layout',
+  narration: 'Shown staged with a bunk bed, desk, and colorful rug, this room demonstrates one possible sleeping and study arrangement. The permanent green and white walls frame the space.',
+};
+const safeStagedSaleStory = buildBoardWizardListingMarketingBatchFromAnalyses({
+  extraction: expListing,
+  targetBoardTitle: '',
+  count: 3,
+  narrationSecondsPerCard: 30,
+  style: 'warm',
+  listingIntent: 'sale',
+  analyses: stagedSaleAnalyses,
+  aiScenes: [safeStagedBedroomScene],
+});
+const safeStagedBedroomCard = safeStagedSaleStory.cards.find((card) => card.imageUrl === expListing.images[1].url);
+assert.equal(safeStagedBedroomCard?.notes, safeStagedBedroomScene.narration, 'properly qualified staging narration should survive validation unchanged');
+
+const unchangedRentalStory = buildBoardWizardListingMarketingBatchFromAnalyses({
+  extraction: expListing,
+  targetBoardTitle: '',
+  count: 3,
+  narrationSecondsPerCard: 30,
+  style: 'warm',
+  listingIntent: 'rental',
+  analyses: stagedSaleAnalyses,
+  aiScenes: [unsafeFurnishedBedroomScene],
+});
+const rentalBedroomCard = unchangedRentalStory.cards.find((card) => card.imageUrl === expListing.images[1].url);
+assert.ok(rentalBedroomCard);
+assert.match(rentalBedroomCard.notes, /features a bunk bed.*desk and office chair.*colorful rug/i, 'rental narration should retain its established direct treatment of provided furnishings');
+assert.doesNotMatch(unchangedRentalStory.cards.at(-1).notes, /may be staging.*may not be included in the sale/i);
+
+const explicitlyFurnishedSale = {
+  ...expListing,
+  description: `${expListing.description} Offered fully furnished with furniture included in the sale.`,
+};
+assert.equal(boardWizardListingFurnishingsIncluded(explicitlyFurnishedSale), true);
+assert.equal(boardWizardListingFurnishingsIncluded({
+  ...explicitlyFurnishedSale,
+  description: 'Virtually staged; furniture is not included.',
+}), false, 'negative furnishing evidence must override furnished wording');
+const furnishedSaleStory = buildBoardWizardListingMarketingBatchFromAnalyses({
+  extraction: explicitlyFurnishedSale,
+  targetBoardTitle: '',
+  count: 3,
+  narrationSecondsPerCard: 30,
+  style: 'warm',
+  listingIntent: 'sale',
+  analyses: stagedSaleAnalyses,
+  aiScenes: [unsafeFurnishedBedroomScene],
+});
+const furnishedSaleBedroomCard = furnishedSaleStory.cards.find((card) => card.imageUrl === expListing.images[1].url);
+assert.ok(furnishedSaleBedroomCard);
+assert.match(furnishedSaleBedroomCard.notes, /features a bunk bed.*desk and office chair.*colorful rug/i, 'verified furnished sales may describe included furniture directly');
+assert.match(furnishedSaleStory.cards.at(-1).notes, /source describes the property as furnished.*confirm the exact furniture inventory/i);
 
 const longTermRentalStory = buildBoardWizardListingMarketingBatchFromAnalyses({
   extraction: expListing,

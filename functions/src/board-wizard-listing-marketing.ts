@@ -14,6 +14,7 @@ import {
 } from './gemini';
 import {
   BOARD_WIZARD_SOURCE_GALLERY_LIMIT,
+  boardWizardListingFurnishingsIncluded,
   buildBoardWizardListingBatch,
   normalizeBoardWizardListingIntent,
   type BoardWizardListingExtraction,
@@ -48,8 +49,8 @@ export type BoardWizardListingPreview = {
   confidence: number;
 };
 
-const PHOTO_ANALYSIS_VERSION = 'listing-photo-v1';
-const STORY_VERSION = 'listing-story-v1';
+const PHOTO_ANALYSIS_VERSION = 'listing-photo-v2-furnishings';
+const STORY_VERSION = 'listing-story-v2-staging';
 const PHOTO_BATCH_SIZE = 10;
 const MAX_ANALYZED_PHOTOS = 48;
 const MAX_IMAGE_BYTES = 8 * 1024 * 1024;
@@ -111,7 +112,14 @@ export function buildBoardWizardListingMarketingBatchFromAnalyses(options: {
 }): GeneratedBoardWizardBatch {
   const allAnalyses = mergeWithFallbackAnalyses(options.extraction, options.analyses);
   const listingIntent = normalizeBoardWizardListingIntent(options.listingIntent);
-  const aiScenes = validateAiScenes(options.aiScenes ?? [], allAnalyses, options.extraction);
+  const furnishingsIncluded = boardWizardListingFurnishingsIncluded(options.extraction);
+  const aiScenes = validateAiScenes(
+    options.aiScenes ?? [],
+    allAnalyses,
+    options.extraction,
+    listingIntent,
+    furnishingsIncluded,
+  );
   const scenes = completeStoryScenes({
     extraction: options.extraction,
     analyses: allAnalyses,
@@ -120,6 +128,7 @@ export function buildBoardWizardListingMarketingBatchFromAnalyses(options: {
     secondsPerCard: options.narrationSecondsPerCard,
     style: options.style,
     listingIntent,
+    furnishingsIncluded,
   });
   return buildMarketingBatch({
     extraction: options.extraction,
@@ -141,6 +150,7 @@ export async function generateBoardWizardListingMarketingBatch(options: {
   const { extraction } = options;
   const listingIntent = normalizeBoardWizardListingIntent(options.listingIntent);
   const supportsTalkThru = extraction.kind === 'real-estate' || listingIntent === 'rental';
+  const furnishingsIncluded = boardWizardListingFurnishingsIncluded(extraction);
   if (!supportsTalkThru || options.marketing.enabled === false || extraction.images.length < 2) {
     return buildBoardWizardListingBatch({
       extraction,
@@ -169,6 +179,7 @@ export async function generateBoardWizardListingMarketingBatch(options: {
         marketingStyle: marketingStyleDescription(options.marketing.style),
         direction: options.marketing.direction,
         listingIntent,
+        furnishingsIncluded,
       });
     }
   } catch (error) {
@@ -179,7 +190,13 @@ export async function generateBoardWizardListingMarketingBatch(options: {
   }
 
   const allAnalyses = mergeWithFallbackAnalyses(extraction, analyses);
-  const validatedAiScenes = validateAiScenes(aiScenes, allAnalyses, extraction);
+  const validatedAiScenes = validateAiScenes(
+    aiScenes,
+    allAnalyses,
+    extraction,
+    listingIntent,
+    furnishingsIncluded,
+  );
   const scenes = completeStoryScenes({
     extraction,
     analyses: allAnalyses,
@@ -188,6 +205,7 @@ export async function generateBoardWizardListingMarketingBatch(options: {
     secondsPerCard: options.narrationSecondsPerCard,
     style: options.marketing.style,
     listingIntent,
+    furnishingsIncluded,
   });
   if (!scenes.length) {
     return buildBoardWizardListingBatch({
@@ -374,19 +392,28 @@ function completeStoryScenes(options: {
   secondsPerCard: number;
   style: BoardWizardListingMarketingStyle;
   listingIntent: BoardWizardListingIntent;
+  furnishingsIncluded: boolean;
 }): BoardWizardListingStoryScene[] {
   const usable = options.analyses.filter((analysis) => !DISALLOWED_STORY_SCENES.has(analysis.sceneType));
   const used = new Set(options.aiScenes.map((scene) => scene.photoIndex));
   const scenes = [...options.aiScenes];
   for (const analysis of orderedAnalyses(usable)) {
     if (scenes.length >= options.count || used.has(analysis.index)) continue;
-    scenes.push(fallbackScene(options.extraction, analysis, scenes.length, options.secondsPerCard, options.style));
+    scenes.push(fallbackScene(
+      options.extraction,
+      analysis,
+      scenes.length,
+      options.secondsPerCard,
+      options.style,
+      options.listingIntent,
+      options.furnishingsIncluded,
+    ));
     used.add(analysis.index);
   }
   const limited = scenes.slice(0, options.count);
   if (!limited.length) return limited;
   const last = limited[limited.length - 1];
-  const close = listingClose(options.extraction, options.listingIntent);
+  const close = listingClose(options.extraction, options.listingIntent, options.furnishingsIncluded);
   const rental = options.listingIntent === 'rental';
   const shortTermRental = rental && options.extraction.kind === 'vacation-rental';
   limited[limited.length - 1] = {
@@ -406,6 +433,8 @@ function validateAiScenes(
   scenes: BoardWizardListingStoryScene[],
   analyses: BoardWizardListingPhotoAnalysis[],
   extraction: BoardWizardListingExtraction,
+  listingIntent: BoardWizardListingIntent,
+  furnishingsIncluded: boolean,
 ): BoardWizardListingStoryScene[] {
   const analysisByIndex = new Map(analyses.map((analysis) => [analysis.index, analysis]));
   const factValues = Object.values(listingFacts(extraction)).join(' ');
@@ -414,6 +443,11 @@ function validateAiScenes(
     const analysis = analysisByIndex.get(scene.photoIndex);
     if (!analysis || seen.has(scene.photoIndex) || DISALLOWED_STORY_SCENES.has(analysis.sceneType)) return false;
     if (containsUnsafeListingLanguage(scene.narration)) return false;
+    if (
+      listingIntent !== 'rental'
+      && !furnishingsIncluded
+      && containsUnqualifiedSaleFurnishingClaim([scene.title, scene.subtitle, scene.narration].join('. '))
+    ) return false;
     const narrationNumbers = scene.narration.match(/\b\d[\d,.]*\b/g) ?? [];
     if (narrationNumbers.some((number) => !factValues.includes(number))) return false;
     seen.add(scene.photoIndex);
@@ -500,20 +534,33 @@ function fallbackScene(
   position: number,
   secondsPerCard: number,
   style: BoardWizardListingMarketingStyle,
+  listingIntent: BoardWizardListingIntent,
+  furnishingsIncluded: boolean,
 ): BoardWizardListingStoryScene {
   const role = position === 0 ? 'hook' : analysis.sceneType;
   const room = analysis.confidence >= 0.65 ? analysis.roomType : neutralRoomLabel(analysis.sceneType);
-  const featureText = analysis.features.slice(0, 2).join(' and ');
+  const fixedFeatures = listingFixedFeatures(analysis);
+  const movableFurnishings = listingMovableFurnishings(analysis);
+  const visibleFeatures = listingIntent === 'rental' || furnishingsIncluded
+    ? [...fixedFeatures, ...movableFurnishings]
+    : fixedFeatures;
+  const featureText = visibleFeatures.slice(0, 2).join(' and ');
   const transition = position === 0
     ? `${styleLead(style)} ${room} opens the visual story of ${extraction.listingName}.`
     : `From here, the tour moves into ${room.toLowerCase()}.`;
   const visible = featureText ? `The photograph highlights ${featureText}, keeping the focus on details visible in the listing itself.` : '';
+  const staging = listingIntent !== 'rental' && !furnishingsIncluded && movableFurnishings.length
+    ? `Shown staged with ${humanList(movableFurnishings.slice(0, 3))}, the room demonstrates one possible arrangement; these furnishings may not be included with the property.`
+    : '';
+  const furnished = listingIntent !== 'rental' && furnishingsIncluded && movableFurnishings.length
+    ? `The listing states that the property is offered furnished; confirm the exact included inventory on the original listing.`
+    : '';
   return {
     photoIndex: analysis.index,
     role,
     title: position === 0 ? `Begin at ${shortAddress(extraction)}` : room,
-    subtitle: analysis.features.slice(0, 3).join(' · ') || `Source listing photo ${analysis.index + 1}`,
-    narration: fitFallbackNarration([transition, visible].filter(Boolean).join(' '), secondsPerCard),
+    subtitle: visibleFeatures.slice(0, 3).join(' · ') || `Source listing photo ${analysis.index + 1}`,
+    narration: fitFallbackNarration([transition, staging, visible, furnished].filter(Boolean).join(' '), secondsPerCard),
     durationSeconds: secondsPerCard,
     factKeys: [],
   };
@@ -558,6 +605,7 @@ function fallbackAnalysis(
     sceneType,
     roomType: match?.[2] || 'Property view',
     features: [],
+    movableFurnishings: [],
     qualityScore: Math.max(0.35, 0.72 - index * 0.002),
     heroScore: sceneType === 'exterior' ? 0.82 : index === 0 ? 0.68 : 0.4,
     confidence: match ? 0.72 : 0.3,
@@ -606,7 +654,11 @@ function storyBoardDescription(extraction: BoardWizardListingExtraction, listing
   return `A connected ${listingIntent === 'rental' ? 'rental TalkThru' : 'property TalkThru'} of ${extraction.listingName}${details ? ` — ${details}` : ''}, arranged from arrival through the living spaces to the next step.`;
 }
 
-function listingClose(extraction: BoardWizardListingExtraction, listingIntent: BoardWizardListingIntent): string {
+function listingClose(
+  extraction: BoardWizardListingExtraction,
+  listingIntent: BoardWizardListingIntent,
+  furnishingsIncluded: boolean,
+): string {
   const contact = extraction.realEstate.agentName
     ? `The source page identifies ${extraction.realEstate.agentName} as ${extraction.realEstate.agentRole || 'the site contact'}.`
     : '';
@@ -618,7 +670,9 @@ function listingClose(extraction: BoardWizardListingExtraction, listingIntent: B
       ? extraction.kind === 'vacation-rental'
         ? 'Open the original rental listing to confirm the current price, availability, fees, cancellation terms, house rules, and booking details.'
         : 'Open the original rental listing to confirm the current rent, availability, lease terms, deposits, fees, application requirements, and contact details.'
-      : 'Open the original listing to confirm the current price, status, disclosures, fees, showing availability, and contact details.',
+      : furnishingsIncluded
+        ? 'The source describes the property as furnished. Confirm the exact furniture inventory, exclusions, current price, status, disclosures, fees, showing availability, and contact details on the original listing.'
+        : 'Furnishings and decor shown in listing photographs may be staging and may not be included in the sale. Confirm all inclusions, current price, status, disclosures, fees, showing availability, and contact details on the original listing.',
   ].filter(Boolean).join(' ');
 }
 
@@ -653,6 +707,34 @@ function marketingStyleDescription(style: BoardWizardListingMarketingStyle): str
     case 'investor': return 'fact-forward property overview, emphasizing only verified practical details';
     default: return 'warm storyteller, inviting and visually connected without sales hype';
   }
+}
+
+const MOVABLE_FURNISHING_PATTERN = /\b(?:furnishings?|furniture|bunk\s+beds?|beds?|headboards?|nightstands?|dressers?|wardrobes?|desks?|office\s+chairs?|chairs?|sofas?|couches?|sectionals?|ottomans?|coffee\s+tables?|dining\s+tables?|tables?|stools?|benches?|rugs?|carpets?|artwork|paintings?|televisions?|tvs?|lamps?|cribs?|bookcases?|bookshelves?|loose\s+decor|decorations?|refrigerators?|washers?|dryers?|microwaves?|appliances?)\b/i;
+const STAGING_QUALIFIER_PATTERN = /\b(?:staged|staging|shown|pictured|depicted|illustrat(?:e|es|ed|ing)|demonstrat(?:e|es|ed|ing)|could|may|might|imagine|example|possible|potential|visualiz(?:e|es|ed|ing)|accommodat(?:e|es|ed|ing)|space for|room for|can fit|if desired|depending on|not included|does not convey)\b/i;
+
+function listingFixedFeatures(analysis: BoardWizardListingPhotoAnalysis): string[] {
+  return (analysis.features ?? []).filter((feature) => !MOVABLE_FURNISHING_PATTERN.test(feature));
+}
+
+function listingMovableFurnishings(analysis: BoardWizardListingPhotoAnalysis): string[] {
+  return Array.from(new Set([
+    ...(analysis.movableFurnishings ?? []),
+    ...(analysis.features ?? []).filter((feature) => MOVABLE_FURNISHING_PATTERN.test(feature)),
+  ])).slice(0, 8);
+}
+
+function containsUnqualifiedSaleFurnishingClaim(value: string): boolean {
+  return value
+    .split(/(?<=[.!?])\s+|\s+[·|]\s+/)
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .some((part) => MOVABLE_FURNISHING_PATTERN.test(part) && !STAGING_QUALIFIER_PATTERN.test(part));
+}
+
+function humanList(values: string[]): string {
+  if (values.length <= 1) return values[0] ?? '';
+  if (values.length === 2) return `${values[0]} and ${values[1]}`;
+  return `${values.slice(0, -1).join(', ')}, and ${values[values.length - 1]}`;
 }
 
 function styleLead(style: BoardWizardListingMarketingStyle): string {
@@ -694,11 +776,15 @@ function normalizeCachedAnalysis(value: unknown, expectedIndex: number): BoardWi
   const features = Array.isArray(record.features)
     ? record.features.map((item) => cleanText(item, 90)).filter(Boolean).slice(0, 8)
     : [];
+  const movableFurnishings = Array.isArray(record.movableFurnishings)
+    ? record.movableFurnishings.map((item) => cleanText(item, 90)).filter(Boolean).slice(0, 8)
+    : [];
   return {
     index: expectedIndex,
     sceneType: cleanText(record.sceneType, 40).toLowerCase() || 'unknown',
     roomType: cleanText(record.roomType, 80) || 'Property view',
     features,
+    movableFurnishings,
     qualityScore: score(record.qualityScore),
     heroScore: score(record.heroScore),
     confidence: score(record.confidence),
