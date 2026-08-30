@@ -11,6 +11,11 @@ import sgMail from '@sendgrid/mail';
 import Stripe from 'stripe';
 import stackNarratorVoiceCatalog from './stack-narrator-voices.json';
 import { selectAtlasRealtimeVoice } from './atlas-realtime-voice';
+import {
+  buildAtlasIdentityInstruction,
+  normalizeAtlasResponsePerspective,
+  normalizeAtlasWikiType,
+} from './atlas-identity';
 import { BOARD_WIZARD_PASTE_MAX_LENGTH, parseNumberedBoardSource, type NumberedBoardSource } from './board-wizard-source';
 import {
   boardWizardImageEntityName,
@@ -16205,6 +16210,26 @@ export const cleanupDeletedAtlasVoice = onDocumentDeleted(
   },
 );
 
+function atlasRuntimeIdentity(atlas: Record<string, unknown>) {
+  const guide = atlas['chat_guide'] && typeof atlas['chat_guide'] === 'object'
+    ? atlas['chat_guide'] as Record<string, unknown>
+    : null;
+  const guideName = textValue(guide?.['name'], 80);
+  const atlasName = textValue(atlas['name'], 120);
+  const wikiType = normalizeAtlasWikiType(atlas['wiki_type'], {
+    hasCityConfig: !!atlas['city_config'] && typeof atlas['city_config'] === 'object',
+    hasUniversityConfig: !!atlas['university_config'] && typeof atlas['university_config'] === 'object',
+  });
+  const configuredPerspective = normalizeAtlasResponsePerspective(atlas['response_perspective']);
+  const identity = buildAtlasIdentityInstruction({
+    atlasName,
+    guideName,
+    wikiType,
+    configuredPerspective,
+  });
+  return { wikiType, configuredPerspective, ...identity };
+}
+
 function atlasRuntimePersonaInstruction(atlas: Record<string, unknown>): string {
   const guide = atlas['chat_guide'] && typeof atlas['chat_guide'] === 'object'
     ? atlas['chat_guide'] as Record<string, unknown>
@@ -16221,7 +16246,10 @@ function atlasRuntimePersonaInstruction(atlas: Record<string, unknown>): string 
   const persona = typeof atlas['persona_prompt'] === 'string'
     ? atlas['persona_prompt'].trim()
     : '';
-  return [guidePrompt, persona].filter(Boolean).join('\n\n').slice(0, 8000);
+  const identityInstruction = atlasRuntimeIdentity(atlas).instruction;
+  const personaBudget = Math.max(0, 8000 - identityInstruction.length - 2);
+  const personaAndGuide = [guidePrompt, persona].filter(Boolean).join('\n\n').slice(0, personaBudget);
+  return [personaAndGuide, identityInstruction].filter(Boolean).join('\n\n');
 }
 
 async function elevenLabsVoiceIsAvailable(apiKey: string, voiceId: string): Promise<boolean> {
@@ -16389,6 +16417,9 @@ export const createElevenLabsVoiceSession = onCall(
       timings,
     });
 
+    const runtimeIdentity = atlasRecord ? atlasRuntimeIdentity(atlasRecord) : null;
+    const runtimePersonaInstruction = atlasRecord ? atlasRuntimePersonaInstruction(atlasRecord) : '';
+
     return {
       conversationToken: conversationToken || null,
       signedUrl: signedUrl || null,
@@ -16413,7 +16444,10 @@ export const createElevenLabsVoiceSession = onCall(
         preferred_accent: selectedVoice?.accent ?? voicePreference.accent ?? '',
         selected_voice_id: selectedVoice?.voiceId ?? '',
         selected_voice_name: selectedVoice?.name ?? '',
-        atlas_persona_instruction: atlasRecord ? atlasRuntimePersonaInstruction(atlasRecord) : '',
+        atlas_persona_instruction: runtimePersonaInstruction,
+        atlas_identity_instruction: runtimeIdentity?.instruction ?? '',
+        atlas_subject_type: runtimeIdentity?.wikiType ?? 'topic',
+        atlas_response_perspective: runtimeIdentity?.effectivePerspective ?? 'third_person',
         atlas_guide_name: textValue(
           atlasRecord?.['chat_guide'] && typeof atlasRecord['chat_guide'] === 'object'
             ? (atlasRecord['chat_guide'] as Record<string, unknown>)['name']
@@ -21665,6 +21699,7 @@ export const createBulkCityAtlases = onCall(
       batch.set(atlasRef, {
         user_id: uid,
         wiki_type: 'city',
+        response_perspective: 'auto',
         name,
         slug,
         description,
@@ -21915,6 +21950,7 @@ export const createUniversityAtlases = onCall(
       batch.set(atlasRef, {
         user_id: uid,
         wiki_type: 'university',
+        response_perspective: 'auto',
         name: slug === baseSlug ? officialName : `${officialName} (${state})`,
         slug,
         description,

@@ -100,7 +100,9 @@ export interface CityAtlasConfig {
   manual_metrics?: CityPulseMetric[] | null;
 }
 
-export type WikiType = 'city' | 'university' | 'topic';
+export type WikiType = 'city' | 'person' | 'university' | 'organization' | 'topic';
+
+export type AtlasResponsePerspective = 'auto' | 'first_person' | 'third_person';
 
 export interface UniversityAssetSource {
   url: string | null;
@@ -167,6 +169,7 @@ export interface AtlasItem {
   university_config?: UniversityAtlasConfig | null;
   chat_guide?: AtlasChatGuideConfig | null;
   persona_prompt?: string | null;
+  response_perspective?: AtlasResponsePerspective | null;
   default_answer_mode?: 'wiki' | 'internet' | null;
   newsletter_config?: AtlasNewsletterConfig | null;
   public_voice_phone_number?: string | null;

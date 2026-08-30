@@ -20,7 +20,7 @@ import {
 } from 'firebase/firestore';
 import { httpsCallable } from 'firebase/functions';
 import { deleteObject, getDownloadURL, ref as storageRef, uploadBytes } from 'firebase/storage';
-import type { AtlasAdminProfile, AtlasChatGuideConfig, AtlasItem, AtlasNewsletterConfig, AtlasNewsletterTestResult, AtlasSpeechVoiceConfig, AtlasSpeechVoiceDesignResult, AtlasSubscriptionItem, AtlasTextMessagingConfig, AtlasUsage, AtlasVoiceAgentConfig, CityAtlasConfig, CityAtlasMetadata, CityPulseMetric, UniversityAtlasConfig } from './atlas.models';
+import type { AtlasAdminProfile, AtlasChatGuideConfig, AtlasItem, AtlasNewsletterConfig, AtlasNewsletterTestResult, AtlasResponsePerspective, AtlasSpeechVoiceConfig, AtlasSpeechVoiceDesignResult, AtlasSubscriptionItem, AtlasTextMessagingConfig, AtlasUsage, AtlasVoiceAgentConfig, CityAtlasConfig, CityAtlasMetadata, CityPulseMetric, UniversityAtlasConfig, WikiType } from './atlas.models';
 import { AuthService } from './auth.service';
 import type { CityAtlasTemplate } from './city-atlas-templates';
 import { getFirebaseFirestore, getFirebaseFunctions, getFirebaseStorage } from './firebase.client';
@@ -580,7 +580,7 @@ export class AtlasService {
     }
   }
 
-  async createAtlas(input: { name: string; description?: string }): Promise<string | null> {
+  async createAtlas(input: { name: string; description?: string; wikiType?: WikiType }): Promise<string | null> {
     if (!this.firestore) return null;
     const uid = this.authService.uid();
     if (!uid) return null;
@@ -590,7 +590,8 @@ export class AtlasService {
     const slug = this.slugify(name);
     const ref = await addDoc(collection(this.firestore, 'atlases'), {
       user_id: uid,
-      wiki_type: 'city',
+      wiki_type: input.wikiType ?? 'topic',
+      response_perspective: 'auto',
       name,
       slug,
       description: input.description?.trim() || null,
@@ -639,6 +640,7 @@ export class AtlasService {
     const ref = await addDoc(collection(this.firestore, 'atlases'), {
       user_id: uid,
       wiki_type: 'city',
+      response_perspective: 'auto',
       name: template.name,
       slug,
       description: template.description,
@@ -721,6 +723,7 @@ export class AtlasService {
     const ref = await addDoc(collection(this.firestore, 'atlases'), {
       user_id: uid,
       wiki_type: 'city',
+      response_perspective: 'auto',
       name,
       slug,
       description,
@@ -1032,6 +1035,28 @@ export class AtlasService {
     await updateDoc(doc(this.firestore, 'atlases', atlasId), {
       persona_prompt: persona,
       updated_at: serverTimestamp(),
+    });
+  }
+
+  async updatePersonaSettings(atlasId: string, input: {
+    wikiType: WikiType;
+    responsePerspective: AtlasResponsePerspective;
+    personaPrompt: string | null;
+  }): Promise<void> {
+    if (!this.firestore) return;
+    const trimmed = input.personaPrompt === null ? null : input.personaPrompt.trim();
+    const persona = trimmed && trimmed.length > 0 ? trimmed.slice(0, 40000) : null;
+    await updateDoc(doc(this.firestore, 'atlases', atlasId), {
+      wiki_type: input.wikiType,
+      response_perspective: input.responsePerspective,
+      persona_prompt: persona,
+      updated_at: serverTimestamp(),
+    });
+    this.patchAtlas(atlasId, {
+      wiki_type: input.wikiType,
+      response_perspective: input.responsePerspective,
+      persona_prompt: persona,
+      updated_at: new Date(),
     });
   }
 
@@ -1449,6 +1474,8 @@ export class AtlasService {
     this.assertCanCreateWiki();
     const ref = await addDoc(collection(this.firestore, 'atlases'), {
       user_id: uid,
+      wiki_type: 'topic',
+      response_perspective: 'auto',
       name: 'My Wiki',
       slug: 'my-wiki',
       description: null,
@@ -1499,7 +1526,7 @@ export class AtlasService {
       hero_url: typeof data['hero_url'] === 'string' ? data['hero_url'] : null,
       video_url: typeof data['video_url'] === 'string' ? data['video_url'] : null,
       cover_color: typeof data['cover_color'] === 'string' ? data['cover_color'] : null,
-      wiki_type: data['wiki_type'] === 'city' || data['wiki_type'] === 'university' || data['wiki_type'] === 'topic'
+      wiki_type: data['wiki_type'] === 'city' || data['wiki_type'] === 'person' || data['wiki_type'] === 'university' || data['wiki_type'] === 'organization' || data['wiki_type'] === 'topic'
         ? data['wiki_type']
         : data['city_config'] && typeof data['city_config'] === 'object'
           ? 'city'
@@ -1510,6 +1537,9 @@ export class AtlasService {
         : null,
       chat_guide: this.hydrateChatGuideConfig(data['chat_guide']),
       persona_prompt: typeof data['persona_prompt'] === 'string' ? data['persona_prompt'] : null,
+      response_perspective: data['response_perspective'] === 'first_person' || data['response_perspective'] === 'third_person'
+        ? data['response_perspective']
+        : 'auto',
       admin_user_ids: Array.isArray(data['admin_user_ids'])
         ? data['admin_user_ids'].filter((value): value is string => typeof value === 'string')
         : [],

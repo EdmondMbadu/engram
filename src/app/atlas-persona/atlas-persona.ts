@@ -1,7 +1,7 @@
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, HostListener, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import type { AtlasItem, AtlasSpeechVoiceConfig, AtlasSpeechVoicePreview } from '../atlas.models';
+import type { AtlasItem, AtlasResponsePerspective, AtlasSpeechVoiceConfig, AtlasSpeechVoicePreview, WikiType } from '../atlas.models';
 import { AtlasService, type AtlasSpeechAudioResponse } from '../atlas.service';
 import { STACK_NARRATOR_VOICES, type StackNarratorVoice } from '../boards/stack-voice';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
@@ -17,6 +17,7 @@ const PREVIEW_DESCRIPTORS = ['Low · measured · dignified', 'Warm · reflective
 
 type IdentityStudioStep = 'personality' | 'spoken';
 type SpokenVoiceMode = 'default' | 'catalog' | 'design';
+type IdentityMenu = 'wiki_type' | 'perspective';
 
 @Component({
   selector: 'app-atlas-persona',
@@ -34,11 +35,16 @@ export class AtlasPersonaComponent {
   readonly atlasId = signal<string | null>(null);
   readonly draft = signal('');
   readonly initialValue = signal('');
+  readonly wikiTypeDraft = signal<WikiType>('topic');
+  readonly initialWikiType = signal<WikiType>('topic');
+  readonly perspectiveDraft = signal<AtlasResponsePerspective>('auto');
+  readonly initialPerspective = signal<AtlasResponsePerspective>('auto');
   readonly saving = signal(false);
   readonly justSaved = signal(false);
   readonly errorMessage = signal<string | null>(null);
   readonly hasInitialized = signal(false);
   readonly activeStep = signal<IdentityStudioStep>('personality');
+  readonly openIdentityMenu = signal<IdentityMenu | null>(null);
 
   readonly speechVoiceConfig = signal<AtlasSpeechVoiceConfig | null>(null);
   readonly voiceConfigLoading = signal(false);
@@ -66,7 +72,12 @@ export class AtlasPersonaComponent {
   readonly remaining = computed(() => Math.max(0, PERSONA_STORAGE_LIMIT - this.characterCount()));
   readonly overStorageLimit = computed(() => this.characterCount() > PERSONA_STORAGE_LIMIT);
   readonly overRuntimeLimit = computed(() => this.characterCount() > PERSONA_RUNTIME_LIMIT);
-  readonly hasChanges = computed(() => this.draft().trim() !== this.initialValue().trim());
+  readonly hasPersonaChanges = computed(() => this.draft().trim() !== this.initialValue().trim());
+  readonly hasIdentityChanges = computed(() =>
+    this.wikiTypeDraft() !== this.initialWikiType()
+    || this.perspectiveDraft() !== this.initialPerspective(),
+  );
+  readonly hasChanges = computed(() => this.hasPersonaChanges() || this.hasIdentityChanges());
   readonly hasCustomPrompt = computed(() => this.initialValue().trim().length > 0);
   readonly personalityReady = computed(() => this.initialValue().trim().length > 0);
   readonly descriptionCount = computed(() => this.voiceDescription().length);
@@ -102,6 +113,33 @@ export class AtlasPersonaComponent {
   readonly runtimeLimit = PERSONA_RUNTIME_LIMIT;
   readonly voiceDescriptionLimit = VOICE_DESCRIPTION_LIMIT;
   readonly previewScriptLimit = PREVIEW_SCRIPT_LIMIT;
+  readonly effectivePerspective = computed<'first_person' | 'third_person'>(() => {
+    const configured = this.perspectiveDraft();
+    if (configured === 'first_person' || configured === 'third_person') return configured;
+    return this.wikiTypeDraft() === 'person' ? 'first_person' : 'third_person';
+  });
+  readonly wikiTypeLabel = computed(() => {
+    switch (this.wikiTypeDraft()) {
+      case 'person': return $localize`Person`;
+      case 'city': return $localize`City`;
+      case 'university': return $localize`University`;
+      case 'organization': return $localize`Organization`;
+      default: return $localize`Topic`;
+    }
+  });
+  readonly perspectiveLabel = computed(() => {
+    switch (this.perspectiveDraft()) {
+      case 'first_person': return $localize`First person`;
+      case 'third_person': return $localize`Third person`;
+      default: return $localize`Automatic (recommended)`;
+    }
+  });
+  readonly perspectivePreview = computed(() => {
+    const name = this.guideName() || this.displayName();
+    return this.effectivePerspective() === 'first_person'
+      ? `“I am ${name}. I will answer from my documented perspective while being candid about uncertainty.”`
+      : `“${name} is the subject of this wiki. Answers will describe ${name} from a knowledgeable guide’s perspective.”`;
+  });
 
   constructor() {
     effect(() => this.atlasId.set(this.route.snapshot.paramMap.get('atlasId')));
@@ -109,8 +147,14 @@ export class AtlasPersonaComponent {
       const atlas = this.atlas();
       if (!atlas || this.hasInitialized()) return;
       const value = String(atlas.persona_prompt ?? '');
+      const wikiType = atlas.wiki_type ?? 'topic';
+      const perspective = atlas.response_perspective ?? 'auto';
       this.draft.set(value);
       this.initialValue.set(value);
+      this.wikiTypeDraft.set(wikiType);
+      this.initialWikiType.set(wikiType);
+      this.perspectiveDraft.set(perspective);
+      this.initialPerspective.set(perspective);
       this.previewScript.set(this.defaultPreviewScript());
       this.hasInitialized.set(true);
     });
@@ -147,6 +191,38 @@ export class AtlasPersonaComponent {
     this.errorMessage.set(null);
   }
 
+  toggleIdentityMenu(menu: IdentityMenu): void {
+    this.openIdentityMenu.update((open) => open === menu ? null : menu);
+  }
+
+  onWikiTypeChange(value: string): void {
+    if (value === 'city' || value === 'person' || value === 'university' || value === 'organization' || value === 'topic') {
+      this.wikiTypeDraft.set(value as WikiType);
+      this.openIdentityMenu.set(null);
+      this.justSaved.set(false);
+      this.errorMessage.set(null);
+    }
+  }
+
+  onPerspectiveChange(value: string): void {
+    if (value === 'auto' || value === 'first_person' || value === 'third_person') {
+      this.perspectiveDraft.set(value as AtlasResponsePerspective);
+      this.openIdentityMenu.set(null);
+      this.justSaved.set(false);
+      this.errorMessage.set(null);
+    }
+  }
+
+  @HostListener('document:click')
+  closeIdentityMenu(): void {
+    this.openIdentityMenu.set(null);
+  }
+
+  @HostListener('document:keydown.escape')
+  closeIdentityMenuOnEscape(): void {
+    this.openIdentityMenu.set(null);
+  }
+
   onVoiceDescriptionInput(event: Event): void {
     this.voiceDescription.set((event.target as HTMLTextAreaElement).value.slice(0, VOICE_DESCRIPTION_LIMIT));
     this.clearGeneratedPreviews();
@@ -168,8 +244,14 @@ export class AtlasPersonaComponent {
     this.saving.set(true);
     this.errorMessage.set(null);
     try {
-      await this.atlasService.updatePersonaPrompt(id, value || null);
+      await this.atlasService.updatePersonaSettings(id, {
+        wikiType: this.wikiTypeDraft(),
+        responsePerspective: this.perspectiveDraft(),
+        personaPrompt: value || null,
+      });
       this.initialValue.set(value);
+      this.initialWikiType.set(this.wikiTypeDraft());
+      this.initialPerspective.set(this.perspectiveDraft());
       this.draft.set(value);
       this.justSaved.set(true);
     } catch (error) {
@@ -181,6 +263,8 @@ export class AtlasPersonaComponent {
 
   revertToSaved(): void {
     this.draft.set(this.initialValue());
+    this.wikiTypeDraft.set(this.initialWikiType());
+    this.perspectiveDraft.set(this.initialPerspective());
     this.justSaved.set(false);
     this.errorMessage.set(null);
   }

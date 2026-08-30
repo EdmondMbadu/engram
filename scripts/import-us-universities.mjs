@@ -53,6 +53,7 @@ for (const row of rows) {
   pending.push({ atlasRef, data: {
     user_id: ownerUid,
     wiki_type: 'university',
+    response_perspective: 'auto',
     name: displayName,
     slug,
     description: row.description,

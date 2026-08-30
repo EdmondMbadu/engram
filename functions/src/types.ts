@@ -319,6 +319,8 @@ export interface PreparedUpload {
 
 export interface AtlasRecord {
   user_id: string;
+  wiki_type?: 'city' | 'person' | 'university' | 'organization' | 'topic';
+  response_perspective?: 'auto' | 'first_person' | 'third_person' | null;
   name: string;
   slug: string;
   description: string | null;

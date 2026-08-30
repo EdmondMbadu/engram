@@ -3,7 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
-import type { AtlasItem, ChatHistoryItem, ChatStoredMessage, ChatThreadItem, CitationPassage, MappableLocation, TravelGuideCard, TravelGuideStructuredResponse } from '../atlas.models';
+import type { AtlasItem, ChatHistoryItem, ChatStoredMessage, ChatThreadItem, CitationPassage, MappableLocation, TravelGuideCard, TravelGuideStructuredResponse, WikiType } from '../atlas.models';
 import { AuthService } from '../auth.service';
 import { AtlasService } from '../atlas.service';
 import { AnswerCardService } from '../answer-card.service';
@@ -4374,8 +4374,8 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 
     const greeting = this.voiceSessionGreeting(language);
     const accentProfile = language ? this.voiceAccentProfile(language) : null;
-    const cityName = this.currentWikiName();
-    const cityCountry = this.currentWikiCountry();
+    const wikiName = this.currentWikiName();
+    const wikiCountry = this.currentWikiCountry();
     const linkDeliveryInstruction = 'If the user asks you to send, text, email, or provide links during the voice call, do not say you cannot send links. Say: "I will collect the relevant links and they will be included in your recap email after you hang up." Continue answering naturally, and mention that the user can send the recap from the post-call prompt.';
 
     this.stopAnswerAudio();
@@ -4447,16 +4447,38 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       const atlasPersonaInstruction = String(
         session.dynamicVariables?.['atlas_persona_instruction'] ?? '',
       ).trim();
+      const atlasIdentityInstruction = String(
+        session.dynamicVariables?.['atlas_identity_instruction'] ?? '',
+      ).trim();
+      const subjectType = String(
+        session.dynamicVariables?.['atlas_subject_type'] ?? this.currentWikiSubjectType(),
+      ).trim() || 'topic';
+      const responsePerspective = String(
+        session.dynamicVariables?.['atlas_response_perspective'] ?? (subjectType === 'person' ? 'first_person' : 'third_person'),
+      ).trim() === 'first_person' ? 'first_person' : 'third_person';
+      const subjectContextInstruction = responsePerspective === 'first_person'
+        ? `This voice conversation is for the ${subjectType} Wiki about ${wikiName || 'the selected subject'}. Speak as the subject in first person, while staying grounded in the historical or supplied record.`
+        : `This voice conversation is for the ${subjectType} Wiki about ${wikiName || 'the selected subject'}. Speak as a guide about the subject in third person.`;
+      const wikiContextInstruction = [
+        subjectContextInstruction,
+        wikiName ? `Invite questions about ${wikiName}, while still answering broader questions when asked.` : '',
+        atlasPersonaInstruction || atlasIdentityInstruction,
+        linkDeliveryInstruction,
+      ].filter(Boolean).join(' ').trim();
       const voiceDynamicVariables = {
         ...(session.dynamicVariables ?? {}),
-        current_city: cityName,
-        current_city_country: cityCountry,
-        current_living_wiki: cityName ? `LivingWiki, ${cityName}` : 'LivingWiki',
+        current_city: subjectType === 'city' ? wikiName : '',
+        current_city_country: subjectType === 'city' ? wikiCountry : '',
+        current_wiki_subject: wikiName,
+        current_wiki_subject_type: subjectType,
+        current_wiki_response_perspective: responsePerspective,
+        current_living_wiki: wikiName ? `LivingWiki, ${wikiName}` : 'LivingWiki',
         requested_intro_greeting: greeting,
         link_delivery_instruction: linkDeliveryInstruction,
-        city_context_instruction: cityName
-          ? `This voice conversation is for the LivingWiki page for ${cityName}${cityCountry ? `, ${cityCountry}` : ''}. Invite questions about ${cityName}, while still answering broader questions when asked. ${atlasPersonaInstruction} ${linkDeliveryInstruction}`.trim()
-          : `This voice conversation is for the current LivingWiki page. ${atlasPersonaInstruction} ${linkDeliveryInstruction}`.trim(),
+        wiki_context_instruction: wikiContextInstruction,
+        // Keep the legacy variable populated until the shared ElevenLabs agent
+        // prompt has migrated to wiki_context_instruction.
+        city_context_instruction: wikiContextInstruction,
       };
       const voiceOverrides = {
         ...(session.firstMessageOverrideEnabled
@@ -4559,6 +4581,11 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 
       this.realtimeVoiceConversation = conversation;
       this.startRealtimeVoiceMeter(conversation);
+      try {
+        conversation.sendContextualUpdate(wikiContextInstruction, { contextId: `wiki-identity-${atlasId}` });
+      } catch (error) {
+        console.warn('[Voice mode] Could not send Wiki identity context', error);
+      }
       if (language && accentProfile) {
         this.sendVoiceLanguageWelcomePrompt(
           conversation,
@@ -4909,12 +4936,12 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     const prompt = [
       `Please greet me now in ${language.language} for ${language.country}.`,
       `Say exactly this greeting first: "${greeting}"`,
-      `The current LivingWiki city context is ${this.currentWikiName() || 'the selected city wiki'}.`,
+      `The current LivingWiki subject is ${this.currentWikiName() || 'the selected wiki subject'}, a ${this.currentWikiSubjectType()} Wiki.`,
       accentProfile.instruction,
       'For the rest of this voice session, keep speaking in this language and accent unless I ask to switch.',
       this.currentWikiName()
         ? `When helpful, invite me to ask questions about ${this.currentWikiName()}.`
-        : 'When helpful, invite me to ask questions about this city.',
+        : 'When helpful, invite me to ask questions about this Wiki subject.',
       'Keep it warm and brief, then wait for my spoken question.',
     ].join(' ');
 
@@ -4928,7 +4955,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       try {
         conversation.sendContextualUpdate([
           `The visitor selected ${language.country} / ${language.language}.`,
-          `The current LivingWiki context is ${this.currentWikiName() || 'the selected city wiki'}.`,
+          `The current LivingWiki subject is ${this.currentWikiName() || 'the selected wiki subject'}, a ${this.currentWikiSubjectType()} Wiki.`,
           `Voice and accent target: ${accentProfile.label}.`,
           voiceName ? `Selected ElevenLabs voice: ${voiceName}.` : 'No dedicated ElevenLabs native voice was selected; use the closest available native accent.',
           accentProfile.instruction,
@@ -6637,6 +6664,14 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 
   private defaultAnswerMode(atlas: AtlasItem | null | undefined): 'wiki' | 'internet' {
     return atlas?.default_answer_mode === 'internet' ? 'internet' : 'wiki';
+  }
+
+  private currentWikiSubjectType(): WikiType {
+    const atlas = this.currentWikiAtlas();
+    if (atlas?.wiki_type) return atlas.wiki_type;
+    if (atlas?.university_config?.enabled === true) return 'university';
+    if (atlas?.city_config?.enabled === true) return 'city';
+    return 'topic';
   }
 
   private currentWikiDensityPerKm2(): number | null {

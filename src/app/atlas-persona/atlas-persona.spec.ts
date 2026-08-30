@@ -25,6 +25,7 @@ describe('AtlasPersonaComponent', () => {
     displayName: jasmine.createSpy('displayName').and.callFake((atlas: AtlasItem) => atlas.name),
     getAtlasSpeechVoiceConfig: jasmine.createSpy('getAtlasSpeechVoiceConfig').and.resolveTo(defaultVoice),
     updatePersonaPrompt: jasmine.createSpy('updatePersonaPrompt').and.resolveTo(),
+    updatePersonaSettings: jasmine.createSpy('updatePersonaSettings').and.resolveTo(),
     designAtlasSpeechVoice: jasmine.createSpy('designAtlasSpeechVoice'),
     saveAtlasDesignedVoice: jasmine.createSpy('saveAtlasDesignedVoice'),
     selectAtlasCatalogVoice: jasmine.createSpy('selectAtlasCatalogVoice'),
@@ -54,6 +55,8 @@ describe('AtlasPersonaComponent', () => {
       hero_url: null,
       video_url: null,
       cover_color: null,
+      wiki_type: 'person',
+      response_perspective: 'auto',
       persona_prompt: 'You are George Washington. Be measured, candid, and grounded in the record.',
       chat_guide: {
         name: 'George Washington',
@@ -73,6 +76,7 @@ describe('AtlasPersonaComponent', () => {
     atlasService.displayName.and.callFake((item: AtlasItem) => item.name);
     atlasService.getAtlasSpeechVoiceConfig.and.resolveTo(defaultVoice);
     atlasService.updatePersonaPrompt.and.resolveTo();
+    atlasService.updatePersonaSettings.and.resolveTo();
 
     await TestBed.configureTestingModule({
       imports: [AtlasPersonaComponent],
@@ -109,6 +113,60 @@ describe('AtlasPersonaComponent', () => {
     const image = fixture.nativeElement.querySelector('aside img') as HTMLImageElement;
     expect(image).not.toBeNull();
     expect(image.getAttribute('src')).toBe('/guide-portrait.jpg');
+  });
+
+  it('resolves automatic perspective by subject type and saves structured identity settings', async () => {
+    const fixture = TestBed.createComponent(AtlasPersonaComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const component = fixture.componentInstance;
+
+    expect(component.wikiTypeDraft()).toBe('person');
+    expect(component.perspectiveDraft()).toBe('auto');
+    expect(component.effectivePerspective()).toBe('first_person');
+
+    component.onWikiTypeChange('city');
+    expect(component.effectivePerspective()).toBe('third_person');
+    component.onWikiTypeChange('person');
+    component.onPerspectiveChange('third_person');
+    expect(component.effectivePerspective()).toBe('third_person');
+
+    await component.save();
+    expect(atlasService.updatePersonaSettings).toHaveBeenCalledWith('atlas-1', {
+      wikiType: 'person',
+      responsePerspective: 'third_person',
+      personaPrompt: 'You are George Washington. Be measured, candid, and grounded in the record.',
+    });
+  });
+
+  it('opens both identity menus and selects options through clicks', async () => {
+    const fixture = TestBed.createComponent(AtlasPersonaComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const subjectTrigger = fixture.nativeElement.querySelector('[data-testid="wiki-subject-trigger"]') as HTMLButtonElement;
+    subjectTrigger.click();
+    fixture.detectChanges();
+    const subjectMenu = fixture.nativeElement.querySelector('[data-testid="wiki-subject-menu"]') as HTMLElement;
+    expect(subjectMenu).not.toBeNull();
+    (Array.from(subjectMenu.querySelectorAll('button')) as HTMLButtonElement[])
+      .find((button) => button.textContent?.includes('University'))
+      ?.click();
+    fixture.detectChanges();
+    expect(fixture.componentInstance.wikiTypeDraft()).toBe('university');
+    expect(fixture.nativeElement.querySelector('[data-testid="wiki-subject-menu"]')).toBeNull();
+
+    const perspectiveTrigger = fixture.nativeElement.querySelector('[data-testid="speaking-perspective-trigger"]') as HTMLButtonElement;
+    perspectiveTrigger.click();
+    fixture.detectChanges();
+    const perspectiveMenu = fixture.nativeElement.querySelector('[data-testid="speaking-perspective-menu"]') as HTMLElement;
+    expect(perspectiveMenu).not.toBeNull();
+    (Array.from(perspectiveMenu.querySelectorAll('button')) as HTMLButtonElement[])
+      .find((button) => button.textContent?.includes('First person'))
+      ?.click();
+    fixture.detectChanges();
+    expect(fixture.componentInstance.perspectiveDraft()).toBe('first_person');
+    expect(fixture.nativeElement.querySelector('[data-testid="speaking-perspective-menu"]')).toBeNull();
   });
 
   it('generates three previews and saves the selected designed voice', async () => {

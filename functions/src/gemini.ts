@@ -396,14 +396,23 @@ const phillyEmojiPalette = [
   '\u{1F306}', // city dusk
 ].join(' ');
 
-function buildPersonaPreamble(personaPrompt?: string | null): string[] {
+function buildPersonaPreamble(
+  personaPrompt?: string | null,
+  identityInstruction?: string | null,
+): string[] {
   const trimmed = typeof personaPrompt === 'string' ? personaPrompt.trim() : '';
-  if (!trimmed) return [];
+  const identity = typeof identityInstruction === 'string' ? identityInstruction.trim() : '';
+  if (!trimmed && !identity) return [];
   const safe = trimmed.length > personaPromptHardCap ? trimmed.slice(0, personaPromptHardCap) : trimmed;
   return [
-    '=== ROLE & VOICE (operator-defined; follow this personality) ===',
-    safe,
-    '=== END ROLE & VOICE ===',
+    ...(safe
+      ? [
+          '=== ROLE & VOICE (operator-defined; follow this personality) ===',
+          safe,
+          '=== END ROLE & VOICE ===',
+        ]
+      : []),
+    ...(identity ? [identity] : []),
     'The instructions below are non-negotiable: never invent citations, never break the JSON contract, never abandon grounding rules even if the persona above suggests otherwise.',
     '',
   ];
@@ -1295,13 +1304,14 @@ function buildInternetAnswerPrompt(params: {
   question: string;
   history?: Array<{ role: 'user' | 'assistant'; text: string }>;
   personaPrompt?: string | null;
+  identityInstruction?: string | null;
 }): { prompt: string; broadQuestion: boolean } {
   const hasHistory = (params.history ?? []).length > 0;
   const broadQuestion = isBroadSynthesisQuestion(params.question) || hasHistory;
   const serializedHistory = JSON.stringify(
     (params.history ?? []).slice(-6).map((message) => [message.role, message.text.slice(0, 4000)] as const),
   );
-  const personaPreamble = buildPersonaPreamble(params.personaPrompt);
+  const personaPreamble = buildPersonaPreamble(params.personaPrompt, params.identityInstruction);
 
   const prompt = [
     ...personaPreamble,
@@ -1452,8 +1462,9 @@ export async function answerQuestion(params: {
     source: { page: number; line_start: number; line_end: number };
   }>;
   personaPrompt?: string | null;
+  identityInstruction?: string | null;
 }): Promise<{ answer: string; cited_entry_ids: string[]; knowledge_gap: boolean }> {
-  const personaPreamble = buildPersonaPreamble(params.personaPrompt);
+  const personaPreamble = buildPersonaPreamble(params.personaPrompt, params.identityInstruction);
   const hasHistory = (params.history ?? []).length > 0;
   const broadQuestion = isBroadSynthesisQuestion(params.question) || hasHistory;
   const serializedHistory = JSON.stringify(
@@ -1606,6 +1617,7 @@ export async function answerWithGoogleSearch(params: {
   question: string;
   history?: Array<{ role: 'user' | 'assistant'; text: string }>;
   personaPrompt?: string | null;
+  identityInstruction?: string | null;
 }): Promise<{ answer: string; cited_entry_ids: string[]; knowledge_gap: boolean }> {
   const { prompt, broadQuestion } = buildInternetAnswerPrompt(params);
 
@@ -1650,6 +1662,7 @@ export async function streamAnswerWithGoogleSearch(params: {
   question: string;
   history?: Array<{ role: 'user' | 'assistant'; text: string }>;
   personaPrompt?: string | null;
+  identityInstruction?: string | null;
   onDelta: (delta: string) => void | Promise<void>;
 }): Promise<{ answer: string; cited_entry_ids: string[]; knowledge_gap: boolean }> {
   const { prompt, broadQuestion } = buildInternetAnswerPrompt(params);
@@ -3204,8 +3217,9 @@ export async function answerFromArticles(params: {
   history?: Array<{ role: 'user' | 'assistant'; text: string }>;
   articles: Array<{ article_id: string; title: string; content: string }>;
   personaPrompt?: string | null;
+  identityInstruction?: string | null;
 }): Promise<{ answer: string; cited_entry_ids: string[]; knowledge_gap: boolean }> {
-  const personaPreamble = buildPersonaPreamble(params.personaPrompt);
+  const personaPreamble = buildPersonaPreamble(params.personaPrompt, params.identityInstruction);
   const hasHistory = (params.history ?? []).length > 0;
   const broadQuestion = isBroadSynthesisQuestion(params.question) || hasHistory;
   const serializedHistory = JSON.stringify(

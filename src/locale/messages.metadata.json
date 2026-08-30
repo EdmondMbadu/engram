@@ -1071,6 +1071,10 @@
     "source": "Friendship views",
     "file": "src/app/boards/boards.html"
   },
+  "1685634248180124543": {
+    "source": "Automatic default",
+    "file": "src/app/atlas-persona/atlas-persona.html"
+  },
   "1693937864227883367": {
     "source": " Open in Spotify {$START_TAG_SPAN}open_in_new{$CLOSE_TAG_SPAN}",
     "file": "src/app/spotify-player/spotify-player.html"
@@ -1102,6 +1106,10 @@
   "1711637338791541973": {
     "source": "{$START_TAG_SPAN}storefront{$CLOSE_TAG_SPAN} Business ",
     "file": "src/app/public-wikis/public-wikis.html"
+  },
+  "1721341545668548200": {
+    "source": "Speaking perspective",
+    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "1721540653519032074": {
     "source": "Plan cancelled. Invited guests will be notified.",
@@ -2078,10 +2086,6 @@
   "2373720888313466652": {
     "source": "Listen now",
     "file": "src/app/chat/chat.ts"
-  },
-  "2375260419993138758": {
-    "source": "URL",
-    "file": "src/app/boards/boards.html"
   },
   "2377882832454767138": {
     "source": "Verified emails",
@@ -3114,6 +3118,10 @@
   "3074987902485823708": {
     "source": "Icon",
     "file": "src/app/boards/boards.html"
+  },
+  "3076687427621376223": {
+    "source": "Organization",
+    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "3080109816219994129": {
     "source": "Instagram",
@@ -5023,6 +5031,10 @@
     "source": "Could not copy the business guide link.",
     "file": "src/app/business-detail/business-detail.ts"
   },
+  "4259420107141838090": {
+    "source": "Person",
+    "file": "src/app/atlas-persona/atlas-persona.html"
+  },
   "4261298153727325582": {
     "source": "Upload business documents.",
     "file": "src/app/landing/landing.ts"
@@ -5085,10 +5097,6 @@
   },
   "4302912603848458571": {
     "source": "Editing preview",
-    "file": "src/app/boards/boards.html"
-  },
-  "4303678965846182109": {
-    "source": "Optional direction",
     "file": "src/app/boards/boards.html"
   },
   "430424462239799071": {
@@ -5178,6 +5186,10 @@
   "4365549448314758949": {
     "source": "5 anonymous questions allowed.",
     "file": "src/app/chat/chat.ts"
+  },
+  "4371440829475265358": {
+    "source": "University",
+    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "4373910011571956547": {
     "source": "Finding the best matches for {$INTERPOLATION}",
@@ -7483,6 +7495,10 @@
     "source": "Say you’re interested. We’ll notify the organizer and email you when a plan is ready to confirm.",
     "file": "src/app/boards/boards.html"
   },
+  "5885452247889934944": {
+    "source": "Topic",
+    "file": "src/app/atlas-persona/atlas-persona.html"
+  },
   "5891064527381218201": {
     "source": "Free",
     "file": "src/app/boards/boards.html"
@@ -8238,6 +8254,10 @@
   "6380962930762780583": {
     "source": "{$START_TAG_SPAN}public{$CLOSE_TAG_SPAN} World ",
     "file": "src/app/dymaxion/dymaxion.html"
+  },
+  "6381230596990321277": {
+    "source": "Wiki subject",
+    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "6384666188543760940": {
     "source": "Open jobs",
@@ -9211,6 +9231,10 @@
     "source": "Live preview",
     "file": "src/app/business-claim/business-claim.html"
   },
+  "7002692656518484945": {
+    "source": "Automatic (recommended)",
+    "file": "src/app/atlas-persona/atlas-persona.html"
+  },
   "7003142405440233286": {
     "source": "Hello, and welcome to my LivingWiki. I enjoy sharing the people, places, and ideas that make every story memorable. As we explore these cards together, I will point out the details, connections, and moments that matter most.",
     "file": "src/app/boards/boards.html"
@@ -9245,7 +9269,7 @@
   },
   "7030146909902536387": {
     "source": "Third person",
-    "file": "src/app/boards/board-narration-style.ts"
+    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "7033016357492920394": {
     "source": "No duplicate claim found for this name and city.",
@@ -9273,10 +9297,6 @@
   },
   "7040825233771361230": {
     "source": "Vibe",
-    "file": "src/app/boards/boards.html"
-  },
-  "7045041100799709352": {
-    "source": "Focus on places, food, and things worth saving",
     "file": "src/app/boards/boards.html"
   },
   "7046030638751781256": {
@@ -10251,6 +10271,10 @@
     "source": " ~{$INTERPOLATION} tokens · estimated ${$INTERPOLATION_1} ",
     "file": "src/app/web-scraper/web-scraper.html"
   },
+  "7770974812608545646": {
+    "source": " Choose what this Wiki is about and whether the subject speaks as “I” or is described by a guide. ",
+    "file": "src/app/atlas-persona/atlas-persona.html"
+  },
   "7773930819417908783": {
     "source": "Ask anything about your research...",
     "file": "src/app/marketing/marketing.html"
@@ -10958,6 +10982,10 @@
   "8237132514222887159": {
     "source": "Street, neighborhood, or area",
     "file": "src/app/business-claim/business-claim.html"
+  },
+  "8249375635168744613": {
+    "source": "Identity & perspective",
+    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "8249973590330071936": {
     "source": "Board logo preview",
@@ -12005,7 +12033,7 @@
   },
   "8980840277498952672": {
     "source": "First person",
-    "file": "src/app/boards/board-narration-style.ts"
+    "file": "src/app/atlas-persona/atlas-persona.html"
   },
   "8981371917325659597": {
     "source": "New here? Start with the welcome video",

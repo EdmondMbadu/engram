@@ -1,6 +1,7 @@
 import { FieldValue, Timestamp } from 'firebase-admin/firestore';
 import { logger } from 'firebase-functions';
 import { answerFromArticles, answerQuestion, answerWithGoogleSearch, compileKnowledgeEntries, compileWikiArticles, mergeWikiArticle, planArticleMerge, streamAnswerWithGoogleSearch, summarizeTopic } from './gemini';
+import { buildAtlasIdentityInstruction, normalizeAtlasResponsePerspective, normalizeAtlasWikiType } from './atlas-identity';
 import { db, storage } from './firebase';
 import { extractBlocksFromBuffer, extractBlocksFromUrl } from './extractors';
 import {
@@ -783,21 +784,24 @@ const maxPersonaPromptChars = 8000;
 
 async function loadAtlasChatContext(atlasId: string | null): Promise<{
   personaPrompt: string | null;
+  identityInstruction: string | null;
   atlasName: string | null;
   cityHint: string | null;
 }> {
   if (!atlasId) {
-    return { personaPrompt: null, atlasName: null, cityHint: null };
+    return { personaPrompt: null, identityInstruction: null, atlasName: null, cityHint: null };
   }
 
   try {
     const snapshot = await atlasesCollection.doc(atlasId).get();
     if (!snapshot.exists) {
-      return { personaPrompt: null, atlasName: null, cityHint: null };
+      return { personaPrompt: null, identityInstruction: null, atlasName: null, cityHint: null };
     }
 
     const data = snapshot.data() as {
       name?: unknown;
+      wiki_type?: unknown;
+      response_perspective?: unknown;
       persona_prompt?: unknown;
       chat_guide?: unknown;
       city_config?: {
@@ -824,7 +828,7 @@ async function loadAtlasChatContext(atlasId: string | null): Promise<{
       ? [
         `You are responding as ${guideName}, ${guideLabel || 'the Living Wiki guide'} for this wiki.`,
         'Let that guide identity shape the voice, warmth, framing, and local color of every answer.',
-        'Stay accurate, grounded, and modern; do not fabricate personal memories, citations, dates, or facts.',
+        'Stay accurate, grounded, clear, and accessible; do not fabricate personal memories, citations, dates, or facts.',
       ].join(' ')
       : '';
     const combined = [guidePrompt, raw].filter(Boolean).join('\n\n');
@@ -846,10 +850,23 @@ async function loadAtlasChatContext(atlasId: string | null): Promise<{
       typeof universityConfig?.state === 'string' ? universityConfig.state.trim() : '',
       typeof universityConfig?.country_code === 'string' ? universityConfig.country_code.trim() : '',
     ].filter(Boolean);
+    const atlasName = typeof data?.name === 'string' && data.name.trim() ? data.name.trim() : null;
+    const wikiType = normalizeAtlasWikiType(data?.wiki_type, {
+      hasCityConfig: !!cityConfig && typeof cityConfig === 'object',
+      hasUniversityConfig: !!universityConfig && typeof universityConfig === 'object',
+    });
+    const configuredPerspective = normalizeAtlasResponsePerspective(data?.response_perspective);
+    const identity = buildAtlasIdentityInstruction({
+      atlasName,
+      guideName: guideName || null,
+      wikiType,
+      configuredPerspective,
+    });
 
     return {
       personaPrompt,
-      atlasName: typeof data?.name === 'string' && data.name.trim() ? data.name.trim() : null,
+      identityInstruction: identity.instruction,
+      atlasName,
       cityHint: cityParts.length > 0
         ? cityParts.join(', ')
         : universityParts.length > 0
@@ -861,7 +878,7 @@ async function loadAtlasChatContext(atlasId: string | null): Promise<{
       atlasId,
       errorMessage: error instanceof Error ? error.message : String(error),
     });
-    return { personaPrompt: null, atlasName: null, cityHint: null };
+    return { personaPrompt: null, identityInstruction: null, atlasName: null, cityHint: null };
   }
 }
 
@@ -1289,6 +1306,7 @@ export async function runAtlasQuery(params: {
       question: trimmedQuestion,
       history: threadHistory.map((message) => ({ role: message.role, text: message.text })),
       personaPrompt: atlasChatContext.personaPrompt,
+      identityInstruction: atlasChatContext.identityInstruction,
     });
     timer.mark('internet_model_ms');
     const { mappableLocations, travelGuide } = buildFastAnswerPresentation({
@@ -1339,6 +1357,7 @@ export async function runAtlasQuery(params: {
     broadQuestion,
     history: threadHistory.map((message) => ({ role: message.role, text: message.text })),
     personaPrompt: atlasChatContext.personaPrompt,
+    identityInstruction: atlasChatContext.identityInstruction,
   });
   timer.mark('article_attempt_ms');
 
@@ -1435,6 +1454,7 @@ export async function runAtlasQuery(params: {
       question: trimmedQuestion,
       history: threadHistory.map((message) => ({ role: message.role, text: message.text })),
       personaPrompt: atlasChatContext.personaPrompt,
+      identityInstruction: atlasChatContext.identityInstruction,
     });
     timer.mark('internet_fallback_model_ms');
     const { mappableLocations, travelGuide } = buildFastAnswerPresentation({
@@ -1495,6 +1515,7 @@ export async function runAtlasQuery(params: {
       source: entry.source,
     })),
     personaPrompt: atlasChatContext.personaPrompt,
+    identityInstruction: atlasChatContext.identityInstruction,
   });
   timer.mark('knowledge_model_ms');
 
@@ -1514,6 +1535,7 @@ export async function runAtlasQuery(params: {
       question: trimmedQuestion,
       history: threadHistory.map((message) => ({ role: message.role, text: message.text })),
       personaPrompt: atlasChatContext.personaPrompt,
+      identityInstruction: atlasChatContext.identityInstruction,
     });
     timer.mark('internet_fallback_model_ms');
     const { mappableLocations, travelGuide } = buildFastAnswerPresentation({
@@ -1633,6 +1655,7 @@ export async function runAtlasInternetStream(params: {
     question: trimmedQuestion,
     history: threadHistory.map((message) => ({ role: message.role, text: message.text })),
     personaPrompt: atlasChatContext.personaPrompt,
+    identityInstruction: atlasChatContext.identityInstruction,
     onDelta: params.onDelta,
   });
   timer.mark('internet_model_stream_ms');
@@ -1763,6 +1786,7 @@ export async function runPublicAtlasQuery(params: {
       question: trimmedQuestion,
       history: threadHistory.map((message) => ({ role: message.role, text: message.text })),
       personaPrompt: atlasChatContext.personaPrompt,
+      identityInstruction: atlasChatContext.identityInstruction,
     });
     timer.mark('internet_model_ms');
     const { mappableLocations, travelGuide } = buildFastAnswerPresentation({
@@ -1823,6 +1847,7 @@ export async function runPublicAtlasQuery(params: {
     broadQuestion,
     history: threadHistory.map((message) => ({ role: message.role, text: message.text })),
     personaPrompt: atlasChatContext.personaPrompt,
+    identityInstruction: atlasChatContext.identityInstruction,
   });
   timer.mark('article_attempt_ms');
 
@@ -1930,6 +1955,7 @@ export async function runPublicAtlasQuery(params: {
       question: trimmedQuestion,
       history: threadHistory.map((message) => ({ role: message.role, text: message.text })),
       personaPrompt: atlasChatContext.personaPrompt,
+      identityInstruction: atlasChatContext.identityInstruction,
     });
     timer.mark('internet_fallback_model_ms');
     const { mappableLocations, travelGuide } = buildFastAnswerPresentation({
@@ -1993,6 +2019,7 @@ export async function runPublicAtlasQuery(params: {
       source: entry.source,
     })),
     personaPrompt: atlasChatContext.personaPrompt,
+    identityInstruction: atlasChatContext.identityInstruction,
   });
   timer.mark('knowledge_model_ms');
 
@@ -2019,6 +2046,7 @@ export async function runPublicAtlasQuery(params: {
       question: trimmedQuestion,
       history: threadHistory.map((message) => ({ role: message.role, text: message.text })),
       personaPrompt: atlasChatContext.personaPrompt,
+      identityInstruction: atlasChatContext.identityInstruction,
     });
     timer.mark('internet_fallback_model_ms');
     const { mappableLocations, travelGuide } = buildFastAnswerPresentation({
@@ -2130,6 +2158,7 @@ async function tryAnswerFromArticles(params: {
   broadQuestion: boolean;
   history: Array<{ role: 'user' | 'assistant'; text: string }>;
   personaPrompt?: string | null;
+  identityInstruction?: string | null;
 }): Promise<{
   answer: string;
   articleIds: string[];
@@ -2195,6 +2224,7 @@ async function tryAnswerFromArticles(params: {
       content: a.content,
     })),
     personaPrompt: params.personaPrompt ?? null,
+    identityInstruction: params.identityInstruction ?? null,
   });
 
   const safeAnswer =

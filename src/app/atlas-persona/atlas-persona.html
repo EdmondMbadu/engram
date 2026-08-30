@@ -92,6 +92,82 @@
           @if (activeStep() === 'personality') {
             <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
               <div>
+                <section class="mb-6 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] p-5">
+                  <div class="flex items-start gap-3">
+                    <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--surface)] text-[var(--accent)]">
+                      <span class="material-symbols-outlined">badge</span>
+                    </span>
+                    <div>
+                      <p class="text-sm font-black text-[var(--text)]" i18n>Identity & perspective</p>
+                      <p class="mt-1 text-xs leading-5 text-[var(--muted)]" i18n>
+                        Choose what this Wiki is about and whether the subject speaks as “I” or is described by a guide.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="mt-5 grid gap-4 sm:grid-cols-2">
+                    <div class="relative block">
+                      <span id="wiki-subject-label" class="mb-2 block text-[10px] font-black uppercase tracking-[0.17em] text-[var(--muted)]" i18n>Wiki subject</span>
+                      <button
+                        type="button"
+                        data-testid="wiki-subject-trigger"
+                        class="theme-input flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3 text-left text-sm text-[var(--text)]"
+                        aria-haspopup="listbox"
+                        aria-labelledby="wiki-subject-label"
+                        [attr.aria-expanded]="openIdentityMenu() === 'wiki_type'"
+                        (click)="$event.stopPropagation(); toggleIdentityMenu('wiki_type')"
+                      >
+                        <span>{{ wikiTypeLabel() }}</span>
+                        <span class="material-symbols-outlined text-[1.1rem] text-[var(--muted)] transition-transform" [class.rotate-180]="openIdentityMenu() === 'wiki_type'">expand_more</span>
+                      </button>
+                      @if (openIdentityMenu() === 'wiki_type') {
+                        <div data-testid="wiki-subject-menu" role="listbox" aria-labelledby="wiki-subject-label" class="absolute inset-x-0 top-full z-50 mt-2 overflow-hidden rounded-xl border border-[var(--line)] bg-[var(--surface)] p-1.5 shadow-xl" (click)="$event.stopPropagation()">
+                          <button type="button" role="option" [attr.aria-selected]="wikiTypeDraft() === 'person'" class="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-sm hover:bg-[var(--soft-fill)]" [class.font-black]="wikiTypeDraft() === 'person'" (click)="onWikiTypeChange('person')"><span i18n>Person</span>@if (wikiTypeDraft() === 'person') { <span class="material-symbols-outlined text-base text-[var(--accent)]">check</span> }</button>
+                          <button type="button" role="option" [attr.aria-selected]="wikiTypeDraft() === 'city'" class="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-sm hover:bg-[var(--soft-fill)]" [class.font-black]="wikiTypeDraft() === 'city'" (click)="onWikiTypeChange('city')"><span i18n>City</span>@if (wikiTypeDraft() === 'city') { <span class="material-symbols-outlined text-base text-[var(--accent)]">check</span> }</button>
+                          <button type="button" role="option" [attr.aria-selected]="wikiTypeDraft() === 'university'" class="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-sm hover:bg-[var(--soft-fill)]" [class.font-black]="wikiTypeDraft() === 'university'" (click)="onWikiTypeChange('university')"><span i18n>University</span>@if (wikiTypeDraft() === 'university') { <span class="material-symbols-outlined text-base text-[var(--accent)]">check</span> }</button>
+                          <button type="button" role="option" [attr.aria-selected]="wikiTypeDraft() === 'organization'" class="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-sm hover:bg-[var(--soft-fill)]" [class.font-black]="wikiTypeDraft() === 'organization'" (click)="onWikiTypeChange('organization')"><span i18n>Organization</span>@if (wikiTypeDraft() === 'organization') { <span class="material-symbols-outlined text-base text-[var(--accent)]">check</span> }</button>
+                          <button type="button" role="option" [attr.aria-selected]="wikiTypeDraft() === 'topic'" class="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-sm hover:bg-[var(--soft-fill)]" [class.font-black]="wikiTypeDraft() === 'topic'" (click)="onWikiTypeChange('topic')"><span i18n>Topic</span>@if (wikiTypeDraft() === 'topic') { <span class="material-symbols-outlined text-base text-[var(--accent)]">check</span> }</button>
+                        </div>
+                      }
+                    </div>
+
+                    <div class="relative block">
+                      <span id="speaking-perspective-label" class="mb-2 block text-[10px] font-black uppercase tracking-[0.17em] text-[var(--muted)]" i18n>Speaking perspective</span>
+                      <button
+                        type="button"
+                        data-testid="speaking-perspective-trigger"
+                        class="theme-input flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3 text-left text-sm text-[var(--text)]"
+                        aria-haspopup="listbox"
+                        aria-labelledby="speaking-perspective-label"
+                        [attr.aria-expanded]="openIdentityMenu() === 'perspective'"
+                        (click)="$event.stopPropagation(); toggleIdentityMenu('perspective')"
+                      >
+                        <span>{{ perspectiveLabel() }}</span>
+                        <span class="material-symbols-outlined text-[1.1rem] text-[var(--muted)] transition-transform" [class.rotate-180]="openIdentityMenu() === 'perspective'">expand_more</span>
+                      </button>
+                      @if (openIdentityMenu() === 'perspective') {
+                        <div data-testid="speaking-perspective-menu" role="listbox" aria-labelledby="speaking-perspective-label" class="absolute inset-x-0 top-full z-50 mt-2 overflow-hidden rounded-xl border border-[var(--line)] bg-[var(--surface)] p-1.5 shadow-xl" (click)="$event.stopPropagation()">
+                          <button type="button" role="option" [attr.aria-selected]="perspectiveDraft() === 'auto'" class="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-sm hover:bg-[var(--soft-fill)]" [class.font-black]="perspectiveDraft() === 'auto'" (click)="onPerspectiveChange('auto')"><span i18n>Automatic (recommended)</span>@if (perspectiveDraft() === 'auto') { <span class="material-symbols-outlined text-base text-[var(--accent)]">check</span> }</button>
+                          <button type="button" role="option" [attr.aria-selected]="perspectiveDraft() === 'first_person'" class="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-sm hover:bg-[var(--soft-fill)]" [class.font-black]="perspectiveDraft() === 'first_person'" (click)="onPerspectiveChange('first_person')"><span i18n>First person</span>@if (perspectiveDraft() === 'first_person') { <span class="material-symbols-outlined text-base text-[var(--accent)]">check</span> }</button>
+                          <button type="button" role="option" [attr.aria-selected]="perspectiveDraft() === 'third_person'" class="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-sm hover:bg-[var(--soft-fill)]" [class.font-black]="perspectiveDraft() === 'third_person'" (click)="onPerspectiveChange('third_person')"><span i18n>Third person</span>@if (perspectiveDraft() === 'third_person') { <span class="material-symbols-outlined text-base text-[var(--accent)]">check</span> }</button>
+                        </div>
+                      }
+                    </div>
+                  </div>
+
+                  <div class="mt-4 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3">
+                    <div class="flex flex-wrap items-center gap-2">
+                      <span class="rounded-full bg-[var(--accent)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--accent-contrast)]">
+                        {{ effectivePerspective() === 'first_person' ? 'First person' : 'Third person' }}
+                      </span>
+                      @if (perspectiveDraft() === 'auto') {
+                        <span class="text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--muted)]" i18n>Automatic default</span>
+                      }
+                    </div>
+                    <p class="mt-2 text-xs leading-5 text-[var(--muted)]">{{ perspectivePreview() }}</p>
+                  </div>
+                </section>
+
                 <div class="mb-3 flex items-end justify-between gap-4">
                   <div>
                     <p class="text-xs font-black uppercase tracking-[0.2em] text-[var(--muted)]" i18n>Persona prompt</p>
@@ -128,7 +204,7 @@
 
                 <div class="mt-4 flex flex-wrap gap-2">
                   <button type="button" class="rounded-full bg-[var(--accent)] px-5 py-2.5 text-sm font-bold text-[var(--accent-contrast)] disabled:cursor-not-allowed disabled:opacity-40" [disabled]="saving() || !hasChanges() || overStorageLimit()" (click)="save()">
-                    {{ saving() ? 'Saving…' : 'Save personality' }}
+                    {{ saving() ? 'Saving…' : 'Save identity & personality' }}
                   </button>
                   <button type="button" class="rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-5 py-2.5 text-sm font-semibold disabled:opacity-40" [disabled]="saving() || !hasChanges()" (click)="revertToSaved()" i18n>Revert changes</button>
                   @if (hasCustomPrompt()) {
