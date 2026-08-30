@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import type { AtlasItem } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
 import { ChatService } from '../chat.service';
-import { TalkingCardConversationComponent } from './talking-card-conversation';
+import { buildTalkingCardVoiceContext, TalkingCardConversationComponent } from './talking-card-conversation';
 
 describe('TalkingCardConversationComponent', () => {
   const atlas: AtlasItem = {
@@ -50,6 +50,20 @@ describe('TalkingCardConversationComponent', () => {
         { provide: ChatService, useValue: chatService },
       ],
     }).compileComponents();
+  });
+
+  it('keeps a person avatar in first person even when a stale session says city', () => {
+    const context = buildTalkingCardVoiceContext(atlas, {
+      atlas_subject_type: 'city',
+      atlas_response_perspective: 'third_person',
+      atlas_persona_instruction: 'Use the documented record and speak with measured confidence.',
+    });
+
+    expect(context.subjectType).toBe('person');
+    expect(context.responsePerspective).toBe('first_person');
+    expect(context.instruction).toContain('Speak as George Washington in the first person');
+    expect(context.instruction).toContain('not a city');
+    expect(context.instruction).toContain('Never describe the subject as a city');
   });
 
   it('opens voice mode by default and starts voice after loading the avatar', async () => {

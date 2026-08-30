@@ -18,15 +18,56 @@
 
     <div class="talking-editor__body">
       @if (mode() === 'existing') {
-        <label>
-          <span>Conversational avatar</span>
-          <select [ngModel]="selectedAtlasId()" (ngModelChange)="selectExistingAtlas($event)">
-            <option value="">Choose an avatar…</option>
-            @for (atlas of availableAtlases(); track atlas.id) {
-              <option [value]="atlas.id">{{ atlas.chat_guide?.name || atlas.name }}{{ atlas.is_public ? ' · Public' : ' · Private' }}</option>
+        <div class="talking-editor__avatar-search">
+          <label for="talking-avatar-search"><span>Conversational avatar</span></label>
+          <div class="talking-editor__search-field">
+            <span class="material-symbols-outlined" aria-hidden="true">search</span>
+            <input
+              id="talking-avatar-search"
+              type="search"
+              autocomplete="off"
+              placeholder="Search avatars by name…"
+              [ngModel]="avatarSearch()"
+              (ngModelChange)="avatarSearch.set($event)"
+              [attr.aria-expanded]="!!avatarSearch().trim()"
+              aria-controls="talking-avatar-results"
+            />
+            @if (avatarSearch()) {
+              <button type="button" aria-label="Clear avatar search" (click)="avatarSearch.set('')"><span class="material-symbols-outlined">close</span></button>
             }
-          </select>
-        </label>
+          </div>
+
+          @if (avatarSearch().trim()) {
+            <div id="talking-avatar-results" class="talking-editor__search-results" role="listbox" aria-label="Matching conversational avatars">
+              @for (atlas of filteredAvailableAtlases(); track atlas.id) {
+                <button
+                  type="button"
+                  role="option"
+                  [attr.aria-selected]="selectedAtlasId() === atlas.id"
+                  [class.is-selected]="selectedAtlasId() === atlas.id"
+                  (click)="selectExistingAtlas(atlas.id)"
+                >
+                  <span class="talking-editor__result-image">
+                    @if (atlas.chat_guide?.image_url || atlas.logo_url || atlas.hero_url) {
+                      <img [src]="atlas.chat_guide?.image_url || atlas.logo_url || atlas.hero_url" alt="" />
+                    } @else {
+                      <span class="material-symbols-outlined" aria-hidden="true">record_voice_over</span>
+                    }
+                  </span>
+                  <span class="talking-editor__result-copy">
+                    <strong>{{ atlas.chat_guide?.name || atlas.name }}</strong>
+                    <small>{{ atlas.chat_guide?.label || atlas.description || atlas.name }}</small>
+                  </span>
+                  <span class="talking-editor__visibility" [class.is-public]="atlas.is_public">{{ atlas.is_public ? 'Public' : 'Private' }}</span>
+                </button>
+              } @empty {
+                <p>No avatars match “{{ avatarSearch().trim() }}”.</p>
+              }
+            </div>
+          } @else if (!selectedAtlas()) {
+            <small class="talking-editor__search-hint">Start typing to find one of your {{ availableAtlases().length }} avatars.</small>
+          }
+        </div>
         @if (!availableAtlases().length) {
           <p class="talking-editor__notice">You do not have an avatar yet. Choose “Create a new avatar” to make one here.</p>
         }
@@ -36,7 +77,7 @@
               @if (imagePreviewUrl()) { <img [src]="imagePreviewUrl()" [alt]="name()" /> }
               @else { <span class="material-symbols-outlined">record_voice_over</span> }
             </div>
-            <div><strong>{{ name() }}</strong><span>{{ role() || 'Conversational guide' }}</span></div>
+            <div><strong>{{ name() }}</strong><span>{{ role() || 'Conversational guide' }}</span><small>Selected avatar</small></div>
           </div>
           @if (needsPublication()) {
             <label class="talking-editor__check">

@@ -26,6 +26,7 @@ export class TalkingCardEditorComponent implements OnDestroy {
 
   readonly mode = signal<EditorMode>('existing');
   readonly selectedAtlasId = signal('');
+  readonly avatarSearch = signal('');
   readonly name = signal('');
   readonly role = signal('');
   readonly personaPrompt = signal('');
@@ -48,6 +49,23 @@ export class TalkingCardEditorComponent implements OnDestroy {
   readonly selectedAtlas = computed<AtlasItem | null>(() =>
     this.availableAtlases().find((atlas) => atlas.id === this.selectedAtlasId()) ?? null,
   );
+  readonly filteredAvailableAtlases = computed(() => {
+    const query = this.avatarSearch().trim().toLocaleLowerCase();
+    if (!query) return [];
+    const terms = query.split(/\s+/).filter(Boolean);
+    return this.availableAtlases()
+      .filter((atlas) => {
+        const searchable = [
+          atlas.chat_guide?.name,
+          atlas.chat_guide?.label,
+          atlas.name,
+          atlas.description,
+          atlas.slug,
+        ].filter(Boolean).join(' ').toLocaleLowerCase();
+        return terms.every((term) => searchable.includes(term));
+      })
+      .slice(0, 12);
+  });
   readonly publicBoard = computed(() => this.boardVisibility() === 'public');
   readonly needsPublication = computed(() => this.publicBoard() && this.selectedAtlas()?.is_public !== true);
   readonly voices = STACK_NARRATOR_VOICES;
@@ -96,6 +114,7 @@ export class TalkingCardEditorComponent implements OnDestroy {
     this.role.set(atlas.chat_guide?.label?.trim() || atlas.description || 'Conversational guide');
     this.imagePreviewUrl.set(atlas.chat_guide?.image_url?.trim() || atlas.logo_url?.trim() || atlas.hero_url?.trim() || '');
     this.publishAvatar.set(false);
+    this.avatarSearch.set('');
   }
 
   close(): void {

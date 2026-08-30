@@ -10,6 +10,48 @@ type VoiceConversation = Awaited<ReturnType<typeof import('@elevenlabs/client').
 type ConversationMode = 'voice' | 'text';
 type VoiceMode = 'speaking' | 'listening' | null;
 
+export function buildTalkingCardVoiceContext(
+  atlas: Pick<AtlasItem, 'name' | 'wiki_type' | 'response_perspective'>,
+  sessionDynamicVariables: Record<string, unknown> = {},
+): {
+  subjectType: string;
+  responsePerspective: 'first_person' | 'third_person';
+  instruction: string;
+} {
+  const subjectType = String(
+    atlas.wiki_type ?? sessionDynamicVariables['atlas_subject_type'] ?? 'person',
+  ).trim() || 'person';
+  const configuredPerspective = String(
+    atlas.response_perspective ?? sessionDynamicVariables['atlas_response_perspective'] ?? 'auto',
+  ).trim();
+  const responsePerspective = configuredPerspective === 'first_person'
+    || (configuredPerspective === 'auto' && subjectType === 'person')
+    ? 'first_person'
+    : 'third_person';
+  const personaInstruction = String(sessionDynamicVariables['atlas_persona_instruction'] ?? '').trim();
+  const identityInstruction = String(sessionDynamicVariables['atlas_identity_instruction'] ?? '').trim();
+  const subjectContextInstruction = responsePerspective === 'first_person'
+    ? [
+        `This voice conversation is for the ${subjectType} Wiki about ${atlas.name}.`,
+        `Speak as ${atlas.name} in the first person and stay grounded in the historical or supplied record.`,
+        `${atlas.name} is a person, not a city. Never describe the subject as a city or say you are here to help with the city.`,
+      ].join(' ')
+    : [
+        `This voice conversation is for the ${subjectType} Wiki about ${atlas.name}.`,
+        `Speak as a knowledgeable guide about ${atlas.name} in the third person.`,
+        subjectType !== 'city' ? `${atlas.name} is not a city. Never describe the subject as a city.` : '',
+      ].filter(Boolean).join(' ');
+  return {
+    subjectType,
+    responsePerspective,
+    instruction: [
+      subjectContextInstruction,
+      personaInstruction || identityInstruction,
+      `Invite questions about ${atlas.name}, while still answering broader questions when asked.`,
+    ].filter(Boolean).join(' ').trim(),
+  };
+}
+
 @Component({
   selector: 'app-talking-card-conversation',
   imports: [FormsModule, VoiceFluidVisualComponent],
@@ -173,25 +215,23 @@ export class TalkingCardConversationComponent implements OnInit, OnDestroy {
           ? { tts: { voiceId: session.voiceId } }
           : {}),
       };
-      const subjectType = String(
-        session.dynamicVariables?.['atlas_subject_type'] ?? atlas.wiki_type ?? 'person',
-      ).trim() || 'person';
-      const configuredPerspective = String(
-        session.dynamicVariables?.['atlas_response_perspective'] ?? atlas.response_perspective ?? 'auto',
-      ).trim();
-      const responsePerspective = configuredPerspective === 'first_person'
-        || (configuredPerspective === 'auto' && subjectType === 'person')
-        ? 'first_person'
-        : 'third_person';
+      const voiceContext = buildTalkingCardVoiceContext(atlas, session.dynamicVariables ?? {});
       const conversation = await client.Conversation.startSession({
         ...connection,
         userId: session.userId,
         dynamicVariables: {
           ...(session.dynamicVariables ?? {}),
           requested_intro_greeting: this.openingMessage().trim(),
+          current_city: voiceContext.subjectType === 'city' ? atlas.name : '',
+          current_city_country: '',
           current_wiki_subject: atlas.name,
-          current_wiki_subject_type: subjectType,
-          current_wiki_response_perspective: responsePerspective,
+          current_wiki_subject_type: voiceContext.subjectType,
+          current_wiki_response_perspective: voiceContext.responsePerspective,
+          current_living_wiki: `LivingWiki, ${atlas.name}`,
+          wiki_context_instruction: voiceContext.instruction,
+          // The shared agent historically read this variable. Keep it aligned
+          // with the subject-aware Wiki instruction during the migration.
+          city_context_instruction: voiceContext.instruction,
         },
         ...(Object.keys(overrides).length ? { overrides } : {}),
         onConnect: () => {
@@ -245,6 +285,12 @@ export class TalkingCardConversationComponent implements OnInit, OnDestroy {
       }
       this.voiceConversation = conversation;
       this.startVoiceMeter(conversation);
+      try {
+        conversation.sendContextualUpdate(voiceContext.instruction, { contextId: `talking-card-identity-${atlas.id}` });
+      } catch {
+        // Dynamic variables already carry the same instruction. Contextual
+        // update is an additional guard for older shared-agent prompts.
+      }
     } catch (error) {
       if (attempt !== this.voiceAttempt) return;
       this.voiceConversation = null;

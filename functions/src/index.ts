@@ -16445,6 +16445,19 @@ export const createElevenLabsVoiceSession = onCall(
 
     const runtimeIdentity = atlasRecord ? atlasRuntimeIdentity(atlasRecord) : null;
     const runtimePersonaInstruction = atlasRecord ? atlasRuntimePersonaInstruction(atlasRecord) : '';
+    const runtimeWikiContextInstruction = runtimeIdentity && atlasName
+      ? [
+          `This voice conversation is for the ${runtimeIdentity.wikiType} Wiki about ${atlasName}.`,
+          runtimeIdentity.effectivePerspective === 'first_person'
+            ? `Speak as ${atlasName} in the first person and stay grounded in the historical or supplied record.`
+            : `Speak as a knowledgeable guide about ${atlasName} in the third person.`,
+          runtimeIdentity.wikiType === 'city'
+            ? ''
+            : `${atlasName} is a ${runtimeIdentity.wikiType}, not a city. Never describe the subject as a city or say you are here to help with the city.`,
+          runtimePersonaInstruction,
+          `Invite questions about ${atlasName}, while still answering broader questions when asked.`,
+        ].filter(Boolean).join(' ').trim()
+      : '';
 
     return {
       conversationToken: conversationToken || null,
@@ -16474,6 +16487,16 @@ export const createElevenLabsVoiceSession = onCall(
         atlas_identity_instruction: runtimeIdentity?.instruction ?? '',
         atlas_subject_type: runtimeIdentity?.wikiType ?? 'topic',
         atlas_response_perspective: runtimeIdentity?.effectivePerspective ?? 'third_person',
+        current_city: runtimeIdentity?.wikiType === 'city' ? atlasName ?? '' : '',
+        current_city_country: '',
+        current_wiki_subject: atlasName ?? '',
+        current_wiki_subject_type: runtimeIdentity?.wikiType ?? 'topic',
+        current_wiki_response_perspective: runtimeIdentity?.effectivePerspective ?? 'third_person',
+        current_living_wiki: atlasName ? `LivingWiki, ${atlasName}` : 'LivingWiki',
+        wiki_context_instruction: runtimeWikiContextInstruction,
+        // Compatibility for the existing shared ElevenLabs agent prompt while
+        // it migrates from city-only variables to subject-aware Wiki variables.
+        city_context_instruction: runtimeWikiContextInstruction,
         atlas_guide_name: textValue(
           atlasRecord?.['chat_guide'] && typeof atlasRecord['chat_guide'] === 'object'
             ? (atlasRecord['chat_guide'] as Record<string, unknown>)['name']
