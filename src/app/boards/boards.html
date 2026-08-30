@@ -3580,21 +3580,30 @@
                       </div>
                     </div>
                   </div>
-                  @if (canGoThere(card) && (isCardExpanded(card.id) || isCardFlipped(card.id))) {
+                  @if ((canGoThere(card) && (isCardExpanded(card.id) || isCardFlipped(card.id))) || (isTalkingCard(card) && isCardFlipped(card.id))) {
                     <div class="detail-card__go-there-bar">
-                      <button
-                        type="button"
-                        class="go-there-card-action__primary go-there-card-action__primary--standalone"
-                        [class.go-there-card-action__primary--planned]="!!visitPlanFor(card)"
-                        aria-haspopup="dialog"
-                        [attr.aria-label]="visitPlanCardLabel(card) + ': ' + card.title"
-                        (click)="openGoThere(cardHostBoard(board, card), card, $event)"
-                      >
-                        <span class="material-symbols-outlined">{{ visitPlanFor(card) ? 'event_available' : 'near_me' }}</span>
-                        <span>{{ visitPlanCardLabel(card) }}</span>
-                      </button>
-                      @if (visitPlanFor(card); as visitPlan) {
-                        <small>{{ visitPlanAttendeeLabel(visitPlan) }}</small>
+                      @if (isTalkingCard(card) && isCardFlipped(card.id)) {
+                        <button type="button" class="talking-card-cta talking-card-cta--back" (click)="openTalkingCardConversation(card, $event, 'board')">
+                          <span class="material-symbols-outlined">mic</span>
+                          <span><strong>{{ talkingCardButtonLabel(card) }}</strong><small>Text or voice conversation</small></span>
+                          <span class="material-symbols-outlined">arrow_forward</span>
+                        </button>
+                      }
+                      @if (canGoThere(card)) {
+                        <button
+                          type="button"
+                          class="go-there-card-action__primary go-there-card-action__primary--standalone"
+                          [class.go-there-card-action__primary--planned]="!!visitPlanFor(card)"
+                          aria-haspopup="dialog"
+                          [attr.aria-label]="visitPlanCardLabel(card) + ': ' + card.title"
+                          (click)="openGoThere(cardHostBoard(board, card), card, $event)"
+                        >
+                          <span class="material-symbols-outlined">{{ visitPlanFor(card) ? 'event_available' : 'near_me' }}</span>
+                          <span>{{ visitPlanCardLabel(card) }}</span>
+                        </button>
+                        @if (visitPlanFor(card); as visitPlan) {
+                          <small>{{ visitPlanAttendeeLabel(visitPlan) }}</small>
+                        }
                       }
                     </div>
                   }

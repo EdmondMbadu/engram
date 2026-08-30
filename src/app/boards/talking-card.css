@@ -82,6 +82,7 @@
 .talking-card-cta > .material-symbols-outlined:first-child { display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%; color: #0d5737; background: #fff; }
 .talking-card-cta--live { width: max-content; max-width: 100%; margin: .75rem auto 0; padding: .7rem 1rem; border: 1px solid rgba(255,255,255,.45); border-radius: 999px; background: rgba(18,103,66,.88); backdrop-filter: blur(10px); }
 .talking-card-cta--live > .material-symbols-outlined:first-child { width: auto; height: auto; color: #fff; background: transparent; }
+.talking-card-cta--back { margin-top: 0; }
 @media (max-width: 640px) {
   .boards-talking-action { min-width: 2.55rem; padding-inline: .7rem; }
   .board-settings-talking-card { grid-template-columns: auto minmax(0, 1fr); }
