@@ -82,6 +82,12 @@ import {
   parseNumberedBoardSource,
 } from './board-wizard-source';
 import {
+  boardWizardDoorwayOffset,
+  boardWizardModeForDoorway,
+  wrapBoardWizardDoorwayIndex,
+  type BoardWizardDoorwayId,
+} from './board-wizard-doorway';
+import {
   boardWizardImageProgressLabel,
   boardWizardStepAfterGenerationFailure,
   isBoardWizardImageEnrichmentActive,
@@ -293,6 +299,7 @@ type WizardCardEditorSection = 'details' | 'image';
 type OffGridLocationSource = 'spot' | 'words';
 type BoardWizardMode = 'describe' | 'paste' | 'photos' | 'off-grid' | 'nearby-gems' | 'url' | 'walking-tour' | 'driving-tour';
 type BoardWizardStep = 'choose' | 'configure' | 'loading' | 'source-review' | 'listing-setup' | 'preview' | 'done';
+type BoardWizardEntryIntent = 'default' | 'real-estate';
 type BoardWizardVibe = 'playful' | 'foodie' | 'traveler' | 'curator' | 'memory';
 type BoardWizardListingMarketingStyle = 'warm' | 'guided' | 'luxury' | 'brisk' | 'investor';
 type BoardWizardListingPreview = {
@@ -1098,6 +1105,55 @@ const BOARD_WIZARD_MODES: Array<{
   },
 ];
 
+type BoardWizardDoorwayOption = {
+  id: BoardWizardDoorwayId;
+  mode: BoardWizardMode | 'manual';
+  label: string;
+  description: string;
+  icon: string;
+  imageUrl: string;
+  imagePosition?: string;
+  collageUrls?: readonly string[];
+};
+
+const BOARD_WIZARD_DOORWAY_ORDER: readonly BoardWizardDoorwayId[] = [
+  'describe',
+  'manual',
+  'paste',
+  'url',
+  'off-grid',
+  'nearby-gems',
+  'driving-tour',
+  'photos',
+  'real-estate',
+  'walking-tour',
+];
+
+const BOARD_WIZARD_DOORWAY_VISUALS: Record<
+  BoardWizardDoorwayId,
+  Pick<BoardWizardDoorwayOption, 'imageUrl' | 'imagePosition' | 'collageUrls'>
+> = {
+  describe: { imageUrl: '/assets/hero_neural.png', imagePosition: 'center' },
+  manual: { imageUrl: '/assets/atlas-landing/wiki-bg.png', imagePosition: 'center' },
+  paste: { imageUrl: '/assets/knowledge_graph.png', imagePosition: 'center' },
+  url: { imageUrl: '/assets/public-wikis/boston-hero.jpg', imagePosition: 'center' },
+  'off-grid': { imageUrl: '/assets/membership/canyon.jpg', imagePosition: 'center' },
+  'nearby-gems': { imageUrl: '/assets/public-wikis/portland-hero.jpg', imagePosition: 'center' },
+  'driving-tour': { imageUrl: '/assets/membership/hero.jpg', imagePosition: 'center 66%' },
+  photos: {
+    imageUrl: '/assets/membership/waterfall.jpg',
+    imagePosition: 'center',
+    collageUrls: [
+      '/assets/membership/waterfall.jpg',
+      '/assets/membership/sushi.jpg',
+      '/assets/membership/coffee.jpg',
+      '/assets/public-wikis/san-francisco-hero.jpg',
+    ],
+  },
+  'real-estate': { imageUrl: '/assets/board-wizard/real-estate-hero.jpg', imagePosition: 'center 58%' },
+  'walking-tour': { imageUrl: '/assets/board-wizard/walking-tour.jpg', imagePosition: 'center 58%' },
+};
+
 const BOARD_WIZARD_VIBES: Array<{ id: BoardWizardVibe; label: string; icon: string }> = [
   { id: 'playful', label: $localize`Playful`, icon: 'celebration' },
   { id: 'foodie', label: $localize`Foodie`, icon: 'restaurant' },
@@ -1634,6 +1690,8 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   private boardRouteUnavailableTimer: ReturnType<typeof setTimeout> | null = null;
   private publicOwnerRouteEmptyTimer: ReturnType<typeof setTimeout> | null = null;
   private nearbyGemsQueryConsumed = false;
+  private wizardDoorwayPointerStartX: number | null = null;
+  private wizardDoorwaySuppressActivation = false;
   private collectionLoadSequence = 0;
   private citiesLoadPromise: Promise<void> | null = null;
 
@@ -1863,6 +1921,8 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly wizardOpen = signal(false);
   readonly wizardStep = signal<BoardWizardStep>('choose');
   readonly wizardMode = signal<BoardWizardMode>('describe');
+  readonly wizardEntryIntent = signal<BoardWizardEntryIntent>('default');
+  readonly wizardDoorwayId = signal<BoardWizardDoorwayId>('real-estate');
   readonly wizardTargetBoardId = signal('new');
   readonly wizardLockedTargetBoardId = signal<string | null>(null);
   readonly wizardContributionBoardId = signal<string | null>(null);
@@ -2709,16 +2769,49 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     const board = this.wizardLockedTargetBoard();
     return board ? this.boardBuildModes(board) : this.wizardModes;
   });
-  readonly wizardIdeaModes = computed(() => this.wizardAvailableModes()
-    .filter((mode) => mode.id === 'describe' || mode.id === 'manual')
-    .sort((left, right) => Number(left.id === 'manual') - Number(right.id === 'manual')));
-  readonly wizardMaterialModes = computed(() => this.wizardAvailableModes()
-    .filter((mode) => mode.id === 'paste' || mode.id === 'photos' || mode.id === 'url'));
-  readonly wizardPlaceModes = computed(() => this.wizardAvailableModes()
-    .filter((mode) => mode.id === 'nearby-gems'
-      || mode.id === 'walking-tour'
-      || mode.id === 'driving-tour'
-      || mode.id === 'off-grid'));
+  readonly wizardDoorwayModes = computed<BoardWizardDoorwayOption[]>(() => {
+    const availableModes = new Map(this.wizardAvailableModes().map((mode) => [mode.id, mode]));
+    return BOARD_WIZARD_DOORWAY_ORDER.flatMap((id): BoardWizardDoorwayOption[] => {
+      if (id === 'real-estate') {
+        if (this.wizardLockedTargetBoard() || !availableModes.has('url')) return [];
+        return [{
+          id,
+          mode: 'url',
+          label: 'Real estate',
+          description: 'Turn a property listing and its gallery into a connected, editable story.',
+          icon: 'home_work',
+          ...BOARD_WIZARD_DOORWAY_VISUALS[id],
+        }];
+      }
+      const mode = availableModes.get(id);
+      if (!mode) return [];
+      return [{
+        ...mode,
+        id,
+        mode: mode.id,
+        ...BOARD_WIZARD_DOORWAY_VISUALS[id],
+      }];
+    });
+  });
+  readonly wizardActiveDoorwayIndex = computed(() => {
+    const modes = this.wizardDoorwayModes();
+    const selectedIndex = modes.findIndex((mode) => mode.id === this.wizardDoorwayId());
+    return selectedIndex >= 0 ? selectedIndex : 0;
+  });
+  readonly wizardActiveDoorway = computed(() =>
+    this.wizardDoorwayModes()[this.wizardActiveDoorwayIndex()] ?? null,
+  );
+  readonly wizardDoorwaySlides = computed(() => {
+    const modes = this.wizardDoorwayModes();
+    const activeIndex = this.wizardActiveDoorwayIndex();
+    return modes
+      .map((option, index) => ({
+        option,
+        offset: boardWizardDoorwayOffset(index, activeIndex, modes.length),
+      }))
+      .filter((slide) => Math.abs(slide.offset) <= 1)
+      .sort((left, right) => left.offset - right.offset);
+  });
   readonly wizardMediaModeLabel = computed(() => this.wizardMediaModes
     .find((mode) => mode.id === this.wizardMediaMode())?.label ?? 'Images only');
   readonly wizardDefaultTypeLabel = computed(() => this.cardTypes
@@ -4027,7 +4120,73 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.wizardOpen.set(true);
   }
 
-  chooseWizardMode(mode: BoardWizardMode | 'manual'): void {
+  selectWizardDoorway(id: BoardWizardDoorwayId): void {
+    if (this.wizardDoorwayModes().some((mode) => mode.id === id)) {
+      this.wizardDoorwayId.set(id);
+    }
+  }
+
+  stepWizardDoorway(direction: -1 | 1): void {
+    const modes = this.wizardDoorwayModes();
+    if (modes.length < 2) return;
+    const index = wrapBoardWizardDoorwayIndex(
+      this.wizardActiveDoorwayIndex(),
+      direction,
+      modes.length,
+    );
+    this.wizardDoorwayId.set(modes[index]?.id ?? modes[0].id);
+  }
+
+  activateWizardDoorway(id: BoardWizardDoorwayId): void {
+    if (this.wizardDoorwaySuppressActivation) {
+      this.wizardDoorwaySuppressActivation = false;
+      return;
+    }
+    if (this.wizardActiveDoorway()?.id !== id) {
+      this.selectWizardDoorway(id);
+      return;
+    }
+    const doorway = this.wizardActiveDoorway();
+    if (!doorway) return;
+    this.chooseWizardMode(
+      boardWizardModeForDoorway(doorway.id),
+      doorway.id === 'real-estate' ? 'real-estate' : 'default',
+    );
+  }
+
+  handleWizardDoorwayKeydown(event: KeyboardEvent): void {
+    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+    event.preventDefault();
+    this.stepWizardDoorway(event.key === 'ArrowLeft' ? -1 : 1);
+  }
+
+  startWizardDoorwayGesture(event: PointerEvent): void {
+    if (!event.isPrimary || event.pointerType === 'mouse') return;
+    this.wizardDoorwayPointerStartX = event.clientX;
+  }
+
+  finishWizardDoorwayGesture(event: PointerEvent): void {
+    const startX = this.wizardDoorwayPointerStartX;
+    this.wizardDoorwayPointerStartX = null;
+    if (startX === null || !event.isPrimary || event.pointerType === 'mouse') return;
+    const delta = event.clientX - startX;
+    if (Math.abs(delta) < 48) return;
+    this.wizardDoorwaySuppressActivation = true;
+    window.setTimeout(() => {
+      this.wizardDoorwaySuppressActivation = false;
+    }, 0);
+    this.stepWizardDoorway(delta > 0 ? -1 : 1);
+  }
+
+  cancelWizardDoorwayGesture(): void {
+    this.wizardDoorwayPointerStartX = null;
+  }
+
+  chooseWizardMode(
+    mode: BoardWizardMode | 'manual',
+    entryIntent: BoardWizardEntryIntent = 'default',
+  ): void {
+    this.wizardEntryIntent.set(entryIntent);
     this.wizardSaveDestination.set('board');
     this.wizardPhotoStudioNotice.set('');
     if (mode === 'manual') {
@@ -4886,7 +5045,9 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       case 'photos':
         return 'IMG_2041 beach sunrise.jpg\nbirthday-dinner-kalaya.png\nmuseum-day.jpeg';
       case 'url':
-        return 'https://www.nationalmechanics.com/foodmenu-1';
+        return this.wizardEntryIntent() === 'real-estate'
+          ? 'https://example.com/property-listing'
+          : 'https://www.nationalmechanics.com/foodmenu-1';
       case 'walking-tour':
         return 'A historical walking tour of Old City Philadelphia tracing where the Declaration of Independence was written, debated, and signed.';
       case 'driving-tour':
@@ -17107,6 +17268,9 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   }
 
   wizardModeLabel(): string {
+    if (this.wizardMode() === 'url' && this.wizardEntryIntent() === 'real-estate') {
+      return 'Real estate';
+    }
     return this.wizardModes.find((mode) => mode.id === this.wizardMode())?.label ?? 'Wizard';
   }
 
@@ -17491,6 +17655,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     const editableSelectedBoard = selectedBoard && this.canEditBoard(selectedBoard) ? selectedBoard : null;
     this.wizardStep.set('choose');
     this.wizardMode.set('describe');
+    this.wizardEntryIntent.set('default');
+    this.wizardDoorwayId.set('real-estate');
+    this.wizardDoorwayPointerStartX = null;
+    this.wizardDoorwaySuppressActivation = false;
     this.wizardTargetBoardId.set(editableSelectedBoard?.id ?? 'new');
     this.wizardLockedTargetBoardId.set(null);
     this.wizardContributionBoardId.set(null);

@@ -4532,70 +4532,139 @@
                 <button type="button" class="boards-primary-action" (click)="resumeWizardDraft(recentDraft)">Resume draft</button>
               </div>
             }
-            @if (wizardIdeaModes().length) {
-              <section class="boards-wizard-mode-group boards-wizard-mode-group--idea">
-                <h4><span class="material-symbols-outlined">auto_awesome</span> Start with an idea</h4>
-                <div class="boards-wizard-mode-grid boards-wizard-mode-grid--idea">
-                  @for (mode of wizardIdeaModes(); track mode.id) {
+            <section
+              class="boards-doorway"
+              role="region"
+              aria-roledescription="carousel"
+              aria-label="Board creation options"
+              tabindex="0"
+              (keydown)="handleWizardDoorwayKeydown($event)"
+            >
+              <div class="boards-doorway__stage">
+                <button
+                  type="button"
+                  class="boards-doorway__nav boards-doorway__nav--previous"
+                  aria-label="Show previous board type"
+                  (click)="stepWizardDoorway(-1)"
+                >
+                  <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+                </button>
+
+                <div
+                  class="boards-doorway__viewport"
+                  (pointerdown)="startWizardDoorwayGesture($event)"
+                  (pointerup)="finishWizardDoorwayGesture($event)"
+                  (pointercancel)="cancelWizardDoorwayGesture()"
+                >
+                  @for (slide of wizardDoorwaySlides(); track slide.option.id) {
                     <button
                       type="button"
-                      class="boards-wizard-mode"
-                      [class.boards-wizard-mode--recommended]="mode.id === 'describe' && !wizardLockedTargetBoard()"
-                      (click)="chooseWizardMode(mode.id)"
+                      class="boards-doorway-card"
+                      [class.boards-doorway-card--previous]="slide.offset === -1"
+                      [class.boards-doorway-card--active]="slide.offset === 0"
+                      [class.boards-doorway-card--next]="slide.offset === 1"
+                      [class.boards-doorway-card--real-estate]="slide.option.id === 'real-estate'"
+                      [attr.aria-current]="slide.offset === 0 ? 'true' : null"
+                      [attr.aria-label]="(slide.offset === 0 ? 'Start with ' : 'Show ') + slide.option.label"
+                      (click)="activateWizardDoorway(slide.option.id)"
                     >
-                      <span class="boards-wizard-mode__icon material-symbols-outlined">{{ mode.icon }}</span>
-                      <span class="boards-wizard-mode__copy">
-                        @if (mode.id === 'describe' && !wizardLockedTargetBoard()) {
-                          <em>Recommended</em>
+                      @if (slide.option.collageUrls?.length) {
+                        <span class="boards-doorway-card__collage" aria-hidden="true">
+                          @for (imageUrl of slide.option.collageUrls; track imageUrl) {
+                            <img [src]="imageUrl" alt="" />
+                          }
+                        </span>
+                      } @else {
+                        <img
+                          class="boards-doorway-card__image"
+                          [src]="slide.option.imageUrl"
+                          [style.object-position]="slide.option.imagePosition || 'center'"
+                          alt=""
+                        />
+                      }
+                      <span class="boards-doorway-card__shade" aria-hidden="true"></span>
+                      <span class="boards-doorway-card__content">
+                        <span class="boards-doorway-card__icon material-symbols-outlined" aria-hidden="true">{{ slide.option.icon }}</span>
+                        <span class="boards-doorway-card__copy">
+                          <small>{{ slide.option.id === 'real-estate' ? 'Featured' : 'Board type' }}</small>
+                          <strong>{{ wizardLockedTargetBoard() && slide.option.id === 'manual' ? 'Add one card manually' : slide.option.label }}</strong>
+                          @if (slide.offset === 0) {
+                            <span>{{ wizardLockedTargetBoard() && slide.option.id === 'manual' ? 'Create one card with the standard card editor.' : slide.option.description }}</span>
+                          }
+                        </span>
+                        @if (slide.offset === 0) {
+                          <span class="boards-doorway-card__action">
+                            {{ wizardLockedTargetBoard() ? 'Add cards' : 'Create board' }}
+                            <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+                          </span>
                         }
-                        <strong>{{ wizardLockedTargetBoard() && mode.id === 'manual' ? 'Add one card manually' : mode.label }}</strong>
-                        <small>{{ wizardLockedTargetBoard() && mode.id === 'manual' ? 'Create one card with the standard card editor.' : mode.description }}</small>
                       </span>
-                      <span class="boards-wizard-mode__arrow material-symbols-outlined">arrow_forward</span>
                     </button>
                   }
                 </div>
-              </section>
-            }
-            @if (wizardMaterialModes().length) {
-              <section class="boards-wizard-mode-group">
-                <h4><span class="material-symbols-outlined">description</span> Use what you have</h4>
-                <div class="boards-wizard-mode-grid boards-wizard-mode-grid--material">
-                  @for (mode of wizardMaterialModes(); track mode.id) {
-                    <button type="button" class="boards-wizard-mode" (click)="chooseWizardMode(mode.id)">
-                      <span class="boards-wizard-mode__icon material-symbols-outlined">{{ mode.icon }}</span>
-                      <span class="boards-wizard-mode__copy">
-                        <strong>{{ mode.label }}</strong>
-                        <small>{{ mode.description }}</small>
-                      </span>
-                      <span class="boards-wizard-mode__arrow material-symbols-outlined">arrow_forward</span>
-                    </button>
-                  }
-                </div>
-              </section>
-            }
-            @if (wizardPlaceModes().length) {
-              <section class="boards-wizard-mode-group">
-                <h4><span class="material-symbols-outlined">location_on</span> Explore a place</h4>
-                <div class="boards-wizard-mode-grid boards-wizard-mode-grid--place">
-                  @for (mode of wizardPlaceModes(); track mode.id) {
+
+                <button
+                  type="button"
+                  class="boards-doorway__nav boards-doorway__nav--next"
+                  aria-label="Show next board type"
+                  (click)="stepWizardDoorway(1)"
+                >
+                  <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+                </button>
+              </div>
+
+              <div class="boards-doorway__progress">
+                <span class="boards-doorway__dots" aria-label="Choose a board type">
+                  @for (mode of wizardDoorwayModes(); track mode.id) {
                     <button
                       type="button"
-                      class="boards-wizard-mode"
-                      [class.boards-wizard-mode--off-grid]="mode.id === 'off-grid'"
-                      (click)="chooseWizardMode(mode.id)"
-                    >
-                      <span class="boards-wizard-mode__icon material-symbols-outlined">{{ mode.icon }}</span>
-                      <span class="boards-wizard-mode__copy">
-                        <strong>{{ mode.label }}</strong>
-                        <small>{{ mode.description }}</small>
-                      </span>
-                      <span class="boards-wizard-mode__arrow material-symbols-outlined">arrow_forward</span>
-                    </button>
+                      [class.boards-doorway__dot--active]="mode.id === wizardActiveDoorway().id"
+                      [attr.aria-label]="'Show ' + mode.label"
+                      [attr.aria-pressed]="mode.id === wizardActiveDoorway().id"
+                      (click)="selectWizardDoorway(mode.id)"
+                    ></button>
                   }
-                </div>
-              </section>
-            }
+                </span>
+                <span class="boards-doorway__gesture-hint">
+                  <span class="material-symbols-outlined" aria-hidden="true">swipe</span>
+                  Swipe or use arrows
+                </span>
+                <span class="sr-only" aria-live="polite">
+                  {{ wizardActiveDoorway().label }}, {{ wizardActiveDoorwayIndex() + 1 }} of {{ wizardDoorwayModes().length }}
+                </span>
+              </div>
+
+              <div class="boards-doorway__rail-head">
+                <strong>All board types</strong>
+                <small>{{ wizardActiveDoorwayIndex() + 1 }} of {{ wizardDoorwayModes().length }}</small>
+              </div>
+              <div class="boards-doorway__rail" role="group" aria-label="All board types">
+                @for (mode of wizardDoorwayModes(); track mode.id) {
+                  <button
+                    type="button"
+                    class="boards-doorway-tile"
+                    [class.boards-doorway-tile--active]="mode.id === wizardActiveDoorway().id"
+                    [class.boards-doorway-tile--icon-only]="mode.id === 'describe' || mode.id === 'manual' || mode.id === 'paste'"
+                    [attr.aria-pressed]="mode.id === wizardActiveDoorway().id"
+                    (click)="selectWizardDoorway(mode.id)"
+                  >
+                    <span class="boards-doorway-tile__visual">
+                      @if (mode.id === 'describe' || mode.id === 'manual' || mode.id === 'paste') {
+                        <span class="material-symbols-outlined" aria-hidden="true">{{ mode.icon }}</span>
+                      } @else {
+                        <img
+                          [src]="mode.imageUrl"
+                          [style.object-position]="mode.imagePosition || 'center'"
+                          alt=""
+                          loading="lazy"
+                        />
+                      }
+                    </span>
+                    <span>{{ mode.label }}</span>
+                  </button>
+                }
+              </div>
+            </section>
             @if (wizardLockedTargetBoard()?.cards?.length) {
               <small>Walking tours, driving tours, and off-grid structure are available before the board’s first card is added.</small>
             }
@@ -5266,7 +5335,7 @@
                 </section>
               } @else {
                 <label>
-                  <span i18n>URL</span>
+                  <span>{{ wizardEntryIntent() === 'real-estate' ? 'Property listing URL' : 'URL' }}</span>
                   <input
                     type="url"
                     required
@@ -5274,16 +5343,21 @@
                     [value]="wizardUrl()"
                     (input)="wizardUrl.set($any($event.target).value)"
                   />
+                  @if (wizardEntryIntent() === 'real-estate') {
+                    <small class="boards-wizard-real-estate-help">
+                      Paste a public property listing. LivingWiki will keep the source, listing details, photos, and attribution together.
+                    </small>
+                  }
                 </label>
                 <label>
-                  <span i18n>Optional direction</span>
+                  <span>{{ wizardEntryIntent() === 'real-estate' ? 'What should the property story emphasize?' : 'Optional direction' }}</span>
                   <input
                     type="text"
                     maxlength="220"
-                    placeholder="Focus on places, food, and things worth saving"
+                    [placeholder]="wizardEntryIntent() === 'real-estate' ? 'Lead with the setting, kitchen, outdoor space, or another visible strength' : 'Focus on places, food, and things worth saving'"
                     [value]="wizardPrompt()"
                     (input)="wizardPrompt.set($any($event.target).value)"
-                   i18n-placeholder/>
+                  />
                 </label>
               }
             </section>
