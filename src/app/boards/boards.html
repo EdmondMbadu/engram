@@ -8973,23 +8973,6 @@
             </section>
           }
 
-          <section class="board-settings-talking-card" aria-labelledby="board-settings-talking-card-title">
-            <span class="board-settings-talking-card__icon material-symbols-outlined" aria-hidden="true">record_voice_over</span>
-            <span class="board-settings-talking-card__copy">
-              <strong id="board-settings-talking-card-title">Talking Card</strong>
-              <small>Add a conversational avatar that visitors can talk to in Live View.</small>
-            </span>
-            <button
-              type="button"
-              class="boards-talking-action"
-              [disabled]="boardSettingsSaving()"
-              (click)="openTalkingCardEditorFromSettings(settingsBoard, $event)"
-            >
-              <span class="material-symbols-outlined" aria-hidden="true">add</span>
-              Add Talking Card
-            </button>
-          </section>
-
           @if (boardSettingsError()) {
             <p class="board-settings-error" style="margin: 0; border-radius: .75rem; background: #fff0ee; color: #9b2a20; font-size: .75rem; font-weight: 750; padding: .65rem;" role="alert">{{ boardSettingsError() }}</p>
           }
@@ -9006,6 +8989,23 @@
               <span>{{ boardSettingsSaving() ? 'Saving…' : 'Save changes' }}</span>
             </button>
           </footer>
+
+          <section class="board-settings-talking-card" aria-labelledby="board-settings-talking-card-title">
+            <span class="board-settings-talking-card__icon material-symbols-outlined" aria-hidden="true">record_voice_over</span>
+            <span class="board-settings-talking-card__copy">
+              <strong id="board-settings-talking-card-title">Talking Card</strong>
+              <small>Add a conversational avatar that visitors can talk to in Live View.</small>
+            </span>
+            <button
+              type="button"
+              class="boards-talking-action"
+              [disabled]="boardSettingsSaving()"
+              (click)="openTalkingCardEditorFromSettings(settingsBoard, $event)"
+            >
+              <span class="material-symbols-outlined" aria-hidden="true">add</span>
+              Add Talking Card
+            </button>
+          </section>
         </form>
       </section>
     </div>
