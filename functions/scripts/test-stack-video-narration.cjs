@@ -1,6 +1,7 @@
 const assert = require('node:assert/strict');
 const {
   sharedStackNarrationCacheMode,
+  shouldUseProviderVoicePreviewUrl,
   normalizeNarrationSpeechText,
   stackTrailerNarrationMatchesPreparedScript,
   stackVideoNarrationCardFromBoard,
@@ -14,6 +15,9 @@ const {
 assert.equal(sharedStackNarrationCacheMode('tour'), 'tour');
 assert.equal(sharedStackNarrationCacheMode('stack-video'), 'tour');
 assert.equal(sharedStackNarrationCacheMode('stack-trailer'), 'stack-trailer');
+assert.equal(shouldUseProviderVoicePreviewUrl('voice-preview', false), true);
+assert.equal(shouldUseProviderVoicePreviewUrl('voice-preview', true), false);
+assert.equal(shouldUseProviderVoicePreviewUrl('tour', false), false);
 assert.equal(
   normalizeNarrationSpeechText('Thirty-nine **carefully chosen** places.'),
   'Thirty nine carefully chosen places.',

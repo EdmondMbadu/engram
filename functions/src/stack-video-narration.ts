@@ -25,6 +25,13 @@ export function sharedStackNarrationCacheMode(mode: string): string {
   return mode === 'stack-video' ? 'tour' : mode;
 }
 
+export function shouldUseProviderVoicePreviewUrl(
+  mode: string,
+  isPersonalNarrator: boolean,
+): boolean {
+  return mode === 'voice-preview' && !isPersonalNarrator;
+}
+
 export function stackVideoNarrationCardFromBoard(
   board: Record<string, unknown>,
   cardId: string,

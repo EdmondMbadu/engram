@@ -191,6 +191,7 @@ import {
 import {
   normalizeNarrationSpeechText as normalizeSpeechText,
   sharedStackNarrationCacheMode,
+  shouldUseProviderVoicePreviewUrl,
   stackTrailerNarrationMatchesPreparedScript,
   stackVideoNarrationCardFromBoard,
   stackVideoNarrationRevisionCacheKey,
@@ -21354,7 +21355,9 @@ export const synthesizeChatAnswerSpeech = onCall(
     }
 
     const primaryVoiceId = requestedNarratorVoiceId || chatAnswerVoiceId;
-    if (requestedMode === 'voice-preview') {
+    // Premade voices expose a provider-hosted preview_url. Instant voice clones
+    // often do not, so personal previews must use the normal TTS path below.
+    if (shouldUseProviderVoicePreviewUrl(requestedMode, isPersonalNarrator)) {
       const previewResponse = await fetch(
         `https://api.elevenlabs.io/v1/voices/${encodeURIComponent(primaryVoiceId)}`,
         { headers: { 'xi-api-key': apiKey } },
