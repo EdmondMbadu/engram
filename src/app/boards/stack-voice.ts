@@ -2,6 +2,7 @@ import stackNarratorVoiceCatalog from '../../../functions/src/stack-narrator-voi
 
 export const DEFAULT_STACK_NARRATOR_VOICE_ID = 'warm-storyteller';
 export const PERSONAL_STACK_NARRATOR_VOICE_ID = 'personal-voice';
+const PERSONAL_STACK_NARRATOR_VOICE_PREFIX = `${PERSONAL_STACK_NARRATOR_VOICE_ID}:`;
 
 export type StackVoicePresentation = 'Female' | 'Male' | 'Neutral';
 export type StackVoiceLibraryFilter = 'All' | StackVoicePresentation;
@@ -64,8 +65,8 @@ export function filterStackNarratorVoices(
 }
 
 export function normalizeStackNarratorVoiceId(value: unknown): string {
-  if (value === PERSONAL_STACK_NARRATOR_VOICE_ID) {
-    return PERSONAL_STACK_NARRATOR_VOICE_ID;
+  if (isPersonalStackNarratorVoiceId(value)) {
+    return String(value);
   }
   return typeof value === 'string' && stackNarratorVoiceById(value)
     ? value
@@ -73,7 +74,26 @@ export function normalizeStackNarratorVoiceId(value: unknown): string {
 }
 
 export function stackNarratorVoiceRequiresPaidPlan(value: unknown): boolean {
-  return normalizeStackNarratorVoiceId(value) === PERSONAL_STACK_NARRATOR_VOICE_ID;
+  // Every signed-in account receives one personal voice. Membership controls
+  // how many voices can be created, not whether an existing voice can be used.
+  return false;
+}
+
+export function personalStackNarratorVoiceId(voiceId: string): string {
+  return `${PERSONAL_STACK_NARRATOR_VOICE_PREFIX}${voiceId}`;
+}
+
+export function personalVoiceIdFromStackNarrator(value: unknown): string | null {
+  if (typeof value !== 'string' || !value.startsWith(PERSONAL_STACK_NARRATOR_VOICE_PREFIX)) {
+    return null;
+  }
+  const voiceId = value.slice(PERSONAL_STACK_NARRATOR_VOICE_PREFIX.length);
+  return /^[A-Za-z0-9_-]{1,64}$/.test(voiceId) ? voiceId : null;
+}
+
+export function isPersonalStackNarratorVoiceId(value: unknown): boolean {
+  return value === PERSONAL_STACK_NARRATOR_VOICE_ID
+    || personalVoiceIdFromStackNarrator(value) !== null;
 }
 
 export function stackNarrationErrorIsPermanent(error: unknown): boolean {

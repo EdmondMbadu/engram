@@ -4,6 +4,9 @@ import {
   STACK_NARRATOR_VOICES,
   RECOMMENDED_STACK_NARRATOR_VOICES,
   normalizeStackNarratorVoiceId,
+  isPersonalStackNarratorVoiceId,
+  personalStackNarratorVoiceId,
+  personalVoiceIdFromStackNarrator,
   filterStackNarratorVoices,
   stackNarrationErrorIsPermanent,
   stackNarratorVoiceRequiresPaidPlan,
@@ -65,12 +68,19 @@ describe('Stack narrator voice catalog', () => {
   it('preserves the server-resolved personal narrator choice', () => {
     expect(normalizeStackNarratorVoiceId(PERSONAL_STACK_NARRATOR_VOICE_ID))
       .toBe(PERSONAL_STACK_NARRATOR_VOICE_ID);
+    const reusableVoiceId = personalStackNarratorVoiceId('voice_123');
+    expect(normalizeStackNarratorVoiceId(reusableVoiceId)).toBe(reusableVoiceId);
+    expect(isPersonalStackNarratorVoiceId(reusableVoiceId)).toBeTrue();
+    expect(personalVoiceIdFromStackNarrator(reusableVoiceId)).toBe('voice_123');
+    expect(normalizeStackNarratorVoiceId('personal-voice:invalid/id'))
+      .toBe(DEFAULT_STACK_NARRATOR_VOICE_ID);
   });
 
-  it('keeps every included narrator free and reserves payment for Personal Voice', () => {
+  it('allows every existing narrator for free while membership controls additional voice creation', () => {
     expect(STACK_NARRATOR_VOICES.every((voice) => !stackNarratorVoiceRequiresPaidPlan(voice.id)))
       .toBeTrue();
-    expect(stackNarratorVoiceRequiresPaidPlan(PERSONAL_STACK_NARRATOR_VOICE_ID)).toBeTrue();
+    expect(stackNarratorVoiceRequiresPaidPlan(PERSONAL_STACK_NARRATOR_VOICE_ID)).toBeFalse();
+    expect(stackNarratorVoiceRequiresPaidPlan(personalStackNarratorVoiceId('voice_123'))).toBeFalse();
   });
 
   it('does not retry permanent narration authorization failures', () => {

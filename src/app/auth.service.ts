@@ -576,7 +576,7 @@ export class AuthService {
       providers: Array.isArray(data['providers'])
         ? data['providers'].filter((provider): provider is string => typeof provider === 'string')
         : [],
-      role: data['role'] === 'admin' ? 'admin' : 'user',
+      role: String(data['role'] ?? '').trim().toLowerCase() === 'admin' ? 'admin' : 'user',
       pricingPlan: this.stringField(data, 'pricingPlan', 'pricing_plan'),
       businessPlan: this.stringField(data, 'businessPlan', 'business_plan'),
       subscriptionStatus: this.stringField(data, 'subscriptionStatus', 'subscription_status'),

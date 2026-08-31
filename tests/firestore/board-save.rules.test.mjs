@@ -311,6 +311,28 @@ test('board narration length accepts supported timing and rejects out-of-range v
   }
 });
 
+test('board narrator accepts stable personal voice references and rejects malformed references', async () => {
+  await testEnvironment.withSecurityRulesDisabled(async (context) => {
+    await setDoc(
+      doc(context.firestore(), 'boards', 'personal-voice-board'),
+      personalWizardBoard({ id: 'personal-voice-board' }),
+    );
+  });
+  const database = testEnvironment.authenticatedContext(ownerUid).firestore();
+  const boardReference = doc(database, 'boards', 'personal-voice-board');
+
+  await assertSucceeds(updateDoc(boardReference, {
+    stackNarratorVoiceId: 'personal-voice:Abc_123-voice',
+    updated_at_iso: '2026-08-30T00:00:00.000Z',
+    server_updated_at: serverTimestamp(),
+  }));
+  await assertFails(updateDoc(boardReference, {
+    stackNarratorVoiceId: 'personal-voice:invalid/voice',
+    updated_at_iso: '2026-08-30T00:01:00.000Z',
+    server_updated_at: serverTimestamp(),
+  }));
+});
+
 test('owner can save each media preference without adding a top-level draft field', async () => {
   const database = testEnvironment.authenticatedContext(ownerUid).firestore();
 

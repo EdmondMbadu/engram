@@ -181,6 +181,21 @@
   text-transform: uppercase;
 }
 
+.stack-personal-voice-library {
+  position: relative;
+  display: grid;
+  gap: 0.75rem;
+  border: 1.5px solid color-mix(in srgb, var(--accent) 34%, var(--line));
+  border-radius: 0.95rem;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 9%, var(--surface)), var(--surface));
+  padding: 0.85rem;
+}
+
+.stack-personal-voice-list {
+  display: grid;
+  gap: 0.55rem;
+}
+
 .stack-personal-voice {
   position: relative;
   display: grid;
@@ -188,8 +203,8 @@
   overflow: hidden;
   border: 1.5px solid color-mix(in srgb, var(--accent) 44%, var(--line));
   border-radius: 0.95rem;
-  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 12%, var(--surface)), var(--surface));
-  padding: 0.85rem;
+  background: color-mix(in srgb, var(--surface) 96%, var(--accent));
+  padding: 0.7rem;
 }
 
 .stack-personal-voice--active {
@@ -257,6 +272,51 @@
   font-size: 0.69rem;
   font-weight: 700;
   line-height: 1.35;
+}
+
+.stack-personal-voice__row {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 0.65rem;
+}
+
+.stack-personal-voice__row > div {
+  display: grid;
+  min-width: 0;
+  gap: 0.15rem;
+}
+
+.stack-personal-voice__row strong {
+  color: var(--text);
+  font-size: 0.83rem;
+  font-weight: 950;
+}
+
+.stack-personal-voice__row p,
+.stack-personal-voice-library__footer p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.65rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.stack-personal-voice__selected {
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 14%, var(--surface));
+  color: var(--accent);
+  font-size: 0.58rem;
+  font-weight: 950;
+  padding: 0.25rem 0.45rem;
+  text-transform: uppercase;
+}
+
+.stack-personal-voice-library__footer {
+  display: grid;
+  justify-items: start;
+  gap: 0.4rem;
 }
 
 .stack-personal-voice__actions {

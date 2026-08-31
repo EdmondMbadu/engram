@@ -7245,66 +7245,76 @@
                       </div>
 
                       @if (stackVideoNarrationEnabled()) {
-                      <article
-                        class="stack-personal-voice"
-                        [class.stack-personal-voice--active]="stackNarratorVoiceId() === personalStackNarratorVoiceId"
-                        [class.stack-personal-voice--locked]="!personalVoiceEligible()"
-                      >
+                      <section class="stack-personal-voice-library" aria-labelledby="personal-voice-library-title">
                         <div class="stack-personal-voice__identity">
                           <span class="stack-personal-voice__icon material-symbols-outlined">graphic_eq</span>
                           <div>
                             <span class="stack-personal-voice__eyebrow">
-                              <ng-container i18n>Your voice</ng-container>
-                              @if (!personalVoiceEligible()) {
-                                <small i18n>Premium</small>
-                              }
+                              <ng-container>My voices</ng-container>
+                              <small>{{ personalVoiceUsageLabel() }}</small>
                             </span>
-                            <strong>{{ personalNarratorVoice()?.name || 'Create your personal narrator' }}</strong>
-                            <p>
-                              @if (personalNarratorVoice()) {
-                                <ng-container i18n>Your private, reusable narrator voice.</ng-container>
-                              } @else {
-                                <ng-container i18n>Record or upload 60–90 seconds of your own clear speech.</ng-container>
-                              }
-                            </p>
+                            <strong id="personal-voice-library-title">Your private narrator library</strong>
+                            <p>Use your voices on any board you own. Each board can choose a different voice.</p>
                           </div>
                         </div>
 
                         @if (personalVoiceLoading()) {
                           <span class="stack-personal-voice__loading material-symbols-outlined">progress_activity</span>
-                        } @else if (personalNarratorVoice()) {
-                          <div class="stack-personal-voice__actions">
-                            <button type="button" (click)="selectStackNarratorVoice(board, personalStackNarratorVoiceId)">
-                              <span class="material-symbols-outlined">{{ stackNarratorVoiceId() === personalStackNarratorVoiceId ? 'check_circle' : 'radio_button_unchecked' }}</span>
-                              {{ stackNarratorVoiceId() === personalStackNarratorVoiceId ? 'Selected' : 'Use my voice' }}
-                            </button>
-                            <button
-                              type="button"
-                              [disabled]="stackVoicePreviewLoadingId() === personalStackNarratorVoiceId"
-                              (click)="togglePersonalVoicePreview(board, $event)"
-                            >
-                              <span class="material-symbols-outlined">{{ stackVoicePreviewLoadingId() === personalStackNarratorVoiceId ? 'progress_activity' : isStackVoicePreviewing(personalStackNarratorVoiceId) ? 'stop' : 'play_arrow' }}</span>
-                              {{ isStackVoicePreviewing(personalStackNarratorVoiceId) ? 'Stop' : 'Preview' }}
-                            </button>
-                            <button type="button" (click)="openPersonalVoiceSetup()" i18n>Replace</button>
-                            <button type="button" class="stack-personal-voice__delete" [disabled]="personalVoiceDeleting()" (click)="deletePersonalNarratorVoice(board)">
-                              {{ personalVoiceDeleting() ? 'Deleting…' : 'Delete' }}
-                            </button>
-                          </div>
                         } @else {
-                          <button type="button" class="stack-personal-voice__create" (click)="openPersonalVoiceSetup()">
-                            <span class="material-symbols-outlined">{{ personalVoiceEligible() ? 'mic' : 'lock' }}</span>
-                            {{ personalVoiceEligible() ? 'Create my voice' : 'Unlock personal voice' }}
-                          </button>
+                          @if (personalNarratorVoices().length) {
+                            <div class="stack-personal-voice-list">
+                              @for (voice of personalNarratorVoices(); track voice.id) {
+                                <article class="stack-personal-voice" [class.stack-personal-voice--active]="personalVoiceSelected(voice)">
+                                  <div class="stack-personal-voice__row">
+                                    <div>
+                                      <strong>{{ voice.name }}</strong>
+                                      <p>Private · reusable across your boards</p>
+                                    </div>
+                                    @if (personalVoiceSelected(voice)) {
+                                      <span class="stack-personal-voice__selected">Selected</span>
+                                    }
+                                  </div>
+                                  <div class="stack-personal-voice__actions">
+                                    <button type="button" (click)="selectStackNarratorVoice(board, personalNarratorId(voice))">
+                                      <span class="material-symbols-outlined">{{ personalVoiceSelected(voice) ? 'check_circle' : 'radio_button_unchecked' }}</span>
+                                      {{ personalVoiceSelected(voice) ? 'Selected' : 'Use this voice' }}
+                                    </button>
+                                    <button
+                                      type="button"
+                                      [disabled]="stackVoicePreviewLoadingId() === personalNarratorId(voice)"
+                                      (click)="togglePersonalVoicePreview(board, voice, $event)"
+                                    >
+                                      <span class="material-symbols-outlined">{{ stackVoicePreviewLoadingId() === personalNarratorId(voice) ? 'progress_activity' : isStackVoicePreviewing(personalNarratorId(voice)) ? 'stop' : 'play_arrow' }}</span>
+                                      {{ isStackVoicePreviewing(personalNarratorId(voice)) ? 'Stop' : 'Preview' }}
+                                    </button>
+                                    <button type="button" (click)="renamePersonalNarratorVoice(voice)" i18n>Rename</button>
+                                    <button type="button" (click)="openPersonalVoiceSetup(voice)" i18n>Replace</button>
+                                    <button type="button" class="stack-personal-voice__delete" [disabled]="personalVoiceDeleting()" (click)="deletePersonalNarratorVoice(board, voice)">
+                                      {{ personalVoiceDeletingId() === voice.id ? 'Deleting…' : 'Delete' }}
+                                    </button>
+                                  </div>
+                                </article>
+                              }
+                            </div>
+                          }
+                          <div class="stack-personal-voice-library__footer">
+                            <button type="button" class="stack-personal-voice__create" (click)="openPersonalVoiceSetup()">
+                              <span class="material-symbols-outlined">{{ personalVoiceCanAdd() ? 'add' : 'lock' }}</span>
+                              {{ personalNarratorVoices().length === 0 ? 'Create my voice' : personalVoiceCanAdd() ? 'Add another voice' : 'Upgrade to add more' }}
+                            </button>
+                            @if (!personalVoiceCanAdd()) {
+                              <p>Your existing voice remains available on every board. Membership unlocks additional voices.</p>
+                            }
+                          </div>
                         }
-                      </article>
+                      </section>
 
                       @if (personalVoiceSetupOpen()) {
                         <section class="stack-personal-voice-setup" aria-label="Create your personal narrator voice" i18n-aria-label>
                           <header>
                             <div>
                               <span i18n>Personal narrator</span>
-                              <h5>{{ personalNarratorVoice() ? 'Replace your voice' : 'Create your voice' }}</h5>
+                              <h5>{{ personalVoiceSetupVoiceId() ? 'Replace this voice' : 'Create a new voice' }}</h5>
                             </div>
                             <button type="button" aria-label="Close personal voice setup" [disabled]="personalVoiceCreating()" (click)="closePersonalVoiceSetup()" i18n-aria-label>
                               <span class="material-symbols-outlined">close</span>
@@ -7359,7 +7369,7 @@
                             (click)="createPersonalNarratorVoice(board)"
                           >
                             <span class="material-symbols-outlined">{{ personalVoiceCreating() ? 'progress_activity' : 'auto_awesome' }}</span>
-                            {{ personalVoiceCreating() ? 'Creating your voice…' : personalNarratorVoice() ? 'Replace my voice' : 'Create my voice' }}
+                            {{ personalVoiceCreating() ? 'Creating your voice…' : personalVoiceSetupVoiceId() ? 'Replace this voice' : 'Create this voice' }}
                           </button>
                         </section>
                       }

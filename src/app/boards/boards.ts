@@ -263,7 +263,10 @@ import {
   STACK_NARRATOR_VOICES,
   STACK_NARRATOR_VOICE_PRESENTATIONS,
   filterStackNarratorVoices,
+  isPersonalStackNarratorVoiceId,
   normalizeStackNarratorVoiceId,
+  personalStackNarratorVoiceId,
+  personalVoiceIdFromStackNarrator,
   stackNarratorVoiceRequiresPaidPlan,
   stackNarratorVoiceById,
   type StackNarratorVoice,
@@ -974,16 +977,26 @@ type BoardTrailerPreparationResponse = {
 };
 
 type PersonalNarratorVoice = {
+  id: string;
+  narratorVoiceId: string;
   name: string;
   status: 'ready';
   createdAt: string;
   updatedAt: string;
   sampleDurationSeconds: number;
+  voiceRevision: number;
 };
 
 type PersonalNarratorVoiceResponse = {
   voice: PersonalNarratorVoice | null;
+  voices?: PersonalNarratorVoice[];
   eligible: boolean;
+  paid?: boolean;
+  admin?: boolean;
+  voiceLimit?: number | null;
+  voiceCount?: number;
+  canAddVoice?: boolean;
+  defaultVoiceId?: string | null;
 };
 
 type SpotifyResolvedCard = {
@@ -2168,9 +2181,18 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly stackVideoBrandingError = signal<string | null>(null);
   readonly stackVideoBrandingUpgradeOpen = signal(false);
   readonly personalNarratorVoice = signal<PersonalNarratorVoice | null>(null);
+  readonly personalNarratorVoices = signal<PersonalNarratorVoice[]>([]);
+  readonly personalVoiceDefaultId = signal<string | null>(null);
+  readonly personalVoiceLimit = signal<number | null>(1);
+  readonly personalVoiceServerCanAdd = signal(true);
+  readonly personalVoiceCanAdd = computed(() =>
+    this.authService.isAdmin() || this.personalVoiceServerCanAdd(),
+  );
+  readonly personalVoicePaid = signal(false);
   readonly personalVoiceLoading = signal(false);
   readonly personalVoiceServerEligible = signal<boolean | null>(null);
   readonly personalVoiceSetupOpen = signal(false);
+  readonly personalVoiceSetupVoiceId = signal<string | null>(null);
   readonly personalVoiceName = signal('My voice');
   readonly personalVoiceFile = signal<File | null>(null);
   readonly personalVoiceDurationSeconds = signal(0);
@@ -2180,6 +2202,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly personalVoiceConsentConfirmed = signal(false);
   readonly personalVoiceCreating = signal(false);
   readonly personalVoiceDeleting = signal(false);
+  readonly personalVoiceDeletingId = signal<string | null>(null);
   readonly personalVoiceError = signal<string | null>(null);
   readonly stackFrameIndex = signal(0);
   readonly stackPlaying = signal(false);
@@ -2983,13 +3006,13 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly stackSelectedNarratorName = computed(() =>
     !this.stackVideoNarrationEnabled()
       ? $localize`No narration`
-      : this.stackNarratorVoiceId() === PERSONAL_STACK_NARRATOR_VOICE_ID
-      ? this.personalNarratorVoice()?.name || $localize`Your voice`
+      : isPersonalStackNarratorVoiceId(this.stackNarratorVoiceId())
+      ? this.personalVoiceForNarratorId(this.stackNarratorVoiceId())?.name || $localize`Your voice`
       : this.stackSelectedNarratorVoice()?.name || $localize`Warm Storyteller`,
   );
   readonly personalVoiceEligible = computed(() =>
     this.personalVoiceServerEligible()
-      ?? (this.authService.isAdmin() || this.authService.hasActivePersonalWikiPlan()),
+      ?? !!this.authService.uid(),
   );
   readonly videoBrandingEligible = computed(() =>
     this.authService.isAdmin() || this.authService.hasActivePersonalWikiPlan(),
@@ -3001,7 +3024,14 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     if (mode === 'custom') return 'Your logo';
     return 'LivingWiki logo';
   });
-  readonly personalVoiceReady = computed(() => !!this.personalNarratorVoice());
+  readonly personalVoiceReady = computed(() => this.personalNarratorVoices().length > 0);
+  readonly personalVoiceUsageLabel = computed(() => {
+    const count = this.personalNarratorVoices().length;
+    const limit = this.personalVoiceLimit();
+    return this.authService.isAdmin() || limit === null
+      ? `${count} · Admin unlimited`
+      : `${count} of ${limit}`;
+  });
   readonly personalVoiceFileLabel = computed(() => {
     const file = this.personalVoiceFile();
     if (!file) return $localize`No recording selected`;
@@ -14649,8 +14679,53 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
   private requestPersonalVoiceUpgrade(): void {
     this.stopStackVoicePreview();
-    this.stackVoiceError.set($localize`Personal Voice is available with Personal Plus or Creator. Included narrator voices remain free.`);
+    this.stackVoiceError.set('Your free account includes one personal voice. Upgrade to add more reusable voices.');
     void this.router.navigate(['/pricing'], { queryParams: { feature: 'personal-voice' } });
+  }
+
+  personalNarratorId(voice: PersonalNarratorVoice): string {
+    return voice.narratorVoiceId || personalStackNarratorVoiceId(voice.id);
+  }
+
+  personalVoiceForNarratorId(narratorVoiceId: string): PersonalNarratorVoice | null {
+    const voiceId = personalVoiceIdFromStackNarrator(narratorVoiceId);
+    if (voiceId) {
+      return this.personalNarratorVoices().find((voice) => voice.id === voiceId) ?? null;
+    }
+    if (narratorVoiceId === PERSONAL_STACK_NARRATOR_VOICE_ID) {
+      return this.personalNarratorVoices().find((voice) => voice.id === this.personalVoiceDefaultId())
+        ?? this.personalNarratorVoices()[0]
+        ?? null;
+    }
+    return null;
+  }
+
+  personalVoiceSelected(voice: PersonalNarratorVoice): boolean {
+    const selected = this.stackNarratorVoiceId();
+    return selected === this.personalNarratorId(voice)
+      || (selected === PERSONAL_STACK_NARRATOR_VOICE_ID
+        && voice.id === (this.personalVoiceDefaultId() ?? this.personalNarratorVoices()[0]?.id));
+  }
+
+  private applyPersonalNarratorVoiceResponse(response: PersonalNarratorVoiceResponse): void {
+    const voices = response.voices ?? (response.voice ? [response.voice] : []);
+    const admin = response.admin === true || this.authService.isAdmin();
+    const fallbackLimit = this.authService.hasActivePersonalWikiPlan() ? 5 : 1;
+    const voiceLimit = admin
+      ? null
+      : Math.max(1, typeof response.voiceLimit === 'number' ? response.voiceLimit : fallbackLimit);
+    this.personalVoiceServerEligible.set(response.eligible);
+    this.personalNarratorVoices.set(voices);
+    this.personalVoiceDefaultId.set(response.defaultVoiceId ?? response.voice?.id ?? voices[0]?.id ?? null);
+    this.personalNarratorVoice.set(
+      voices.find((voice) => voice.id === (response.defaultVoiceId ?? response.voice?.id))
+        ?? response.voice
+        ?? voices[0]
+        ?? null,
+    );
+    this.personalVoiceLimit.set(voiceLimit);
+    this.personalVoiceServerCanAdd.set(admin || (response.canAddVoice ?? voices.length < (voiceLimit ?? fallbackLimit)));
+    this.personalVoicePaid.set(admin || response.paid === true || this.authService.hasActivePersonalWikiPlan());
   }
 
   isStackVoicePreviewing(voiceId: string): boolean {
@@ -14728,15 +14803,19 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.stackVoicePreviewLoadingId.set(null);
   }
 
-  openPersonalVoiceSetup(): void {
+  openPersonalVoiceSetup(voice: PersonalNarratorVoice | null = null): void {
     if (!this.personalVoiceEligible()) {
+      return;
+    }
+    if (!voice && !this.personalVoiceCanAdd()) {
       this.requestPersonalVoiceUpgrade();
       return;
     }
     this.stopPersonalVoiceRecording(true);
     this.personalVoiceFile.set(null);
     this.personalVoiceDurationSeconds.set(0);
-    this.personalVoiceName.set(this.personalNarratorVoice()?.name || 'My voice');
+    this.personalVoiceSetupVoiceId.set(voice?.id ?? null);
+    this.personalVoiceName.set(voice?.name || `My voice${this.personalNarratorVoices().length ? ` ${this.personalNarratorVoices().length + 1}` : ''}`);
     this.personalVoiceOwnVoiceConfirmed.set(false);
     this.personalVoiceConsentConfirmed.set(false);
     this.personalVoiceSetupOpen.set(true);
@@ -14747,6 +14826,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     if (this.personalVoiceCreating()) return;
     this.stopPersonalVoiceRecording(true);
     this.personalVoiceSetupOpen.set(false);
+    this.personalVoiceSetupVoiceId.set(null);
     this.personalVoiceError.set(null);
   }
 
@@ -14759,8 +14839,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         'getPersonalNarratorVoice',
       );
       const response = await callable({});
-      this.personalVoiceServerEligible.set(response.data.eligible);
-      this.personalNarratorVoice.set(response.data.voice ?? null);
+      this.applyPersonalNarratorVoiceResponse(response.data);
     } catch (error) {
       this.personalVoiceError.set(this.cardImageActionErrorMessage(error, 'Your personal voice could not be loaded.'));
     } finally {
@@ -14855,8 +14934,9 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
   async createPersonalNarratorVoice(board: Board): Promise<void> {
     if (!this.functions || !this.storage || !this.authService.uid() || this.personalVoiceCreating()) return;
-    if (!this.personalVoiceEligible()) {
-      void this.router.navigate(['/pricing'], { queryParams: { feature: 'personal-voice' } });
+    const replacingVoiceId = this.personalVoiceSetupVoiceId();
+    if (!replacingVoiceId && !this.personalVoiceCanAdd()) {
+      this.requestPersonalVoiceUpgrade();
       return;
     }
     const file = this.personalVoiceFile();
@@ -14875,7 +14955,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.personalVoiceError.set(null);
     const uid = this.authService.uid();
     const safeName = file.name.toLowerCase().replace(/[^a-z0-9._-]+/g, '-').slice(-90) || 'voice.webm';
-    const path = `users/${uid}/voice-samples/${Date.now()}-${safeName}`;
+    const path = `users/${uid}/voice-samples/${replacingVoiceId || 'new'}/${Date.now()}-${safeName}`;
     const sampleRef = storageRef(this.storage, path);
     try {
       await uploadBytes(sampleRef, file, {
@@ -14888,6 +14968,8 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         sampleDurationSeconds: number;
         ownVoiceConfirmed: boolean;
         consentConfirmed: boolean;
+        operation: 'create' | 'replace';
+        voiceId?: string;
       }, PersonalNarratorVoiceResponse>(this.functions, 'createPersonalNarratorVoice', { timeout: 120_000 });
       const response = await callable({
         name,
@@ -14895,16 +14977,18 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         sampleDurationSeconds: duration,
         ownVoiceConfirmed: true,
         consentConfirmed: true,
+        operation: replacingVoiceId ? 'replace' : 'create',
+        ...(replacingVoiceId ? { voiceId: replacingVoiceId } : {}),
       });
       if (!response.data.voice) {
         throw new Error('The personal voice was not returned after processing.');
       }
-      this.personalVoiceServerEligible.set(response.data.eligible);
-      this.personalNarratorVoice.set(response.data.voice);
+      this.applyPersonalNarratorVoiceResponse(response.data);
       this.personalVoiceFile.set(null);
       this.personalVoiceDurationSeconds.set(0);
       this.personalVoiceSetupOpen.set(false);
-      this.selectStackNarratorVoice(board, PERSONAL_STACK_NARRATOR_VOICE_ID);
+      this.personalVoiceSetupVoiceId.set(null);
+      this.selectStackNarratorVoice(board, this.personalNarratorId(response.data.voice));
     } catch (error) {
       await deleteObject(sampleRef).catch(() => undefined);
       this.personalVoiceError.set(this.cardImageActionErrorMessage(error, 'Your voice could not be created. Check the recording and try again.'));
@@ -14913,58 +14997,74 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  async deletePersonalNarratorVoice(board: Board): Promise<void> {
-    if (!this.functions || !this.personalNarratorVoice() || this.personalVoiceDeleting() || !this.isBrowser) return;
-    const confirmed = window.confirm('Permanently delete your personal narrator voice and its source recording? Boards using it will return to Warm Storyteller.');
+  async deletePersonalNarratorVoice(board: Board, voice: PersonalNarratorVoice): Promise<void> {
+    if (!this.functions || this.personalVoiceDeleting() || !this.isBrowser) return;
+    const confirmed = window.confirm(`Permanently delete “${voice.name}” and its source recording? Boards using this voice will return to Warm Storyteller.`);
     if (!confirmed) return;
     this.personalVoiceDeleting.set(true);
+    this.personalVoiceDeletingId.set(voice.id);
     this.personalVoiceError.set(null);
     this.stopStackVoicePreview();
     try {
-      const callable = httpsCallable<Record<string, never>, { deleted: boolean }>(
+      const callable = httpsCallable<{ voiceId: string }, PersonalNarratorVoiceResponse & { deleted: boolean }>(
         this.functions,
         'deletePersonalNarratorVoice',
       );
-      await callable({});
-      this.personalNarratorVoice.set(null);
+      const response = await callable({ voiceId: voice.id });
+      this.applyPersonalNarratorVoiceResponse(response.data);
       this.personalVoiceSetupOpen.set(false);
-      if (this.stackNarratorVoiceId() === PERSONAL_STACK_NARRATOR_VOICE_ID) {
+      if (this.personalVoiceSelected(voice)) {
         this.selectStackNarratorVoice(board, DEFAULT_STACK_NARRATOR_VOICE_ID);
       }
     } catch (error) {
       this.personalVoiceError.set(this.cardImageActionErrorMessage(error, 'Your personal voice could not be deleted.'));
     } finally {
       this.personalVoiceDeleting.set(false);
+      this.personalVoiceDeletingId.set(null);
     }
   }
 
-  async togglePersonalVoicePreview(board: Board, event?: Event): Promise<void> {
+  async renamePersonalNarratorVoice(voice: PersonalNarratorVoice): Promise<void> {
+    if (!this.functions || !this.isBrowser) return;
+    const requestedName = window.prompt('Voice name', voice.name)?.replace(/\s+/g, ' ').trim().slice(0, 48);
+    if (!requestedName || requestedName === voice.name) return;
+    this.personalVoiceError.set(null);
+    try {
+      const callable = httpsCallable<{ voiceId: string; name: string }, PersonalNarratorVoiceResponse>(
+        this.functions,
+        'renamePersonalNarratorVoice',
+      );
+      const response = await callable({ voiceId: voice.id, name: requestedName });
+      this.applyPersonalNarratorVoiceResponse(response.data);
+    } catch (error) {
+      this.personalVoiceError.set(this.cardImageActionErrorMessage(error, 'The voice name could not be updated.'));
+    }
+  }
+
+  async togglePersonalVoicePreview(board: Board, voice: PersonalNarratorVoice, event?: Event): Promise<void> {
     event?.preventDefault();
     event?.stopPropagation();
-    if (!this.isBrowser || !this.personalNarratorVoice()) return;
-    if (!this.personalVoiceEligible()) {
-      this.requestPersonalVoiceUpgrade();
-      return;
-    }
-    if (this.isStackVoicePreviewing(PERSONAL_STACK_NARRATOR_VOICE_ID)) {
+    if (!this.isBrowser) return;
+    const narratorVoiceId = this.personalNarratorId(voice);
+    if (this.isStackVoicePreviewing(narratorVoiceId)) {
       this.stopStackVoicePreview();
       return;
     }
-    this.selectStackNarratorVoice(board, PERSONAL_STACK_NARRATOR_VOICE_ID);
     this.stopStackVoicePreview();
     this.stopStackAudioPreview();
     const run = ++this.stackVoicePreviewRun;
-    this.stackVoicePreviewLoadingId.set(PERSONAL_STACK_NARRATOR_VOICE_ID);
+    this.stackVoicePreviewLoadingId.set(narratorVoiceId);
     this.personalVoiceError.set(null);
     try {
       const sample = this.stackVoicePreviewSample(
         'Welcome to my LivingWiki. I will guide you through the people, places, and stories that make this board worth exploring.',
       );
       const audioUrl = await this.ensureTourAudioUrl(
-        `personal-narrator-preview:${sample}`,
+        `personal-narrator-preview:${voice.id}:${voice.voiceRevision}:${sample}`,
         sample,
-        PERSONAL_STACK_NARRATOR_VOICE_ID,
+        narratorVoiceId,
         board.id,
+        'voice-preview',
       );
       if (run !== this.stackVoicePreviewRun) return;
       if (!audioUrl) throw new Error('Preview audio was not returned.');
@@ -14982,7 +15082,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       this.stackVoicePreview = audio;
       await audio.play();
       if (run === this.stackVoicePreviewRun && this.stackVoicePreview === audio) {
-        this.stackVoicePreviewingId.set(PERSONAL_STACK_NARRATOR_VOICE_ID);
+        this.stackVoicePreviewingId.set(narratorVoiceId);
       }
     } catch (error) {
       if (run === this.stackVoicePreviewRun) {
