@@ -12102,6 +12102,12 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.closeBoardTranslationMenu();
     const target = event?.target;
     if (!(target instanceof Element)) return;
+    window.document.querySelectorAll<HTMLDetailsElement>('.board-editorial-hero__more[open]')
+      .forEach((menu) => {
+        if (!menu.contains(target)) {
+          menu.open = false;
+        }
+      });
     const anchor = target.closest<HTMLAnchorElement>('app-boards a[href]');
     if (!anchor) return;
     try {
