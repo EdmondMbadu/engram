@@ -1072,12 +1072,7 @@
                   [attr.aria-pressed]="isBoardFlipped(board.id)"
                   (click)="toggleBoardFlip(board.id, $event)"
                 >
-                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="M3 8c2.5-3.5 7-4.5 10.5-2.5" />
-                    <path d="M13 2l1.5 3.5L11 6.5" />
-                    <path d="M21 16c-2.5 3.5-7 4.5-10.5 2.5" />
-                    <path d="M11 22l-1.5-3.5L13 17.5" />
-                  </svg>
+                  <span class="material-symbols-outlined" aria-hidden="true">autorenew</span>
                 </button>
                 @if (canEditBoard(board) || isPlatformAdmin()) {
                   <div
@@ -1234,12 +1229,7 @@
                   [attr.aria-pressed]="isCardFlipped(item.card.id)"
                   (click)="toggleCardFlip(item.card.id, $event)"
                 >
-                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="M3 8c2.5-3.5 7-4.5 10.5-2.5" />
-                    <path d="M13 2l1.5 3.5L11 6.5" />
-                    <path d="M21 16c-2.5 3.5-7 4.5-10.5 2.5" />
-                    <path d="M11 22l-1.5-3.5L13 17.5" />
-                  </svg>
+                  <span class="material-symbols-outlined" aria-hidden="true">autorenew</span>
                 </button>
                 @if (canEditBoard(item.board)) {
                   <div
@@ -3434,12 +3424,7 @@
                           aria-label="Show card back"
                           (click)="toggleCardFlip(card.id, $event)"
                           i18n-aria-label>
-                          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                            <path d="M3 8c2.5-3.5 7-4.5 10.5-2.5" />
-                            <path d="M13 2l1.5 3.5L11 6.5" />
-                            <path d="M21 16c-2.5 3.5-7 4.5-10.5 2.5" />
-                            <path d="M11 22l-1.5-3.5L13 17.5" />
-                          </svg>
+                          <span class="material-symbols-outlined" aria-hidden="true">autorenew</span>
                           <span>Flip</span>
                         </button>
                       </div>
@@ -3530,12 +3515,7 @@
                         aria-label="Show card front"
                         (click)="toggleCardFlip(card.id, $event)"
                         i18n-aria-label>
-                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                          <path d="M3 8c2.5-3.5 7-4.5 10.5-2.5" />
-                          <path d="M13 2l1.5 3.5L11 6.5" />
-                          <path d="M21 16c-2.5 3.5-7 4.5-10.5 2.5" />
-                          <path d="M11 22l-1.5-3.5L13 17.5" />
-                        </svg>
+                        <span class="material-symbols-outlined" aria-hidden="true">autorenew</span>
                         <span>Flip</span>
                       </button>
                       <div class="detail-card__body" style="justify-content: space-between;">
