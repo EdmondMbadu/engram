@@ -20600,6 +20600,7 @@ function personalNarratorLibraryResponse(
     ?? voices[0]
     ?? null;
   return {
+    libraryVersion: 2,
     eligible: true,
     paid: entitlement.paid,
     admin: entitlement.admin,

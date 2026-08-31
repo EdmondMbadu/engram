@@ -52,6 +52,39 @@ type PersistedWizardPreferences = {
 
 export type BoardWizardPersistedListingIntent = 'default' | 'real-estate' | 'rental';
 
+type BoardWizardDraftCardImages = {
+  imageUrl?: string;
+  imageUrls?: string[];
+};
+
+/**
+ * Draft cards can contain browser-local data URLs in both the primary image
+ * field and the image gallery. Persist every unique image before the card is
+ * written to Firestore so a duplicate base64 payload cannot exceed the
+ * document size limit.
+ */
+export async function boardWizardDraftCardWithPersistedImages<
+  TCard extends BoardWizardDraftCardImages,
+>(
+  card: TCard,
+  maxImages: number,
+  persistImage: (imageUrl: string, index: number) => Promise<string>,
+): Promise<TCard & { imageUrl: string; imageUrls: string[] }> {
+  const sourceImages = [card.imageUrl ?? '', ...(card.imageUrls ?? [])]
+    .filter((imageUrl, index, images) => !!imageUrl && images.indexOf(imageUrl) === index)
+    .slice(0, Math.max(0, maxImages));
+  const persistedImages = await Promise.all(
+    sourceImages.map((imageUrl, index) => persistImage(imageUrl, index)),
+  );
+  const imageUrls = persistedImages
+    .filter((imageUrl, index, images) => !!imageUrl && images.indexOf(imageUrl) === index);
+  return {
+    ...card,
+    imageUrl: imageUrls[0] ?? '',
+    imageUrls,
+  };
+}
+
 /**
  * Optional wizard preferences live inside `result`, an established draft field.
  * Keeping them out of the top-level document prevents client/rules deployment

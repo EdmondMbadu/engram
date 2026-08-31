@@ -4,10 +4,36 @@ import {
   boardWizardDraftListingMarketing,
   boardWizardDraftMediaMode,
   boardWizardDraftNarrationSeconds,
+  boardWizardDraftCardWithPersistedImages,
   boardWizardDraftPayloadWithPreferences,
 } from './board-wizard-draft-persistence';
 
 describe('board wizard draft persistence contract', () => {
+  it('persists every unique card image instead of leaving gallery data URLs in Firestore', async () => {
+    const uploaded: string[] = [];
+    const card = await boardWizardDraftCardWithPersistedImages({
+      id: 'card-1',
+      imageUrl: 'data:image/jpeg;base64,primary',
+      imageUrls: [
+        'data:image/jpeg;base64,primary',
+        'data:image/jpeg;base64,secondary',
+      ],
+    }, 12, async (imageUrl, index) => {
+      uploaded.push(imageUrl);
+      return `https://storage.example/card-1/${index}.jpg`;
+    });
+
+    expect(uploaded).toEqual([
+      'data:image/jpeg;base64,primary',
+      'data:image/jpeg;base64,secondary',
+    ]);
+    expect(card.imageUrl).toBe('https://storage.example/card-1/0.jpg');
+    expect(card.imageUrls).toEqual([
+      'https://storage.example/card-1/0.jpg',
+      'https://storage.example/card-1/1.jpg',
+    ]);
+  });
+
   it('nests optional preferences inside the established result field', () => {
     const payload = boardWizardDraftPayloadWithPreferences({
       id: 'draft-1',

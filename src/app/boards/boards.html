@@ -7298,11 +7298,18 @@
                             </div>
                           }
                           <div class="stack-personal-voice-library__footer">
-                            <button type="button" class="stack-personal-voice__create" (click)="openPersonalVoiceSetup()">
+                            <button
+                              type="button"
+                              class="stack-personal-voice__create"
+                              [disabled]="personalNarratorVoices().length > 0 && personalVoiceLibraryVersion() < 2"
+                              (click)="openPersonalVoiceSetup()"
+                            >
                               <span class="material-symbols-outlined">{{ personalVoiceCanAdd() ? 'add' : 'lock' }}</span>
-                              {{ personalNarratorVoices().length === 0 ? 'Create my voice' : personalVoiceCanAdd() ? 'Add another voice' : 'Upgrade to add more' }}
+                              {{ personalNarratorVoices().length === 0 ? 'Create my voice' : personalVoiceLibraryVersion() < 2 ? 'Voice service update required' : personalVoiceCanAdd() ? 'Add another voice' : 'Upgrade to add more' }}
                             </button>
-                            @if (!personalVoiceCanAdd()) {
+                            @if (personalNarratorVoices().length > 0 && personalVoiceLibraryVersion() < 2) {
+                              <p>Additional voices will be available after the updated Functions are deployed.</p>
+                            } @else if (!personalVoiceCanAdd()) {
                               <p>Your existing voice remains available on every board. Membership unlocks additional voices.</p>
                             }
                           </div>

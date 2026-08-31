@@ -106,6 +106,7 @@ import {
   type BoardWizardMediaMode,
 } from './board-wizard-media-mode';
 import {
+  boardWizardDraftCardWithPersistedImages,
   boardWizardDraftCountMode,
   boardWizardDraftListingIntent,
   boardWizardDraftListingMarketing,
@@ -988,6 +989,7 @@ type PersonalNarratorVoice = {
 };
 
 type PersonalNarratorVoiceResponse = {
+  libraryVersion?: number;
   voice: PersonalNarratorVoice | null;
   voices?: PersonalNarratorVoice[];
   eligible: boolean;
@@ -2183,10 +2185,12 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly personalNarratorVoice = signal<PersonalNarratorVoice | null>(null);
   readonly personalNarratorVoices = signal<PersonalNarratorVoice[]>([]);
   readonly personalVoiceDefaultId = signal<string | null>(null);
+  readonly personalVoiceLibraryVersion = signal(1);
   readonly personalVoiceLimit = signal<number | null>(1);
   readonly personalVoiceServerCanAdd = signal(true);
   readonly personalVoiceCanAdd = computed(() =>
-    this.authService.isAdmin() || this.personalVoiceServerCanAdd(),
+    (this.personalNarratorVoices().length === 0 || this.personalVoiceLibraryVersion() >= 2)
+      && (this.authService.isAdmin() || this.personalVoiceServerCanAdd()),
   );
   readonly personalVoicePaid = signal(false);
   readonly personalVoiceLoading = signal(false);
@@ -3028,6 +3032,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly personalVoiceUsageLabel = computed(() => {
     const count = this.personalNarratorVoices().length;
     const limit = this.personalVoiceLimit();
+    if (count > 0 && this.personalVoiceLibraryVersion() < 2) return `${count} voice · update required`;
     return this.authService.isAdmin() || limit === null
       ? `${count} · Admin unlimited`
       : `${count} of ${limit}`;
@@ -14708,23 +14713,36 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   }
 
   private applyPersonalNarratorVoiceResponse(response: PersonalNarratorVoiceResponse): void {
-    const voices = response.voices ?? (response.voice ? [response.voice] : []);
+    const libraryVersion = Math.max(1, Math.trunc(response.libraryVersion ?? 1));
+    const voices = (response.voices ?? (response.voice ? [response.voice] : [])).map((voice, index) => {
+      const id = voice.id || (libraryVersion < 2 && index === 0 ? 'legacy' : `voice-${index + 1}`);
+      return {
+        ...voice,
+        id,
+        narratorVoiceId: voice.narratorVoiceId
+          || (libraryVersion < 2 ? PERSONAL_STACK_NARRATOR_VOICE_ID : personalStackNarratorVoiceId(id)),
+        voiceRevision: Math.max(1, Math.trunc(voice.voiceRevision ?? 1)),
+      };
+    });
     const admin = response.admin === true || this.authService.isAdmin();
     const fallbackLimit = this.authService.hasActivePersonalWikiPlan() ? 5 : 1;
     const voiceLimit = admin
       ? null
       : Math.max(1, typeof response.voiceLimit === 'number' ? response.voiceLimit : fallbackLimit);
     this.personalVoiceServerEligible.set(response.eligible);
+    this.personalVoiceLibraryVersion.set(libraryVersion);
     this.personalNarratorVoices.set(voices);
-    this.personalVoiceDefaultId.set(response.defaultVoiceId ?? response.voice?.id ?? voices[0]?.id ?? null);
+    this.personalVoiceDefaultId.set(response.defaultVoiceId ?? voices[0]?.id ?? null);
     this.personalNarratorVoice.set(
-      voices.find((voice) => voice.id === (response.defaultVoiceId ?? response.voice?.id))
-        ?? response.voice
+      voices.find((voice) => voice.id === response.defaultVoiceId)
         ?? voices[0]
         ?? null,
     );
     this.personalVoiceLimit.set(voiceLimit);
-    this.personalVoiceServerCanAdd.set(admin || (response.canAddVoice ?? voices.length < (voiceLimit ?? fallbackLimit)));
+    this.personalVoiceServerCanAdd.set(
+      libraryVersion >= 2
+        && (admin || (response.canAddVoice ?? voices.length < (voiceLimit ?? fallbackLimit))),
+    );
     this.personalVoicePaid.set(admin || response.paid === true || this.authService.hasActivePersonalWikiPlan());
   }
 
@@ -14805,6 +14823,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
   openPersonalVoiceSetup(voice: PersonalNarratorVoice | null = null): void {
     if (!this.personalVoiceEligible()) {
+      return;
+    }
+    if (!voice && this.personalNarratorVoices().length > 0 && this.personalVoiceLibraryVersion() < 2) {
+      this.personalVoiceError.set('Additional voices are not active on the voice service yet. Update the deployed Functions before adding another voice.');
       return;
     }
     if (!voice && !this.personalVoiceCanAdd()) {
@@ -14988,7 +15010,9 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       this.personalVoiceDurationSeconds.set(0);
       this.personalVoiceSetupOpen.set(false);
       this.personalVoiceSetupVoiceId.set(null);
-      this.selectStackNarratorVoice(board, this.personalNarratorId(response.data.voice));
+      const savedVoice = this.personalNarratorVoices().find((voice) => voice.id === response.data.voice?.id)
+        ?? this.personalNarratorVoices().at(-1);
+      if (savedVoice) this.selectStackNarratorVoice(board, this.personalNarratorId(savedVoice));
     } catch (error) {
       await deleteObject(sampleRef).catch(() => undefined);
       this.personalVoiceError.set(this.cardImageActionErrorMessage(error, 'Your voice could not be created. Check the recording and try again.'));
@@ -17725,12 +17749,15 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       const createdAt = existing?.createdAt || new Date().toISOString();
       const updatedAt = new Date().toISOString();
       const persistedCards = await Promise.all(cards.map(async (card) => ({
-        ...card,
-        editing: false,
-        imageUrl: await this.persistImageIfNeeded(
-          card.imageUrl,
-          `users/${uid}/boards/${draftId}/cards/${card.id}/0.jpg`,
+        ...await boardWizardDraftCardWithPersistedImages(
+          card,
+          cardPhotoLimit(card),
+          (imageUrl, index) => this.persistImageIfNeeded(
+            imageUrl,
+            `users/${uid}/boards/${draftId}/cards/${card.id}/${index}.jpg`,
+          ),
         ),
+        editing: false,
       })));
       const draft: BoardWizardDraft = {
         id: draftId,
